@@ -8,9 +8,7 @@ import {
   CheckCircle,
   Play,
   Clock,
-  X,
   ChevronRight,
-  Settings,
   RefreshCw,
   Filter,
 } from 'lucide-react'
@@ -46,7 +44,7 @@ export function ValidationPanel({
     showWarnings: true,
     showInfo: true,
   })
-  const [expandedItems, setExpandedItems] = useState<Set<number>>(new Set())
+  const [, setExpandedItems] = useState<Set<number>>(new Set())
 
   // Handle manual validation
   const handleValidate = useCallback(async () => {

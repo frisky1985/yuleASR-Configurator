@@ -5,7 +5,7 @@ import { ModuleTree } from '@/components/ModuleTree'
 import { ParameterEditor } from '@/components/ParameterEditor'
 import { ValidationPanel } from '@/components/ValidationPanel'
 import { cn, formatDate } from '@/lib/utils'
-import type { ValidationResult, ConfigParameter } from '@/types'
+import type { ValidationResult } from '@/types'
 import {
   Save,
   ArrowLeft,

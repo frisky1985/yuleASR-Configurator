@@ -3,7 +3,7 @@
  * JSON Schema 定义和构建工具
  */
 
-import type { ModuleSchema, ModuleParameter, ParameterType, ValidationRule } from '../types';
+import type { ModuleSchema, ModuleParameter, ParameterType } from '../types';
 
 /**
  * JSON Schema 版本

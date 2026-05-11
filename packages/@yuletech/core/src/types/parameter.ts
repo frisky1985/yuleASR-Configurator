@@ -47,7 +47,7 @@ export type ParamValidationRuleType =
  */
 export interface ParameterValidationRule {
   /** 规则类型 */
-  type: ValidationRuleType;
+  type: ParamValidationRuleType;
   /** 规则值 */
   value?: unknown;
   /** 错误消息 */

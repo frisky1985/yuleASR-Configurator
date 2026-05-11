@@ -379,7 +379,7 @@ export function ParameterEditor({
               Reset
             </button>
           )}
-          {!displayError && !isDirty && value && (
+          {!displayError && !isDirty && Boolean(value) && (
             <span className="text-green-500">
               <Check className="w-4 h-4" />
             </span>

@@ -172,7 +172,7 @@ function generateMacros(config: ModuleConfig, schema: ModuleSchema): string {
 /**
  * 生成类型定义
  */
-function generateTypes(config: ModuleConfig, schema: ModuleSchema): string {
+function generateTypes(_config: ModuleConfig, _schema: ModuleSchema): string {
   // 基础实现，可根据需要扩展
   return '';
 }
@@ -180,7 +180,7 @@ function generateTypes(config: ModuleConfig, schema: ModuleSchema): string {
 /**
  * 生成外部声明
  */
-function generateExternDeclarations(config: ModuleConfig, schema: ModuleSchema): string {
+function generateExternDeclarations(_config: ModuleConfig, schema: ModuleSchema): string {
   const externName = `${schema.name}_Config`;
   return `extern const ${schema.name}_ConfigType ${externName};`;
 }

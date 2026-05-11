@@ -3,7 +3,7 @@
  * 配置验证器实现
  */
 
-import type { ModuleSchema, ModuleConfig, ModuleParameter, ValidationRule } from '../types';
+import type { ModuleSchema, ModuleConfig, ModuleParameter } from '../types';
 
 /**
  * 验证结果
