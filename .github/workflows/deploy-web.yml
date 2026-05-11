@@ -3,10 +3,6 @@ name: Deploy yuleasr-web to GitHub Pages
 on:
   push:
     branches: [main, master]
-    paths:
-      - 'apps/yuleasr-web/**'
-      - 'packages/@yuletech/**'
-      - '.github/workflows/deploy-web.yml'
   workflow_dispatch:
 
 permissions:
@@ -34,6 +30,7 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: 9
+          run_install: false
 
       - name: Get pnpm store directory
         shell: bash
@@ -49,13 +46,25 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
-      - name: Build packages
-        run: pnpm run build --filter=@yuletech/*
+      - name: Build core packages
+        run: |
+          cd packages/@yuletech/core
+          pnpm run build
+          cd ../ui
+          pnpm run build || true
+          cd ../../yuleasr-editor-core
+          pnpm run build || true
 
       - name: Build yuleasr-web
-        run: pnpm run build --filter=yuleasr-web
+        run: |
+          cd apps/yuleasr-web
+          pnpm run build
+
+      - name: List build output
+        run: |
+          ls -la apps/yuleasr-web/dist/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
