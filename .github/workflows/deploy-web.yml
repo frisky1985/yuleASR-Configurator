@@ -30,37 +30,16 @@ jobs:
         uses: pnpm/action-setup@v2
         with:
           version: 9
-          run_install: false
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build core packages
-        run: |
-          cd packages/@yuletech/core
-          pnpm run build
-          cd ../ui
-          pnpm run build || true
-          cd ../../yuleasr-editor-core
-          pnpm run build || true
+      - name: Build all packages
+        run: pnpm run build
 
-      - name: Build yuleasr-web
+      - name: Copy 404 page for SPA
         run: |
-          cd apps/yuleasr-web
-          pnpm run build
+          cp apps/yuleasr-web/dist/index.html apps/yuleasr-web/dist/404.html
 
       - name: List build output
         run: |
