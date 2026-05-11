@@ -188,11 +188,14 @@
     "dev": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
     "typecheck": "tsc --noEmit",
     "vscode:prepublish": "pnpm build",
-    "clean": "rm -rf out"
+    "clean": "rm -rf out",
+    "package": "vsce package --no-dependencies",
+    "publish-extension": "vsce publish --no-dependencies"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
     "@types/vscode": "^1.80.0",
+    "@vscode/vsce": "^2.24.0",
     "esbuild": "^0.20.0",
     "typescript": "^5.4.0"
   },
