@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/spi.json",
+  "title": "Spi Configuration",
+  "description": "SPI 串行外设接口驱动",
+  "type": "object",
+  "properties": {
+    "SpiChannel": {
+      "description": "SPI 通道配置",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "SpiJob": {
+      "description": "SPI 作业配置",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "SpiSequence": {
+      "description": "SPI 序列配置",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0"
+}

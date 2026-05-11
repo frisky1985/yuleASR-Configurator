@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/pdur.json",
+  "title": "PduR Configuration",
+  "description": "PDU 路由服务",
+  "type": "object",
+  "properties": {
+    "PduRRoutingPath": {
+      "description": "路由路径配置",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "PduRBswModule": {
+      "description": "BSW 模块配置",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0"
+}

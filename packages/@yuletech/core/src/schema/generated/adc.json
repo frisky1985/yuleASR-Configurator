@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/adc.json",
+  "title": "Adc Configuration",
+  "description": "模拟/数字转换器驱动",
+  "type": "object",
+  "properties": {
+    "AdcChannel": {
+      "description": "ADC 通道配置",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "AdcGroup": {
+      "description": "ADC 组配置",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "AdcResolution": {
+      "description": "分辨率",
+      "type": "string",
+      "enum": [
+        "ADC_RESOLUTION_8_BIT",
+        "ADC_RESOLUTION_10_BIT",
+        "ADC_RESOLUTION_12_BIT"
+      ],
+      "default": "ADC_RESOLUTION_12_BIT"
+    }
+  },
+  "additionalProperties": false,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0"
+}

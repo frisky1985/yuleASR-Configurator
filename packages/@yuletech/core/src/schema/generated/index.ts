@@ -1,0 +1,12 @@
+export { default as Mcu } from './mcu.json';
+export { default as Port } from './port.json';
+export { default as Can } from './can.json';
+export { default as Spi } from './spi.json';
+export { default as Adc } from './adc.json';
+export { default as CanIf } from './canif.json';
+export { default as IoHwAb } from './iohwab.json';
+export { default as Com } from './com.json';
+export { default as PduR } from './pdur.json';
+export { default as NvM } from './nvm.json';
+export { default as Dcm } from './dcm.json';
+export { default as Dem } from './dem.json';

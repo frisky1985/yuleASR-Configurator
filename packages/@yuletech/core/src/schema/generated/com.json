@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/com.json",
+  "title": "Com Configuration",
+  "description": "通信服务 - 信号的收发和网关",
+  "type": "object",
+  "properties": {
+    "ComIPdu": {
+      "description": "IPDU 配置",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "ComSignal": {
+      "description": "信号配置",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "ComGateway": {
+      "description": "启用网关功能",
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0"
+}

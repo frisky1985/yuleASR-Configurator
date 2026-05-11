@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/can.json",
+  "title": "Can Configuration",
+  "description": "CAN 驱动 - 控制器区域网络",
+  "type": "object",
+  "properties": {
+    "CanController": {
+      "description": "CAN 控制器配置",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "CanHardwareObject": {
+      "description": "硬件对象配置",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "CanBaudrate": {
+      "description": "波特率 (kbps)",
+      "type": "integer",
+      "minimum": 10,
+      "maximum": 1000,
+      "default": 500
+    }
+  },
+  "required": [
+    "CanController"
+  ],
+  "additionalProperties": false,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0"
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/canif.json",
+  "title": "CanIf Configuration",
+  "description": "CAN 接口 - 提供统一的 CAN 通信接口",
+  "type": "object",
+  "properties": {
+    "CanIfPduCfg": {
+      "description": "PDU 配置",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "CanIfHrhCfg": {
+      "description": "硬件接收句柄配置",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0"
+}

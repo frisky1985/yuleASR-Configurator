@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/iohwab.json",
+  "title": "IoHwAb Configuration",
+  "description": "I/O 硬件抽象层",
+  "type": "object",
+  "properties": {
+    "IoHwAbDio": {
+      "description": "数字 I/O 配置",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "IoHwAbAdc": {
+      "description": "ADC 配置",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0"
+}

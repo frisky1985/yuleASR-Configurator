@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/mcu.json",
+  "title": "Mcu Configuration",
+  "description": "微控制器驱动 - 时钟初始化与低功耗管理",
+  "type": "object",
+  "properties": {
+    "McuClockSetting": {
+      "description": "时钟配置引用",
+      "type": "string"
+    },
+    "McuRamSectorSetting": {
+      "description": "RAM 区域配置",
+      "type": "string"
+    },
+    "McuModeSetting": {
+      "description": "运行模式配置",
+      "type": "string"
+    }
+  },
+  "required": [
+    "McuClockSetting"
+  ],
+  "additionalProperties": false,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0"
+}

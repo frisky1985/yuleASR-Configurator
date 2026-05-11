@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/dcm.json",
+  "title": "Dcm Configuration",
+  "description": "诊断通信管理 - UDS 协议实现",
+  "type": "object",
+  "properties": {
+    "DcmDsdServiceTable": {
+      "description": "服务表配置",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "DcmDspData": {
+      "description": "数据标识符配置",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0"
+}

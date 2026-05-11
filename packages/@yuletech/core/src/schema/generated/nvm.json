@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/nvm.json",
+  "title": "NvM Configuration",
+  "description": "非易失性内存管理",
+  "type": "object",
+  "properties": {
+    "NvMBlockDescriptor": {
+      "description": "NVM 块描述符",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "NvMSize": {
+      "description": "NVM 大小 (bytes)",
+      "type": "integer",
+      "minimum": 64,
+      "maximum": 65536,
+      "default": 1024
+    }
+  },
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0"
+}

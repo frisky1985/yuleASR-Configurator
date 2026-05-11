@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/port.json",
+  "title": "Port Configuration",
+  "description": "GPIO 端口驱动 - 引脚方向和复用功能配置",
+  "type": "object",
+  "properties": {
+    "PortContainer": {
+      "description": "端口容器配置",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "PortPinMode": {
+      "description": "引脚模式",
+      "type": "string",
+      "enum": [
+        "PORT_PIN_MODE_DIO",
+        "PORT_PIN_MODE_CAN",
+        "PORT_PIN_MODE_SPI",
+        "PORT_PIN_MODE_PWM",
+        "PORT_PIN_MODE_ADC"
+      ]
+    }
+  },
+  "required": [
+    "PortContainer"
+  ],
+  "additionalProperties": false,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0"
+}

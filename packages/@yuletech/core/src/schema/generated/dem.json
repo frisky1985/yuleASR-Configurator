@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/dem.json",
+  "title": "Dem Configuration",
+  "description": "诊断事件管理 - DTC 和故障处理",
+  "type": "object",
+  "properties": {
+    "DemEventParameter": {
+      "description": "事件参数",
+      "type": "object",
+      "additionalProperties": true
+    },
+    "DemDTCClass": {
+      "description": "DTC 类别",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0"
+}
