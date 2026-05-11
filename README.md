@@ -210,3 +210,4 @@ pnpm publish -r
 <p align="center">
   由 <strong>YuleTech</strong> 团队开发维护
 </p>
+# Deployment Trigger
