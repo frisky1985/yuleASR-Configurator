@@ -23,12 +23,14 @@ interface ConfigState {
   setLoading: (loading: boolean) => void
   saveConfig: () => Promise<void>
   loadConfig: (configId: string) => Promise<void>
-  createConfig: (name: string, description: string) => Promise<void>
-  deleteConfig: (configId: string) => Promise<void>
+  // Module enable/disable
+  toggleModuleEnabled: (moduleId: string, enabled: boolean) => void
   
   // 配置列表操作
   setConfigList: (list: ConfigListItem[]) => void
   loadConfigList: () => Promise<void>
+  createConfig: (name: string, description: string) => Promise<void>
+  deleteConfig: (configId: string) => Promise<void>
 }
 
 export const useConfigStore = create<ConfigState>()(
@@ -99,6 +101,24 @@ export const useConfigStore = create<ConfigState>()(
         })
       },
 
+      toggleModuleEnabled: (moduleId, enabled) => {
+        const { currentConfig } = get()
+        if (!currentConfig) return
+
+        const updatedModules = currentConfig.modules.map(module =>
+          module.id === moduleId ? { ...module, enabled } : module
+        )
+
+        set({
+          currentConfig: {
+            ...currentConfig,
+            modules: updatedModules,
+            updatedAt: new Date().toISOString()
+          },
+          isDirty: true
+        })
+      },
+
       setValidationResult: (result) => {
         set({ validationResult: result })
       },
@@ -151,6 +171,7 @@ export const useConfigStore = create<ConfigState>()(
                 name: 'Mcu',
                 layer: 'MCAL',
                 version: '4.4.0',
+                enabled: true,
                 parameters: [
                   {
                     name: 'McuClockSetting',
@@ -169,6 +190,16 @@ export const useConfigStore = create<ConfigState>()(
                 name: 'Port',
                 layer: 'MCAL',
                 version: '4.4.0',
+                enabled: true,
+                parameters: [],
+                containers: []
+              },
+              {
+                id: 'dio',
+                name: 'Dio',
+                layer: 'MCAL',
+                version: '4.4.0',
+                enabled: false,
                 parameters: [],
                 containers: []
               },
@@ -177,6 +208,42 @@ export const useConfigStore = create<ConfigState>()(
                 name: 'Can',
                 layer: 'ECUAL',
                 version: '4.4.0',
+                enabled: true,
+                parameters: [
+                  {
+                    name: 'CanControllerId',
+                    type: 'integer',
+                    value: 0,
+                    default: 0,
+                    min: 0,
+                    max: 255,
+                    description: 'CAN Controller ID'
+                  },
+                  {
+                    name: 'CanBaudrate',
+                    type: 'enum',
+                    value: '500K',
+                    default: '500K',
+                    options: ['125K', '250K', '500K', '1M'],
+                    description: 'CAN bus baudrate'
+                  },
+                  {
+                    name: 'CanTxPdus',
+                    type: 'array',
+                    value: ['Pdu1', 'Pdu2'],
+                    default: [],
+                    itemType: 'string',
+                    description: 'List of TX PDUs'
+                  }
+                ],
+                containers: []
+              },
+              {
+                id: 'eth',
+                name: 'Eth',
+                layer: 'ECUAL',
+                version: '4.4.0',
+                enabled: false,
                 parameters: [],
                 containers: []
               }

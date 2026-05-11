@@ -1,25 +1,34 @@
-import { useEffect } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useConfigStore } from '@/stores/configStore'
 import { ModuleTree } from '@/components/ModuleTree'
 import { ParameterEditor } from '@/components/ParameterEditor'
 import { ValidationPanel } from '@/components/ValidationPanel'
 import { cn, formatDate } from '@/lib/utils'
-import { 
-  Save, 
-  ArrowLeft, 
-  Play, 
-  Download, 
+import type { ValidationResult, ConfigParameter } from '@/types'
+import {
+  Save,
+  ArrowLeft,
+  Play,
+  Download,
   GitBranch,
   MoreVertical,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  Search,
 } from 'lucide-react'
 
 export function Editor() {
   const { configId, moduleId } = useParams<{ configId: string; moduleId?: string }>()
   const navigate = useNavigate()
-  
+
+  // Local state
+  const [searchQuery, setSearchQuery] = useState('')
+  const [showDisabled, setShowDisabled] = useState(true)
+  const [realTimeValidation, setRealTimeValidation] = useState(false)
+  const [isValidating, setIsValidating] = useState(false)
+  const [lastValidatedAt, setLastValidatedAt] = useState<Date | undefined>(undefined)
+
   const {
     currentConfig,
     selectedModuleId,
@@ -31,6 +40,7 @@ export function Editor() {
     updateParameter,
     saveConfig,
     setValidationResult,
+    toggleModuleEnabled,
   } = useConfigStore()
 
   useEffect(() => {
@@ -45,21 +55,98 @@ export function Editor() {
     }
   }, [moduleId, setSelectedModule])
 
-  const selectedModule = currentConfig?.modules.find(m => m.id === selectedModuleId)
+  const selectedModule = currentConfig?.modules.find((m) => m.id === selectedModuleId)
 
-  const handleValidate = () => {
-    // Mock validation - TODO: integrate with @yuletech/core validator
-    const mockResult = {
-      valid: true,
-      errors: [] as Array<{ path: string; message: string; severity: 'error' | 'warning' | 'info' }>,
-      warnings: [] as Array<{ path: string; message: string; severity: 'error' | 'warning' | 'info' }>,
+  // Mock validation function
+  const handleValidate = useCallback(async (): Promise<ValidationResult> => {
+    setIsValidating(true)
+
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 800))
+
+    // Generate mock validation result based on current state
+    const mockErrors: Array<{ path: string; message: string; severity: 'error' | 'warning' | 'info' }> = []
+    const mockWarnings: Array<{ path: string; message: string; severity: 'error' | 'warning' | 'info' }> = []
+
+    // Check for validation issues based on parameters
+    currentConfig?.modules.forEach((module) => {
+      if (!module.enabled) return
+
+      module.parameters.forEach((param) => {
+        if (param.type === 'integer' || param.type === 'float') {
+          const val = param.value as number
+          if (param.min !== undefined && val < param.min) {
+            mockErrors.push({
+              path: `${module.name}.${param.name}`,
+              message: `${param.name} value ${val} is below minimum ${param.min}`,
+              severity: 'error',
+            })
+          }
+          if (param.max !== undefined && val > param.max) {
+            mockErrors.push({
+              path: `${module.name}.${param.name}`,
+              message: `${param.name} value ${val} exceeds maximum ${param.max}`,
+              severity: 'error',
+            })
+          }
+        }
+      })
+    })
+
+    // Add some warnings
+    const enabledCount = currentConfig?.modules.filter((m) => m.enabled).length || 0
+    if (enabledCount < 3) {
+      mockWarnings.push({
+        path: 'config.modules',
+        message: `Only ${enabledCount} modules enabled. Consider enabling more for full functionality.`,
+        severity: 'warning',
+      })
     }
-    setValidationResult(mockResult)
-  }
+
+    const result: ValidationResult = {
+      valid: mockErrors.length === 0,
+      errors: mockErrors,
+      warnings: mockWarnings,
+    }
+
+    setValidationResult(result)
+    setLastValidatedAt(new Date())
+    setIsValidating(false)
+
+    return result
+  }, [currentConfig, setValidationResult])
+
+  // Real-time validation effect
+  useEffect(() => {
+    if (!realTimeValidation) return
+
+    const timeout = setTimeout(() => {
+      handleValidate()
+    }, 1000)
+
+    return () => clearTimeout(timeout)
+  }, [currentConfig, realTimeValidation, handleValidate])
 
   const handleSave = async () => {
     await saveConfig()
   }
+
+  const handleParameterChange = (paramName: string, value: unknown) => {
+    if (selectedModule) {
+      updateParameter(selectedModule.id, paramName, value)
+    }
+  }
+
+  // Filter parameters based on search
+  const filteredParameters = selectedModule?.parameters.filter((param) => {
+    if (!searchQuery) return true
+    const query = searchQuery.toLowerCase()
+    return (
+      param.name.toLowerCase().includes(query) ||
+      param.description.toLowerCase().includes(query) ||
+      param.type.toLowerCase().includes(query)
+    )
+  })
 
   if (isLoading && !currentConfig) {
     return (
@@ -119,31 +206,34 @@ export function Editor() {
             </p>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-2">
           <button
             onClick={handleValidate}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            disabled={isValidating}
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
           >
-            <Play className="w-4 h-4" />
+            {isValidating ? (
+              <div className="animate-spin w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full" />
+            ) : (
+              <Play className="w-4 h-4" />
+            )}
             Validate
           </button>
           <button
             onClick={handleSave}
             disabled={!isDirty || isLoading}
             className={cn(
-              "inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors",
+              'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors',
               !isDirty || isLoading
-                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "bg-primary-600 text-white hover:bg-primary-700"
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-primary-600 text-white hover:bg-primary-700'
             )}
           >
             <Save className="w-4 h-4" />
             {isLoading ? 'Saving...' : 'Save'}
           </button>
-          <button
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-          >
+          <button className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
             <GitBranch className="w-4 h-4" />
             Sync
           </button>
@@ -167,39 +257,85 @@ export function Editor() {
               setSelectedModule(id)
               navigate(`/editor/${configId}/${id}`)
             }}
+            onToggleModule={(id, enabled) => toggleModuleEnabled(id, enabled)}
+            filterText={searchQuery}
+            onFilterChange={setSearchQuery}
+            showDisabled={showDisabled}
+            onShowDisabledChange={setShowDisabled}
           />
         </div>
 
         {/* Center - Parameter Editor */}
         <div className="col-span-6">
           <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-            <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
+            <div className="px-4 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
               <h3 className="text-sm font-semibold text-gray-900">
                 {selectedModule ? `${selectedModule.name} Configuration` : 'Select a Module'}
               </h3>
+              {selectedModule && (
+                <div className="flex items-center gap-2">
+                  {/* Parameter search */}
+                  <div className="relative">
+                    <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Filter params..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-7 pr-3 py-1 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 w-40"
+                    />
+                  </div>
+                  <span className="text-xs text-gray-500">
+                    {filteredParameters?.length || 0} params
+                  </span>
+                </div>
+              )}
             </div>
-            
+
             {selectedModule ? (
               <div className="p-4 space-y-6">
                 <div className="flex items-center gap-2 text-xs text-gray-500 pb-4 border-b border-gray-100">
                   <span className="px-2 py-1 bg-gray-100 rounded">{selectedModule.layer}</span>
                   <span>Version: {selectedModule.version}</span>
+                  <span
+                    className={cn(
+                      'px-2 py-1 rounded',
+                      selectedModule.enabled
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-gray-100 text-gray-500'
+                    )}
+                  >
+                    {selectedModule.enabled ? 'Enabled' : 'Disabled'}
+                  </span>
                 </div>
-                
-                {selectedModule.parameters.length === 0 ? (
+
+                {!selectedModule.enabled && (
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <p className="text-sm text-yellow-800">
+                      This module is currently disabled. Enable it in the module tree to activate
+                      its configuration.
+                    </p>
+                  </div>
+                )}
+
+                {filteredParameters?.length === 0 ? (
                   <div className="text-center py-8">
-                    <p className="text-gray-500">No configurable parameters for this module</p>
+                    <p className="text-gray-500">
+                      {selectedModule.parameters.length === 0
+                        ? 'No configurable parameters for this module'
+                        : 'No parameters match your filter'}
+                    </p>
                   </div>
                 ) : (
-                  selectedModule.parameters.map((param) => (
-                    <ParameterEditor
-                      key={param.name}
-                      parameter={param}
-                      onChange={(value) => 
-                        updateParameter(selectedModule.id, param.name, value)
-                      }
-                    />
-                  ))
+                  <div className="space-y-6">
+                    {filteredParameters?.map((param) => (
+                      <ParameterEditor
+                        key={param.name}
+                        parameter={param}
+                        onChange={(value) => handleParameterChange(param.name, value)}
+                      />
+                    ))}
+                  </div>
                 )}
               </div>
             ) : (
@@ -212,11 +348,16 @@ export function Editor() {
 
         {/* Right Sidebar - Validation & Info */}
         <div className="col-span-3 space-y-4">
-          <ValidationPanel 
+          <ValidationPanel
             result={validationResult}
             onNavigate={(path) => console.log('Navigate to:', path)}
+            onValidate={handleValidate}
+            isValidating={isValidating}
+            realTimeValidation={realTimeValidation}
+            onToggleRealTime={setRealTimeValidation}
+            lastValidatedAt={lastValidatedAt}
           />
-          
+
           {/* Module Info Card */}
           {selectedModule && (
             <div className="bg-white rounded-lg border border-gray-200 p-4">
@@ -235,8 +376,22 @@ export function Editor() {
                   <dd className="font-medium text-gray-900">{selectedModule.version}</dd>
                 </div>
                 <div className="flex justify-between">
+                  <dt className="text-gray-500">Status</dt>
+                  <dd className="font-medium">
+                    <span
+                      className={cn(
+                        selectedModule.enabled ? 'text-green-600' : 'text-gray-500'
+                      )}
+                    >
+                      {selectedModule.enabled ? 'Active' : 'Inactive'}
+                    </span>
+                  </dd>
+                </div>
+                <div className="flex justify-between">
                   <dt className="text-gray-500">Parameters</dt>
-                  <dd className="font-medium text-gray-900">{selectedModule.parameters.length}</dd>
+                  <dd className="font-medium text-gray-900">
+                    {selectedModule.parameters.length}
+                  </dd>
                 </div>
               </dl>
             </div>

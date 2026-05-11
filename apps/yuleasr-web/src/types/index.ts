@@ -5,13 +5,14 @@ export interface ModuleConfig {
   name: string
   layer: 'MCAL' | 'ECUAL' | 'Service' | 'RTE' | 'ASW'
   version: string
+  enabled: boolean
   parameters: ConfigParameter[]
   containers: ContainerConfig[]
 }
 
 export interface ConfigParameter {
   name: string
-  type: 'boolean' | 'integer' | 'float' | 'string' | 'enum' | 'reference'
+  type: 'boolean' | 'integer' | 'float' | 'string' | 'enum' | 'array' | 'reference'
   value: unknown
   default?: unknown
   min?: number
@@ -19,6 +20,10 @@ export interface ConfigParameter {
   options?: string[]
   description: string
   validation?: ValidationRule[]
+  // For array type
+  itemType?: 'string' | 'integer' | 'float'
+  // For reference type
+  referenceTarget?: string
 }
 
 export interface ContainerConfig {

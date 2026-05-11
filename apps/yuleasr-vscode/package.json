@@ -1,104 +1,160 @@
 {
   "name": "yuleasr-vscode",
   "displayName": "yuleASR Configurator",
-  "description": "yuleASR AutoSAR configuration editor for VS Code",
+  "description": "Visual configuration editor for yuleASR AutoSAR modules",
   "version": "0.1.0",
   "publisher": "yuletech",
-  "license": "MIT",
+  "private": true,
   "engines": {
     "vscode": "^1.80.0"
   },
   "categories": [
+    "Other",
     "Programming Languages",
-    "Visualization",
-    "Debuggers"
+    "Formatters"
   ],
   "keywords": [
-    "autosar",
-    "yuleasr",
-    "configuration",
-    "embedded"
+    "yuleASR",
+    "AutoSAR",
+    "BSW",
+    "embedded",
+    "configuration"
   ],
   "activationEvents": [
     "onLanguage:json",
-    "onCommand:yuleasr.openConfig",
-    "onView:yuleasr.configExplorer"
+    "workspaceContains:**/*.yule.json",
+    "workspaceContains:**/*.xdm",
+    "workspaceContains:**/yuleasr.config.json",
+    "onCommand:yuleasr.openConfig"
   ],
-  "main": "./dist/extension.js",
+  "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "yuleasr.openConfig",
-        "title": "Open yuleASR Config",
-        "icon": "$(open-folder)"
+        "title": "Open Configuration",
+        "icon": "$(open-editors-view-icon)"
+      },
+      {
+        "command": "yuleasr.refreshExplorer",
+        "title": "Refresh Explorer",
+        "icon": "$(refresh)"
       },
       {
         "command": "yuleasr.syncConfig",
-        "title": "yuleASR: Sync Configuration",
+        "title": "Sync with yuleASR",
         "icon": "$(sync)"
       },
       {
         "command": "yuleasr.validateConfig",
-        "title": "yuleASR: Validate Configuration",
+        "title": "Validate Configuration",
         "icon": "$(check)"
       },
       {
         "command": "yuleasr.generateCode",
-        "title": "yuleASR: Generate Code",
-        "icon": "$(file-code)"
+        "title": "Generate Code",
+        "icon": "$(gear)"
       },
       {
-        "command": "yuleasr.refreshExplorer",
-        "title": "Refresh",
-        "icon": "$(refresh)"
+        "command": "yuleasr.newModule",
+        "title": "New Module",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "yuleasr.deleteModule",
+        "title": "Delete Module",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "yuleasr.renameModule",
+        "title": "Rename Module",
+        "icon": "$(edit)"
       }
     ],
     "menus": {
-      "explorer/context": [
+      "commandPalette": [
         {
           "command": "yuleasr.openConfig",
-          "when": "resourceExtname == .xdm || resourceExtname == .json",
-          "group": "yuleasr@1"
+          "when": "workspaceHasYuleASR"
         }
       ],
       "view/title": [
         {
+          "command": "yuleasr.newModule",
+          "when": "view == yuleasrExplorer",
+          "group": "navigation"
+        },
+        {
           "command": "yuleasr.refreshExplorer",
-          "when": "view == yuleasr.configExplorer",
+          "when": "view == yuleasrExplorer",
           "group": "navigation"
         }
       ],
       "view/item/context": [
         {
-          "command": "yuleasr.syncConfig",
-          "when": "view == yuleasr.configExplorer && viewItem == config",
-          "group": "yuleasr@1"
+          "command": "yuleasr.openConfig",
+          "when": "view == yuleasrExplorer && viewItem == module",
+          "group": "inline"
+        },
+        {
+          "command": "yuleasr.renameModule",
+          "when": "view == yuleasrExplorer && viewItem == module",
+          "group": "2_modification"
+        },
+        {
+          "command": "yuleasr.deleteModule",
+          "when": "view == yuleasrExplorer && viewItem == module",
+          "group": "2_modification"
         },
         {
           "command": "yuleasr.validateConfig",
-          "when": "view == yuleasr.configExplorer && viewItem == config",
-          "group": "yuleasr@2"
+          "when": "view == yuleasrExplorer && viewItem == module",
+          "group": "1_validation"
         },
         {
           "command": "yuleasr.generateCode",
-          "when": "view == yuleasr.configExplorer && viewItem == config",
-          "group": "yuleasr@3"
+          "when": "view == yuleasrExplorer && viewItem == module",
+          "group": "1_validation"
         }
       ]
     },
     "views": {
       "explorer": [
         {
-          "id": "yuleasr.configExplorer",
-          "name": "yuleASR Configurations",
-          "when": "workspaceHasYuleasrConfig"
+          "id": "yuleasrExplorer",
+          "name": "yuleASR Modules",
+          "when": "workspaceHasYuleASR",
+          "icon": "$(symbol-misc)"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "yuleasrSidebar",
+          "title": "yuleASR",
+          "icon": "$(symbol-misc)"
         }
       ]
     },
     "viewsWelcome": [
       {
-        "view": "yuleasr.configExplorer",
-        "contents": "No yuleASR configurations found in this workspace.\n[Open yuleASR Project](command:yuleasr.openConfig)"
+        "view": "yuleasrExplorer",
+        "contents": "No yuleASR configuration found in this workspace.\n[Initialize yuleASR Project](command:yuleasr.initProject)"
+      }
+    ],
+    "languages": [
+      {
+        "id": "yuleasr-config",
+        "aliases": ["yuleASR Configuration", "yuleasr"],
+        "extensions": [".yule.json"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "jsonValidation": [
+      {
+        "fileMatch": "*.yule.json",
+        "url": "./schemas/module-config.schema.json"
       }
     ],
     "configuration": {
@@ -107,38 +163,41 @@
         "yuleasr.yuleASRPath": {
           "type": "string",
           "default": "",
-          "description": "Path to yuleASR codebase repository"
+          "description": "Path to yuleASR repository"
         },
         "yuleasr.autoSync": {
           "type": "boolean",
           "default": true,
-          "description": "Automatically sync configuration on save"
+          "description": "Automatically sync with yuleASR repository"
         },
-        "yuleasr.validationLevel": {
-          "type": "string",
-          "default": "strict",
-          "enum": ["strict", "normal", "relaxed"],
-          "description": "Configuration validation level"
+        "yuleasr.validateOnSave": {
+          "type": "boolean",
+          "default": true,
+          "description": "Validate configuration on save"
+        },
+        "yuleasr.showGeneratedCode": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show generated code preview"
         }
       }
     }
   },
   "scripts": {
-    "build": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify",
-    "dev": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
-    "vscode:prepublish": "pnpm run build",
-    "compile": "tsc -p ./",
-    "lint": "eslint src --ext ts",
-    "package": "vsce package --no-dependencies"
-  },
-  "dependencies": {
-    "@yuletech/core": "workspace:*",
-    "yuleasr-editor-core": "workspace:*"
+    "build": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --minify",
+    "dev": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
+    "typecheck": "tsc --noEmit",
+    "vscode:prepublish": "pnpm build",
+    "clean": "rm -rf out"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
     "@types/vscode": "^1.80.0",
     "esbuild": "^0.20.0",
     "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "@yuletech/core": "workspace:*",
+    "yuleasr-editor-core": "workspace:*"
   }
 }
