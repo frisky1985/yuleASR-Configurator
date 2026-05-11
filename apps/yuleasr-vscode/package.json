@@ -1,0 +1,144 @@
+{
+  "name": "yuleasr-vscode",
+  "displayName": "yuleASR Configurator",
+  "description": "yuleASR AutoSAR configuration editor for VS Code",
+  "version": "0.1.0",
+  "publisher": "yuletech",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Visualization",
+    "Debuggers"
+  ],
+  "keywords": [
+    "autosar",
+    "yuleasr",
+    "configuration",
+    "embedded"
+  ],
+  "activationEvents": [
+    "onLanguage:json",
+    "onCommand:yuleasr.openConfig",
+    "onView:yuleasr.configExplorer"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "yuleasr.openConfig",
+        "title": "Open yuleASR Config",
+        "icon": "$(open-folder)"
+      },
+      {
+        "command": "yuleasr.syncConfig",
+        "title": "yuleASR: Sync Configuration",
+        "icon": "$(sync)"
+      },
+      {
+        "command": "yuleasr.validateConfig",
+        "title": "yuleASR: Validate Configuration",
+        "icon": "$(check)"
+      },
+      {
+        "command": "yuleasr.generateCode",
+        "title": "yuleASR: Generate Code",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "yuleasr.refreshExplorer",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "yuleasr.openConfig",
+          "when": "resourceExtname == .xdm || resourceExtname == .json",
+          "group": "yuleasr@1"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "yuleasr.refreshExplorer",
+          "when": "view == yuleasr.configExplorer",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "yuleasr.syncConfig",
+          "when": "view == yuleasr.configExplorer && viewItem == config",
+          "group": "yuleasr@1"
+        },
+        {
+          "command": "yuleasr.validateConfig",
+          "when": "view == yuleasr.configExplorer && viewItem == config",
+          "group": "yuleasr@2"
+        },
+        {
+          "command": "yuleasr.generateCode",
+          "when": "view == yuleasr.configExplorer && viewItem == config",
+          "group": "yuleasr@3"
+        }
+      ]
+    },
+    "views": {
+      "explorer": [
+        {
+          "id": "yuleasr.configExplorer",
+          "name": "yuleASR Configurations",
+          "when": "workspaceHasYuleasrConfig"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "yuleasr.configExplorer",
+        "contents": "No yuleASR configurations found in this workspace.\n[Open yuleASR Project](command:yuleasr.openConfig)"
+      }
+    ],
+    "configuration": {
+      "title": "yuleASR Configurator",
+      "properties": {
+        "yuleasr.yuleASRPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to yuleASR codebase repository"
+        },
+        "yuleasr.autoSync": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically sync configuration on save"
+        },
+        "yuleasr.validationLevel": {
+          "type": "string",
+          "default": "strict",
+          "enum": ["strict", "normal", "relaxed"],
+          "description": "Configuration validation level"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify",
+    "dev": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
+    "vscode:prepublish": "pnpm run build",
+    "compile": "tsc -p ./",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package --no-dependencies"
+  },
+  "dependencies": {
+    "@yuletech/core": "workspace:*",
+    "yuleasr-editor-core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.80.0",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.4.0"
+  }
+}
