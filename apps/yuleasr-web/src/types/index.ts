@@ -1,13 +1,24 @@
 // yuleASR 配置类型定义
 
+export type ModuleLayer = 'MCAL' | 'ECUAL' | 'Service' | 'RTE' | 'ASW'
+
 export interface ModuleConfig {
   id: string
   name: string
-  layer: 'MCAL' | 'ECUAL' | 'Service' | 'RTE' | 'ASW'
+  layer: ModuleLayer
   version: string
   enabled: boolean
+  description?: string
   parameters: ConfigParameter[]
   containers: ContainerConfig[]
+  dependencies?: ModuleDependency[]
+}
+
+export interface ModuleDependency {
+  module: string
+  version?: string
+  required: boolean
+  description?: string
 }
 
 export interface ConfigParameter {

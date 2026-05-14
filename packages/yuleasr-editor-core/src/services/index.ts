@@ -7,6 +7,17 @@ import type { ConfigValidator, ValidationResult, ModuleSchema } from '@yuletech/
 import type { ConfigEngine } from '../engine';
 import type { ConfigModel, ConfigProject, ConfigChangeEvent } from '../models';
 
+// 导出 Git 服务
+export { GitService, GitError } from './gitService';
+export type { 
+  GitServiceConfig, 
+  CommitInfo, 
+  BranchInfo, 
+  DiffInfo, 
+  DiffHunk, 
+  FileStatus 
+} from './gitService';
+
 /**
  * 验证服务配置
  */

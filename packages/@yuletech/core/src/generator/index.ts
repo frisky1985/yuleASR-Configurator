@@ -3,6 +3,9 @@
  * 代码生成器接口定义
  */
 
+export * from './ecuc-generator';
+export * from './rte-generator';
+
 import type { ModuleConfig, ModuleSchema } from '../types';
 
 /**

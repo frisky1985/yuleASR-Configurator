@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, lazy, Suspense } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useConfigStore } from '@/stores/configStore'
 import { formatDate, cn } from '@/lib/utils'
+import type { ModuleConfig } from '@/types'
 import { 
   Plus, 
   FileJson, 
@@ -10,8 +11,14 @@ import {
   Settings, 
   ChevronRight,
   Clock,
-  Layers
+  Layers,
+  GitGraph,
+  X,
+  Loader2
 } from 'lucide-react'
+
+// Lazy load ModuleGraph component
+const ModuleGraph = lazy(() => import('@/components/ModuleGraph').then(m => ({ default: m.ModuleGraph })))
 
 export function Dashboard() {
   const navigate = useNavigate()
@@ -27,6 +34,10 @@ export function Dashboard() {
   const [newConfigName, setNewConfigName] = useState('')
   const [newConfigDesc, setNewConfigDesc] = useState('')
   const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [showGraphModal, setShowGraphModal] = useState(false)
+  const [selectedConfigForGraph, setSelectedConfigForGraph] = useState<string | null>(null)
+  const [graphModules, setGraphModules] = useState<ModuleConfig[]>([])
+  const [isLoadingGraph, setIsLoadingGraph] = useState(false)
 
   useEffect(() => {
     loadConfigList()
@@ -46,6 +57,111 @@ export function Dashboard() {
       await deleteConfig(id)
     }
     setDeletingId(null)
+  }
+
+  // Handle opening the dependency graph
+  const handleShowGraph = async (configId: string) => {
+    setSelectedConfigForGraph(configId)
+    setIsLoadingGraph(true)
+    setShowGraphModal(true)
+    
+    // Load the config modules
+    // In a real app, you'd fetch this from API. Here we use mock data similar to configStore
+    await new Promise(resolve => setTimeout(resolve, 500))
+    
+    const mockModules: ModuleConfig[] = [
+      {
+        id: 'mcu',
+        name: 'Mcu',
+        layer: 'MCAL',
+        version: '4.4.0',
+        enabled: true,
+        description: 'Microcontroller Driver',
+        parameters: [],
+        containers: [],
+        dependencies: []
+      },
+      {
+        id: 'port',
+        name: 'Port',
+        layer: 'MCAL',
+        version: '4.4.0',
+        enabled: true,
+        description: 'Port Driver',
+        parameters: [],
+        containers: [],
+        dependencies: [{ module: 'Mcu', required: true }]
+      },
+      {
+        id: 'dio',
+        name: 'Dio',
+        layer: 'MCAL',
+        version: '4.4.0',
+        enabled: true,
+        description: 'Digital I/O Driver',
+        parameters: [],
+        containers: [],
+        dependencies: [{ module: 'Port', required: true }]
+      },
+      {
+        id: 'can',
+        name: 'Can',
+        layer: 'ECUAL',
+        version: '4.4.0',
+        enabled: true,
+        description: 'CAN Communication Driver',
+        parameters: [],
+        containers: [],
+        dependencies: [{ module: 'Mcu', required: true }]
+      },
+      {
+        id: 'eth',
+        name: 'Eth',
+        layer: 'ECUAL',
+        version: '4.4.0',
+        enabled: false,
+        description: 'Ethernet Driver',
+        parameters: [],
+        containers: [],
+        dependencies: [{ module: 'Mcu', required: true }]
+      },
+      {
+        id: 'ecum',
+        name: 'EcuM',
+        layer: 'Service',
+        version: '4.4.0',
+        enabled: true,
+        description: 'ECU State Manager',
+        parameters: [],
+        containers: [],
+        dependencies: [{ module: 'Mcu', required: true }, { module: 'Can', required: false }]
+      },
+      {
+        id: 'rte',
+        name: 'Rte',
+        layer: 'RTE',
+        version: '4.4.0',
+        enabled: true,
+        description: 'Runtime Environment',
+        parameters: [],
+        containers: [],
+        dependencies: [{ module: 'EcuM', required: true }, { module: 'Can', required: false }]
+      },
+      {
+        id: 'swc1',
+        name: 'SensorSWC',
+        layer: 'ASW',
+        version: '1.0.0',
+        enabled: true,
+        description: 'Sensor Software Component',
+        parameters: [],
+        containers: [],
+        dependencies: [{ module: 'Rte', required: true }, { module: 'Can', required: false }]
+      }
+    ]
+    
+    setGraphModules(mockModules)
+    setIsLoadingGraph(false)
   }
 
   return (
@@ -68,7 +184,7 @@ export function Dashboard() {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <button className="p-4 bg-white border border-gray-200 rounded-lg hover:border-primary-300 hover:shadow-sm transition-all text-left">
           <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center mb-3">
             <FolderOpen className="w-5 h-5 text-blue-600" />
@@ -91,6 +207,17 @@ export function Dashboard() {
           </div>
           <h3 className="font-medium text-gray-900">Templates</h3>
           <p className="text-sm text-gray-500 mt-1">Start from template</p>
+        </button>
+
+        <button 
+          onClick={() => handleShowGraph('config-1')}
+          className="p-4 bg-white border border-gray-200 rounded-lg hover:border-primary-300 hover:shadow-sm transition-all text-left group"
+        >
+          <div className="w-10 h-10 bg-pink-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-pink-100 transition-colors">
+            <GitGraph className="w-5 h-5 text-pink-600" />
+          </div>
+          <h3 className="font-medium text-gray-900">Dependency Graph</h3>
+          <p className="text-sm text-gray-500 mt-1">View module relationships</p>
         </button>
       </div>
 
@@ -144,6 +271,16 @@ export function Dashboard() {
                 </button>
                 
                 <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleShowGraph(config.id)
+                    }}
+                    className="p-2 text-gray-400 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
+                    title="View Dependency Graph"
+                  >
+                    <GitGraph className="w-5 h-5" />
+                  </button>
                   <button
                     onClick={() => navigate(`/editor/${config.id}`)}
                     className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
@@ -224,6 +361,64 @@ export function Dashboard() {
               >
                 {isLoading ? 'Creating...' : 'Create'}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Dependency Graph Modal */}
+      {showGraphModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl w-[95vw] h-[90vh] flex flex-col overflow-hidden">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                  <GitGraph className="w-5 h-5 text-pink-600" />
+                  Module Dependency Graph
+                </h3>
+                <p className="text-sm text-gray-500 mt-0.5">
+                  Visualize module relationships and dependencies
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setShowGraphModal(false)
+                  setGraphModules([])
+                  setSelectedConfigForGraph(null)
+                }}
+                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="flex-1 relative overflow-hidden">
+              {isLoadingGraph ? (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <Loader2 className="w-10 h-10 animate-spin text-primary-600 mx-auto mb-3" />
+                    <p className="text-gray-600 font-medium">Loading module graph...</p>
+                    <p className="text-sm text-gray-400 mt-1">Calculating dependencies</p>
+                  </div>
+                </div>
+              ) : (
+                <Suspense fallback={
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center">
+                      <Loader2 className="w-10 h-10 animate-spin text-primary-600 mx-auto mb-3" />
+                      <p className="text-gray-600 font-medium">Initializing graph...</p>
+                    </div>
+                  </div>
+                }>
+                  <ModuleGraph
+                    configId={selectedConfigForGraph || 'config-1'}
+                    modules={graphModules}
+                    onNodeClick={(moduleId) => console.log('Selected:', moduleId)}
+                  />
+                </Suspense>
+              )}
             </div>
           </div>
         </div>
