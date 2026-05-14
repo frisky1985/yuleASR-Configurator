@@ -1,0 +1,202 @@
+import { useState, useRef } from 'react'
+import { Upload, FileJson, AlertCircle, Check, X } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { yuleasrAdapter } from '@yuletech/core'
+import type { ModuleConfig } from '@yuletech/core'
+
+interface YuleasrImportDialogProps {
+  isOpen: boolean
+  onClose: () => void
+  onImport: (modules: ModuleConfig[]) => void
+}
+
+export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImportDialogProps) {
+  const [fileContent, setFileContent] = useState<string | null>(null)
+  const [fileName, setFileName] = useState<string>('')
+  const [error, setError] = useState<string | null>(null)
+  const [_isLoading, setIsLoading] = useState(false)
+  const [validationResult, setValidationResult] = useState<{ valid: boolean; errors: string[] } | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setError(null)
+    setValidationResult(null)
+    setIsLoading(true)
+
+    try {
+      const content = await file.text()
+      setFileName(file.name)
+      setFileContent(content)
+
+      // 验证配置
+      const result = yuleasrAdapter.validateYuleasrConfig(content)
+      setValidationResult(result)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '读取文件失败')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleImport = () => {
+    if (!fileContent) return
+
+    try {
+      const modules = yuleasrAdapter.importFromYuleasr(fileContent)
+      onImport(modules)
+      handleClose()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '导入失败')
+    }
+  }
+
+  const handleClose = () => {
+    setFileContent(null)
+    setFileName('')
+    setError(null)
+    setValidationResult(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+    onClose()
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-lg mx-4">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-900">
+            导入 yuleASR 配置
+          </h2>
+          <button
+            onClick={handleClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-6 space-y-4">
+          {/* File Upload */}
+          <div
+            onClick={() => fileInputRef.current?.click()}
+            className={cn(
+              'border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors',
+              'hover:border-primary-400 hover:bg-primary-50',
+              fileContent ? 'border-green-400 bg-green-50' : 'border-gray-300'
+            )}
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".json"
+              onChange={handleFileSelect}
+              className="hidden"
+            />
+            
+            {fileContent ? (
+              <div className="flex flex-col items-center gap-2">
+                <Check className="w-8 h-8 text-green-500" />
+                <span className="text-sm font-medium text-green-700">{fileName}</span>
+                <span className="text-xs text-green-600">文件已加载</span>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-2">
+                <Upload className="w-8 h-8 text-gray-400" />
+                <span className="text-sm font-medium text-gray-700">点击选择 bsw_config.json</span>
+                <span className="text-xs text-gray-500">支持 yuleASR 配置格式</span>
+              </div>
+            )}
+          </div>
+
+          {/* Validation Result */}
+          {validationResult && (
+            <div
+              className={cn(
+                'p-4 rounded-lg border',
+                validationResult.valid
+                  ? 'bg-green-50 border-green-200'
+                  : 'bg-red-50 border-red-200'
+              )}
+            >
+              <div className="flex items-center gap-2">
+                {validationResult.valid ? (
+                  <Check className="w-5 h-5 text-green-500" />
+                ) : (
+                  <AlertCircle className="w-5 h-5 text-red-500" />
+                )}
+                <span
+                  className={cn(
+                    'font-medium',
+                    validationResult.valid ? 'text-green-700' : 'text-red-700'
+                  )}
+                >
+                  {validationResult.valid ? '配置验证通过' : '配置验证失败'}
+                </span>
+              </div>
+              
+              {!validationResult.valid && validationResult.errors.length > 0 && (
+                <ul className="mt-2 text-sm text-red-600 list-disc list-inside">
+                  {validationResult.errors.map((err, i) => (
+                    <li key={i}>{err}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+
+          {/* Error */}
+          {error && (
+            <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="w-5 h-5 text-red-500" />
+                <span className="font-medium text-red-700">错误</span>
+              </div>
+              <p className="mt-1 text-sm text-red-600">{error}</p>
+            </div>
+          )}
+
+          {/* Info */}
+          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-start gap-3">
+              <FileJson className="w-5 h-5 text-blue-500 mt-0.5" />
+              <div>
+                <p className="font-medium text-blue-900">支持的配置格式</p>
+                <p className="text-sm text-blue-700 mt-1">
+                  导入 yuleASR 项目的 bsw_config.json 配置文件，
+                  包含 Mcu、Can、NvM 等 BSW 模块配置。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-200">
+          <button
+            onClick={handleClose}
+            className="px-4 py-2 text-gray-700 hover:text-gray-900 font-medium"
+          >
+            取消
+          </button>
+          <button
+            onClick={handleImport}
+            disabled={!fileContent || !validationResult?.valid}
+            className="px-4 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            导入配置
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default YuleasrImportDialog
