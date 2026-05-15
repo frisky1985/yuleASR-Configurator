@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense } from 'react'
+import { useEffect, useState, lazy, Suspense, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useConfigStore } from '@/stores/configStore'
 import { formatDate, cn } from '@/lib/utils'
@@ -45,6 +45,7 @@ export function Dashboard() {
   const [selectedConfigForGraph, setSelectedConfigForGraph] = useState<string | null>(null)
   const [graphModules, setGraphModules] = useState<ModuleConfig[]>([])
   const [isLoadingGraph, setIsLoadingGraph] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     loadConfigList()
@@ -114,6 +115,37 @@ export function Dashboard() {
     setDeletingId(null)
   }
 
+  // Handle opening local config file
+  const handleOpenExisting = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    try {
+      const content = await file.text()
+      const config = JSON.parse(content)
+      
+      // Validate basic config structure
+      if (!config.name || !Array.isArray(config.modules)) {
+        alert('Invalid configuration file format')
+        return
+      }
+
+      // Create new config from file
+      await createConfig(config.name, config.description || 'Imported from file')
+      await loadConfigList()
+      alert(`Configuration "${config.name}" imported successfully!`)
+    } catch (error) {
+      alert('Failed to read configuration file: ' + (error as Error).message)
+    }
+
+    // Reset input
+    event.target.value = ''
+  }
+
   // Handle opening the dependency graph
   const handleShowGraph = async (configId: string) => {
     setSelectedConfigForGraph(configId)
@@ -172,13 +204,25 @@ export function Dashboard() {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <button className="p-4 bg-white border border-gray-200 rounded-lg hover:border-primary-300 hover:shadow-sm transition-all text-left">
+        <button 
+          onClick={handleOpenExisting}
+          className="p-4 bg-white border border-gray-200 rounded-lg hover:border-primary-300 hover:shadow-sm transition-all text-left"
+        >
           <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center mb-3">
             <FolderOpen className="w-5 h-5 text-blue-600" />
           </div>
           <h3 className="font-medium text-gray-900">Open Existing</h3>
           <p className="text-sm text-gray-500 mt-1">Browse local config files</p>
         </button>
+        
+        {/* Hidden file input for opening existing configs */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".json"
+          onChange={handleFileSelect}
+          className="hidden"
+        />
         
         <button 
           onClick={() => setShowImportDialog(true)}
