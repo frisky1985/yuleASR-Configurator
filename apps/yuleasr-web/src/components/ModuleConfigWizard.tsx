@@ -161,6 +161,148 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         max: 2048
       }
     ]
+  },
+  {
+    id: 'Gpt',
+    name: 'GPT',
+    layer: 'MCAL',
+    description: 'General Purpose Timer configuration',
+    icon: <Gauge className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'channel_count',
+        type: 'number',
+        label: 'Channel Count',
+        description: 'Number of GPT channels',
+        defaultValue: 4,
+        min: 1,
+        max: 16
+      },
+      {
+        name: 'tick_frequency',
+        type: 'number',
+        label: 'Tick Frequency (Hz)',
+        description: 'GPT tick frequency',
+        defaultValue: 1000,
+        min: 1,
+        max: 1000000
+      },
+      {
+        name: 'predef_timer_1us',
+        type: 'boolean',
+        label: '1us Predefined Timer',
+        description: 'Enable 1 microsecond predefined timer',
+        defaultValue: true
+      }
+    ]
+  },
+  {
+    id: 'Pwm',
+    name: 'PWM',
+    layer: 'MCAL',
+    description: 'Pulse Width Modulation configuration',
+    icon: <Gauge className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'channel_count',
+        type: 'number',
+        label: 'Channel Count',
+        description: 'Number of PWM channels',
+        defaultValue: 8,
+        min: 1,
+        max: 32
+      },
+      {
+        name: 'frequency',
+        type: 'number',
+        label: 'Default Frequency (Hz)',
+        description: 'Default PWM frequency',
+        defaultValue: 1000,
+        min: 1,
+        max: 100000
+      }
+    ]
+  },
+  {
+    id: 'Adc',
+    name: 'ADC',
+    layer: 'MCAL',
+    description: 'Analog to Digital Converter configuration',
+    icon: <Gauge className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'channel_count',
+        type: 'number',
+        label: 'Channel Count',
+        description: 'Number of ADC channels',
+        defaultValue: 16,
+        min: 1,
+        max: 64
+      },
+      {
+        name: 'resolution',
+        type: 'select',
+        label: 'Resolution',
+        description: 'ADC resolution',
+        defaultValue: 12,
+        options: [
+          { value: 8, label: '8-bit' },
+          { value: 10, label: '10-bit' },
+          { value: 12, label: '12-bit' },
+          { value: 16, label: '16-bit' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'Port',
+    name: 'Port',
+    layer: 'MCAL',
+    description: 'Port pin configuration',
+    icon: <HardDrive className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'pin_count',
+        type: 'number',
+        label: 'Pin Count',
+        description: 'Number of configurable port pins',
+        defaultValue: 64,
+        min: 1,
+        max: 256
+      },
+      {
+        name: 'dev_error_detect',
+        type: 'boolean',
+        label: 'Development Error Detection',
+        description: 'Enable development error detection',
+        defaultValue: true
+      }
+    ]
+  },
+  {
+    id: 'Dio',
+    name: 'DIO',
+    layer: 'MCAL',
+    description: 'Digital Input/Output configuration',
+    icon: <HardDrive className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'channel_count',
+        type: 'number',
+        label: 'Channel Count',
+        description: 'Number of DIO channels',
+        defaultValue: 64,
+        min: 1,
+        max: 256
+      },
+      {
+        name: 'flip_channel_api',
+        type: 'boolean',
+        label: 'Flip Channel API',
+        description: 'Enable flip channel API',
+        defaultValue: true
+      }
+    ]
   }
 ]
 

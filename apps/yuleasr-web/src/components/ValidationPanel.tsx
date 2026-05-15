@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { AlertCircle, CheckCircle, AlertTriangle, XCircle, RefreshCw } from 'lucide-react'
+import { CheckCircle, AlertTriangle, XCircle, RefreshCw, ChevronDown, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { yuleasrValidator } from '@yuletech/core'
 import type { ModuleConfig, ValidationError, ValidationResult } from '@yuletech/core'
@@ -14,8 +14,10 @@ interface ValidationPanelProps {
 export function ValidationPanel({ modules, result: externalResult, onNavigate, className }: ValidationPanelProps) {
   const [internalErrors, setInternalErrors] = useState<ValidationError[]>([])
   const [isValidating, setIsValidating] = useState(false)
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set(['errors', 'warnings']))
   
   const errors = externalResult?.errors || internalErrors
+  const warnings = externalResult?.warnings || []
 
   const validate = () => {
     setIsValidating(true)
@@ -40,10 +42,36 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
     }
   }
 
-  // Group errors by severity
-  const errorItems = errors.filter(e => e.severity === 'error')
-  const warningItems = errors.filter(e => e.severity === 'warning')
-  const infoItems = errors.filter(e => e.severity === 'info')
+  const toggleGroup = (group: string) => {
+    setExpandedGroups(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(group)) {
+        newSet.delete(group)
+      } else {
+        newSet.add(group)
+      }
+      return newSet
+    })
+  }
+
+  // Group errors by module
+  const groupedErrors = errors.reduce((acc, error) => {
+    const moduleName = error.path.split('.')[0] || 'general'
+    if (!acc[moduleName]) acc[moduleName] = []
+    acc[moduleName].push(error)
+    return acc
+  }, {} as Record<string, ValidationError[]>)
+
+  const groupedWarnings = warnings.reduce((acc, warning) => {
+    const moduleName = warning.path.split('.')[0] || 'general'
+    if (!acc[moduleName]) acc[moduleName] = []
+    acc[moduleName].push(warning)
+    return acc
+  }, {} as Record<string, ValidationError[]>)
+
+  const hasErrors = stats.errorCount > 0
+  const hasWarnings = stats.warningCount > 0
+  const isValid = !hasErrors && !hasWarnings
 
   return (
     <div className={cn("bg-white border border-gray-200 rounded-lg overflow-hidden", className)}>
@@ -51,23 +79,23 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
       <div className="px-4 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <h3 className="font-semibold text-gray-900">Validation</h3>
-          {errors.length === 0 ? (
+          {isValid ? (
             <span className="flex items-center gap-1 text-sm text-green-600">
               <CheckCircle className="w-4 h-4" />
-              All checks passed
+              Valid
             </span>
           ) : (
             <div className="flex items-center gap-2">
-              {stats.errorCount > 0 && (
+              {hasErrors && (
                 <span className="flex items-center gap-1 text-sm text-red-600">
                   <XCircle className="w-4 h-4" />
-                  {stats.errorCount} errors
+                  {stats.errorCount}
                 </span>
               )}
-              {stats.warningCount > 0 && (
+              {hasWarnings && (
                 <span className="flex items-center gap-1 text-sm text-yellow-600">
                   <AlertTriangle className="w-4 h-4" />
-                  {stats.warningCount} warnings
+                  {stats.warningCount}
                 </span>
               )}
             </div>
@@ -84,94 +112,106 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
       </div>
 
       {/* Content */}
-      <div className="max-h-64 overflow-auto">
-        {errors.length === 0 ? (
-          <div className="p-8 text-center">
-            <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-3">
-              <CheckCircle className="w-8 h-8 text-green-500" />
+      <div className="max-h-80 overflow-auto">
+        {isValid ? (
+          <div className="p-6 text-center">
+            <div className="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-3">
+              <CheckCircle className="w-7 h-7 text-green-500" />
             </div>
-            <p className="text-gray-600 font-medium">Configuration is valid</p>
+            <p className="text-gray-700 font-medium">Configuration is valid</p>
             <p className="text-sm text-gray-400 mt-1">
-              All modules and parameters pass validation
+              All {modules.length} modules pass validation
             </p>
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
-            {/* Errors */}
-            {errorItems.length > 0 && (
+            {/* Errors Section */}
+            {hasErrors && (
               <div>
-                <div className="px-4 py-2 bg-red-50 text-red-700 text-sm font-medium">
-                  Errors ({errorItems.length})
-                </div>
-                {errorItems.map((error: ValidationError, index: number) => (
-                  <div
-                    key={`error-${index}`}
-                    className="px-4 py-3 hover:bg-gray-50 cursor-pointer"
-                    onClick={() => handleItemClick(error.path)}
-                  >
-                    <div className="flex items-start gap-3">
-                      <XCircle className="w-5 h-5 text-red-500 mt-0.5 shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm text-gray-900">{error.message}</p>
-                        <p className="text-xs text-gray-500 mt-0.5 font-mono">
-                          {error.path}
-                        </p>
+                <button
+                  onClick={() => toggleGroup('errors')}
+                  className="w-full px-4 py-2 bg-red-50 text-red-700 text-sm font-medium flex items-center justify-between hover:bg-red-100 transition-colors"
+                >
+                  <span>Errors ({stats.errorCount})</span>
+                  {expandedGroups.has('errors') ? (
+                    <ChevronDown className="w-4 h-4" />
+                  ) : (
+                    <ChevronRight className="w-4 h-4" />
+                  )}
+                </button>
+                {expandedGroups.has('errors') && (
+                  <div className="divide-y divide-gray-50">
+                    {Object.entries(groupedErrors).map(([moduleName, moduleErrors]) => (
+                      <div key={moduleName} className="px-4 py-2">
+                        <div className="text-xs font-medium text-gray-500 mb-1 uppercase tracking-wide">
+                          {moduleName}
+                        </div>
+                        {moduleErrors.map((error: ValidationError, index: number) => (
+                          <div
+                            key={`error-${index}`}
+                            className="py-2 hover:bg-gray-50 cursor-pointer rounded px-2 -mx-2"
+                            onClick={() => handleItemClick(error.path)}
+                          >
+                            <div className="flex items-start gap-2">
+                              <XCircle className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm text-gray-800">{error.message}</p>
+                                <p className="text-xs text-gray-400 mt-0.5 font-mono">
+                                  {error.path}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
             )}
 
-            {/* Warnings */}
-            {warningItems.length > 0 && (
+            {/* Warnings Section */}
+            {hasWarnings && (
               <div>
-                <div className="px-4 py-2 bg-yellow-50 text-yellow-700 text-sm font-medium">
-                  Warnings ({warningItems.length})
-                </div>
-                {warningItems.map((error: ValidationError, index: number) => (
-                  <div
-                    key={`warning-${index}`}
-                    className="px-4 py-3 hover:bg-gray-50 cursor-pointer"
-                    onClick={() => handleItemClick(error.path)}
-                  >
-                    <div className="flex items-start gap-3">
-                      <AlertTriangle className="w-5 h-5 text-yellow-500 mt-0.5 shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm text-gray-900">{error.message}</p>
-                        <p className="text-xs text-gray-500 mt-0.5 font-mono">
-                          {error.path}
-                        </p>
-                      </div>
-                    </div>
+                <button
+                  onClick={() => toggleGroup('warnings')}
+                  className="w-full px-4 py-2 bg-yellow-50 text-yellow-700 text-sm font-medium flex items-center justify-between hover:bg-yellow-100 transition-colors"
+                >
+                  <span>Warnings ({stats.warningCount})</span>
+                  {expandedGroups.has('warnings') ? (
+                    <ChevronDown className="w-4 h-4" />
+                  ) : (
+                    <ChevronRight className="w-4 h-4" />
+                  )}
+                </button>
+                {expandedGroups.has('warnings') && (
+                  <div className="divide-y divide-gray-50">
+                    {Object.entries(groupedWarnings).map(([moduleName, moduleWarnings]) => (
+                      <div key={moduleName} className="px-4 py-2">
+                        <div className="text-xs font-medium text-gray-500 mb-1 uppercase tracking-wide">
+                          {moduleName}
+                        </div>
+                        {moduleWarnings.map((warning: ValidationError, index: number) => (
+                          <div
+                            key={`warning-${index}`}
+                            className="py-2 hover:bg-gray-50 cursor-pointer rounded px-2 -mx-2"
+                            onClick={() => handleItemClick(warning.path)}
+                          >
+                            <div className="flex items-start gap-2">
+                              <AlertTriangle className="w-4 h-4 text-yellow-500 mt-0.5 shrink-0" />
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm text-gray-800">{warning.message}</p>
+                                <p className="text-xs text-gray-400 mt-0.5 font-mono">
+                                  {warning.path}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
                   </div>
-                ))}
-              </div>
-            )}
-
-            {/* Info */}
-            {infoItems.length > 0 && (
-              <div>
-                <div className="px-4 py-2 bg-blue-50 text-blue-700 text-sm font-medium">
-                  Info ({infoItems.length})
-                </div>
-                {infoItems.map((error: ValidationError, index: number) => (
-                  <div
-                    key={`info-${index}`}
-                    className="px-4 py-3 hover:bg-gray-50 cursor-pointer"
-                    onClick={() => handleItemClick(error.path)}
-                  >
-                    <div className="flex items-start gap-3">
-                      <AlertCircle className="w-5 h-5 text-blue-500 mt-0.5 shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm text-gray-900">{error.message}</p>
-                        <p className="text-xs text-gray-500 mt-0.5 font-mono">
-                          {error.path}
-                        </p>
-                      </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
             )}
           </div>
@@ -179,7 +219,7 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
       </div>
 
       {/* Footer */}
-      {errors.length > 0 && (
+      {(hasErrors || hasWarnings) && (
         <div className="px-4 py-2 border-t border-gray-200 bg-gray-50 text-xs text-gray-500">
           Click on an item to navigate to the configuration
         </div>
