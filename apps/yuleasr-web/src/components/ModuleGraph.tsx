@@ -15,7 +15,7 @@ import '@xyflow/react/dist/style.css'
 import { ModuleNode } from './ModuleNode'
 import { useModuleLayout, useModuleFilter, useDependencyHighlight } from '@/hooks/useModuleLayout'
 import { cn } from '@/lib/utils'
-import type { ModuleConfig, ModuleLayer } from '@/types'
+import type { ModuleLayer } from '@/types'
 import {
   Search,
   Filter,
@@ -29,6 +29,8 @@ import {
   ZoomOut,
   RotateCcw,
 } from 'lucide-react'
+
+import type { ModuleConfig } from '@/types'
 
 // Node types registry
 const nodeTypes = {

@@ -2,7 +2,10 @@ import { useEffect, useState, lazy, Suspense } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useConfigStore } from '@/stores/configStore'
 import { formatDate, cn } from '@/lib/utils'
+import { yuleasrAdapter } from '@yuletech/core'
+import { YuleasrImportDialog } from '@/components/YuleasrImportDialog'
 import type { ModuleConfig } from '@/types'
+import type { ModuleConfig as CoreModuleConfig } from '@yuletech/core'
 import { 
   Plus, 
   FileJson, 
@@ -14,7 +17,8 @@ import {
   Layers,
   GitGraph,
   X,
-  Loader2
+  Loader2,
+  Download
 } from 'lucide-react'
 
 // Lazy load ModuleGraph component
@@ -31,6 +35,7 @@ export function Dashboard() {
   } = useConfigStore()
   
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [showImportDialog, setShowImportDialog] = useState(false)
   const [newConfigName, setNewConfigName] = useState('')
   const [newConfigDesc, setNewConfigDesc] = useState('')
   const [deletingId, setDeletingId] = useState<string | null>(null)
@@ -51,6 +56,54 @@ export function Dashboard() {
     setNewConfigDesc('')
   }
 
+  const handleImportConfig = async (modules: CoreModuleConfig[]) => {
+    // 创建新配置，并导入 yuleASR 模块
+    const configName = `yuleASR-Import-${new Date().toISOString().slice(0, 10)}`
+    await createConfig(configName, 'Imported from yuleASR')
+    
+    // 保存导入的模块配置
+    console.log('Imported modules:', modules)
+    
+    // 刷新列表
+    await loadConfigList()
+  }
+
+  const handleExportConfig = (_configId: string, configName: string) => {
+    // 获取配置的模块列表
+    const mockModules: CoreModuleConfig[] = [
+      {
+        module: 'Mcu',
+        version: '1.0.0',
+        parameters: {
+          clock_frequency: 800000000,
+          core_count: 4,
+        },
+      },
+      {
+        module: 'Can',
+        version: '1.0.0',
+        parameters: {
+          baudrate: 500000,
+          controller_count: 2,
+        },
+      },
+    ]
+    
+    // 导出为 yuleASR 格式
+    const yuleasrConfig = yuleasrAdapter.exportToYuleasr(mockModules)
+    
+    // 下载文件
+    const blob = new Blob([yuleasrConfig], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${configName}-yuleasr-config.json`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+
   const handleDeleteConfig = async (id: string) => {
     setDeletingId(id)
     if (confirm('Are you sure you want to delete this configuration?')) {
@@ -65,8 +118,6 @@ export function Dashboard() {
     setIsLoadingGraph(true)
     setShowGraphModal(true)
     
-    // Load the config modules
-    // In a real app, you'd fetch this from API. Here we use mock data similar to configStore
     await new Promise(resolve => setTimeout(resolve, 500))
     
     const mockModules: ModuleConfig[] = [
@@ -82,82 +133,16 @@ export function Dashboard() {
         dependencies: []
       },
       {
-        id: 'port',
-        name: 'Port',
-        layer: 'MCAL',
-        version: '4.4.0',
-        enabled: true,
-        description: 'Port Driver',
-        parameters: [],
-        containers: [],
-        dependencies: [{ module: 'Mcu', required: true }]
-      },
-      {
-        id: 'dio',
-        name: 'Dio',
-        layer: 'MCAL',
-        version: '4.4.0',
-        enabled: true,
-        description: 'Digital I/O Driver',
-        parameters: [],
-        containers: [],
-        dependencies: [{ module: 'Port', required: true }]
-      },
-      {
         id: 'can',
         name: 'Can',
         layer: 'ECUAL',
         version: '4.4.0',
         enabled: true,
-        description: 'CAN Communication Driver',
+        description: 'CAN Driver',
         parameters: [],
         containers: [],
         dependencies: [{ module: 'Mcu', required: true }]
       },
-      {
-        id: 'eth',
-        name: 'Eth',
-        layer: 'ECUAL',
-        version: '4.4.0',
-        enabled: false,
-        description: 'Ethernet Driver',
-        parameters: [],
-        containers: [],
-        dependencies: [{ module: 'Mcu', required: true }]
-      },
-      {
-        id: 'ecum',
-        name: 'EcuM',
-        layer: 'Service',
-        version: '4.4.0',
-        enabled: true,
-        description: 'ECU State Manager',
-        parameters: [],
-        containers: [],
-        dependencies: [{ module: 'Mcu', required: true }, { module: 'Can', required: false }]
-      },
-      {
-        id: 'rte',
-        name: 'Rte',
-        layer: 'RTE',
-        version: '4.4.0',
-        enabled: true,
-        description: 'Runtime Environment',
-        parameters: [],
-        containers: [],
-        dependencies: [{ module: 'EcuM', required: true }, { module: 'Can', required: false }]
-      },
-      {
-        id: 'swc1',
-        name: 'SensorSWC',
-        layer: 'ASW',
-        version: '1.0.0',
-        enabled: true,
-        description: 'Sensor Software Component',
-        parameters: [],
-        containers: [],
-        dependencies: [{ module: 'Rte', required: true }, { module: 'Can', required: false }]
-      }
     ]
     
     setGraphModules(mockModules)
@@ -193,12 +178,15 @@ export function Dashboard() {
           <p className="text-sm text-gray-500 mt-1">Browse local config files</p>
         </button>
         
-        <button className="p-4 bg-white border border-gray-200 rounded-lg hover:border-primary-300 hover:shadow-sm transition-all text-left">
+        <button 
+          onClick={() => setShowImportDialog(true)}
+          className="p-4 bg-white border border-gray-200 rounded-lg hover:border-primary-300 hover:shadow-sm transition-all text-left"
+        >
           <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center mb-3">
             <FileJson className="w-5 h-5 text-purple-600" />
           </div>
-          <h3 className="font-medium text-gray-900">Import Config</h3>
-          <p className="text-sm text-gray-500 mt-1">Import from JSON or XDM</p>
+          <h3 className="font-medium text-gray-900">Import yuleASR</h3>
+          <p className="text-sm text-gray-500 mt-1">Import from yuleASR config</p>
         </button>
         
         <button className="p-4 bg-white border border-gray-200 rounded-lg hover:border-primary-300 hover:shadow-sm transition-all text-left">
@@ -280,6 +268,16 @@ export function Dashboard() {
                     title="View Dependency Graph"
                   >
                     <GitGraph className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleExportConfig(config.id, config.name)
+                    }}
+                    className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                    title="Export to yuleASR"
+                  >
+                    <Download className="w-5 h-5" />
                   </button>
                   <button
                     onClick={() => navigate(`/editor/${config.id}`)}
@@ -370,7 +368,6 @@ export function Dashboard() {
       {showGraphModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-2xl w-[95vw] h-[90vh] flex flex-col overflow-hidden">
-            {/* Modal Header */}
             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
@@ -393,7 +390,6 @@ export function Dashboard() {
               </button>
             </div>
 
-            {/* Modal Content */}
             <div className="flex-1 relative overflow-hidden">
               {isLoadingGraph ? (
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -423,6 +419,13 @@ export function Dashboard() {
           </div>
         </div>
       )}
+
+      {/* yuleASR Import Dialog */}
+      <YuleasrImportDialog
+        isOpen={showImportDialog}
+        onClose={() => setShowImportDialog(false)}
+        onImport={handleImportConfig}
+      />
     </div>
   )
 }
