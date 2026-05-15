@@ -4,6 +4,7 @@ import { useConfigStore } from '@/stores/configStore'
 import { formatDate, cn } from '@/lib/utils'
 import { yuleasrAdapter } from '@yuletech/core'
 import { YuleasrImportDialog } from '@/components/YuleasrImportDialog'
+import { ModuleConfigWizard } from '@/components/ModuleConfigWizard'
 import type { ModuleConfig } from '@/types'
 import type { ModuleConfig as CoreModuleConfig } from '@yuletech/core'
 import { 
@@ -36,6 +37,7 @@ export function Dashboard() {
   
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [showImportDialog, setShowImportDialog] = useState(false)
+  const [showModuleWizard, setShowModuleWizard] = useState(false)
   const [newConfigName, setNewConfigName] = useState('')
   const [newConfigDesc, setNewConfigDesc] = useState('')
   const [deletingId, setDeletingId] = useState<string | null>(null)
@@ -189,12 +191,15 @@ export function Dashboard() {
           <p className="text-sm text-gray-500 mt-1">Import from yuleASR config</p>
         </button>
         
-        <button className="p-4 bg-white border border-gray-200 rounded-lg hover:border-primary-300 hover:shadow-sm transition-all text-left">
+        <button 
+          onClick={() => setShowModuleWizard(true)}
+          className="p-4 bg-white border border-gray-200 rounded-lg hover:border-primary-300 hover:shadow-sm transition-all text-left"
+        >
           <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mb-3">
             <Settings className="w-5 h-5 text-green-600" />
           </div>
-          <h3 className="font-medium text-gray-900">Templates</h3>
-          <p className="text-sm text-gray-500 mt-1">Start from template</p>
+          <h3 className="font-medium text-gray-900">Module Wizard</h3>
+          <p className="text-sm text-gray-500 mt-1">Configure modules step-by-step</p>
         </button>
 
         <button 
@@ -425,6 +430,17 @@ export function Dashboard() {
         isOpen={showImportDialog}
         onClose={() => setShowImportDialog(false)}
         onImport={handleImportConfig}
+      />
+
+      {/* Module Config Wizard */}
+      <ModuleConfigWizard
+        isOpen={showModuleWizard}
+        onClose={() => setShowModuleWizard(false)}
+        onComplete={(config) => {
+          console.log('Module config completed:', config)
+          setShowModuleWizard(false)
+          // 这里可以将配置添加到当前配置
+        }}
       />
     </div>
   )
