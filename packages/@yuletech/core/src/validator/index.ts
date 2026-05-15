@@ -3,51 +3,7 @@
  * 配置验证器实现
  */
 
-import type { ModuleSchema, ModuleConfig, ModuleParameter } from '../types';
-
-/**
- * 验证结果
- */
-export interface ValidationResult {
-  /** 是否有效 */
-  valid: boolean;
-  /** 错误列表 */
-  errors: ValidationError[];
-  /** 警告列表 */
-  warnings: ValidationWarning[];
-}
-
-/**
- * 验证错误
- */
-export interface ValidationError {
-  /** 错误类型 */
-  type: 'error';
-  /** 错误码 */
-  code: string;
-  /** 错误消息 */
-  message: string;
-  /** 参数路径 */
-  path: string;
-  /** 参数名称 */
-  parameter?: string;
-}
-
-/**
- * 验证警告
- */
-export interface ValidationWarning {
-  /** 警告类型 */
-  type: 'warning';
-  /** 警告码 */
-  code: string;
-  /** 警告消息 */
-  message: string;
-  /** 参数路径 */
-  path: string;
-  /** 参数名称 */
-  parameter?: string;
-}
+import type { ModuleSchema, ModuleConfig, ModuleParameter, ValidationError, ValidationResult } from '../types';
 
 /**
  * 配置验证器
@@ -60,13 +16,12 @@ export class ConfigValidator {
    */
   validate(config: ModuleConfig): ValidationResult {
     const errors: ValidationError[] = [];
-    const warnings: ValidationWarning[] = [];
+    const warnings: ValidationError[] = [];
 
     const schema = this.schemas.get(config.module);
     if (!schema) {
       errors.push({
-        type: 'error',
-        code: 'MODULE_NOT_FOUND',
+        severity: 'error',
         message: `未找到模块: ${config.module}`,
         path: 'module',
       });
@@ -85,11 +40,9 @@ export class ConfigValidator {
     for (const key of Object.keys(config.parameters)) {
       if (!schema.parameters.find(p => p.name === key)) {
         warnings.push({
-          type: 'warning',
-          code: 'UNKNOWN_PARAMETER',
+          severity: 'warning',
           message: `未知参数: ${key}`,
           path: `parameters.${key}`,
-          parameter: key,
         });
       }
     }
@@ -110,16 +63,14 @@ export class ConfigValidator {
     path: string
   ): ValidationResult {
     const errors: ValidationError[] = [];
-    const warnings: ValidationWarning[] = [];
+    const warnings: ValidationError[] = [];
 
     // 必填检查
     if (param.required && (value === undefined || value === null)) {
       errors.push({
-        type: 'error',
-        code: 'REQUIRED',
+        severity: 'error',
         message: `参数 ${param.name} 为必填项`,
         path,
-        parameter: param.name,
       });
       return { valid: false, errors, warnings };
     }
@@ -133,11 +84,9 @@ export class ConfigValidator {
     const typeValid = this.validateType(param.type, value);
     if (!typeValid) {
       errors.push({
-        type: 'error',
-        code: 'TYPE_MISMATCH',
+        severity: 'error',
         message: `参数 ${param.name} 类型错误，期望 ${param.type}，实际 ${typeof value}`,
         path,
-        parameter: param.name,
       });
       return { valid: false, errors, warnings };
     }
@@ -147,20 +96,16 @@ export class ConfigValidator {
       const numValue = value as number;
       if (param.min !== undefined && numValue < param.min) {
         errors.push({
-          type: 'error',
-          code: 'MIN_VIOLATION',
+          severity: 'error',
           message: `参数 ${param.name} 不能小于 ${param.min}`,
           path,
-          parameter: param.name,
         });
       }
       if (param.max !== undefined && numValue > param.max) {
         errors.push({
-          type: 'error',
-          code: 'MAX_VIOLATION',
+          severity: 'error',
           message: `参数 ${param.name} 不能大于 ${param.max}`,
           path,
-          parameter: param.name,
         });
       }
     }
@@ -169,29 +114,23 @@ export class ConfigValidator {
     if (param.type === 'string' && typeof value === 'string') {
       if (param.minLength !== undefined && value.length < param.minLength) {
         errors.push({
-          type: 'error',
-          code: 'MIN_LENGTH',
+          severity: 'error',
           message: `参数 ${param.name} 长度不能小于 ${param.minLength}`,
           path,
-          parameter: param.name,
         });
       }
       if (param.maxLength !== undefined && value.length > param.maxLength) {
         errors.push({
-          type: 'error',
-          code: 'MAX_LENGTH',
+          severity: 'error',
           message: `参数 ${param.name} 长度不能大于 ${param.maxLength}`,
           path,
-          parameter: param.name,
         });
       }
       if (param.pattern && !new RegExp(param.pattern).test(value)) {
         errors.push({
-          type: 'error',
-          code: 'PATTERN_MISMATCH',
+          severity: 'error',
           message: `参数 ${param.name} 格式不匹配`,
           path,
-          parameter: param.name,
         });
       }
     }
@@ -201,11 +140,9 @@ export class ConfigValidator {
       const validValues = param.options.map(opt => opt.value);
       if (!validValues.includes(value as string | number | boolean)) {
         errors.push({
-          type: 'error',
-          code: 'INVALID_ENUM',
+          severity: 'error',
           message: `参数 ${param.name} 值无效，必须是: ${validValues.join(', ')}`,
           path,
-          parameter: param.name,
         });
       }
     }

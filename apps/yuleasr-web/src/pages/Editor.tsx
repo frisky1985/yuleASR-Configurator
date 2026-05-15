@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useConfigStore } from '@/stores/configStore'
 import { ModuleTree } from '@/components/ModuleTree'
 import { ParameterEditor } from '@/components/ParameterEditor'
-import { ValidationPanel } from '@/components/ValidationPanel'
 import { cn, formatDate } from '@/lib/utils'
 import type { ValidationResult } from '@/types'
 import {
@@ -25,9 +24,7 @@ export function Editor() {
   // Local state
   const [searchQuery, setSearchQuery] = useState('')
   const [showDisabled, setShowDisabled] = useState(true)
-  const [realTimeValidation, setRealTimeValidation] = useState(false)
   const [isValidating, setIsValidating] = useState(false)
-  const [lastValidatedAt, setLastValidatedAt] = useState<Date | undefined>(undefined)
 
   const {
     currentConfig,
@@ -57,18 +54,17 @@ export function Editor() {
 
   const selectedModule = currentConfig?.modules.find((m) => m.id === selectedModuleId)
 
-  // Mock validation function
+  // Validation function
   const handleValidate = useCallback(async (): Promise<ValidationResult> => {
     setIsValidating(true)
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 800))
 
-    // Generate mock validation result based on current state
+    // Generate mock validation result
     const mockErrors: Array<{ path: string; message: string; severity: 'error' | 'warning' | 'info' }> = []
     const mockWarnings: Array<{ path: string; message: string; severity: 'error' | 'warning' | 'info' }> = []
 
-    // Check for validation issues based on parameters
     currentConfig?.modules.forEach((module) => {
       if (!module.enabled) return
 
@@ -93,7 +89,6 @@ export function Editor() {
       })
     })
 
-    // Add some warnings
     const enabledCount = currentConfig?.modules.filter((m) => m.enabled).length || 0
     if (enabledCount < 3) {
       mockWarnings.push({
@@ -110,22 +105,10 @@ export function Editor() {
     }
 
     setValidationResult(result)
-    setLastValidatedAt(new Date())
     setIsValidating(false)
 
     return result
   }, [currentConfig, setValidationResult])
-
-  // Real-time validation effect
-  useEffect(() => {
-    if (!realTimeValidation) return
-
-    const timeout = setTimeout(() => {
-      handleValidate()
-    }, 1000)
-
-    return () => clearTimeout(timeout)
-  }, [currentConfig, realTimeValidation, handleValidate])
 
   const handleSave = async () => {
     await saveConfig()
@@ -137,7 +120,6 @@ export function Editor() {
     }
   }
 
-  // Filter parameters based on search
   const filteredParameters = selectedModule?.parameters.filter((param) => {
     if (!searchQuery) return true
     const query = searchQuery.toLowerCase()
@@ -274,7 +256,6 @@ export function Editor() {
               </h3>
               {selectedModule && (
                 <div className="flex items-center gap-2">
-                  {/* Parameter search */}
                   <div className="relative">
                     <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
                     <input
@@ -348,15 +329,31 @@ export function Editor() {
 
         {/* Right Sidebar - Validation & Info */}
         <div className="col-span-3 space-y-4">
-          <ValidationPanel
-            result={validationResult}
-            onNavigate={(path) => console.log('Navigate to:', path)}
-            onValidate={handleValidate}
-            isValidating={isValidating}
-            realTimeValidation={realTimeValidation}
-            onToggleRealTime={setRealTimeValidation}
-            lastValidatedAt={lastValidatedAt}
-          />
+          {/* Validation Summary */}
+          <div className="bg-white border border-gray-200 rounded-lg p-4">
+            <h3 className="text-sm font-semibold text-gray-900 mb-3">Validation</h3>
+            {validationResult ? (
+              <div className="space-y-2">
+                {validationResult.valid ? (
+                  <div className="flex items-center gap-2 text-green-600">
+                    <CheckCircle className="w-5 h-5" />
+                    <span className="text-sm">All checks passed</span>
+                  </div>
+                ) : (
+                  <>
+                    <div className="text-red-600 text-sm">
+                      {validationResult.errors.length} errors
+                    </div>
+                    <div className="text-yellow-600 text-sm">
+                      {validationResult.warnings.length} warnings
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-500">Click Validate to check configuration</p>
+            )}
+          </div>
 
           {/* Module Info Card */}
           {selectedModule && (

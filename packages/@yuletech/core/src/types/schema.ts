@@ -138,19 +138,6 @@ export interface ModuleJsonSchema {
   required: string[];
 }
 
-/** Schema validation result */
-export interface ValidationResult {
-  valid: boolean;
-  errors: ValidationError[];
-}
-
-/** Validation error */
-export interface ValidationError {
-  path: string;
-  message: string;
-  value?: unknown;
-}
-
 /** Parser options */
 export interface ParserOptions {
   sourcePath: string;

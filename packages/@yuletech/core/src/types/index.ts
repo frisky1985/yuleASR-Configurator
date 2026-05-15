@@ -4,3 +4,4 @@
  */
 
 export * from './module';
+export * from './validation';
