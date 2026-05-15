@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { Upload, FileJson, AlertCircle, Check, X } from 'lucide-react'
+import { Upload, FileCode, AlertCircle, Check, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { yuleasrAdapter } from '@yuletech/core'
 import type { ModuleConfig } from '@yuletech/core'
@@ -13,6 +13,7 @@ interface YuleasrImportDialogProps {
 export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImportDialogProps) {
   const [fileContent, setFileContent] = useState<string | null>(null)
   const [fileName, setFileName] = useState<string>('')
+  const [fileType, setFileType] = useState<'json' | 'arxml' | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [_isLoading, setIsLoading] = useState(false)
   const [validationResult, setValidationResult] = useState<{ valid: boolean; errors: string[] } | null>(null)
@@ -31,8 +32,17 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
       setFileName(file.name)
       setFileContent(content)
 
+      // 检测文件类型
+      const isArxml = file.name.toLowerCase().endsWith('.arxml')
+      setFileType(isArxml ? 'arxml' : 'json')
+
       // 验证配置
-      const result = yuleasrAdapter.validateYuleasrConfig(content)
+      let result: { valid: boolean; errors: string[] }
+      if (isArxml) {
+        result = yuleasrAdapter.validateArxmlConfig(content)
+      } else {
+        result = yuleasrAdapter.validateYuleasrConfig(content)
+      }
       setValidationResult(result)
     } catch (err) {
       setError(err instanceof Error ? err.message : '读取文件失败')
@@ -42,10 +52,15 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
   }
 
   const handleImport = () => {
-    if (!fileContent) return
+    if (!fileContent || !fileType) return
 
     try {
-      const modules = yuleasrAdapter.importFromYuleasr(fileContent)
+      let modules: ModuleConfig[]
+      if (fileType === 'arxml') {
+        modules = yuleasrAdapter.importFromArxml(fileContent)
+      } else {
+        modules = yuleasrAdapter.importFromYuleasr(fileContent)
+      }
       onImport(modules)
       handleClose()
     } catch (err) {
@@ -56,6 +71,7 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
   const handleClose = () => {
     setFileContent(null)
     setFileName('')
+    setFileType(null)
     setError(null)
     setValidationResult(null)
     if (fileInputRef.current) {
@@ -96,7 +112,7 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
             <input
               ref={fileInputRef}
               type="file"
-              accept=".json"
+              accept=".json,.arxml"
               onChange={handleFileSelect}
               className="hidden"
             />
@@ -105,13 +121,15 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
               <div className="flex flex-col items-center gap-2">
                 <Check className="w-8 h-8 text-green-500" />
                 <span className="text-sm font-medium text-green-700">{fileName}</span>
-                <span className="text-xs text-green-600">文件已加载</span>
+                <span className="text-xs text-green-600">
+                  {fileType === 'arxml' ? 'ARXML 格式' : 'JSON 格式'} 已加载
+                </span>
               </div>
             ) : (
               <div className="flex flex-col items-center gap-2">
                 <Upload className="w-8 h-8 text-gray-400" />
-                <span className="text-sm font-medium text-gray-700">点击选择 bsw_config.json</span>
-                <span className="text-xs text-gray-500">支持 yuleASR 配置格式</span>
+                <span className="text-sm font-medium text-gray-700">点击选择配置文件</span>
+                <span className="text-xs text-gray-500">支持 JSON 和 ARXML 格式</span>
               </div>
             )}
           </div>
@@ -166,12 +184,12 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
           {/* Info */}
           <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <div className="flex items-start gap-3">
-              <FileJson className="w-5 h-5 text-blue-500 mt-0.5" />
+              <FileCode className="w-5 h-5 text-blue-500 mt-0.5" />
               <div>
                 <p className="font-medium text-blue-900">支持的配置格式</p>
                 <p className="text-sm text-blue-700 mt-1">
-                  导入 yuleASR 项目的 bsw_config.json 配置文件，
-                  包含 Mcu、Can、NvM 等 BSW 模块配置。
+                  <strong>JSON:</strong> yuleASR 项目的 bsw_config.json 配置文件<br/>
+                  <strong>ARXML:</strong> AutoSAR 标准配置文件 (ECUC 模块配置)
                 </p>
               </div>
             </div>

@@ -1,10 +1,11 @@
 /**
  * yuleASR Adapter
  * 将 yuleASR 配置格式与 yuleASR-Configurator 内部模型互转换
- * 支持: config/bsw_config.json 格式
+ * 支持: config/bsw_config.json 格式, ARXML 格式
  */
 
 import type { ModuleConfig } from '../types';
+import { parseArxml, validateArxml } from './arxml-parser';
 
 /**
  * yuleASR 模块配置结构
@@ -163,6 +164,26 @@ export class YuleasrAdapter {
       valid: errors.length === 0,
       errors,
     };
+  }
+
+  /**
+   * 从 ARXML 导入配置
+   */
+  importFromArxml(arxmlContent: string): ModuleConfig[] {
+    const result = parseArxml(arxmlContent);
+    
+    if (result.errors.length > 0) {
+      throw new Error(`ARXML parse failed: ${result.errors.join(', ')}`);
+    }
+
+    return result.modules;
+  }
+
+  /**
+   * 验证 ARXML 格式
+   */
+  validateArxmlConfig(arxmlContent: string): { valid: boolean; errors: string[] } {
+    return validateArxml(arxmlContent);
   }
 }
 

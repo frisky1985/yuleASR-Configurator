@@ -22,3 +22,11 @@ export {
   yuleasrValidator,
   type ModuleValidationRules 
 } from './validators/yuleasr-validator';
+
+// 导出 ARXML 解析器
+export {
+  parseArxml,
+  validateArxml,
+  convertArxmlToYuleasr,
+  type ArxmlParseResult
+} from './adapters/arxml-parser';
