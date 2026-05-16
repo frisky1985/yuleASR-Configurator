@@ -1,14 +1,14 @@
 import { useState, useCallback } from 'react'
-import type { ConfigParameter, ValidationError } from '@/types'
+import type { ConfigParameter, ValidationIssue } from '@/types'
 import { cn } from '@/lib/utils'
 import { RotateCcw, Plus, X, Link, AlertCircle, Check, ChevronDown } from 'lucide-react'
 
 interface ParameterEditorProps {
   parameter: ConfigParameter
-  error?: ValidationError
-  warning?: ValidationError
+  error?: ValidationIssue
+  warning?: ValidationIssue
   onChange: (value: unknown) => void
-  onValidate?: (value: unknown) => ValidationError | null
+  onValidate?: (value: unknown) => ValidationIssue | null
   compact?: boolean
 }
 
@@ -27,7 +27,7 @@ export function ParameterEditor({
     min,
     max,
     options,
-    default: defaultValue,
+    defaultValue,
     itemType,
     referenceTarget,
   } = parameter
@@ -240,9 +240,12 @@ export function ParameterEditor({
               className={cn(baseInputClass, 'appearance-none cursor-pointer')}
             >
               <option value="">Select an option...</option>
-              {options?.map((option) => (
-                <option key={option} value={option}>
-                  {option}
+              {options?.map((option, index) => (
+                <option 
+                  key={index} 
+                  value={typeof option === 'string' ? option : String(option.value)}
+                >
+                  {typeof option === 'string' ? option : option.label}
                 </option>
               ))}
             </select>

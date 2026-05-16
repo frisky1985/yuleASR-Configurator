@@ -61,6 +61,12 @@ const layerConfig: Record<ModuleLayer, {
     bgColor: 'bg-green-50',
     borderColor: 'border-green-200',
   },
+  OS: {
+    icon: Power,
+    color: 'text-indigo-600',
+    bgColor: 'bg-indigo-50',
+    borderColor: 'border-indigo-200',
+  },
 }
 
 function ModuleNodeComponent(props: NodeProps<Node<ModuleNodeData>>) {

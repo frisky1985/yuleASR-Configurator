@@ -1,80 +1,19 @@
 // yuleASR 配置类型定义
 
-export type ModuleLayer = 'MCAL' | 'ECUAL' | 'Service' | 'RTE' | 'ASW'
+// 导出所有配置类型
+export * from './config'
 
-export interface ModuleConfig {
-  id: string
-  name: string
-  layer: ModuleLayer
-  version: string
-  enabled: boolean
-  description?: string
-  parameters: ConfigParameter[]
-  containers: ContainerConfig[]
-  dependencies?: ModuleDependency[]
-}
+// 保留旧的类型导出以兼容
+export type ModuleLayer = 'MCAL' | 'ECUAL' | 'Service' | 'RTE' | 'ASW' | 'OS'
 
-export interface ModuleDependency {
-  module: string
-  version?: string
-  required: boolean
-  description?: string
-}
-
-export interface ConfigParameter {
-  name: string
-  type: 'boolean' | 'integer' | 'float' | 'string' | 'enum' | 'array' | 'reference'
-  value: unknown
-  default?: unknown
-  min?: number
-  max?: number
-  options?: string[]
-  description: string
-  validation?: ValidationRule[]
-  // For array type
-  itemType?: 'string' | 'integer' | 'float'
-  // For reference type
-  referenceTarget?: string
-}
-
-export interface ContainerConfig {
-  name: string
-  multiple: boolean
-  parameters: ConfigParameter[]
-  subContainers?: ContainerConfig[]
-}
-
-export interface ValidationRule {
-  type: 'required' | 'range' | 'regex' | 'dependency'
-  message: string
-  condition?: unknown
-}
-
-export interface ValidationError {
-  path: string
-  message: string
-  severity: 'error' | 'warning' | 'info'
-}
-
-export interface ValidationResult {
-  valid: boolean
-  errors: ValidationError[]
-  warnings: ValidationError[]
-}
-
-export interface ConfigFile {
-  id: string
-  name: string
-  description: string
-  createdAt: string
-  updatedAt: string
-  modules: ModuleConfig[]
-}
+// 兼容性别名
+export type { ConfigModule as ModuleConfig } from './config'
+export type { ValidationIssue as ValidationError } from './config'
 
 export interface EditorState {
-  currentConfig: ConfigFile | null
+  currentConfig: import('./config').ConfigFile | null
   selectedModuleId: string | null
-  validationResult: ValidationResult | null
+  validationResult: import('./config').ValidationResult | null
   isDirty: boolean
   isLoading: boolean
 }

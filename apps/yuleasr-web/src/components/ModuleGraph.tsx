@@ -132,6 +132,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
     Service: '#f97316', // orange-500
     RTE: '#ec4899',     // pink-500
     ASW: '#22c55e',     // green-500
+    OS: '#6366f1',      // indigo-500
   }
 
   const layerNames: Record<ModuleLayer, string> = {
@@ -140,6 +141,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
     Service: 'Services',
     RTE: 'Runtime',
     ASW: 'Application',
+    OS: 'Operating System',
   }
 
   // Update nodes with click handler

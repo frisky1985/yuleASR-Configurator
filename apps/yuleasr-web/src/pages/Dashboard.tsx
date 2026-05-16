@@ -164,7 +164,9 @@ export function Dashboard() {
         description: 'Microcontroller Driver',
         parameters: [],
         containers: [],
-        dependencies: []
+        dependencies: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       },
       {
         id: 'can',
@@ -175,7 +177,9 @@ export function Dashboard() {
         description: 'CAN Driver',
         parameters: [],
         containers: [],
-        dependencies: [{ module: 'Mcu', required: true }]
+        dependencies: [{ module: 'Mcu', required: true, autoEnable: true }],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       },
     ]
     

@@ -1,12 +1,17 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
-import type { ConfigFile, ModuleConfig, ValidationResult, ConfigListItem } from '@/types'
+import type { ConfigFile, ConfigModule, ValidationResult, ConfigListItem, ValidationIssue } from '@/types'
+import { mcalModules } from '@/data/mcal-config'
+import { ecualModules, serviceModules } from '@/data/ecual-config'
+import { defaultOSConfig } from '@/data/os-config'
+import { DependencyValidator } from '@/core/DependencyValidator'
 
 interface ConfigState {
   // 当前配置状态
   currentConfig: ConfigFile | null
-  selectedModuleId: string | null
+  selectedPath: string | null
   validationResult: ValidationResult | null
+  validationIssues: ValidationIssue[]
   isDirty: boolean
   isLoading: boolean
   
@@ -15,16 +20,18 @@ interface ConfigState {
   
   // Actions
   setCurrentConfig: (config: ConfigFile | null) => void
-  setSelectedModule: (moduleId: string | null) => void
-  updateModule: (moduleId: string, module: ModuleConfig) => void
-  updateParameter: (moduleId: string, path: string, value: unknown) => void
+  setSelectedPath: (path: string | null) => void
+  updateModule: (moduleId: string, module: ConfigModule) => void
+  updateParameter: (path: string, value: unknown) => void
   setValidationResult: (result: ValidationResult | null) => void
+  setValidationIssues: (issues: ValidationIssue[]) => void
+  validateConfig: () => ValidationResult
   setDirty: (dirty: boolean) => void
   setLoading: (loading: boolean) => void
   saveConfig: () => Promise<void>
   loadConfig: (configId: string) => Promise<void>
-  // Module enable/disable
   toggleModuleEnabled: (moduleId: string, enabled: boolean) => void
+  autoEnableDependencies: (moduleId: string) => void
   
   // 配置列表操作
   setConfigList: (list: ConfigListItem[]) => void
@@ -33,13 +40,41 @@ interface ConfigState {
   deleteConfig: (configId: string) => Promise<void>
 }
 
+// 创建默认配置 - 使用分层配置数据
+function createDefaultConfig(configId: string): ConfigFile {
+  return {
+    id: configId,
+    name: 'Default Configuration',
+    description: 'yuleASR configuration with MCAL, BSW, and OS layers',
+    targetPlatform: 'ARM Cortex-M4',
+    targetChip: 'S32K144',
+    compiler: 'GCC',
+    
+    // 合并所有模块
+    modules: [
+      ...(JSON.parse(JSON.stringify(mcalModules)) as ConfigModule[]),
+      ...(JSON.parse(JSON.stringify(ecualModules)) as ConfigModule[]),
+      ...(JSON.parse(JSON.stringify(serviceModules)) as ConfigModule[]),
+    ],
+    
+    // OS 配置
+    os: JSON.parse(JSON.stringify(defaultOSConfig)) as ConfigFile['os'],
+    
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    createdBy: 'yuleASR Configurator',
+    version: '1.0.0',
+  }
+}
+
 export const useConfigStore = create<ConfigState>()(
   devtools(
     (set, get) => ({
       // 初始状态
       currentConfig: null,
-      selectedModuleId: null,
+      selectedPath: null,
       validationResult: null,
+      validationIssues: [],
       isDirty: false,
       isLoading: false,
       configList: [],
@@ -48,13 +83,22 @@ export const useConfigStore = create<ConfigState>()(
       setCurrentConfig: (config) => {
         set({ 
           currentConfig: config, 
-          selectedModuleId: config?.modules?.[0]?.id || null,
+          selectedPath: null,
           isDirty: false 
         })
+        // 验证新配置
+        if (config) {
+          const validator = new DependencyValidator(config)
+          const result = validator.validate()
+          set({ 
+            validationResult: result,
+            validationIssues: result.errors
+          })
+        }
       },
 
-      setSelectedModule: (moduleId) => {
-        set({ selectedModuleId: moduleId })
+      setSelectedPath: (path) => {
+        set({ selectedPath: path })
       },
 
       updateModule: (moduleId, module) => {
@@ -65,62 +109,160 @@ export const useConfigStore = create<ConfigState>()(
           m.id === moduleId ? module : m
         )
 
+        const updatedConfig = {
+          ...currentConfig,
+          modules: updatedModules,
+          updatedAt: new Date().toISOString()
+        }
+
+        // 重新验证
+        const validator = new DependencyValidator(updatedConfig)
+        const result = validator.validate()
+
         set({
-          currentConfig: {
-            ...currentConfig,
-            modules: updatedModules,
-            updatedAt: new Date().toISOString()
-          },
+          currentConfig: updatedConfig,
+          validationResult: result,
+          validationIssues: result.errors,
           isDirty: true
         })
       },
 
-      updateParameter: (moduleId, path, value) => {
+      updateParameter: (path, value) => {
         const { currentConfig } = get()
         if (!currentConfig) return
 
-        // 简化实现 - 实际应该递归更新参数
-        const updatedModules = currentConfig.modules.map(module => {
-          if (module.id !== moduleId) return module
-          
-          return {
-            ...module,
-            parameters: module.parameters.map(p => 
-              p.name === path ? { ...p, value } : p
-            )
-          }
-        })
+        // 解析路径并更新参数
+        const pathParts = path.split('/')
+        let targetModule: ConfigModule | undefined
+        let targetParam: any
 
-        set({
-          currentConfig: {
+        // 简化版本 - 实际应该递归搜索
+        for (const part of pathParts) {
+          if (part.startsWith('module:')) {
+            const moduleId = part.replace('module:', '')
+            targetModule = currentConfig.modules.find(m => m.id === moduleId)
+          }
+        }
+
+        if (targetModule) {
+          const updatedModules = currentConfig.modules.map(module => {
+            if (module.id !== targetModule!.id) return module
+            
+            return {
+              ...module,
+              parameters: module.parameters.map(p => 
+                p.id === pathParts[pathParts.length - 1] ? { ...p, value } : p
+              )
+            }
+          })
+
+          const updatedConfig = {
             ...currentConfig,
             modules: updatedModules,
             updatedAt: new Date().toISOString()
-          },
-          isDirty: true
-        })
+          }
+
+          set({
+            currentConfig: updatedConfig,
+            isDirty: true
+          })
+        }
       },
 
       toggleModuleEnabled: (moduleId, enabled) => {
-        const { currentConfig } = get()
+        const { currentConfig, autoEnableDependencies } = get()
         if (!currentConfig) return
 
         const updatedModules = currentConfig.modules.map(module =>
           module.id === moduleId ? { ...module, enabled } : module
         )
 
+        const updatedConfig = {
+          ...currentConfig,
+          modules: updatedModules,
+          updatedAt: new Date().toISOString()
+        }
+
+        // 重新验证
+        const validator = new DependencyValidator(updatedConfig)
+        const result = validator.validate()
+
         set({
-          currentConfig: {
+          currentConfig: updatedConfig,
+          validationResult: result,
+          validationIssues: result.errors,
+          isDirty: true
+        })
+
+        // 如果启用模块，自动启用依赖
+        if (enabled) {
+          autoEnableDependencies(moduleId)
+        }
+      },
+
+      autoEnableDependencies: (moduleId) => {
+        const { currentConfig } = get()
+        if (!currentConfig) return
+
+        const module = currentConfig.modules.find(m => m.id === moduleId)
+        if (!module) return
+
+        let updated = false
+        const updatedModules = currentConfig.modules.map(m => {
+          // 检查是否是这个模块的依赖
+          const isDependency = module.dependencies.some(dep => 
+            dep.module === m.name && dep.required && dep.autoEnable && !m.enabled
+          )
+          
+          if (isDependency) {
+            updated = true
+            return { ...m, enabled: true }
+          }
+          return m
+        })
+
+        if (updated) {
+          const updatedConfig = {
             ...currentConfig,
             modules: updatedModules,
             updatedAt: new Date().toISOString()
-          },
-          isDirty: true
+          }
+
+          const validator = new DependencyValidator(updatedConfig)
+          const result = validator.validate()
+
+          set({
+            currentConfig: updatedConfig,
+            validationResult: result,
+            validationIssues: result.errors,
+            isDirty: true
+          })
+        }
+      },
+
+      validateConfig: () => {
+        const { currentConfig } = get()
+        if (!currentConfig) {
+          return { valid: true, errors: [], warnings: [], info: [] }
+        }
+
+        const validator = new DependencyValidator(currentConfig)
+        const result = validator.validate()
+
+        set({
+          validationResult: result,
+          validationIssues: [...result.errors, ...result.warnings]
         })
+
+        return result
       },
 
       setValidationResult: (result) => {
         set({ validationResult: result })
+      },
+
+      setValidationIssues: (issues) => {
+        set({ validationIssues: issues })
       },
 
       setDirty: (dirty) => {
@@ -132,18 +274,27 @@ export const useConfigStore = create<ConfigState>()(
       },
 
       saveConfig: async () => {
-        const { currentConfig } = get()
+        const { currentConfig, validateConfig } = get()
         if (!currentConfig) return
 
         set({ isLoading: true })
         try {
-          // TODO: 调用 API 保存配置
+          // 先验证
+          const validation = validateConfig()
+          if (!validation.valid) {
+            console.warn('Configuration has errors, saving anyway')
+          }
+
           console.log('Saving config:', currentConfig)
-          
-          // 模拟 API 调用
           await new Promise(resolve => setTimeout(resolve, 500))
           
-          set({ isDirty: false })
+          set({ 
+            isDirty: false,
+            currentConfig: {
+              ...currentConfig,
+              updatedAt: new Date().toISOString()
+            }
+          })
         } finally {
           set({ isLoading: false })
         }
@@ -152,107 +303,18 @@ export const useConfigStore = create<ConfigState>()(
       loadConfig: async (configId) => {
         set({ isLoading: true })
         try {
-          // TODO: 调用 API 加载配置
-          console.log('Loading config:', configId)
+          // 使用默认分层配置
+          const config = createDefaultConfig(configId)
           
-          // 模拟 API 调用
-          await new Promise(resolve => setTimeout(resolve, 500))
-          
-          // 模拟配置数据
-          const mockConfig: ConfigFile = {
-            id: configId,
-            name: 'Default Config',
-            description: 'Default yuleASR configuration',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            modules: [
-              {
-                id: 'mcu',
-                name: 'Mcu',
-                layer: 'MCAL',
-                version: '4.4.0',
-                enabled: true,
-                parameters: [
-                  {
-                    name: 'McuClockSetting',
-                    type: 'integer',
-                    value: 16000000,
-                    default: 16000000,
-                    min: 1000000,
-                    max: 180000000,
-                    description: 'MCU clock frequency in Hz'
-                  }
-                ],
-                containers: []
-              },
-              {
-                id: 'port',
-                name: 'Port',
-                layer: 'MCAL',
-                version: '4.4.0',
-                enabled: true,
-                parameters: [],
-                containers: []
-              },
-              {
-                id: 'dio',
-                name: 'Dio',
-                layer: 'MCAL',
-                version: '4.4.0',
-                enabled: false,
-                parameters: [],
-                containers: []
-              },
-              {
-                id: 'can',
-                name: 'Can',
-                layer: 'ECUAL',
-                version: '4.4.0',
-                enabled: true,
-                parameters: [
-                  {
-                    name: 'CanControllerId',
-                    type: 'integer',
-                    value: 0,
-                    default: 0,
-                    min: 0,
-                    max: 255,
-                    description: 'CAN Controller ID'
-                  },
-                  {
-                    name: 'CanBaudrate',
-                    type: 'enum',
-                    value: '500K',
-                    default: '500K',
-                    options: ['125K', '250K', '500K', '1M'],
-                    description: 'CAN bus baudrate'
-                  },
-                  {
-                    name: 'CanTxPdus',
-                    type: 'array',
-                    value: ['Pdu1', 'Pdu2'],
-                    default: [],
-                    itemType: 'string',
-                    description: 'List of TX PDUs'
-                  }
-                ],
-                containers: []
-              },
-              {
-                id: 'eth',
-                name: 'Eth',
-                layer: 'ECUAL',
-                version: '4.4.0',
-                enabled: false,
-                parameters: [],
-                containers: []
-              }
-            ]
-          }
+          // 初始验证
+          const validator = new DependencyValidator(config)
+          const result = validator.validate()
           
           set({ 
-            currentConfig: mockConfig,
-            selectedModuleId: mockConfig.modules[0]?.id || null,
+            currentConfig: config,
+            selectedPath: null,
+            validationResult: result,
+            validationIssues: result.errors,
             isDirty: false
           })
         } finally {
@@ -263,13 +325,14 @@ export const useConfigStore = create<ConfigState>()(
       createConfig: async (name, description) => {
         set({ isLoading: true })
         try {
-          // TODO: 调用 API 创建配置
-          console.log('Creating config:', { name, description })
-          
-          // 模拟 API 调用
+          const configId = `config-${Date.now()}`
+          const config = createDefaultConfig(configId)
+          config.name = name
+          config.description = description
+
+          console.log('Creating config:', config)
           await new Promise(resolve => setTimeout(resolve, 500))
           
-          // 刷新列表
           await get().loadConfigList()
         } finally {
           set({ isLoading: false })
@@ -279,13 +342,9 @@ export const useConfigStore = create<ConfigState>()(
       deleteConfig: async (configId) => {
         set({ isLoading: true })
         try {
-          // TODO: 调用 API 删除配置
           console.log('Deleting config:', configId)
-          
-          // 模拟 API 调用
           await new Promise(resolve => setTimeout(resolve, 500))
           
-          // 刷新列表
           await get().loadConfigList()
         } finally {
           set({ isLoading: false })
@@ -299,30 +358,28 @@ export const useConfigStore = create<ConfigState>()(
       loadConfigList: async () => {
         set({ isLoading: true })
         try {
-          // TODO: 调用 API 获取配置列表
-          
-          // 模拟数据
+          // 模拟配置列表
           const mockList: ConfigListItem[] = [
             {
               id: 'config-1',
               name: 'Default Configuration',
-              description: 'Default yuleASR configuration for testing',
-              moduleCount: 35,
-              lastModified: '2025-05-10T14:30:00Z'
+              description: 'Complete yuleASR configuration with MCAL, BSW, OS layers',
+              moduleCount: mcalModules.length + ecualModules.length + serviceModules.length,
+              lastModified: '2025-05-16T14:30:00Z'
             },
             {
               id: 'config-2',
               name: 'Production Config',
-              description: 'Production ready configuration',
-              moduleCount: 35,
-              lastModified: '2025-05-09T10:15:00Z'
+              description: 'Production ready configuration with optimized settings',
+              moduleCount: 12,
+              lastModified: '2025-05-15T10:15:00Z'
             },
             {
               id: 'config-3',
               name: 'Development Config',
-              description: 'Development configuration with debug enabled',
-              moduleCount: 20,
-              lastModified: '2025-05-08T16:45:00Z'
+              description: 'Development configuration with debug and diagnostic enabled',
+              moduleCount: 15,
+              lastModified: '2025-05-14T16:45:00Z'
             }
           ]
           

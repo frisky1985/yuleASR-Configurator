@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useConfigStore } from '@/stores/configStore'
-import { ModuleTree } from '@/components/ModuleTree'
+import { ConfigTree } from '@/components/ConfigTree'
 import { ParameterEditor } from '@/components/ParameterEditor'
 import { cn, formatDate } from '@/lib/utils'
 import type { ValidationResult } from '@/types'
@@ -15,10 +15,12 @@ import {
   CheckCircle,
   AlertCircle,
   Search,
+  AlertTriangle,
+  Info,
 } from 'lucide-react'
 
 export function Editor() {
-  const { configId, moduleId } = useParams<{ configId: string; moduleId?: string }>()
+  const { configId } = useParams<{ configId: string }>()
   const navigate = useNavigate()
 
   // Local state
@@ -28,15 +30,16 @@ export function Editor() {
 
   const {
     currentConfig,
-    selectedModuleId,
+    selectedPath,
     validationResult,
+    validationIssues,
     isDirty,
     isLoading,
     loadConfig,
-    setSelectedModule,
+    setSelectedPath,
     updateParameter,
     saveConfig,
-    setValidationResult,
+    validateConfig,
     toggleModuleEnabled,
   } = useConfigStore()
 
@@ -46,89 +49,28 @@ export function Editor() {
     }
   }, [configId, loadConfig])
 
-  useEffect(() => {
-    if (moduleId) {
-      setSelectedModule(moduleId)
-    }
-  }, [moduleId, setSelectedModule])
-
-  const selectedModule = currentConfig?.modules.find((m) => m.id === selectedModuleId)
-
-  // Validation function
-  const handleValidate = useCallback(async (): Promise<ValidationResult> => {
+  // Handle validation
+  const handleValidate = useCallback(async () => {
     setIsValidating(true)
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 800))
-
-    // Generate mock validation result
-    const mockErrors: Array<{ path: string; message: string; severity: 'error' | 'warning' | 'info' }> = []
-    const mockWarnings: Array<{ path: string; message: string; severity: 'error' | 'warning' | 'info' }> = []
-
-    currentConfig?.modules.forEach((module) => {
-      if (!module.enabled) return
-
-      module.parameters.forEach((param) => {
-        if (param.type === 'integer' || param.type === 'float') {
-          const val = param.value as number
-          if (param.min !== undefined && val < param.min) {
-            mockErrors.push({
-              path: `${module.name}.${param.name}`,
-              message: `${param.name} value ${val} is below minimum ${param.min}`,
-              severity: 'error',
-            })
-          }
-          if (param.max !== undefined && val > param.max) {
-            mockErrors.push({
-              path: `${module.name}.${param.name}`,
-              message: `${param.name} value ${val} exceeds maximum ${param.max}`,
-              severity: 'error',
-            })
-          }
-        }
-      })
-    })
-
-    const enabledCount = currentConfig?.modules.filter((m) => m.enabled).length || 0
-    if (enabledCount < 3) {
-      mockWarnings.push({
-        path: 'config.modules',
-        message: `Only ${enabledCount} modules enabled. Consider enabling more for full functionality.`,
-        severity: 'warning',
-      })
-    }
-
-    const result: ValidationResult = {
-      valid: mockErrors.length === 0,
-      errors: mockErrors,
-      warnings: mockWarnings,
-    }
-
-    setValidationResult(result)
+    const result = validateConfig()
     setIsValidating(false)
-
     return result
-  }, [currentConfig, setValidationResult])
+  }, [validateConfig])
 
   const handleSave = async () => {
     await saveConfig()
   }
 
   const handleParameterChange = (paramName: string, value: unknown) => {
-    if (selectedModule) {
-      updateParameter(selectedModule.id, paramName, value)
+    if (selectedPath) {
+      updateParameter(selectedPath, value)
     }
   }
 
-  const filteredParameters = selectedModule?.parameters.filter((param) => {
-    if (!searchQuery) return true
-    const query = searchQuery.toLowerCase()
-    return (
-      param.name.toLowerCase().includes(query) ||
-      param.description.toLowerCase().includes(query) ||
-      param.type.toLowerCase().includes(query)
-    )
-  })
+  // Get selected module from path
+  const selectedModule = selectedPath 
+    ? currentConfig?.modules.find(m => selectedPath.includes(m.id))
+    : null
 
   if (isLoading && !currentConfig) {
     return (
@@ -182,8 +124,15 @@ export function Editor() {
                   Saved
                 </span>
               )}
+              {validationIssues.length > 0 && (
+                <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-red-100 text-red-800 rounded-full">
+                  <AlertCircle className="w-3 h-3" />
+                  {validationIssues.filter(i => i.severity === 'error').length} Errors
+                </span>
+              )}
             </div>
             <p className="text-sm text-gray-500">
+              {currentConfig.targetChip} | {currentConfig.modules.filter(m => m.enabled).length} modules | 
               Last modified: {formatDate(currentConfig.updatedAt)}
             </p>
           </div>
@@ -229,52 +178,38 @@ export function Editor() {
       </div>
 
       {/* Main Content */}
-      <div className="grid grid-cols-12 gap-4">
-        {/* Left Sidebar - Module Tree */}
-        <div className="col-span-3">
-          <ModuleTree
-            modules={currentConfig.modules}
-            selectedModuleId={selectedModuleId}
-            onSelectModule={(id) => {
-              setSelectedModule(id)
-              navigate(`/editor/${configId}/${id}`)
-            }}
+      <div className="grid grid-cols-12 gap-4 h-[calc(100vh-12rem)]">
+        {/* Left Sidebar - Hierarchical Config Tree */}
+        <div className="col-span-3 h-full">
+          <ConfigTree
+            config={currentConfig}
+            selectedPath={selectedPath}
+            onSelectPath={setSelectedPath}
+            validationIssues={validationIssues}
+            showDisabled={showDisabled}
             onToggleModule={(id, enabled) => toggleModuleEnabled(id, enabled)}
             filterText={searchQuery}
-            onFilterChange={setSearchQuery}
-            showDisabled={showDisabled}
-            onShowDisabledChange={setShowDisabled}
           />
         </div>
 
         {/* Center - Parameter Editor */}
-        <div className="col-span-6">
-          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <div className="col-span-6 h-full overflow-hidden">
+          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden h-full flex flex-col">
             <div className="px-4 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
               <h3 className="text-sm font-semibold text-gray-900">
-                {selectedModule ? `${selectedModule.name} Configuration` : 'Select a Module'}
+                {selectedModule ? `${selectedModule.displayName || selectedModule.name} Configuration` : 'Select an Item'}
               </h3>
               {selectedModule && (
                 <div className="flex items-center gap-2">
-                  <div className="relative">
-                    <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
-                    <input
-                      type="text"
-                      placeholder="Filter params..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-7 pr-3 py-1 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 w-40"
-                    />
-                  </div>
                   <span className="text-xs text-gray-500">
-                    {filteredParameters?.length || 0} params
+                    {selectedModule.parameters.length} params
                   </span>
                 </div>
               )}
             </div>
 
             {selectedModule ? (
-              <div className="p-4 space-y-6">
+              <div className="p-4 space-y-6 overflow-y-auto flex-1">
                 <div className="flex items-center gap-2 text-xs text-gray-500 pb-4 border-b border-gray-100">
                   <span className="px-2 py-1 bg-gray-100 rounded">{selectedModule.layer}</span>
                   <span>Version: {selectedModule.version}</span>
@@ -299,19 +234,17 @@ export function Editor() {
                   </div>
                 )}
 
-                {filteredParameters?.length === 0 ? (
+                {selectedModule.parameters.length === 0 ? (
                   <div className="text-center py-8">
                     <p className="text-gray-500">
-                      {selectedModule.parameters.length === 0
-                        ? 'No configurable parameters for this module'
-                        : 'No parameters match your filter'}
+                      No configurable parameters for this module
                     </p>
                   </div>
                 ) : (
                   <div className="space-y-6">
-                    {filteredParameters?.map((param) => (
+                    {selectedModule.parameters.map((param) => (
                       <ParameterEditor
-                        key={param.name}
+                        key={param.id}
                         parameter={param}
                         onChange={(value) => handleParameterChange(param.name, value)}
                       />
@@ -320,15 +253,15 @@ export function Editor() {
                 )}
               </div>
             ) : (
-              <div className="p-8 text-center">
-                <p className="text-gray-500">Select a module from the sidebar to configure</p>
+              <div className="p-8 text-center flex-1 flex items-center justify-center">
+                <p className="text-gray-500">Select a module or container from the tree to configure</p>
               </div>
             )}
           </div>
         </div>
 
         {/* Right Sidebar - Validation & Info */}
-        <div className="col-span-3 space-y-4">
+        <div className="col-span-3 space-y-4 h-full overflow-y-auto">
           {/* Validation Summary */}
           <div className="bg-white border border-gray-200 rounded-lg p-4">
             <h3 className="text-sm font-semibold text-gray-900 mb-3">Validation</h3>
@@ -341,11 +274,17 @@ export function Editor() {
                   </div>
                 ) : (
                   <>
-                    <div className="text-red-600 text-sm">
-                      {validationResult.errors.length} errors
+                    <div className="flex items-center gap-2 text-red-600">
+                      <AlertCircle className="w-4 h-4" />
+                      <span className="text-sm">{validationResult.errors.length} errors</span>
                     </div>
-                    <div className="text-yellow-600 text-sm">
-                      {validationResult.warnings.length} warnings
+                    <div className="flex items-center gap-2 text-yellow-600">
+                      <AlertTriangle className="w-4 h-4" />
+                      <span className="text-sm">{validationResult.warnings.length} warnings</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-blue-600">
+                      <Info className="w-4 h-4" />
+                      <span className="text-sm">{validationResult.info.length} info</span>
                     </div>
                   </>
                 )}
@@ -354,6 +293,46 @@ export function Editor() {
               <p className="text-sm text-gray-500">Click Validate to check configuration</p>
             )}
           </div>
+
+          {/* Validation Issues List */}
+          {validationIssues.length > 0 && (
+            <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-gray-900 mb-3">Issues</h3>
+              <div className="space-y-2 max-h-48 overflow-y-auto">
+                {validationIssues.slice(0, 10).map((issue) => (
+                  <div
+                    key={issue.id}
+                    className={cn(
+                      'text-xs p-2 rounded cursor-pointer hover:bg-gray-50',
+                      issue.severity === 'error' && 'bg-red-50 text-red-700 border border-red-100',
+                      issue.severity === 'warning' && 'bg-yellow-50 text-yellow-700 border border-yellow-100',
+                      issue.severity === 'info' && 'bg-blue-50 text-blue-700 border border-blue-100'
+                    )}
+                    onClick={() => {
+                      // Navigate to the issue location
+                      if (issue.module) {
+                        const module = currentConfig?.modules.find(m => m.name === issue.module)
+                        if (module) {
+                          setSelectedPath(`layer:${module.layer}/module:${module.id}`)
+                        }
+                      }
+                    }}
+                  >
+                    <div className="font-medium">{issue.path}</div>
+                    <div className="mt-1">{issue.message}</div>
+                    {issue.suggestion && (
+                      <div className="mt-1 text-gray-500 italic">{issue.suggestion}</div>
+                    )}
+                  </div>
+                ))}
+                {validationIssues.length > 10 && (
+                  <div className="text-xs text-gray-500 text-center">
+                    +{validationIssues.length - 10} more issues
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Module Info Card */}
           {selectedModule && (
@@ -372,6 +351,12 @@ export function Editor() {
                   <dt className="text-gray-500">Version</dt>
                   <dd className="font-medium text-gray-900">{selectedModule.version}</dd>
                 </div>
+                {selectedModule.vendor && (
+                  <div className="flex justify-between">
+                    <dt className="text-gray-500">Vendor</dt>
+                    <dd className="font-medium text-gray-900">{selectedModule.vendor}</dd>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <dt className="text-gray-500">Status</dt>
                   <dd className="font-medium">
@@ -390,6 +375,14 @@ export function Editor() {
                     {selectedModule.parameters.length}
                   </dd>
                 </div>
+                {selectedModule.containers.length > 0 && (
+                  <div className="flex justify-between">
+                    <dt className="text-gray-500">Containers</dt>
+                    <dd className="font-medium text-gray-900">
+                      {selectedModule.containers.length}
+                    </dd>
+                  </div>
+                )}
               </dl>
             </div>
           )}

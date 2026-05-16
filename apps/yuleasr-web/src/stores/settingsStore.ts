@@ -1,6 +1,14 @@
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
-import type { ValidationRule } from '@/types'
+
+// Validation rule type
+interface ValidationRule {
+  id: string
+  name: string
+  enabled: boolean
+  severity: 'error' | 'warning' | 'info'
+  description?: string
+}
 
 export type EditorTheme = 'light' | 'dark' | 'system'
 export type UILanguage = 'zh-CN' | 'en-US'
