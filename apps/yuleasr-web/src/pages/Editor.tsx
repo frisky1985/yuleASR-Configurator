@@ -2,7 +2,10 @@ import { useEffect, useState, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useConfigStore } from '@/stores/configStore'
 import { ConfigTree } from '@/components/ConfigTree'
+import { ConfigurationStatusPanel, exportConfigReport } from '@/components/ConfigurationStatusPanel'
 import { ParameterEditor } from '@/components/ParameterEditor'
+import { ValidationPanel } from '@/components/ValidationPanel'
+import { ModuleConfigWizard } from '@/components/ModuleConfigWizard'
 import { cn, formatDate } from '@/lib/utils'
 import type { ValidationResult } from '@/types'
 import {
@@ -262,6 +265,12 @@ export function Editor() {
 
         {/* Right Sidebar - Validation & Info */}
         <div className="col-span-3 space-y-4 h-full overflow-y-auto">
+          {/* Configuration Status Panel */}
+          <ConfigurationStatusPanel 
+            config={currentConfig}
+            onExportReport={() => exportConfigReport(currentConfig)}
+          />
+
           {/* Validation Summary */}
           <div className="bg-white border border-gray-200 rounded-lg p-4">
             <h3 className="text-sm font-semibold text-gray-900 mb-3">Validation</h3>

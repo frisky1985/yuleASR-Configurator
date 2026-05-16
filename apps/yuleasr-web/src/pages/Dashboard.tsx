@@ -208,6 +208,62 @@ export function Dashboard() {
         </button>
       </div>
 
+      {/* Configuration Overview Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="bg-white border border-gray-200 rounded-lg p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Total Configs</p>
+              <p className="text-2xl font-bold text-gray-900">{configList.length}</p>
+            </div>
+            <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+              <FolderOpen className="w-6 h-6 text-blue-600" />
+            </div>
+          </div>
+        </div>
+        <div className="bg-white border border-gray-200 rounded-lg p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Configured</p>
+              <p className="text-2xl font-bold text-green-600">
+                {configList.filter(c => c.moduleCount > 0).length}
+              </p>
+            </div>
+            <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
+              <Settings className="w-6 h-6 text-green-600" />
+            </div>
+          </div>
+        </div>
+        <div className="bg-white border border-gray-200 rounded-lg p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Total Modules</p>
+              <p className="text-2xl font-bold text-purple-600">
+                {configList.reduce((sum, c) => sum + c.moduleCount, 0)}
+              </p>
+            </div>
+            <div className="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
+              <Layers className="w-6 h-6 text-purple-600" />
+            </div>
+          </div>
+        </div>
+        <div className="bg-white border border-gray-200 rounded-lg p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Last Modified</p>
+              <p className="text-lg font-bold text-gray-900">
+                {configList.length > 0 
+                  ? formatDate(configList[0]?.lastModified || new Date().toISOString())
+                  : 'N/A'}
+              </p>
+            </div>
+            <div className="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center">
+              <Clock className="w-6 h-6 text-orange-600" />
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <button 
