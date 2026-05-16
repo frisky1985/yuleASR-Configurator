@@ -40,6 +40,7 @@ interface TreeNodeData {
   icon: React.ReactNode
   hasChildren: boolean
   enabled?: boolean
+  configStatus?: 'unconfigured' | 'configuring' | 'configured' | 'partial'
   errorCount: number
   warningCount: number
   children?: TreeNodeData[]
@@ -101,6 +102,7 @@ export function ConfigTree({
         version: config.os.version,
         layer: 'OS',
         enabled: true,
+        configStatus: 'configured',
         containers: [
           { id: 'tasks', name: 'Tasks', displayName: 'Task Configuration', parameters: [], subContainers: [] },
           { id: 'isrs', name: 'ISRs', displayName: 'Interrupt Service Routines', parameters: [], subContainers: [] },
@@ -196,6 +198,7 @@ export function ConfigTree({
       icon: <Folder className="w-4 h-4" />,
       hasChildren: containerNodes.length > 0 || paramNodes.length > 0,
       enabled: module.enabled,
+      configStatus: module.configStatus,
       errorCount,
       warningCount,
       data: module,
@@ -369,6 +372,17 @@ export function ConfigTree({
           )}>
             {node.displayName}
           </span>
+          
+          {/* Configuration Status Indicator */}
+          {node.type === 'module' && node.configStatus && (
+            <span className={cn(
+              'flex-shrink-0 w-2 h-2 rounded-full',
+              node.configStatus === 'configured' && 'bg-green-500',
+              node.configStatus === 'configuring' && 'bg-blue-500 animate-pulse',
+              node.configStatus === 'partial' && 'bg-yellow-500',
+              node.configStatus === 'unconfigured' && 'bg-gray-300'
+            )} title={`Status: ${node.configStatus}`} />
+          )}
           
           {/* Module enable toggle */}
           {node.type === 'module' && onToggleModule && (

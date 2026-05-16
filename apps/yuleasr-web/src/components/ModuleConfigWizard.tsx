@@ -14,7 +14,15 @@ import { cn } from '@/lib/utils'
 interface ModuleConfigWizardProps {
   isOpen: boolean
   onClose: () => void
-  onComplete: (config: Record<string, unknown>) => void
+  onComplete: (config: {
+    module: string
+    version: string
+    parameters: Record<string, unknown>
+    configStatus: 'configured'
+    configMethod: 'wizard'
+    configProgress: number
+    configuredAt: string
+  }) => void
 }
 
 interface ModuleTemplate {
@@ -374,7 +382,12 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
       onComplete({
         module: selectedModule.id,
         version: '1.0.0',
-        parameters
+        parameters,
+        // 标记为已配置
+        configStatus: 'configured',
+        configMethod: 'wizard',
+        configProgress: 100,
+        configuredAt: new Date().toISOString()
       })
     }
     // Reset and close

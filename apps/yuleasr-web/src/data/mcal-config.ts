@@ -138,6 +138,9 @@ export const mcalModules: ConfigModule[] = [
       { module: 'Gpt', required: false, description: 'Clock configuration affects timer accuracy' },
     ],
     createdAt: '2025-01-01T00:00:00Z',
+    configStatus: 'configured',
+    configMethod: 'manual',
+    configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
   {
@@ -280,6 +283,9 @@ export const mcalModules: ConfigModule[] = [
       { module: 'Mcu', required: true, description: 'Port needs MCU clock settings', autoEnable: true },
     ],
     createdAt: '2025-01-01T00:00:00Z',
+    configStatus: 'configured',
+    configMethod: 'manual',
+    configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
   {
@@ -355,6 +361,9 @@ export const mcalModules: ConfigModule[] = [
       { module: 'Port', required: true, description: 'Dio requires Port to be configured first', autoEnable: true },
     ],
     createdAt: '2025-01-01T00:00:00Z',
+    configStatus: 'configured',
+    configMethod: 'manual',
+    configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
   {
@@ -438,6 +447,9 @@ export const mcalModules: ConfigModule[] = [
       { module: 'Mcu', required: true, description: 'GPT needs MCU clock configuration', autoEnable: true },
     ],
     createdAt: '2025-01-01T00:00:00Z',
+    configStatus: 'configured',
+    configMethod: 'manual',
+    configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
   {
@@ -505,6 +517,9 @@ export const mcalModules: ConfigModule[] = [
       { module: 'Port', required: true, description: 'PWM needs pin configuration', autoEnable: true },
     ],
     createdAt: '2025-01-01T00:00:00Z',
+    configStatus: 'configured',
+    configMethod: 'manual',
+    configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
   {
@@ -577,6 +592,9 @@ export const mcalModules: ConfigModule[] = [
       { module: 'Port', required: true, description: 'ADC needs analog pin config', autoEnable: true },
     ],
     createdAt: '2025-01-01T00:00:00Z',
+    configStatus: 'configured',
+    configMethod: 'manual',
+    configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
   {
@@ -661,6 +679,9 @@ export const mcalModules: ConfigModule[] = [
       { module: 'Port', required: true, description: 'SPI needs pin config', autoEnable: true },
     ],
     createdAt: '2025-01-01T00:00:00Z',
+    configStatus: 'configured',
+    configMethod: 'manual',
+    configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
   {
@@ -760,6 +781,9 @@ export const mcalModules: ConfigModule[] = [
       { module: 'Port', required: true, description: 'CAN needs pin config', autoEnable: true },
     ],
     createdAt: '2025-01-01T00:00:00Z',
+    configStatus: 'configured',
+    configMethod: 'manual',
+    configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
 ]

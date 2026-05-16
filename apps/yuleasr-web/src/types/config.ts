@@ -91,6 +91,18 @@ export interface ConfigModule {
   // Validation status
   validationStatus?: 'valid' | 'invalid' | 'warning' | 'pending'
   validationErrors?: string[]
+  
+  // Configuration status - tracks if module has been configured
+  configStatus: 'unconfigured' | 'configuring' | 'configured' | 'partial'
+  
+  // Configuration progress (0-100)
+  configProgress?: number
+  
+  // Last configuration timestamp
+  lastConfiguredAt?: string
+  
+  // Configuration method used
+  configMethod?: 'wizard' | 'manual' | 'import'
 }
 
 // OS specific configuration

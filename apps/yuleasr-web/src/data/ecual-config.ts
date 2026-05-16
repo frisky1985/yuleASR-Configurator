@@ -124,6 +124,9 @@ export const ecualModules: ConfigModule[] = [
       { module: 'Port', required: true, description: 'Physical pins needed', autoEnable: true },
     ],
     createdAt: '2025-01-01T00:00:00Z',
+    configStatus: 'configured',
+    configMethod: 'manual',
+    configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
   {
@@ -189,6 +192,9 @@ export const ecualModules: ConfigModule[] = [
       { module: 'Dio', required: false, description: 'May use DIO for control pins' },
     ],
     createdAt: '2025-01-01T00:00:00Z',
+    configStatus: 'configured',
+    configMethod: 'manual',
+    configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
   {
@@ -277,6 +283,9 @@ export const ecualModules: ConfigModule[] = [
       { module: 'Port', required: true, description: 'Needs pin configuration', autoEnable: true },
     ],
     createdAt: '2025-01-01T00:00:00Z',
+    configStatus: 'configured',
+    configMethod: 'manual',
+    configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
   {
@@ -332,6 +341,9 @@ export const ecualModules: ConfigModule[] = [
       { module: 'Port', required: true, description: 'Needs pin configuration', autoEnable: true },
     ],
     createdAt: '2025-01-01T00:00:00Z',
+    configStatus: 'configured',
+    configMethod: 'manual',
+    configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
 ]
@@ -430,6 +442,9 @@ export const serviceModules: ConfigModule[] = [
       { module: 'Ea', required: false, description: 'EEPROM Abstraction optional' },
     ],
     createdAt: '2025-01-01T00:00:00Z',
+    configStatus: 'configured',
+    configMethod: 'manual',
+    configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
   {
@@ -505,6 +520,9 @@ export const serviceModules: ConfigModule[] = [
       { module: 'CanIf', required: true, description: 'CAN Interface needed', autoEnable: true },
     ],
     createdAt: '2025-01-01T00:00:00Z',
+    configStatus: 'configured',
+    configMethod: 'manual',
+    configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
   {
@@ -559,6 +577,9 @@ export const serviceModules: ConfigModule[] = [
       { module: 'CanTp', required: true, description: 'CAN TP needed', autoEnable: true },
     ],
     createdAt: '2025-01-01T00:00:00Z',
+    configStatus: 'configured',
+    configMethod: 'manual',
+    configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
 ]

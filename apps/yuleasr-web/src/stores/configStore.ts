@@ -22,6 +22,7 @@ interface ConfigState {
   setCurrentConfig: (config: ConfigFile | null) => void
   setSelectedPath: (path: string | null) => void
   updateModule: (moduleId: string, module: ConfigModule) => void
+  updateModuleConfigStatus: (moduleId: string, status: ConfigModule['configStatus'], method?: ConfigModule['configMethod']) => void
   updateParameter: (path: string, value: unknown) => void
   setValidationResult: (result: ValidationResult | null) => void
   setValidationIssues: (issues: ValidationIssue[]) => void
@@ -123,6 +124,32 @@ export const useConfigStore = create<ConfigState>()(
           currentConfig: updatedConfig,
           validationResult: result,
           validationIssues: result.errors,
+          isDirty: true
+        })
+      },
+
+      updateModuleConfigStatus: (moduleId, status, method) => {
+        const { currentConfig } = get()
+        if (!currentConfig) return
+
+        const updatedModules = currentConfig.modules.map(module =>
+          module.id === moduleId 
+            ? { 
+                ...module, 
+                configStatus: status,
+                configMethod: method || module.configMethod,
+                lastConfiguredAt: status === 'configured' ? new Date().toISOString() : module.lastConfiguredAt,
+                updatedAt: new Date().toISOString()
+              } 
+            : module
+        )
+
+        set({
+          currentConfig: {
+            ...currentConfig,
+            modules: updatedModules,
+            updatedAt: new Date().toISOString()
+          },
           isDirty: true
         })
       },
