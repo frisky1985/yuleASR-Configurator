@@ -10,7 +10,7 @@
 | 项目 | 内容 |
 |------|------|
 | **项目名称** | yuleASR-Configurator |
-| **当前版本** | v0.1.2 |
+| **当前版本** | v0.1.3 |
 | **GitHub 仓库** | https://github.com/frisky1985/yuleASR-Configurator |
 | **在线演示** | https://frisky1985.github.io/yuleASR-Configurator/ |
 | **工作目录** | /home/admin/yuletech-monorepo |
