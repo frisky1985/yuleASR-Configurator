@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.1.2] - 2025-01-16
+
+### Theme Support
+
+- **Dark Mode**: Full dark mode support with CSS variables
+- **Theme Provider**: ThemeProvider component with system preference detection
+- **Theme Toggle**: Quick toggle button in header with Ctrl+D shortcut
+
+### Global Search
+
+- **Search Modal**: Global search across all configuration items
+- **Search Results**: Search modules, containers, parameters, OS entities
+- **Keyboard Navigation**: Arrow keys to navigate, Enter to select
+- **Shortcut**: Ctrl+K to open search
+
+### Keyboard Shortcuts
+
+- **Ctrl+K**: Open global search
+- **Ctrl+S**: Save configuration
+- **Ctrl+D**: Toggle dark/light theme
+- **Ctrl+/**: Show keyboard shortcuts help
+
+---
+
 ## [0.1.1] - 2025-01-16
 
 ### OS Configuration Editor

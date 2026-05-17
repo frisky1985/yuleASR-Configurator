@@ -7,6 +7,8 @@ import { ParameterEditor } from '@/components/ParameterEditor'
 import { ValidationPanel } from '@/components/ValidationPanel'
 import { ModuleConfigWizard } from '@/components/ModuleConfigWizard'
 import { OSEditor } from '@/components/OSEditor'
+import { GlobalSearch } from '@/components/GlobalSearch'
+import { useTheme } from '@/components/ThemeProvider'
 import { cn, formatDate } from '@/lib/utils'
 import type { ValidationResult } from '@/types'
 import {
@@ -31,6 +33,7 @@ export function Editor() {
   const [searchQuery, setSearchQuery] = useState('')
   const [showDisabled, setShowDisabled] = useState(true)
   const [isValidating, setIsValidating] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
 
   const {
     currentConfig,
@@ -52,6 +55,27 @@ export function Editor() {
       loadConfig(configId)
     }
   }, [configId, loadConfig])
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ctrl/Cmd + K to open search
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault()
+        setIsSearchOpen(true)
+      }
+      // Ctrl/Cmd + S to save
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault()
+        if (isDirty) {
+          handleSave()
+        }
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isDirty])
 
   // Handle validation
   const handleValidate = useCallback(async () => {
@@ -146,6 +170,17 @@ export function Editor() {
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Search Button */}
+          <button
+            onClick={() => setIsSearchOpen(true)}
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            title="Search (Ctrl+K)"
+          >
+            <Search className="w-4 h-4" />
+            <span className="hidden sm:inline">Search</span>
+            <kbd className="hidden sm:inline-flex px-1.5 py-0.5 bg-gray-100 rounded text-xs">Ctrl+K</kbd>
+          </button>
+
           <button
             onClick={handleValidate}
             disabled={isValidating}
@@ -403,6 +438,13 @@ export function Editor() {
           )}
         </div>
       </div>
+
+      {/* Global Search */}
+      <GlobalSearch
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        onSelectResult={(path) => setSelectedPath(path)}
+      />
     </div>
   )
 }
