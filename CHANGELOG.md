@@ -1,5 +1,50 @@
 # Changelog
 
+## [0.1.4] - 2025-01-16
+
+### Parameter Validation Enhancement
+
+- **ParameterValidator Class**: Comprehensive parameter validation engine
+  - Range validation for numeric values (min/max)
+  - Pattern validation using regular expressions
+  - Enum validation for allowed value sets
+  - Custom validation rules support
+  - Pre-configured validation for common AUTOSAR parameters:
+    - MCU clock frequency (1-1000 MHz)
+    - CAN baudrate (125000, 250000, 500000, 1000000)
+    - PWM frequency (0.1-10000 Hz)
+    - ADC resolution (8, 10, 12 bits)
+    - OS task priority (0-255)
+    - OS stack size (64-65536 bytes)
+
+### Configuration Comparison
+
+- **ConfigComparer Class**: Deep configuration diff engine
+  - Compare two complete configurations
+  - Detect added, removed, and modified parameters
+  - Export comparison results to Markdown or JSON
+  - Visual diff display with color coding
+  - **ConfigCompareDialog Component**: UI for selecting and comparing configs
+
+### Bulk Operations
+
+- **BulkOperationsPanel Component**: Batch module management
+  - Select multiple modules with checkboxes
+  - Filter by layer and status
+  - Search modules by name
+  - Bulk enable/disable operations
+  - Visual selection summary
+
+### Mobile Responsiveness
+
+- **useMediaQuery Hook**: React to viewport changes
+- **MobileNav Component**: Bottom navigation bar for mobile devices
+- **MobileDrawer Component**: Slide-out drawer for mobile navigation
+- Touch-friendly UI elements
+- Safe area insets support for notched devices
+
+---
+
 ## [0.1.3] - 2025-01-16
 
 ### Internationalization (i18n)

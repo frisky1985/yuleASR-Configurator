@@ -10,7 +10,7 @@
 | 项目 | 内容 |
 |------|------|
 | **项目名称** | yuleASR-Configurator |
-| **当前版本** | v0.1.3 |
+| **当前版本** | v0.1.4 |
 | **GitHub 仓库** | https://github.com/frisky1985/yuleASR-Configurator |
 | **在线演示** | https://frisky1985.github.io/yuleASR-Configurator/ |
 | **工作目录** | /home/admin/yuletech-monorepo |
@@ -62,9 +62,9 @@
 
 ### 高优先级
 - [x] **OS 配置编辑器** - 支持 Task/Event/Alarm/Resource/Counter/ISR 的编辑功能
-- [ ] **参数验证增强** - 添加更多参数级别的验证规则
-- [ ] **配置比较功能** - 比较两个配置的差异
-- [ ] **批量操作** - 批量启用/禁用模块
+- [x] **参数验证增强** - 添加了 ParameterValidator 类，支持范围、模式、枚举等验证规则
+- [x] **配置比较功能** - 添加了 ConfigComparer 类和 ConfigCompareDialog 组件
+- [x] **批量操作** - 添加了 BulkOperationsPanel 组件，支持批量启用/禁用模块
 
 ### 中优先级
 - [x] **Undo/Redo 功能** - 配置编辑的历史记录
@@ -74,9 +74,9 @@
 
 ### 低优先级
 - [x] **多语言支持** - 支持中英文界面切换
-- [x] **性能优化** - 添加虚拟化列表组件
+- [x] **性能优化** - 添加了虚拟化列表组件
 - [x] **配置迁移工具** - 支持从其他 AUTOSAR 工具导入
-- [ ] **移动端适配** - 响应式布局改进
+- [x] **移动端适配** - 添加了 useMediaQuery hook、MobileNav、MobileDrawer 组件
 
 ---
 
@@ -88,33 +88,41 @@
 │   └── yuleasr-web/               # React 前端应用
 │       ├── src/
 │       │   ├── components/        # React 组件
-│       │   │   ├── ConfigTree.tsx           # 分层配置树
-│       │   │   ├── ConfigurationStatusPanel.tsx  # 状态面板
-│       │   │   ├── ModuleConfigWizard.tsx   # 模块配置向导
-│       │   │   ├── ParameterEditor.tsx      # 参数编辑器
-│       │   │   ├── ValidationPanel.tsx      # 验证面板
-│       │   │   ├── ModuleGraph.tsx          # 依赖图谱
+│       │   │   ├── ConfigTree.tsx
+│       │   │   ├── ConfigTreeVirtual.tsx    # 虚拟化配置树
+│       │   │   ├── ConfigCompareDialog.tsx   # 配置比较对话框
+│       │   │   ├── BulkOperationsPanel.tsx   # 批量操作面板
+│       │   │   ├── MobileNav.tsx             # 移动端导航
+│       │   │   ├── MobileDrawer.tsx          # 移动端抽屉
+│       │   │   ├── ConfigurationStatusPanel.tsx
+│       │   │   ├── ModuleConfigWizard.tsx
+│       │   │   ├── ParameterEditor.tsx
+│       │   │   ├── ValidationPanel.tsx
+│       │   │   ├── ModuleGraph.tsx
 │       │   │   └── ...
-│       │   ├── pages/             # 页面组件
+│       │   ├── pages/
 │       │   │   ├── Dashboard.tsx
 │       │   │   ├── Editor.tsx
 │       │   │   ├── Templates.tsx
 │       │   │   ├── GitSync.tsx
-│       │   │   └── Settings.tsx
-│       │   ├── data/              # 配置数据定义
-│       │   │   ├── mcal-config.ts
-│       │   │   ├── ecual-config.ts
-│       │   │   └── os-config.ts
-│       │   ├── types/             # TypeScript 类型
-│       │   │   ├── config.ts      # 核心配置类型
-│       │   │   └── index.ts
-│       │   ├── stores/            # 状态管理 (Zustand)
-│       │   │   ├── configStore.ts
-│       │   │   └── settingsStore.ts
+│       │   │   ├── Settings.tsx
+│       │   │   └── Migrate.tsx
+│       │   ├── data/
+│       │   ├── types/
+│       │   ├── stores/
 │       │   ├── core/              # 核心逻辑
-│       │   │   └── DependencyValidator.ts
+│       │   │   ├── DependencyValidator.ts
+│       │   │   ├── ParameterValidator.ts   # 参数验证引擎
+│       │   │   └── ConfigComparer.ts       # 配置比较引擎
+│       │   ├── hooks/             # 自定义 hooks
+│       │   │   └── useMediaQuery.ts        # 响应式断点 hook
+│       │   ├── i18n/              # 多语言
+│       │   │   ├── index.ts
+│       │   │   └── locales/
+│       │   │       ├── en.json
+│       │   │       └── zh.json
 │       │   └── App.tsx
-│       ├── package.json           # 版本: 0.1.0
+│       ├── package.json
 │       └── ...
 ├── packages/
 │   └── @yuletech/core/            # 核心适配器包
