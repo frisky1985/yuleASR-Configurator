@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { useTheme } from '@/components/ThemeProvider'
 import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp'
-import { Home, Settings, FileJson, GitBranch, Moon, Sun, Keyboard, Globe } from 'lucide-react'
+import { Home, Settings, FileJson, GitBranch, Moon, Sun, Keyboard, Globe, ArrowLeftRight } from 'lucide-react'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -43,6 +43,7 @@ export function Layout({ children }: LayoutProps) {
   const navItems = [
     { path: '/dashboard', label: t('nav.dashboard'), icon: Home },
     { path: '/templates', label: t('nav.templates'), icon: FileJson },
+    { path: '/migrate', label: 'Migrate', icon: ArrowLeftRight },
     { path: '/sync', label: t('nav.gitSync'), icon: GitBranch },
     { path: '/settings', label: t('nav.settings'), icon: Settings },
   ]

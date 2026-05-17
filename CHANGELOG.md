@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.1.3] - 2025-01-16
+
+### Internationalization (i18n)
+
+- **Multi-language Support**: Full i18n implementation with react-i18next
+- **Chinese Translation**: Complete Chinese (zh) translation for all UI elements
+- **Language Toggle**: Quick language switcher in header (EN/中)
+- **Auto-detection**: Automatic language detection from browser settings
+
+### Performance Optimization
+
+- **VirtualList Component**: Efficient rendering of large lists with virtualization
+- **ConfigTreeVirtual**: Virtualized tree component for large configurations
+- **Lazy Loading**: On-demand rendering of off-screen items
+- **Improved Scrolling**: Smooth scrolling with 60fps performance
+
+### Configuration Migration Tool
+
+- **Migration Page**: New /migrate page for importing from other tools
+- **Vector DaVinci**: Support for importing .xdm and .arxml files
+- **ETAS ISOLAR**: Support for ISOLAR-A/B configurations
+- **Elektrobit Tresos**: Support for EB Tresos .xdm files
+- **Generic AUTOSAR**: Support for standard ARXML files
+- **Drag & Drop**: Easy file upload with drag and drop
+- **Migration Report**: Detailed import results and warnings
+
+---
+
 ## [0.1.2] - 2025-01-16
 
 ### Theme Support

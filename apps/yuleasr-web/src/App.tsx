@@ -6,6 +6,7 @@ import { Editor } from './pages/Editor'
 import { Templates } from './pages/Templates'
 import { GitSync } from './pages/GitSync'
 import { Settings } from './pages/Settings'
+import { Migrate } from './pages/Migrate'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/templates" element={<Templates />} />
           <Route path="/sync" element={<GitSync />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/migrate" element={<Migrate />} />
           <Route path="/editor/:configId" element={<Editor />} />
           <Route path="/editor/:configId/:moduleId" element={<Editor />} />
         </Routes>
