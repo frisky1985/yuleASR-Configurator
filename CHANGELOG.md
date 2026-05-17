@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.1.1] - 2025-01-16
+
+### OS Configuration Editor
+
+#### New Features
+- **OSEditor Component**: Full-featured OS configuration editor
+  - Tasks management: Add, edit, delete tasks with priority, schedule, stack size
+  - Events management: Configure event masks for task synchronization
+  - Alarms management: Create periodic alarms with actions (Activate Task, Set Event)
+  - Resources management: Define resources for mutual exclusion
+  - Counters management: Configure system counters with tick rates
+  - ISRs management: Setup interrupt service routines with priorities
+  - General settings: Scalability class, hooks configuration, status level
+
+#### Technical Improvements
+- Added `updateOS` action to configStore for OS configuration updates
+- Integrated OS editor into Editor page with tab-based interface
+- Real-time validation of OS configuration changes
+
+---
+
 ## [0.1.0] - 2025-01-16
 
 ### Initial Release
