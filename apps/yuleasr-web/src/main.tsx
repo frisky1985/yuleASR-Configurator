@@ -1,13 +1,14 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { HashRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
+import './i18n'  // Initialize i18n
 import App from './App'
 import './index.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <HashRouter>
+    <BrowserRouter basename="/yuleASR-Configurator">
       <App />
-    </HashRouter>
+    </BrowserRouter>
   </StrictMode>,
 )

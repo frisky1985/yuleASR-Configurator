@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/lib/utils'
 import { useTheme } from '@/components/ThemeProvider'
 import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp'
-import { Home, Settings, FileJson, GitBranch, Moon, Sun, Keyboard } from 'lucide-react'
+import { Home, Settings, FileJson, GitBranch, Moon, Sun, Keyboard, Globe } from 'lucide-react'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -11,6 +12,7 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const location = useLocation()
+  const { t, i18n } = useTranslation()
   const { effectiveTheme, toggleTheme } = useTheme()
   const [showShortcuts, setShowShortcuts] = useState(false)
 
@@ -33,11 +35,16 @@ export function Layout({ children }: LayoutProps) {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [toggleTheme])
 
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'zh' ? 'en' : 'zh'
+    i18n.changeLanguage(newLang)
+  }
+
   const navItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: Home },
-    { path: '/templates', label: 'Templates', icon: FileJson },
-    { path: '/sync', label: 'Git Sync', icon: GitBranch },
-    { path: '/settings', label: 'Settings', icon: Settings },
+    { path: '/dashboard', label: t('nav.dashboard'), icon: Home },
+    { path: '/templates', label: t('nav.templates'), icon: FileJson },
+    { path: '/sync', label: t('nav.gitSync'), icon: GitBranch },
+    { path: '/settings', label: t('nav.settings'), icon: Settings },
   ]
 
   return (
@@ -51,7 +58,7 @@ export function Layout({ children }: LayoutProps) {
                 <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-sm">yA</span>
                 </div>
-                <span className="text-xl font-semibold text-foreground">yuleASR Configurator</span>
+                <span className="text-xl font-semibold text-foreground">{t('app.name')}</span>
               </Link>
             </div>
             <nav className="flex items-center space-x-4">
@@ -78,11 +85,21 @@ export function Layout({ children }: LayoutProps) {
               {/* Divider */}
               <div className="w-px h-6 bg-border" />
 
+              {/* Language Toggle Button */}
+              <button
+                onClick={toggleLanguage}
+                className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+                title="Toggle Language"
+              >
+                <Globe className="w-4 h-4" />
+                <span className="ml-1 text-xs">{i18n.language === 'zh' ? 'EN' : '中'}</span>
+              </button>
+
               {/* Keyboard Shortcuts Button */}
               <button
                 onClick={() => setShowShortcuts(true)}
                 className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                title="Keyboard Shortcuts (Ctrl+/)"
+                title={t('shortcuts.title') + ' (Ctrl+/)'}
               >
                 <Keyboard className="w-4 h-4" />
               </button>
