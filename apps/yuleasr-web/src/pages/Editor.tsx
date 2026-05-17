@@ -6,6 +6,7 @@ import { ConfigurationStatusPanel, exportConfigReport } from '@/components/Confi
 import { ParameterEditor } from '@/components/ParameterEditor'
 import { ValidationPanel } from '@/components/ValidationPanel'
 import { ModuleConfigWizard } from '@/components/ModuleConfigWizard'
+import { OSEditor } from '@/components/OSEditor'
 import { cn, formatDate } from '@/lib/utils'
 import type { ValidationResult } from '@/types'
 import {
@@ -74,6 +75,9 @@ export function Editor() {
   const selectedModule = selectedPath 
     ? currentConfig?.modules.find(m => selectedPath.includes(m.id))
     : null
+  
+  // Check if OS is selected
+  const isOSSelected = selectedPath?.includes('layer:OS') || selectedPath?.includes('/os')
 
   if (isLoading && !currentConfig) {
     return (
@@ -255,6 +259,8 @@ export function Editor() {
                   </div>
                 )}
               </div>
+            ) : isOSSelected ? (
+              <OSEditor className="h-full overflow-y-auto" />
             ) : (
               <div className="p-8 text-center flex-1 flex items-center justify-center">
                 <p className="text-gray-500">Select a module or container from the tree to configure</p>

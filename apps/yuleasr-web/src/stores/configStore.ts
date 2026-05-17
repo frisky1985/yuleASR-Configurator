@@ -22,6 +22,7 @@ interface ConfigState {
   setCurrentConfig: (config: ConfigFile | null) => void
   setSelectedPath: (path: string | null) => void
   updateModule: (moduleId: string, module: ConfigModule) => void
+  updateOS: (os: ConfigFile['os']) => void
   updateModuleConfigStatus: (moduleId: string, status: ConfigModule['configStatus'], method?: ConfigModule['configMethod']) => void
   updateParameter: (path: string, value: unknown) => void
   setValidationResult: (result: ValidationResult | null) => void
@@ -113,6 +114,28 @@ export const useConfigStore = create<ConfigState>()(
         const updatedConfig = {
           ...currentConfig,
           modules: updatedModules,
+          updatedAt: new Date().toISOString()
+        }
+
+        // 重新验证
+        const validator = new DependencyValidator(updatedConfig)
+        const result = validator.validate()
+
+        set({
+          currentConfig: updatedConfig,
+          validationResult: result,
+          validationIssues: result.errors,
+          isDirty: true
+        })
+      },
+
+      updateOS: (os) => {
+        const { currentConfig } = get()
+        if (!currentConfig) return
+
+        const updatedConfig = {
+          ...currentConfig,
+          os,
           updatedAt: new Date().toISOString()
         }
 
