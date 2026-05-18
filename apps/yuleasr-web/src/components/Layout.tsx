@@ -58,7 +58,7 @@ export function Layout({ children }: LayoutProps) {
             <div className="flex items-center">
               <Link to="/" className="flex items-center gap-2">
                 <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">yA</span>
+                  <span className="text-white font-bold text-sm">YL</span>
                 </div>
                 <span className="text-xl font-semibold text-foreground">{t('app.name')}</span>
               </Link>
