@@ -36,8 +36,9 @@ export function Layout({ children }: LayoutProps) {
   }, [toggleTheme])
 
   const toggleLanguage = () => {
-    const newLang = i18n.language === 'zh' ? 'en' : 'zh'
-    console.log(`[i18n] Switching language from ${i18n.language} to ${newLang}`)
+    const currentLang = i18n.language
+    const newLang = currentLang === 'zh' ? 'en' : 'zh'
+    console.log(`[i18n] Switching language from ${currentLang} to ${newLang}`)
     i18n.changeLanguage(newLang)
   }
 
@@ -94,7 +95,7 @@ export function Layout({ children }: LayoutProps) {
                 title="Toggle Language"
               >
                 <Globe className="w-4 h-4" />
-                <span className="text-xs font-medium">{i18n.language === 'zh' ? 'EN' : '中'}</span>
+                <span className="text-xs font-medium">{i18n.language === 'zh' ? '中' : 'EN'}</span>
               </button>
 
               {/* Keyboard Shortcuts Button */}
