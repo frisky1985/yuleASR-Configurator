@@ -12,7 +12,20 @@ import {
   Gauge,
   Search,
   Layers,
-  X
+  X,
+  Zap,
+  Activity,
+  Clock,
+  Radio,
+  Database,
+  Share2,
+  Settings,
+  Shield,
+  Bell,
+  Timer,
+  Network,
+  Usb,
+  Monitor
 } from 'lucide-react'
 
 interface ModuleConfigWizardProps {
@@ -83,11 +96,12 @@ const LAYER_COLORS: Record<string, { bg: string; text: string; border: string; h
 const LAYER_ORDER = ['MCAL', 'ECUAL', 'Service', 'RTE']
 
 const MODULE_TEMPLATES: ModuleTemplate[] = [
+  // ==================== MCAL Layer ====================
   {
     id: 'Mcu',
     name: 'MCU',
     layer: 'MCAL',
-    description: 'Microcontroller configuration',
+    description: 'Microcontroller Unit - Basic MCU initialization, power down, reset functionality',
     icon: <Cpu className="w-6 h-6" />,
     parameters: [
       {
@@ -95,9 +109,9 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         type: 'number',
         label: 'Clock Frequency (Hz)',
         description: 'Main system clock frequency',
-        defaultValue: 800000000,
+        defaultValue: 160000000,
         min: 1000000,
-        max: 10000000000
+        max: 600000000
       },
       {
         name: 'core_count',
@@ -109,101 +123,100 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         max: 8
       },
       {
-        name: 'target_platform',
+        name: 'mcu_mode',
         type: 'select',
-        label: 'Target Platform',
-        description: 'Target MCU platform',
-        defaultValue: 'imx8mm',
+        label: 'MCU Mode',
+        description: 'MCU operating mode',
+        defaultValue: 'RUN',
         options: [
-          { value: 'imx8mm', label: 'i.MX8M Mini' },
-          { value: 's32k312', label: 'S32K312' },
-          { value: 's32k344', label: 'S32K344' }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'Can',
-    name: 'CAN',
-    layer: 'ECUAL',
-    description: 'CAN communication configuration',
-    icon: <Wifi className="w-6 h-6" />,
-    parameters: [
-      {
-        name: 'baudrate',
-        type: 'select',
-        label: 'Baudrate',
-        description: 'CAN bus baudrate',
-        defaultValue: 500000,
-        options: [
-          { value: 125000, label: '125 kbps' },
-          { value: 250000, label: '250 kbps' },
-          { value: 500000, label: '500 kbps' },
-          { value: 1000000, label: '1 Mbps' }
+          { value: 'RUN', label: 'Run Mode' },
+          { value: 'SLEEP', label: 'Sleep Mode' },
+          { value: 'STOP', label: 'Stop Mode' },
+          { value: 'STANDBY', label: 'Standby Mode' }
         ]
       },
       {
-        name: 'controller_count',
-        type: 'number',
-        label: 'Controller Count',
-        description: 'Number of CAN controllers',
-        defaultValue: 2,
-        min: 1,
-        max: 8
+        name: 'sysclk_source',
+        type: 'select',
+        label: 'System Clock Source',
+        description: 'Main system clock source',
+        defaultValue: 'PLL',
+        options: [
+          { value: 'HSI', label: 'High Speed Internal' },
+          { value: 'HSE', label: 'High Speed External' },
+          { value: 'PLL', label: 'Phase Locked Loop' }
+        ]
       }
     ]
   },
   {
-    id: 'NvM',
-    name: 'NVM',
-    layer: 'Service',
-    description: 'Non-volatile memory configuration',
+    id: 'Port',
+    name: 'Port',
+    layer: 'MCAL',
+    description: 'Port Driver - GPIO pin configuration and management',
     icon: <HardDrive className="w-6 h-6" />,
     parameters: [
       {
-        name: 'block_count',
+        name: 'pin_count',
         type: 'number',
-        label: 'Block Count',
-        description: 'Number of NVM blocks',
-        defaultValue: 32,
+        label: 'Pin Count',
+        description: 'Number of configurable port pins',
+        defaultValue: 144,
         min: 1,
         max: 256
       },
       {
-        name: 'write_cycle_count',
-        type: 'number',
-        label: 'Write Cycle Count',
-        description: 'Maximum write cycles',
-        defaultValue: 100000,
-        min: 1000,
-        max: 1000000
+        name: 'version_info_api',
+        type: 'boolean',
+        label: 'Version Info API',
+        description: 'Enable version info API',
+        defaultValue: true
+      },
+      {
+        name: 'set_pin_mode_api',
+        type: 'boolean',
+        label: 'Set Pin Mode API',
+        description: 'Enable runtime pin mode change',
+        defaultValue: true
+      },
+      {
+        name: 'dev_error_detect',
+        type: 'boolean',
+        label: 'Development Error Detection',
+        description: 'Enable development error detection',
+        defaultValue: true
       }
     ]
   },
   {
-    id: 'Com',
-    name: 'COM',
-    layer: 'Service',
-    description: 'Communication stack configuration',
-    icon: <Gauge className="w-6 h-6" />,
+    id: 'Dio',
+    name: 'DIO',
+    layer: 'MCAL',
+    description: 'Digital Input/Output - Reading and writing to digital pins',
+    icon: <Zap className="w-6 h-6" />,
     parameters: [
       {
-        name: 'ipdu_count',
+        name: 'channel_count',
         type: 'number',
-        label: 'IPDU Count',
-        description: 'Number of Interaction PDUs',
-        defaultValue: 64,
+        label: 'Channel Count',
+        description: 'Number of DIO channels',
+        defaultValue: 144,
         min: 1,
-        max: 512
+        max: 256
       },
       {
-        name: 'signal_count',
-        type: 'number',
-        label: 'Signal Count',
-        description: 'Number of COM signals',
-        defaultValue: 256,
-        min: 1,
-        max: 2048
+        name: 'flip_channel_api',
+        type: 'boolean',
+        label: 'Flip Channel API',
+        description: 'Enable flip channel API',
+        defaultValue: true
+      },
+      {
+        name: 'masked_write_port_api',
+        type: 'boolean',
+        label: 'Masked Write Port API',
+        description: 'Enable masked write port operations',
+        defaultValue: false
       }
     ]
   },
@@ -211,26 +224,33 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
     id: 'Gpt',
     name: 'GPT',
     layer: 'MCAL',
-    description: 'General Purpose Timer configuration',
-    icon: <Gauge className="w-6 h-6" />,
+    description: 'General Purpose Timer - Timer channel configuration',
+    icon: <Clock className="w-6 h-6" />,
     parameters: [
       {
         name: 'channel_count',
         type: 'number',
         label: 'Channel Count',
         description: 'Number of GPT channels',
-        defaultValue: 4,
+        defaultValue: 14,
         min: 1,
-        max: 16
+        max: 32
       },
       {
         name: 'tick_frequency',
         type: 'number',
         label: 'Tick Frequency (Hz)',
         description: 'GPT tick frequency',
-        defaultValue: 1000,
+        defaultValue: 1000000,
         min: 1,
-        max: 1000000
+        max: 100000000
+      },
+      {
+        name: 'wakeup_functionality',
+        type: 'boolean',
+        label: 'Wakeup Functionality',
+        description: 'Enable wakeup functionality',
+        defaultValue: false
       },
       {
         name: 'predef_timer_1us',
@@ -238,6 +258,13 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         label: '1us Predefined Timer',
         description: 'Enable 1 microsecond predefined timer',
         defaultValue: true
+      },
+      {
+        name: 'predef_timer_100us',
+        type: 'boolean',
+        label: '100us Predefined Timer',
+        description: 'Enable 100 microsecond predefined timer',
+        defaultValue: false
       }
     ]
   },
@@ -245,26 +272,40 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
     id: 'Pwm',
     name: 'PWM',
     layer: 'MCAL',
-    description: 'Pulse Width Modulation configuration',
-    icon: <Gauge className="w-6 h-6" />,
+    description: 'Pulse Width Modulation - PWM output channel configuration',
+    icon: <Activity className="w-6 h-6" />,
     parameters: [
       {
         name: 'channel_count',
         type: 'number',
         label: 'Channel Count',
         description: 'Number of PWM channels',
-        defaultValue: 8,
+        defaultValue: 16,
         min: 1,
         max: 32
       },
       {
-        name: 'frequency',
+        name: 'default_frequency',
         type: 'number',
         label: 'Default Frequency (Hz)',
         description: 'Default PWM frequency',
         defaultValue: 1000,
         min: 1,
         max: 100000
+      },
+      {
+        name: 'notifications',
+        type: 'boolean',
+        label: 'Enable Notifications',
+        description: 'Enable PWM notifications',
+        defaultValue: true
+      },
+      {
+        name: 'set_duty_cycle_api',
+        type: 'boolean',
+        label: 'Set Duty Cycle API',
+        description: 'Enable duty cycle adjustment API',
+        defaultValue: true
       }
     ]
   },
@@ -272,7 +313,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
     id: 'Adc',
     name: 'ADC',
     layer: 'MCAL',
-    description: 'Analog to Digital Converter configuration',
+    description: 'Analog to Digital Converter - ADC channel and resolution configuration',
     icon: <Gauge className="w-6 h-6" />,
     parameters: [
       {
@@ -288,7 +329,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         name: 'resolution',
         type: 'select',
         label: 'Resolution',
-        description: 'ADC resolution',
+        description: 'ADC resolution in bits',
         defaultValue: 12,
         options: [
           { value: 8, label: '8-bit' },
@@ -296,55 +337,852 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
           { value: 12, label: '12-bit' },
           { value: 16, label: '16-bit' }
         ]
+      },
+      {
+        name: 'conversion_mode',
+        type: 'select',
+        label: 'Conversion Mode',
+        description: 'ADC conversion mode',
+        defaultValue: 'CONTINUOUS',
+        options: [
+          { value: 'SINGLE', label: 'Single Conversion' },
+          { value: 'CONTINUOUS', label: 'Continuous Conversion' }
+        ]
+      },
+      {
+        name: 'sample_time',
+        type: 'number',
+        label: 'Sample Time (μs)',
+        description: 'ADC sampling time in microseconds',
+        defaultValue: 3,
+        min: 1,
+        max: 100
       }
     ]
   },
   {
-    id: 'Port',
-    name: 'Port',
+    id: 'Can',
+    name: 'CAN',
     layer: 'MCAL',
-    description: 'Port pin configuration',
-    icon: <HardDrive className="w-6 h-6" />,
+    description: 'CAN Driver - Controller Area Network driver configuration',
+    icon: <Network className="w-6 h-6" />,
     parameters: [
       {
-        name: 'pin_count',
+        name: 'controller_count',
         type: 'number',
-        label: 'Pin Count',
-        description: 'Number of configurable port pins',
-        defaultValue: 64,
+        label: 'Controller Count',
+        description: 'Number of CAN controllers',
+        defaultValue: 3,
         min: 1,
-        max: 256
+        max: 8
       },
+      {
+        name: 'baudrate',
+        type: 'select',
+        label: 'Baudrate',
+        description: 'CAN bus baudrate',
+        defaultValue: 500000,
+        options: [
+          { value: 125000, label: '125 kbps' },
+          { value: 250000, label: '250 kbps' },
+          { value: 500000, label: '500 kbps' },
+          { value: 1000000, label: '1 Mbps' }
+        ]
+      },
+      {
+        name: 'rx_fifo_count',
+        type: 'number',
+        label: 'RX FIFO Count',
+        description: 'Number of receive FIFOs per controller',
+        defaultValue: 2,
+        min: 1,
+        max: 8
+      },
+      {
+        name: 'tx_buffer_count',
+        type: 'number',
+        label: 'TX Buffer Count',
+        description: 'Number of transmit buffers per controller',
+        defaultValue: 32,
+        min: 1,
+        max: 64
+      },
+      {
+        name: 'wakeup_support',
+        type: 'boolean',
+        label: 'Wakeup Support',
+        description: 'Enable CAN wakeup functionality',
+        defaultValue: true
+      }
+    ]
+  },
+  {
+    id: 'Spi',
+    name: 'SPI',
+    layer: 'MCAL',
+    description: 'Serial Peripheral Interface - SPI bus configuration',
+    icon: <Share2 className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'channel_count',
+        type: 'number',
+        label: 'Channel Count',
+        description: 'Number of SPI channels',
+        defaultValue: 4,
+        min: 1,
+        max: 8
+      },
+      {
+        name: 'max_buffer_size',
+        type: 'number',
+        label: 'Max Buffer Size (bytes)',
+        description: 'Maximum SPI buffer size',
+        defaultValue: 256,
+        min: 1,
+        max: 4096
+      },
+      {
+        name: 'clock_polarity',
+        type: 'select',
+        label: 'Clock Polarity',
+        description: 'SPI clock polarity (CPOL)',
+        defaultValue: 'LOW',
+        options: [
+          { value: 'LOW', label: 'CPOL = 0 (Low when idle)' },
+          { value: 'HIGH', label: 'CPOL = 1 (High when idle)' }
+        ]
+      },
+      {
+        name: 'clock_phase',
+        type: 'select',
+        label: 'Clock Phase',
+        description: 'SPI clock phase (CPHA)',
+        defaultValue: '1EDGE',
+        options: [
+          { value: '1EDGE', label: 'CPHA = 0 (First edge)' },
+          { value: '2EDGE', label: 'CPHA = 1 (Second edge)' }
+        ]
+      },
+      {
+        name: 'baudrate_prescaler',
+        type: 'select',
+        label: 'Baudrate Prescaler',
+        description: 'SPI baudrate prescaler',
+        defaultValue: 'DIV_4',
+        options: [
+          { value: 'DIV_2', label: 'Divide by 2' },
+          { value: 'DIV_4', label: 'Divide by 4' },
+          { value: 'DIV_8', label: 'Divide by 8' },
+          { value: 'DIV_16', label: 'Divide by 16' },
+          { value: 'DIV_32', label: 'Divide by 32' },
+          { value: 'DIV_64', label: 'Divide by 64' },
+          { value: 'DIV_128', label: 'Divide by 128' },
+          { value: 'DIV_256', label: 'Divide by 256' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'I2c',
+    name: 'I2C',
+    layer: 'MCAL',
+    description: 'Inter-Integrated Circuit - I2C bus configuration',
+    icon: <Usb className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'channel_count',
+        type: 'number',
+        label: 'Channel Count',
+        description: 'Number of I2C channels',
+        defaultValue: 3,
+        min: 1,
+        max: 8
+      },
+      {
+        name: 'clock_speed',
+        type: 'select',
+        label: 'Clock Speed',
+        description: 'I2C clock speed mode',
+        defaultValue: 'FAST',
+        options: [
+          { value: 'STANDARD', label: 'Standard Mode (100 kHz)' },
+          { value: 'FAST', label: 'Fast Mode (400 kHz)' },
+          { value: 'FAST_PLUS', label: 'Fast Mode Plus (1 MHz)' }
+        ]
+      },
+      {
+        name: 'own_address',
+        type: 'number',
+        label: 'Own Address (7-bit)',
+        description: 'I2C device own address',
+        defaultValue: 0x50,
+        min: 0x08,
+        max: 0x77
+      },
+      {
+        name: 'addressing_mode',
+        type: 'select',
+        label: 'Addressing Mode',
+        description: 'I2C addressing mode',
+        defaultValue: '7BIT',
+        options: [
+          { value: '7BIT', label: '7-bit Addressing' },
+          { value: '10BIT', label: '10-bit Addressing' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'Wdg',
+    name: 'WDG',
+    layer: 'MCAL',
+    description: 'Watchdog Driver - Internal and external watchdog configuration',
+    icon: <Shield className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'timeout_period',
+        type: 'number',
+        label: 'Timeout Period (ms)',
+        description: 'Watchdog timeout period in milliseconds',
+        defaultValue: 1000,
+        min: 1,
+        max: 60000
+      },
+      {
+        name: 'window_mode',
+        type: 'boolean',
+        label: 'Window Mode',
+        description: 'Enable watchdog window mode',
+        defaultValue: false
+      },
+      {
+        name: 'window_start',
+        type: 'number',
+        label: 'Window Start (%)',
+        description: 'Watchdog window start percentage',
+        defaultValue: 25,
+        min: 0,
+        max: 100
+      },
+      {
+        name: 'debug_mode',
+        type: 'boolean',
+        label: 'Debug Mode',
+        description: 'Enable watchdog in debug mode',
+        defaultValue: false
+      }
+    ]
+  },
+  {
+    id: 'Icu',
+    name: 'ICU',
+    layer: 'MCAL',
+    description: 'Input Capture Unit - Signal edge detection and measurement',
+    icon: <Timer className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'channel_count',
+        type: 'number',
+        label: 'Channel Count',
+        description: 'Number of ICU channels',
+        defaultValue: 8,
+        min: 1,
+        max: 32
+      },
+      {
+        name: 'max_duty_cycle',
+        type: 'number',
+        label: 'Max Duty Cycle (‰)',
+        description: 'Maximum measurable duty cycle in permille',
+        defaultValue: 10000,
+        min: 1,
+        max: 10000
+      },
+      {
+        name: 'timestamp_resolution',
+        type: 'select',
+        label: 'Timestamp Resolution',
+        description: 'ICU timestamp resolution',
+        defaultValue: '16BIT',
+        options: [
+          { value: '8BIT', label: '8-bit' },
+          { value: '16BIT', label: '16-bit' },
+          { value: '32BIT', label: '32-bit' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'Ocu',
+    name: 'OCU',
+    layer: 'MCAL',
+    description: 'Output Compare Unit - Output compare channel configuration',
+    icon: <Radio className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'channel_count',
+        type: 'number',
+        label: 'Channel Count',
+        description: 'Number of OCU channels',
+        defaultValue: 8,
+        min: 1,
+        max: 32
+      },
+      {
+        name: 'pin_action',
+        type: 'select',
+        label: 'Default Pin Action',
+        description: 'Default output pin action',
+        defaultValue: 'TOGGLE',
+        options: [
+          { value: 'NONE', label: 'No Action' },
+          { value: 'SET', label: 'Set High' },
+          { value: 'CLEAR', label: 'Clear Low' },
+          { value: 'TOGGLE', label: 'Toggle' }
+        ]
+      }
+    ]
+  },
+  // ==================== ECUAL Layer ====================
+  {
+    id: 'CanIf',
+    name: 'CanIf',
+    layer: 'ECUAL',
+    description: 'CAN Interface - Hardware-independent CAN communication interface',
+    icon: <Wifi className="w-6 h-6" />,
+    parameters: [
       {
         name: 'dev_error_detect',
         type: 'boolean',
         label: 'Development Error Detection',
         description: 'Enable development error detection',
         defaultValue: true
+      },
+      {
+        name: 'version_info_api',
+        type: 'boolean',
+        label: 'Version Info API',
+        description: 'Enable version info API',
+        defaultValue: true
+      },
+      {
+        name: 'ul_cdd_support',
+        type: 'boolean',
+        label: 'CDD Support',
+        description: 'Enable Complex Driver support',
+        defaultValue: false
+      },
+      {
+        name: 'hth_count',
+        type: 'number',
+        label: 'HTH Count',
+        description: 'Number of Hardware Transmit Handles',
+        defaultValue: 32,
+        min: 1,
+        max: 64
+      },
+      {
+        name: 'hrh_count',
+        type: 'number',
+        label: 'HRH Count',
+        description: 'Number of Hardware Receive Handles',
+        defaultValue: 32,
+        min: 1,
+        max: 64
       }
     ]
   },
   {
-    id: 'Dio',
-    name: 'DIO',
-    layer: 'MCAL',
-    description: 'Digital Input/Output configuration',
-    icon: <HardDrive className="w-6 h-6" />,
+    id: 'CanTrcv',
+    name: 'CanTrcv',
+    layer: 'ECUAL',
+    description: 'CAN Transceiver - External CAN transceiver driver',
+    icon: <Radio className="w-6 h-6" />,
     parameters: [
       {
         name: 'channel_count',
         type: 'number',
         label: 'Channel Count',
-        description: 'Number of DIO channels',
+        description: 'Number of transceiver channels',
+        defaultValue: 4,
+        min: 1,
+        max: 8
+      },
+      {
+        name: 'wakeup_mode',
+        type: 'select',
+        label: 'Wakeup Mode',
+        description: 'Wakeup detection mode',
+        defaultValue: 'INTERRUPT',
+        options: [
+          { value: 'POLLING', label: 'Polling' },
+          { value: 'INTERRUPT', label: 'Interrupt' }
+        ]
+      },
+      {
+        name: 'standby_mode',
+        type: 'boolean',
+        label: 'Standby Mode Support',
+        description: 'Enable standby mode support',
+        defaultValue: true
+      }
+    ]
+  },
+  {
+    id: 'Eth',
+    name: 'ETH',
+    layer: 'ECUAL',
+    description: 'Ethernet Driver - MAC and PHY communication driver',
+    icon: <Network className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'controller_count',
+        type: 'number',
+        label: 'Controller Count',
+        description: 'Number of Ethernet controllers',
+        defaultValue: 1,
+        min: 1,
+        max: 2
+      },
+      {
+        name: 'mac_address',
+        type: 'string',
+        label: 'MAC Address',
+        description: 'Default MAC address',
+        defaultValue: 'AA:BB:CC:DD:EE:FF'
+      },
+      {
+        name: 'link_speed',
+        type: 'select',
+        label: 'Link Speed',
+        description: 'Ethernet link speed',
+        defaultValue: '100',
+        options: [
+          { value: '10', label: '10 Mbps' },
+          { value: '100', label: '100 Mbps' },
+          { value: '1000', label: '1 Gbps' }
+        ]
+      },
+      {
+        name: 'duplex_mode',
+        type: 'select',
+        label: 'Duplex Mode',
+        description: 'Duplex mode configuration',
+        defaultValue: 'FULL',
+        options: [
+          { value: 'HALF', label: 'Half Duplex' },
+          { value: 'FULL', label: 'Full Duplex' }
+        ]
+      },
+      {
+        name: 'rx_buffer_count',
+        type: 'number',
+        label: 'RX Buffer Count',
+        description: 'Number of receive buffers',
+        defaultValue: 8,
+        min: 1,
+        max: 64
+      },
+      {
+        name: 'tx_buffer_count',
+        type: 'number',
+        label: 'TX Buffer Count',
+        description: 'Number of transmit buffers',
+        defaultValue: 8,
+        min: 1,
+        max: 64
+      }
+    ]
+  },
+  {
+    id: 'Fr',
+    name: 'FR',
+    layer: 'ECUAL',
+    description: 'FlexRay Driver - FlexRay communication driver',
+    icon: <Activity className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'controller_count',
+        type: 'number',
+        label: 'Controller Count',
+        description: 'Number of FlexRay controllers',
+        defaultValue: 2,
+        min: 1,
+        max: 4
+      },
+      {
+        name: 'cluster_count',
+        type: 'number',
+        label: 'Cluster Count',
+        description: 'Number of FlexRay clusters',
+        defaultValue: 1,
+        min: 1,
+        max: 4
+      },
+      {
+        name: 'g_cycle_count',
+        type: 'number',
+        label: 'gCycleCount',
+        description: 'Number of cycles in the schedule',
         defaultValue: 64,
+        min: 1,
+        max: 64
+      },
+      {
+        name: 'gd_macrotick',
+        type: 'number',
+        label: 'gdMacrotick (μs)',
+        description: 'Duration of a macrotick in microseconds',
+        defaultValue: 1,
+        min: 1,
+        max: 100
+      },
+      {
+        name: 'version_info_api',
+        type: 'boolean',
+        label: 'Version Info API',
+        description: 'Enable version info API',
+        defaultValue: true
+      }
+    ]
+  },
+  {
+    id: 'Lin',
+    name: 'LIN',
+    layer: 'ECUAL',
+    description: 'LIN Driver - Local Interconnect Network driver',
+    icon: <Usb className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'channel_count',
+        type: 'number',
+        label: 'Channel Count',
+        description: 'Number of LIN channels',
+        defaultValue: 2,
+        min: 1,
+        max: 8
+      },
+      {
+        name: 'baudrate',
+        type: 'select',
+        label: 'Baudrate',
+        description: 'LIN bus baudrate',
+        defaultValue: '19200',
+        options: [
+          { value: '9600', label: '9600 bps' },
+          { value: '19200', label: '19200 bps' }
+        ]
+      },
+      {
+        name: 'wakeup_support',
+        type: 'boolean',
+        label: 'Wakeup Support',
+        description: 'Enable LIN wakeup support',
+        defaultValue: true
+      },
+      {
+        name: 'master_node',
+        type: 'boolean',
+        label: 'Master Node',
+        description: 'Configure as master node',
+        defaultValue: true
+      }
+    ]
+  },
+  // ==================== Service Layer ====================
+  {
+    id: 'NvM',
+    name: 'NvM',
+    layer: 'Service',
+    description: 'NVRAM Manager - Non-volatile RAM management',
+    icon: <Database className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'api_config_class',
+        type: 'select',
+        label: 'API Config Class',
+        description: 'API configuration class',
+        defaultValue: '3',
+        options: [
+          { value: '1', label: 'Class 1 - Basic' },
+          { value: '2', label: 'Class 2 - Extended' },
+          { value: '3', label: 'Class 3 - Full' }
+        ]
+      },
+      {
+        name: 'block_count',
+        type: 'number',
+        label: 'Block Count',
+        description: 'Number of NVM blocks',
+        defaultValue: 32,
         min: 1,
         max: 256
       },
       {
-        name: 'flip_channel_api',
+        name: 'job_end_notification',
         type: 'boolean',
-        label: 'Flip Channel API',
-        description: 'Enable flip channel API',
+        label: 'Job End Notification',
+        description: 'Enable job end notification',
+        defaultValue: true
+      },
+      {
+        name: 'multi_block_callback',
+        type: 'boolean',
+        label: 'Multi Block Callback',
+        description: 'Enable multi block callback',
+        defaultValue: false
+      },
+      {
+        name: 'write_block_once',
+        type: 'boolean',
+        label: 'Write Block Once',
+        description: 'Enable write block once feature',
+        defaultValue: false
+      }
+    ]
+  },
+  {
+    id: 'Com',
+    name: 'COM',
+    layer: 'Service',
+    description: 'COM Stack - Signal-based communication stack',
+    icon: <Share2 className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'signal_count',
+        type: 'number',
+        label: 'Signal Count',
+        description: 'Number of COM signals',
+        defaultValue: 256,
+        min: 1,
+        max: 2048
+      },
+      {
+        name: 'ipdu_count',
+        type: 'number',
+        label: 'IPDU Count',
+        description: 'Number of Interaction PDUs',
+        defaultValue: 64,
+        min: 1,
+        max: 512
+      },
+      {
+        name: 'enable_signal_gates',
+        type: 'boolean',
+        label: 'Enable Signal Gates',
+        description: 'Enable signal gateway functionality',
+        defaultValue: false
+      },
+      {
+        name: 'deferred_event_cache',
+        type: 'number',
+        label: 'Deferred Event Cache Size',
+        description: 'Size of deferred event cache',
+        defaultValue: 32,
+        min: 1,
+        max: 256
+      }
+    ]
+  },
+  {
+    id: 'Fee',
+    name: 'FEE',
+    layer: 'Service',
+    description: 'Flash EEPROM Emulation - EEPROM emulation over Flash',
+    icon: <HardDrive className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'virtual_page_size',
+        type: 'number',
+        label: 'Virtual Page Size (bytes)',
+        description: 'Size of virtual page',
+        defaultValue: 8,
+        min: 1,
+        max: 64
+      },
+      {
+        name: 'block_count',
+        type: 'number',
+        label: 'Block Count',
+        description: 'Number of FEE blocks',
+        defaultValue: 64,
+        min: 1,
+        max: 512
+      },
+      {
+        name: 'garbage_collection',
+        type: 'boolean',
+        label: 'Garbage Collection',
+        description: 'Enable garbage collection',
+        defaultValue: true
+      }
+    ]
+  },
+  {
+    id: 'Ea',
+    name: 'EA',
+    layer: 'Service',
+    description: 'EEPROM Abstraction - EEPROM abstraction layer',
+    icon: <Monitor className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'device_type',
+        type: 'select',
+        label: 'Device Type',
+        description: 'EEPROM device type',
+        defaultValue: 'INTERNAL',
+        options: [
+          { value: 'INTERNAL', label: 'Internal EEPROM' },
+          { value: 'EXTERNAL', label: 'External EEPROM' }
+        ]
+      },
+      {
+        name: 'page_size',
+        type: 'number',
+        label: 'Page Size (bytes)',
+        description: 'EEPROM page size',
+        defaultValue: 32,
+        min: 1,
+        max: 256
+      },
+      {
+        name: 'sector_count',
+        type: 'number',
+        label: 'Sector Count',
+        description: 'Number of sectors',
+        defaultValue: 16,
+        min: 1,
+        max: 64
+      }
+    ]
+  },
+  {
+    id: 'MemIf',
+    name: 'MemIf',
+    layer: 'Service',
+    description: 'Memory Interface - Abstraction for memory services',
+    icon: <Database className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'fee_used',
+        type: 'boolean',
+        label: 'FEE Used',
+        description: 'Use Flash EEPROM Emulation',
+        defaultValue: true
+      },
+      {
+        name: 'ea_used',
+        type: 'boolean',
+        label: 'EA Used',
+        description: 'Use EEPROM Abstraction',
+        defaultValue: false
+      },
+      {
+        name: 'version_info_api',
+        type: 'boolean',
+        label: 'Version Info API',
+        description: 'Enable version info API',
+        defaultValue: true
+      }
+    ]
+  },
+  {
+    id: 'Crc',
+    name: 'CRC',
+    layer: 'Service',
+    description: 'CRC Library - CRC calculation routines',
+    icon: <Shield className="w-6 h-6" />,
+    parameters: [
+      {
+        name: '8bit_mode',
+        type: 'boolean',
+        label: '8-bit CRC',
+        description: 'Enable 8-bit CRC calculation',
+        defaultValue: true
+      },
+      {
+        name: '16bit_mode',
+        type: 'boolean',
+        label: '16-bit CRC',
+        description: 'Enable 16-bit CRC calculation',
+        defaultValue: true
+      },
+      {
+        name: '32bit_mode',
+        type: 'boolean',
+        label: '32-bit CRC',
+        description: 'Enable 32-bit CRC calculation',
+        defaultValue: true
+      },
+      {
+        name: '64bit_mode',
+        type: 'boolean',
+        label: '64-bit CRC',
+        description: 'Enable 64-bit CRC calculation',
+        defaultValue: false
+      }
+    ]
+  },
+  {
+    id: 'Det',
+    name: 'DET',
+    layer: 'Service',
+    description: 'Default Error Tracer - Error tracking and reporting',
+    icon: <Bell className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'forward_to_dlt',
+        type: 'boolean',
+        label: 'Forward to DLT',
+        description: 'Forward errors to DLT module',
+        defaultValue: true
+      },
+      {
+        name: 'breakpoint_on_error',
+        type: 'boolean',
+        label: 'Breakpoint on Error',
+        description: 'Trigger breakpoint on error',
+        defaultValue: false
+      },
+      {
+        name: 'max_error_count',
+        type: 'number',
+        label: 'Max Error Count',
+        description: 'Maximum number of errors to track',
+        defaultValue: 100,
+        min: 10,
+        max: 1000
+      }
+    ]
+  },
+  {
+    id: 'Dem',
+    name: 'DEM',
+    layer: 'Service',
+    description: 'Diagnostic Event Manager - Diagnostic event handling',
+    icon: <Activity className="w-6 h-6" />,
+    parameters: [
+      {
+        name: 'event_count',
+        type: 'number',
+        label: 'Event Count',
+        description: 'Number of diagnostic events',
+        defaultValue: 128,
+        min: 1,
+        max: 512
+      },
+      {
+        name: 'debounce_counter_based',
+        type: 'boolean',
+        label: 'Counter-based Debounce',
+        description: 'Enable counter-based debouncing',
+        defaultValue: true
+      },
+      {
+        name: 'debounce_time_based',
+        type: 'boolean',
+        label: 'Time-based Debounce',
+        description: 'Enable time-based debouncing',
         defaultValue: true
       }
     ]
