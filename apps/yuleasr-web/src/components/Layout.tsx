@@ -37,6 +37,7 @@ export function Layout({ children }: LayoutProps) {
 
   const toggleLanguage = () => {
     const newLang = i18n.language === 'zh' ? 'en' : 'zh'
+    console.log(`[i18n] Switching language from ${i18n.language} to ${newLang}`)
     i18n.changeLanguage(newLang)
   }
 
@@ -89,11 +90,11 @@ export function Layout({ children }: LayoutProps) {
               {/* Language Toggle Button */}
               <button
                 onClick={toggleLanguage}
-                className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+                className="flex flex-col items-center justify-center p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors min-w-[44px]"
                 title="Toggle Language"
               >
                 <Globe className="w-4 h-4" />
-                <span className="ml-1 text-xs">{i18n.language === 'zh' ? 'EN' : '中'}</span>
+                <span className="text-[10px] mt-0.5 font-medium">{i18n.language === 'zh' ? 'EN' : '中'}</span>
               </button>
 
               {/* Keyboard Shortcuts Button */}

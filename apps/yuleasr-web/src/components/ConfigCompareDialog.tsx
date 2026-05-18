@@ -46,8 +46,11 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
 
     setIsComparing(true)
     try {
-      const configA = await loadConfig(leftConfigId)
-      const configB = await loadConfig(rightConfigId)
+      await loadConfig(leftConfigId)
+      const configA = useConfigStore.getState().currentConfig
+      
+      await loadConfig(rightConfigId)
+      const configB = useConfigStore.getState().currentConfig
       
       if (configA && configB) {
         const comparison = configComparer.compareConfigs(configA, configB)
