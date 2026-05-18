@@ -90,11 +90,11 @@ export function Layout({ children }: LayoutProps) {
               {/* Language Toggle Button */}
               <button
                 onClick={toggleLanguage}
-                className="flex flex-col items-center justify-center p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors min-w-[44px]"
+                className="flex items-center gap-1.5 px-2 py-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
                 title="Toggle Language"
               >
                 <Globe className="w-4 h-4" />
-                <span className="text-[10px] mt-0.5 font-medium">{i18n.language === 'zh' ? 'EN' : '中'}</span>
+                <span className="text-xs font-medium">{i18n.language === 'zh' ? 'EN' : '中'}</span>
               </button>
 
               {/* Keyboard Shortcuts Button */}
