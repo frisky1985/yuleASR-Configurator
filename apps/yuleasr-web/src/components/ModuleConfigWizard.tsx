@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+import { cn } from '@/lib/utils'
 import { 
   Cpu, 
   Wifi, 
@@ -7,9 +9,11 @@ import {
   Check,
   AlertCircle,
   HardDrive,
-  Gauge
+  Gauge,
+  Search,
+  Layers,
+  X
 } from 'lucide-react'
-import { cn } from '@/lib/utils'
 
 interface ModuleConfigWizardProps {
   isOpen: boolean
@@ -44,6 +48,39 @@ interface ParameterConfig {
   min?: number
   max?: number
 }
+
+const LAYER_COLORS: Record<string, { bg: string; text: string; border: string; hover: string; badge: string }> = {
+  MCAL: {
+    bg: 'bg-blue-50',
+    text: 'text-blue-700',
+    border: 'border-blue-200',
+    hover: 'hover:border-blue-300 hover:bg-blue-50',
+    badge: 'bg-blue-100 text-blue-700 border-blue-200'
+  },
+  ECUAL: {
+    bg: 'bg-green-50',
+    text: 'text-green-700',
+    border: 'border-green-200',
+    hover: 'hover:border-green-300 hover:bg-green-50',
+    badge: 'bg-green-100 text-green-700 border-green-200'
+  },
+  Service: {
+    bg: 'bg-purple-50',
+    text: 'text-purple-700',
+    border: 'border-purple-200',
+    hover: 'hover:border-purple-300 hover:bg-purple-50',
+    badge: 'bg-purple-100 text-purple-700 border-purple-200'
+  },
+  RTE: {
+    bg: 'bg-orange-50',
+    text: 'text-orange-700',
+    border: 'border-orange-200',
+    hover: 'hover:border-orange-300 hover:bg-orange-50',
+    badge: 'bg-orange-100 text-orange-700 border-orange-200'
+  }
+}
+
+const LAYER_ORDER = ['MCAL', 'ECUAL', 'Service', 'RTE']
 
 const MODULE_TEMPLATES: ModuleTemplate[] = [
   {
@@ -315,10 +352,55 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
 ]
 
 export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfigWizardProps) {
+  const { t } = useTranslation()
   const [step, setStep] = useState<1 | 2 | 3>(1)
   const [selectedModule, setSelectedModule] = useState<ModuleTemplate | null>(null)
   const [parameters, setParameters] = useState<Record<string, unknown>>({})
   const [errors, setErrors] = useState<Record<string, string>>({})
+  
+  // Category filter states
+  const [selectedLayer, setSelectedLayer] = useState<string>('all')
+  const [searchQuery, setSearchQuery] = useState('')
+
+  // Filter and group modules
+  const groupedModules = useMemo(() => {
+    let modules = MODULE_TEMPLATES
+
+    // Filter by layer
+    if (selectedLayer !== 'all') {
+      modules = modules.filter(m => m.layer === selectedLayer)
+    }
+
+    // Filter by search query
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase()
+      modules = modules.filter(m => 
+        m.name.toLowerCase().includes(query) ||
+        m.description.toLowerCase().includes(query) ||
+        m.layer.toLowerCase().includes(query)
+      )
+    }
+
+    // Group by layer
+    const grouped: Record<string, ModuleTemplate[]> = {}
+    LAYER_ORDER.forEach(layer => {
+      const layerModules = modules.filter(m => m.layer === layer)
+      if (layerModules.length > 0) {
+        grouped[layer] = layerModules
+      }
+    })
+
+    return grouped
+  }, [selectedLayer, searchQuery])
+
+  // Get layer module count
+  const layerCounts = useMemo(() => {
+    const counts: Record<string, number> = {}
+    LAYER_ORDER.forEach(layer => {
+      counts[layer] = MODULE_TEMPLATES.filter(m => m.layer === layer).length
+    })
+    return counts
+  }, [])
 
   if (!isOpen) return null
 
@@ -391,10 +473,16 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
       })
     }
     // Reset and close
+    resetAndClose()
+  }
+
+  const resetAndClose = () => {
     setStep(1)
     setSelectedModule(null)
     setParameters({})
     setErrors({})
+    setSelectedLayer('all')
+    setSearchQuery('')
     onClose()
   }
 
@@ -414,20 +502,23 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
         <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
           <div>
             <h3 className="text-lg font-semibold text-gray-900">
-              Module Configuration Wizard
+              {t('wizard.title', 'Module Configuration Wizard')}
             </h3>
             <p className="text-sm text-gray-500">
-              Step {step} of 3: {step === 1 ? 'Select Module' : step === 2 ? 'Configure Parameters' : 'Review'}
+              {t('wizard.step', 'Step {{step}} of 3: {{title}}', {
+                step,
+                title: step === 1 ? t('wizard.selectModule', 'Select Module') : 
+                       step === 2 ? t('wizard.configureParams', 'Configure Parameters') : 
+                       t('wizard.review', 'Review')
+              })}
             </p>
           </div>
           <button
-            onClick={onClose}
+            onClick={resetAndClose}
             className="text-gray-400 hover:text-gray-600 transition-colors"
           >
             <span className="sr-only">Close</span>
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <X className="w-6 h-6" />
           </button>
         </div>
 
@@ -465,45 +556,162 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
         <div className="flex-1 overflow-auto p-6">
           {step === 1 && (
             <div className="space-y-4">
-              <p className="text-gray-600">
-                Select a module to configure. Each module corresponds to a layer in the AutoSAR architecture.
-              </p>
-              <div className="grid grid-cols-2 gap-4">
-                {MODULE_TEMPLATES.map((module) => (
+              {/* Search and Filter Bar */}
+              <div className="space-y-3">
+                {/* Search */}
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={t('wizard.searchModule', 'Search modules...')}
+                    className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Layer Filter Tabs */}
+                <div className="flex flex-wrap gap-2">
                   <button
-                    key={module.id}
-                    onClick={() => handleSelectModule(module)}
-                    className="p-4 border border-gray-200 rounded-lg hover:border-primary-300 hover:shadow-md transition-all text-left group"
+                    onClick={() => setSelectedLayer('all')}
+                    className={cn(
+                      "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
+                      selectedLayer === 'all'
+                        ? "bg-gray-900 text-white"
+                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    )}
                   >
-                    <div className="flex items-start gap-3">
-                      <div className="p-2 bg-primary-50 rounded-lg text-primary-600 group-hover:bg-primary-100 transition-colors">
-                        {module.icon}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-semibold text-gray-900">{module.name}</span>
-                          <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded">
-                            {module.layer}
+                    <Layers className="w-3.5 h-3.5" />
+                    {t('wizard.allLayers', 'All')}
+                    <span className="ml-1 text-xs opacity-70">({MODULE_TEMPLATES.length})</span>
+                  </button>
+                  {LAYER_ORDER.map(layer => (
+                    <button
+                      key={layer}
+                      onClick={() => setSelectedLayer(layer)}
+                      className={cn(
+                        "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border",
+                        selectedLayer === layer
+                          ? cn(LAYER_COLORS[layer].badge, 'border-transparent')
+                          : cn(LAYER_COLORS[layer].bg, LAYER_COLORS[layer].text, 'hover:opacity-80', LAYER_COLORS[layer].border)
+                      )}
+                    >
+                      <span>{layer}</span>
+                      <span className="text-xs opacity-70">({layerCounts[layer]})</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Module Grid */}
+              {Object.keys(groupedModules).length === 0 ? (
+                <div className="text-center py-12 text-gray-500">
+                  <Search className="w-12 h-12 mx-auto mb-3 opacity-30" />
+                  <p>{t('wizard.noModules', 'No modules found')}</p>
+                  <button
+                    onClick={() => { setSearchQuery(''); setSelectedLayer('all'); }}
+                    className="mt-2 text-primary-600 hover:text-primary-700 text-sm"
+                  >
+                    {t('wizard.clearFilters', 'Clear filters')}
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {LAYER_ORDER.map(layer => {
+                    const modules = groupedModules[layer]
+                    if (!modules || modules.length === 0) return null
+
+                    return (
+                      <div key={layer} className="space-y-3">
+                        {/* Layer Header */}
+                        <div className={cn(
+                          "flex items-center gap-2 px-3 py-2 rounded-lg",
+                          LAYER_COLORS[layer].bg
+                        )}>
+                          <span className={cn("text-sm font-semibold", LAYER_COLORS[layer].text)}>
+                            {layer} Layer
+                          </span>
+                          <span className={cn("text-xs", LAYER_COLORS[layer].text, "opacity-70")}>
+                            ({modules.length})
                           </span>
                         </div>
-                        <p className="text-sm text-gray-500 mt-1">{module.description}</p>
+
+                        {/* Module Cards */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {modules.map((module) => (
+                            <button
+                              key={module.id}
+                              onClick={() => handleSelectModule(module)}
+                              className={cn(
+                                "p-4 border rounded-lg transition-all text-left group",
+                                LAYER_COLORS[layer].hover,
+                                "border-gray-200 hover:shadow-md"
+                              )}
+                            >
+                              <div className="flex items-start gap-3">
+                                <div className={cn(
+                                  "p-2 rounded-lg transition-colors",
+                                  LAYER_COLORS[layer].bg,
+                                  LAYER_COLORS[layer].text
+                                )}>
+                                  {module.icon}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2">
+                                    <span className="font-semibold text-gray-900">{module.name}</span>
+                                    <span className={cn(
+                                      "px-1.5 py-0.5 text-xs rounded border",
+                                      LAYER_COLORS[layer].badge
+                                    )}>
+                                      {module.layer}
+                                    </span>
+                                  </div>
+                                  <p className="text-sm text-gray-500 mt-1 line-clamp-2">{module.description}</p>
+                                  <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
+                                    <span>{module.parameters.length} {t('wizard.params', 'params')}</span>
+                                  </div>
+                                </div>
+                                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600 flex-shrink-0" />
+                              </div>
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                      <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-primary-600" />
-                    </div>
-                  </button>
-                ))}
-              </div>
+                    )
+                  })}
+                </div>
+              )}
             </div>
           )}
 
           {step === 2 && selectedModule && (
             <div className="space-y-6">
-              <div className="flex items-center gap-3 p-4 bg-primary-50 rounded-lg">
-                <div className="p-2 bg-white rounded-lg text-primary-600">
+              <div className={cn(
+                "flex items-center gap-3 p-4 rounded-lg border",
+                LAYER_COLORS[selectedModule.layer].bg,
+                LAYER_COLORS[selectedModule.layer].border
+              )}>
+                <div className="p-2 bg-white rounded-lg shadow-sm">
                   {selectedModule.icon}
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900">{selectedModule.name}</h4>
+                  <div className="flex items-center gap-2">
+                    <h4 className="font-semibold text-gray-900">{selectedModule.name}</h4>
+                    <span className={cn(
+                      "px-1.5 py-0.5 text-xs rounded border",
+                      LAYER_COLORS[selectedModule.layer].badge
+                    )}>
+                      {selectedModule.layer}
+                    </span>
+                  </div>
                   <p className="text-sm text-gray-500">{selectedModule.description}</p>
                 </div>
               </div>
@@ -531,6 +739,16 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                           </option>
                         ))}
                       </select>
+                    ) : param.type === 'boolean' ? (
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={Boolean(parameters[param.name])}
+                          onChange={(e) => handleParameterChange(param.name, e.target.checked)}
+                          className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                        />
+                        <span className="text-sm text-gray-700">{t('wizard.enabled', 'Enabled')}</span>
+                      </label>
                     ) : (
                       <input
                         type={param.type === 'number' ? 'number' : 'text'}
@@ -564,32 +782,40 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
 
           {step === 3 && selectedModule && (
             <div className="space-y-6">
-              <div className="p-4 bg-green-50 rounded-lg">
+              <div className="p-4 bg-green-50 rounded-lg border border-green-200">
                 <div className="flex items-center gap-2 text-green-700">
                   <Check className="w-5 h-5" />
-                  <span className="font-medium">Configuration Complete</span>
+                  <span className="font-medium">{t('wizard.configComplete', 'Configuration Complete')}</span>
                 </div>
                 <p className="text-sm text-green-600 mt-1">
-                  Review your configuration before saving.
+                  {t('wizard.reviewDesc', 'Review your configuration before saving.')}
                 </p>
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <span className="text-gray-600">Module</span>
-                  <span className="font-medium">{selectedModule.name}</span>
+                <div className={cn(
+                  "flex items-center justify-between p-3 rounded-lg border",
+                  LAYER_COLORS[selectedModule.layer].bg,
+                  LAYER_COLORS[selectedModule.layer].border
+                )}>
+                  <span className="text-gray-600">{t('wizard.module', 'Module')}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium">{selectedModule.name}</span>
+                    <span className={cn(
+                      "px-1.5 py-0.5 text-xs rounded border",
+                      LAYER_COLORS[selectedModule.layer].badge
+                    )}>
+                      {selectedModule.layer}
+                    </span>
+                  </div>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <span className="text-gray-600">Layer</span>
-                  <span className="font-medium">{selectedModule.layer}</span>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <span className="text-gray-600">Version</span>
+                  <span className="text-gray-600">{t('wizard.version', 'Version')}</span>
                   <span className="font-medium">1.0.0</span>
                 </div>
 
                 <div className="border-t border-gray-200 pt-4">
-                  <h4 className="font-medium text-gray-900 mb-3">Parameters</h4>
+                  <h4 className="font-medium text-gray-900 mb-3">{t('wizard.parameters', 'Parameters')}</h4>
                   <div className="space-y-2">
                     {selectedModule.parameters.map((param) => (
                       <div
@@ -624,7 +850,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
             )}
           >
             <ChevronLeft className="w-4 h-4" />
-            Back
+            {t('wizard.back', 'Back')}
           </button>
           
           {step === 3 ? (
@@ -633,7 +859,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
               className="flex items-center gap-2 px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
             >
               <Check className="w-4 h-4" />
-              Save Configuration
+              {t('wizard.save', 'Save Configuration')}
             </button>
           ) : (
             <button
@@ -646,7 +872,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                   : "bg-primary-600 text-white hover:bg-primary-700"
               )}
             >
-              Next
+              {t('wizard.next', 'Next')}
               <ChevronRight className="w-4 h-4" />
             </button>
           )}
