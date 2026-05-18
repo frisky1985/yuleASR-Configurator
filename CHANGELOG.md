@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.5] - 2025-01-16
+
+### UI Polish
+
+- **Logo Update**: Changed logo from "yA" to "YL" for better brand recognition
+- **Language Toggle**: Improved language toggle button styling with horizontal layout
+- **i18n Debug**: Added debug logging for language switching troubleshooting
+
+---
+
 ## [0.1.4] - 2025-01-16
 
 ### Parameter Validation Enhancement
