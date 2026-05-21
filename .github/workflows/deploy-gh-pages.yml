@@ -36,7 +36,7 @@ jobs:
           cp apps/yuleasr-web/dist/index.html apps/yuleasr-web/dist/404.html
 
       - name: Deploy to gh-pages branch
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./apps/yuleasr-web/dist
