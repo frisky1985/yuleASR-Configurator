@@ -5,33 +5,738 @@
   "description": "微控制器驱动库",
   "type": "object",
   "properties": {
-    "MclGeneral": {
-      "description": "Mcl 通用配置",
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
       "type": "object",
       "properties": {
-        "MclDevErrorDetect": {
-          "description": "开启开发错误检测",
-          "type": "boolean",
-          "default": false
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
         },
-        "MclVersionInfoApi": {
-          "description": "版本信息API",
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DmaChannel": {
+      "description": "DmaChannel 配置容器",
+      "type": "object",
+      "properties": {
+        "DmaChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DmaChannelId 参数"
+        },
+        "DmaChannelArbitrationGroup": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DmaChannelArbitrationGroup 参数"
+        },
+        "DmaChannelArbitrationPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DmaChannelArbitrationPriority 参数"
+        },
+        "DmaChannelECP": {
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "DmaChannelECP 参数"
+        },
+        "DmaChannelDPA": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaChannelDPA 参数"
+        },
+        "DmaChannelHwId": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DmaChannelHwId 参数"
+        },
+        "DmaChannelMultiplexor": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DmaChannelMultiplexor 参数"
+        },
+        "DmaChannelTransferCompletionNotif": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DmaChannelTransferCompletionNotif 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DmaInstance": {
+      "description": "DmaInstance 配置容器",
+      "type": "object",
+      "properties": {
+        "DmaCX": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaCX 参数"
+        },
+        "DmaECX": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaECX 参数"
+        },
+        "DmaGMRC": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaGMRC 参数"
+        },
+        "DmaGCLC": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaGCLC 参数"
+        },
+        "DmaHALT": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaHALT 参数"
+        },
+        "DmaHAE": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaHAE 参数"
+        },
+        "DmaERCA": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaERCA 参数"
+        },
+        "DmaEDBG": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaEDBG 参数"
+        },
+        "DmaHwInstance": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DmaHwInstance 参数"
         }
       },
       "additionalProperties": true
     },
     "MclConfigSet": {
-      "description": "Mcl 配置集",
+      "description": "MclConfigSet 配置容器",
       "type": "object",
+      "properties": {
+        "DmaCX": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaCX 参数"
+        },
+        "DmaECX": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaECX 参数"
+        },
+        "DmaGMRC": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaGMRC 参数"
+        },
+        "DmaGCLC": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaGCLC 参数"
+        },
+        "DmaHALT": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaHALT 参数"
+        },
+        "DmaHAE": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaHAE 参数"
+        },
+        "DmaERCA": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaERCA 参数"
+        },
+        "DmaEDBG": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaEDBG 参数"
+        },
+        "TrgMuxTrgMux0LockEn": {
+          "type": "boolean",
+          "default": false,
+          "description": "TrgMuxTrgMux0LockEn 参数"
+        },
+        "TrgMuxLPIT00LockEn": {
+          "type": "boolean",
+          "default": false,
+          "description": "TrgMuxLPIT00LockEn 参数"
+        },
+        "TrgMuxTPM0LockEn": {
+          "type": "boolean",
+          "default": false,
+          "description": "TrgMuxTPM0LockEn 参数"
+        },
+        "TrgMuxTPM1LockEn": {
+          "type": "boolean",
+          "default": false,
+          "description": "TrgMuxTPM1LockEn 参数"
+        },
+        "TrgMuxLPI2C0LockEn": {
+          "type": "boolean",
+          "default": false,
+          "description": "TrgMuxLPI2C0LockEn 参数"
+        },
+        "TrgMuxLPI2C1LockEn": {
+          "type": "boolean",
+          "default": false,
+          "description": "TrgMuxLPI2C1LockEn 参数"
+        },
+        "TrgMuxLPSPI0LockEn": {
+          "type": "boolean",
+          "default": false,
+          "description": "TrgMuxLPSPI0LockEn 参数"
+        },
+        "TrgMuxLPSPI1LockEn": {
+          "type": "boolean",
+          "default": false,
+          "description": "TrgMuxLPSPI1LockEn 参数"
+        },
+        "TrgMuxLPUART0LockEn": {
+          "type": "boolean",
+          "default": false,
+          "description": "TrgMuxLPUART0LockEn 参数"
+        },
+        "TrgMuxLPUART1LockEn": {
+          "type": "boolean",
+          "default": false,
+          "description": "TrgMuxLPUART1LockEn 参数"
+        },
+        "TrgMuxFlexio0LockEn": {
+          "type": "boolean",
+          "default": false,
+          "description": "TrgMuxFlexio0LockEn 参数"
+        },
+        "TrgMuxADCGP0LockEn": {
+          "type": "boolean",
+          "default": false,
+          "description": "TrgMuxADCGP0LockEn 参数"
+        },
+        "TrgMuxCMPGP0LockEn": {
+          "type": "boolean",
+          "default": false,
+          "description": "TrgMuxCMPGP0LockEn 参数"
+        },
+        "TrgMuxCMPGP1LockEn": {
+          "type": "boolean",
+          "default": false,
+          "description": "TrgMuxCMPGP1LockEn 参数"
+        },
+        "DmaChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DmaChannelId 参数"
+        },
+        "DmaChannelArbitrationGroup": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DmaChannelArbitrationGroup 参数"
+        },
+        "DmaChannelArbitrationPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DmaChannelArbitrationPriority 参数"
+        },
+        "DmaChannelECP": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaChannelECP 参数"
+        },
+        "DmaChannelDPA": {
+          "type": "boolean",
+          "default": false,
+          "description": "DmaChannelDPA 参数"
+        },
+        "DmaHwInstance": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DmaHwInstance 参数"
+        },
+        "TrgMuxTrgMux0Input0": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxTrgMux0Input0 参数"
+        },
+        "TrgMuxTrgMux0Input1": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxTrgMux0Input1 参数"
+        },
+        "TrgMuxTrgMux0Input2": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxTrgMux0Input2 参数"
+        },
+        "TrgMuxTrgMux0Input3": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxTrgMux0Input3 参数"
+        },
+        "TrgMuxLPIT0Input0": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxLPIT0Input0 参数"
+        },
+        "TrgMuxLPIT0Input1": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxLPIT0Input1 参数"
+        },
+        "TrgMuxLPIT0Input2": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxLPIT0Input2 参数"
+        },
+        "TrgMuxLPIT0Input3": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxLPIT0Input3 参数"
+        },
+        "TrgMuxTPM0Input0": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxTPM0Input0 参数"
+        },
+        "TrgMuxTPM0Input1": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxTPM0Input1 参数"
+        },
+        "TrgMuxTPM0Input2": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxTPM0Input2 参数"
+        },
+        "TrgMuxTPM1Input0": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxTPM1Input0 参数"
+        },
+        "TrgMuxTPM1Input1": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxTPM1Input1 参数"
+        },
+        "TrgMuxTPM1Input2": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxTPM1Input2 参数"
+        },
+        "TrgMuxLPI2C0Input0": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxLPI2C0Input0 参数"
+        },
+        "TrgMuxLPI2C1Input0": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxLPI2C1Input0 参数"
+        },
+        "TrgMuxLPSPI0Input0": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxLPSPI0Input0 参数"
+        },
+        "TrgMuxLPSPI1Input0": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxLPSPI1Input0 参数"
+        },
+        "TrgMuxLPUART0Input0": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxLPUART0Input0 参数"
+        },
+        "TrgMuxLPUART1Input0": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxLPUART1Input0 参数"
+        },
+        "TrgMuxFlexio0Input0": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxFlexio0Input0 参数"
+        },
+        "TrgMuxFlexio0Input1": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxFlexio0Input1 参数"
+        },
+        "TrgMuxFlexio0Input2": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxFlexio0Input2 参数"
+        },
+        "TrgMuxFlexio0Input3": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxFlexio0Input3 参数"
+        },
+        "TrgMuxADCGP0Input0": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxADCGP0Input0 参数"
+        },
+        "TrgMuxADCGP0Input1": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxADCGP0Input1 参数"
+        },
+        "TrgMuxADCGP0Input2": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxADCGP0Input2 参数"
+        },
+        "TrgMuxADCGP0Input3": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxADCGP0Input3 参数"
+        },
+        "TrgMuxCMPGP0Input0": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxCMPGP0Input0 参数"
+        },
+        "TrgMuxCMPGP1Input0": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "TrgMuxCMPGP1Input0 参数"
+        },
+        "DmaChannelHwId": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DmaChannelHwId 参数"
+        },
+        "DmaChannelMultiplexor": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DmaChannelMultiplexor 参数"
+        },
+        "DmaChannelTransferCompletionNotif": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DmaChannelTransferCompletionNotif 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MclGeneral": {
+      "description": "MclGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "MclDisableDemReportErrorStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclDisableDemReportErrorStatus 参数"
+        },
+        "MclDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclDevErrorDetect 参数"
+        },
+        "MclDmaNotificationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclDmaNotificationSupported 参数"
+        },
+        "MclErrorChecking": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclErrorChecking 参数"
+        },
+        "Mcl_VersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "Mcl_VersionInfoApi 参数"
+        },
+        "Mcl_DmaGetChannelErrorStatusApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "Mcl_DmaGetChannelErrorStatusApi 参数"
+        },
+        "Mcl_DmaGetGlobalErrorStatusApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "Mcl_DmaGetGlobalErrorStatusApi 参数"
+        },
+        "Mcl_DeInitApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "Mcl_DeInitApi 参数"
+        },
+        "EnableDMA": {
+          "type": "boolean",
+          "default": false,
+          "description": "EnableDMA 参数"
+        },
+        "MclEnableTrgMux": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclEnableTrgMux 参数"
+        },
+        "MclEnableUserModeSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclEnableUserModeSupport 参数"
+        },
+        "MclIsrEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclIsrEnabled 参数"
+        },
+        "MclLpcacEnableCacheApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclLpcacEnableCacheApi 参数"
+        },
+        "MclLpcacEnableWriteBuffer": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclLpcacEnableWriteBuffer 参数"
+        },
+        "MclIsrName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "MclIsrName 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MclIsrAvailable": {
+      "description": "MclIsrAvailable 配置容器",
+      "type": "object",
+      "properties": {
+        "MclIsrEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclIsrEnabled 参数"
+        },
+        "MclIsrName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "MclIsrName 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MclIsrAvailable_1": {
+      "description": "MclIsrAvailable_1 配置容器",
+      "type": "object",
+      "properties": {
+        "MclIsrEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclIsrEnabled 参数"
+        },
+        "MclIsrName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "MclIsrName 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MclIsrAvailable_10": {
+      "description": "MclIsrAvailable_10 配置容器",
+      "type": "object",
+      "properties": {
+        "MclIsrEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclIsrEnabled 参数"
+        },
+        "MclIsrName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "MclIsrName 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MclIsrAvailable_11": {
+      "description": "MclIsrAvailable_11 配置容器",
+      "type": "object",
+      "properties": {
+        "MclIsrEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclIsrEnabled 参数"
+        },
+        "MclIsrName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "MclIsrName 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MclIsrAvailable_12": {
+      "description": "MclIsrAvailable_12 配置容器",
+      "type": "object",
+      "properties": {
+        "MclIsrEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclIsrEnabled 参数"
+        },
+        "MclIsrName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "MclIsrName 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MclIsrAvailable_13": {
+      "description": "MclIsrAvailable_13 配置容器",
+      "type": "object",
+      "properties": {
+        "MclIsrEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclIsrEnabled 参数"
+        },
+        "MclIsrName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "MclIsrName 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MclIsrAvailable_14": {
+      "description": "MclIsrAvailable_14 配置容器",
+      "type": "object",
+      "properties": {
+        "MclIsrEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclIsrEnabled 参数"
+        },
+        "MclIsrName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "MclIsrName 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MclIsrAvailable_15": {
+      "description": "MclIsrAvailable_15 配置容器",
+      "type": "object",
+      "properties": {
+        "MclIsrEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclIsrEnabled 参数"
+        },
+        "MclIsrName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "MclIsrName 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MclIsrAvailable_2": {
+      "description": "MclIsrAvailable_2 配置容器",
+      "type": "object",
+      "properties": {
+        "MclIsrEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclIsrEnabled 参数"
+        },
+        "MclIsrName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "MclIsrName 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MclIsrAvailable_3": {
+      "description": "MclIsrAvailable_3 配置容器",
+      "type": "object",
+      "properties": {
+        "MclIsrEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "MclIsrEnabled 参数"
+        },
+        "MclIsrName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "MclIsrName 参数"
+        }
+      },
       "additionalProperties": true
     }
   },
   "required": [
-    "MclGeneral"
+    "CommonPublishedInformation",
+    "DmaChannel",
+    "DmaInstance"
   ],
   "additionalProperties": false,
   "x-layer": "MCAL",
-  "x-version": "4.4.0"
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

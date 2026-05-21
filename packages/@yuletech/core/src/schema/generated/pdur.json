@@ -2,21 +2,884 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/pdur.json",
   "title": "PduR Configuration",
-  "description": "PDU 路由服务",
+  "description": "PduR Configuration",
   "type": "object",
   "properties": {
-    "PduRRoutingPath": {
-      "description": "路由路径配置",
+    "BPEPS_100ms_PDU02_6c6b86b4_Tx": {
+      "description": "BPEPS_100ms_PDU02_6c6b86b4_Tx 配置容器",
       "type": "object",
+      "properties": {
+        "PduRMulticoreRoutingPath": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRMulticoreRoutingPath 参数"
+        },
+        "PduRDestPduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRDestPduHandleId 参数"
+        },
+        "PduRDestPduCrossPartitionDestination": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRDestPduCrossPartitionDestination 参数"
+        },
+        "PduRTransmissionConfirmation": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRTransmissionConfirmation 参数"
+        },
+        "PduRSourcePduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRSourcePduHandleId 参数"
+        },
+        "PduRRoutingPathCommunicationType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRRoutingPathCommunicationType 参数"
+        },
+        "PduRDestPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDirection 参数"
+        },
+        "PduRDestPduRoutingType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduRoutingType 参数"
+        },
+        "PduRDestPduDataProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProcessing 参数"
+        },
+        "PduRPduLengthHandlingStrategy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRPduLengthHandlingStrategy 参数"
+        },
+        "PduRDestPduDataProvision": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProvision 参数"
+        },
+        "PduRSrcPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRSrcPduDirection 参数"
+        }
+      },
       "additionalProperties": true
     },
-    "PduRBswModule": {
-      "description": "BSW 模块配置",
+    "BPEPS_100ms_PDU02_e5aa2847_Tx": {
+      "description": "BPEPS_100ms_PDU02_e5aa2847_Tx 配置容器",
       "type": "object",
+      "properties": {
+        "PduRDestPduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRDestPduHandleId 参数"
+        },
+        "PduRDestPduCrossPartitionDestination": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRDestPduCrossPartitionDestination 参数"
+        },
+        "PduRTransmissionConfirmation": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRTransmissionConfirmation 参数"
+        },
+        "PduRDestPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDirection 参数"
+        },
+        "PduRDestPduRoutingType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduRoutingType 参数"
+        },
+        "PduRDestPduDataProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProcessing 参数"
+        },
+        "PduRPduLengthHandlingStrategy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRPduLengthHandlingStrategy 参数"
+        },
+        "PduRDestPduDataProvision": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProvision 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BPEPS_100ms_PDU11_afece58e_Tx": {
+      "description": "BPEPS_100ms_PDU11_afece58e_Tx 配置容器",
+      "type": "object",
+      "properties": {
+        "PduRDestPduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRDestPduHandleId 参数"
+        },
+        "PduRDestPduCrossPartitionDestination": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRDestPduCrossPartitionDestination 参数"
+        },
+        "PduRTransmissionConfirmation": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRTransmissionConfirmation 参数"
+        },
+        "PduRDestPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDirection 参数"
+        },
+        "PduRDestPduRoutingType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduRoutingType 参数"
+        },
+        "PduRDestPduDataProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProcessing 参数"
+        },
+        "PduRPduLengthHandlingStrategy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRPduLengthHandlingStrategy 参数"
+        },
+        "PduRDestPduDataProvision": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProvision 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BPEPS_100ms_PDU11_ec79e64f_Tx": {
+      "description": "BPEPS_100ms_PDU11_ec79e64f_Tx 配置容器",
+      "type": "object",
+      "properties": {
+        "PduRMulticoreRoutingPath": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRMulticoreRoutingPath 参数"
+        },
+        "PduRDestPduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRDestPduHandleId 参数"
+        },
+        "PduRDestPduCrossPartitionDestination": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRDestPduCrossPartitionDestination 参数"
+        },
+        "PduRTransmissionConfirmation": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRTransmissionConfirmation 参数"
+        },
+        "PduRSourcePduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRSourcePduHandleId 参数"
+        },
+        "PduRRoutingPathCommunicationType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRRoutingPathCommunicationType 参数"
+        },
+        "PduRDestPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDirection 参数"
+        },
+        "PduRDestPduRoutingType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduRoutingType 参数"
+        },
+        "PduRDestPduDataProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProcessing 参数"
+        },
+        "PduRPduLengthHandlingStrategy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRPduLengthHandlingStrategy 参数"
+        },
+        "PduRDestPduDataProvision": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProvision 参数"
+        },
+        "PduRSrcPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRSrcPduDirection 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BPEPS_20ms_PDU38_7d518cc7_Tx": {
+      "description": "BPEPS_20ms_PDU38_7d518cc7_Tx 配置容器",
+      "type": "object",
+      "properties": {
+        "PduRMulticoreRoutingPath": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRMulticoreRoutingPath 参数"
+        },
+        "PduRSourcePduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRSourcePduHandleId 参数"
+        },
+        "PduRDestPduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRDestPduHandleId 参数"
+        },
+        "PduRDestPduCrossPartitionDestination": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRDestPduCrossPartitionDestination 参数"
+        },
+        "PduRTransmissionConfirmation": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRTransmissionConfirmation 参数"
+        },
+        "PduRRoutingPathCommunicationType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRRoutingPathCommunicationType 参数"
+        },
+        "PduRSrcPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRSrcPduDirection 参数"
+        },
+        "PduRDestPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDirection 参数"
+        },
+        "PduRDestPduRoutingType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduRoutingType 参数"
+        },
+        "PduRDestPduDataProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProcessing 参数"
+        },
+        "PduRPduLengthHandlingStrategy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRPduLengthHandlingStrategy 参数"
+        },
+        "PduRDestPduDataProvision": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProvision 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BPEPS_20ms_PDU38_d8b71e78_Tx": {
+      "description": "BPEPS_20ms_PDU38_d8b71e78_Tx 配置容器",
+      "type": "object",
+      "properties": {
+        "PduRDestPduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRDestPduHandleId 参数"
+        },
+        "PduRDestPduCrossPartitionDestination": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRDestPduCrossPartitionDestination 参数"
+        },
+        "PduRTransmissionConfirmation": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRTransmissionConfirmation 参数"
+        },
+        "PduRDestPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDirection 参数"
+        },
+        "PduRDestPduRoutingType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduRoutingType 参数"
+        },
+        "PduRDestPduDataProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProcessing 参数"
+        },
+        "PduRPduLengthHandlingStrategy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRPduLengthHandlingStrategy 参数"
+        },
+        "PduRDestPduDataProvision": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProvision 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BPEPS_50ms_PDU06_48654724_Tx": {
+      "description": "BPEPS_50ms_PDU06_48654724_Tx 配置容器",
+      "type": "object",
+      "properties": {
+        "PduRDestPduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRDestPduHandleId 参数"
+        },
+        "PduRDestPduCrossPartitionDestination": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRDestPduCrossPartitionDestination 参数"
+        },
+        "PduRTransmissionConfirmation": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRTransmissionConfirmation 参数"
+        },
+        "PduRDestPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDirection 参数"
+        },
+        "PduRDestPduRoutingType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduRoutingType 参数"
+        },
+        "PduRDestPduDataProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProcessing 参数"
+        },
+        "PduRPduLengthHandlingStrategy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRPduLengthHandlingStrategy 参数"
+        },
+        "PduRDestPduDataProvision": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProvision 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BPEPS_50ms_PDU06_5318e97a_Tx": {
+      "description": "BPEPS_50ms_PDU06_5318e97a_Tx 配置容器",
+      "type": "object",
+      "properties": {
+        "PduRMulticoreRoutingPath": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRMulticoreRoutingPath 参数"
+        },
+        "PduRDestPduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRDestPduHandleId 参数"
+        },
+        "PduRDestPduCrossPartitionDestination": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRDestPduCrossPartitionDestination 参数"
+        },
+        "PduRTransmissionConfirmation": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRTransmissionConfirmation 参数"
+        },
+        "PduRSourcePduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRSourcePduHandleId 参数"
+        },
+        "PduRRoutingPathCommunicationType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRRoutingPathCommunicationType 参数"
+        },
+        "PduRDestPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDirection 参数"
+        },
+        "PduRDestPduRoutingType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduRoutingType 参数"
+        },
+        "PduRDestPduDataProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProcessing 参数"
+        },
+        "PduRPduLengthHandlingStrategy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRPduLengthHandlingStrategy 参数"
+        },
+        "PduRDestPduDataProvision": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProvision 参数"
+        },
+        "PduRSrcPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRSrcPduDirection 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BPEPS_Sporadic_PDU25_249d52a6_Tx": {
+      "description": "BPEPS_Sporadic_PDU25_249d52a6_Tx 配置容器",
+      "type": "object",
+      "properties": {
+        "PduRDestPduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRDestPduHandleId 参数"
+        },
+        "PduRDestPduCrossPartitionDestination": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRDestPduCrossPartitionDestination 参数"
+        },
+        "PduRTransmissionConfirmation": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRTransmissionConfirmation 参数"
+        },
+        "PduRDestPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDirection 参数"
+        },
+        "PduRDestPduRoutingType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduRoutingType 参数"
+        },
+        "PduRDestPduDataProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProcessing 参数"
+        },
+        "PduRPduLengthHandlingStrategy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRPduLengthHandlingStrategy 参数"
+        },
+        "PduRDestPduDataProvision": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProvision 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BPEPS_Sporadic_PDU25_919eb00c_Tx": {
+      "description": "BPEPS_Sporadic_PDU25_919eb00c_Tx 配置容器",
+      "type": "object",
+      "properties": {
+        "PduRMulticoreRoutingPath": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRMulticoreRoutingPath 参数"
+        },
+        "PduRSourcePduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRSourcePduHandleId 参数"
+        },
+        "PduRDestPduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRDestPduHandleId 参数"
+        },
+        "PduRDestPduCrossPartitionDestination": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRDestPduCrossPartitionDestination 参数"
+        },
+        "PduRTransmissionConfirmation": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRTransmissionConfirmation 参数"
+        },
+        "PduRRoutingPathCommunicationType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRRoutingPathCommunicationType 参数"
+        },
+        "PduRSrcPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRSrcPduDirection 参数"
+        },
+        "PduRDestPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDirection 参数"
+        },
+        "PduRDestPduRoutingType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduRoutingType 参数"
+        },
+        "PduRDestPduDataProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProcessing 参数"
+        },
+        "PduRPduLengthHandlingStrategy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRPduLengthHandlingStrategy 参数"
+        },
+        "PduRDestPduDataProvision": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProvision 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BPEPS_Sporadic_PDU26_0897e1b6_Tx": {
+      "description": "BPEPS_Sporadic_PDU26_0897e1b6_Tx 配置容器",
+      "type": "object",
+      "properties": {
+        "PduRMulticoreRoutingPath": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRMulticoreRoutingPath 参数"
+        },
+        "PduRSourcePduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRSourcePduHandleId 参数"
+        },
+        "PduRDestPduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRDestPduHandleId 参数"
+        },
+        "PduRDestPduCrossPartitionDestination": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRDestPduCrossPartitionDestination 参数"
+        },
+        "PduRTransmissionConfirmation": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRTransmissionConfirmation 参数"
+        },
+        "PduRRoutingPathCommunicationType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRRoutingPathCommunicationType 参数"
+        },
+        "PduRSrcPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRSrcPduDirection 参数"
+        },
+        "PduRDestPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDirection 参数"
+        },
+        "PduRDestPduRoutingType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduRoutingType 参数"
+        },
+        "PduRDestPduDataProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProcessing 参数"
+        },
+        "PduRPduLengthHandlingStrategy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRPduLengthHandlingStrategy 参数"
+        },
+        "PduRDestPduDataProvision": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProvision 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BPEPS_Sporadic_PDU26_603c77be_Tx": {
+      "description": "BPEPS_Sporadic_PDU26_603c77be_Tx 配置容器",
+      "type": "object",
+      "properties": {
+        "PduRDestPduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRDestPduHandleId 参数"
+        },
+        "PduRDestPduCrossPartitionDestination": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRDestPduCrossPartitionDestination 参数"
+        },
+        "PduRTransmissionConfirmation": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRTransmissionConfirmation 参数"
+        },
+        "PduRDestPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDirection 参数"
+        },
+        "PduRDestPduRoutingType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduRoutingType 参数"
+        },
+        "PduRDestPduDataProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProcessing 参数"
+        },
+        "PduRPduLengthHandlingStrategy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRPduLengthHandlingStrategy 参数"
+        },
+        "PduRDestPduDataProvision": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProvision 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BPEPS_Sporadic_PDU27_5c5c94b6_Tx": {
+      "description": "BPEPS_Sporadic_PDU27_5c5c94b6_Tx 配置容器",
+      "type": "object",
+      "properties": {
+        "PduRDestPduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRDestPduHandleId 参数"
+        },
+        "PduRDestPduCrossPartitionDestination": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRDestPduCrossPartitionDestination 参数"
+        },
+        "PduRTransmissionConfirmation": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRTransmissionConfirmation 参数"
+        },
+        "PduRDestPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDirection 参数"
+        },
+        "PduRDestPduRoutingType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduRoutingType 参数"
+        },
+        "PduRDestPduDataProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProcessing 参数"
+        },
+        "PduRPduLengthHandlingStrategy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRPduLengthHandlingStrategy 参数"
+        },
+        "PduRDestPduDataProvision": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProvision 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BPEPS_Sporadic_PDU27_7f90d120_Tx": {
+      "description": "BPEPS_Sporadic_PDU27_7f90d120_Tx 配置容器",
+      "type": "object",
+      "properties": {
+        "PduRMulticoreRoutingPath": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRMulticoreRoutingPath 参数"
+        },
+        "PduRDestPduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRDestPduHandleId 参数"
+        },
+        "PduRDestPduCrossPartitionDestination": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRDestPduCrossPartitionDestination 参数"
+        },
+        "PduRTransmissionConfirmation": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRTransmissionConfirmation 参数"
+        },
+        "PduRSourcePduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRSourcePduHandleId 参数"
+        },
+        "PduRRoutingPathCommunicationType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRRoutingPathCommunicationType 参数"
+        },
+        "PduRDestPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDirection 参数"
+        },
+        "PduRDestPduRoutingType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduRoutingType 参数"
+        },
+        "PduRDestPduDataProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProcessing 参数"
+        },
+        "PduRPduLengthHandlingStrategy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRPduLengthHandlingStrategy 参数"
+        },
+        "PduRDestPduDataProvision": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProvision 参数"
+        },
+        "PduRSrcPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRSrcPduDirection 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BPEPS_Sporadic_PDU28_d108238f_Tx": {
+      "description": "BPEPS_Sporadic_PDU28_d108238f_Tx 配置容器",
+      "type": "object",
+      "properties": {
+        "PduRDestPduHandleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PduRDestPduHandleId 参数"
+        },
+        "PduRDestPduCrossPartitionDestination": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRDestPduCrossPartitionDestination 参数"
+        },
+        "PduRTransmissionConfirmation": {
+          "type": "boolean",
+          "default": false,
+          "description": "PduRTransmissionConfirmation 参数"
+        },
+        "PduRDestPduDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDirection 参数"
+        },
+        "PduRDestPduRoutingType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduRoutingType 参数"
+        },
+        "PduRDestPduDataProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProcessing 参数"
+        },
+        "PduRPduLengthHandlingStrategy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRPduLengthHandlingStrategy 参数"
+        },
+        "PduRDestPduDataProvision": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PduRDestPduDataProvision 参数"
+        }
+      },
       "additionalProperties": true
     }
   },
+  "required": [
+    "BPEPS_100ms_PDU02_6c6b86b4_Tx",
+    "BPEPS_100ms_PDU02_e5aa2847_Tx",
+    "BPEPS_100ms_PDU11_afece58e_Tx"
+  ],
   "additionalProperties": false,
   "x-layer": "Service",
-  "x-version": "4.4.0"
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

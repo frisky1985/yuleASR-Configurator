@@ -6,32 +6,47 @@
   "type": "object",
   "properties": {
     "MemIfGeneral": {
-      "description": "MemIf 通用配置",
+      "description": "MemIfGeneral 配置容器",
       "type": "object",
       "properties": {
         "MemIfDevErrorDetect": {
-          "description": "开启开发错误检测",
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "MemIfDevErrorDetect 参数"
         },
         "MemIfVersionInfoApi": {
-          "description": "版本信息API",
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "MemIfVersionInfoApi 参数"
+        },
+        "MemIfSafeBswChecks": {
+          "type": "boolean",
+          "default": false,
+          "description": "MemIfSafeBswChecks 参数"
         }
       },
       "additionalProperties": true
     },
-    "MemIfConfigSet": {
-      "description": "MemIf 配置集",
+    "MemIfMemHwA": {
+      "description": "MemIfMemHwA 配置容器",
       "type": "object",
+      "properties": {
+        "MemIfMemHwAId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "MemIfMemHwAId 参数"
+        }
+      },
       "additionalProperties": true
     }
   },
   "required": [
-    "MemIfGeneral"
+    "MemIfGeneral",
+    "MemIfMemHwA"
   ],
   "additionalProperties": false,
   "x-layer": "ECUAL",
-  "x-version": "4.4.0"
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

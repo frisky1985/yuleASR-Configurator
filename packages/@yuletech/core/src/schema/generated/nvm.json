@@ -2,23 +2,2057 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/nvm.json",
   "title": "NvM Configuration",
-  "description": "非易失性内存管理",
+  "description": "NvM Configuration",
   "type": "object",
   "properties": {
-    "NvMBlockDescriptor": {
-      "description": "NVM 块描述符",
+    "BleShortID0": {
+      "description": "BleShortID0 配置容器",
       "type": "object",
+      "properties": {
+        "NvMSelectBlockForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForWriteAll 参数"
+        },
+        "NvMBlockUseCrc": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCrc 参数"
+        },
+        "NvMBlockJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMBlockJobPriority 参数"
+        },
+        "NvMBlockUseSyncMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSyncMechanism 参数"
+        },
+        "NvMBlockWriteProt": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockWriteProt 参数"
+        },
+        "NvMBswMBlockStatusInformation": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBswMBlockStatusInformation 参数"
+        },
+        "NvMNvBlockLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockLength 参数"
+        },
+        "NvMNvBlockNum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockNum 参数"
+        },
+        "NvMNvramBlockIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvramBlockIdentifier 参数"
+        },
+        "NvMResistantToChangedSw": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMResistantToChangedSw 参数"
+        },
+        "NvMWriteBlockOnce": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMWriteBlockOnce 参数"
+        },
+        "NvMUseServicePorts": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseServicePorts 参数"
+        },
+        "NvMUseJobendCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseJobendCallback 参数"
+        },
+        "NvMUseInitCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseInitCallback 参数"
+        },
+        "NvMBlockUseCRCCompMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCRCCompMechanism 参数"
+        },
+        "NvMBlockUseSetRamBlockStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSetRamBlockStatus 参数"
+        },
+        "NvMInvokeCallbacksForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForReadAll 参数"
+        },
+        "NvMInvokeCallbacksForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForWriteAll 参数"
+        },
+        "NvMCheckLossOfRedundancy": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMCheckLossOfRedundancy 参数"
+        },
+        "NvMSelectBlockForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForReadAll 参数"
+        },
+        "NvMBlockCrcType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockCrcType 参数"
+        },
+        "NvMBlockManagementType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockManagementType 参数"
+        },
+        "NvMRamBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRamBlockDataAddress 参数"
+        },
+        "NvMRomBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRomBlockDataAddress 参数"
+        },
+        "NvMSingleBlockCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMSingleBlockCallback 参数"
+        }
+      },
       "additionalProperties": true
     },
-    "NvMSize": {
-      "description": "NVM 大小 (bytes)",
-      "type": "integer",
-      "minimum": 64,
-      "maximum": 65536,
-      "default": 1024
+    "BleShortID1": {
+      "description": "BleShortID1 配置容器",
+      "type": "object",
+      "properties": {
+        "NvMSelectBlockForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForWriteAll 参数"
+        },
+        "NvMBlockUseCrc": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCrc 参数"
+        },
+        "NvMBlockJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMBlockJobPriority 参数"
+        },
+        "NvMBlockUseSyncMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSyncMechanism 参数"
+        },
+        "NvMBlockWriteProt": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockWriteProt 参数"
+        },
+        "NvMBswMBlockStatusInformation": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBswMBlockStatusInformation 参数"
+        },
+        "NvMNvBlockLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockLength 参数"
+        },
+        "NvMNvBlockNum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockNum 参数"
+        },
+        "NvMNvramBlockIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvramBlockIdentifier 参数"
+        },
+        "NvMResistantToChangedSw": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMResistantToChangedSw 参数"
+        },
+        "NvMWriteBlockOnce": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMWriteBlockOnce 参数"
+        },
+        "NvMUseServicePorts": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseServicePorts 参数"
+        },
+        "NvMUseJobendCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseJobendCallback 参数"
+        },
+        "NvMUseInitCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseInitCallback 参数"
+        },
+        "NvMBlockUseCRCCompMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCRCCompMechanism 参数"
+        },
+        "NvMBlockUseSetRamBlockStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSetRamBlockStatus 参数"
+        },
+        "NvMInvokeCallbacksForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForReadAll 参数"
+        },
+        "NvMInvokeCallbacksForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForWriteAll 参数"
+        },
+        "NvMCheckLossOfRedundancy": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMCheckLossOfRedundancy 参数"
+        },
+        "NvMSelectBlockForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForReadAll 参数"
+        },
+        "NvMBlockCrcType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockCrcType 参数"
+        },
+        "NvMBlockManagementType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockManagementType 参数"
+        },
+        "NvMRamBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRamBlockDataAddress 参数"
+        },
+        "NvMRomBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRomBlockDataAddress 参数"
+        },
+        "NvMSingleBlockCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMSingleBlockCallback 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BleShortID10": {
+      "description": "BleShortID10 配置容器",
+      "type": "object",
+      "properties": {
+        "NvMSelectBlockForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForWriteAll 参数"
+        },
+        "NvMBlockUseCrc": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCrc 参数"
+        },
+        "NvMBlockJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMBlockJobPriority 参数"
+        },
+        "NvMBlockUseSyncMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSyncMechanism 参数"
+        },
+        "NvMBlockWriteProt": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockWriteProt 参数"
+        },
+        "NvMBswMBlockStatusInformation": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBswMBlockStatusInformation 参数"
+        },
+        "NvMNvBlockLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockLength 参数"
+        },
+        "NvMNvBlockNum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockNum 参数"
+        },
+        "NvMNvramBlockIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvramBlockIdentifier 参数"
+        },
+        "NvMResistantToChangedSw": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMResistantToChangedSw 参数"
+        },
+        "NvMWriteBlockOnce": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMWriteBlockOnce 参数"
+        },
+        "NvMUseServicePorts": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseServicePorts 参数"
+        },
+        "NvMUseJobendCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseJobendCallback 参数"
+        },
+        "NvMUseInitCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseInitCallback 参数"
+        },
+        "NvMBlockUseCRCCompMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCRCCompMechanism 参数"
+        },
+        "NvMBlockUseSetRamBlockStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSetRamBlockStatus 参数"
+        },
+        "NvMInvokeCallbacksForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForReadAll 参数"
+        },
+        "NvMInvokeCallbacksForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForWriteAll 参数"
+        },
+        "NvMCheckLossOfRedundancy": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMCheckLossOfRedundancy 参数"
+        },
+        "NvMSelectBlockForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForReadAll 参数"
+        },
+        "NvMBlockCrcType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockCrcType 参数"
+        },
+        "NvMBlockManagementType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockManagementType 参数"
+        },
+        "NvMRamBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRamBlockDataAddress 参数"
+        },
+        "NvMRomBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRomBlockDataAddress 参数"
+        },
+        "NvMSingleBlockCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMSingleBlockCallback 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BleShortID11": {
+      "description": "BleShortID11 配置容器",
+      "type": "object",
+      "properties": {
+        "NvMSelectBlockForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForWriteAll 参数"
+        },
+        "NvMBlockUseCrc": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCrc 参数"
+        },
+        "NvMBlockJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMBlockJobPriority 参数"
+        },
+        "NvMBlockUseSyncMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSyncMechanism 参数"
+        },
+        "NvMBlockWriteProt": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockWriteProt 参数"
+        },
+        "NvMBswMBlockStatusInformation": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBswMBlockStatusInformation 参数"
+        },
+        "NvMNvBlockLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockLength 参数"
+        },
+        "NvMNvBlockNum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockNum 参数"
+        },
+        "NvMNvramBlockIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvramBlockIdentifier 参数"
+        },
+        "NvMResistantToChangedSw": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMResistantToChangedSw 参数"
+        },
+        "NvMWriteBlockOnce": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMWriteBlockOnce 参数"
+        },
+        "NvMUseServicePorts": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseServicePorts 参数"
+        },
+        "NvMUseJobendCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseJobendCallback 参数"
+        },
+        "NvMUseInitCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseInitCallback 参数"
+        },
+        "NvMBlockUseCRCCompMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCRCCompMechanism 参数"
+        },
+        "NvMBlockUseSetRamBlockStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSetRamBlockStatus 参数"
+        },
+        "NvMInvokeCallbacksForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForReadAll 参数"
+        },
+        "NvMInvokeCallbacksForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForWriteAll 参数"
+        },
+        "NvMCheckLossOfRedundancy": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMCheckLossOfRedundancy 参数"
+        },
+        "NvMSelectBlockForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForReadAll 参数"
+        },
+        "NvMBlockCrcType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockCrcType 参数"
+        },
+        "NvMBlockManagementType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockManagementType 参数"
+        },
+        "NvMRamBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRamBlockDataAddress 参数"
+        },
+        "NvMRomBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRomBlockDataAddress 参数"
+        },
+        "NvMSingleBlockCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMSingleBlockCallback 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BleShortID12": {
+      "description": "BleShortID12 配置容器",
+      "type": "object",
+      "properties": {
+        "NvMSelectBlockForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForWriteAll 参数"
+        },
+        "NvMBlockUseCrc": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCrc 参数"
+        },
+        "NvMBlockJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMBlockJobPriority 参数"
+        },
+        "NvMBlockUseSyncMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSyncMechanism 参数"
+        },
+        "NvMBlockWriteProt": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockWriteProt 参数"
+        },
+        "NvMBswMBlockStatusInformation": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBswMBlockStatusInformation 参数"
+        },
+        "NvMNvBlockLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockLength 参数"
+        },
+        "NvMNvBlockNum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockNum 参数"
+        },
+        "NvMNvramBlockIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvramBlockIdentifier 参数"
+        },
+        "NvMResistantToChangedSw": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMResistantToChangedSw 参数"
+        },
+        "NvMWriteBlockOnce": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMWriteBlockOnce 参数"
+        },
+        "NvMUseServicePorts": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseServicePorts 参数"
+        },
+        "NvMUseJobendCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseJobendCallback 参数"
+        },
+        "NvMUseInitCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseInitCallback 参数"
+        },
+        "NvMBlockUseCRCCompMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCRCCompMechanism 参数"
+        },
+        "NvMBlockUseSetRamBlockStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSetRamBlockStatus 参数"
+        },
+        "NvMInvokeCallbacksForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForReadAll 参数"
+        },
+        "NvMInvokeCallbacksForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForWriteAll 参数"
+        },
+        "NvMCheckLossOfRedundancy": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMCheckLossOfRedundancy 参数"
+        },
+        "NvMSelectBlockForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForReadAll 参数"
+        },
+        "NvMBlockCrcType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockCrcType 参数"
+        },
+        "NvMBlockManagementType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockManagementType 参数"
+        },
+        "NvMRamBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRamBlockDataAddress 参数"
+        },
+        "NvMRomBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRomBlockDataAddress 参数"
+        },
+        "NvMSingleBlockCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMSingleBlockCallback 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BleShortID13": {
+      "description": "BleShortID13 配置容器",
+      "type": "object",
+      "properties": {
+        "NvMSelectBlockForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForWriteAll 参数"
+        },
+        "NvMBlockUseCrc": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCrc 参数"
+        },
+        "NvMBlockJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMBlockJobPriority 参数"
+        },
+        "NvMBlockUseSyncMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSyncMechanism 参数"
+        },
+        "NvMBlockWriteProt": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockWriteProt 参数"
+        },
+        "NvMBswMBlockStatusInformation": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBswMBlockStatusInformation 参数"
+        },
+        "NvMNvBlockLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockLength 参数"
+        },
+        "NvMNvBlockNum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockNum 参数"
+        },
+        "NvMNvramBlockIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvramBlockIdentifier 参数"
+        },
+        "NvMResistantToChangedSw": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMResistantToChangedSw 参数"
+        },
+        "NvMWriteBlockOnce": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMWriteBlockOnce 参数"
+        },
+        "NvMUseServicePorts": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseServicePorts 参数"
+        },
+        "NvMUseJobendCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseJobendCallback 参数"
+        },
+        "NvMUseInitCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseInitCallback 参数"
+        },
+        "NvMBlockUseCRCCompMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCRCCompMechanism 参数"
+        },
+        "NvMBlockUseSetRamBlockStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSetRamBlockStatus 参数"
+        },
+        "NvMInvokeCallbacksForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForReadAll 参数"
+        },
+        "NvMInvokeCallbacksForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForWriteAll 参数"
+        },
+        "NvMCheckLossOfRedundancy": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMCheckLossOfRedundancy 参数"
+        },
+        "NvMSelectBlockForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForReadAll 参数"
+        },
+        "NvMBlockCrcType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockCrcType 参数"
+        },
+        "NvMBlockManagementType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockManagementType 参数"
+        },
+        "NvMRamBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRamBlockDataAddress 参数"
+        },
+        "NvMRomBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRomBlockDataAddress 参数"
+        },
+        "NvMSingleBlockCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMSingleBlockCallback 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BleShortID14": {
+      "description": "BleShortID14 配置容器",
+      "type": "object",
+      "properties": {
+        "NvMSelectBlockForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForWriteAll 参数"
+        },
+        "NvMBlockUseCrc": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCrc 参数"
+        },
+        "NvMBlockJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMBlockJobPriority 参数"
+        },
+        "NvMBlockUseSyncMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSyncMechanism 参数"
+        },
+        "NvMBlockWriteProt": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockWriteProt 参数"
+        },
+        "NvMBswMBlockStatusInformation": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBswMBlockStatusInformation 参数"
+        },
+        "NvMNvBlockLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockLength 参数"
+        },
+        "NvMNvBlockNum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockNum 参数"
+        },
+        "NvMNvramBlockIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvramBlockIdentifier 参数"
+        },
+        "NvMResistantToChangedSw": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMResistantToChangedSw 参数"
+        },
+        "NvMWriteBlockOnce": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMWriteBlockOnce 参数"
+        },
+        "NvMUseServicePorts": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseServicePorts 参数"
+        },
+        "NvMUseJobendCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseJobendCallback 参数"
+        },
+        "NvMUseInitCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseInitCallback 参数"
+        },
+        "NvMBlockUseCRCCompMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCRCCompMechanism 参数"
+        },
+        "NvMBlockUseSetRamBlockStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSetRamBlockStatus 参数"
+        },
+        "NvMInvokeCallbacksForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForReadAll 参数"
+        },
+        "NvMInvokeCallbacksForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForWriteAll 参数"
+        },
+        "NvMCheckLossOfRedundancy": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMCheckLossOfRedundancy 参数"
+        },
+        "NvMSelectBlockForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForReadAll 参数"
+        },
+        "NvMBlockCrcType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockCrcType 参数"
+        },
+        "NvMBlockManagementType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockManagementType 参数"
+        },
+        "NvMRamBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRamBlockDataAddress 参数"
+        },
+        "NvMRomBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRomBlockDataAddress 参数"
+        },
+        "NvMSingleBlockCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMSingleBlockCallback 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BleShortID15": {
+      "description": "BleShortID15 配置容器",
+      "type": "object",
+      "properties": {
+        "NvMSelectBlockForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForWriteAll 参数"
+        },
+        "NvMBlockUseCrc": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCrc 参数"
+        },
+        "NvMBlockJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMBlockJobPriority 参数"
+        },
+        "NvMBlockUseSyncMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSyncMechanism 参数"
+        },
+        "NvMBlockWriteProt": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockWriteProt 参数"
+        },
+        "NvMBswMBlockStatusInformation": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBswMBlockStatusInformation 参数"
+        },
+        "NvMNvBlockLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockLength 参数"
+        },
+        "NvMNvBlockNum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockNum 参数"
+        },
+        "NvMNvramBlockIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvramBlockIdentifier 参数"
+        },
+        "NvMResistantToChangedSw": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMResistantToChangedSw 参数"
+        },
+        "NvMWriteBlockOnce": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMWriteBlockOnce 参数"
+        },
+        "NvMUseServicePorts": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseServicePorts 参数"
+        },
+        "NvMUseJobendCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseJobendCallback 参数"
+        },
+        "NvMUseInitCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseInitCallback 参数"
+        },
+        "NvMBlockUseCRCCompMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCRCCompMechanism 参数"
+        },
+        "NvMBlockUseSetRamBlockStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSetRamBlockStatus 参数"
+        },
+        "NvMInvokeCallbacksForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForReadAll 参数"
+        },
+        "NvMInvokeCallbacksForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForWriteAll 参数"
+        },
+        "NvMCheckLossOfRedundancy": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMCheckLossOfRedundancy 参数"
+        },
+        "NvMSelectBlockForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForReadAll 参数"
+        },
+        "NvMBlockCrcType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockCrcType 参数"
+        },
+        "NvMBlockManagementType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockManagementType 参数"
+        },
+        "NvMRamBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRamBlockDataAddress 参数"
+        },
+        "NvMRomBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRomBlockDataAddress 参数"
+        },
+        "NvMSingleBlockCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMSingleBlockCallback 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BleShortID16": {
+      "description": "BleShortID16 配置容器",
+      "type": "object",
+      "properties": {
+        "NvMSelectBlockForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForWriteAll 参数"
+        },
+        "NvMBlockUseCrc": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCrc 参数"
+        },
+        "NvMBlockJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMBlockJobPriority 参数"
+        },
+        "NvMBlockUseSyncMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSyncMechanism 参数"
+        },
+        "NvMBlockWriteProt": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockWriteProt 参数"
+        },
+        "NvMBswMBlockStatusInformation": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBswMBlockStatusInformation 参数"
+        },
+        "NvMNvBlockLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockLength 参数"
+        },
+        "NvMNvBlockNum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockNum 参数"
+        },
+        "NvMNvramBlockIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvramBlockIdentifier 参数"
+        },
+        "NvMResistantToChangedSw": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMResistantToChangedSw 参数"
+        },
+        "NvMWriteBlockOnce": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMWriteBlockOnce 参数"
+        },
+        "NvMUseServicePorts": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseServicePorts 参数"
+        },
+        "NvMUseJobendCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseJobendCallback 参数"
+        },
+        "NvMUseInitCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseInitCallback 参数"
+        },
+        "NvMBlockUseCRCCompMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCRCCompMechanism 参数"
+        },
+        "NvMBlockUseSetRamBlockStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSetRamBlockStatus 参数"
+        },
+        "NvMInvokeCallbacksForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForReadAll 参数"
+        },
+        "NvMInvokeCallbacksForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForWriteAll 参数"
+        },
+        "NvMCheckLossOfRedundancy": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMCheckLossOfRedundancy 参数"
+        },
+        "NvMSelectBlockForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForReadAll 参数"
+        },
+        "NvMBlockCrcType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockCrcType 参数"
+        },
+        "NvMBlockManagementType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockManagementType 参数"
+        },
+        "NvMRamBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRamBlockDataAddress 参数"
+        },
+        "NvMRomBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRomBlockDataAddress 参数"
+        },
+        "NvMSingleBlockCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMSingleBlockCallback 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BleShortID17": {
+      "description": "BleShortID17 配置容器",
+      "type": "object",
+      "properties": {
+        "NvMSelectBlockForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForWriteAll 参数"
+        },
+        "NvMBlockUseCrc": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCrc 参数"
+        },
+        "NvMBlockJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMBlockJobPriority 参数"
+        },
+        "NvMBlockUseSyncMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSyncMechanism 参数"
+        },
+        "NvMBlockWriteProt": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockWriteProt 参数"
+        },
+        "NvMBswMBlockStatusInformation": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBswMBlockStatusInformation 参数"
+        },
+        "NvMNvBlockLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockLength 参数"
+        },
+        "NvMNvBlockNum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockNum 参数"
+        },
+        "NvMNvramBlockIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvramBlockIdentifier 参数"
+        },
+        "NvMResistantToChangedSw": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMResistantToChangedSw 参数"
+        },
+        "NvMWriteBlockOnce": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMWriteBlockOnce 参数"
+        },
+        "NvMUseServicePorts": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseServicePorts 参数"
+        },
+        "NvMUseJobendCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseJobendCallback 参数"
+        },
+        "NvMUseInitCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseInitCallback 参数"
+        },
+        "NvMBlockUseCRCCompMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCRCCompMechanism 参数"
+        },
+        "NvMBlockUseSetRamBlockStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSetRamBlockStatus 参数"
+        },
+        "NvMInvokeCallbacksForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForReadAll 参数"
+        },
+        "NvMInvokeCallbacksForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForWriteAll 参数"
+        },
+        "NvMCheckLossOfRedundancy": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMCheckLossOfRedundancy 参数"
+        },
+        "NvMSelectBlockForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForReadAll 参数"
+        },
+        "NvMBlockCrcType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockCrcType 参数"
+        },
+        "NvMBlockManagementType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockManagementType 参数"
+        },
+        "NvMRamBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRamBlockDataAddress 参数"
+        },
+        "NvMRomBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRomBlockDataAddress 参数"
+        },
+        "NvMSingleBlockCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMSingleBlockCallback 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BleShortID18": {
+      "description": "BleShortID18 配置容器",
+      "type": "object",
+      "properties": {
+        "NvMSelectBlockForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForWriteAll 参数"
+        },
+        "NvMBlockUseCrc": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCrc 参数"
+        },
+        "NvMBlockJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMBlockJobPriority 参数"
+        },
+        "NvMBlockUseSyncMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSyncMechanism 参数"
+        },
+        "NvMBlockWriteProt": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockWriteProt 参数"
+        },
+        "NvMBswMBlockStatusInformation": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBswMBlockStatusInformation 参数"
+        },
+        "NvMNvBlockLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockLength 参数"
+        },
+        "NvMNvBlockNum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockNum 参数"
+        },
+        "NvMNvramBlockIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvramBlockIdentifier 参数"
+        },
+        "NvMResistantToChangedSw": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMResistantToChangedSw 参数"
+        },
+        "NvMWriteBlockOnce": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMWriteBlockOnce 参数"
+        },
+        "NvMUseServicePorts": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseServicePorts 参数"
+        },
+        "NvMUseJobendCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseJobendCallback 参数"
+        },
+        "NvMUseInitCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseInitCallback 参数"
+        },
+        "NvMBlockUseCRCCompMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCRCCompMechanism 参数"
+        },
+        "NvMBlockUseSetRamBlockStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSetRamBlockStatus 参数"
+        },
+        "NvMInvokeCallbacksForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForReadAll 参数"
+        },
+        "NvMInvokeCallbacksForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForWriteAll 参数"
+        },
+        "NvMCheckLossOfRedundancy": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMCheckLossOfRedundancy 参数"
+        },
+        "NvMSelectBlockForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForReadAll 参数"
+        },
+        "NvMBlockCrcType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockCrcType 参数"
+        },
+        "NvMBlockManagementType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockManagementType 参数"
+        },
+        "NvMRamBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRamBlockDataAddress 参数"
+        },
+        "NvMRomBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRomBlockDataAddress 参数"
+        },
+        "NvMSingleBlockCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMSingleBlockCallback 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BleShortID19": {
+      "description": "BleShortID19 配置容器",
+      "type": "object",
+      "properties": {
+        "NvMSelectBlockForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForWriteAll 参数"
+        },
+        "NvMBlockUseCrc": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCrc 参数"
+        },
+        "NvMBlockJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMBlockJobPriority 参数"
+        },
+        "NvMBlockUseSyncMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSyncMechanism 参数"
+        },
+        "NvMBlockWriteProt": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockWriteProt 参数"
+        },
+        "NvMBswMBlockStatusInformation": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBswMBlockStatusInformation 参数"
+        },
+        "NvMNvBlockLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockLength 参数"
+        },
+        "NvMNvBlockNum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockNum 参数"
+        },
+        "NvMNvramBlockIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvramBlockIdentifier 参数"
+        },
+        "NvMResistantToChangedSw": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMResistantToChangedSw 参数"
+        },
+        "NvMWriteBlockOnce": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMWriteBlockOnce 参数"
+        },
+        "NvMUseServicePorts": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseServicePorts 参数"
+        },
+        "NvMUseJobendCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseJobendCallback 参数"
+        },
+        "NvMUseInitCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseInitCallback 参数"
+        },
+        "NvMBlockUseCRCCompMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCRCCompMechanism 参数"
+        },
+        "NvMBlockUseSetRamBlockStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSetRamBlockStatus 参数"
+        },
+        "NvMInvokeCallbacksForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForReadAll 参数"
+        },
+        "NvMInvokeCallbacksForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForWriteAll 参数"
+        },
+        "NvMCheckLossOfRedundancy": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMCheckLossOfRedundancy 参数"
+        },
+        "NvMSelectBlockForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForReadAll 参数"
+        },
+        "NvMBlockCrcType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockCrcType 参数"
+        },
+        "NvMBlockManagementType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockManagementType 参数"
+        },
+        "NvMRamBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRamBlockDataAddress 参数"
+        },
+        "NvMRomBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRomBlockDataAddress 参数"
+        },
+        "NvMSingleBlockCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMSingleBlockCallback 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BleShortID2": {
+      "description": "BleShortID2 配置容器",
+      "type": "object",
+      "properties": {
+        "NvMSelectBlockForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForWriteAll 参数"
+        },
+        "NvMBlockUseCrc": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCrc 参数"
+        },
+        "NvMBlockJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMBlockJobPriority 参数"
+        },
+        "NvMBlockUseSyncMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSyncMechanism 参数"
+        },
+        "NvMBlockWriteProt": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockWriteProt 参数"
+        },
+        "NvMBswMBlockStatusInformation": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBswMBlockStatusInformation 参数"
+        },
+        "NvMNvBlockLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockLength 参数"
+        },
+        "NvMNvBlockNum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockNum 参数"
+        },
+        "NvMNvramBlockIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvramBlockIdentifier 参数"
+        },
+        "NvMResistantToChangedSw": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMResistantToChangedSw 参数"
+        },
+        "NvMWriteBlockOnce": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMWriteBlockOnce 参数"
+        },
+        "NvMUseServicePorts": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseServicePorts 参数"
+        },
+        "NvMUseJobendCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseJobendCallback 参数"
+        },
+        "NvMUseInitCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseInitCallback 参数"
+        },
+        "NvMBlockUseCRCCompMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCRCCompMechanism 参数"
+        },
+        "NvMBlockUseSetRamBlockStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSetRamBlockStatus 参数"
+        },
+        "NvMInvokeCallbacksForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForReadAll 参数"
+        },
+        "NvMInvokeCallbacksForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForWriteAll 参数"
+        },
+        "NvMCheckLossOfRedundancy": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMCheckLossOfRedundancy 参数"
+        },
+        "NvMSelectBlockForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForReadAll 参数"
+        },
+        "NvMBlockCrcType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockCrcType 参数"
+        },
+        "NvMBlockManagementType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockManagementType 参数"
+        },
+        "NvMRamBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRamBlockDataAddress 参数"
+        },
+        "NvMRomBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRomBlockDataAddress 参数"
+        },
+        "NvMSingleBlockCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMSingleBlockCallback 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BleShortID20": {
+      "description": "BleShortID20 配置容器",
+      "type": "object",
+      "properties": {
+        "NvMSelectBlockForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForWriteAll 参数"
+        },
+        "NvMBlockUseCrc": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCrc 参数"
+        },
+        "NvMBlockJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMBlockJobPriority 参数"
+        },
+        "NvMBlockUseSyncMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSyncMechanism 参数"
+        },
+        "NvMBlockWriteProt": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockWriteProt 参数"
+        },
+        "NvMBswMBlockStatusInformation": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBswMBlockStatusInformation 参数"
+        },
+        "NvMNvBlockLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockLength 参数"
+        },
+        "NvMNvBlockNum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockNum 参数"
+        },
+        "NvMNvramBlockIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvramBlockIdentifier 参数"
+        },
+        "NvMResistantToChangedSw": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMResistantToChangedSw 参数"
+        },
+        "NvMWriteBlockOnce": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMWriteBlockOnce 参数"
+        },
+        "NvMUseServicePorts": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseServicePorts 参数"
+        },
+        "NvMUseJobendCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseJobendCallback 参数"
+        },
+        "NvMUseInitCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseInitCallback 参数"
+        },
+        "NvMBlockUseCRCCompMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCRCCompMechanism 参数"
+        },
+        "NvMBlockUseSetRamBlockStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSetRamBlockStatus 参数"
+        },
+        "NvMInvokeCallbacksForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForReadAll 参数"
+        },
+        "NvMInvokeCallbacksForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForWriteAll 参数"
+        },
+        "NvMCheckLossOfRedundancy": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMCheckLossOfRedundancy 参数"
+        },
+        "NvMSelectBlockForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForReadAll 参数"
+        },
+        "NvMBlockCrcType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockCrcType 参数"
+        },
+        "NvMBlockManagementType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockManagementType 参数"
+        },
+        "NvMRamBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRamBlockDataAddress 参数"
+        },
+        "NvMRomBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRomBlockDataAddress 参数"
+        },
+        "NvMSingleBlockCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMSingleBlockCallback 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BleShortID21": {
+      "description": "BleShortID21 配置容器",
+      "type": "object",
+      "properties": {
+        "NvMSelectBlockForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForWriteAll 参数"
+        },
+        "NvMBlockUseCrc": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCrc 参数"
+        },
+        "NvMBlockJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMBlockJobPriority 参数"
+        },
+        "NvMBlockUseSyncMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSyncMechanism 参数"
+        },
+        "NvMBlockWriteProt": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockWriteProt 参数"
+        },
+        "NvMBswMBlockStatusInformation": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBswMBlockStatusInformation 参数"
+        },
+        "NvMNvBlockLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockLength 参数"
+        },
+        "NvMNvBlockNum": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvBlockNum 参数"
+        },
+        "NvMNvramBlockIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NvMNvramBlockIdentifier 参数"
+        },
+        "NvMResistantToChangedSw": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMResistantToChangedSw 参数"
+        },
+        "NvMWriteBlockOnce": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMWriteBlockOnce 参数"
+        },
+        "NvMUseServicePorts": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseServicePorts 参数"
+        },
+        "NvMUseJobendCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseJobendCallback 参数"
+        },
+        "NvMUseInitCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMUseInitCallback 参数"
+        },
+        "NvMBlockUseCRCCompMechanism": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseCRCCompMechanism 参数"
+        },
+        "NvMBlockUseSetRamBlockStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMBlockUseSetRamBlockStatus 参数"
+        },
+        "NvMInvokeCallbacksForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForReadAll 参数"
+        },
+        "NvMInvokeCallbacksForWriteAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMInvokeCallbacksForWriteAll 参数"
+        },
+        "NvMCheckLossOfRedundancy": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMCheckLossOfRedundancy 参数"
+        },
+        "NvMSelectBlockForReadAll": {
+          "type": "boolean",
+          "default": false,
+          "description": "NvMSelectBlockForReadAll 参数"
+        },
+        "NvMBlockCrcType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockCrcType 参数"
+        },
+        "NvMBlockManagementType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMBlockManagementType 参数"
+        },
+        "NvMRamBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRamBlockDataAddress 参数"
+        },
+        "NvMRomBlockDataAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMRomBlockDataAddress 参数"
+        },
+        "NvMSingleBlockCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvMSingleBlockCallback 参数"
+        }
+      },
+      "additionalProperties": true
     }
   },
+  "required": [
+    "BleShortID0",
+    "BleShortID1",
+    "BleShortID10"
+  ],
   "additionalProperties": false,
   "x-layer": "Service",
-  "x-version": "4.4.0"
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

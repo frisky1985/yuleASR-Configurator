@@ -5,33 +5,194 @@
   "description": "运行时环境",
   "type": "object",
   "properties": {
-    "RteGeneral": {
-      "description": "Rte 通用配置",
+    "ADC_EXCLUSIVE_AREA_00": {
+      "description": "ADC_EXCLUSIVE_AREA_00 配置容器",
       "type": "object",
       "properties": {
-        "RteDevErrorDetect": {
-          "description": "开启开发错误检测",
-          "type": "boolean",
-          "default": false
-        },
-        "RteVersionInfoApi": {
-          "description": "版本信息API",
-          "type": "boolean",
-          "default": false
+        "RteExclusiveAreaImplMechanism": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "RteExclusiveAreaImplMechanism 参数"
         }
       },
       "additionalProperties": true
     },
-    "RteConfigSet": {
-      "description": "Rte 配置集",
+    "ADC_EXCLUSIVE_AREA_01": {
+      "description": "ADC_EXCLUSIVE_AREA_01 配置容器",
       "type": "object",
+      "properties": {
+        "RteExclusiveAreaImplMechanism": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "RteExclusiveAreaImplMechanism 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ADC_EXCLUSIVE_AREA_02": {
+      "description": "ADC_EXCLUSIVE_AREA_02 配置容器",
+      "type": "object",
+      "properties": {
+        "RteExclusiveAreaImplMechanism": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "RteExclusiveAreaImplMechanism 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ADC_EXCLUSIVE_AREA_03": {
+      "description": "ADC_EXCLUSIVE_AREA_03 配置容器",
+      "type": "object",
+      "properties": {
+        "RteExclusiveAreaImplMechanism": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "RteExclusiveAreaImplMechanism 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ADC_EXCLUSIVE_AREA_04": {
+      "description": "ADC_EXCLUSIVE_AREA_04 配置容器",
+      "type": "object",
+      "properties": {
+        "RteExclusiveAreaImplMechanism": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "RteExclusiveAreaImplMechanism 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ADC_EXCLUSIVE_AREA_05": {
+      "description": "ADC_EXCLUSIVE_AREA_05 配置容器",
+      "type": "object",
+      "properties": {
+        "RteExclusiveAreaImplMechanism": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "RteExclusiveAreaImplMechanism 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ADC_EXCLUSIVE_AREA_06": {
+      "description": "ADC_EXCLUSIVE_AREA_06 配置容器",
+      "type": "object",
+      "properties": {
+        "RteExclusiveAreaImplMechanism": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "RteExclusiveAreaImplMechanism 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ADC_EXCLUSIVE_AREA_07": {
+      "description": "ADC_EXCLUSIVE_AREA_07 配置容器",
+      "type": "object",
+      "properties": {
+        "RteExclusiveAreaImplMechanism": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "RteExclusiveAreaImplMechanism 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ADC_EXCLUSIVE_AREA_08": {
+      "description": "ADC_EXCLUSIVE_AREA_08 配置容器",
+      "type": "object",
+      "properties": {
+        "RteExclusiveAreaImplMechanism": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "RteExclusiveAreaImplMechanism 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ADC_EXCLUSIVE_AREA_09": {
+      "description": "ADC_EXCLUSIVE_AREA_09 配置容器",
+      "type": "object",
+      "properties": {
+        "RteExclusiveAreaImplMechanism": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "RteExclusiveAreaImplMechanism 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ADC_EXCLUSIVE_AREA_10": {
+      "description": "ADC_EXCLUSIVE_AREA_10 配置容器",
+      "type": "object",
+      "properties": {
+        "RteExclusiveAreaImplMechanism": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "RteExclusiveAreaImplMechanism 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ADC_EXCLUSIVE_AREA_11": {
+      "description": "ADC_EXCLUSIVE_AREA_11 配置容器",
+      "type": "object",
+      "properties": {
+        "RteExclusiveAreaImplMechanism": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "RteExclusiveAreaImplMechanism 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ADC_EXCLUSIVE_AREA_12": {
+      "description": "ADC_EXCLUSIVE_AREA_12 配置容器",
+      "type": "object",
+      "properties": {
+        "RteExclusiveAreaImplMechanism": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "RteExclusiveAreaImplMechanism 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ADC_EXCLUSIVE_AREA_13": {
+      "description": "ADC_EXCLUSIVE_AREA_13 配置容器",
+      "type": "object",
+      "properties": {
+        "RteExclusiveAreaImplMechanism": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "RteExclusiveAreaImplMechanism 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ADC_EXCLUSIVE_AREA_14": {
+      "description": "ADC_EXCLUSIVE_AREA_14 配置容器",
+      "type": "object",
+      "properties": {
+        "RteExclusiveAreaImplMechanism": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "RteExclusiveAreaImplMechanism 参数"
+        }
+      },
       "additionalProperties": true
     }
   },
   "required": [
-    "RteGeneral"
+    "ADC_EXCLUSIVE_AREA_00",
+    "ADC_EXCLUSIVE_AREA_01",
+    "ADC_EXCLUSIVE_AREA_02"
   ],
   "additionalProperties": false,
   "x-layer": "RTE",
-  "x-version": "4.4.0"
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

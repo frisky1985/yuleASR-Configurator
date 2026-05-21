@@ -5,33 +5,372 @@
   "description": "BSW 模式管理器",
   "type": "object",
   "properties": {
-    "BswMGeneral": {
-      "description": "BswM 通用配置",
+    "AL_Disable_NM": {
+      "description": "AL_Disable_NM 配置容器",
       "type": "object",
       "properties": {
-        "BswMDevErrorDetect": {
-          "description": "开启开发错误检测",
-          "type": "boolean",
-          "default": false
+        "BswMActionListPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListPriority 参数"
         },
-        "BswMVersionInfoApi": {
-          "description": "版本信息API",
+        "BswMAbortOnFail": {
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "BswMAbortOnFail 参数"
+        },
+        "BswMActionListItemIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListItemIndex 参数"
+        },
+        "BswMActionListExecution": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BswMActionListExecution 参数"
         }
       },
       "additionalProperties": true
     },
-    "BswMConfigSet": {
-      "description": "BswM 配置集",
+    "AL_Disable_Rx": {
+      "description": "AL_Disable_Rx 配置容器",
       "type": "object",
+      "properties": {
+        "BswMActionListPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListPriority 参数"
+        },
+        "BswMAbortOnFail": {
+          "type": "boolean",
+          "default": false,
+          "description": "BswMAbortOnFail 参数"
+        },
+        "BswMActionListItemIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListItemIndex 参数"
+        },
+        "BswMActionListExecution": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BswMActionListExecution 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "AL_Disable_Rx_DM": {
+      "description": "AL_Disable_Rx_DM 配置容器",
+      "type": "object",
+      "properties": {
+        "BswMActionListPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListPriority 参数"
+        },
+        "BswMAbortOnFail": {
+          "type": "boolean",
+          "default": false,
+          "description": "BswMAbortOnFail 参数"
+        },
+        "BswMActionListItemIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListItemIndex 参数"
+        },
+        "BswMActionListExecution": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BswMActionListExecution 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "AL_Disable_Tx": {
+      "description": "AL_Disable_Tx 配置容器",
+      "type": "object",
+      "properties": {
+        "BswMActionListPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListPriority 参数"
+        },
+        "BswMAbortOnFail": {
+          "type": "boolean",
+          "default": false,
+          "description": "BswMAbortOnFail 参数"
+        },
+        "BswMActionListItemIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListItemIndex 参数"
+        },
+        "BswMActionListExecution": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BswMActionListExecution 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "AL_Enable_NM": {
+      "description": "AL_Enable_NM 配置容器",
+      "type": "object",
+      "properties": {
+        "BswMActionListPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListPriority 参数"
+        },
+        "BswMAbortOnFail": {
+          "type": "boolean",
+          "default": false,
+          "description": "BswMAbortOnFail 参数"
+        },
+        "BswMActionListItemIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListItemIndex 参数"
+        },
+        "BswMActionListExecution": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BswMActionListExecution 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "AL_Enable_Rx": {
+      "description": "AL_Enable_Rx 配置容器",
+      "type": "object",
+      "properties": {
+        "BswMActionListPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListPriority 参数"
+        },
+        "BswMAbortOnFail": {
+          "type": "boolean",
+          "default": false,
+          "description": "BswMAbortOnFail 参数"
+        },
+        "BswMActionListItemIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListItemIndex 参数"
+        },
+        "BswMActionListExecution": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BswMActionListExecution 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "AL_Enable_Rx_DM": {
+      "description": "AL_Enable_Rx_DM 配置容器",
+      "type": "object",
+      "properties": {
+        "BswMActionListPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListPriority 参数"
+        },
+        "BswMAbortOnFail": {
+          "type": "boolean",
+          "default": false,
+          "description": "BswMAbortOnFail 参数"
+        },
+        "BswMActionListItemIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListItemIndex 参数"
+        },
+        "BswMActionListExecution": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BswMActionListExecution 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "AL_Enable_Tx": {
+      "description": "AL_Enable_Tx 配置容器",
+      "type": "object",
+      "properties": {
+        "BswMActionListPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListPriority 参数"
+        },
+        "BswMAbortOnFail": {
+          "type": "boolean",
+          "default": false,
+          "description": "BswMAbortOnFail 参数"
+        },
+        "BswMActionListItemIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListItemIndex 参数"
+        },
+        "BswMActionListExecution": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BswMActionListExecution 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "Action_BSWM_NM_DISABLE_DKMM_LHBDCANFD_a9ca9096": {
+      "description": "Action_BSWM_NM_DISABLE_DKMM_LHBDCANFD_a9ca9096 配置容器",
+      "type": "object",
+      "properties": {
+        "BswMAbortOnFail": {
+          "type": "boolean",
+          "default": false,
+          "description": "BswMAbortOnFail 参数"
+        },
+        "BswMActionListItemIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListItemIndex 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "Action_BSWM_NM_ENABLE_DKMM_LHBDCANFD_a9ca9096": {
+      "description": "Action_BSWM_NM_ENABLE_DKMM_LHBDCANFD_a9ca9096 配置容器",
+      "type": "object",
+      "properties": {
+        "BswMAbortOnFail": {
+          "type": "boolean",
+          "default": false,
+          "description": "BswMAbortOnFail 参数"
+        },
+        "BswMActionListItemIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListItemIndex 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "Action_DISABLE_BPEPS_LHBDCANFD_Rx_5db50b44": {
+      "description": "Action_DISABLE_BPEPS_LHBDCANFD_Rx_5db50b44 配置容器",
+      "type": "object",
+      "properties": {
+        "BswMAbortOnFail": {
+          "type": "boolean",
+          "default": false,
+          "description": "BswMAbortOnFail 参数"
+        },
+        "BswMActionListItemIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListItemIndex 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "Action_DISABLE_BPEPS_LHBDCANFD_Tx_0befacc2": {
+      "description": "Action_DISABLE_BPEPS_LHBDCANFD_Tx_0befacc2 配置容器",
+      "type": "object",
+      "properties": {
+        "BswMAbortOnFail": {
+          "type": "boolean",
+          "default": false,
+          "description": "BswMAbortOnFail 参数"
+        },
+        "BswMActionListItemIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListItemIndex 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "Action_DM_DISABLE_BPEPS_LHBDCANFD_Rx_5db50b44": {
+      "description": "Action_DM_DISABLE_BPEPS_LHBDCANFD_Rx_5db50b44 配置容器",
+      "type": "object",
+      "properties": {
+        "BswMAbortOnFail": {
+          "type": "boolean",
+          "default": false,
+          "description": "BswMAbortOnFail 参数"
+        },
+        "BswMActionListItemIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListItemIndex 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "Action_DM_ENABLE_BPEPS_LHBDCANFD_Rx_5db50b44": {
+      "description": "Action_DM_ENABLE_BPEPS_LHBDCANFD_Rx_5db50b44 配置容器",
+      "type": "object",
+      "properties": {
+        "BswMAbortOnFail": {
+          "type": "boolean",
+          "default": false,
+          "description": "BswMAbortOnFail 参数"
+        },
+        "BswMActionListItemIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListItemIndex 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "Action_ENABLE_BPEPS_LHBDCANFD_Rx_5db50b44": {
+      "description": "Action_ENABLE_BPEPS_LHBDCANFD_Rx_5db50b44 配置容器",
+      "type": "object",
+      "properties": {
+        "BswMAbortOnFail": {
+          "type": "boolean",
+          "default": false,
+          "description": "BswMAbortOnFail 参数"
+        },
+        "BswMActionListItemIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BswMActionListItemIndex 参数"
+        }
+      },
       "additionalProperties": true
     }
   },
   "required": [
-    "BswMGeneral"
+    "AL_Disable_NM",
+    "AL_Disable_Rx",
+    "AL_Disable_Rx_DM"
   ],
   "additionalProperties": false,
   "x-layer": "Service",
-  "x-version": "4.4.0"
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

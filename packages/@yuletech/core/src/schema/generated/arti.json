@@ -5,33 +5,312 @@
   "description": "ARTI 运行时接口",
   "type": "object",
   "properties": {
-    "ArtiGeneral": {
-      "description": "Arti 通用配置",
+    "ActivateTask": {
+      "description": "ActivateTask 配置容器",
       "type": "object",
       "properties": {
-        "ArtiDevErrorDetect": {
-          "description": "开启开发错误检测",
-          "type": "boolean",
-          "default": false
+        "ArtiParameterTypeMapPairInput": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArtiParameterTypeMapPairInput 参数"
         },
-        "ArtiVersionInfoApi": {
-          "description": "版本信息API",
-          "type": "boolean",
-          "default": false
+        "ArtiParameterTypeMapPairOutput": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiParameterTypeMapPairOutput 参数"
         }
       },
       "additionalProperties": true
     },
-    "ArtiConfigSet": {
-      "description": "Arti 配置集",
+    "ActivateTaskAsyn": {
+      "description": "ActivateTaskAsyn 配置容器",
       "type": "object",
+      "properties": {
+        "ArtiParameterTypeMapPairInput": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArtiParameterTypeMapPairInput 参数"
+        },
+        "ArtiParameterTypeMapPairOutput": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiParameterTypeMapPairOutput 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "Adc0_Isr_Bat": {
+      "description": "Adc0_Isr_Bat 配置容器",
+      "type": "object",
+      "properties": {
+        "ArtiParameterTypeMapPairInput": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArtiParameterTypeMapPairInput 参数"
+        },
+        "ArtiParameterTypeMapPairOutput": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiParameterTypeMapPairOutput 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "Adc0_Isr_Bat_Input_Exp": {
+      "description": "Adc0_Isr_Bat_Input_Exp 配置容器",
+      "type": "object",
+      "properties": {
+        "ArtiExpressionString": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiExpressionString 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "AllowAccess": {
+      "description": "AllowAccess 配置容器",
+      "type": "object",
+      "properties": {
+        "ArtiParameterTypeMapPairInput": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArtiParameterTypeMapPairInput 参数"
+        },
+        "ArtiParameterTypeMapPairOutput": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiParameterTypeMapPairOutput 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ArtiGeneral": {
+      "description": "ArtiGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "ArtiDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "ArtiDevErrorDetect 参数"
+        },
+        "ArtiSafeBswChecks": {
+          "type": "boolean",
+          "default": false,
+          "description": "ArtiSafeBswChecks 参数"
+        },
+        "ArtiEnableVfbTraceClient": {
+          "type": "boolean",
+          "default": false,
+          "description": "ArtiEnableVfbTraceClient 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ArtiHardware": {
+      "description": "ArtiHardware 配置容器",
+      "type": "object",
+      "properties": {
+        "ArtiHardwareCoreInstanceCoreId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArtiHardwareCoreInstanceCoreId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ArtiHardwareCoreClass_CurrentApplication_Map": {
+      "description": "ArtiHardwareCoreClass_CurrentApplication_Map 配置容器",
+      "type": "object",
+      "properties": {
+        "ArtiParameterTypeMapPairOutput": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiParameterTypeMapPairOutput 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ArtiHardwareCoreClass_CurrentIsr_Map": {
+      "description": "ArtiHardwareCoreClass_CurrentIsr_Map 配置容器",
+      "type": "object",
+      "properties": {
+        "ArtiParameterTypeMapPairOutput": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiParameterTypeMapPairOutput 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ArtiHardwareCoreClass_CurrentTask_Map": {
+      "description": "ArtiHardwareCoreClass_CurrentTask_Map 配置容器",
+      "type": "object",
+      "properties": {
+        "ArtiParameterTypeMapPairOutput": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiParameterTypeMapPairOutput 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ArtiHookTraceVariable": {
+      "description": "ArtiHookTraceVariable 配置容器",
+      "type": "object",
+      "properties": {
+        "ArtiHookStartBit": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArtiHookStartBit 参数"
+        },
+        "ArtiHookBitCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArtiHookBitCount 参数"
+        },
+        "ArtiHookTraceVariableAccessType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiHookTraceVariableAccessType 参数"
+        },
+        "ArtiHookPartPart": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiHookPartPart 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ArtiHookTraceVariablePart": {
+      "description": "ArtiHookTraceVariablePart 配置容器",
+      "type": "object",
+      "properties": {
+        "ArtiHookStartBit": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArtiHookStartBit 参数"
+        },
+        "ArtiHookBitCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArtiHookBitCount 参数"
+        },
+        "ArtiHookPartPart": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiHookPartPart 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ArtiOs": {
+      "description": "ArtiOs 配置容器",
+      "type": "object",
+      "properties": {
+        "ArtiOsIsrInstanceId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArtiOsIsrInstanceId 参数"
+        },
+        "ArtiOsTaskInstanceId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArtiOsTaskInstanceId 参数"
+        },
+        "ArtiOsAlarmInstanceCounter": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiOsAlarmInstanceCounter 参数"
+        },
+        "ArtiOsAlarmInstanceAction": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiOsAlarmInstanceAction 参数"
+        },
+        "ArtiOsIsrInstanceCategory": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiOsIsrInstanceCategory 参数"
+        },
+        "ArtiOsIsrInstanceFunction": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiOsIsrInstanceFunction 参数"
+        },
+        "ArtiOsResourceInstancePriority": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiOsResourceInstancePriority 参数"
+        },
+        "ArtiOsStackInstanceDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiOsStackInstanceDirection 参数"
+        },
+        "ArtiOsTaskInstanceFunction": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiOsTaskInstanceFunction 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ArtiOsAlarmClass_State_Map": {
+      "description": "ArtiOsAlarmClass_State_Map 配置容器",
+      "type": "object",
+      "properties": {
+        "ArtiParameterTypeMapPairInput": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArtiParameterTypeMapPairInput 参数"
+        },
+        "ArtiParameterTypeMapPairOutput": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiParameterTypeMapPairOutput 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ArtiOsClass_AppMode_Map": {
+      "description": "ArtiOsClass_AppMode_Map 配置容器",
+      "type": "object",
+      "properties": {
+        "ArtiParameterTypeMapPairInput": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArtiParameterTypeMapPairInput 参数"
+        },
+        "ArtiParameterTypeMapPairOutput": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ArtiParameterTypeMapPairOutput 参数"
+        }
+      },
       "additionalProperties": true
     }
   },
   "required": [
-    "ArtiGeneral"
+    "ActivateTask",
+    "ActivateTaskAsyn",
+    "Adc0_Isr_Bat"
   ],
   "additionalProperties": false,
   "x-layer": "Service",
-  "x-version": "4.4.0"
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

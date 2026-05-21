@@ -2,31 +2,632 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/adc.json",
   "title": "Adc Configuration",
-  "description": "模拟/数字转换器驱动",
+  "description": "Adc Configuration",
   "type": "object",
   "properties": {
-    "AdcChannel": {
-      "description": "ADC 通道配置",
+    "AdcConfigSet": {
+      "description": "AdcConfigSet 配置容器",
       "type": "object",
+      "properties": {
+        "AdcDozeMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcDozeMode 参数"
+        },
+        "AdcLogicalUnitId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcLogicalUnitId 参数"
+        },
+        "AdcPowerUpDelayValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcPowerUpDelayValue 参数"
+        },
+        "AdcPreEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcPreEnable 参数"
+        },
+        "AdcLogicalChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcLogicalChannelId 参数"
+        },
+        "AdcEnablePause": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcEnablePause 参数"
+        },
+        "AdcEnableRsync": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcEnableRsync 参数"
+        },
+        "AdcGroupId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcGroupId 参数"
+        },
+        "AdcPauseDelayValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcPauseDelayValue 参数"
+        },
+        "AdcStreamingNumSamples": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcStreamingNumSamples 参数"
+        },
+        "AdcTriggerDelayValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcTriggerDelayValue 参数"
+        },
+        "AdcWithoutInterrupts": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcWithoutInterrupts 参数"
+        },
+        "AdcHwUnitId": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcHwUnitId 参数"
+        },
+        "AdcResolution": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcResolution 参数"
+        },
+        "AdcTransferType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcTransferType 参数"
+        },
+        "AdcVoltageReferenceSelection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcVoltageReferenceSelection 参数"
+        },
+        "AdcChannelId": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcChannelId 参数"
+        },
+        "AdcHardwareAverageSelect": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcHardwareAverageSelect 参数"
+        },
+        "AdcSampleTimeSelect": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcSampleTimeSelect 参数"
+        },
+        "AdcExtraNotification": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcExtraNotification 参数"
+        },
+        "AdcGroupAccessMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcGroupAccessMode 参数"
+        },
+        "AdcGroupConversionMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcGroupConversionMode 参数"
+        },
+        "AdcGroupConversionType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcGroupConversionType 参数"
+        },
+        "AdcGroupTriggSrc": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcGroupTriggSrc 参数"
+        },
+        "AdcStreamingBufferMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcStreamingBufferMode 参数"
+        }
+      },
       "additionalProperties": true
     },
-    "AdcGroup": {
-      "description": "ADC 组配置",
+    "AdcHwUnit_0": {
+      "description": "AdcHwUnit_0 配置容器",
       "type": "object",
+      "properties": {
+        "AdcDozeMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcDozeMode 参数"
+        },
+        "AdcLogicalUnitId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcLogicalUnitId 参数"
+        },
+        "AdcPowerUpDelayValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcPowerUpDelayValue 参数"
+        },
+        "AdcPreEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcPreEnable 参数"
+        },
+        "AdcLogicalChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcLogicalChannelId 参数"
+        },
+        "AdcEnablePause": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcEnablePause 参数"
+        },
+        "AdcEnableRsync": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcEnableRsync 参数"
+        },
+        "AdcGroupId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcGroupId 参数"
+        },
+        "AdcPauseDelayValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcPauseDelayValue 参数"
+        },
+        "AdcStreamingNumSamples": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcStreamingNumSamples 参数"
+        },
+        "AdcTriggerDelayValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcTriggerDelayValue 参数"
+        },
+        "AdcWithoutInterrupts": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcWithoutInterrupts 参数"
+        },
+        "AdcHwUnitId": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcHwUnitId 参数"
+        },
+        "AdcResolution": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcResolution 参数"
+        },
+        "AdcTransferType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcTransferType 参数"
+        },
+        "AdcVoltageReferenceSelection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcVoltageReferenceSelection 参数"
+        },
+        "AdcChannelId": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcChannelId 参数"
+        },
+        "AdcHardwareAverageSelect": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcHardwareAverageSelect 参数"
+        },
+        "AdcSampleTimeSelect": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcSampleTimeSelect 参数"
+        },
+        "AdcExtraNotification": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcExtraNotification 参数"
+        },
+        "AdcGroupAccessMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcGroupAccessMode 参数"
+        },
+        "AdcGroupConversionMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcGroupConversionMode 参数"
+        },
+        "AdcGroupConversionType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcGroupConversionType 参数"
+        },
+        "AdcGroupTriggSrc": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcGroupTriggSrc 参数"
+        },
+        "AdcStreamingBufferMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcStreamingBufferMode 参数"
+        }
+      },
       "additionalProperties": true
     },
-    "AdcResolution": {
-      "description": "分辨率",
-      "type": "string",
-      "enum": [
-        "ADC_RESOLUTION_8_BIT",
-        "ADC_RESOLUTION_10_BIT",
-        "ADC_RESOLUTION_12_BIT"
-      ],
-      "default": "ADC_RESOLUTION_12_BIT"
+    "Adc_A8_BAT": {
+      "description": "Adc_A8_BAT 配置容器",
+      "type": "object",
+      "properties": {
+        "AdcLogicalChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcLogicalChannelId 参数"
+        },
+        "AdcChannelId": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcChannelId 参数"
+        },
+        "AdcHardwareAverageSelect": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcHardwareAverageSelect 参数"
+        },
+        "AdcSampleTimeSelect": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcSampleTimeSelect 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "AdcGroup_0": {
+      "description": "AdcGroup_0 配置容器",
+      "type": "object",
+      "properties": {
+        "AdcEnablePause": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcEnablePause 参数"
+        },
+        "AdcEnableRsync": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcEnableRsync 参数"
+        },
+        "AdcGroupId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcGroupId 参数"
+        },
+        "AdcPauseDelayValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcPauseDelayValue 参数"
+        },
+        "AdcStreamingNumSamples": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcStreamingNumSamples 参数"
+        },
+        "AdcTriggerDelayValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcTriggerDelayValue 参数"
+        },
+        "AdcWithoutInterrupts": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcWithoutInterrupts 参数"
+        },
+        "AdcExtraNotification": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcExtraNotification 参数"
+        },
+        "AdcGroupAccessMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcGroupAccessMode 参数"
+        },
+        "AdcGroupConversionMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcGroupConversionMode 参数"
+        },
+        "AdcGroupConversionType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcGroupConversionType 参数"
+        },
+        "AdcGroupTriggSrc": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcGroupTriggSrc 参数"
+        },
+        "AdcStreamingBufferMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcStreamingBufferMode 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "AdcGeneral": {
+      "description": "AdcGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "AdcDeInitApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcDeInitApi 参数"
+        },
+        "AdcDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcDevErrorDetect 参数"
+        },
+        "AdcDmaTimeout": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcDmaTimeout 参数"
+        },
+        "AdcEnableLimitCheck": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcEnableLimitCheck 参数"
+        },
+        "AdcEnableQueuing": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcEnableQueuing 参数"
+        },
+        "AdcEnableStartStopGroupApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcEnableStartStopGroupApi 参数"
+        },
+        "AdcGrpNotifCapability": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcGrpNotifCapability 参数"
+        },
+        "AdcHwTriggerApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcHwTriggerApi 参数"
+        },
+        "AdcPriorityQueueMaxDepth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcPriorityQueueMaxDepth 参数"
+        },
+        "AdcReadGroupApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcReadGroupApi 参数"
+        },
+        "AdcVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcVersionInfoApi 参数"
+        },
+        "AdcPriorityImplementation": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcPriorityImplementation 参数"
+        },
+        "AdcResultAlignment": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcResultAlignment 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "AdcInterrupt_0": {
+      "description": "AdcInterrupt_0 配置容器",
+      "type": "object",
+      "properties": {
+        "AdcInterruptEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcInterruptEnable 参数"
+        },
+        "AdcInterruptSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcInterruptSource 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "AdcInterrupt_1": {
+      "description": "AdcInterrupt_1 配置容器",
+      "type": "object",
+      "properties": {
+        "AdcInterruptEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcInterruptEnable 参数"
+        },
+        "AdcInterruptSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AdcInterruptSource 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "AdcPublishedInformation": {
+      "description": "AdcPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "AdcChannelValueSigned": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcChannelValueSigned 参数"
+        },
+        "AdcGroupFirstChannelFixed": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcGroupFirstChannelFixed 参数"
+        },
+        "AdcMaxChannelResolution": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AdcMaxChannelResolution 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        },
+        "VendorApiInfix": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "VendorApiInfix 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "NonAutosar": {
+      "description": "NonAutosar 配置容器",
+      "type": "object",
+      "properties": {
+        "AdcDisableDemReportErrorStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcDisableDemReportErrorStatus 参数"
+        },
+        "AdcEnableCalibration": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcEnableCalibration 参数"
+        },
+        "AdcEnableDmaTrasferMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcEnableDmaTrasferMode 参数"
+        },
+        "AdcEnableGroupDependentChannelNames": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcEnableGroupDependentChannelNames 参数"
+        },
+        "AdcEnableInitialNotification": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcEnableInitialNotification 参数"
+        },
+        "AdcEnableSetChannel": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcEnableSetChannel 参数"
+        },
+        "AdcUseHardwareNormalGroups": {
+          "type": "boolean",
+          "default": false,
+          "description": "AdcUseHardwareNormalGroups 参数"
+        }
+      },
+      "additionalProperties": true
     }
   },
+  "required": [
+    "AdcConfigSet",
+    "AdcHwUnit_0",
+    "Adc_A8_BAT"
+  ],
   "additionalProperties": false,
-  "x-layer": "MCAL",
-  "x-version": "4.4.0"
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

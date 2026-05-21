@@ -2,21 +2,402 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/dcm.json",
   "title": "Dcm Configuration",
-  "description": "诊断通信管理 - UDS 协议实现",
+  "description": "Dcm Configuration",
   "type": "object",
   "properties": {
-    "DcmDsdServiceTable": {
-      "description": "服务表配置",
+    "Active_Diagnostic_Session": {
+      "description": "Active_Diagnostic_Session 配置容器",
       "type": "object",
+      "properties": {
+        "DcmDspDidDataPos": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDspDidDataPos 参数"
+        }
+      },
       "additionalProperties": true
     },
-    "DcmDspData": {
-      "description": "数据标识符配置",
+    "Active_Diagnostic_Session_Active_Diagnostic_Session": {
+      "description": "Active_Diagnostic_Session_Active_Diagnostic_Session 配置容器",
       "type": "object",
+      "properties": {
+        "DcmDspDataSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDspDataSize 参数"
+        },
+        "DcmDspDataType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDspDataType 参数"
+        },
+        "DcmDspDataUsePort": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDspDataUsePort 参数"
+        },
+        "DcmDspDataConditionCheckReadFnc": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDspDataConditionCheckReadFnc 参数"
+        },
+        "DcmDspDataReadFnc": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDspDataReadFnc 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BLE_Ranging_Calibration_data": {
+      "description": "BLE_Ranging_Calibration_data 配置容器",
+      "type": "object",
+      "properties": {
+        "DcmDspDidDataPos": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDspDidDataPos 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BLE_Ranging_Calibration_data_BLE_Ranging_Calibration_data": {
+      "description": "BLE_Ranging_Calibration_data_BLE_Ranging_Calibration_data 配置容器",
+      "type": "object",
+      "properties": {
+        "DcmDspDataSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDspDataSize 参数"
+        },
+        "DcmDspDataType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDspDataType 参数"
+        },
+        "DcmDspDataUsePort": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDspDataUsePort 参数"
+        },
+        "DcmDspDataConditionCheckReadFnc": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDspDataConditionCheckReadFnc 参数"
+        },
+        "DcmDspDataReadFnc": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDspDataReadFnc 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BPEPS_WorkingStatus": {
+      "description": "BPEPS_WorkingStatus 配置容器",
+      "type": "object",
+      "properties": {
+        "DcmDspDidDataPos": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDspDidDataPos 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BPEPS_WorkingStatus_BPEPS_WorkingStatus": {
+      "description": "BPEPS_WorkingStatus_BPEPS_WorkingStatus 配置容器",
+      "type": "object",
+      "properties": {
+        "DcmDspDataSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDspDataSize 参数"
+        },
+        "DcmDspDataType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDspDataType 参数"
+        },
+        "DcmDspDataUsePort": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDspDataUsePort 参数"
+        },
+        "DcmDspDataConditionCheckReadFnc": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDspDataConditionCheckReadFnc 参数"
+        },
+        "DcmDspDataReadFnc": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDspDataReadFnc 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ClearDiagInfo": {
+      "description": "ClearDiagInfo 配置容器",
+      "type": "object",
+      "properties": {
+        "DcmDsdSidTabServiceId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDsdSidTabServiceId 参数"
+        },
+        "DcmDsdSidTabSubfuncAvail": {
+          "type": "boolean",
+          "default": false,
+          "description": "DcmDsdSidTabSubfuncAvail 参数"
+        },
+        "DcmDsdSidTabUsed": {
+          "type": "boolean",
+          "default": false,
+          "description": "DcmDsdSidTabUsed 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CommunicationControl": {
+      "description": "CommunicationControl 配置容器",
+      "type": "object",
+      "properties": {
+        "DcmDsdSidTabServiceId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDsdSidTabServiceId 参数"
+        },
+        "DcmDsdSidTabSubfuncAvail": {
+          "type": "boolean",
+          "default": false,
+          "description": "DcmDsdSidTabSubfuncAvail 参数"
+        },
+        "DcmDsdSidTabUsed": {
+          "type": "boolean",
+          "default": false,
+          "description": "DcmDsdSidTabUsed 参数"
+        },
+        "DcmDsdSubServiceId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDsdSubServiceId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ControlDtcSetting": {
+      "description": "ControlDtcSetting 配置容器",
+      "type": "object",
+      "properties": {
+        "DcmDsdSidTabServiceId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDsdSidTabServiceId 参数"
+        },
+        "DcmDsdSidTabSubfuncAvail": {
+          "type": "boolean",
+          "default": false,
+          "description": "DcmDsdSidTabSubfuncAvail 参数"
+        },
+        "DcmDsdSidTabUsed": {
+          "type": "boolean",
+          "default": false,
+          "description": "DcmDsdSidTabUsed 参数"
+        },
+        "DcmDsdSubServiceId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDsdSubServiceId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DC_0xE001_oMyECU_oCAN_9c85e87b": {
+      "description": "DC_0xE001_oMyECU_oCAN_9c85e87b 配置容器",
+      "type": "object",
+      "properties": {
+        "DcmDslProtocolRxTesterSourceAddr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDslProtocolRxTesterSourceAddr 参数"
+        },
+        "DcmDslProtocolRxConnectionId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDslProtocolRxConnectionId 参数"
+        },
+        "DcmDslProtocolRxPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDslProtocolRxPduId 参数"
+        },
+        "DcmDslProtocolRxChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDslProtocolRxChannelId 参数"
+        },
+        "DcmDslTxConfirmationPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDslTxConfirmationPduId 参数"
+        },
+        "DcmDslAddressingType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDslAddressingType 参数"
+        },
+        "DcmDslProtocolRxAddrType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDslProtocolRxAddrType 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DIAG_LHBDCANFD_FuncReq_SDU_269ed755_Rx_477d06eb": {
+      "description": "DIAG_LHBDCANFD_FuncReq_SDU_269ed755_Rx_477d06eb 配置容器",
+      "type": "object",
+      "properties": {
+        "DcmDslProtocolRxPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDslProtocolRxPduId 参数"
+        },
+        "DcmDslProtocolRxChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDslProtocolRxChannelId 参数"
+        },
+        "DcmDslProtocolRxAddrType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDslProtocolRxAddrType 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DIAG_LHBDCANFD_PhyReq_DKMM_SDU_8c6e0837_Rx_066ae7fd": {
+      "description": "DIAG_LHBDCANFD_PhyReq_DKMM_SDU_8c6e0837_Rx_066ae7fd 配置容器",
+      "type": "object",
+      "properties": {
+        "DcmDslProtocolRxPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDslProtocolRxPduId 参数"
+        },
+        "DcmDslProtocolRxChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDslProtocolRxChannelId 参数"
+        },
+        "DcmDslProtocolRxAddrType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDslProtocolRxAddrType 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DIAG_LHBDCANFD_PhyResp_DKMM_SDU_192b76e8_Tx_87ad90a2": {
+      "description": "DIAG_LHBDCANFD_PhyResp_DKMM_SDU_192b76e8_Tx_87ad90a2 配置容器",
+      "type": "object",
+      "properties": {
+        "DcmDslTxConfirmationPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDslTxConfirmationPduId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DID_BLE_Ranging_Info": {
+      "description": "DID_BLE_Ranging_Info 配置容器",
+      "type": "object",
+      "properties": {
+        "DcmDspDidIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDspDidIdentifier 参数"
+        },
+        "DcmDspDidUsed": {
+          "type": "boolean",
+          "default": false,
+          "description": "DcmDspDidUsed 参数"
+        },
+        "DcmDspDidDataPos": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDspDidDataPos 参数"
+        },
+        "DcmDspDidUsePort": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDspDidUsePort 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DID_BPEPS_Bluetooth_Address": {
+      "description": "DID_BPEPS_Bluetooth_Address 配置容器",
+      "type": "object",
+      "properties": {
+        "DcmDspDidIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDspDidIdentifier 参数"
+        },
+        "DcmDspDidUsed": {
+          "type": "boolean",
+          "default": false,
+          "description": "DcmDspDidUsed 参数"
+        },
+        "DcmDspDidDataPos": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DcmDspDidDataPos 参数"
+        },
+        "DcmDspDidUsePort": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DcmDspDidUsePort 参数"
+        }
+      },
       "additionalProperties": true
     }
   },
+  "required": [
+    "Active_Diagnostic_Session",
+    "Active_Diagnostic_Session_Active_Diagnostic_Session",
+    "BLE_Ranging_Calibration_data"
+  ],
   "additionalProperties": false,
   "x-layer": "Service",
-  "x-version": "4.4.0"
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

@@ -5,33 +5,159 @@
   "description": "CAN 状态管理",
   "type": "object",
   "properties": {
-    "CanSMGeneral": {
-      "description": "CanSM 通用配置",
+    "CanSMConfiguration": {
+      "description": "CanSMConfiguration 配置容器",
       "type": "object",
       "properties": {
-        "CanSMDevErrorDetect": {
-          "description": "开启开发错误检测",
-          "type": "boolean",
-          "default": false
+        "CanSMModeRequestRepetitionMax": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanSMModeRequestRepetitionMax 参数"
         },
-        "CanSMVersionInfoApi": {
-          "description": "版本信息API",
+        "CanSMModeRequestRepetitionTime": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanSMModeRequestRepetitionTime 参数"
+        },
+        "CanSMBorCounterL1ToL2": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanSMBorCounterL1ToL2 参数"
+        },
+        "CanSMBorTimeL1": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanSMBorTimeL1 参数"
+        },
+        "CanSMBorTimeL2": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanSMBorTimeL2 参数"
+        },
+        "CanSMBorTimeTxEnsured": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanSMBorTimeTxEnsured 参数"
+        },
+        "CanSMBorTxConfirmationPolling": {
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "CanSMBorTxConfirmationPolling 参数"
         }
       },
       "additionalProperties": true
     },
-    "CanSMConfigSet": {
-      "description": "CanSM 配置集",
+    "LHBDCANFD_1e9b6ab9": {
+      "description": "LHBDCANFD_1e9b6ab9 配置容器",
       "type": "object",
+      "properties": {
+        "CanSMBorCounterL1ToL2": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanSMBorCounterL1ToL2 参数"
+        },
+        "CanSMBorTimeL1": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanSMBorTimeL1 参数"
+        },
+        "CanSMBorTimeL2": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanSMBorTimeL2 参数"
+        },
+        "CanSMBorTimeTxEnsured": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanSMBorTimeTxEnsured 参数"
+        },
+        "CanSMBorTxConfirmationPolling": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanSMBorTxConfirmationPolling 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanSMGeneral": {
+      "description": "CanSMGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "CanSMDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanSMDevErrorDetect 参数"
+        },
+        "CanSMMainFunctionTimePeriod": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanSMMainFunctionTimePeriod 参数"
+        },
+        "CanSMVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanSMVersionInfoApi 参数"
+        },
+        "CanSMBorCheckLevel": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanSMBorCheckLevel 参数"
+        },
+        "CanSMSafeBswChecks": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanSMSafeBswChecks 参数"
+        },
+        "CanSMSetBaudrateApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanSMSetBaudrateApi 参数"
+        },
+        "CanSMOutOfBoundsWriteSanitizer": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanSMOutOfBoundsWriteSanitizer 参数"
+        },
+        "CanSMOutOfBoundsReadSanitizer": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanSMOutOfBoundsReadSanitizer 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanSMGeneration": {
+      "description": "CanSMGeneration 配置容器",
+      "type": "object",
+      "properties": {
+        "CanSMOutOfBoundsWriteSanitizer": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanSMOutOfBoundsWriteSanitizer 参数"
+        },
+        "CanSMOutOfBoundsReadSanitizer": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanSMOutOfBoundsReadSanitizer 参数"
+        }
+      },
       "additionalProperties": true
     }
   },
   "required": [
+    "CanSMConfiguration",
+    "LHBDCANFD_1e9b6ab9",
     "CanSMGeneral"
   ],
   "additionalProperties": false,
   "x-layer": "ECUAL",
-  "x-version": "4.4.0"
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

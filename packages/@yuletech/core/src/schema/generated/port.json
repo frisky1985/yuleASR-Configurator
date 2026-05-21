@@ -2,30 +2,1146 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/port.json",
   "title": "Port Configuration",
-  "description": "GPIO 端口驱动 - 引脚方向和复用功能配置",
+  "description": "Port Configuration",
   "type": "object",
   "properties": {
-    "PortContainer": {
-      "description": "端口容器配置",
+    "BLE_3V3": {
+      "description": "BLE_3V3 配置容器",
       "type": "object",
+      "properties": {
+        "PortPinDirectionChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinDirectionChangeable 参数"
+        },
+        "PortPinId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinId 参数"
+        },
+        "PortPinModeChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinModeChangeable 参数"
+        },
+        "PortPinPFE": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinPFE 参数"
+        },
+        "PortPinPcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinPcr 参数"
+        },
+        "PortPinDSE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDSE 参数"
+        },
+        "PortPinDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDirection 参数"
+        },
+        "PortPinInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinInitialMode 参数"
+        },
+        "PortPinLevelValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinLevelValue 参数"
+        },
+        "PortPinMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinMode 参数"
+        },
+        "PortPinODE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinODE 参数"
+        },
+        "PortPinPE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPE 参数"
+        },
+        "PortPinPS": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPS 参数"
+        },
+        "PortPinPV": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPV 参数"
+        }
+      },
       "additionalProperties": true
     },
-    "PortPinMode": {
-      "description": "引脚模式",
-      "type": "string",
-      "enum": [
-        "PORT_PIN_MODE_DIO",
-        "PORT_PIN_MODE_CAN",
-        "PORT_PIN_MODE_SPI",
-        "PORT_PIN_MODE_PWM",
-        "PORT_PIN_MODE_ADC"
-      ]
+    "CAN_SPI_CLK": {
+      "description": "CAN_SPI_CLK 配置容器",
+      "type": "object",
+      "properties": {
+        "PortPinDirectionChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinDirectionChangeable 参数"
+        },
+        "PortPinId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinId 参数"
+        },
+        "PortPinModeChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinModeChangeable 参数"
+        },
+        "PortPinPFE": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinPFE 参数"
+        },
+        "PortPinPcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinPcr 参数"
+        },
+        "PortPinDSE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDSE 参数"
+        },
+        "PortPinDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDirection 参数"
+        },
+        "PortPinInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinInitialMode 参数"
+        },
+        "PortPinLevelValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinLevelValue 参数"
+        },
+        "PortPinMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinMode 参数"
+        },
+        "PortPinODE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinODE 参数"
+        },
+        "PortPinPE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPE 参数"
+        },
+        "PortPinPS": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPS 参数"
+        },
+        "PortPinPV": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPV 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CAN_SPI_CS": {
+      "description": "CAN_SPI_CS 配置容器",
+      "type": "object",
+      "properties": {
+        "PortPinDirectionChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinDirectionChangeable 参数"
+        },
+        "PortPinId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinId 参数"
+        },
+        "PortPinModeChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinModeChangeable 参数"
+        },
+        "PortPinPFE": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinPFE 参数"
+        },
+        "PortPinPcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinPcr 参数"
+        },
+        "PortPinDSE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDSE 参数"
+        },
+        "PortPinDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDirection 参数"
+        },
+        "PortPinInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinInitialMode 参数"
+        },
+        "PortPinLevelValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinLevelValue 参数"
+        },
+        "PortPinMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinMode 参数"
+        },
+        "PortPinODE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinODE 参数"
+        },
+        "PortPinPE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPE 参数"
+        },
+        "PortPinPS": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPS 参数"
+        },
+        "PortPinPV": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPV 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CAN_SPI_MISO": {
+      "description": "CAN_SPI_MISO 配置容器",
+      "type": "object",
+      "properties": {
+        "PortPinDirectionChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinDirectionChangeable 参数"
+        },
+        "PortPinId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinId 参数"
+        },
+        "PortPinModeChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinModeChangeable 参数"
+        },
+        "PortPinPFE": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinPFE 参数"
+        },
+        "PortPinPcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinPcr 参数"
+        },
+        "PortPinDSE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDSE 参数"
+        },
+        "PortPinDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDirection 参数"
+        },
+        "PortPinInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinInitialMode 参数"
+        },
+        "PortPinLevelValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinLevelValue 参数"
+        },
+        "PortPinMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinMode 参数"
+        },
+        "PortPinODE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinODE 参数"
+        },
+        "PortPinPE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPE 参数"
+        },
+        "PortPinPS": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPS 参数"
+        },
+        "PortPinPV": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPV 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CAN_SPI_MOSI": {
+      "description": "CAN_SPI_MOSI 配置容器",
+      "type": "object",
+      "properties": {
+        "PortPinDirectionChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinDirectionChangeable 参数"
+        },
+        "PortPinId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinId 参数"
+        },
+        "PortPinModeChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinModeChangeable 参数"
+        },
+        "PortPinPFE": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinPFE 参数"
+        },
+        "PortPinPcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinPcr 参数"
+        },
+        "PortPinDSE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDSE 参数"
+        },
+        "PortPinDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDirection 参数"
+        },
+        "PortPinInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinInitialMode 参数"
+        },
+        "PortPinLevelValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinLevelValue 参数"
+        },
+        "PortPinMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinMode 参数"
+        },
+        "PortPinODE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinODE 参数"
+        },
+        "PortPinPE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPE 参数"
+        },
+        "PortPinPS": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPS 参数"
+        },
+        "PortPinPV": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPV 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FLASH_SE_SPI_CLK": {
+      "description": "FLASH_SE_SPI_CLK 配置容器",
+      "type": "object",
+      "properties": {
+        "PortPinDirectionChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinDirectionChangeable 参数"
+        },
+        "PortPinId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinId 参数"
+        },
+        "PortPinModeChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinModeChangeable 参数"
+        },
+        "PortPinPFE": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinPFE 参数"
+        },
+        "PortPinPcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinPcr 参数"
+        },
+        "PortPinDSE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDSE 参数"
+        },
+        "PortPinDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDirection 参数"
+        },
+        "PortPinInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinInitialMode 参数"
+        },
+        "PortPinLevelValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinLevelValue 参数"
+        },
+        "PortPinMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinMode 参数"
+        },
+        "PortPinODE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinODE 参数"
+        },
+        "PortPinPE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPE 参数"
+        },
+        "PortPinPS": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPS 参数"
+        },
+        "PortPinPV": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPV 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FLASH_SE_SPI_MISO": {
+      "description": "FLASH_SE_SPI_MISO 配置容器",
+      "type": "object",
+      "properties": {
+        "PortPinDirectionChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinDirectionChangeable 参数"
+        },
+        "PortPinId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinId 参数"
+        },
+        "PortPinModeChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinModeChangeable 参数"
+        },
+        "PortPinPFE": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinPFE 参数"
+        },
+        "PortPinPcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinPcr 参数"
+        },
+        "PortPinDSE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDSE 参数"
+        },
+        "PortPinDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDirection 参数"
+        },
+        "PortPinInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinInitialMode 参数"
+        },
+        "PortPinLevelValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinLevelValue 参数"
+        },
+        "PortPinMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinMode 参数"
+        },
+        "PortPinODE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinODE 参数"
+        },
+        "PortPinPE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPE 参数"
+        },
+        "PortPinPS": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPS 参数"
+        },
+        "PortPinPV": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPV 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FLASH_SE_SPI_MOSI": {
+      "description": "FLASH_SE_SPI_MOSI 配置容器",
+      "type": "object",
+      "properties": {
+        "PortPinDirectionChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinDirectionChangeable 参数"
+        },
+        "PortPinId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinId 参数"
+        },
+        "PortPinModeChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinModeChangeable 参数"
+        },
+        "PortPinPFE": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinPFE 参数"
+        },
+        "PortPinPcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinPcr 参数"
+        },
+        "PortPinDSE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDSE 参数"
+        },
+        "PortPinDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDirection 参数"
+        },
+        "PortPinInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinInitialMode 参数"
+        },
+        "PortPinLevelValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinLevelValue 参数"
+        },
+        "PortPinMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinMode 参数"
+        },
+        "PortPinODE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinODE 参数"
+        },
+        "PortPinPE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPE 参数"
+        },
+        "PortPinPS": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPS 参数"
+        },
+        "PortPinPV": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPV 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FLASH_SPI_CS": {
+      "description": "FLASH_SPI_CS 配置容器",
+      "type": "object",
+      "properties": {
+        "PortPinDirectionChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinDirectionChangeable 参数"
+        },
+        "PortPinId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinId 参数"
+        },
+        "PortPinModeChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinModeChangeable 参数"
+        },
+        "PortPinPFE": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinPFE 参数"
+        },
+        "PortPinPcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinPcr 参数"
+        },
+        "PortPinDSE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDSE 参数"
+        },
+        "PortPinDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDirection 参数"
+        },
+        "PortPinInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinInitialMode 参数"
+        },
+        "PortPinLevelValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinLevelValue 参数"
+        },
+        "PortPinMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinMode 参数"
+        },
+        "PortPinODE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinODE 参数"
+        },
+        "PortPinPE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPE 参数"
+        },
+        "PortPinPS": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPS 参数"
+        },
+        "PortPinPV": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPV 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FLASH_WP": {
+      "description": "FLASH_WP 配置容器",
+      "type": "object",
+      "properties": {
+        "PortPinDirectionChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinDirectionChangeable 参数"
+        },
+        "PortPinId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinId 参数"
+        },
+        "PortPinModeChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinModeChangeable 参数"
+        },
+        "PortPinPFE": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinPFE 参数"
+        },
+        "PortPinPcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinPcr 参数"
+        },
+        "PortPinDSE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDSE 参数"
+        },
+        "PortPinDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDirection 参数"
+        },
+        "PortPinInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinInitialMode 参数"
+        },
+        "PortPinLevelValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinLevelValue 参数"
+        },
+        "PortPinMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinMode 参数"
+        },
+        "PortPinODE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinODE 参数"
+        },
+        "PortPinPE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPE 参数"
+        },
+        "PortPinPS": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPS 参数"
+        },
+        "PortPinPV": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPV 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "KW45_RST": {
+      "description": "KW45_RST 配置容器",
+      "type": "object",
+      "properties": {
+        "PortPinDirectionChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinDirectionChangeable 参数"
+        },
+        "PortPinId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinId 参数"
+        },
+        "PortPinModeChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinModeChangeable 参数"
+        },
+        "PortPinPFE": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinPFE 参数"
+        },
+        "PortPinPcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinPcr 参数"
+        },
+        "PortPinDSE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDSE 参数"
+        },
+        "PortPinDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDirection 参数"
+        },
+        "PortPinInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinInitialMode 参数"
+        },
+        "PortPinLevelValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinLevelValue 参数"
+        },
+        "PortPinMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinMode 参数"
+        },
+        "PortPinODE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinODE 参数"
+        },
+        "PortPinPE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPE 参数"
+        },
+        "PortPinPS": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPS 参数"
+        },
+        "PortPinPV": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPV 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "KW45_SWD_CLK": {
+      "description": "KW45_SWD_CLK 配置容器",
+      "type": "object",
+      "properties": {
+        "PortPinDirectionChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinDirectionChangeable 参数"
+        },
+        "PortPinId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinId 参数"
+        },
+        "PortPinModeChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinModeChangeable 参数"
+        },
+        "PortPinPFE": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinPFE 参数"
+        },
+        "PortPinPcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinPcr 参数"
+        },
+        "PortPinDSE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDSE 参数"
+        },
+        "PortPinDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDirection 参数"
+        },
+        "PortPinInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinInitialMode 参数"
+        },
+        "PortPinLevelValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinLevelValue 参数"
+        },
+        "PortPinMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinMode 参数"
+        },
+        "PortPinODE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinODE 参数"
+        },
+        "PortPinPE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPE 参数"
+        },
+        "PortPinPS": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPS 参数"
+        },
+        "PortPinPV": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPV 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "KW45_SWD_DIO": {
+      "description": "KW45_SWD_DIO 配置容器",
+      "type": "object",
+      "properties": {
+        "PortPinDirectionChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinDirectionChangeable 参数"
+        },
+        "PortPinId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinId 参数"
+        },
+        "PortPinModeChangeable": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinModeChangeable 参数"
+        },
+        "PortPinPFE": {
+          "type": "boolean",
+          "default": false,
+          "description": "PortPinPFE 参数"
+        },
+        "PortPinPcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortPinPcr 参数"
+        },
+        "PortPinDSE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDSE 参数"
+        },
+        "PortPinDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDirection 参数"
+        },
+        "PortPinInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinInitialMode 参数"
+        },
+        "PortPinLevelValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinLevelValue 参数"
+        },
+        "PortPinMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinMode 参数"
+        },
+        "PortPinODE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinODE 参数"
+        },
+        "PortPinPE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPE 参数"
+        },
+        "PortPinPS": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPS 参数"
+        },
+        "PortPinPV": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPV 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "NotUsedPortPin": {
+      "description": "NotUsedPortPin 配置容器",
+      "type": "object",
+      "properties": {
+        "PortPinDSE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDSE 参数"
+        },
+        "PortPinDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinDirection 参数"
+        },
+        "PortPinLevelValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinLevelValue 参数"
+        },
+        "PortPinMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinMode 参数"
+        },
+        "PortPinODE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinODE 参数"
+        },
+        "PortPinPE": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPE 参数"
+        },
+        "PortPinPS": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPS 参数"
+        },
+        "PortPinPV": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PortPinPV 参数"
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [
-    "PortContainer"
+    "BLE_3V3",
+    "CAN_SPI_CLK",
+    "CAN_SPI_CS"
   ],
   "additionalProperties": false,
-  "x-layer": "MCAL",
-  "x-version": "4.4.0"
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

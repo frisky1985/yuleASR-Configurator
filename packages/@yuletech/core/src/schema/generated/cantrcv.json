@@ -5,33 +5,274 @@
   "description": "CAN 收发器",
   "type": "object",
   "properties": {
-    "CanTrcvGeneral": {
-      "description": "CanTrcv 通用配置",
+    "CanTrcvConfigSet": {
+      "description": "CanTrcvConfigSet 配置容器",
       "type": "object",
       "properties": {
-        "CanTrcvDevErrorDetect": {
-          "description": "开启开发错误检测",
-          "type": "boolean",
-          "default": false
+        "CanTrcvChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvChannelId 参数"
         },
-        "CanTrcvVersionInfoApi": {
-          "description": "版本信息API",
+        "CanTrcvChannelUsed": {
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "CanTrcvChannelUsed 参数"
+        },
+        "CanTrcvControlsPowerSupply": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvControlsPowerSupply 参数"
+        },
+        "CanTrcvHwPnSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvHwPnSupport 参数"
+        },
+        "CanTrcvMaxBaudrate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvMaxBaudrate 参数"
+        },
+        "CanTrcvWakeupByBusUsed": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvWakeupByBusUsed 参数"
+        },
+        "CanTrcvBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvBaudRate 参数"
+        },
+        "CanTrcvBusErrFlag": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvBusErrFlag 参数"
+        },
+        "CanTrcvPnCanIdIsExtended": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvPnCanIdIsExtended 参数"
+        },
+        "CanTrcvPnEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvPnEnabled 参数"
+        },
+        "CanTrcvPnFrameCanId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvPnFrameCanId 参数"
+        },
+        "CanTrcvPnFrameCanIdMask": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvPnFrameCanIdMask 参数"
+        },
+        "CanTrcvPnFrameDlc": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvPnFrameDlc 参数"
+        },
+        "CanTrcvPowerOnFlag": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvPowerOnFlag 参数"
+        },
+        "CanTrcvInitState": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTrcvInitState 参数"
         }
       },
       "additionalProperties": true
     },
-    "CanTrcvConfigSet": {
-      "description": "CanTrcv 配置集",
+    "CanTrcvChannel": {
+      "description": "CanTrcvChannel 配置容器",
       "type": "object",
+      "properties": {
+        "CanTrcvChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvChannelId 参数"
+        },
+        "CanTrcvChannelUsed": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvChannelUsed 参数"
+        },
+        "CanTrcvControlsPowerSupply": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvControlsPowerSupply 参数"
+        },
+        "CanTrcvHwPnSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvHwPnSupport 参数"
+        },
+        "CanTrcvMaxBaudrate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvMaxBaudrate 参数"
+        },
+        "CanTrcvWakeupByBusUsed": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvWakeupByBusUsed 参数"
+        },
+        "CanTrcvBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvBaudRate 参数"
+        },
+        "CanTrcvBusErrFlag": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvBusErrFlag 参数"
+        },
+        "CanTrcvPnCanIdIsExtended": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvPnCanIdIsExtended 参数"
+        },
+        "CanTrcvPnEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvPnEnabled 参数"
+        },
+        "CanTrcvPnFrameCanId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvPnFrameCanId 参数"
+        },
+        "CanTrcvPnFrameCanIdMask": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvPnFrameCanIdMask 参数"
+        },
+        "CanTrcvPnFrameDlc": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvPnFrameDlc 参数"
+        },
+        "CanTrcvPowerOnFlag": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvPowerOnFlag 参数"
+        },
+        "CanTrcvInitState": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTrcvInitState 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTrcvPartialNetwork": {
+      "description": "CanTrcvPartialNetwork 配置容器",
+      "type": "object",
+      "properties": {
+        "CanTrcvBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvBaudRate 参数"
+        },
+        "CanTrcvBusErrFlag": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvBusErrFlag 参数"
+        },
+        "CanTrcvPnCanIdIsExtended": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvPnCanIdIsExtended 参数"
+        },
+        "CanTrcvPnEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvPnEnabled 参数"
+        },
+        "CanTrcvPnFrameCanId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvPnFrameCanId 参数"
+        },
+        "CanTrcvPnFrameCanIdMask": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvPnFrameCanIdMask 参数"
+        },
+        "CanTrcvPnFrameDlc": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvPnFrameDlc 参数"
+        },
+        "CanTrcvPowerOnFlag": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvPowerOnFlag 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTrcvGeneral": {
+      "description": "CanTrcvGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "CanTrcvDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvDevErrorDetect 参数"
+        },
+        "CanTrcvGetVersionInfo": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTrcvGetVersionInfo 参数"
+        },
+        "CanTrcvIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTrcvIndex 参数"
+        },
+        "CanTrcvMainFunctionPeriod": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTrcvMainFunctionPeriod 参数"
+        },
+        "CanTrcvWakeUpSupport": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTrcvWakeUpSupport 参数"
+        }
+      },
       "additionalProperties": true
     }
   },
   "required": [
-    "CanTrcvGeneral"
+    "CanTrcvConfigSet",
+    "CanTrcvChannel",
+    "CanTrcvPartialNetwork"
   ],
   "additionalProperties": false,
   "x-layer": "ECUAL",
-  "x-version": "4.4.0"
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

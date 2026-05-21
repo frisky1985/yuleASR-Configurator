@@ -6,25 +6,45 @@
   "type": "object",
   "properties": {
     "CrcGeneral": {
-      "description": "Crc 通用配置",
+      "description": "CrcGeneral 配置容器",
       "type": "object",
       "properties": {
-        "CrcDevErrorDetect": {
-          "description": "开启开发错误检测",
-          "type": "boolean",
-          "default": false
-        },
         "CrcVersionInfoApi": {
-          "description": "版本信息API",
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "CrcVersionInfoApi 参数"
+        },
+        "Crc16Mode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "Crc16Mode 参数"
+        },
+        "Crc32Mode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "Crc32Mode 参数"
+        },
+        "Crc8H2FMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "Crc8H2FMode 参数"
+        },
+        "Crc8Mode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "Crc8Mode 参数"
+        },
+        "Crc32P4Mode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "Crc32P4Mode 参数"
+        },
+        "Crc64Mode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "Crc64Mode 参数"
         }
       },
-      "additionalProperties": true
-    },
-    "CrcConfigSet": {
-      "description": "Crc 配置集",
-      "type": "object",
       "additionalProperties": true
     }
   },
@@ -33,5 +53,6 @@
   ],
   "additionalProperties": false,
   "x-layer": "Service",
-  "x-version": "4.4.0"
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

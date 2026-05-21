@@ -5,33 +5,1012 @@
   "description": "硬件加密服务",
   "type": "object",
   "properties": {
-    "CryptoGeneral": {
-      "description": "Crypto 通用配置",
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
       "type": "object",
       "properties": {
-        "CryptoDevErrorDetect": {
-          "description": "开启开发错误检测",
-          "type": "boolean",
-          "default": false
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
         },
-        "CryptoVersionInfoApi": {
-          "description": "版本信息API",
-          "type": "boolean",
-          "default": false
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        },
+        "VendorApiInfix": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "VendorApiInfix 参数"
         }
       },
       "additionalProperties": true
     },
-    "CryptoConfigSet": {
-      "description": "Crypto 配置集",
+    "CryptoDriverObject_0": {
+      "description": "CryptoDriverObject_0 配置容器",
       "type": "object",
+      "properties": {
+        "CryptoDriverObjectId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryptoDriverObjectId 参数"
+        },
+        "CryptoQueueSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryptoQueueSize 参数"
+        },
+        "CryptoPrimitiveType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoPrimitiveType 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CryptoDriverObjects": {
+      "description": "CryptoDriverObjects 配置容器",
+      "type": "object",
+      "properties": {
+        "CryptoDriverObjectId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryptoDriverObjectId 参数"
+        },
+        "CryptoQueueSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryptoQueueSize 参数"
+        },
+        "CryptoPrimitiveType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoPrimitiveType 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CryptoGeneral": {
+      "description": "CryptoGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "CryptoDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoDevErrorDetect 参数"
+        },
+        "CryptoEnableUserModeSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoEnableUserModeSupport 参数"
+        },
+        "CryptoHardwareSemaphore": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoHardwareSemaphore 参数"
+        },
+        "CryptoInstanceId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryptoInstanceId 参数"
+        },
+        "CryptoTimeoutDuration": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryptoTimeoutDuration 参数"
+        },
+        "CryptoVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoVersionInfoApi 参数"
+        },
+        "CryptoHostVersion": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoHostVersion 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CryptoKeyElementAdvanceProperties": {
+      "description": "CryptoKeyElementAdvanceProperties 配置容器",
+      "type": "object",
+      "properties": {
+        "CryptoKeyLock": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyLock 参数"
+        },
+        "CryptoKeyValidForAEAD": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAEAD 参数"
+        },
+        "CryptoKeyValidForAES": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAES 参数"
+        },
+        "CryptoKeyValidForDecrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForDecrypt 参数"
+        },
+        "CryptoKeyValidForEncrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForEncrypt 参数"
+        },
+        "CryptoKeyValidForExchange": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForExchange 参数"
+        },
+        "CryptoKeyValidForImportExport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForImportExport 参数"
+        },
+        "CryptoKeyValidForMAC": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForMAC 参数"
+        },
+        "CryptoKeyValidForPlainRead": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainRead 参数"
+        },
+        "CryptoKeyValidForPlainWrite": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainWrite 参数"
+        },
+        "CryptoKeyValidForSign": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSign 参数"
+        },
+        "CryptoKeyValidForSignVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSignVerify 参数"
+        },
+        "CryptoKeyValidForVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForVerify 参数"
+        },
+        "CryptoKeyAccessSecureLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoKeyAccessSecureLevel 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CryptoKeyElementAdvancePropertyDummy": {
+      "description": "CryptoKeyElementAdvancePropertyDummy 配置容器",
+      "type": "object",
+      "properties": {
+        "CryptoKeyLock": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyLock 参数"
+        },
+        "CryptoKeyValidForVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForVerify 参数"
+        },
+        "CryptoKeyValidForSign": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSign 参数"
+        },
+        "CryptoKeyValidForDecrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForDecrypt 参数"
+        },
+        "CryptoKeyValidForEncrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForEncrypt 参数"
+        },
+        "CryptoKeyValidForAES": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAES 参数"
+        },
+        "CryptoKeyValidForMAC": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForMAC 参数"
+        },
+        "CryptoKeyValidForAEAD": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAEAD 参数"
+        },
+        "CryptoKeyValidForSignVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSignVerify 参数"
+        },
+        "CryptoKeyValidForExchange": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForExchange 参数"
+        },
+        "CryptoKeyValidForImportExport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForImportExport 参数"
+        },
+        "CryptoKeyValidForPlainRead": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainRead 参数"
+        },
+        "CryptoKeyValidForPlainWrite": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainWrite 参数"
+        },
+        "CryptoKeyAccessSecureLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoKeyAccessSecureLevel 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CryptoKeyElementAdvancePropertyForBleDeobfuscateKey": {
+      "description": "CryptoKeyElementAdvancePropertyForBleDeobfuscateKey 配置容器",
+      "type": "object",
+      "properties": {
+        "CryptoKeyLock": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyLock 参数"
+        },
+        "CryptoKeyValidForAEAD": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAEAD 参数"
+        },
+        "CryptoKeyValidForAES": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAES 参数"
+        },
+        "CryptoKeyValidForDecrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForDecrypt 参数"
+        },
+        "CryptoKeyValidForEncrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForEncrypt 参数"
+        },
+        "CryptoKeyValidForExchange": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForExchange 参数"
+        },
+        "CryptoKeyValidForImportExport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForImportExport 参数"
+        },
+        "CryptoKeyValidForMAC": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForMAC 参数"
+        },
+        "CryptoKeyValidForPlainRead": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainRead 参数"
+        },
+        "CryptoKeyValidForPlainWrite": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainWrite 参数"
+        },
+        "CryptoKeyValidForSign": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSign 参数"
+        },
+        "CryptoKeyValidForSignVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSignVerify 参数"
+        },
+        "CryptoKeyValidForVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForVerify 参数"
+        },
+        "CryptoKeyAccessSecureLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoKeyAccessSecureLevel 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CryptoKeyElementAdvancePropertyForBleExportA2BLtkElke": {
+      "description": "CryptoKeyElementAdvancePropertyForBleExportA2BLtkElke 配置容器",
+      "type": "object",
+      "properties": {
+        "CryptoKeyLock": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyLock 参数"
+        },
+        "CryptoKeyValidForAEAD": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAEAD 参数"
+        },
+        "CryptoKeyValidForAES": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAES 参数"
+        },
+        "CryptoKeyValidForDecrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForDecrypt 参数"
+        },
+        "CryptoKeyValidForEncrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForEncrypt 参数"
+        },
+        "CryptoKeyValidForExchange": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForExchange 参数"
+        },
+        "CryptoKeyValidForImportExport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForImportExport 参数"
+        },
+        "CryptoKeyValidForMAC": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForMAC 参数"
+        },
+        "CryptoKeyValidForPlainRead": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainRead 参数"
+        },
+        "CryptoKeyValidForPlainWrite": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainWrite 参数"
+        },
+        "CryptoKeyValidForSign": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSign 参数"
+        },
+        "CryptoKeyValidForSignVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSignVerify 参数"
+        },
+        "CryptoKeyValidForVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForVerify 参数"
+        },
+        "CryptoKeyAccessSecureLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoKeyAccessSecureLevel 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CryptoKeyElementAdvancePropertyForBleF5LtkKeyBlob": {
+      "description": "CryptoKeyElementAdvancePropertyForBleF5LtkKeyBlob 配置容器",
+      "type": "object",
+      "properties": {
+        "CryptoKeyLock": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyLock 参数"
+        },
+        "CryptoKeyValidForAEAD": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAEAD 参数"
+        },
+        "CryptoKeyValidForAES": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAES 参数"
+        },
+        "CryptoKeyValidForDecrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForDecrypt 参数"
+        },
+        "CryptoKeyValidForEncrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForEncrypt 参数"
+        },
+        "CryptoKeyValidForExchange": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForExchange 参数"
+        },
+        "CryptoKeyValidForImportExport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForImportExport 参数"
+        },
+        "CryptoKeyValidForMAC": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForMAC 参数"
+        },
+        "CryptoKeyValidForPlainRead": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainRead 参数"
+        },
+        "CryptoKeyValidForPlainWrite": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainWrite 参数"
+        },
+        "CryptoKeyValidForSign": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSign 参数"
+        },
+        "CryptoKeyValidForSignVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSignVerify 参数"
+        },
+        "CryptoKeyValidForVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForVerify 参数"
+        },
+        "CryptoKeyAccessSecureLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoKeyAccessSecureLevel 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CryptoKeyElementAdvancePropertyForBleF5MacKey": {
+      "description": "CryptoKeyElementAdvancePropertyForBleF5MacKey 配置容器",
+      "type": "object",
+      "properties": {
+        "CryptoKeyLock": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyLock 参数"
+        },
+        "CryptoKeyValidForAEAD": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAEAD 参数"
+        },
+        "CryptoKeyValidForAES": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAES 参数"
+        },
+        "CryptoKeyValidForDecrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForDecrypt 参数"
+        },
+        "CryptoKeyValidForEncrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForEncrypt 参数"
+        },
+        "CryptoKeyValidForExchange": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForExchange 参数"
+        },
+        "CryptoKeyValidForImportExport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForImportExport 参数"
+        },
+        "CryptoKeyValidForMAC": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForMAC 参数"
+        },
+        "CryptoKeyValidForPlainRead": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainRead 参数"
+        },
+        "CryptoKeyValidForPlainWrite": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainWrite 参数"
+        },
+        "CryptoKeyValidForSign": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSign 参数"
+        },
+        "CryptoKeyValidForSignVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSignVerify 参数"
+        },
+        "CryptoKeyValidForVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForVerify 参数"
+        },
+        "CryptoKeyAccessSecureLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoKeyAccessSecureLevel 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CryptoKeyElementAdvancePropertyForBleImportA2BLtkElke": {
+      "description": "CryptoKeyElementAdvancePropertyForBleImportA2BLtkElke 配置容器",
+      "type": "object",
+      "properties": {
+        "CryptoKeyLock": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyLock 参数"
+        },
+        "CryptoKeyValidForAEAD": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAEAD 参数"
+        },
+        "CryptoKeyValidForAES": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAES 参数"
+        },
+        "CryptoKeyValidForDecrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForDecrypt 参数"
+        },
+        "CryptoKeyValidForEncrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForEncrypt 参数"
+        },
+        "CryptoKeyValidForExchange": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForExchange 参数"
+        },
+        "CryptoKeyValidForImportExport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForImportExport 参数"
+        },
+        "CryptoKeyValidForMAC": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForMAC 参数"
+        },
+        "CryptoKeyValidForPlainRead": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainRead 参数"
+        },
+        "CryptoKeyValidForPlainWrite": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainWrite 参数"
+        },
+        "CryptoKeyValidForSign": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSign 参数"
+        },
+        "CryptoKeyValidForSignVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSignVerify 参数"
+        },
+        "CryptoKeyValidForVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForVerify 参数"
+        },
+        "CryptoKeyAccessSecureLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoKeyAccessSecureLevel 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CryptoKeyElementAdvancePropertyForBleLtkBlob": {
+      "description": "CryptoKeyElementAdvancePropertyForBleLtkBlob 配置容器",
+      "type": "object",
+      "properties": {
+        "CryptoKeyLock": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyLock 参数"
+        },
+        "CryptoKeyValidForAEAD": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAEAD 参数"
+        },
+        "CryptoKeyValidForAES": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAES 参数"
+        },
+        "CryptoKeyValidForDecrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForDecrypt 参数"
+        },
+        "CryptoKeyValidForEncrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForEncrypt 参数"
+        },
+        "CryptoKeyValidForExchange": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForExchange 参数"
+        },
+        "CryptoKeyValidForImportExport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForImportExport 参数"
+        },
+        "CryptoKeyValidForMAC": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForMAC 参数"
+        },
+        "CryptoKeyValidForPlainRead": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainRead 参数"
+        },
+        "CryptoKeyValidForPlainWrite": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainWrite 参数"
+        },
+        "CryptoKeyValidForSign": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSign 参数"
+        },
+        "CryptoKeyValidForSignVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSignVerify 参数"
+        },
+        "CryptoKeyValidForVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForVerify 参数"
+        },
+        "CryptoKeyAccessSecureLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoKeyAccessSecureLevel 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CryptoKeyElementAdvancePropertyForBleObfuscateKey": {
+      "description": "CryptoKeyElementAdvancePropertyForBleObfuscateKey 配置容器",
+      "type": "object",
+      "properties": {
+        "CryptoKeyLock": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyLock 参数"
+        },
+        "CryptoKeyValidForAEAD": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAEAD 参数"
+        },
+        "CryptoKeyValidForAES": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAES 参数"
+        },
+        "CryptoKeyValidForDecrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForDecrypt 参数"
+        },
+        "CryptoKeyValidForEncrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForEncrypt 参数"
+        },
+        "CryptoKeyValidForExchange": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForExchange 参数"
+        },
+        "CryptoKeyValidForImportExport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForImportExport 参数"
+        },
+        "CryptoKeyValidForMAC": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForMAC 参数"
+        },
+        "CryptoKeyValidForPlainRead": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainRead 参数"
+        },
+        "CryptoKeyValidForPlainWrite": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainWrite 参数"
+        },
+        "CryptoKeyValidForSign": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSign 参数"
+        },
+        "CryptoKeyValidForSignVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSignVerify 参数"
+        },
+        "CryptoKeyValidForVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForVerify 参数"
+        },
+        "CryptoKeyAccessSecureLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoKeyAccessSecureLevel 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CryptoKeyElementAdvancePropertyForBleSkdBlob": {
+      "description": "CryptoKeyElementAdvancePropertyForBleSkdBlob 配置容器",
+      "type": "object",
+      "properties": {
+        "CryptoKeyLock": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyLock 参数"
+        },
+        "CryptoKeyValidForAEAD": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAEAD 参数"
+        },
+        "CryptoKeyValidForAES": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForAES 参数"
+        },
+        "CryptoKeyValidForDecrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForDecrypt 参数"
+        },
+        "CryptoKeyValidForEncrypt": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForEncrypt 参数"
+        },
+        "CryptoKeyValidForExchange": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForExchange 参数"
+        },
+        "CryptoKeyValidForImportExport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForImportExport 参数"
+        },
+        "CryptoKeyValidForMAC": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForMAC 参数"
+        },
+        "CryptoKeyValidForPlainRead": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainRead 参数"
+        },
+        "CryptoKeyValidForPlainWrite": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForPlainWrite 参数"
+        },
+        "CryptoKeyValidForSign": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSign 参数"
+        },
+        "CryptoKeyValidForSignVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForSignVerify 参数"
+        },
+        "CryptoKeyValidForVerify": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyValidForVerify 参数"
+        },
+        "CryptoKeyAccessSecureLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoKeyAccessSecureLevel 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CryptoKeyElementForBleA2BAlgorithem": {
+      "description": "CryptoKeyElementForBleA2BAlgorithem 配置容器",
+      "type": "object",
+      "properties": {
+        "CryptoKeyElementAllowPartialAccess": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyElementAllowPartialAccess 参数"
+        },
+        "CryptoKeyElementBitsSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryptoKeyElementBitsSize 参数"
+        },
+        "CryptoKeyElementId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryptoKeyElementId 参数"
+        },
+        "CryptoKeyElementLoadToRAM": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyElementLoadToRAM 参数"
+        },
+        "CryptoKeyElementPersist": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryptoKeyElementPersist 参数"
+        },
+        "CryptoKeyElementSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryptoKeyElementSize 参数"
+        },
+        "CryptoKeyElementUniqueIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryptoKeyElementUniqueIndex 参数"
+        },
+        "CryptoKeyElementFormat": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoKeyElementFormat 参数"
+        },
+        "CryptoKeyElementFreeType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoKeyElementFreeType 参数"
+        },
+        "CryptoKeyElementInitValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoKeyElementInitValue 参数"
+        },
+        "CryptoKeyElementReadAccess": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoKeyElementReadAccess 参数"
+        },
+        "CryptoKeyElementType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoKeyElementType 参数"
+        },
+        "CryptoKeyElementWriteAccess": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryptoKeyElementWriteAccess 参数"
+        }
+      },
       "additionalProperties": true
     }
   },
   "required": [
-    "CryptoGeneral"
+    "CommonPublishedInformation",
+    "CryptoDriverObject_0",
+    "CryptoDriverObjects"
   ],
   "additionalProperties": false,
   "x-layer": "Service",
-  "x-version": "4.4.0"
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

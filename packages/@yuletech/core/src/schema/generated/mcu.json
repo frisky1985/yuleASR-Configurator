@@ -2,26 +2,477 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/mcu.json",
   "title": "Mcu Configuration",
-  "description": "微控制器驱动 - 时钟初始化与低功耗管理",
+  "description": "Mcu Configuration",
   "type": "object",
   "properties": {
-    "McuClockSetting": {
-      "description": "时钟配置引用",
-      "type": "string"
+    "ActiveModePowerSetting": {
+      "description": "ActiveModePowerSetting 配置容器",
+      "type": "object",
+      "properties": {
+        "ActiveModeBandgapBufferEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "ActiveModeBandgapBufferEnable 参数"
+        },
+        "ActiveModeCoreHighVoltageDetectEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "ActiveModeCoreHighVoltageDetectEnable 参数"
+        },
+        "ActiveModeCoreLowVoltageDetectEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "ActiveModeCoreLowVoltageDetectEnable 参数"
+        },
+        "ActiveModeIOHighVoltageDetectEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "ActiveModeIOHighVoltageDetectEnable 参数"
+        },
+        "ActiveModeIOLowVoltageDetectEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "ActiveModeIOLowVoltageDetectEnable 参数"
+        },
+        "ActiveModeSystemHighVoltageDetectEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "ActiveModeSystemHighVoltageDetectEnable 参数"
+        },
+        "ActiveModeSystemLowVoltageDetectEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "ActiveModeSystemLowVoltageDetectEnable 参数"
+        },
+        "ActiveModeVddCoreGlitchDetectDisable": {
+          "type": "boolean",
+          "default": false,
+          "description": "ActiveModeVddCoreGlitchDetectDisable 参数"
+        },
+        "ActiveModeBandgapMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ActiveModeBandgapMode 参数"
+        },
+        "ActiveModeCoreLdoVddLvl": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ActiveModeCoreLdoVddLvl 参数"
+        },
+        "ActiveModeDCDCVddDriveStrength": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ActiveModeDCDCVddDriveStrength 参数"
+        },
+        "ActiveModeDCDCVddVoltageLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ActiveModeDCDCVddVoltageLevel 参数"
+        },
+        "ActiveModeSystemLdoVddDriveStrength": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ActiveModeSystemLdoVddDriveStrength 参数"
+        },
+        "ActiveModeSystemLdoVddVoltageLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ActiveModeSystemLdoVddVoltageLevel 参数"
+        }
+      },
+      "additionalProperties": true
     },
-    "McuRamSectorSetting": {
-      "description": "RAM 区域配置",
-      "type": "string"
+    "BandgapTimerConfiguration": {
+      "description": "BandgapTimerConfiguration 配置容器",
+      "type": "object",
+      "properties": {
+        "EnableBandgapTimer0": {
+          "type": "boolean",
+          "default": false,
+          "description": "EnableBandgapTimer0 参数"
+        },
+        "EnableBandgapTimer1": {
+          "type": "boolean",
+          "default": false,
+          "description": "EnableBandgapTimer1 参数"
+        },
+        "BandgapTimer0TimeoutValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BandgapTimer0TimeoutValue 参数"
+        },
+        "BandgapTimer1TimeoutValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BandgapTimer1TimeoutValue 参数"
+        }
+      },
+      "additionalProperties": true
     },
-    "McuModeSetting": {
-      "description": "运行模式配置",
-      "type": "string"
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        },
+        "VendorApiInfix": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "VendorApiInfix 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CoreLDOSettings": {
+      "description": "CoreLDOSettings 配置容器",
+      "type": "object",
+      "properties": {
+        "CoreLdoDeepPowerDownPulldownDisable": {
+          "type": "boolean",
+          "default": false,
+          "description": "CoreLdoDeepPowerDownPulldownDisable 参数"
+        },
+        "CoreLdoPassThroughEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "CoreLdoPassThroughEnable 参数"
+        },
+        "EnableCoreLdo": {
+          "type": "boolean",
+          "default": false,
+          "description": "EnableCoreLdo 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DCDCSettings": {
+      "description": "DCDCSettings 配置容器",
+      "type": "object",
+      "properties": {
+        "Enable2P5VOuput": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable2P5VOuput 参数"
+        },
+        "EnableDCDC": {
+          "type": "boolean",
+          "default": false,
+          "description": "EnableDCDC 参数"
+        },
+        "EnableDCDCBurstFreqControl": {
+          "type": "boolean",
+          "default": false,
+          "description": "EnableDCDCBurstFreqControl 参数"
+        },
+        "EnableExternalBurstRequest": {
+          "type": "boolean",
+          "default": false,
+          "description": "EnableExternalBurstRequest 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ExternalVoltageDomainConfig": {
+      "description": "ExternalVoltageDomainConfig 配置容器",
+      "type": "object",
+      "properties": {
+        "IsolateIOAbcDomain": {
+          "type": "boolean",
+          "default": false,
+          "description": "IsolateIOAbcDomain 参数"
+        },
+        "IsolateIOAnaDomain": {
+          "type": "boolean",
+          "default": false,
+          "description": "IsolateIOAnaDomain 参数"
+        },
+        "IsolateIODDomain": {
+          "type": "boolean",
+          "default": false,
+          "description": "IsolateIODDomain 参数"
+        },
+        "LowPowerIsolateIOAbcDomain": {
+          "type": "boolean",
+          "default": false,
+          "description": "LowPowerIsolateIOAbcDomain 参数"
+        },
+        "LowPowerIsolateIOAnaDomain": {
+          "type": "boolean",
+          "default": false,
+          "description": "LowPowerIsolateIOAnaDomain 参数"
+        },
+        "LowPowerIsolateIODDomain": {
+          "type": "boolean",
+          "default": false,
+          "description": "LowPowerIsolateIODDomain 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FRO16KConfiguration": {
+      "description": "FRO16KConfiguration 配置容器",
+      "type": "object",
+      "properties": {
+        "EnableFRO16k": {
+          "type": "boolean",
+          "default": false,
+          "description": "EnableFRO16k 参数"
+        },
+        "EnableFRO16kOutput": {
+          "type": "boolean",
+          "default": false,
+          "description": "EnableFRO16kOutput 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "GlobalLowPowerModePowerSetting": {
+      "description": "GlobalLowPowerModePowerSetting 配置容器",
+      "type": "object",
+      "properties": {
+        "LowPowerBandgapBufferEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "LowPowerBandgapBufferEnable 参数"
+        },
+        "LowPowerCoreHighVoltageDetectEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "LowPowerCoreHighVoltageDetectEnable 参数"
+        },
+        "LowPowerCoreLowVoltageDetectEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "LowPowerCoreLowVoltageDetectEnable 参数"
+        },
+        "LowPowerCoreVddIvsEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "LowPowerCoreVddIvsEnable 参数"
+        },
+        "LowPowerIOHighVoltageDetectEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "LowPowerIOHighVoltageDetectEnable 参数"
+        },
+        "LowPowerIOLowVoltageDetectEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "LowPowerIOLowVoltageDetectEnable 参数"
+        },
+        "LowPowerIREFEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "LowPowerIREFEnable 参数"
+        },
+        "LowPowerSystemHighVoltageDetectEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "LowPowerSystemHighVoltageDetectEnable 参数"
+        },
+        "LowPowerSystemLowVoltageDetectEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "LowPowerSystemLowVoltageDetectEnable 参数"
+        },
+        "LowPowerVddCoreGlitchDetectDisable": {
+          "type": "boolean",
+          "default": false,
+          "description": "LowPowerVddCoreGlitchDetectDisable 参数"
+        },
+        "LowPowerWakeUpDelay": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "LowPowerWakeUpDelay 参数"
+        },
+        "LowPowerBandgapMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "LowPowerBandgapMode 参数"
+        },
+        "LowPowerCoreLdoDriveStrength": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "LowPowerCoreLdoDriveStrength 参数"
+        },
+        "LowPowerCoreLdoVddLvl": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "LowPowerCoreLdoVddLvl 参数"
+        },
+        "LowPowerDCDCVddDriveStrength": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "LowPowerDCDCVddDriveStrength 参数"
+        },
+        "LowPowerDCDCVddVoltageLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "LowPowerDCDCVddVoltageLevel 参数"
+        },
+        "LowPowerSystemLdoVddDriveStrength": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "LowPowerSystemLdoVddDriveStrength 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LowPowerModeFlashContorl": {
+      "description": "LowPowerModeFlashContorl 配置容器",
+      "type": "object",
+      "properties": {
+        "FlashDisable": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlashDisable 参数"
+        },
+        "FlashDoze": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlashDoze 参数"
+        },
+        "FlashWake": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlashWake 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MCU_DAP_RESET": {
+      "description": "MCU_DAP_RESET 配置容器",
+      "type": "object",
+      "properties": {
+        "McuResetReason": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "McuResetReason 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MCU_FATAL_RESET": {
+      "description": "MCU_FATAL_RESET 配置容器",
+      "type": "object",
+      "properties": {
+        "McuResetReason": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "McuResetReason 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MCU_HVD_RESET": {
+      "description": "MCU_HVD_RESET 配置容器",
+      "type": "object",
+      "properties": {
+        "McuResetReason": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "McuResetReason 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MCU_JTAG_SYSTEM_RESET": {
+      "description": "MCU_JTAG_SYSTEM_RESET 配置容器",
+      "type": "object",
+      "properties": {
+        "McuResetReason": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "McuResetReason 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MCU_LOCKUP_RESET": {
+      "description": "MCU_LOCKUP_RESET 配置容器",
+      "type": "object",
+      "properties": {
+        "McuResetReason": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "McuResetReason 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MCU_LOW_POWER_ACKNOWLEDGE_TIMEOUT_RESET": {
+      "description": "MCU_LOW_POWER_ACKNOWLEDGE_TIMEOUT_RESET 配置容器",
+      "type": "object",
+      "properties": {
+        "McuResetReason": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "McuResetReason 参数"
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [
-    "McuClockSetting"
+    "ActiveModePowerSetting",
+    "BandgapTimerConfiguration",
+    "CommonPublishedInformation"
   ],
   "additionalProperties": false,
-  "x-layer": "MCAL",
-  "x-version": "4.4.0"
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

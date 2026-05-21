@@ -5,33 +5,139 @@
   "description": "系统基础芯片",
   "type": "object",
   "properties": {
-    "SbcGeneral": {
-      "description": "Sbc 通用配置",
+    "SbcPublicCfg": {
+      "description": "SbcPublicCfg 配置容器",
       "type": "object",
       "properties": {
-        "SbcDevErrorDetect": {
-          "description": "开启开发错误检测",
+        "SbcSingleInstanceApi": {
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "SbcSingleInstanceApi 参数"
         },
-        "SbcVersionInfoApi": {
-          "description": "版本信息API",
+        "SbcDevErrorDetect": {
           "type": "boolean",
-          "default": false
+          "default": false,
+          "description": "SbcDevErrorDetect 参数"
+        },
+        "SbcGetVersionInfo": {
+          "type": "boolean",
+          "default": false,
+          "description": "SbcGetVersionInfo 参数"
+        },
+        "SbcWatchdogSupportInitialTrigger": {
+          "type": "boolean",
+          "default": false,
+          "description": "SbcWatchdogSupportInitialTrigger 参数"
+        },
+        "SbcWatchdogSupportSetModeAfterTrigger": {
+          "type": "boolean",
+          "default": false,
+          "description": "SbcWatchdogSupportSetModeAfterTrigger 参数"
+        },
+        "SbcWatchdogSupportSlowMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "SbcWatchdogSupportSlowMode 参数"
+        },
+        "SbcWatchdogSupportOffMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "SbcWatchdogSupportOffMode 参数"
+        },
+        "SbcSafeBswChecks": {
+          "type": "boolean",
+          "default": false,
+          "description": "SbcSafeBswChecks 参数"
+        },
+        "SbcUserConfigFile": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SbcUserConfigFile 参数"
         }
       },
       "additionalProperties": true
     },
-    "SbcConfigSet": {
-      "description": "Sbc 配置集",
+    "tcan2451": {
+      "description": "tcan2451 配置容器",
       "type": "object",
+      "properties": {
+        "SbcDeviceId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SbcDeviceId 参数"
+        },
+        "SbcWatchdogPeripheralId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SbcWatchdogPeripheralId 参数"
+        },
+        "SbcWatchdogTriggerOffset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SbcWatchdogTriggerOffset 参数"
+        },
+        "SbcCanTrcvPeripheralId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SbcCanTrcvPeripheralId 参数"
+        },
+        "SbcWatchdogInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SbcWatchdogInitialMode 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SbcWatchdogPeripheral": {
+      "description": "SbcWatchdogPeripheral 配置容器",
+      "type": "object",
+      "properties": {
+        "SbcWatchdogPeripheralId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SbcWatchdogPeripheralId 参数"
+        },
+        "SbcWatchdogTriggerOffset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SbcWatchdogTriggerOffset 参数"
+        },
+        "SbcWatchdogInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SbcWatchdogInitialMode 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SbcCanTrcvPeripheral": {
+      "description": "SbcCanTrcvPeripheral 配置容器",
+      "type": "object",
+      "properties": {
+        "SbcCanTrcvPeripheralId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SbcCanTrcvPeripheralId 参数"
+        }
+      },
       "additionalProperties": true
     }
   },
   "required": [
-    "SbcGeneral"
+    "SbcPublicCfg",
+    "tcan2451",
+    "SbcWatchdogPeripheral"
   ],
   "additionalProperties": false,
   "x-layer": "Service",
-  "x-version": "4.4.0"
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

@@ -5,33 +5,111 @@
   "description": "加密接口",
   "type": "object",
   "properties": {
-    "CryIfGeneral": {
-      "description": "CryIf 通用配置",
+    "CryIfChannel": {
+      "description": "CryIfChannel 配置容器",
       "type": "object",
       "properties": {
-        "CryIfDevErrorDetect": {
-          "description": "开启开发错误检测",
-          "type": "boolean",
-          "default": false
-        },
-        "CryIfVersionInfoApi": {
-          "description": "版本信息API",
-          "type": "boolean",
-          "default": false
+        "CryIfChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryIfChannelId 参数"
         }
       },
       "additionalProperties": true
     },
-    "CryIfConfigSet": {
-      "description": "CryIf 配置集",
+    "CryIfGeneral": {
+      "description": "CryIfGeneral 配置容器",
       "type": "object",
+      "properties": {
+        "CryIfDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryIfDevErrorDetect 参数"
+        },
+        "CryIfVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryIfVersionInfoApi 参数"
+        },
+        "CryIfMaxNumberOfKeyElements": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryIfMaxNumberOfKeyElements 参数"
+        },
+        "CryIfMaxSizeOfKeyElement": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryIfMaxSizeOfKeyElement 参数"
+        },
+        "CryIfRedirection": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryIfRedirection 参数"
+        },
+        "CryIfSafeBswChecks": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryIfSafeBswChecks 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CryIfKey": {
+      "description": "CryIfKey 配置容器",
+      "type": "object",
+      "properties": {
+        "CryIfKeyId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryIfKeyId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CryIfCryptoModule": {
+      "description": "CryIfCryptoModule 配置容器",
+      "type": "object",
+      "properties": {
+        "CryIfSupportsKeyElementCopyPartial": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryIfSupportsKeyElementCopyPartial 参数"
+        },
+        "CryIfCancelJobApiUsesJobType": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryIfCancelJobApiUsesJobType 参数"
+        },
+        "CryIfSupportsCertificateAPI": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryIfSupportsCertificateAPI 参数"
+        },
+        "CryIfSupportsKeyStatusAPI": {
+          "type": "boolean",
+          "default": false,
+          "description": "CryIfSupportsKeyStatusAPI 参数"
+        },
+        "CryIfCryptoKeySetValidAPI": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CryIfCryptoKeySetValidAPI 参数"
+        }
+      },
       "additionalProperties": true
     }
   },
   "required": [
-    "CryIfGeneral"
+    "CryIfChannel",
+    "CryIfGeneral",
+    "CryIfKey"
   ],
   "additionalProperties": false,
   "x-layer": "Service",
-  "x-version": "4.4.0"
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }
