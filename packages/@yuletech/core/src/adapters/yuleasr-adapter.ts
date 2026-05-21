@@ -77,21 +77,12 @@ export class YuleasrAdapter {
       parameters[key] = value;
     }
 
-    // 处理模块级别的特殊字段
-    if (yuleasrModule.clock_frequency !== undefined) {
-      parameters['clock_frequency'] = yuleasrModule.clock_frequency;
-    }
-
-    if (yuleasrModule.core_count !== undefined) {
-      parameters['core_count'] = yuleasrModule.core_count;
-    }
-
-    if (yuleasrModule.baudrate !== undefined) {
-      parameters['baudrate'] = yuleasrModule.baudrate;
-    }
-
-    if (yuleasrModule.controller_count !== undefined) {
-      parameters['controller_count'] = yuleasrModule.controller_count;
+    // 复制所有其他属性到 parameters（排除标准字段）
+    const standardKeys = new Set(['name', 'enabled', 'version', 'parameters']);
+    for (const [key, value] of Object.entries(yuleasrModule)) {
+      if (!standardKeys.has(key)) {
+        parameters[key] = value;
+      }
     }
 
     return {
@@ -143,11 +134,11 @@ export class YuleasrAdapter {
     try {
       const config = JSON.parse(jsonConfig) as YuleasrBswConfig;
 
-      if (!config.version) {
-        errors.push('Missing required field: version');
+      if (!config.version || typeof config.version !== 'string' || config.version.trim() === '') {
+        errors.push('Missing or invalid field: version');
       }
 
-      if (!config.modules || typeof config.modules !== 'object') {
+      if (!config.modules || typeof config.modules !== 'object' || Object.keys(config.modules).length === 0) {
         errors.push('Missing or invalid field: modules');
       }
 

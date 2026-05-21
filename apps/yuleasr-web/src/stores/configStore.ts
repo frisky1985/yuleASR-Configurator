@@ -1,8 +1,7 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 import type { ConfigFile, ConfigModule, ValidationResult, ConfigListItem, ValidationIssue } from '@/types'
-import { mcalModules } from '@/data/mcal-config'
-import { ecualModules, serviceModules } from '@/data/ecual-config'
+import { allModules } from '@/data/all-modules'
 import { defaultOSConfig } from '@/data/os-config'
 import { DependencyValidator } from '@/core/DependencyValidator'
 
@@ -52,12 +51,8 @@ function createDefaultConfig(configId: string): ConfigFile {
     targetChip: 'S32K144',
     compiler: 'GCC',
     
-    // 合并所有模块
-    modules: [
-      ...(JSON.parse(JSON.stringify(mcalModules)) as ConfigModule[]),
-      ...(JSON.parse(JSON.stringify(ecualModules)) as ConfigModule[]),
-      ...(JSON.parse(JSON.stringify(serviceModules)) as ConfigModule[]),
-    ],
+    // 使用所有37个BSW模块
+    modules: JSON.parse(JSON.stringify(allModules)) as ConfigModule[],
     
     // OS 配置
     os: JSON.parse(JSON.stringify(defaultOSConfig)) as ConfigFile['os'],
@@ -414,7 +409,7 @@ export const useConfigStore = create<ConfigState>()(
               id: 'config-1',
               name: 'Default Configuration',
               description: 'Complete yuleASR configuration with MCAL, BSW, OS layers',
-              moduleCount: mcalModules.length + ecualModules.length + serviceModules.length,
+              moduleCount: allModules.length,
               lastModified: '2025-05-16T14:30:00Z'
             },
             {

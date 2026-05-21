@@ -54,13 +54,13 @@ describe('YuleasrAdapter', () => {
     })
     
     it('should validate yuleASR config format', () => {
-      const valid = yuleasrAdapter.validateYuleasrConfig(JSON.stringify(realYuleasrConfig))
-      expect(valid).toBe(true)
+      const result = yuleasrAdapter.validateYuleasrConfig(JSON.stringify(realYuleasrConfig))
+      expect(result.valid).toBe(true)
     })
     
     it('should reject invalid config', () => {
-      const invalid = yuleasrAdapter.validateYuleasrConfig('{"invalid": true}')
-      expect(invalid).toBe(false)
+      const result = yuleasrAdapter.validateYuleasrConfig('{"invalid": true}')
+      expect(result.valid).toBe(false)
     })
   })
   

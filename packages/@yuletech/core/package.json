@@ -16,6 +16,11 @@
       "require": "./dist/schema/index.js",
       "types": "./dist/schema/index.d.ts"
     },
+    "./schema/generated": {
+      "import": "./dist/schema/generated/index.mjs",
+      "require": "./dist/schema/generated/index.js",
+      "types": "./dist/schema/generated/index.d.ts"
+    },
     "./types": {
       "import": "./dist/types/index.mjs",
       "require": "./dist/types/index.js",
