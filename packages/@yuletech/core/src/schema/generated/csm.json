@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/csm.json",
+  "title": "Csm Configuration",
+  "description": "加密服务管理",
+  "type": "object",
+  "properties": {
+    "CsmGeneral": {
+      "description": "Csm 通用配置",
+      "type": "object",
+      "properties": {
+        "CsmDevErrorDetect": {
+          "description": "开启开发错误检测",
+          "type": "boolean",
+          "default": false
+        },
+        "CsmVersionInfoApi": {
+          "description": "版本信息API",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmConfigSet": {
+      "description": "Csm 配置集",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CsmGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0"
+}

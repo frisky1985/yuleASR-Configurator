@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/cansm.json",
+  "title": "CanSM Configuration",
+  "description": "CAN 状态管理",
+  "type": "object",
+  "properties": {
+    "CanSMGeneral": {
+      "description": "CanSM 通用配置",
+      "type": "object",
+      "properties": {
+        "CanSMDevErrorDetect": {
+          "description": "开启开发错误检测",
+          "type": "boolean",
+          "default": false
+        },
+        "CanSMVersionInfoApi": {
+          "description": "版本信息API",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanSMConfigSet": {
+      "description": "CanSM 配置集",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CanSMGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0"
+}

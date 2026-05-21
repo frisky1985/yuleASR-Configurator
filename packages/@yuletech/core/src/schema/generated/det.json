@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/det.json",
+  "title": "Det Configuration",
+  "description": "错误跟踪",
+  "type": "object",
+  "properties": {
+    "DetGeneral": {
+      "description": "Det 通用配置",
+      "type": "object",
+      "properties": {
+        "DetDevErrorDetect": {
+          "description": "开启开发错误检测",
+          "type": "boolean",
+          "default": false
+        },
+        "DetVersionInfoApi": {
+          "description": "版本信息API",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "DetConfigSet": {
+      "description": "Det 配置集",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "DetGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0"
+}

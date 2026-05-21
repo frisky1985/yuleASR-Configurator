@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/arti.json",
+  "title": "Arti Configuration",
+  "description": "ARTI 运行时接口",
+  "type": "object",
+  "properties": {
+    "ArtiGeneral": {
+      "description": "Arti 通用配置",
+      "type": "object",
+      "properties": {
+        "ArtiDevErrorDetect": {
+          "description": "开启开发错误检测",
+          "type": "boolean",
+          "default": false
+        },
+        "ArtiVersionInfoApi": {
+          "description": "版本信息API",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "ArtiConfigSet": {
+      "description": "Arti 配置集",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "ArtiGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0"
+}

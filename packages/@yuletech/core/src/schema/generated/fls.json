@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/fls.json",
+  "title": "Fls Configuration",
+  "description": "Flash 驱动",
+  "type": "object",
+  "properties": {
+    "FlsGeneral": {
+      "description": "Fls 通用配置",
+      "type": "object",
+      "properties": {
+        "FlsDevErrorDetect": {
+          "description": "开启开发错误检测",
+          "type": "boolean",
+          "default": false
+        },
+        "FlsVersionInfoApi": {
+          "description": "版本信息API",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "FlsConfigSet": {
+      "description": "Fls 配置集",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "FlsGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0"
+}

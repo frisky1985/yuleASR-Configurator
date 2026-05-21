@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/sbc.json",
+  "title": "Sbc Configuration",
+  "description": "系统基础芯片",
+  "type": "object",
+  "properties": {
+    "SbcGeneral": {
+      "description": "Sbc 通用配置",
+      "type": "object",
+      "properties": {
+        "SbcDevErrorDetect": {
+          "description": "开启开发错误检测",
+          "type": "boolean",
+          "default": false
+        },
+        "SbcVersionInfoApi": {
+          "description": "版本信息API",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "SbcConfigSet": {
+      "description": "Sbc 配置集",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "SbcGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0"
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/cantp.json",
+  "title": "CanTp Configuration",
+  "description": "CAN 传输协议",
+  "type": "object",
+  "properties": {
+    "CanTpGeneral": {
+      "description": "CanTp 通用配置",
+      "type": "object",
+      "properties": {
+        "CanTpDevErrorDetect": {
+          "description": "开启开发错误检测",
+          "type": "boolean",
+          "default": false
+        },
+        "CanTpVersionInfoApi": {
+          "description": "版本信息API",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTpConfigSet": {
+      "description": "CanTp 配置集",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CanTpGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0"
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/cantrcv.json",
+  "title": "CanTrcv Configuration",
+  "description": "CAN 收发器",
+  "type": "object",
+  "properties": {
+    "CanTrcvGeneral": {
+      "description": "CanTrcv 通用配置",
+      "type": "object",
+      "properties": {
+        "CanTrcvDevErrorDetect": {
+          "description": "开启开发错误检测",
+          "type": "boolean",
+          "default": false
+        },
+        "CanTrcvVersionInfoApi": {
+          "description": "版本信息API",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTrcvConfigSet": {
+      "description": "CanTrcv 配置集",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CanTrcvGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0"
+}

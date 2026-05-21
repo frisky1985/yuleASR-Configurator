@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/rte.json",
+  "title": "Rte Configuration",
+  "description": "运行时环境",
+  "type": "object",
+  "properties": {
+    "RteGeneral": {
+      "description": "Rte 通用配置",
+      "type": "object",
+      "properties": {
+        "RteDevErrorDetect": {
+          "description": "开启开发错误检测",
+          "type": "boolean",
+          "default": false
+        },
+        "RteVersionInfoApi": {
+          "description": "版本信息API",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "RteConfigSet": {
+      "description": "Rte 配置集",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "RteGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "RTE",
+  "x-version": "4.4.0"
+}

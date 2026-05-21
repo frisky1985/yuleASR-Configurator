@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/gpt.json",
+  "title": "Gpt Configuration",
+  "description": "通用定时器",
+  "type": "object",
+  "properties": {
+    "GptGeneral": {
+      "description": "Gpt 通用配置",
+      "type": "object",
+      "properties": {
+        "GptDevErrorDetect": {
+          "description": "开启开发错误检测",
+          "type": "boolean",
+          "default": false
+        },
+        "GptVersionInfoApi": {
+          "description": "版本信息API",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "GptConfigSet": {
+      "description": "Gpt 配置集",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "GptGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0"
+}

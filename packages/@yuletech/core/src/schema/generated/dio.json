@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/dio.json",
+  "title": "DIO Configuration",
+  "description": "DIO 驱动 - 数字输入/输出驱动",
+  "type": "object",
+  "properties": {
+    "DioConfig": {
+      "description": "DIO 配置容器",
+      "type": "object",
+      "properties": {
+        "DioPort": {
+          "description": "DIO 端口配置",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "DioPortId": {
+                "description": "端口ID",
+                "type": "integer",
+                "minimum": 0
+              },
+              "DioChannel": {
+                "description": "通道配置",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "DioChannelId": {
+                      "description": "通道ID",
+                      "type": "integer"
+                    },
+                    "DioChannelName": {
+                      "description": "通道名称",
+                      "type": "string"
+                    },
+                    "DioChannelDirection": {
+                      "description": "通道方向",
+                      "type": "string",
+                      "enum": ["INPUT", "OUTPUT"]
+                    }
+                  },
+                  "required": ["DioChannelId"]
+                }
+              }
+            },
+            "required": ["DioPortId"]
+          }
+        }
+      }
+    },
+    "DioGeneral": {
+      "description": "DIO 通用配置",
+      "type": "object",
+      "properties": {
+        "DioDevErrorDetect": {
+          "description": "开启开发错误检测",
+          "type": "boolean",
+          "default": false
+        },
+        "DioVersionInfoApi": {
+          "description": "启用版本信息API",
+          "type": "boolean",
+          "default": false
+        },
+        "DioFlipChannelApi": {
+          "description": "启用翻转通道API",
+          "type": "boolean",
+          "default": false
+        }
+      }
+    }
+  },
+  "required": ["DioConfig"],
+  "additionalProperties": false,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0"
+}
