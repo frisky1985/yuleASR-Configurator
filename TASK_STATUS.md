@@ -1,228 +1,213 @@
-# yuleASR-Configurator 任务状态记录
+# yuleASR-Configurator 开发任务状态
 
-> 本文档用于记录项目当前状态，恢复工作时请先读取此文件。
-> 最后更新: 2025-01-16
-
----
-
-## 📊 项目概览
-
-| 项目 | 内容 |
-|------|------|
-| **项目名称** | yuleASR-Configurator |
-| **当前版本** | v0.1.5 |
-| **GitHub 仓库** | https://github.com/frisky1985/yuleASR-Configurator |
-| **在线演示** | https://frisky1985.github.io/yuleASR-Configurator/ |
-| **工作目录** | /home/admin/yuletech-monorepo |
+> 最后更新: 2025-01-20
+> 当前阶段: Phase 1 - 完善 Service 层配置数据
 
 ---
 
-## ✅ 已完成的功能
+## 项目概览
 
-### v0.1.0 核心功能 (已发布)
-
-#### 1. 分层配置系统
-- [x] MCAL 层配置 (Mcu, Port, Dio, Gpt, Pwm, Adc)
-- [x] ECUAL 层配置 (Can, Eth)
-- [x] Service 层配置 (NvM, Com, Dcm, CanTp)
-- [x] OS 层配置 (Tasks, Events, Alarms, Resources, Counters)
-- [x] 可折叠层级树组件 (ConfigTree)
-- [x] 依赖验证引擎 (DependencyValidator)
-
-#### 2. 配置状态管理
-- [x] ConfigModule 配置状态字段 (configStatus: unconfigured/configuring/configured/partial)
-- [x] 配置进度追踪 (configProgress)
-- [x] 配置方法记录 (configMethod: wizard/manual/import)
-- [x] 配置时间戳 (lastConfiguredAt)
-- [x] ConfigurationStatusPanel 组件
-- [x] 配置报告导出功能 (Markdown 格式)
-
-#### 3. 导入/导出功能
-- [x] yuleASR JSON 格式导入/导出
-- [x] ARXML 文件导入支持
-- [x] 配置报告导出
-
-#### 4. 页面功能
-- [x] Dashboard - 配置概览和统计
-- [x] Editor - 分层配置编辑器
-- [x] Templates - 预设配置模板页面
-- [x] Git Sync - 版本控制页面
-- [x] Settings - 用户设置页面
-
-#### 5. UI/UX 功能
-- [x] 模块配置向导 (9个预设模块)
-- [x] 模块依赖图谱可视化
-- [x] 验证面板和错误提示
-- [x] 未配置模块警告提醒
-- [x] Dashboard 统计卡片
+| 属性 | 值 |
+|------|-----|
+| 代码总量 | ~26,890 行 |
+| 架构 | Monorepo (pnpm workspace) |
+| 技术栈 | React 19 + TypeScript 5.4 + Vite 6 |
+| 状态管理 | Zustand |
+| 图表引擎 | React Flow (@xyflow/react) |
 
 ---
 
-## 🚧 待办事项 (TODO)
+## 已完成功能清单
 
-### 高优先级
-- [x] **OS 配置编辑器** - 支持 Task/Event/Alarm/Resource/Counter/ISR 的编辑功能
-- [x] **参数验证增强** - 添加了 ParameterValidator 类，支持范围、模式、枚举等验证规则
-- [x] **配置比较功能** - 添加了 ConfigComparer 类和 ConfigCompareDialog 组件
-- [x] **批量操作** - 添加了 BulkOperationsPanel 组件，支持批量启用/禁用模块
+### Core 层 (@yuletech/core)
+- [x] 类型系统 (ModuleSchema, ModuleConfig, Validation)
+- [x] Schema 管理 (JSON Schema 转换)
+- [x] 配置验证器
+- [x] 代码生成器接口
+- [x] ARXML 解析器
+- [x] yuleASR 适配器
 
-### 中优先级
-- [x] **Undo/Redo 功能** - 配置编辑的历史记录
-- [x] **配置搜索增强** - 全局搜索参数和配置项
-- [x] **快捷键支持** - 键盘快捷键提升效率
-- [x] **深色主题** - Settings 中已实现切换，但需完善配色
+### Editor Core 层 (yuleasr-editor-core)
+- [x] 配置引擎 (undo/redo)
+- [x] 历史管理器
+- [x] 事件系统
+- [x] Git 服务集成
 
-### 低优先级
-- [x] **多语言支持** - 支持中英文界面切换
-- [x] **性能优化** - 添加了虚拟化列表组件
-- [x] **配置迁移工具** - 支持从其他 AUTOSAR 工具导入
-- [x] **移动端适配** - 添加了 useMediaQuery hook、MobileNav、MobileDrawer 组件
+### Web 应用 (yuleasr-web)
+- [x] Dashboard 页面
+- [x] Editor 页面
+- [x] Templates 页面
+- [x] GitSync 页面
+- [x] Settings 页面
+- [x] Migrate 页面
+- [x] ModuleTree 组件
+- [x] ModuleGraph 组件 (React Flow)
+- [x] ModuleConfigWizard 组件
+- [x] ValidationPanel 组件
+- [x] DiffViewer 组件
+- [x] GlobalSearch 组件
+- [x] MigrationTool 组件
+- [x] VersionHistory 组件
+
+### 数据层
+- [x] MCAL 配置数据
+- [x] ECUAL 配置数据
+- [x] OS 配置数据
 
 ---
 
-## 📁 项目结构
+## 开发阶段规划
 
+### Phase 1: 完善 Service 层配置数据
+**状态**: 进行中
+**工期**: 3-5天
+**目标**: 补充 Service 层模块定义，完善 AutoSAR 层级支持
+
+**任务清单**:
+- [ ] 1.1 定义 Service 层模块分类 (MemStack, ComStack, IoHwAb, etc.)
+- [ ] 1.2 创建 MemStack 模块 (Fee, Ea, MemIf, Nvm)
+- [ ] 1.3 创建 ComStack 模块 (Can, CanIf, CanTp, Com, PduR)
+- [ ] 1.4 创建 IoHwAb 模块
+- [ ] 1.5 创建 CryptoServices 模块
+- [ ] 1.6 创建 WdgServices 模块
+- [ ] 1.7 更新 ModuleTree 支持 Service 层显示
+- [ ] 1.8 更新 Dashboard 统计 Service 层模块
+
+**验收标准**:
+- Service 层模块可在 UI 中正常显示和配置
+- 所有 Service 层模块有完整的参数定义
+- 模块间依赖关系正确定义
+
+---
+
+### Phase 2: 开发 VS Code 扩展
+**状态**: 待启动
+**工期**: 5-7天
+**目标**: 提供 IDE 原生集成体验
+
+**任务清单**:
+- [ ] 2.1 创建 apps/yuleasr-vscode 扩展包
+- [ ] 2.2 配置 VS Code 扩展清单 (package.json)
+- [ ] 2.3 实现侧边栏 ModuleTree Provider
+- [ ] 2.4 实现配置编辑器 Webview Panel
+- [ ] 2.5 实现 ARXML 文件右键导入命令
+- [ ] 2.6 实现代码生成命令
+- [ ] 2.7 实现配置验证命令
+- [ ] 2.8 配置热重载和调试支持
+
+**验收标准**:
+- 扩展可在 VS Code 中正常安装和运行
+- 支持 ARXML 文件右键快速导入
+- 支持配置编辑和验证
+- 支持一键代码生成
+
+---
+
+### Phase 3: 构建 UI 组件库
+**状态**: 待启动
+**工期**: 5-7天
+**目标**: 提取可复用组件，支持 Web 和 VS Code 共享
+
+**任务清单**:
+- [ ] 3.1 分析 web 应用中可复用组件
+- [ ] 3.2 提取 Button 组件
+- [ ] 3.3 提取 Input 组件
+- [ ] 3.4 提取 Select 组件
+- [ ] 3.5 提取 FormField 组件
+- [ ] 3.6 提取 Modal 组件
+- [ ] 3.7 提取 Tooltip 组件
+- [ ] 3.8 提取 Tree 组件
+- [ ] 3.9 提取 PropertyPanel 组件
+- [ ] 3.10 配置组件库构建和发布
+
+**验收标准**:
+- 组件库可在 @yuletech/ui 中独立构建
+- Web 应用和 VS Code 扩展都能使用
+- 每个组件有完整 props 定义和样式
+
+---
+
+### Phase 4: 补充单元测试
+**状态**: 待启动
+**工期**: 3-5天
+**目标**: 提升测试覆盖率至 80%
+
+**任务清单**:
+- [ ] 4.1 为核心包配置测试环境
+- [ ] 4.2 编写 Schema 转换测试
+- [ ] 4.3 编写验证器测试
+- [ ] 4.4 编写代码生成器测试
+- [ ] 4.5 编写 ARXML 解析器测试
+- [ ] 4.6 编写配置引擎测试
+- [ ] 4.7 编写组件单元测试
+- [ ] 4.8 配置 CI 测试流程
+
+**验收标准**:
+- @yuletech/core 覆盖率 ≥ 80%
+- yuleasr-editor-core 覆盖率 ≥ 80%
+- 关键组件有单元测试
+- CI 自动运行测试
+
+---
+
+### Phase 5: 完善 C 代码生成
+**状态**: 待启动
+**工期**: 7-10天
+**目标**: 实现完整的 C 代码和 ARXML 导出
+
+**任务清单**:
+- [ ] 5.1 完善 C 头文件生成模板
+- [ ] 5.2 实现 C 源文件生成
+- [ ] 5.3 实现宏定义生成
+- [ ] 5.4 实现类型定义生成
+- [ ] 5.5 实现 ECUC 描述文件生成
+- [ ] 5.6 实现 ARXML 导出功能
+- [ ] 5.7 实现多模块批量生成
+- [ ] 5.8 添加代码格式化选项
+
+**验收标准**:
+- 支持生成完整 C 头文件和源文件
+- 支持 ECUC ARXML 导出
+- 生成的代码符合 MISRA C 规范
+- 支持多编译器模板 (GCC/IAR/GHS)
+
+---
+
+## 当前阻塞事项
+
+| 问题 | 状态 | 解决方案 |
+|------|------|----------|
+| 无 | - | - |
+
+---
+
+## 快速导航
+
+```bash
+# 启动开发环境
+cd /home/admin/yuleASR-Configurator
+pnpm install
+pnpm dev
+
+# 运行测试
+pnpm test
+
+# 构建
+pnpm build
+
+# 代码检查
+pnpm lint
+pnpm typecheck
 ```
-/home/admin/yuletech-monorepo/
-├── apps/
-│   └── yuleasr-web/               # React 前端应用
-│       ├── src/
-│       │   ├── components/        # React 组件
-│       │   │   ├── ConfigTree.tsx
-│       │   │   ├── ConfigTreeVirtual.tsx    # 虚拟化配置树
-│       │   │   ├── ConfigCompareDialog.tsx   # 配置比较对话框
-│       │   │   ├── BulkOperationsPanel.tsx   # 批量操作面板
-│       │   │   ├── MobileNav.tsx             # 移动端导航
-│       │   │   ├── MobileDrawer.tsx          # 移动端抽屉
-│       │   │   ├── ConfigurationStatusPanel.tsx
-│       │   │   ├── ModuleConfigWizard.tsx
-│       │   │   ├── ParameterEditor.tsx
-│       │   │   ├── ValidationPanel.tsx
-│       │   │   ├── ModuleGraph.tsx
-│       │   │   └── ...
-│       │   ├── pages/
-│       │   │   ├── Dashboard.tsx
-│       │   │   ├── Editor.tsx
-│       │   │   ├── Templates.tsx
-│       │   │   ├── GitSync.tsx
-│       │   │   ├── Settings.tsx
-│       │   │   └── Migrate.tsx
-│       │   ├── data/
-│       │   ├── types/
-│       │   ├── stores/
-│       │   ├── core/              # 核心逻辑
-│       │   │   ├── DependencyValidator.ts
-│       │   │   ├── ParameterValidator.ts   # 参数验证引擎
-│       │   │   └── ConfigComparer.ts       # 配置比较引擎
-│       │   ├── hooks/             # 自定义 hooks
-│       │   │   └── useMediaQuery.ts        # 响应式断点 hook
-│       │   ├── i18n/              # 多语言
-│       │   │   ├── index.ts
-│       │   │   └── locales/
-│       │   │       ├── en.json
-│       │   │       └── zh.json
-│       │   └── App.tsx
-│       ├── package.json
-│       └── ...
-├── packages/
-│   └── @yuletech/core/            # 核心适配器包
-├── CHANGELOG.md                   # 版本更新日志
-├── TASK_STATUS.md                 # 本文件
-└── ...
-```
 
 ---
 
-## 🔧 技术栈
+## 相关文档
 
-| 技术 | 版本 | 用途 |
-|------|------|------|
-| React | 19.0.0 | UI 框架 |
-| TypeScript | 5.6.0 | 类型安全 |
-| Vite | 6.0.0 | 构建工具 |
-| Tailwind CSS | 3.4.0 | CSS 框架 |
-| Zustand | 5.0.0 | 状态管理 |
-| React Router | 7.0.0 | 路由管理 |
-| Lucide React | 0.460.0 | 图标库 |
+- [项目架构文档](./docs/architecture/README.md) (待创建)
+- [开发规范](./docs/development/README.md) (待创建)
+- [API 文档](./docs/api/README.md) (待创建)
 
 ---
 
-## 📈 最近的提交记录
-
-```
-69105d7 docs: add CHANGELOG for v0.1.0 release
-0aedba8 feat: enhance configuration status management
-3b5d77d feat: add module configuration status management
-f5d8b0b feat: 完善 yuleASR-Configurator 分层配置系统
-9abb1c1 feat: 完成 Templates/Git Sync/Settings 三个导航页面
-9672a96 feat: Import yuleASR 支持 ARXML 文件格式
-9838911 fix: 修复 Open Existing 按钮功能
-bc28487 feat: 完善 yuleASR 集成优化
-```
-
----
-
-## 🎯 恢复工作时的检查清单
-
-1. **检查工作目录**
-   ```bash
-   cd /home/admin/yuletech-monorepo
-   git status
-   git log --oneline -3
-   ```
-
-2. **检查依赖**
-   ```bash
-   pnpm install
-   ```
-
-3. **构建测试**
-   ```bash
-   pnpm run build
-   ```
-
-4. **启动开发服务器**
-   ```bash
-   pnpm run dev
-   ```
-
-5. **检查部署状态**
-   ```bash
-   # 查看 GitHub Pages 部署
-   # https://frisky1985.github.io/yuleASR-Configurator/
-   ```
-
----
-
-## 🐛 已知问题
-
-| 问题 | 状态 | 说明 |
-|------|------|------|
-| OS 配置只读 | 🔵 待实现 | OS 层配置目前只能查看，无法编辑 |
-| 移动端适配 | 🟡 低优先级 | 界面主要适配桌面端 |
-| 多语言不完整 | 🟡 低优先级 | 只有英文完整，中文部分缺失 |
-
----
-
-## 📚 参考文档
-
-- [CHANGELOG.md](./CHANGELOG.md) - 版本更新日志
-- [README.md](./README.md) - 项目说明
-- GitHub Issues: https://github.com/frisky1985/yuleASR-Configurator/issues
-- GitHub Releases: https://github.com/frisky1985/yuleASR-Configurator/releases
-
----
-
-## 💡 下一步建议
-
-基于当前状态，建议按以下顺序继续开发：
-
-1. **实现 OS 配置编辑器** - 这是当前最缺失的功能
-2. **增强参数验证** - 添加更多实时验证
-3. **实现配置比较** - 方便版本管理
-4. **完善多语言** - 支持完整的中文界面
-5. **性能优化** - 优化大型配置的加载速度
-
----
-
-*本文件由 AI 助手维护，每次会话结束时更新*
+*本文档遵循 OSH (OpenSpec + Superpowers + Harness Engineering) 方法论*
