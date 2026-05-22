@@ -1,0 +1,1305 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/fls.json",
+  "title": "Fls Configuration",
+  "description": "Flash 驱动",
+  "type": "object",
+  "properties": {
+    "AutosarExt": {
+      "description": "AutosarExt 配置容器",
+      "type": "object",
+      "properties": {
+        "FlsDisableDemReportErrorStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsDisableDemReportErrorStatus 参数"
+        },
+        "FlsEnableUserModeSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsEnableUserModeSupport 参数"
+        },
+        "FlsExtendedReadErrorCheck": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsExtendedReadErrorCheck 参数"
+        },
+        "FlsExternalSectorsConfigured": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsExternalSectorsConfigured 参数"
+        },
+        "FlsInternalSectorsConfigured": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsInternalSectorsConfigured 参数"
+        },
+        "FlsSynchronizeCache": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSynchronizeCache 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        },
+        "VendorApiInfix": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "VendorApiInfix 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FlsConfigSet": {
+      "description": "FlsConfigSet 配置容器",
+      "type": "object",
+      "properties": {
+        "FlsAcErase": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsAcErase 参数"
+        },
+        "FlsAcWrite": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsAcWrite 参数"
+        },
+        "FlsCallCycle": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsCallCycle 参数"
+        },
+        "FlsMaxReadFastMode": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsMaxReadFastMode 参数"
+        },
+        "FlsMaxReadNormalMode": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsMaxReadNormalMode 参数"
+        },
+        "FlsMaxWriteFastMode": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsMaxWriteFastMode 参数"
+        },
+        "FlsMaxWriteNormalMode": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsMaxWriteNormalMode 参数"
+        },
+        "FlsProtection": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsProtection 参数"
+        },
+        "FlsNumberOfSectors": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsNumberOfSectors 参数"
+        },
+        "FlsPageSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPageSize 参数"
+        },
+        "FlsPageWriteAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPageWriteAsynch 参数"
+        },
+        "FlsPhysicalSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPhysicalSectorSize 参数"
+        },
+        "FlsPhysicalSectorUnlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPhysicalSectorUnlock 参数"
+        },
+        "FlsSectorEraseAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorEraseAsynch 参数"
+        },
+        "FlsSectorIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorIndex 参数"
+        },
+        "FlsSectorIrqMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorIrqMode 参数"
+        },
+        "FlsSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorSize 参数"
+        },
+        "FlsSectorStartaddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorStartaddress 参数"
+        },
+        "FlsAcErasePointer": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsAcErasePointer 参数"
+        },
+        "FlsAcWritePointer": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsAcWritePointer 参数"
+        },
+        "FlsDefaultMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsDefaultMode 参数"
+        },
+        "FlsJobEndNotification": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsJobEndNotification 参数"
+        },
+        "FlsJobErrorNotification": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsJobErrorNotification 参数"
+        },
+        "FlsHwCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsHwCh 参数"
+        },
+        "FlsPhysicalSector": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsPhysicalSector 参数"
+        },
+        "FlsProgrammingSize": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsProgrammingSize 参数"
+        },
+        "FlsQspiSectorCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsQspiSectorCh 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FlsGeneral": {
+      "description": "FlsGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "FlsAcLoadOnJobStart": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsAcLoadOnJobStart 参数"
+        },
+        "FlsBaseAddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsBaseAddress 参数"
+        },
+        "FlsBlankCheckApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsBlankCheckApi 参数"
+        },
+        "FlsCancelApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsCancelApi 参数"
+        },
+        "FlsCompareApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsCompareApi 参数"
+        },
+        "FlsDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsDevErrorDetect 参数"
+        },
+        "FlsDriverIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsDriverIndex 参数"
+        },
+        "FlsDsiHandlerApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsDsiHandlerApi 参数"
+        },
+        "FlsEraseVerificationEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsEraseVerificationEnabled 参数"
+        },
+        "FlsGetJobResultApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsGetJobResultApi 参数"
+        },
+        "FlsGetStatusApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsGetStatusApi 参数"
+        },
+        "FlsMaxEraseBlankCheck": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsMaxEraseBlankCheck 参数"
+        },
+        "FlsRuntimeErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsRuntimeErrorDetect 参数"
+        },
+        "FlsSetModeApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSetModeApi 参数"
+        },
+        "FlsTimeoutSupervisionEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsTimeoutSupervisionEnabled 参数"
+        },
+        "FlsTotalSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsTotalSize 参数"
+        },
+        "FlsTransientFaultDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsTransientFaultDetect 参数"
+        },
+        "FlsUseInterrupts": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsUseInterrupts 参数"
+        },
+        "FlsVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsVersionInfoApi 参数"
+        },
+        "FlsWriteBlankCheck": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsWriteBlankCheck 参数"
+        },
+        "FlsWriteVerificationEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsWriteVerificationEnabled 参数"
+        },
+        "FlsAbortTimeout": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsAbortTimeout 参数"
+        },
+        "FlsAsyncEraseTimeout": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsAsyncEraseTimeout 参数"
+        },
+        "FlsAsyncWriteTimeout": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsAsyncWriteTimeout 参数"
+        },
+        "FlsSyncEraseTimeout": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSyncEraseTimeout 参数"
+        },
+        "FlsSyncWriteTimeout": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSyncWriteTimeout 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FlsPublishedInformation": {
+      "description": "FlsPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "FlsAcLocationErase": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsAcLocationErase 参数"
+        },
+        "FlsAcLocationWrite": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsAcLocationWrite 参数"
+        },
+        "FlsAcSizeErase": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsAcSizeErase 参数"
+        },
+        "FlsAcSizeWrite": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsAcSizeWrite 参数"
+        },
+        "FlsEraseTime": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsEraseTime 参数"
+        },
+        "FlsErasedValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsErasedValue 参数"
+        },
+        "FlsSpecifiedEraseCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSpecifiedEraseCycles 参数"
+        },
+        "FlsWriteTime": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsWriteTime 参数"
+        },
+        "FlsExpectedHwId": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsExpectedHwId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FlsSectorList": {
+      "description": "FlsSectorList 配置容器",
+      "type": "object",
+      "properties": {
+        "FlsNumberOfSectors": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsNumberOfSectors 参数"
+        },
+        "FlsPageSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPageSize 参数"
+        },
+        "FlsPageWriteAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPageWriteAsynch 参数"
+        },
+        "FlsPhysicalSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPhysicalSectorSize 参数"
+        },
+        "FlsPhysicalSectorUnlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPhysicalSectorUnlock 参数"
+        },
+        "FlsSectorEraseAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorEraseAsynch 参数"
+        },
+        "FlsSectorIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorIndex 参数"
+        },
+        "FlsSectorIrqMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorIrqMode 参数"
+        },
+        "FlsSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorSize 参数"
+        },
+        "FlsSectorStartaddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorStartaddress 参数"
+        },
+        "FlsHwCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsHwCh 参数"
+        },
+        "FlsPhysicalSector": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsPhysicalSector 参数"
+        },
+        "FlsProgrammingSize": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsProgrammingSize 参数"
+        },
+        "FlsQspiSectorCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsQspiSectorCh 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FlsSector_0": {
+      "description": "FlsSector_0 配置容器",
+      "type": "object",
+      "properties": {
+        "FlsNumberOfSectors": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsNumberOfSectors 参数"
+        },
+        "FlsPageSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPageSize 参数"
+        },
+        "FlsPageWriteAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPageWriteAsynch 参数"
+        },
+        "FlsPhysicalSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPhysicalSectorSize 参数"
+        },
+        "FlsPhysicalSectorUnlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPhysicalSectorUnlock 参数"
+        },
+        "FlsSectorEraseAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorEraseAsynch 参数"
+        },
+        "FlsSectorIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorIndex 参数"
+        },
+        "FlsSectorIrqMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorIrqMode 参数"
+        },
+        "FlsSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorSize 参数"
+        },
+        "FlsSectorStartaddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorStartaddress 参数"
+        },
+        "FlsHwCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsHwCh 参数"
+        },
+        "FlsPhysicalSector": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsPhysicalSector 参数"
+        },
+        "FlsProgrammingSize": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsProgrammingSize 参数"
+        },
+        "FlsQspiSectorCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsQspiSectorCh 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FlsSector_1": {
+      "description": "FlsSector_1 配置容器",
+      "type": "object",
+      "properties": {
+        "FlsNumberOfSectors": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsNumberOfSectors 参数"
+        },
+        "FlsPageSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPageSize 参数"
+        },
+        "FlsPageWriteAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPageWriteAsynch 参数"
+        },
+        "FlsPhysicalSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPhysicalSectorSize 参数"
+        },
+        "FlsPhysicalSectorUnlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPhysicalSectorUnlock 参数"
+        },
+        "FlsSectorEraseAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorEraseAsynch 参数"
+        },
+        "FlsSectorIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorIndex 参数"
+        },
+        "FlsSectorIrqMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorIrqMode 参数"
+        },
+        "FlsSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorSize 参数"
+        },
+        "FlsSectorStartaddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorStartaddress 参数"
+        },
+        "FlsHwCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsHwCh 参数"
+        },
+        "FlsPhysicalSector": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsPhysicalSector 参数"
+        },
+        "FlsProgrammingSize": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsProgrammingSize 参数"
+        },
+        "FlsQspiSectorCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsQspiSectorCh 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FlsSector_2": {
+      "description": "FlsSector_2 配置容器",
+      "type": "object",
+      "properties": {
+        "FlsNumberOfSectors": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsNumberOfSectors 参数"
+        },
+        "FlsPageSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPageSize 参数"
+        },
+        "FlsPageWriteAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPageWriteAsynch 参数"
+        },
+        "FlsPhysicalSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPhysicalSectorSize 参数"
+        },
+        "FlsPhysicalSectorUnlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPhysicalSectorUnlock 参数"
+        },
+        "FlsSectorEraseAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorEraseAsynch 参数"
+        },
+        "FlsSectorIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorIndex 参数"
+        },
+        "FlsSectorIrqMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorIrqMode 参数"
+        },
+        "FlsSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorSize 参数"
+        },
+        "FlsSectorStartaddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorStartaddress 参数"
+        },
+        "FlsHwCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsHwCh 参数"
+        },
+        "FlsPhysicalSector": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsPhysicalSector 参数"
+        },
+        "FlsProgrammingSize": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsProgrammingSize 参数"
+        },
+        "FlsQspiSectorCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsQspiSectorCh 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FlsSector_3": {
+      "description": "FlsSector_3 配置容器",
+      "type": "object",
+      "properties": {
+        "FlsNumberOfSectors": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsNumberOfSectors 参数"
+        },
+        "FlsPageSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPageSize 参数"
+        },
+        "FlsPageWriteAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPageWriteAsynch 参数"
+        },
+        "FlsPhysicalSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPhysicalSectorSize 参数"
+        },
+        "FlsPhysicalSectorUnlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPhysicalSectorUnlock 参数"
+        },
+        "FlsSectorEraseAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorEraseAsynch 参数"
+        },
+        "FlsSectorIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorIndex 参数"
+        },
+        "FlsSectorIrqMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorIrqMode 参数"
+        },
+        "FlsSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorSize 参数"
+        },
+        "FlsSectorStartaddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorStartaddress 参数"
+        },
+        "FlsHwCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsHwCh 参数"
+        },
+        "FlsPhysicalSector": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsPhysicalSector 参数"
+        },
+        "FlsProgrammingSize": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsProgrammingSize 参数"
+        },
+        "FlsQspiSectorCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsQspiSectorCh 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FlsSector_4": {
+      "description": "FlsSector_4 配置容器",
+      "type": "object",
+      "properties": {
+        "FlsNumberOfSectors": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsNumberOfSectors 参数"
+        },
+        "FlsPageSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPageSize 参数"
+        },
+        "FlsPageWriteAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPageWriteAsynch 参数"
+        },
+        "FlsPhysicalSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPhysicalSectorSize 参数"
+        },
+        "FlsPhysicalSectorUnlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPhysicalSectorUnlock 参数"
+        },
+        "FlsSectorEraseAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorEraseAsynch 参数"
+        },
+        "FlsSectorIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorIndex 参数"
+        },
+        "FlsSectorIrqMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorIrqMode 参数"
+        },
+        "FlsSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorSize 参数"
+        },
+        "FlsSectorStartaddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorStartaddress 参数"
+        },
+        "FlsHwCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsHwCh 参数"
+        },
+        "FlsPhysicalSector": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsPhysicalSector 参数"
+        },
+        "FlsProgrammingSize": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsProgrammingSize 参数"
+        },
+        "FlsQspiSectorCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsQspiSectorCh 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FlsSector_5": {
+      "description": "FlsSector_5 配置容器",
+      "type": "object",
+      "properties": {
+        "FlsNumberOfSectors": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsNumberOfSectors 参数"
+        },
+        "FlsPageSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPageSize 参数"
+        },
+        "FlsPageWriteAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPageWriteAsynch 参数"
+        },
+        "FlsPhysicalSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPhysicalSectorSize 参数"
+        },
+        "FlsPhysicalSectorUnlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPhysicalSectorUnlock 参数"
+        },
+        "FlsSectorEraseAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorEraseAsynch 参数"
+        },
+        "FlsSectorIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorIndex 参数"
+        },
+        "FlsSectorIrqMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorIrqMode 参数"
+        },
+        "FlsSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorSize 参数"
+        },
+        "FlsSectorStartaddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorStartaddress 参数"
+        },
+        "FlsHwCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsHwCh 参数"
+        },
+        "FlsPhysicalSector": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsPhysicalSector 参数"
+        },
+        "FlsProgrammingSize": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsProgrammingSize 参数"
+        },
+        "FlsQspiSectorCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsQspiSectorCh 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FlsSector_6": {
+      "description": "FlsSector_6 配置容器",
+      "type": "object",
+      "properties": {
+        "FlsNumberOfSectors": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsNumberOfSectors 参数"
+        },
+        "FlsPageSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPageSize 参数"
+        },
+        "FlsPageWriteAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPageWriteAsynch 参数"
+        },
+        "FlsPhysicalSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPhysicalSectorSize 参数"
+        },
+        "FlsPhysicalSectorUnlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPhysicalSectorUnlock 参数"
+        },
+        "FlsSectorEraseAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorEraseAsynch 参数"
+        },
+        "FlsSectorIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorIndex 参数"
+        },
+        "FlsSectorIrqMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorIrqMode 参数"
+        },
+        "FlsSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorSize 参数"
+        },
+        "FlsSectorStartaddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorStartaddress 参数"
+        },
+        "FlsHwCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsHwCh 参数"
+        },
+        "FlsPhysicalSector": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsPhysicalSector 参数"
+        },
+        "FlsProgrammingSize": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsProgrammingSize 参数"
+        },
+        "FlsQspiSectorCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsQspiSectorCh 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FlsSector_7": {
+      "description": "FlsSector_7 配置容器",
+      "type": "object",
+      "properties": {
+        "FlsNumberOfSectors": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsNumberOfSectors 参数"
+        },
+        "FlsPageSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPageSize 参数"
+        },
+        "FlsPageWriteAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPageWriteAsynch 参数"
+        },
+        "FlsPhysicalSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPhysicalSectorSize 参数"
+        },
+        "FlsPhysicalSectorUnlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPhysicalSectorUnlock 参数"
+        },
+        "FlsSectorEraseAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorEraseAsynch 参数"
+        },
+        "FlsSectorIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorIndex 参数"
+        },
+        "FlsSectorIrqMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorIrqMode 参数"
+        },
+        "FlsSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorSize 参数"
+        },
+        "FlsSectorStartaddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorStartaddress 参数"
+        },
+        "FlsHwCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsHwCh 参数"
+        },
+        "FlsPhysicalSector": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsPhysicalSector 参数"
+        },
+        "FlsProgrammingSize": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsProgrammingSize 参数"
+        },
+        "FlsQspiSectorCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsQspiSectorCh 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FlsSector_8": {
+      "description": "FlsSector_8 配置容器",
+      "type": "object",
+      "properties": {
+        "FlsNumberOfSectors": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsNumberOfSectors 参数"
+        },
+        "FlsPageSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPageSize 参数"
+        },
+        "FlsPageWriteAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPageWriteAsynch 参数"
+        },
+        "FlsPhysicalSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsPhysicalSectorSize 参数"
+        },
+        "FlsPhysicalSectorUnlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsPhysicalSectorUnlock 参数"
+        },
+        "FlsSectorEraseAsynch": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorEraseAsynch 参数"
+        },
+        "FlsSectorIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorIndex 参数"
+        },
+        "FlsSectorIrqMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "FlsSectorIrqMode 参数"
+        },
+        "FlsSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorSize 参数"
+        },
+        "FlsSectorStartaddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FlsSectorStartaddress 参数"
+        },
+        "FlsHwCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsHwCh 参数"
+        },
+        "FlsPhysicalSector": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsPhysicalSector 参数"
+        },
+        "FlsProgrammingSize": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsProgrammingSize 参数"
+        },
+        "FlsQspiSectorCh": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FlsQspiSectorCh 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "AutosarExt",
+    "CommonPublishedInformation",
+    "FlsConfigSet"
+  ],
+  "additionalProperties": false,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

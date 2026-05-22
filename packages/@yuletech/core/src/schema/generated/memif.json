@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/memif.json",
+  "title": "MemIf Configuration",
+  "description": "存储器接口",
+  "type": "object",
+  "properties": {
+    "MemIfGeneral": {
+      "description": "MemIfGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "MemIfDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "MemIfDevErrorDetect 参数"
+        },
+        "MemIfVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "MemIfVersionInfoApi 参数"
+        },
+        "MemIfSafeBswChecks": {
+          "type": "boolean",
+          "default": false,
+          "description": "MemIfSafeBswChecks 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MemIfMemHwA": {
+      "description": "MemIfMemHwA 配置容器",
+      "type": "object",
+      "properties": {
+        "MemIfMemHwAId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "MemIfMemHwAId 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "MemIfGeneral",
+    "MemIfMemHwA"
+  ],
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

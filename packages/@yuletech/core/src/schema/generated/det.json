@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/det.json",
+  "title": "Det Configuration",
+  "description": "错误跟踪",
+  "type": "object",
+  "properties": {
+    "DetGeneral": {
+      "description": "DetGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "DetVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "DetVersionInfoApi 参数"
+        },
+        "DetEnableDet": {
+          "type": "boolean",
+          "default": false,
+          "description": "DetEnableDet 参数"
+        },
+        "DetExtDebugSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "DetExtDebugSupport 参数"
+        },
+        "DetGlobalFilterSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DetGlobalFilterSize 参数"
+        },
+        "DetBreakFilterSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DetBreakFilterSize 参数"
+        },
+        "DetLogBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DetLogBufferSize 参数"
+        },
+        "DetReportErrorRecursionLimit": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DetReportErrorRecursionLimit 参数"
+        },
+        "DetReportRuntimeErrorRecursionLimit": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DetReportRuntimeErrorRecursionLimit 参数"
+        },
+        "DetReportTransientFaultRecursionLimit": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DetReportTransientFaultRecursionLimit 参数"
+        },
+        "DetDltFilterSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DetDltFilterSize 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "DetGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

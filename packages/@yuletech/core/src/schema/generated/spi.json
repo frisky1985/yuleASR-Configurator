@@ -2,26 +2,941 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/spi.json",
   "title": "Spi Configuration",
-  "description": "SPI 串行外设接口驱动",
+  "description": "Spi Configuration",
   "type": "object",
   "properties": {
-    "SpiChannel": {
-      "description": "SPI 通道配置",
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
       "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
       "additionalProperties": true
     },
-    "SpiJob": {
-      "description": "SPI 作业配置",
+    "SpiChannelList_0": {
+      "description": "SpiChannelList_0 配置容器",
       "type": "object",
+      "properties": {
+        "SpiChannelIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiChannelIndex 参数"
+        }
+      },
       "additionalProperties": true
     },
-    "SpiSequence": {
-      "description": "SPI 序列配置",
+    "SpiChannel_Flash": {
+      "description": "SpiChannel_Flash 配置容器",
       "type": "object",
+      "properties": {
+        "SpiChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiChannelId 参数"
+        },
+        "SpiDataWidth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiDataWidth 参数"
+        },
+        "SpiEbMaxLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiEbMaxLength 参数"
+        },
+        "SpiIbNBuffers": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiIbNBuffers 参数"
+        },
+        "SpiChannelType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiChannelType 参数"
+        },
+        "SpiTransferStart": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiTransferStart 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SpiChannel_SE": {
+      "description": "SpiChannel_SE 配置容器",
+      "type": "object",
+      "properties": {
+        "SpiChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiChannelId 参数"
+        },
+        "SpiDataWidth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiDataWidth 参数"
+        },
+        "SpiEbMaxLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiEbMaxLength 参数"
+        },
+        "SpiIbNBuffers": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiIbNBuffers 参数"
+        },
+        "SpiChannelType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiChannelType 参数"
+        },
+        "SpiTransferStart": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiTransferStart 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SpiChannel_UWB": {
+      "description": "SpiChannel_UWB 配置容器",
+      "type": "object",
+      "properties": {
+        "SpiChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiChannelId 参数"
+        },
+        "SpiDataWidth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiDataWidth 参数"
+        },
+        "SpiEbMaxLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiEbMaxLength 参数"
+        },
+        "SpiIbNBuffers": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiIbNBuffers 参数"
+        },
+        "SpiChannelType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiChannelType 参数"
+        },
+        "SpiTransferStart": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiTransferStart 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SpiDriver": {
+      "description": "SpiDriver 配置容器",
+      "type": "object",
+      "properties": {
+        "SpiMaxChannel": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiMaxChannel 参数"
+        },
+        "SpiMaxJob": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiMaxJob 参数"
+        },
+        "SpiMaxSequence": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiMaxSequence 参数"
+        },
+        "SpiChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiChannelId 参数"
+        },
+        "SpiDataWidth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiDataWidth 参数"
+        },
+        "SpiEbMaxLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiEbMaxLength 参数"
+        },
+        "SpiIbNBuffers": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiIbNBuffers 参数"
+        },
+        "SpiBaudrate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiBaudrate 参数"
+        },
+        "SpiBaudrateAlternate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiBaudrateAlternate 参数"
+        },
+        "SpiEnableCs": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiEnableCs 参数"
+        },
+        "SpiSlaveMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiSlaveMode 参数"
+        },
+        "SpiTimeClk2Cs": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiTimeClk2Cs 参数"
+        },
+        "SpiTimeCs2Clk": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiTimeCs2Clk 参数"
+        },
+        "SpiTimeCs2Cs": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiTimeCs2Cs 参数"
+        },
+        "SpiJobId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiJobId 参数"
+        },
+        "SpiJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiJobPriority 参数"
+        },
+        "SpiChannelIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiChannelIndex 参数"
+        },
+        "SpiInterruptibleSequence": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiInterruptibleSequence 参数"
+        },
+        "SpiSequenceId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiSequenceId 参数"
+        },
+        "SpiChannelType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiChannelType 参数"
+        },
+        "SpiTransferStart": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiTransferStart 参数"
+        },
+        "SpiByteSwap": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiByteSwap 参数"
+        },
+        "SpiCsContinous": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiCsContinous 参数"
+        },
+        "SpiCsIdentifier": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiCsIdentifier 参数"
+        },
+        "SpiCsPolarity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiCsPolarity 参数"
+        },
+        "SpiCsSelection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiCsSelection 参数"
+        },
+        "SpiDataShiftEdge": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiDataShiftEdge 参数"
+        },
+        "SpiHwUnit": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiHwUnit 参数"
+        },
+        "SpiPinConfig": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiPinConfig 参数"
+        },
+        "SpiShiftClockIdleLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiShiftClockIdleLevel 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SpiExternalDevice_FLASH": {
+      "description": "SpiExternalDevice_FLASH 配置容器",
+      "type": "object",
+      "properties": {
+        "SpiBaudrate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiBaudrate 参数"
+        },
+        "SpiBaudrateAlternate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiBaudrateAlternate 参数"
+        },
+        "SpiEnableCs": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiEnableCs 参数"
+        },
+        "SpiSlaveMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiSlaveMode 参数"
+        },
+        "SpiTimeClk2Cs": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiTimeClk2Cs 参数"
+        },
+        "SpiTimeCs2Clk": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiTimeCs2Clk 参数"
+        },
+        "SpiTimeCs2Cs": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiTimeCs2Cs 参数"
+        },
+        "SpiByteSwap": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiByteSwap 参数"
+        },
+        "SpiCsContinous": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiCsContinous 参数"
+        },
+        "SpiCsIdentifier": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiCsIdentifier 参数"
+        },
+        "SpiCsPolarity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiCsPolarity 参数"
+        },
+        "SpiCsSelection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiCsSelection 参数"
+        },
+        "SpiDataShiftEdge": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiDataShiftEdge 参数"
+        },
+        "SpiHwUnit": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiHwUnit 参数"
+        },
+        "SpiPinConfig": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiPinConfig 参数"
+        },
+        "SpiShiftClockIdleLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiShiftClockIdleLevel 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SpiExternalDevice_SE": {
+      "description": "SpiExternalDevice_SE 配置容器",
+      "type": "object",
+      "properties": {
+        "SpiBaudrate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiBaudrate 参数"
+        },
+        "SpiBaudrateAlternate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiBaudrateAlternate 参数"
+        },
+        "SpiEnableCs": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiEnableCs 参数"
+        },
+        "SpiSlaveMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiSlaveMode 参数"
+        },
+        "SpiTimeClk2Cs": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiTimeClk2Cs 参数"
+        },
+        "SpiTimeCs2Clk": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiTimeCs2Clk 参数"
+        },
+        "SpiTimeCs2Cs": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiTimeCs2Cs 参数"
+        },
+        "SpiByteSwap": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiByteSwap 参数"
+        },
+        "SpiCsContinous": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiCsContinous 参数"
+        },
+        "SpiCsIdentifier": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiCsIdentifier 参数"
+        },
+        "SpiCsPolarity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiCsPolarity 参数"
+        },
+        "SpiCsSelection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiCsSelection 参数"
+        },
+        "SpiDataShiftEdge": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiDataShiftEdge 参数"
+        },
+        "SpiHwUnit": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiHwUnit 参数"
+        },
+        "SpiPinConfig": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiPinConfig 参数"
+        },
+        "SpiShiftClockIdleLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiShiftClockIdleLevel 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SpiExternalDevice_UWB": {
+      "description": "SpiExternalDevice_UWB 配置容器",
+      "type": "object",
+      "properties": {
+        "SpiBaudrate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiBaudrate 参数"
+        },
+        "SpiBaudrateAlternate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiBaudrateAlternate 参数"
+        },
+        "SpiEnableCs": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiEnableCs 参数"
+        },
+        "SpiSlaveMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiSlaveMode 参数"
+        },
+        "SpiTimeClk2Cs": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiTimeClk2Cs 参数"
+        },
+        "SpiTimeCs2Clk": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiTimeCs2Clk 参数"
+        },
+        "SpiTimeCs2Cs": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiTimeCs2Cs 参数"
+        },
+        "SpiByteSwap": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiByteSwap 参数"
+        },
+        "SpiCsContinous": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiCsContinous 参数"
+        },
+        "SpiCsIdentifier": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiCsIdentifier 参数"
+        },
+        "SpiCsPolarity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiCsPolarity 参数"
+        },
+        "SpiCsSelection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiCsSelection 参数"
+        },
+        "SpiDataShiftEdge": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiDataShiftEdge 参数"
+        },
+        "SpiHwUnit": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiHwUnit 参数"
+        },
+        "SpiPinConfig": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiPinConfig 参数"
+        },
+        "SpiShiftClockIdleLevel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiShiftClockIdleLevel 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SpiGeneral": {
+      "description": "SpiGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "SpiCancelApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiCancelApi 参数"
+        },
+        "SpiChannelBuffersAllowed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiChannelBuffersAllowed 参数"
+        },
+        "SpiDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiDevErrorDetect 参数"
+        },
+        "SpiGlobalDmaEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiGlobalDmaEnable 参数"
+        },
+        "SpiHwStatusApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiHwStatusApi 参数"
+        },
+        "SpiInterruptibleSeqAllowed": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiInterruptibleSeqAllowed 参数"
+        },
+        "SpiLevelDelivered": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiLevelDelivered 参数"
+        },
+        "SpiOptimizeOneJobSequences": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiOptimizeOneJobSequences 参数"
+        },
+        "SpiOptimizedChannelsNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiOptimizedChannelsNumber 参数"
+        },
+        "SpiOptimizedSeqNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiOptimizedSeqNumber 参数"
+        },
+        "SpiSupportConcurrentSyncTransmit": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiSupportConcurrentSyncTransmit 参数"
+        },
+        "SpiTransmitTimeout": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiTransmitTimeout 参数"
+        },
+        "SpiVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiVersionInfoApi 参数"
+        },
+        "SpiPhyUnitSync": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiPhyUnitSync 参数"
+        },
+        "SpiFlexioClkPinSelect": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiFlexioClkPinSelect 参数"
+        },
+        "SpiFlexioClkPinSelectSlave": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiFlexioClkPinSelectSlave 参数"
+        },
+        "SpiFlexioCsPinSelect": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiFlexioCsPinSelect 参数"
+        },
+        "SpiFlexioCsPinSelectSlave": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiFlexioCsPinSelectSlave 参数"
+        },
+        "SpiFlexioRxPinSelect": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiFlexioRxPinSelect 参数"
+        },
+        "SpiFlexioTxPinSelect": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiFlexioTxPinSelect 参数"
+        },
+        "SpiPhyUnitAsyncMethod": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiPhyUnitAsyncMethod 参数"
+        },
+        "SpiPhyUnitMapping": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiPhyUnitMapping 参数"
+        },
+        "SpiPhyUnitMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiPhyUnitMode 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SpiJob_Flash": {
+      "description": "SpiJob_Flash 配置容器",
+      "type": "object",
+      "properties": {
+        "SpiJobId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiJobId 参数"
+        },
+        "SpiJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiJobPriority 参数"
+        },
+        "SpiChannelIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiChannelIndex 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SpiJob_SE": {
+      "description": "SpiJob_SE 配置容器",
+      "type": "object",
+      "properties": {
+        "SpiJobId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiJobId 参数"
+        },
+        "SpiJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiJobPriority 参数"
+        },
+        "SpiChannelIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiChannelIndex 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SpiJob_UWB": {
+      "description": "SpiJob_UWB 配置容器",
+      "type": "object",
+      "properties": {
+        "SpiJobId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiJobId 参数"
+        },
+        "SpiJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiJobPriority 参数"
+        },
+        "SpiChannelIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiChannelIndex 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SpiNonAUTOSAR": {
+      "description": "SpiNonAUTOSAR 配置容器",
+      "type": "object",
+      "properties": {
+        "SpiAllowBigSizeCollections": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiAllowBigSizeCollections 参数"
+        },
+        "SpiDisableDemReportErrorStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiDisableDemReportErrorStatus 参数"
+        },
+        "SpiEnableHWUnitAsyncMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiEnableHWUnitAsyncMode 参数"
+        },
+        "SpiEnableUserModeSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiEnableUserModeSupport 参数"
+        },
+        "SpiForceDataType": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiForceDataType 参数"
+        },
+        "SpiJobStartNotificationEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiJobStartNotificationEnable 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SpiPhyUnit_0": {
+      "description": "SpiPhyUnit_0 配置容器",
+      "type": "object",
+      "properties": {
+        "SpiPhyUnitSync": {
+          "type": "boolean",
+          "default": false,
+          "description": "SpiPhyUnitSync 参数"
+        },
+        "SpiFlexioClkPinSelect": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiFlexioClkPinSelect 参数"
+        },
+        "SpiFlexioClkPinSelectSlave": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiFlexioClkPinSelectSlave 参数"
+        },
+        "SpiFlexioCsPinSelect": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiFlexioCsPinSelect 参数"
+        },
+        "SpiFlexioCsPinSelectSlave": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiFlexioCsPinSelectSlave 参数"
+        },
+        "SpiFlexioRxPinSelect": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiFlexioRxPinSelect 参数"
+        },
+        "SpiFlexioTxPinSelect": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiFlexioTxPinSelect 参数"
+        },
+        "SpiPhyUnitAsyncMethod": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiPhyUnitAsyncMethod 参数"
+        },
+        "SpiPhyUnitMapping": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiPhyUnitMapping 参数"
+        },
+        "SpiPhyUnitMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SpiPhyUnitMode 参数"
+        }
+      },
       "additionalProperties": true
     }
   },
+  "required": [
+    "CommonPublishedInformation",
+    "SpiChannelList_0",
+    "SpiChannel_Flash"
+  ],
   "additionalProperties": false,
-  "x-layer": "MCAL",
-  "x-version": "4.4.0"
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

@@ -1,0 +1,314 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/dio.json",
+  "title": "Dio Configuration",
+  "description": "Dio Configuration",
+  "type": "object",
+  "properties": {
+    "CAN_RX": {
+      "description": "CAN_RX 配置容器",
+      "type": "object",
+      "properties": {
+        "DioChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioChannelId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DioConfig": {
+      "description": "DioConfig 配置容器",
+      "type": "object",
+      "properties": {
+        "DioPortId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioPortId 参数"
+        },
+        "DioChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioChannelId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DioGeneral": {
+      "description": "DioGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "DioDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "DioDevErrorDetect 参数"
+        },
+        "DioEnableUserModeSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "DioEnableUserModeSupport 参数"
+        },
+        "DioFlipChannelApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "DioFlipChannelApi 参数"
+        },
+        "DioMaskedWritePortApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "DioMaskedWritePortApi 参数"
+        },
+        "DioReadZeroForUndefinedPortPins": {
+          "type": "boolean",
+          "default": false,
+          "description": "DioReadZeroForUndefinedPortPins 参数"
+        },
+        "DioReversePortBits": {
+          "type": "boolean",
+          "default": false,
+          "description": "DioReversePortBits 参数"
+        },
+        "DioVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "DioVersionInfoApi 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DioPort_A": {
+      "description": "DioPort_A 配置容器",
+      "type": "object",
+      "properties": {
+        "DioPortId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioPortId 参数"
+        },
+        "DioChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioChannelId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DioPort_B": {
+      "description": "DioPort_B 配置容器",
+      "type": "object",
+      "properties": {
+        "DioPortId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioPortId 参数"
+        },
+        "DioChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioChannelId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DioPort_C": {
+      "description": "DioPort_C 配置容器",
+      "type": "object",
+      "properties": {
+        "DioPortId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioPortId 参数"
+        },
+        "DioChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioChannelId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DioPort_D": {
+      "description": "DioPort_D 配置容器",
+      "type": "object",
+      "properties": {
+        "DioPortId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioPortId 参数"
+        },
+        "DioChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioChannelId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FLASH_SPI_CS": {
+      "description": "FLASH_SPI_CS 配置容器",
+      "type": "object",
+      "properties": {
+        "DioChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioChannelId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SBC_CLK": {
+      "description": "SBC_CLK 配置容器",
+      "type": "object",
+      "properties": {
+        "DioChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioChannelId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SBC_INT": {
+      "description": "SBC_INT 配置容器",
+      "type": "object",
+      "properties": {
+        "DioChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioChannelId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SBC_MOSI": {
+      "description": "SBC_MOSI 配置容器",
+      "type": "object",
+      "properties": {
+        "DioChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioChannelId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SBC_RST": {
+      "description": "SBC_RST 配置容器",
+      "type": "object",
+      "properties": {
+        "DioChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioChannelId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SE_IRQ": {
+      "description": "SE_IRQ 配置容器",
+      "type": "object",
+      "properties": {
+        "DioChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioChannelId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SWD_DIO": {
+      "description": "SWD_DIO 配置容器",
+      "type": "object",
+      "properties": {
+        "DioChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioChannelId 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CAN_RX",
+    "CommonPublishedInformation",
+    "DioConfig"
+  ],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

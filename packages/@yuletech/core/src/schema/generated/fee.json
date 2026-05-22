@@ -1,0 +1,633 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/fee.json",
+  "title": "Fee Configuration",
+  "description": "Flash EEPROM 模拟",
+  "type": "object",
+  "properties": {
+    "FeeBlockConfiguration": {
+      "description": "FeeBlockConfiguration 配置容器",
+      "type": "object",
+      "properties": {
+        "FeeBlockNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockNumber 参数"
+        },
+        "FeeBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockSize 参数"
+        },
+        "FeeImmediateData": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeImmediateData 参数"
+        },
+        "FeeNumberOfWriteCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeNumberOfWriteCycles 参数"
+        },
+        "FeeBlockId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockId 参数"
+        },
+        "FeeIsLookupTableBlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeIsLookupTableBlock 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FeeBlockConfiguration_01": {
+      "description": "FeeBlockConfiguration_01 配置容器",
+      "type": "object",
+      "properties": {
+        "FeeBlockNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockNumber 参数"
+        },
+        "FeeBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockSize 参数"
+        },
+        "FeeImmediateData": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeImmediateData 参数"
+        },
+        "FeeNumberOfWriteCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeNumberOfWriteCycles 参数"
+        },
+        "FeeBlockId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockId 参数"
+        },
+        "FeeIsLookupTableBlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeIsLookupTableBlock 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FeeBlockDescriptor": {
+      "description": "FeeBlockDescriptor 配置容器",
+      "type": "object",
+      "properties": {
+        "FeeBlockNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockNumber 参数"
+        },
+        "FeeBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockSize 参数"
+        },
+        "FeeImmediateData": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeImmediateData 参数"
+        },
+        "FeeNumberOfWriteCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeNumberOfWriteCycles 参数"
+        },
+        "FeeBlockId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockId 参数"
+        },
+        "FeeIsLookupTableBlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeIsLookupTableBlock 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FeeBlockDescriptor_ApplicationNVMBlockData": {
+      "description": "FeeBlockDescriptor_ApplicationNVMBlockData 配置容器",
+      "type": "object",
+      "properties": {
+        "FeeBlockNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockNumber 参数"
+        },
+        "FeeBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockSize 参数"
+        },
+        "FeeImmediateData": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeImmediateData 参数"
+        },
+        "FeeNumberOfWriteCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeNumberOfWriteCycles 参数"
+        },
+        "FeeBlockId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockId 参数"
+        },
+        "FeeIsLookupTableBlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeIsLookupTableBlock 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FeeBlockDescriptor_BleShortID0": {
+      "description": "FeeBlockDescriptor_BleShortID0 配置容器",
+      "type": "object",
+      "properties": {
+        "FeeBlockNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockNumber 参数"
+        },
+        "FeeBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockSize 参数"
+        },
+        "FeeImmediateData": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeImmediateData 参数"
+        },
+        "FeeNumberOfWriteCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeNumberOfWriteCycles 参数"
+        },
+        "FeeBlockId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockId 参数"
+        },
+        "FeeIsLookupTableBlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeIsLookupTableBlock 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FeeBlockDescriptor_BleShortID1": {
+      "description": "FeeBlockDescriptor_BleShortID1 配置容器",
+      "type": "object",
+      "properties": {
+        "FeeBlockNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockNumber 参数"
+        },
+        "FeeBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockSize 参数"
+        },
+        "FeeImmediateData": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeImmediateData 参数"
+        },
+        "FeeNumberOfWriteCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeNumberOfWriteCycles 参数"
+        },
+        "FeeBlockId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockId 参数"
+        },
+        "FeeIsLookupTableBlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeIsLookupTableBlock 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FeeBlockDescriptor_BleShortID10": {
+      "description": "FeeBlockDescriptor_BleShortID10 配置容器",
+      "type": "object",
+      "properties": {
+        "FeeBlockNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockNumber 参数"
+        },
+        "FeeBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockSize 参数"
+        },
+        "FeeImmediateData": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeImmediateData 参数"
+        },
+        "FeeNumberOfWriteCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeNumberOfWriteCycles 参数"
+        },
+        "FeeBlockId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockId 参数"
+        },
+        "FeeIsLookupTableBlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeIsLookupTableBlock 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FeeBlockDescriptor_BleShortID11": {
+      "description": "FeeBlockDescriptor_BleShortID11 配置容器",
+      "type": "object",
+      "properties": {
+        "FeeBlockNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockNumber 参数"
+        },
+        "FeeBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockSize 参数"
+        },
+        "FeeImmediateData": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeImmediateData 参数"
+        },
+        "FeeNumberOfWriteCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeNumberOfWriteCycles 参数"
+        },
+        "FeeBlockId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockId 参数"
+        },
+        "FeeIsLookupTableBlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeIsLookupTableBlock 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FeeBlockDescriptor_BleShortID12": {
+      "description": "FeeBlockDescriptor_BleShortID12 配置容器",
+      "type": "object",
+      "properties": {
+        "FeeBlockNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockNumber 参数"
+        },
+        "FeeBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockSize 参数"
+        },
+        "FeeImmediateData": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeImmediateData 参数"
+        },
+        "FeeNumberOfWriteCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeNumberOfWriteCycles 参数"
+        },
+        "FeeBlockId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockId 参数"
+        },
+        "FeeIsLookupTableBlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeIsLookupTableBlock 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FeeBlockDescriptor_BleShortID13": {
+      "description": "FeeBlockDescriptor_BleShortID13 配置容器",
+      "type": "object",
+      "properties": {
+        "FeeBlockNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockNumber 参数"
+        },
+        "FeeBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockSize 参数"
+        },
+        "FeeImmediateData": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeImmediateData 参数"
+        },
+        "FeeNumberOfWriteCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeNumberOfWriteCycles 参数"
+        },
+        "FeeBlockId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockId 参数"
+        },
+        "FeeIsLookupTableBlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeIsLookupTableBlock 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FeeBlockDescriptor_BleShortID14": {
+      "description": "FeeBlockDescriptor_BleShortID14 配置容器",
+      "type": "object",
+      "properties": {
+        "FeeBlockNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockNumber 参数"
+        },
+        "FeeBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockSize 参数"
+        },
+        "FeeImmediateData": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeImmediateData 参数"
+        },
+        "FeeNumberOfWriteCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeNumberOfWriteCycles 参数"
+        },
+        "FeeBlockId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockId 参数"
+        },
+        "FeeIsLookupTableBlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeIsLookupTableBlock 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FeeBlockDescriptor_BleShortID15": {
+      "description": "FeeBlockDescriptor_BleShortID15 配置容器",
+      "type": "object",
+      "properties": {
+        "FeeBlockNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockNumber 参数"
+        },
+        "FeeBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockSize 参数"
+        },
+        "FeeImmediateData": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeImmediateData 参数"
+        },
+        "FeeNumberOfWriteCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeNumberOfWriteCycles 参数"
+        },
+        "FeeBlockId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockId 参数"
+        },
+        "FeeIsLookupTableBlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeIsLookupTableBlock 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FeeBlockDescriptor_BleShortID16": {
+      "description": "FeeBlockDescriptor_BleShortID16 配置容器",
+      "type": "object",
+      "properties": {
+        "FeeBlockNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockNumber 参数"
+        },
+        "FeeBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockSize 参数"
+        },
+        "FeeImmediateData": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeImmediateData 参数"
+        },
+        "FeeNumberOfWriteCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeNumberOfWriteCycles 参数"
+        },
+        "FeeBlockId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockId 参数"
+        },
+        "FeeIsLookupTableBlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeIsLookupTableBlock 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FeeBlockDescriptor_BleShortID17": {
+      "description": "FeeBlockDescriptor_BleShortID17 配置容器",
+      "type": "object",
+      "properties": {
+        "FeeBlockNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockNumber 参数"
+        },
+        "FeeBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockSize 参数"
+        },
+        "FeeImmediateData": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeImmediateData 参数"
+        },
+        "FeeNumberOfWriteCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeNumberOfWriteCycles 参数"
+        },
+        "FeeBlockId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockId 参数"
+        },
+        "FeeIsLookupTableBlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeIsLookupTableBlock 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FeeBlockDescriptor_BleShortID18": {
+      "description": "FeeBlockDescriptor_BleShortID18 配置容器",
+      "type": "object",
+      "properties": {
+        "FeeBlockNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockNumber 参数"
+        },
+        "FeeBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockSize 参数"
+        },
+        "FeeImmediateData": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeImmediateData 参数"
+        },
+        "FeeNumberOfWriteCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeNumberOfWriteCycles 参数"
+        },
+        "FeeBlockId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FeeBlockId 参数"
+        },
+        "FeeIsLookupTableBlock": {
+          "type": "boolean",
+          "default": false,
+          "description": "FeeIsLookupTableBlock 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "FeeBlockConfiguration",
+    "FeeBlockConfiguration_01",
+    "FeeBlockDescriptor"
+  ],
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

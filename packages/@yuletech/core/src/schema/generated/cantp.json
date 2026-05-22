@@ -1,0 +1,814 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/cantp.json",
+  "title": "CanTp Configuration",
+  "description": "CAN 传输协议",
+  "type": "object",
+  "properties": {
+    "CanTpGeneral": {
+      "description": "CanTpGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "CanTpChangeParameterApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpChangeParameterApi 参数"
+        },
+        "CanTpDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpDevErrorDetect 参数"
+        },
+        "CanTpPaddingByte": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpPaddingByte 参数"
+        },
+        "CanTpReadParameterApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpReadParameterApi 参数"
+        },
+        "CanTpVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpVersionInfoApi 参数"
+        },
+        "CanTpPaddingActive": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpPaddingActive 参数"
+        },
+        "CanTpHavePaddingByte": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpHavePaddingByte 参数"
+        },
+        "CanTpEnableSplitMainFunction": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpEnableSplitMainFunction 参数"
+        },
+        "CanTpSupportStandardAddressing": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpSupportStandardAddressing 参数"
+        },
+        "CanTpSupportExtendedAddressing": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpSupportExtendedAddressing 参数"
+        },
+        "CanTpSupportMixed11Addressing": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpSupportMixed11Addressing 参数"
+        },
+        "CanTpSupportMixed29Addressing": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpSupportMixed29Addressing 参数"
+        },
+        "CanTpSupportNormalFixedAddressing": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpSupportNormalFixedAddressing 参数"
+        },
+        "CanTpSupportCustomAddressing": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpSupportCustomAddressing 参数"
+        },
+        "CanTpOnlyNotifyInformedAppl": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpOnlyNotifyInformedAppl 参数"
+        },
+        "CanTpRc": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpRc 参数"
+        },
+        "CanTpTc": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpTc 参数"
+        },
+        "CanTpSafeBswChecks": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpSafeBswChecks 参数"
+        },
+        "CanTpUseOnlyFirstFc": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpUseOnlyFirstFc 参数"
+        },
+        "CanTpFlexibleDataRateSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpFlexibleDataRateSupport 参数"
+        },
+        "CanTpSupportLongFirstFrames": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpSupportLongFirstFrames 参数"
+        },
+        "CanTpEnableSynchronousTransmit": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpEnableSynchronousTransmit 参数"
+        },
+        "CanTpEnableTransmitQueue": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpEnableTransmitQueue 参数"
+        },
+        "CanTpEnableNonStrictLengthCheck": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpEnableNonStrictLengthCheck 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTpConfig": {
+      "description": "CanTpConfig 配置容器",
+      "type": "object",
+      "properties": {
+        "CanTpMainFunctionPeriod": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpMainFunctionPeriod 参数"
+        },
+        "CanTpBs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpBs 参数"
+        },
+        "CanTpNar": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpNar 参数"
+        },
+        "CanTpNcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpNcr 参数"
+        },
+        "CanTpRxDl": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxDl 参数"
+        },
+        "CanTpRxWftMax": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxWftMax 参数"
+        },
+        "CanTpSTmin": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpSTmin 参数"
+        },
+        "CanTpNbr": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpNbr 参数"
+        },
+        "CanTpRxNSduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxNSduId 参数"
+        },
+        "CanTpTxFcNPduConfirmationPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpTxFcNPduConfirmationPduId 参数"
+        },
+        "CanTpRxNPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxNPduId 参数"
+        },
+        "CanTpNas": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpNas 参数"
+        },
+        "CanTpNbs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpNbs 参数"
+        },
+        "CanTpTxDl": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpTxDl 参数"
+        },
+        "CanTpNcs": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpNcs 参数"
+        },
+        "CanTpTc": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpTc 参数"
+        },
+        "CanTpTxNSduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpTxNSduId 参数"
+        },
+        "CanTpTxNPduConfirmationPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpTxNPduConfirmationPduId 参数"
+        },
+        "CanTpRxFcNPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxFcNPduId 参数"
+        },
+        "CanTpChannelMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpChannelMode 参数"
+        },
+        "CanTpRxAddressingFormat": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpRxAddressingFormat 参数"
+        },
+        "CanTpRxPaddingActivation": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpRxPaddingActivation 参数"
+        },
+        "CanTpRxTaType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpRxTaType 参数"
+        },
+        "CanTpTxAddressingFormat": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpTxAddressingFormat 参数"
+        },
+        "CanTpTxPaddingActivation": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpTxPaddingActivation 参数"
+        },
+        "CanTpTxTaType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpTxTaType 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LHBDCANFDTpChannel_fc1f7a07": {
+      "description": "LHBDCANFDTpChannel_fc1f7a07 配置容器",
+      "type": "object",
+      "properties": {
+        "CanTpBs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpBs 参数"
+        },
+        "CanTpNar": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpNar 参数"
+        },
+        "CanTpNcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpNcr 参数"
+        },
+        "CanTpRxDl": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxDl 参数"
+        },
+        "CanTpRxWftMax": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxWftMax 参数"
+        },
+        "CanTpSTmin": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpSTmin 参数"
+        },
+        "CanTpNbr": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpNbr 参数"
+        },
+        "CanTpRxNSduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxNSduId 参数"
+        },
+        "CanTpTxFcNPduConfirmationPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpTxFcNPduConfirmationPduId 参数"
+        },
+        "CanTpRxNPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxNPduId 参数"
+        },
+        "CanTpNas": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpNas 参数"
+        },
+        "CanTpNbs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpNbs 参数"
+        },
+        "CanTpTxDl": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpTxDl 参数"
+        },
+        "CanTpNcs": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpNcs 参数"
+        },
+        "CanTpTc": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpTc 参数"
+        },
+        "CanTpTxNSduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpTxNSduId 参数"
+        },
+        "CanTpTxNPduConfirmationPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpTxNPduConfirmationPduId 参数"
+        },
+        "CanTpRxFcNPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxFcNPduId 参数"
+        },
+        "CanTpChannelMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpChannelMode 参数"
+        },
+        "CanTpRxAddressingFormat": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpRxAddressingFormat 参数"
+        },
+        "CanTpRxPaddingActivation": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpRxPaddingActivation 参数"
+        },
+        "CanTpRxTaType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpRxTaType 参数"
+        },
+        "CanTpTxAddressingFormat": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpTxAddressingFormat 参数"
+        },
+        "CanTpTxPaddingActivation": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpTxPaddingActivation 参数"
+        },
+        "CanTpTxTaType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpTxTaType 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTpRxNSdu_2563bfd5": {
+      "description": "CanTpRxNSdu_2563bfd5 配置容器",
+      "type": "object",
+      "properties": {
+        "CanTpBs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpBs 参数"
+        },
+        "CanTpNar": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpNar 参数"
+        },
+        "CanTpNcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpNcr 参数"
+        },
+        "CanTpRxDl": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxDl 参数"
+        },
+        "CanTpRxWftMax": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxWftMax 参数"
+        },
+        "CanTpSTmin": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpSTmin 参数"
+        },
+        "CanTpNbr": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpNbr 参数"
+        },
+        "CanTpRxNSduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxNSduId 参数"
+        },
+        "CanTpTxFcNPduConfirmationPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpTxFcNPduConfirmationPduId 参数"
+        },
+        "CanTpRxNPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxNPduId 参数"
+        },
+        "CanTpRxAddressingFormat": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpRxAddressingFormat 参数"
+        },
+        "CanTpRxPaddingActivation": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpRxPaddingActivation 参数"
+        },
+        "CanTpRxTaType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpRxTaType 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTpTxFcNPdu_15b9b3c6": {
+      "description": "CanTpTxFcNPdu_15b9b3c6 配置容器",
+      "type": "object",
+      "properties": {
+        "CanTpTxFcNPduConfirmationPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpTxFcNPduConfirmationPduId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTpRxNPdu_15b9b3c6": {
+      "description": "CanTpRxNPdu_15b9b3c6 配置容器",
+      "type": "object",
+      "properties": {
+        "CanTpRxNPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxNPduId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTpTxNSdu_2563bfd5": {
+      "description": "CanTpTxNSdu_2563bfd5 配置容器",
+      "type": "object",
+      "properties": {
+        "CanTpNas": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpNas 参数"
+        },
+        "CanTpNbs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpNbs 参数"
+        },
+        "CanTpTxDl": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpTxDl 参数"
+        },
+        "CanTpNcs": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpNcs 参数"
+        },
+        "CanTpTc": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanTpTc 参数"
+        },
+        "CanTpTxNSduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpTxNSduId 参数"
+        },
+        "CanTpTxNPduConfirmationPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpTxNPduConfirmationPduId 参数"
+        },
+        "CanTpRxFcNPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxFcNPduId 参数"
+        },
+        "CanTpTxAddressingFormat": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpTxAddressingFormat 参数"
+        },
+        "CanTpTxPaddingActivation": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpTxPaddingActivation 参数"
+        },
+        "CanTpTxTaType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpTxTaType 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTpTxNPdu_37436734": {
+      "description": "CanTpTxNPdu_37436734 配置容器",
+      "type": "object",
+      "properties": {
+        "CanTpTxNPduConfirmationPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpTxNPduConfirmationPduId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTpRxFcNPdu_37436734": {
+      "description": "CanTpRxFcNPdu_37436734 配置容器",
+      "type": "object",
+      "properties": {
+        "CanTpRxFcNPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxFcNPduId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LHBDCANFDTpChannel_82b40f25": {
+      "description": "LHBDCANFDTpChannel_82b40f25 配置容器",
+      "type": "object",
+      "properties": {
+        "CanTpBs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpBs 参数"
+        },
+        "CanTpNar": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpNar 参数"
+        },
+        "CanTpNcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpNcr 参数"
+        },
+        "CanTpRxDl": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxDl 参数"
+        },
+        "CanTpRxWftMax": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxWftMax 参数"
+        },
+        "CanTpSTmin": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpSTmin 参数"
+        },
+        "CanTpNbr": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpNbr 参数"
+        },
+        "CanTpRxNSduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxNSduId 参数"
+        },
+        "CanTpRxNPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxNPduId 参数"
+        },
+        "CanTpChannelMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpChannelMode 参数"
+        },
+        "CanTpRxAddressingFormat": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpRxAddressingFormat 参数"
+        },
+        "CanTpRxPaddingActivation": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpRxPaddingActivation 参数"
+        },
+        "CanTpRxTaType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpRxTaType 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTpRxNSdu_6c047742": {
+      "description": "CanTpRxNSdu_6c047742 配置容器",
+      "type": "object",
+      "properties": {
+        "CanTpBs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpBs 参数"
+        },
+        "CanTpNar": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpNar 参数"
+        },
+        "CanTpNcr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpNcr 参数"
+        },
+        "CanTpRxDl": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxDl 参数"
+        },
+        "CanTpRxWftMax": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxWftMax 参数"
+        },
+        "CanTpSTmin": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpSTmin 参数"
+        },
+        "CanTpNbr": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpNbr 参数"
+        },
+        "CanTpRxNSduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxNSduId 参数"
+        },
+        "CanTpRxNPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxNPduId 参数"
+        },
+        "CanTpRxAddressingFormat": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpRxAddressingFormat 参数"
+        },
+        "CanTpRxPaddingActivation": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpRxPaddingActivation 参数"
+        },
+        "CanTpRxTaType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanTpRxTaType 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTpRxNPdu_b0a36b39": {
+      "description": "CanTpRxNPdu_b0a36b39 配置容器",
+      "type": "object",
+      "properties": {
+        "CanTpRxNPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTpRxNPduId 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CanTpGeneral",
+    "CanTpConfig",
+    "LHBDCANFDTpChannel_fc1f7a07"
+  ],
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

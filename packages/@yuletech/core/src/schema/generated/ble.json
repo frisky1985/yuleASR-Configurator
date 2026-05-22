@@ -1,0 +1,752 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/ble.json",
+  "title": "Ble Configuration",
+  "description": "BLE 驱动",
+  "type": "object",
+  "properties": {
+    "BleGlobalConfig": {
+      "description": "BleGlobalConfig 配置容器",
+      "type": "object",
+      "properties": {
+        "BleAvertisingDefaultTxPower": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleAvertisingDefaultTxPower 参数"
+        },
+        "BleConnectionDefaultTxPower": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleConnectionDefaultTxPower 参数"
+        },
+        "BleControllerWakeUpDelay": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleControllerWakeUpDelay 参数"
+        },
+        "BleDirectTestMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "BleDirectTestMode 参数"
+        },
+        "BleDisableControllerLowPower": {
+          "type": "boolean",
+          "default": false,
+          "description": "BleDisableControllerLowPower 参数"
+        },
+        "BleHciCommandFlowControl": {
+          "type": "boolean",
+          "default": false,
+          "description": "BleHciCommandFlowControl 参数"
+        },
+        "BleHciTimeoutMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleHciTimeoutMs 参数"
+        },
+        "BleInvalidPduHandling": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleInvalidPduHandling 参数"
+        },
+        "BleLl32MhzWakeupAdvanceHslot": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleLl32MhzWakeupAdvanceHslot 参数"
+        },
+        "BleMaxTxPower": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleMaxTxPower 参数"
+        },
+        "BleRpmsgRemoteReadyRetryCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleRpmsgRemoteReadyRetryCount 参数"
+        },
+        "BleXtal32KStartupTimeout": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleXtal32KStartupTimeout 参数"
+        },
+        "BleXtal32MStartupTimeout": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleXtal32MStartupTimeout 参数"
+        },
+        "BleXtalTrimValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleXtalTrimValue 参数"
+        },
+        "ControllerTriggerReseed": {
+          "type": "boolean",
+          "default": false,
+          "description": "ControllerTriggerReseed 参数"
+        },
+        "PlatformActiveReqTimeoutUs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PlatformActiveReqTimeoutUs 参数"
+        },
+        "BleBDAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BleBDAddress 参数"
+        },
+        "BleControllerVersionNotification": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BleControllerVersionNotification 参数"
+        },
+        "BleErrorNotification": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BleErrorNotification 参数"
+        },
+        "BleTimeDelay": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BleTimeDelay 参数"
+        },
+        "ControllerIssueNotification": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ControllerIssueNotification 参数"
+        },
+        "ControllerMemoryErrorNotification": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ControllerMemoryErrorNotification 参数"
+        },
+        "PlatformErrorNotification": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PlatformErrorNotification 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BleHostConfiguration": {
+      "description": "BleHostConfiguration 配置容器",
+      "type": "object",
+      "properties": {
+        "Ble50Compatible": {
+          "type": "boolean",
+          "default": false,
+          "description": "Ble50Compatible 参数"
+        },
+        "BleAppEattDefaultMtu": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleAppEattDefaultMtu 参数"
+        },
+        "BleAppEattMaxNoOfBearers": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleAppEattMaxNoOfBearers 参数"
+        },
+        "BleAppMaxActiveConnectionsEatt": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleAppMaxActiveConnectionsEatt 参数"
+        },
+        "BleAppMaxActiveConnectionsGattCaching": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleAppMaxActiveConnectionsGattCaching 参数"
+        },
+        "BleAppMaxConnections": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleAppMaxConnections 参数"
+        },
+        "BleChannelSounding": {
+          "type": "boolean",
+          "default": false,
+          "description": "BleChannelSounding 参数"
+        },
+        "BleControllerPrivacyTimeout": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleControllerPrivacyTimeout 参数"
+        },
+        "BleDefaultTxOctets": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleDefaultTxOctets 参数"
+        },
+        "BleDefaultTxTime": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleDefaultTxTime 参数"
+        },
+        "BleEatt": {
+          "type": "boolean",
+          "default": false,
+          "description": "BleEatt 参数"
+        },
+        "BleGapMaxServiceSpecificSecurityRequirements": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleGapMaxServiceSpecificSecurityRequirements 参数"
+        },
+        "BleGapMaximumActiveConnections": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleGapMaximumActiveConnections 参数"
+        },
+        "BleGapSimultaneousEachainedReports": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleGapSimultaneousEachainedReports 参数"
+        },
+        "BleGattCaching": {
+          "type": "boolean",
+          "default": false,
+          "description": "BleGattCaching 参数"
+        },
+        "BleGcAppMaximumBondedDevicesGattCaching": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleGcAppMaximumBondedDevicesGattCaching 参数"
+        },
+        "BleHostAutoRejectLtkRequestForUnbondedDevices": {
+          "type": "boolean",
+          "default": false,
+          "description": "BleHostAutoRejectLtkRequestForUnbondedDevices 参数"
+        },
+        "BleHostExtAdvUseSameRandomAddr": {
+          "type": "boolean",
+          "default": false,
+          "description": "BleHostExtAdvUseSameRandomAddr 参数"
+        },
+        "BleHostFreeEareportTimeoutMs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleHostFreeEareportTimeoutMs 参数"
+        },
+        "BleHostPrivacyTimeout": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleHostPrivacyTimeout 参数"
+        },
+        "BleL2caLowPeerCreditsThreshold": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleL2caLowPeerCreditsThreshold 参数"
+        },
+        "BleL2caMaxLeCbChannels": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleL2caMaxLeCbChannels 参数"
+        },
+        "BleL2caMaxLePsmSupported": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleL2caMaxLePsmSupported 参数"
+        },
+        "BleLeScOobHasMitmProtection": {
+          "type": "boolean",
+          "default": false,
+          "description": "BleLeScOobHasMitmProtection 参数"
+        },
+        "BleMaxAdvReportQueueSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleMaxAdvReportQueueSize 参数"
+        },
+        "BleMaxBondedDevices": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleMaxBondedDevices 参数"
+        },
+        "BleMaxL2caQueueSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleMaxL2caQueueSize 参数"
+        },
+        "BleMaxNonBondedDevices": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleMaxNonBondedDevices 参数"
+        },
+        "BleMaxReadNotificationHandles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleMaxReadNotificationHandles 参数"
+        },
+        "BleMaxResolvingListSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleMaxResolvingListSize 参数"
+        },
+        "BleMaxWriteNotificationHandles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BleMaxWriteNotificationHandles 参数"
+        },
+        "BlePrepareWriteQueueSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "BlePrepareWriteQueueSize 参数"
+        },
+        "BleGeneralCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BleGeneralCallback 参数"
+        },
+        "BleHostInitReset": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BleHostInitReset 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        },
+        "VendorApiInfix": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "VendorApiInfix 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CryptoConfiguration": {
+      "description": "CryptoConfiguration 配置容器",
+      "type": "object",
+      "properties": {
+        "BleSecureMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "BleSecureMode 参数"
+        },
+        "CryptoJobIdForAesCmac": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryptoJobIdForAesCmac 参数"
+        },
+        "CryptoJobIdForAesEcb": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryptoJobIdForAesEcb 参数"
+        },
+        "CryptoJobIdForRng": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CryptoJobIdForRng 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "GattDBAtt_0": {
+      "description": "GattDBAtt_0 配置容器",
+      "type": "object",
+      "properties": {
+        "AttCharacteristicProperties": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AttCharacteristicProperties 参数"
+        },
+        "AttPermissions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AttPermissions 参数"
+        },
+        "AttValueMaxLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AttValueMaxLength 参数"
+        },
+        "AttType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AttType 参数"
+        },
+        "AttUuid": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AttUuid 参数"
+        },
+        "AttValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AttValue 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "GattDBAtt_1": {
+      "description": "GattDBAtt_1 配置容器",
+      "type": "object",
+      "properties": {
+        "AttCharacteristicProperties": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AttCharacteristicProperties 参数"
+        },
+        "AttPermissions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AttPermissions 参数"
+        },
+        "AttValueMaxLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AttValueMaxLength 参数"
+        },
+        "AttType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AttType 参数"
+        },
+        "AttUuid": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AttUuid 参数"
+        },
+        "AttValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AttValue 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "GattDBAtt_2": {
+      "description": "GattDBAtt_2 配置容器",
+      "type": "object",
+      "properties": {
+        "AttCharacteristicProperties": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AttCharacteristicProperties 参数"
+        },
+        "AttPermissions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AttPermissions 参数"
+        },
+        "AttValueMaxLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AttValueMaxLength 参数"
+        },
+        "AttType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AttType 参数"
+        },
+        "AttUuid": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AttUuid 参数"
+        },
+        "AttValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AttValue 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "GattDBConfiguration1": {
+      "description": "GattDBConfiguration1 配置容器",
+      "type": "object",
+      "properties": {
+        "AttCharacteristicProperties": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AttCharacteristicProperties 参数"
+        },
+        "AttPermissions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AttPermissions 参数"
+        },
+        "AttValueMaxLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AttValueMaxLength 参数"
+        },
+        "AttType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AttType 参数"
+        },
+        "AttUuid": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AttUuid 参数"
+        },
+        "AttValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AttValue 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "GeneralConfiguration": {
+      "description": "GeneralConfiguration 配置容器",
+      "type": "object",
+      "properties": {
+        "BleDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "BleDevErrorDetect 参数"
+        },
+        "BleDisableDemReportErrorStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "BleDisableDemReportErrorStatus 参数"
+        },
+        "BleVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "BleVersionInfoApi 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LowPowerConfiguration": {
+      "description": "LowPowerConfiguration 配置容器",
+      "type": "object",
+      "properties": {
+        "BleEnterLowPowerCritical": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BleEnterLowPowerCritical 参数"
+        },
+        "BleExitLowPowerCritical": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BleExitLowPowerCritical 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MemoryConfiguration": {
+      "description": "MemoryConfiguration 配置容器",
+      "type": "object",
+      "properties": {
+        "MemoryPoolSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "MemoryPoolSize 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "NVMConfiguration": {
+      "description": "NVMConfiguration 配置容器",
+      "type": "object",
+      "properties": {
+        "NvmDataClear": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvmDataClear 参数"
+        },
+        "NvmDataLoad": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvmDataLoad 参数"
+        },
+        "NvmDataSave": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NvmDataSave 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "NbuLowPowerConfiguration": {
+      "description": "NbuLowPowerConfiguration 配置容器",
+      "type": "object",
+      "properties": {
+        "BleNbuReleaseLowPowerConstraint": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BleNbuReleaseLowPowerConstraint 参数"
+        },
+        "BleNbuSetLowPowerConstraint": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BleNbuSetLowPowerConstraint 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PeripheralConfiguration": {
+      "description": "PeripheralConfiguration 配置容器",
+      "type": "object",
+      "properties": {
+        "BlePeripheralInterruptDisable": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BlePeripheralInterruptDisable 参数"
+        },
+        "BlePeripheralInterruptEnable": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BlePeripheralInterruptEnable 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "app_dk_rx_char": {
+      "description": "app_dk_rx_char 配置容器",
+      "type": "object",
+      "properties": {
+        "AttCharacteristicProperties": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AttCharacteristicProperties 参数"
+        },
+        "AttPermissions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AttPermissions 参数"
+        },
+        "AttValueMaxLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "AttValueMaxLength 参数"
+        },
+        "AttType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AttType 参数"
+        },
+        "AttUuid": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AttUuid 参数"
+        },
+        "AttValue": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "AttValue 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "BleGlobalConfig",
+    "BleHostConfiguration",
+    "CommonPublishedInformation"
+  ],
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

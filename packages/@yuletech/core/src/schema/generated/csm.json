@@ -1,0 +1,465 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/csm.json",
+  "title": "Csm Configuration",
+  "description": "加密服务管理",
+  "type": "object",
+  "properties": {
+    "CsmGeneral": {
+      "description": "CsmGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "CsmAsymPrivateKeyMaxLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CsmAsymPrivateKeyMaxLength 参数"
+        },
+        "CsmAsymPublicKeyMaxLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CsmAsymPublicKeyMaxLength 参数"
+        },
+        "CsmDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmDevErrorDetect 参数"
+        },
+        "CsmSymKeyMaxLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CsmSymKeyMaxLength 参数"
+        },
+        "CsmUseDeprecated": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmUseDeprecated 参数"
+        },
+        "CsmVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmVersionInfoApi 参数"
+        },
+        "CsmCallbackStartNotification": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmCallbackStartNotification 参数"
+        },
+        "CsmCancelationDuringProcessing": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmCancelationDuringProcessing 参数"
+        },
+        "CsmSafeBswChecks": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmSafeBswChecks 参数"
+        },
+        "CsmMultiPartitionRuntimeChecks": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmMultiPartitionRuntimeChecks 参数"
+        },
+        "CsmJobTypeLayoutAsr430Compatibility": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutAsr430Compatibility 参数"
+        },
+        "CsmJobTypeLayoutVarMembers": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutVarMembers 参数"
+        },
+        "CsmJobTypeLayoutInput64": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutInput64 参数"
+        },
+        "CsmJobTypeLayoutOutput64Ptr": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutOutput64Ptr 参数"
+        },
+        "CsmJobTypeLayoutRedirectionInfoRef": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutRedirectionInfoRef 参数"
+        },
+        "CsmJobTypeLayoutJobInfoPtr": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutJobInfoPtr 参数"
+        },
+        "CsmJobTypeLayoutSecureCounterId": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutSecureCounterId 参数"
+        },
+        "CsmJobTypeLayoutCallbackUpdateNotification": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutCallbackUpdateNotification 参数"
+        },
+        "CsmJobTypeLayoutResultLength": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutResultLength 参数"
+        },
+        "CsmSwcMainInterfaceVersion": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmSwcMainInterfaceVersion 参数"
+        },
+        "CsmJobTypeLayoutFieldOrdering": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmJobTypeLayoutFieldOrdering 参数"
+        },
+        "CsmDefaultJobKeyApiVersion": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmDefaultJobKeyApiVersion 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmJobTypeLayout": {
+      "description": "CsmJobTypeLayout 配置容器",
+      "type": "object",
+      "properties": {
+        "CsmJobTypeLayoutAsr430Compatibility": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutAsr430Compatibility 参数"
+        },
+        "CsmJobTypeLayoutVarMembers": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutVarMembers 参数"
+        },
+        "CsmJobTypeLayoutInput64": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutInput64 参数"
+        },
+        "CsmJobTypeLayoutOutput64Ptr": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutOutput64Ptr 参数"
+        },
+        "CsmJobTypeLayoutRedirectionInfoRef": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutRedirectionInfoRef 参数"
+        },
+        "CsmJobTypeLayoutJobInfoPtr": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutJobInfoPtr 参数"
+        },
+        "CsmJobTypeLayoutSecureCounterId": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutSecureCounterId 参数"
+        },
+        "CsmJobTypeLayoutCallbackUpdateNotification": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutCallbackUpdateNotification 参数"
+        },
+        "CsmJobTypeLayoutResultLength": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobTypeLayoutResultLength 参数"
+        },
+        "CsmJobTypeLayoutFieldOrdering": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmJobTypeLayoutFieldOrdering 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmBswApiCompatibility": {
+      "description": "CsmBswApiCompatibility 配置容器",
+      "type": "object",
+      "properties": {
+        "CsmDefaultJobKeyApiVersion": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmDefaultJobKeyApiVersion 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmKeys": {
+      "description": "CsmKeys 配置容器",
+      "type": "object",
+      "properties": {
+        "CsmKeyId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CsmKeyId 参数"
+        },
+        "CsmKeyUsePort": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmKeyUsePort 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmKey_CryIfKey": {
+      "description": "CsmKey_CryIfKey 配置容器",
+      "type": "object",
+      "properties": {
+        "CsmKeyId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CsmKeyId 参数"
+        },
+        "CsmKeyUsePort": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmKeyUsePort 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmMainFunction": {
+      "description": "CsmMainFunction 配置容器",
+      "type": "object",
+      "properties": {
+        "CsmMainFunctionPeriod": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmMainFunctionPeriod 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmJobs": {
+      "description": "CsmJobs 配置容器",
+      "type": "object",
+      "properties": {
+        "CsmJobId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CsmJobId 参数"
+        },
+        "CsmJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CsmJobPriority 参数"
+        },
+        "CsmJobUsePort": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobUsePort 参数"
+        },
+        "CsmProcessingMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmProcessingMode 参数"
+        },
+        "CsmJobInterfaceUsePort": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmJobInterfaceUsePort 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmJob": {
+      "description": "CsmJob 配置容器",
+      "type": "object",
+      "properties": {
+        "CsmJobId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CsmJobId 参数"
+        },
+        "CsmJobPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CsmJobPriority 参数"
+        },
+        "CsmJobUsePort": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobUsePort 参数"
+        },
+        "CsmProcessingMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmProcessingMode 参数"
+        },
+        "CsmJobInterfaceUsePort": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmJobInterfaceUsePort 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmQueues": {
+      "description": "CsmQueues 配置容器",
+      "type": "object",
+      "properties": {
+        "CsmQueueSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CsmQueueSize 参数"
+        },
+        "CsmTriggerAsynchJobsInCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmTriggerAsynchJobsInCallback 参数"
+        },
+        "CsmJobSharing": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobSharing 参数"
+        },
+        "CsmOperationModeLimitation": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmOperationModeLimitation 参数"
+        },
+        "CsmQueueProcessingMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmQueueProcessingMode 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmQueue": {
+      "description": "CsmQueue 配置容器",
+      "type": "object",
+      "properties": {
+        "CsmQueueSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CsmQueueSize 参数"
+        },
+        "CsmTriggerAsynchJobsInCallback": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmTriggerAsynchJobsInCallback 参数"
+        },
+        "CsmJobSharing": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmJobSharing 参数"
+        },
+        "CsmOperationModeLimitation": {
+          "type": "boolean",
+          "default": false,
+          "description": "CsmOperationModeLimitation 参数"
+        },
+        "CsmQueueProcessingMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmQueueProcessingMode 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmPrimitives": {
+      "description": "CsmPrimitives 配置容器",
+      "type": "object",
+      "properties": {
+        "CsmHashResultLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CsmHashResultLength 参数"
+        },
+        "CsmHashAlgorithmFamiliy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmHashAlgorithmFamiliy 参数"
+        },
+        "CsmHashAlgorithmFamily": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmHashAlgorithmFamily 参数"
+        },
+        "CsmHashAlgorithmMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmHashAlgorithmMode 参数"
+        },
+        "CsmHashAlgorithmSecondaryFamily": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmHashAlgorithmSecondaryFamily 参数"
+        },
+        "CsmHashProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmHashProcessing 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmHash": {
+      "description": "CsmHash 配置容器",
+      "type": "object",
+      "properties": {
+        "CsmHashResultLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CsmHashResultLength 参数"
+        },
+        "CsmHashAlgorithmFamiliy": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmHashAlgorithmFamiliy 参数"
+        },
+        "CsmHashAlgorithmFamily": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmHashAlgorithmFamily 参数"
+        },
+        "CsmHashAlgorithmMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmHashAlgorithmMode 参数"
+        },
+        "CsmHashAlgorithmSecondaryFamily": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmHashAlgorithmSecondaryFamily 参数"
+        },
+        "CsmHashProcessing": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CsmHashProcessing 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CsmGeneral",
+    "CsmJobTypeLayout",
+    "CsmBswApiCompatibility"
+  ],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

@@ -120,6 +120,78 @@ jobs:
             apps/**/*.vsix
           retention-days: 7
 
+  schema-validation:
+    name: Schema Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate JSON schemas are valid JSON
+        run: |
+          node -e "
+          const fs = require('fs');
+          const path = require('path');
+          const dir = 'packages/@yuletech/core/src/schema/generated';
+          const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+          let ok = 0, fail = 0;
+          for (const f of files) {
+            try {
+              const content = fs.readFileSync(path.join(dir, f), 'utf8');
+              JSON.parse(content);
+              ok++;
+            } catch (e) {
+              console.error('INVALID JSON:', f, e.message);
+              fail++;
+            }
+          }
+          console.log(\`Validated \${ok} JSON files, \${fail} failures\`);
+          if (fail > 0) process.exit(1);
+          "
+
+      - name: Verify schemas can be loaded as modules
+        run: |
+          node -e "
+          const fs = require('fs');
+          const path = require('path');
+          const dir = 'packages/@yuletech/core/src/schema/generated';
+          const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+          let ok = 0, fail = 0;
+          for (const f of files) {
+            try {
+              const content = fs.readFileSync(path.join(dir, f), 'utf8');
+              const parsed = JSON.parse(content);
+              if (parsed && typeof parsed === 'object') ok++;
+              else { console.error('NOT AN OBJECT:', f); fail++; }
+            } catch (e) {
+              console.error('FAILED TO LOAD:', f, e.message);
+              fail++;
+            }
+          }
+          console.log(\`Loaded \${ok} schemas, \${fail} failures\`);
+          if (fail > 0) process.exit(1);
+          "
+
+      - name: Check schema index.ts compiles correctly
+        run: pnpm --filter @yuletech/core typecheck
+
+      - name: Type-check validator
+        run: pnpm --filter @yuletech/core typecheck
+
   build-vscode:
     name: Build VS Code Extension
     runs-on: ubuntu-latest

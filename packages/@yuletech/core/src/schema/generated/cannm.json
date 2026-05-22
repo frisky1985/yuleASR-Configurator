@@ -1,0 +1,493 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/cannm.json",
+  "title": "CanNm Configuration",
+  "description": "CAN 网络管理",
+  "type": "object",
+  "properties": {
+    "CanNmGlobalConfig": {
+      "description": "CanNmGlobalConfig 配置容器",
+      "type": "object",
+      "properties": {
+        "CanNmComControlEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmComControlEnabled 参数"
+        },
+        "CanNmNodeDetectionEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmNodeDetectionEnabled 参数"
+        },
+        "CanNmNodeIdEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmNodeIdEnabled 参数"
+        },
+        "CanNmPduRxIndicationEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmPduRxIndicationEnabled 参数"
+        },
+        "CanNmPnEiraCalcEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmPnEiraCalcEnabled 参数"
+        },
+        "CanNmRepeatMsgIndEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmRepeatMsgIndEnabled 参数"
+        },
+        "CanNmStateChangeIndEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmStateChangeIndEnabled 参数"
+        },
+        "CanNmUserDataEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmUserDataEnabled 参数"
+        },
+        "CanNmBusLoadReductionEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmBusLoadReductionEnabled 参数"
+        },
+        "CanNmBusSynchronizationEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmBusSynchronizationEnabled 参数"
+        },
+        "CanNmComUserDataSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmComUserDataSupport 参数"
+        },
+        "CanNmCoordinatorSyncSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmCoordinatorSyncSupport 参数"
+        },
+        "CanNmDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmDevErrorDetect 参数"
+        },
+        "CanNmImmediateTxconfEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmImmediateTxconfEnabled 参数"
+        },
+        "CanNmMainFunctionPeriod": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanNmMainFunctionPeriod 参数"
+        },
+        "CanNmPassiveModeEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmPassiveModeEnabled 参数"
+        },
+        "CanNmRemoteSleepIndEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmRemoteSleepIndEnabled 参数"
+        },
+        "CanNmVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmVersionInfoApi 参数"
+        },
+        "CanNmDisableTxErrReport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmDisableTxErrReport 参数"
+        },
+        "CanNmApiOptimization": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmApiOptimization 参数"
+        },
+        "CanNmCanIfRangeConfigDLCCheck": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmCanIfRangeConfigDLCCheck 参数"
+        },
+        "CanNmRuntimeMeasurementSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmRuntimeMeasurementSupport 参数"
+        },
+        "CanNmSafeBswChecks": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmSafeBswChecks 参数"
+        },
+        "CanNmPnSyncShutdownErrorReactionEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmPnSyncShutdownErrorReactionEnabled 参数"
+        },
+        "CanNmRuntimeErrorReport": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmRuntimeErrorReport 参数"
+        },
+        "CanNmOutOfBoundsWriteSanitizer": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmOutOfBoundsWriteSanitizer 参数"
+        },
+        "CanNmOutOfBoundsReadSanitizer": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmOutOfBoundsReadSanitizer 参数"
+        },
+        "CanNmInterfacesForDeactivatedData": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmInterfacesForDeactivatedData 参数"
+        },
+        "CanNmImmediateNmCycleTime": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanNmImmediateNmCycleTime 参数"
+        },
+        "CanNmImmediateNmTransmissions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmImmediateNmTransmissions 参数"
+        },
+        "CanNmMsgCycleTime": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanNmMsgCycleTime 参数"
+        },
+        "CanNmMsgTimeoutTime": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanNmMsgTimeoutTime 参数"
+        },
+        "CanNmNodeId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmNodeId 参数"
+        },
+        "CanNmRemoteSleepIndTime": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmRemoteSleepIndTime 参数"
+        },
+        "CanNmRepeatMessageTime": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanNmRepeatMessageTime 参数"
+        },
+        "CanNmTimeoutTime": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmTimeoutTime 参数"
+        },
+        "CanNmUserDataLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmUserDataLength 参数"
+        },
+        "CanNmWaitBusSleepTime": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmWaitBusSleepTime 参数"
+        },
+        "CanNmBusLoadReductionActive": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmBusLoadReductionActive 参数"
+        },
+        "CanNmCarWakeUpRxEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmCarWakeUpRxEnabled 参数"
+        },
+        "CanNmMsgCycleOffset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmMsgCycleOffset 参数"
+        },
+        "CanNmMsgReducedTime": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanNmMsgReducedTime 参数"
+        },
+        "CanNmActiveWakeupBitEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmActiveWakeupBitEnabled 参数"
+        },
+        "CanNmImmediateRestartEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmImmediateRestartEnabled 参数"
+        },
+        "CanNmCriBitAlwaysEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmCriBitAlwaysEnabled 参数"
+        },
+        "CanNmTxConfirmationPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmTxConfirmationPduId 参数"
+        },
+        "CanNmTxUserDataPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmTxUserDataPduId 参数"
+        },
+        "CanNmRxPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmRxPduId 参数"
+        },
+        "CanNmPduCbvPosition": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanNmPduCbvPosition 参数"
+        },
+        "CanNmPduNidPosition": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanNmPduNidPosition 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanNmGeneration": {
+      "description": "CanNmGeneration 配置容器",
+      "type": "object",
+      "properties": {
+        "CanNmOutOfBoundsWriteSanitizer": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmOutOfBoundsWriteSanitizer 参数"
+        },
+        "CanNmOutOfBoundsReadSanitizer": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmOutOfBoundsReadSanitizer 参数"
+        },
+        "CanNmInterfacesForDeactivatedData": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmInterfacesForDeactivatedData 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LHBDCANFD_Cluster_43c3a476": {
+      "description": "LHBDCANFD_Cluster_43c3a476 配置容器",
+      "type": "object",
+      "properties": {
+        "CanNmComControlEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmComControlEnabled 参数"
+        },
+        "CanNmImmediateNmCycleTime": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanNmImmediateNmCycleTime 参数"
+        },
+        "CanNmImmediateNmTransmissions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmImmediateNmTransmissions 参数"
+        },
+        "CanNmMsgCycleTime": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanNmMsgCycleTime 参数"
+        },
+        "CanNmMsgTimeoutTime": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanNmMsgTimeoutTime 参数"
+        },
+        "CanNmNodeDetectionEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmNodeDetectionEnabled 参数"
+        },
+        "CanNmNodeId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmNodeId 参数"
+        },
+        "CanNmNodeIdEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmNodeIdEnabled 参数"
+        },
+        "CanNmRemoteSleepIndTime": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmRemoteSleepIndTime 参数"
+        },
+        "CanNmRepeatMessageTime": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanNmRepeatMessageTime 参数"
+        },
+        "CanNmRepeatMsgIndEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmRepeatMsgIndEnabled 参数"
+        },
+        "CanNmTimeoutTime": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmTimeoutTime 参数"
+        },
+        "CanNmUserDataLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmUserDataLength 参数"
+        },
+        "CanNmWaitBusSleepTime": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmWaitBusSleepTime 参数"
+        },
+        "CanNmBusLoadReductionActive": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmBusLoadReductionActive 参数"
+        },
+        "CanNmCarWakeUpRxEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmCarWakeUpRxEnabled 参数"
+        },
+        "CanNmMsgCycleOffset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmMsgCycleOffset 参数"
+        },
+        "CanNmMsgReducedTime": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanNmMsgReducedTime 参数"
+        },
+        "CanNmActiveWakeupBitEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmActiveWakeupBitEnabled 参数"
+        },
+        "CanNmImmediateRestartEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmImmediateRestartEnabled 参数"
+        },
+        "CanNmCriBitAlwaysEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "CanNmCriBitAlwaysEnabled 参数"
+        },
+        "CanNmTxConfirmationPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmTxConfirmationPduId 参数"
+        },
+        "CanNmTxUserDataPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmTxUserDataPduId 参数"
+        },
+        "CanNmRxPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmRxPduId 参数"
+        },
+        "CanNmPduCbvPosition": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanNmPduCbvPosition 参数"
+        },
+        "CanNmPduNidPosition": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanNmPduNidPosition 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "NmPDU_LHBDCANFD_DKMM_3336d6fc_Tx": {
+      "description": "NmPDU_LHBDCANFD_DKMM_3336d6fc_Tx 配置容器",
+      "type": "object",
+      "properties": {
+        "CanNmTxConfirmationPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmTxConfirmationPduId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "NmPDU_LHBDCANFD_DKMM_0ffad24c": {
+      "description": "NmPDU_LHBDCANFD_DKMM_0ffad24c 配置容器",
+      "type": "object",
+      "properties": {
+        "CanNmTxUserDataPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmTxUserDataPduId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LHBDCANFD_Cluster_43c3a476_Rx": {
+      "description": "LHBDCANFD_Cluster_43c3a476_Rx 配置容器",
+      "type": "object",
+      "properties": {
+        "CanNmRxPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNmRxPduId 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CanNmGlobalConfig",
+    "CanNmGeneration",
+    "LHBDCANFD_Cluster_43c3a476"
+  ],
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

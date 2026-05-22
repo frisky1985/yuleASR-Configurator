@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/sbc.json",
+  "title": "Sbc Configuration",
+  "description": "系统基础芯片",
+  "type": "object",
+  "properties": {
+    "SbcPublicCfg": {
+      "description": "SbcPublicCfg 配置容器",
+      "type": "object",
+      "properties": {
+        "SbcSingleInstanceApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "SbcSingleInstanceApi 参数"
+        },
+        "SbcDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "SbcDevErrorDetect 参数"
+        },
+        "SbcGetVersionInfo": {
+          "type": "boolean",
+          "default": false,
+          "description": "SbcGetVersionInfo 参数"
+        },
+        "SbcWatchdogSupportInitialTrigger": {
+          "type": "boolean",
+          "default": false,
+          "description": "SbcWatchdogSupportInitialTrigger 参数"
+        },
+        "SbcWatchdogSupportSetModeAfterTrigger": {
+          "type": "boolean",
+          "default": false,
+          "description": "SbcWatchdogSupportSetModeAfterTrigger 参数"
+        },
+        "SbcWatchdogSupportSlowMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "SbcWatchdogSupportSlowMode 参数"
+        },
+        "SbcWatchdogSupportOffMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "SbcWatchdogSupportOffMode 参数"
+        },
+        "SbcSafeBswChecks": {
+          "type": "boolean",
+          "default": false,
+          "description": "SbcSafeBswChecks 参数"
+        },
+        "SbcUserConfigFile": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SbcUserConfigFile 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "tcan2451": {
+      "description": "tcan2451 配置容器",
+      "type": "object",
+      "properties": {
+        "SbcDeviceId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SbcDeviceId 参数"
+        },
+        "SbcWatchdogPeripheralId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SbcWatchdogPeripheralId 参数"
+        },
+        "SbcWatchdogTriggerOffset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SbcWatchdogTriggerOffset 参数"
+        },
+        "SbcCanTrcvPeripheralId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SbcCanTrcvPeripheralId 参数"
+        },
+        "SbcWatchdogInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SbcWatchdogInitialMode 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SbcWatchdogPeripheral": {
+      "description": "SbcWatchdogPeripheral 配置容器",
+      "type": "object",
+      "properties": {
+        "SbcWatchdogPeripheralId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SbcWatchdogPeripheralId 参数"
+        },
+        "SbcWatchdogTriggerOffset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SbcWatchdogTriggerOffset 参数"
+        },
+        "SbcWatchdogInitialMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "SbcWatchdogInitialMode 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SbcCanTrcvPeripheral": {
+      "description": "SbcCanTrcvPeripheral 配置容器",
+      "type": "object",
+      "properties": {
+        "SbcCanTrcvPeripheralId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SbcCanTrcvPeripheralId 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "SbcPublicCfg",
+    "tcan2451",
+    "SbcWatchdogPeripheral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

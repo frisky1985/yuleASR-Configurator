@@ -1,0 +1,344 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/ecum.json",
+  "title": "EcuM Configuration",
+  "description": "ECU 状态管理器",
+  "type": "object",
+  "properties": {
+    "Adc_Init": {
+      "description": "Adc_Init 配置容器",
+      "type": "object",
+      "properties": {
+        "EcuMModuleID": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleID 参数"
+        },
+        "EcuMModuleService": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleService 参数"
+        },
+        "EcuMModuleHeader": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleHeader 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BswM_InitMemory": {
+      "description": "BswM_InitMemory 配置容器",
+      "type": "object",
+      "properties": {
+        "EcuMModuleID": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleID 参数"
+        },
+        "EcuMModuleService": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleService 参数"
+        },
+        "EcuMModuleHeader": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleHeader 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BswM_PreInit": {
+      "description": "BswM_PreInit 配置容器",
+      "type": "object",
+      "properties": {
+        "EcuMModuleID": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleID 参数"
+        },
+        "EcuMModuleService": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleService 参数"
+        },
+        "EcuMModuleHeader": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleHeader 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanIf_InitMemory": {
+      "description": "CanIf_InitMemory 配置容器",
+      "type": "object",
+      "properties": {
+        "EcuMModuleID": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleID 参数"
+        },
+        "EcuMModuleService": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleService 参数"
+        },
+        "EcuMModuleHeader": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleHeader 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanNm_InitMemory": {
+      "description": "CanNm_InitMemory 配置容器",
+      "type": "object",
+      "properties": {
+        "EcuMModuleID": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleID 参数"
+        },
+        "EcuMModuleService": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleService 参数"
+        },
+        "EcuMModuleHeader": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleHeader 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanSM_InitMemory": {
+      "description": "CanSM_InitMemory 配置容器",
+      "type": "object",
+      "properties": {
+        "EcuMModuleID": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleID 参数"
+        },
+        "EcuMModuleService": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleService 参数"
+        },
+        "EcuMModuleHeader": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleHeader 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTp_InitMemory": {
+      "description": "CanTp_InitMemory 配置容器",
+      "type": "object",
+      "properties": {
+        "EcuMModuleID": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleID 参数"
+        },
+        "EcuMModuleService": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleService 参数"
+        },
+        "EcuMModuleHeader": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleHeader 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTp_PreInit": {
+      "description": "CanTp_PreInit 配置容器",
+      "type": "object",
+      "properties": {
+        "EcuMModuleID": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleID 参数"
+        },
+        "EcuMModuleService": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleService 参数"
+        },
+        "EcuMModuleHeader": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleHeader 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTrcvChannel": {
+      "description": "CanTrcvChannel 配置容器",
+      "type": "object",
+      "properties": {
+        "EcuMWakeupSourceId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EcuMWakeupSourceId 参数"
+        },
+        "EcuMWakeupSourcePolling": {
+          "type": "boolean",
+          "default": false,
+          "description": "EcuMWakeupSourcePolling 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTrcv_30_Sbc_Init": {
+      "description": "CanTrcv_30_Sbc_Init 配置容器",
+      "type": "object",
+      "properties": {
+        "EcuMModuleID": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleID 参数"
+        },
+        "EcuMModuleService": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleService 参数"
+        },
+        "EcuMModuleHeader": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleHeader 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanTrcv_30_Sbc_InitMemory": {
+      "description": "CanTrcv_30_Sbc_InitMemory 配置容器",
+      "type": "object",
+      "properties": {
+        "EcuMModuleID": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleID 参数"
+        },
+        "EcuMModuleService": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleService 参数"
+        },
+        "EcuMModuleHeader": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleHeader 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "Can_30_Flexcan4_InitMemory": {
+      "description": "Can_30_Flexcan4_InitMemory 配置容器",
+      "type": "object",
+      "properties": {
+        "EcuMModuleID": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleID 参数"
+        },
+        "EcuMModuleService": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleService 参数"
+        },
+        "EcuMModuleHeader": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleHeader 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ComM_InitMemory": {
+      "description": "ComM_InitMemory 配置容器",
+      "type": "object",
+      "properties": {
+        "EcuMModuleID": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleID 参数"
+        },
+        "EcuMModuleService": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleService 参数"
+        },
+        "EcuMModuleHeader": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleHeader 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ComM_PreInit": {
+      "description": "ComM_PreInit 配置容器",
+      "type": "object",
+      "properties": {
+        "EcuMModuleID": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleID 参数"
+        },
+        "EcuMModuleService": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleService 参数"
+        },
+        "EcuMModuleHeader": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleHeader 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "Com_InitMemory": {
+      "description": "Com_InitMemory 配置容器",
+      "type": "object",
+      "properties": {
+        "EcuMModuleID": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleID 参数"
+        },
+        "EcuMModuleService": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleService 参数"
+        },
+        "EcuMModuleHeader": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EcuMModuleHeader 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "Adc_Init",
+    "BswM_InitMemory",
+    "BswM_PreInit"
+  ],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

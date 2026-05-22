@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/crc.json",
+  "title": "Crc Configuration",
+  "description": "CRC 计算服务",
+  "type": "object",
+  "properties": {
+    "CrcGeneral": {
+      "description": "CrcGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "CrcVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "CrcVersionInfoApi 参数"
+        },
+        "Crc16Mode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "Crc16Mode 参数"
+        },
+        "Crc32Mode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "Crc32Mode 参数"
+        },
+        "Crc8H2FMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "Crc8H2FMode 参数"
+        },
+        "Crc8Mode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "Crc8Mode 参数"
+        },
+        "Crc32P4Mode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "Crc32P4Mode 参数"
+        },
+        "Crc64Mode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "Crc64Mode 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CrcGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

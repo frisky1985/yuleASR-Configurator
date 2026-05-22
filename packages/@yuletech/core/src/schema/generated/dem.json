@@ -2,21 +2,442 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/dem.json",
   "title": "Dem Configuration",
-  "description": "诊断事件管理 - DTC 和故障处理",
+  "description": "Dem Configuration",
   "type": "object",
   "properties": {
-    "DemEventParameter": {
-      "description": "事件参数",
+    "AgedCounter": {
+      "description": "AgedCounter 配置容器",
       "type": "object",
+      "properties": {
+        "DemDataElementDataSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DemDataElementDataSize 参数"
+        },
+        "DemDataElementStoreNonVolatile": {
+          "type": "boolean",
+          "default": false,
+          "description": "DemDataElementStoreNonVolatile 参数"
+        },
+        "DemDataElementUsePort": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementUsePort 参数"
+        },
+        "DemDataElementInternalData": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementInternalData 参数"
+        }
+      },
       "additionalProperties": true
     },
-    "DemDTCClass": {
-      "description": "DTC 类别",
+    "AgingCounter": {
+      "description": "AgingCounter 配置容器",
       "type": "object",
+      "properties": {
+        "DemDataElementDataSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DemDataElementDataSize 参数"
+        },
+        "DemDataElementStoreNonVolatile": {
+          "type": "boolean",
+          "default": false,
+          "description": "DemDataElementStoreNonVolatile 参数"
+        },
+        "DemDataElementUsePort": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementUsePort 参数"
+        },
+        "DemDataElementInternalData": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementInternalData 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DID_0x10b_Date_time": {
+      "description": "DID_0x10b_Date_time 配置容器",
+      "type": "object",
+      "properties": {
+        "DemDataElementDataSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DemDataElementDataSize 参数"
+        },
+        "DemDataElementStoreNonVolatile": {
+          "type": "boolean",
+          "default": false,
+          "description": "DemDataElementStoreNonVolatile 参数"
+        },
+        "DemDataElementDataType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementDataType 参数"
+        },
+        "DemDataElementEndianness": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementEndianness 参数"
+        },
+        "DemDataElementUsePort": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementUsePort 参数"
+        },
+        "DemDataElementReadFnc": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementReadFnc 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DID_0x112_Supply_voltage": {
+      "description": "DID_0x112_Supply_voltage 配置容器",
+      "type": "object",
+      "properties": {
+        "DemDataElementDataSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DemDataElementDataSize 参数"
+        },
+        "DemDataElementStoreNonVolatile": {
+          "type": "boolean",
+          "default": false,
+          "description": "DemDataElementStoreNonVolatile 参数"
+        },
+        "DemDataElementDataType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementDataType 参数"
+        },
+        "DemDataElementEndianness": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementEndianness 参数"
+        },
+        "DemDataElementUsePort": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementUsePort 参数"
+        },
+        "DemDataElementReadFnc": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementReadFnc 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DID_0xd002_Vehicle_State": {
+      "description": "DID_0xd002_Vehicle_State 配置容器",
+      "type": "object",
+      "properties": {
+        "DemDataElementDataSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DemDataElementDataSize 参数"
+        },
+        "DemDataElementStoreNonVolatile": {
+          "type": "boolean",
+          "default": false,
+          "description": "DemDataElementStoreNonVolatile 参数"
+        },
+        "DemDataElementDataType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementDataType 参数"
+        },
+        "DemDataElementEndianness": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementEndianness 参数"
+        },
+        "DemDataElementUsePort": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementUsePort 参数"
+        },
+        "DemDataElementReadFnc": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementReadFnc 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DID_0xe010_Vehicle_Speed": {
+      "description": "DID_0xe010_Vehicle_Speed 配置容器",
+      "type": "object",
+      "properties": {
+        "DemDataElementDataSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DemDataElementDataSize 参数"
+        },
+        "DemDataElementStoreNonVolatile": {
+          "type": "boolean",
+          "default": false,
+          "description": "DemDataElementStoreNonVolatile 参数"
+        },
+        "DemDataElementDataType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementDataType 参数"
+        },
+        "DemDataElementEndianness": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementEndianness 参数"
+        },
+        "DemDataElementUsePort": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementUsePort 参数"
+        },
+        "DemDataElementReadFnc": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementReadFnc 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DID_0xe101_Odometer_reading": {
+      "description": "DID_0xe101_Odometer_reading 配置容器",
+      "type": "object",
+      "properties": {
+        "DemDataElementDataSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DemDataElementDataSize 参数"
+        },
+        "DemDataElementStoreNonVolatile": {
+          "type": "boolean",
+          "default": false,
+          "description": "DemDataElementStoreNonVolatile 参数"
+        },
+        "DemDataElementDataType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementDataType 参数"
+        },
+        "DemDataElementEndianness": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementEndianness 参数"
+        },
+        "DemDataElementUsePort": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementUsePort 参数"
+        },
+        "DemDataElementReadFnc": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDataElementReadFnc 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DTCClass_DTC_0x978700": {
+      "description": "DTCClass_DTC_0x978700 配置容器",
+      "type": "object",
+      "properties": {
+        "DemUdsDTC": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DemUdsDTC 参数"
+        },
+        "DemImmediateNvStorage": {
+          "type": "boolean",
+          "default": false,
+          "description": "DemImmediateNvStorage 参数"
+        },
+        "DemDTCSeverity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDTCSeverity 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DTCClass_DTC_0x978704": {
+      "description": "DTCClass_DTC_0x978704 配置容器",
+      "type": "object",
+      "properties": {
+        "DemImmediateNvStorage": {
+          "type": "boolean",
+          "default": false,
+          "description": "DemImmediateNvStorage 参数"
+        },
+        "DemUdsDTC": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DemUdsDTC 参数"
+        },
+        "DemDTCSeverity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDTCSeverity 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DTCClass_DTC_0x978745": {
+      "description": "DTCClass_DTC_0x978745 配置容器",
+      "type": "object",
+      "properties": {
+        "DemUdsDTC": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DemUdsDTC 参数"
+        },
+        "DemImmediateNvStorage": {
+          "type": "boolean",
+          "default": false,
+          "description": "DemImmediateNvStorage 参数"
+        },
+        "DemDTCSeverity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDTCSeverity 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DTCClass_DTC_0x978f04": {
+      "description": "DTCClass_DTC_0x978f04 配置容器",
+      "type": "object",
+      "properties": {
+        "DemImmediateNvStorage": {
+          "type": "boolean",
+          "default": false,
+          "description": "DemImmediateNvStorage 参数"
+        },
+        "DemUdsDTC": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DemUdsDTC 参数"
+        },
+        "DemDTCSeverity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDTCSeverity 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DTCClass_DTC_0x979300": {
+      "description": "DTCClass_DTC_0x979300 配置容器",
+      "type": "object",
+      "properties": {
+        "DemImmediateNvStorage": {
+          "type": "boolean",
+          "default": false,
+          "description": "DemImmediateNvStorage 参数"
+        },
+        "DemUdsDTC": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DemUdsDTC 参数"
+        },
+        "DemDTCSeverity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDTCSeverity 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DTCClass_DTC_0x979400": {
+      "description": "DTCClass_DTC_0x979400 配置容器",
+      "type": "object",
+      "properties": {
+        "DemImmediateNvStorage": {
+          "type": "boolean",
+          "default": false,
+          "description": "DemImmediateNvStorage 参数"
+        },
+        "DemUdsDTC": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DemUdsDTC 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DTCClass_DTC_0x979500": {
+      "description": "DTCClass_DTC_0x979500 配置容器",
+      "type": "object",
+      "properties": {
+        "DemImmediateNvStorage": {
+          "type": "boolean",
+          "default": false,
+          "description": "DemImmediateNvStorage 参数"
+        },
+        "DemUdsDTC": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DemUdsDTC 参数"
+        },
+        "DemDTCSeverity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDTCSeverity 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DTCClass_DTC_0xc07388": {
+      "description": "DTCClass_DTC_0xc07388 配置容器",
+      "type": "object",
+      "properties": {
+        "DemUdsDTC": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DemUdsDTC 参数"
+        },
+        "DemImmediateNvStorage": {
+          "type": "boolean",
+          "default": false,
+          "description": "DemImmediateNvStorage 参数"
+        },
+        "DemDTCSeverity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDTCSeverity 参数"
+        }
+      },
       "additionalProperties": true
     }
   },
+  "required": [
+    "AgedCounter",
+    "AgingCounter",
+    "DID_0x10b_Date_time"
+  ],
   "additionalProperties": false,
   "x-layer": "Service",
-  "x-version": "4.4.0"
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

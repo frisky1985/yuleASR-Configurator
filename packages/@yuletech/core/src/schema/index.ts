@@ -3,6 +3,8 @@
  * JSON Schema 定义和构建工具
  */
 
+export * from './generated';
+
 import type { ModuleSchema, ModuleParameter, ParameterType } from '../types';
 
 /**

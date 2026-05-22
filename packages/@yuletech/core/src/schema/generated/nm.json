@@ -1,0 +1,398 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/nm.json",
+  "title": "Nm Configuration",
+  "description": "网络管理通用",
+  "type": "object",
+  "properties": {
+    "NmGlobalConfig": {
+      "description": "NmGlobalConfig 配置容器",
+      "type": "object",
+      "properties": {
+        "NmComControlEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmComControlEnabled 参数"
+        },
+        "NmComUserDataSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmComUserDataSupport 参数"
+        },
+        "NmNodeDetectionEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmNodeDetectionEnabled 参数"
+        },
+        "NmNodeIdEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmNodeIdEnabled 参数"
+        },
+        "NmPduRxIndicationEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmPduRxIndicationEnabled 参数"
+        },
+        "NmStateChangeIndEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmStateChangeIndEnabled 参数"
+        },
+        "NmUserDataEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmUserDataEnabled 参数"
+        },
+        "NmBusSynchronizationEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmBusSynchronizationEnabled 参数"
+        },
+        "NmCarWakeUpRxEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmCarWakeUpRxEnabled 参数"
+        },
+        "NmCoordinatorSupportEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmCoordinatorSupportEnabled 参数"
+        },
+        "NmRemoteSleepIndEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmRemoteSleepIndEnabled 参数"
+        },
+        "NmRepeatMsgIndEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmRepeatMsgIndEnabled 参数"
+        },
+        "NmMacroLayerEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmMacroLayerEnabled 参数"
+        },
+        "NmCoordinatorSyncSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmCoordinatorSyncSupport 参数"
+        },
+        "NmRuntimeMeasurementSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmRuntimeMeasurementSupport 参数"
+        },
+        "NmCoordinatorRequestChannelsInBusSleep": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmCoordinatorRequestChannelsInBusSleep 参数"
+        },
+        "NmCoordinatorPassiveStartUpForwarding": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmCoordinatorPassiveStartUpForwarding 参数"
+        },
+        "NmOutOfBoundsWriteSanitizer": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmOutOfBoundsWriteSanitizer 参数"
+        },
+        "NmOutOfBoundsReadSanitizer": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmOutOfBoundsReadSanitizer 参数"
+        },
+        "NmShortSymbols": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmShortSymbols 参数"
+        },
+        "NmInterfacesForDeactivatedData": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmInterfacesForDeactivatedData 参数"
+        },
+        "NmReferringKeysInComments": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmReferringKeysInComments 参数"
+        },
+        "NmDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmDevErrorDetect 参数"
+        },
+        "NmVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmVersionInfoApi 参数"
+        },
+        "NmSafeBswChecks": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmSafeBswChecks 参数"
+        },
+        "NmStateChangeIndCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NmStateChangeIndCallback 参数"
+        },
+        "NmCallbacksPrototypeHeader": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NmCallbacksPrototypeHeader 参数"
+        },
+        "NmRepeatMessageIndCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NmRepeatMessageIndCallback 参数"
+        },
+        "NmPduReceiveIndCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NmPduReceiveIndCallback 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "NmGlobalFeatures": {
+      "description": "NmGlobalFeatures 配置容器",
+      "type": "object",
+      "properties": {
+        "NmComControlEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmComControlEnabled 参数"
+        },
+        "NmComUserDataSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmComUserDataSupport 参数"
+        },
+        "NmNodeDetectionEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmNodeDetectionEnabled 参数"
+        },
+        "NmNodeIdEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmNodeIdEnabled 参数"
+        },
+        "NmPduRxIndicationEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmPduRxIndicationEnabled 参数"
+        },
+        "NmStateChangeIndEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmStateChangeIndEnabled 参数"
+        },
+        "NmUserDataEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmUserDataEnabled 参数"
+        },
+        "NmBusSynchronizationEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmBusSynchronizationEnabled 参数"
+        },
+        "NmCarWakeUpRxEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmCarWakeUpRxEnabled 参数"
+        },
+        "NmCoordinatorSupportEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmCoordinatorSupportEnabled 参数"
+        },
+        "NmRemoteSleepIndEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmRemoteSleepIndEnabled 参数"
+        },
+        "NmRepeatMsgIndEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmRepeatMsgIndEnabled 参数"
+        },
+        "NmMacroLayerEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmMacroLayerEnabled 参数"
+        },
+        "NmCoordinatorSyncSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmCoordinatorSyncSupport 参数"
+        },
+        "NmRuntimeMeasurementSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmRuntimeMeasurementSupport 参数"
+        },
+        "NmCoordinatorRequestChannelsInBusSleep": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmCoordinatorRequestChannelsInBusSleep 参数"
+        },
+        "NmCoordinatorPassiveStartUpForwarding": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmCoordinatorPassiveStartUpForwarding 参数"
+        },
+        "NmStateChangeIndCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NmStateChangeIndCallback 参数"
+        },
+        "NmCallbacksPrototypeHeader": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NmCallbacksPrototypeHeader 参数"
+        },
+        "NmRepeatMessageIndCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NmRepeatMessageIndCallback 参数"
+        },
+        "NmPduReceiveIndCallback": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NmPduReceiveIndCallback 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "NmGeneration": {
+      "description": "NmGeneration 配置容器",
+      "type": "object",
+      "properties": {
+        "NmOutOfBoundsWriteSanitizer": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmOutOfBoundsWriteSanitizer 参数"
+        },
+        "NmOutOfBoundsReadSanitizer": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmOutOfBoundsReadSanitizer 参数"
+        },
+        "NmShortSymbols": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmShortSymbols 参数"
+        },
+        "NmInterfacesForDeactivatedData": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmInterfacesForDeactivatedData 参数"
+        },
+        "NmReferringKeysInComments": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmReferringKeysInComments 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "NmGlobalProperties": {
+      "description": "NmGlobalProperties 配置容器",
+      "type": "object",
+      "properties": {
+        "NmDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmDevErrorDetect 参数"
+        },
+        "NmVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmVersionInfoApi 参数"
+        },
+        "NmSafeBswChecks": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmSafeBswChecks 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DKMM_LHBDCANFD_a9ca9096": {
+      "description": "DKMM_LHBDCANFD_a9ca9096 配置容器",
+      "type": "object",
+      "properties": {
+        "NmPassiveModeEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmPassiveModeEnabled 参数"
+        },
+        "NmChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "NmChannelId 参数"
+        },
+        "NmChannelSleepMaster": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmChannelSleepMaster 参数"
+        },
+        "NmStateReportEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmStateReportEnabled 参数"
+        },
+        "NmSynchronizingNetwork": {
+          "type": "boolean",
+          "default": false,
+          "description": "NmSynchronizingNetwork 参数"
+        },
+        "NmStandardBusType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NmStandardBusType 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LHBDCANFD_Cluster_43c3a476": {
+      "description": "LHBDCANFD_Cluster_43c3a476 配置容器",
+      "type": "object",
+      "properties": {
+        "NmStandardBusType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NmStandardBusType 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "NmStandardBusNmConfig": {
+      "description": "NmStandardBusNmConfig 配置容器",
+      "type": "object",
+      "properties": {
+        "NmStandardBusType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "NmStandardBusType 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "NmGlobalConfig",
+    "NmGlobalFeatures",
+    "NmGeneration"
+  ],
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

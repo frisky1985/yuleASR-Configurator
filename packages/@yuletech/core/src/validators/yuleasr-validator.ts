@@ -136,31 +136,48 @@ export class YuleasrValidator {
     // 检查模块间依赖
     const moduleNames = new Set(configs.map(c => c.module));
     
+    // AUTOSAR BSW 标准依赖关系定义
+    const dependencyRules: Record<string, Array<{module: string; severity: 'error' | 'warning'; message: string}>> = {
+      CanIf:    [{module: 'Can', severity: 'error', message: 'CanIf requires Can driver'}],
+      CanNm:    [{module: 'CanIf', severity: 'error', message: 'CanNm requires CanIf'}, {module: 'Nm', severity: 'error', message: 'CanNm requires Nm'}],
+      CanSM:    [{module: 'CanIf', severity: 'error', message: 'CanSM requires CanIf'}, {module: 'ComM', severity: 'warning', message: 'CanSM should have ComM'}],
+      CanTp:    [{module: 'CanIf', severity: 'error', message: 'CanTp requires CanIf'}, {module: 'PduR', severity: 'error', message: 'CanTp requires PduR'}],
+      CanTrcv:  [{module: 'Can', severity: 'warning', message: 'CanTrcv should have Can'}],
+      Com:      [{module: 'PduR', severity: 'error', message: 'Com requires PduR'}],
+      ComM:     [{module: 'Com', severity: 'error', message: 'ComM requires Com'}, {module: 'Nm', severity: 'warning', message: 'ComM should have Nm'}],
+      Dcm:      [{module: 'Com', severity: 'error', message: 'Dcm requires Com'}, {module: 'PduR', severity: 'error', message: 'Dcm requires PduR'}, {module: 'Dem', severity: 'warning', message: 'Dcm should have Dem'}],
+      Dem:      [{module: 'Dcm', severity: 'error', message: 'Dem requires Dcm'}, {module: 'NvM', severity: 'warning', message: 'Dem should have NvM'}],
+      Det:      [],
+      Dio:      [{module: 'Port', severity: 'error', message: 'Dio requires Port'}, {module: 'Mcu', severity: 'warning', message: 'Dio should have Mcu'}],
+      EcuM:     [{module: 'Mcu', severity: 'error', message: 'EcuM requires Mcu'}],
+      Fee:      [{module: 'Fls', severity: 'error', message: 'Fee requires Fls'}, {module: 'MemIf', severity: 'error', message: 'Fee requires MemIf'}],
+      Fls:      [{module: 'Mcu', severity: 'warning', message: 'Fls should have Mcu'}],
+      Gpt:      [{module: 'Mcu', severity: 'warning', message: 'Gpt should have Mcu'}],
+      Icu:      [{module: 'Mcu', severity: 'warning', message: 'Icu should have Mcu'}],
+      Mcl:      [{module: 'Mcu', severity: 'warning', message: 'Mcl should have Mcu'}],
+      MemIf:    [{module: 'Fee', severity: 'error', message: 'MemIf requires Fee or Ea'}],
+      Nm:       [{module: 'ComM', severity: 'error', message: 'Nm requires ComM'}],
+      NvM:      [{module: 'MemIf', severity: 'error', message: 'NvM requires MemIf'}],
+      Os:       [{module: 'EcuM', severity: 'warning', message: 'Os should have EcuM'}],
+      PduR:     [{module: 'CanIf', severity: 'error', message: 'PduR requires CanIf'}],
+      Rte:      [{module: 'Os', severity: 'error', message: 'Rte requires Os'}, {module: 'Com', severity: 'warning', message: 'Rte should have Com'}],
+      Spi:      [{module: 'Mcu', severity: 'warning', message: 'Spi should have Mcu'}],
+      Adc:      [{module: 'Mcu', severity: 'warning', message: 'Adc should have Mcu'}],
+      Port:     [{module: 'Mcu', severity: 'warning', message: 'Port should have Mcu'}],
+    };
+
     for (const config of configs) {
-      // 检查 Mcu 依赖
-      if (config.module !== 'Mcu' && !moduleNames.has('Mcu')) {
-        allErrors.push({
-          path: config.module,
-          message: `${config.module} requires Mcu module`,
-          severity: 'error',
-        });
-      }
-
-      // 检查特定模块依赖
-      if (config.module === 'CanIf' && !moduleNames.has('Can')) {
-        allErrors.push({
-          path: 'CanIf',
-          message: 'CanIf requires Can module',
-          severity: 'error',
-        });
-      }
-
-      if (config.module === 'PduR' && !moduleNames.has('CanIf')) {
-        allErrors.push({
-          path: 'PduR',
-          message: 'PduR requires CanIf module',
-          severity: 'warning',
-        });
+      const rules = dependencyRules[config.module];
+      if (!rules) continue;
+      
+      for (const dep of rules) {
+        if (!moduleNames.has(dep.module)) {
+          allErrors.push({
+            path: config.module,
+            message: dep.message,
+            severity: dep.severity,
+          });
+        }
       }
     }
 
@@ -219,3 +236,22 @@ yuleasrValidator.registerModuleRules({
     ],
   },
 });
+
+// Auto-generated module rules for all 37 BSW modules
+const allModuleNames = [
+  'Adc','Arti','Ble','BswM','Can','CanIf','CanNm','CanSM','CanTp','CanTrcv',
+  'Com','ComM','Crc','CryIf','Crypto','Csm','Dcm','Dem','Det','Dio',
+  'EcuM','Fee','Fls','Gpt','Icu','IoHwAb','Mcl','Mcu','MemIf','Nm',
+  'NvM','Os','PduR','Port','Rte','Sbc','Spi',
+];
+
+for (const modName of allModuleNames) {
+  if (modName === 'Mcu' || modName === 'Can') continue; // already registered above
+  yuleasrValidator.registerModuleRules({
+    module: modName,
+    rules: [],
+    parameterRules: {
+      [`${modName}DevErrorDetect`]: [{ type: 'required', message: `${modName}DevErrorDetect is required` }],
+    },
+  });
+}

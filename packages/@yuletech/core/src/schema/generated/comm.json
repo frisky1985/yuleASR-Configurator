@@ -1,0 +1,251 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/comm.json",
+  "title": "ComM Configuration",
+  "description": "通信管理器",
+  "type": "object",
+  "properties": {
+    "ComMGeneral": {
+      "description": "ComMGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "ComMPncSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMPncSupport 参数"
+        },
+        "ComMDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMDevErrorDetect 参数"
+        },
+        "ComMEcuGroupClassification": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ComMEcuGroupClassification 参数"
+        },
+        "ComMModeLimitationEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMModeLimitationEnabled 参数"
+        },
+        "ComMSynchronousWakeUp": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMSynchronousWakeUp 参数"
+        },
+        "ComMTMinFullComModeDuration": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ComMTMinFullComModeDuration 参数"
+        },
+        "ComMVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMVersionInfoApi 参数"
+        },
+        "ComMWakeupInhibitionEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMWakeupInhibitionEnabled 参数"
+        },
+        "ComMSafeBswChecks": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMSafeBswChecks 参数"
+        },
+        "ComMOutOfBoundsWriteSanitizer": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMOutOfBoundsWriteSanitizer 参数"
+        },
+        "ComMOutOfBoundsReadSanitizer": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMOutOfBoundsReadSanitizer 参数"
+        },
+        "ComMPncIdCounting": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ComMPncIdCounting 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ComMGeneration": {
+      "description": "ComMGeneration 配置容器",
+      "type": "object",
+      "properties": {
+        "ComMOutOfBoundsWriteSanitizer": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMOutOfBoundsWriteSanitizer 参数"
+        },
+        "ComMOutOfBoundsReadSanitizer": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMOutOfBoundsReadSanitizer 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ComMConfigSet": {
+      "description": "ComMConfigSet 配置容器",
+      "type": "object",
+      "properties": {
+        "ComMPncEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMPncEnabled 参数"
+        },
+        "ComMChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ComMChannelId 参数"
+        },
+        "ComMFullCommRequestNotificationEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMFullCommRequestNotificationEnabled 参数"
+        },
+        "ComMMainFunctionPeriod": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ComMMainFunctionPeriod 参数"
+        },
+        "ComMNoCom": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMNoCom 参数"
+        },
+        "ComMNoWakeup": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMNoWakeup 参数"
+        },
+        "ComMPncNmRequest": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMPncNmRequest 参数"
+        },
+        "ComMUserIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ComMUserIdentifier 参数"
+        },
+        "ComMUserModeNotification": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMUserModeNotification 参数"
+        },
+        "ComMBusType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ComMBusType 参数"
+        },
+        "ComMNmVariant": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ComMNmVariant 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DKMM_LHBDCANFD_a9ca9096": {
+      "description": "DKMM_LHBDCANFD_a9ca9096 配置容器",
+      "type": "object",
+      "properties": {
+        "ComMChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ComMChannelId 参数"
+        },
+        "ComMFullCommRequestNotificationEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMFullCommRequestNotificationEnabled 参数"
+        },
+        "ComMMainFunctionPeriod": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ComMMainFunctionPeriod 参数"
+        },
+        "ComMNoCom": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMNoCom 参数"
+        },
+        "ComMNoWakeup": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMNoWakeup 参数"
+        },
+        "ComMPncNmRequest": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMPncNmRequest 参数"
+        },
+        "ComMBusType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ComMBusType 参数"
+        },
+        "ComMNmVariant": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ComMNmVariant 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ComMNetworkManagement": {
+      "description": "ComMNetworkManagement 配置容器",
+      "type": "object",
+      "properties": {
+        "ComMPncNmRequest": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMPncNmRequest 参数"
+        },
+        "ComMNmVariant": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ComMNmVariant 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DKMM_LHBDCANFD_49934aba": {
+      "description": "DKMM_LHBDCANFD_49934aba 配置容器",
+      "type": "object",
+      "properties": {
+        "ComMUserIdentifier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ComMUserIdentifier 参数"
+        },
+        "ComMUserModeNotification": {
+          "type": "boolean",
+          "default": false,
+          "description": "ComMUserModeNotification 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "ComMGeneral",
+    "ComMGeneration",
+    "ComMConfigSet"
+  ],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}
