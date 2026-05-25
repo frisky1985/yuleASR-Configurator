@@ -46,6 +46,11 @@ interface TreeNodeData {
   warningCount: number
   children?: TreeNodeData[]
   data: ConfigModule | ConfigContainer | ConfigParameter
+  // Dynamic instance support
+  isDynamic?: boolean
+  isDynamicParent?: boolean
+  parentContainerPath?: string
+  instanceName?: string
 }
 
 const layerIcons: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -81,6 +86,71 @@ export function ConfigTree({
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set())
   const [searchQuery, setSearchQuery] = useState(filterText)
   const [showFilterMenu, setShowFilterMenu] = useState(false)
+  
+  // Track dynamic instance counts per container
+  // Key: container path, Value: array of instance names
+  const [dynamicInstances, setDynamicInstances] = useState<Record<string, string[]>>(() => {
+    // Initialize with default instances based on minInstances
+    const initial: Record<string, string[]> = {}
+    for (const module of config.modules) {
+      collectDynamicContainers(module.containers, `module:${module.id}`, initial)
+    }
+    return initial
+  })
+  
+  // Collect initial dynamic instances from module containers
+  function collectDynamicContainers(
+    containers: ConfigContainer[], 
+    parentPath: string, 
+    acc: Record<string, string[]>
+  ) {
+    for (const container of containers) {
+      const contPath = `${parentPath}/container:${container.id}`
+      if (container.multiple && container.subContainers && container.subContainers.length > 0) {
+        // Generate default instances
+        const template = container.subContainers[0]
+        const baseName = template.name.replace(/_\d+$/, '') || template.name
+        const count = container.minInstances || 1
+        const instances: string[] = []
+        for (let i = 0; i < count; i++) {
+          instances.push(`${baseName}_${i}`)
+        }
+        acc[contPath] = instances
+      }
+      if (container.subContainers) {
+        collectDynamicContainers(container.subContainers, contPath, acc)
+      }
+    }
+  }
+  
+  // Add a new dynamic instance
+  const addInstance = useCallback((containerPath: string) => {
+    setDynamicInstances(prev => {
+      const instances = [...(prev[containerPath] || [])]
+      // Find next available index
+      let maxIdx = -1
+      for (const inst of instances) {
+        const match = inst.match(/_(\d+)$/)
+        if (match) {
+          maxIdx = Math.max(maxIdx, parseInt(match[1]))
+        }
+      }
+      // Get base name
+      const baseName = instances.length > 0 
+        ? instances[0].replace(/_\d+$/, '') 
+        : 'Instance'
+      instances.push(`${baseName}_${maxIdx + 1}`)
+      return { ...prev, [containerPath]: instances }
+    })
+  }, [])
+  
+  // Remove a dynamic instance
+  const removeInstance = useCallback((containerPath: string, instanceName: string) => {
+    setDynamicInstances(prev => {
+      const instances = (prev[containerPath] || []).filter(n => n !== instanceName)
+      return { ...prev, [containerPath]: instances }
+    })
+  }, [])
 
   // Build tree data structure
   const treeData = useMemo(() => {
@@ -201,10 +271,48 @@ export function ConfigTree({
     const errorCount = containerIssues.filter(i => i.severity === 'error').length
     const warningCount = containerIssues.filter(i => i.severity === 'warning').length
     
-    // Build sub-container nodes
-    const subContainerNodes = (container.subContainers || []).map(sub => 
-      buildContainerNode(sub, path, moduleName, issues)
-    )
+    // Check for dynamic instances
+    const isDynamic = container.multiple && container.subContainers && container.subContainers.length > 0
+    const children: TreeNodeData[] = []
+    
+    if (isDynamic) {
+      // Render dynamic instances
+      const template = container.subContainers![0]
+      const instances = dynamicInstances[path] || []
+      
+      for (const instName of instances) {
+        // Create an instance node based on the template
+        const instPath = `${path}/instance:${instName}`
+        const subChildren: TreeNodeData[] = []
+        
+        // Render sub-containers of the template within each instance
+        for (const sub of template.subContainers || []) {
+          subChildren.push(buildContainerNode(sub, instPath, moduleName, issues))
+        }
+        
+        children.push({
+          id: instPath,
+          type: 'container',
+          name: instName,
+          displayName: instName,
+          path: instPath,
+          icon: <FileText className="w-4 h-4" />,
+          hasChildren: subChildren.length > 0,
+          errorCount,
+          warningCount,
+          data: container,
+          children: subChildren,
+          isDynamic: true,
+          parentContainerPath: path,
+          instanceName: instName,
+        })
+      }
+    } else {
+      // Render static sub-containers (existing behavior)
+      for (const sub of container.subContainers || []) {
+        children.push(buildContainerNode(sub, path, moduleName, issues))
+      }
+    }
     
     return {
       id: path,
@@ -212,12 +320,13 @@ export function ConfigTree({
       name: container.name,
       displayName: container.displayName || container.name,
       path,
-      icon: container.subContainers?.length ? <FolderOpen className="w-4 h-4" /> : <FileText className="w-4 h-4" />,
-      hasChildren: subContainerNodes.length > 0,
+      icon: isDynamic ? <FolderOpen className="w-4 h-4" /> : (container.subContainers?.length ? <FolderOpen className="w-4 h-4" /> : <FileText className="w-4 h-4" />),
+      hasChildren: children.length > 0,
       errorCount,
       warningCount,
       data: container,
-      children: subContainerNodes,
+      children,
+      isDynamicParent: isDynamic,
     }
   }
 
@@ -344,6 +453,34 @@ export function ConfigTree({
           )}>
             {node.displayName}
           </span>
+          
+          {/* Dynamic instance controls */}
+          {node.isDynamicParent && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                addInstance(node.path)
+              }}
+              className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded text-green-600 hover:bg-green-50 opacity-0 group-hover:opacity-100 transition-opacity text-sm font-bold"
+              title={`Add ${node.displayName} instance`}
+            >
+              +
+            </button>
+          )}
+          {node.isDynamic && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                if (node.parentContainerPath) {
+                  removeInstance(node.parentContainerPath, node.instanceName!)
+                }
+              }}
+              className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded text-red-400 hover:text-red-600 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity text-sm"
+              title={`Delete ${node.instanceName}`}
+            >
+              ×
+            </button>
+          )}
           
           {/* Configuration Status Indicator */}
           {node.type === 'module' && node.configStatus && (
