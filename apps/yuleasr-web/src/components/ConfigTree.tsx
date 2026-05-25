@@ -132,7 +132,7 @@ export function ConfigTree({
         // Generate default instances
         const template = container.subContainers[0]
         const baseName = template.name.replace(/_\d+$/, '') || template.name
-        const count = container.minInstances || 1
+        const count = container.minInstances ?? 0
         const instances: string[] = []
         for (let i = 0; i < count; i++) {
           instances.push(`${baseName}_${i}`)

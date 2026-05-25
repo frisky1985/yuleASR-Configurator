@@ -321,7 +321,7 @@ export function Editor() {
             </div>
           )}
 
-          {/* Selected Container Parameters (click container in tree → show here) */}
+          {/* Selected Container Parameters - show when a container is clicked */}
           {selectedContainer && (
             <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
               <div className="px-4 py-2.5 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
@@ -333,10 +333,29 @@ export function Editor() {
                 </span>
               </div>
               <div className="p-3">
-                <ContainerParameterList
-                  container={selectedContainer}
-                  onParamChange={(name, value) => handleParameterChange(name, value)}
-                />
+                {selectedContainer.multiple && !selectedPath?.includes('/instance:') ? (
+                  /* Dynamic container with 0 instances or container selected directly */
+                  <div className="text-center py-8">
+                    <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-3">
+                      <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      </svg>
+                    </div>
+                    <p className="text-sm font-medium text-gray-900 mb-1">
+                      {selectedContainer.displayName || selectedContainer.name}
+                    </p>
+                    <p className="text-sm text-gray-500 mb-2">
+                      点击左侧 [+] 添加{selectedContainer.subContainers?.[0]?.displayName || selectedContainer.subContainers?.[0]?.name || '实例'} 实例
+                    </p>
+                    <p className="text-xs text-gray-400">创建实例后，在树中选择实例查看和编辑参数</p>
+                  </div>
+                ) : (
+                  /* Static container or instance selected - show parameters normally */
+                  <ContainerParameterList
+                    container={selectedContainer}
+                    onParamChange={(name, value) => handleParameterChange(name, value)}
+                  />
+                )}
               </div>
             </div>
           )}
