@@ -65,7 +65,7 @@
     "dependencyGraph": "Dependency Graph",
     "dependencyGraphDesc": "View module relationships",
     "recentConfigurations": "Recent Configurations",
-    "configs": "configs",
+    "configs": "{{count}} configs",
     "noConfigurations": "No configurations yet",
     "createFirstTitle": "Create your first configuration",
     "createFirstDesc": "Get started by creating a new yuleASR configuration or importing an existing one. Configure modules, set parameters, and build your embedded system.",

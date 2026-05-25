@@ -65,7 +65,7 @@
     "dependencyGraph": "依赖关系图",
     "dependencyGraphDesc": "查看模块关系",
     "recentConfigurations": "最近配置",
-    "configs": "个配置",
+    "configs": "{{count}} 个配置",
     "noConfigurations": "暂无配置",
     "createFirstTitle": "创建您的第一个配置",
     "createFirstDesc": "通过创建新的 yuleASR 配置或导入现有配置来开始。配置模块、设置参数，构建您的嵌入式系统。",
