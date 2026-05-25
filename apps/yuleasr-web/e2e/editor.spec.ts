@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test'
+
+import { layerNames, moduleNames } from './fixtures/test-data'
 import { DashboardPage } from './pages/dashboard.page'
 import { EditorPage } from './pages/editor.page'
 import { waitForLoading } from './utils/test-helpers'
-import { layerNames, moduleNames } from './fixtures/test-data'
 
 test.describe('Editor', () => {
   let dashboard: DashboardPage

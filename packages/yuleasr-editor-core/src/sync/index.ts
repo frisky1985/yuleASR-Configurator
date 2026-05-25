@@ -22,10 +22,10 @@ export interface SyncResult {
  * Git sync manager
  */
 export class GitSyncManager {
-  private config: SyncConfig;
+  private _config: SyncConfig;
 
   constructor(config: SyncConfig) {
-    this.config = config;
+    this._config = config;
   }
 
   /**
@@ -71,10 +71,10 @@ export class GitSyncManager {
  * Schema sync manager
  */
 export class SchemaSyncManager {
-  private repoPath: string;
+  private _repoPath: string;
 
-  constructor(repoPath: string) {
-    this.repoPath = repoPath;
+  constructor(_repoPath: string) {
+    this._repoPath = _repoPath;
   }
 
   /**

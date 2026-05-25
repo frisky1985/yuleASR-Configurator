@@ -1,9 +1,10 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
-import type { ConfigFile, ConfigModule, ValidationResult, ConfigListItem, ValidationIssue } from '@/types'
+
+import { DependencyValidator } from '@/core/DependencyValidator'
 import { allModules } from '@/data/all-modules'
 import { defaultOSConfig } from '@/data/os-config'
-import { DependencyValidator } from '@/core/DependencyValidator'
+import type { ConfigFile, ConfigModule, ValidationResult, ConfigListItem, ValidationIssue } from '@/types'
 
 interface ConfigState {
   // 当前配置状态

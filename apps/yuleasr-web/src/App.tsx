@@ -1,12 +1,13 @@
 import { Routes, Route } from 'react-router-dom'
+
 import { Layout } from './components/Layout'
 import { ThemeProvider } from './components/ThemeProvider'
 import { Dashboard } from './pages/Dashboard'
 import { Editor } from './pages/Editor'
-import { Templates } from './pages/Templates'
 import { GitSync } from './pages/GitSync'
-import { Settings } from './pages/Settings'
 import { Migrate } from './pages/Migrate'
+import { Settings } from './pages/Settings'
+import { Templates } from './pages/Templates'
 
 function App() {
   return (

@@ -3,9 +3,10 @@
  * Display available keyboard shortcuts in a modal
  */
 
-import { useEffect } from 'react'
-import { cn } from '@/lib/utils'
 import { X, Command, Keyboard, Save, Search, ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react'
+import { useEffect } from 'react'
+
+import { cn } from '@/lib/utils'
 
 interface KeyboardShortcutsHelpProps {
   isOpen: boolean

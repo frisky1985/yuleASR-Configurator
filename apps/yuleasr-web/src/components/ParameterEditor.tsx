@@ -1,7 +1,8 @@
-import { useState, useCallback } from 'react'
-import type { ConfigParameter, ValidationIssue } from '@/types'
-import { cn } from '@/lib/utils'
 import { RotateCcw, Plus, X, Link, AlertCircle, Check, ChevronDown } from 'lucide-react'
+import { useState, useCallback } from 'react'
+
+import { cn } from '@/lib/utils'
+import type { ConfigParameter, ValidationIssue } from '@/types'
 
 interface ParameterEditorProps {
   parameter: ConfigParameter
@@ -184,7 +185,7 @@ export function ParameterEditor({
         return (
           <div className="flex items-center gap-3">
             <button
-              onClick={() => handleChange(!Boolean(value))}
+              onClick={() => handleChange(!value)}
               className={cn(
                 'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
                 value ? 'bg-primary-600' : 'bg-gray-200'

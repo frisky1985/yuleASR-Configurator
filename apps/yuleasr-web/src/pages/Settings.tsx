@@ -1,12 +1,3 @@
-import { useState, useEffect } from 'react'
-import { cn } from '@/lib/utils'
-import { 
-  useSettingsStore, 
-  type EditorTheme, 
-  type UILanguage, 
-  type ExportFormat,
-  type FileNamingRule 
-} from '@/stores/settingsStore'
 import {
   CheckCircle2,
   AlertCircle,
@@ -26,6 +17,16 @@ import {
   FileJson,
   FileCode,
 } from 'lucide-react'
+import { useState, useEffect } from 'react'
+
+import { cn } from '@/lib/utils'
+import { 
+  useSettingsStore, 
+  type EditorTheme, 
+  type UILanguage, 
+  type ExportFormat,
+  type FileNamingRule 
+} from '@/stores/settingsStore'
 
 interface SettingSectionProps {
   title: string

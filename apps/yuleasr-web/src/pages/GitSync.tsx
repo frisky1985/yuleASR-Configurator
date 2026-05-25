@@ -1,10 +1,3 @@
-import { useEffect, useState, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { GitService, type CommitInfo, type BranchInfo, type DiffInfo } from '@/services/gitService'
-import { BranchManager } from '@/components/BranchManager'
-import { VersionHistory } from '@/components/VersionHistory'
-import { DiffViewer } from '@/components/DiffViewer'
-import { cn, formatDate } from '@/lib/utils'
 import {
   ArrowLeft,
   GitBranch,
@@ -19,6 +12,14 @@ import {
   Clock,
   User,
 } from 'lucide-react'
+import { useEffect, useState, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import { BranchManager } from '@/components/BranchManager'
+import { DiffViewer } from '@/components/DiffViewer'
+import { VersionHistory } from '@/components/VersionHistory'
+import { cn, formatDate } from '@/lib/utils'
+import { GitService, type CommitInfo, type BranchInfo, type DiffInfo } from '@/services/gitService'
 
 export function GitSync() {
   const navigate = useNavigate()

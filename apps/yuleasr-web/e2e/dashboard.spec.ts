@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test'
+
+import { testConfigNames } from './fixtures/test-data'
 import { DashboardPage } from './pages/dashboard.page'
 import { generateConfigName, acceptDialog } from './utils/test-helpers'
-import { testConfigNames } from './fixtures/test-data'
 
 test.describe('Dashboard', () => {
   let dashboard: DashboardPage

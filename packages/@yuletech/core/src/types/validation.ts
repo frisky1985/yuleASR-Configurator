@@ -13,6 +13,8 @@ export interface ValidationError {
   message: string;
   /** 错误严重级别 */
   severity: 'error' | 'warning' | 'info';
+  /** 错误代码 (可选) */
+  code?: string;
 }
 
 /**

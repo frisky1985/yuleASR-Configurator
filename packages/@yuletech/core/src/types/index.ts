@@ -5,3 +5,4 @@
 
 export * from './module';
 export * from './validation';
+export * from './parameter';

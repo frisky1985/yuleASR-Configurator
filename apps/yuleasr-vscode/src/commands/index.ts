@@ -1,8 +1,10 @@
-import * as vscode from 'vscode';
-import * as path from 'path';
 import * as fs from 'fs';
-import { ConfigTreeProvider, ConfigTreeItem, ModuleLayer } from '../providers/ConfigTreeProvider';
+import * as path from 'path';
+
+import * as vscode from 'vscode';
+
 import { ConfigEditorPanel } from '../panels/ConfigEditorPanel';
+import { ConfigTreeProvider, ConfigTreeItem, ModuleLayer } from '../providers/ConfigTreeProvider';
 
 /**
  * Register all yuleASR commands

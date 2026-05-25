@@ -1,5 +1,3 @@
-import { useCallback, useState, useRef, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import {
   ReactFlow,
   Background,
@@ -10,12 +8,16 @@ import {
   type Node,
   type Connection,
 } from '@xyflow/react'
+import { useCallback, useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import '@xyflow/react/dist/style.css'
 
 import { ModuleNode } from './ModuleNode'
+
 import { useModuleLayout, useModuleFilter, useDependencyHighlight } from '@/hooks/useModuleLayout'
 import { cn } from '@/lib/utils'
-import type { ModuleLayer } from '@/types'
+import type { ModuleLayer , ModuleConfig } from '@/types'
+
 import {
   Search,
   Filter,
@@ -30,7 +32,6 @@ import {
   RotateCcw,
 } from 'lucide-react'
 
-import type { ModuleConfig } from '@/types'
 
 // Node types registry
 const nodeTypes = {

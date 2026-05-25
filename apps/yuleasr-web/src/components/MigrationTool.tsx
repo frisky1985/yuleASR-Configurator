@@ -3,9 +3,6 @@
  * Import configurations from other AUTOSAR tools
  */
 
-import { useState, useCallback } from 'react'
-import { cn } from '@/lib/utils'
-import { useConfigStore } from '@/stores/configStore'
 import { 
   Upload, 
   FileJson, 
@@ -17,6 +14,10 @@ import {
   FileCode,
   Settings
 } from 'lucide-react'
+import { useState, useCallback } from 'react'
+
+import { cn } from '@/lib/utils'
+import { useConfigStore } from '@/stores/configStore'
 
 interface MigrationSource {
   id: string

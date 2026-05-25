@@ -4,6 +4,7 @@
  */
 
 import { describe, it, expect } from 'vitest'
+
 import { yuleasrAdapter } from '../yuleasr-adapter'
 import type { YuleasrBswConfig } from '../yuleasr-adapter'
 

@@ -1,6 +1,3 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useConfigStore } from '@/stores/configStore'
 import {
   Cpu,
   Wifi,
@@ -19,6 +16,10 @@ import {
   Check,
   LayoutTemplate
 } from 'lucide-react'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import { useConfigStore } from '@/stores/configStore'
 
 // Template type definitions
 interface TemplateModule {

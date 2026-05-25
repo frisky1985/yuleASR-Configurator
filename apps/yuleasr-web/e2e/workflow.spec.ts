@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+
 import { DashboardPage } from './pages/dashboard.page'
 import { EditorPage } from './pages/editor.page'
 import { generateConfigName, acceptDialog } from './utils/test-helpers'

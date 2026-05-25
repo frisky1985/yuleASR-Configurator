@@ -3,10 +3,12 @@
  * Bottom navigation bar for mobile devices
  */
 
-import { Link, useLocation } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { cn } from '@/lib/utils'
 import { Home, FileJson, ArrowLeftRight, GitBranch, Settings, Menu } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+import { Link, useLocation } from 'react-router-dom'
+
+import { cn } from '@/lib/utils'
+
 
 export function MobileNav() {
   const location = useLocation()

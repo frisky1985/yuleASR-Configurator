@@ -3,11 +3,13 @@
  * For large configurations, only renders visible items
  */
 
-import { useMemo, useCallback, memo } from 'react'
-import { cn } from '@/lib/utils'
-import { VirtualList } from './VirtualList'
-import type { ConfigFile, ConfigModule, ValidationIssue } from '@/types'
 import { Folder, FileJson, Settings, Hash, Type, ToggleLeft, ChevronRight, ChevronDown } from 'lucide-react'
+import { useMemo, useCallback, memo } from 'react'
+
+import { VirtualList } from './VirtualList'
+
+import { cn } from '@/lib/utils'
+import type { ConfigFile, ConfigModule, ValidationIssue } from '@/types'
 
 interface ConfigTreeVirtualProps {
   config: ConfigFile

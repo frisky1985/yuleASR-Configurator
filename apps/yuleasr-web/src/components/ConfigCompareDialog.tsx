@@ -3,12 +3,13 @@
  * UI for comparing two configurations
  */
 
+import { X, FileJson, ChevronDown, ChevronUp, Download, Copy, CheckCircle, XCircle, Edit3 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+
+import { configComparer, type ComparisonResult, type ConfigDiff } from '@/core/ConfigComparer'
 import { cn } from '@/lib/utils'
 import { useConfigStore } from '@/stores/configStore'
-import { configComparer, type ComparisonResult, type ConfigDiff } from '@/core/ConfigComparer'
-import { X, FileJson, ChevronDown, ChevronUp, Download, Copy, CheckCircle, XCircle, Edit3 } from 'lucide-react'
 
 interface ConfigCompareDialogProps {
   isOpen: boolean

@@ -66,6 +66,7 @@ export default tseslint.config(
       '**/node_modules/**',
       '**/dist/**',
       '**/build/**',
+      '**/out/**',
       '**/.vscode/**',
       '**/.idea/**',
       '**/coverage/**',

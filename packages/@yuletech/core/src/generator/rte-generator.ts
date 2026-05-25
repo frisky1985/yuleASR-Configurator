@@ -7,6 +7,7 @@
  */
 
 import type { ModuleConfig, ModuleSchema } from '../types';
+
 import type { CodeGenerator, GeneratorOptions, GenerationResult, GeneratedFile } from './index';
 
 /**

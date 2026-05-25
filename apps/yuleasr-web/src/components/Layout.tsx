@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
-import { cn } from '@/lib/utils'
-import { useTheme } from '@/components/ThemeProvider'
-import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp'
 import { Home, Settings, FileJson, GitBranch, Moon, Sun, Keyboard, Globe, ArrowLeftRight } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Link, useLocation } from 'react-router-dom'
+
+import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp'
+import { useTheme } from '@/components/ThemeProvider'
+import { cn } from '@/lib/utils'
 
 interface LayoutProps {
   children: React.ReactNode

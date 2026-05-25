@@ -9,8 +9,10 @@ import type {
   ParameterValue,
   ValidationResult,
   ValidationError,
-  ValidationWarning,
 } from '@yuletech/core';
+
+// 本地别名：验证警告类型 (兼容旧代码)
+export type ValidationWarning = ValidationError;
 
 /**
  * 配置模型 - 代表一个完整的配置文件

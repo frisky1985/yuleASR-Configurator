@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { 
   ChevronDown, 
   ChevronRight, 
@@ -12,6 +11,8 @@ import {
   Minimize2,
   Download,
 } from 'lucide-react'
+import { useState } from 'react'
+
 import { cn } from '@/lib/utils'
 import type { DiffInfo, DiffHunk } from '@/services/gitService'
 

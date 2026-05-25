@@ -3,7 +3,8 @@
  * 业务服务实现
  */
 
-import type { ConfigValidator, ValidationResult, ModuleSchema } from '@yuletech/core';
+import type { ConfigValidator, ValidationResult } from '@yuletech/core';
+
 import type { ConfigEngine } from '../engine';
 import type { ConfigModel, ConfigProject, ConfigChangeEvent } from '../models';
 
@@ -148,7 +149,7 @@ export class ValidationService {
    * 验证自定义规则
    */
   private validateCustomRule(rule: ValidationRule, config: ConfigModel): ValidationResult {
-    const errors: Array<{ type: 'error'; code: string; message: string; path: string; parameter?: string }> = [];
+    const errors: Array<{ severity: 'error'; code: string; message: string; path: string; parameter?: string }> = [];
 
     if (rule.validate) {
       const value = this.engine.getValue(rule.path);
@@ -164,7 +165,7 @@ export class ValidationService {
       const isValid = rule.validate(value, context);
       if (!isValid) {
         errors.push({
-          type: 'error',
+          severity: 'error',
           code: 'CUSTOM_RULE',
           message: rule.message,
           path: rule.path,
@@ -194,7 +195,7 @@ export class ValidationService {
         valid: false,
         errors: [
           {
-            type: 'error',
+            severity: 'error',
             code: 'MODULE_NOT_FOUND',
             message: `模块 ${moduleName} 不存在`,
             path: moduleName,
@@ -209,14 +210,14 @@ export class ValidationService {
     module.warnings = [];
 
     // 验证模块的所有参数
-    const errors: Array<{ type: 'error'; code: string; message: string; path: string; parameter?: string }> = [];
+    const errors: Array<{ severity: 'error'; code: string; message: string; path: string; parameter?: string }> = [];
 
     for (const [paramName, param] of module.parameters) {
       // 检查必填字段
       if (module.schema.parameters.find(p => p.name === paramName)?.required && 
           (param.value === undefined || param.value === null || param.value === '')) {
         const error = {
-          type: 'error' as const,
+          severity: 'error' as const,
           code: 'REQUIRED',
           message: `参数 ${paramName} 为必填项`,
           path: `${moduleName}.${paramName}`,
@@ -249,7 +250,7 @@ export class ValidationService {
         valid: false,
         errors: [
           {
-            type: 'error',
+            severity: 'error',
             code: 'INVALID_PATH',
             message: `无效的路径: ${path}`,
             path,
@@ -267,7 +268,7 @@ export class ValidationService {
         valid: false,
         errors: [
           {
-            type: 'error',
+            severity: 'error',
             code: 'MODULE_NOT_FOUND',
             message: `模块 ${moduleName} 不存在`,
             path,
@@ -285,7 +286,7 @@ export class ValidationService {
         valid: false,
         errors: [
           {
-            type: 'error',
+            severity: 'error',
             code: 'PARAMETER_NOT_FOUND',
             message: `参数 ${paramName} 不存在`,
             path,
@@ -296,13 +297,13 @@ export class ValidationService {
       };
     }
 
-    const errors: Array<{ type: 'error'; code: string; message: string; path: string; parameter?: string }> = [];
+    const errors: Array<{ severity: 'error'; code: string; message: string; path: string; parameter?: string }> = [];
 
     // 检查必填
     const schemaParam = module.schema.parameters.find(p => p.name === paramName);
     if (schemaParam?.required && (param.value === undefined || param.value === null || param.value === '')) {
       errors.push({
-        type: 'error',
+        severity: 'error',
         code: 'REQUIRED',
         message: `参数 ${paramName} 为必填项`,
         path,
@@ -857,7 +858,7 @@ export class ServiceContainer {
    * 清理所有服务
    */
   async dispose(): Promise<void> {
-    for (const [name, service] of this.services) {
+    for (const [_name, service] of this.services) {
       if (service && typeof service === 'object' && 'dispose' in service && typeof service.dispose === 'function') {
         await (service as { dispose(): Promise<void> }).dispose();
       }

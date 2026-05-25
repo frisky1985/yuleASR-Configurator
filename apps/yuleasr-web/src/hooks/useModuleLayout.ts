@@ -1,5 +1,6 @@
-import { useMemo, useCallback } from 'react'
 import type { Node, Edge } from '@xyflow/react'
+import { useMemo, useCallback } from 'react'
+
 import type { ModuleConfig, ModuleLayer } from '@/types'
 
 interface LayoutOptions {

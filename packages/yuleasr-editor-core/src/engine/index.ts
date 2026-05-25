@@ -3,10 +3,10 @@
  * 配置引擎实现
  */
 
-import type { ValidationResult, ValidationError, ValidationWarning } from '@yuletech/core';
+import type { ValidationResult, ValidationError } from '@yuletech/core';
 import EventEmitter from 'eventemitter3';
-import type { ConfigProject, ConfigModel, ModuleConfigModel, ParameterValueModel } from '../models';
-import type { ConfigChangeEvent, ParameterValue } from '../models';
+
+import type { ConfigProject, ConfigModel, ModuleConfigModel, ParameterValueModel , ConfigChangeEvent, ParameterValue } from '../models';
 
 /**
  * 历史记录类型
@@ -518,7 +518,7 @@ export class ConfigEngine extends EventEmitter<EngineEvents> {
         valid: false,
         errors: [
           {
-            type: 'error',
+            severity: 'error',
             code: 'NO_CONFIG',
             message: '没有活动的配置',
             path: '',
@@ -547,7 +547,7 @@ export class ConfigEngine extends EventEmitter<EngineEvents> {
         if (param.errors && param.errors.length > 0) {
           for (const error of param.errors) {
             const validationError: ValidationError = {
-              type: 'error',
+              severity: 'error',
               code: 'PARAMETER_ERROR',
               message: error,
               path: `${moduleName}.${paramName}`,

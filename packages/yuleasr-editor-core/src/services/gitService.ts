@@ -3,8 +3,8 @@
  * 基于 isomorphic-git 实现
  */
 
-import * as git from 'isomorphic-git'
 import FS from '@isomorphic-git/lightning-fs'
+import * as git from 'isomorphic-git'
 
 export interface GitServiceConfig {
   /** 仓库目录 */
@@ -255,13 +255,12 @@ export class GitService {
   /**
    * 删除分支
    */
-  async deleteBranch(name: string, force = false): Promise<void> {
+  async deleteBranch(name: string, _force = false): Promise<void> {
     try {
       await git.deleteBranch({
         fs: this.fs,
         dir: this.config.dir,
         ref: name,
-        force,
       })
     } catch (error) {
       throw new GitError(`Failed to delete branch: ${name}`, error)
@@ -475,7 +474,7 @@ export class GitService {
   async rollback(oid: string, hard = false): Promise<void> {
     try {
       if (hard) {
-        // 硬重置
+        // 硬重置 - 强制 checkout 到目标提交
         await git.checkout({
           fs: this.fs,
           dir: this.config.dir,
@@ -483,18 +482,12 @@ export class GitService {
           force: true,
         })
       } else {
-        // 软重置 - 创建新提交回滚
-        const head = await git.resolveRef({
-          fs: this.fs,
-          dir: this.config.dir,
-          ref: 'HEAD',
-        })
-
-        await git.reset({
+        // 软重置 - 强制 checkout 到目标提交，然后创建回滚提交
+        await git.checkout({
           fs: this.fs,
           dir: this.config.dir,
           ref: oid,
-          mode: hard ? 'hard' : 'soft',
+          force: true,
         })
 
         // 创建回滚提交

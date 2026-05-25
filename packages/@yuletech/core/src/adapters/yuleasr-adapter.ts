@@ -5,6 +5,7 @@
  */
 
 import type { ModuleConfig } from '../types';
+
 import { parseArxml, validateArxml } from './arxml-parser';
 
 /**

@@ -10,15 +10,16 @@
  * - Dependency highlighting
  */
 
-import { useState, useMemo, useCallback } from 'react'
-import { cn } from '@/lib/utils'
-import type { ConfigFile, ConfigModule, ConfigContainer, ConfigParameter, ValidationIssue } from '@/types/config'
 import { 
   Cpu, Settings, Layers, Box, Code, Search, ChevronDown, ChevronRight, 
   Power, AlertCircle, AlertTriangle, Info, Folder, FolderOpen, 
   FileText, Hash, ToggleLeft, List, Filter, ChevronRightSquare,
   ChevronDownSquare, CircleDot, Layers2
 } from 'lucide-react'
+import { useState, useMemo, useCallback } from 'react'
+
+import { cn } from '@/lib/utils'
+import type { ConfigFile, ConfigModule, ConfigContainer, ConfigParameter, ValidationIssue } from '@/types/config'
 
 interface ConfigTreeProps {
   config: ConfigFile

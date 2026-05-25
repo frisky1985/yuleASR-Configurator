@@ -1,4 +1,3 @@
-import { useState, useCallback } from 'react'
 import { 
   GitCommit, 
   GitBranch, 
@@ -12,6 +11,8 @@ import {
   Search,
   GitCompare,
 } from 'lucide-react'
+import { useState, useCallback } from 'react'
+
 import { cn, formatDate } from '@/lib/utils'
 import type { CommitInfo, BranchInfo } from '@/services/gitService'
 

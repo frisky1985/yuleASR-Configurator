@@ -4,9 +4,6 @@
  * Similar to Vector Configurator's status overview
  */
 
-import { useMemo } from 'react'
-import { cn } from '@/lib/utils'
-import type { ConfigFile, ConfigModule } from '@/types'
 import { 
   CheckCircle2, 
   AlertCircle, 
@@ -18,6 +15,10 @@ import {
   Download,
   FileText
 } from 'lucide-react'
+import { useMemo } from 'react'
+
+import { cn } from '@/lib/utils'
+import type { ConfigFile, ConfigModule } from '@/types'
 
 interface ConfigurationStatusPanelProps {
   config: ConfigFile

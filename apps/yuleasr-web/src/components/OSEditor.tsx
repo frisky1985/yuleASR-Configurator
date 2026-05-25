@@ -3,10 +3,6 @@
  * Edit OSEK/AUTOSAR OS configuration including Tasks, Events, Alarms, Resources, Counters, ISRs
  */
 
-import { useState } from 'react'
-import { cn } from '@/lib/utils'
-import { useConfigStore } from '@/stores/configStore'
-import type { OSConfig, OSTask, OSEvent, OSAlarm, OSResource, OSCounter, OSISR } from '@/types/config'
 import {
   Plus,
   Trash2,
@@ -20,6 +16,11 @@ import {
   ChevronRight,
   GripVertical,
 } from 'lucide-react'
+import { useState } from 'react'
+
+import { cn } from '@/lib/utils'
+import { useConfigStore } from '@/stores/configStore'
+import type { OSConfig, OSTask, OSEvent, OSAlarm, OSResource, OSCounter, OSISR } from '@/types/config'
 
 interface OSEditorProps {
   className?: string

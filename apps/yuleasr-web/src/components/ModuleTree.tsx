@@ -1,7 +1,8 @@
+import { Cpu, Settings, Layers, Box, Search, ChevronDown, ChevronRight, Power, Filter } from 'lucide-react'
 import { useState, useMemo } from 'react'
+
 import { cn } from '@/lib/utils'
 import type { ModuleConfig } from '@/types'
-import { Cpu, Settings, Layers, Box, Search, ChevronDown, ChevronRight, Power, Filter } from 'lucide-react'
 
 interface ModuleTreeProps {
   modules: ModuleConfig[]

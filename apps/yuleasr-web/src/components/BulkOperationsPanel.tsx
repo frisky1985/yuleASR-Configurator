@@ -3,10 +3,6 @@
  * Enable/disable multiple modules at once
  */
 
-import { useState, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
-import { cn } from '@/lib/utils'
-import type { ConfigModule } from '@/types/config'
 import { 
   CheckSquare, 
   Square, 
@@ -17,6 +13,11 @@ import {
   Filter,
   Search
 } from 'lucide-react'
+import { useState, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import { cn } from '@/lib/utils'
+import type { ConfigModule } from '@/types/config'
 
 interface BulkOperationsPanelProps {
   modules: ConfigModule[]

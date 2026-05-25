@@ -1,16 +1,3 @@
-import { useEffect, useState, useCallback } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { useConfigStore } from '@/stores/configStore'
-import { ConfigTree } from '@/components/ConfigTree'
-import { ConfigurationStatusPanel, exportConfigReport } from '@/components/ConfigurationStatusPanel'
-import { ParameterEditor } from '@/components/ParameterEditor'
-import { ValidationPanel } from '@/components/ValidationPanel'
-import { ModuleConfigWizard } from '@/components/ModuleConfigWizard'
-import { OSEditor } from '@/components/OSEditor'
-import { GlobalSearch } from '@/components/GlobalSearch'
-import { useTheme } from '@/components/ThemeProvider'
-import { cn, formatDate } from '@/lib/utils'
-import type { ValidationResult } from '@/types'
 import {
   Save,
   ArrowLeft,
@@ -24,6 +11,20 @@ import {
   AlertTriangle,
   Info,
 } from 'lucide-react'
+import { useEffect, useState, useCallback } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+
+import { ConfigTree } from '@/components/ConfigTree'
+import { ConfigurationStatusPanel, exportConfigReport } from '@/components/ConfigurationStatusPanel'
+import { GlobalSearch } from '@/components/GlobalSearch'
+import { ModuleConfigWizard } from '@/components/ModuleConfigWizard'
+import { OSEditor } from '@/components/OSEditor'
+import { ParameterEditor } from '@/components/ParameterEditor'
+import { useTheme } from '@/components/ThemeProvider'
+import { ValidationPanel } from '@/components/ValidationPanel'
+import { cn, formatDate } from '@/lib/utils'
+import { useConfigStore } from '@/stores/configStore'
+import type { ValidationResult } from '@/types'
 
 export function Editor() {
   const { configId } = useParams<{ configId: string }>()

@@ -3,10 +3,11 @@
  * Search across all parameters, modules, and configurations
  */
 
+import { Search, X, FileJson, Folder, Hash, Type, ToggleLeft, ChevronRight } from 'lucide-react'
 import { useState, useEffect, useCallback, useMemo } from 'react'
+
 import { cn } from '@/lib/utils'
 import { useConfigStore } from '@/stores/configStore'
-import { Search, X, FileJson, Folder, Hash, Type, ToggleLeft, ChevronRight } from 'lucide-react'
 import type { ConfigParameter } from '@/types'
 
 interface SearchResult {

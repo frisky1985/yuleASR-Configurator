@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
-import { ConfigTreeProvider, ConfigTreeItem } from './providers/ConfigTreeProvider';
+
 import { registerCommands } from './commands';
+import { ConfigTreeProvider, ConfigTreeItem } from './providers/ConfigTreeProvider';
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log('yuleASR Configurator extension is now active');

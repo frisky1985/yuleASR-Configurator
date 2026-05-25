@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { YuleasrValidator, yuleasrValidator } from '../yuleasr-validator'
+
 import type { ModuleConfig } from '../../types'
+import { YuleasrValidator, yuleasrValidator } from '../yuleasr-validator'
 
 function makeConfig(module: string, params: Record<string, unknown> = {}): ModuleConfig {
   return {

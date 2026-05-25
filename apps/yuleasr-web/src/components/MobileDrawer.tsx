@@ -3,9 +3,10 @@
  * Slide-out drawer for mobile navigation
  */
 
-import { useEffect } from 'react'
-import { cn } from '@/lib/utils'
 import { X } from 'lucide-react'
+import { useEffect } from 'react'
+
+import { cn } from '@/lib/utils'
 
 interface MobileDrawerProps {
   isOpen: boolean

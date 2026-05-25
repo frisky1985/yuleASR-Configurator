@@ -1,4 +1,3 @@
-import { memo } from 'react'
 import { Handle, Position, type NodeProps, type Node } from '@xyflow/react'
 import { 
   Cpu, 
@@ -9,6 +8,8 @@ import {
   Power,
   PowerOff
 } from 'lucide-react'
+import { memo } from 'react'
+
 import { cn } from '@/lib/utils'
 import type { ModuleLayer } from '@/types'
 
