@@ -21,7 +21,7 @@ import { useState, useMemo, useCallback, useEffect } from 'react'
 import { cn } from '@/lib/utils'
 import type { ConfigFile, ConfigModule, ConfigContainer, ConfigParameter, ValidationIssue } from '@/types/config'
 
-interface ConfigTreeProps {
+export interface ConfigTreeProps {
   config: ConfigFile
   selectedPath: string | null
   onSelectPath: (path: string) => void
@@ -30,6 +30,8 @@ interface ConfigTreeProps {
   showDisabled?: boolean
   onToggleModule?: (moduleId: string, enabled: boolean) => void
   filterText?: string
+  /** Called when an instance parameter value changes */
+  onInstanceParamChange?: (containerPath: string, instanceName: string, paramId: string, value: unknown) => void
 }
 
 interface TreeNodeData {
@@ -91,13 +93,16 @@ export function ConfigTree({
   const [searchQuery, setSearchQuery] = useState(filterText)
   const [showFilterMenu, setShowFilterMenu] = useState(false)
   
-  // Track dynamic instance counts per container
-  // Key: container path, Value: array of instance names
-  const [dynamicInstances, setDynamicInstances] = useState<Record<string, string[]>>(() => {
-    // Initialize with default instances based on minInstances
-    const initial: Record<string, string[]> = {}
+  // Instance data with per-instance parameter values
+  interface InstanceEntry {
+    name: string
+    paramValues: Record<string, unknown>
+  }
+
+  // Track dynamic instances per container: path → array of {name, paramValues}
+  const [dynamicInstances, setDynamicInstances] = useState<Record<string, InstanceEntry[]>>(() => {
+    const initial: Record<string, InstanceEntry[]> = {}
     for (const module of config.modules) {
-      // Use the same path format as buildModuleNode
       const modulePath = `layer:${module.layer}/module:${module.id}`
       collectDynamicContainers(module.containers, modulePath, initial)
     }
@@ -138,20 +143,23 @@ export function ConfigTree({
   function collectDynamicContainers(
     containers: ConfigContainer[], 
     parentPath: string, 
-    acc: Record<string, string[]>
+    acc: Record<string, InstanceEntry[]>
   ) {
     for (const container of containers) {
       const contPath = `${parentPath}/container:${container.id}`
       if (container.multiple && container.subContainers && container.subContainers.length > 0) {
-        // Generate default instances
+        // Generate default instances from template, with param values
         const template = container.subContainers[0]
         const baseName = template.name.replace(/_\d+$/, '') || template.name
         const count = container.minInstances ?? 0
-        const instances: string[] = []
+        const entries: InstanceEntry[] = []
         for (let i = 0; i < count; i++) {
-          instances.push(`${baseName}_${i}`)
+          entries.push({
+            name: `${baseName}_${i}`,
+            paramValues: extractParamValues(template),
+          })
         }
-        acc[contPath] = instances
+        acc[contPath] = entries
       }
       if (container.subContainers) {
         collectDynamicContainers(container.subContainers, contPath, acc)
@@ -159,30 +167,63 @@ export function ConfigTree({
     }
   }
   
+  // Extract default parameter values from a container template
+  function extractParamValues(container: ConfigContainer): Record<string, unknown> {
+    const values: Record<string, unknown> = {}
+    for (const param of container.parameters || []) {
+      values[param.id] = param.value ?? param.defaultValue
+    }
+    for (const sub of container.subContainers || []) {
+      Object.assign(values, extractParamValues(sub))
+    }
+    return values
+  }
+  
   // Add a new dynamic instance
   const addInstance = useCallback((containerPath: string) => {
     setDynamicInstances(prev => {
-      const instances = [...(prev[containerPath] || [])]
+      const entries = [...(prev[containerPath] || [])]
       let maxIdx = -1
-      for (const inst of instances) {
-        const match = inst.match(/_(\d+)$/)
+      for (const e of entries) {
+        const match = e.name.match(/_(\d+)$/)
         if (match) maxIdx = Math.max(maxIdx, parseInt(match[1]))
       }
-      // Determine baseName from template or existing instances
       let baseName = 'Instance'
-      if (instances.length > 0) {
-        baseName = instances[0].replace(/_\d+$/, '') || baseName
+      if (entries.length > 0) {
+        baseName = entries[0].name.replace(/_\d+$/, '') || baseName
       } else {
-        // Search through all containers for the template
         for (const mod of config.modules) {
           const found = findTemplateName(mod.containers, containerPath, `layer:${mod.layer}/module:${mod.id}`)
           if (found) { baseName = found; break }
         }
       }
-      instances.push(`${baseName}_${maxIdx + 1}`)
-      return { ...prev, [containerPath]: instances }
+      const newName = `${baseName}_${maxIdx + 1}`
+      // Get param values from template
+      const newParams: Record<string, unknown> = {}
+      for (const mod of config.modules) {
+        const found = findTemplateContainer(mod.containers, containerPath, `layer:${mod.layer}/module:${mod.id}`)
+        if (found) {
+          Object.assign(newParams, extractParamValues(found.subContainers?.[0] || found))
+          break
+        }
+      }
+      entries.push({ name: newName, paramValues: newParams })
+      return { ...prev, [containerPath]: entries }
     })
   }, [config])
+
+  // Find template container by path (returns the container object for param extraction)
+  function findTemplateContainer(containers: ConfigContainer[], targetPath: string, parentPath: string): ConfigContainer | null {
+    for (const c of containers) {
+      const cp = `${parentPath}/container:${c.id}`
+      if (cp === targetPath) return c
+      if (c.subContainers?.length) {
+        const found = findTemplateContainer(c.subContainers, targetPath, cp)
+        if (found) return found
+      }
+    }
+    return null
+  }
 
   // Recursively search for template name matching a container path
   function findTemplateName(containers: ConfigContainer[], targetPath: string, parentPath: string): string | null {
@@ -207,31 +248,35 @@ export function ConfigTree({
   // Remove a dynamic instance
   const removeInstance = useCallback((containerPath: string, instanceName: string) => {
     setDynamicInstances(prev => {
-      const instances = (prev[containerPath] || []).filter(n => n !== instanceName)
-      return { ...prev, [containerPath]: instances }
+      const entries = (prev[containerPath] || []).filter(e => e.name !== instanceName)
+      return { ...prev, [containerPath]: entries }
     })
   }, [])
   
   // Rename an instance
   const renameInstance = useCallback((containerPath: string, oldName: string, newName: string) => {
     setDynamicInstances(prev => {
-      const instances = (prev[containerPath] || []).map(n => n === oldName ? newName : n)
-      return { ...prev, [containerPath]: instances }
+      const entries = (prev[containerPath] || []).map(e => e.name === oldName ? { ...e, name: newName } : e)
+      return { ...prev, [containerPath]: entries }
     })
   }, [])
   
-  // Copy an instance (adds a new one with auto-incremented name)
+  // Copy an instance (adds a new one with auto-incremented name and copied params)
   const copyInstance = useCallback((containerPath: string, sourceName: string) => {
     setDynamicInstances(prev => {
-      const instances = [...(prev[containerPath] || [])]
+      const entries = [...(prev[containerPath] || [])]
       let maxIdx = -1
-      for (const inst of instances) {
-        const match = inst.match(/_(\d+)$/)
+      for (const e of entries) {
+        const match = e.name.match(/_(\d+)$/)
         if (match) maxIdx = Math.max(maxIdx, parseInt(match[1]))
       }
       const baseName = sourceName.replace(/_\d+$/, '') || sourceName
-      instances.push(`${baseName}_${maxIdx + 1}`)
-      return { ...prev, [containerPath]: instances }
+      const source = entries.find(e => e.name === sourceName)
+      entries.push({
+        name: `${baseName}_${maxIdx + 1}`,
+        paramValues: source ? { ...source.paramValues } : {},
+      })
+      return { ...prev, [containerPath]: entries }
     })
   }, [])
   
@@ -244,12 +289,12 @@ export function ConfigTree({
   // Confirm rename
   const confirmRename = useCallback((containerPath: string) => {
     if (renamingPath && renameValue.trim()) {
-      const currentName = dynamicInstances[containerPath]?.find(n => {
-        const instPath = `${containerPath}/instance:${n}`
+      const entry = dynamicInstances[containerPath]?.find(e => {
+        const instPath = `${containerPath}/instance:${e.name}`
         return instPath === renamingPath
       })
-      if (currentName) {
-        renameInstance(containerPath, currentName, renameValue.trim())
+      if (entry) {
+        renameInstance(containerPath, entry.name, renameValue.trim())
       }
     }
     setRenamingPath(null)
@@ -284,13 +329,13 @@ export function ConfigTree({
       return
     }
     setDynamicInstances(prev => {
-      const instances = [...(prev[targetContainerPath] || [])]
-      const fromIdx = instances.indexOf(sourceName)
-      const toIdx = instances.indexOf(targetName)
+      const entries = [...(prev[targetContainerPath] || [])]
+      const fromIdx = entries.findIndex(e => e.name === sourceName)
+      const toIdx = entries.findIndex(e => e.name === targetName)
       if (fromIdx === -1 || toIdx === -1) return prev
-      instances.splice(fromIdx, 1)
-      instances.splice(toIdx, 0, sourceName)
-      return { ...prev, [targetContainerPath]: instances }
+      const [moved] = entries.splice(fromIdx, 1)
+      entries.splice(toIdx, 0, moved)
+      return { ...prev, [targetContainerPath]: entries }
     })
     setDragSource(null)
   }, [dragSource])
@@ -454,9 +499,9 @@ export function ConfigTree({
       const instances = dynamicInstances[path] || []
       const minCount = container.minInstances ?? 1
       
-      for (const instName of instances) {
+      for (const entry of instances) {
         // Create an instance node based on the template
-        const instPath = `${path}/instance:${instName}`
+        const instPath = `${path}/instance:${entry.name}`
         const subChildren: TreeNodeData[] = []
         
         // Render sub-containers of the template within each instance
@@ -467,8 +512,8 @@ export function ConfigTree({
         children.push({
           id: instPath,
           type: 'container',
-          name: instName,
-          displayName: instName,
+          name: entry.name,
+          displayName: entry.name,
           path: instPath,
           icon: <FileText className="w-4 h-4" />,
           hasChildren: subChildren.length > 0,
@@ -478,7 +523,7 @@ export function ConfigTree({
           children: subChildren,
           isDynamic: true,
           parentContainerPath: path,
-          instanceName: instName,
+          instanceName: entry.name,
           instanceCount: instances.length,
           minInstanceCount: minCount,
         })
