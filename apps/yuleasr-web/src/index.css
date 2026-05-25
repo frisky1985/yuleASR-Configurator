@@ -24,6 +24,12 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
+
+    /* Brand theme colors */
+    --brand-primary: #2563EB;
+    --brand-success: #10B981;
+    --brand-warning: #F59E0B;
+    --brand-error: #EF4444;
   }
 
   .dark {
@@ -55,5 +61,60 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Smooth transitions on interactive elements */
+  a, button, input, textarea, select {
+    @apply transition-all duration-150 ease-in-out;
+  }
+
+  /* Enhanced focus ring styles */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-offset-2;
+    ring-color: var(--brand-primary);
+    ring-offset-color: white;
+  }
+
+  /* Brand utility classes */
+  .ring-brand:focus-visible {
+    @apply ring-2 ring-offset-2;
+    ring-color: var(--brand-primary);
+  }
+}
+
+@layer components {
+  /* Card hover elevation */
+  .card-hover {
+    @apply transition-all duration-200 ease-in-out;
+  }
+  .card-hover:hover {
+    @apply shadow-md;
+    transform: translateY(-1px);
+  }
+
+  /* Progress bar gradient transition */
+  .progress-bar-animated {
+    @apply transition-all duration-700 ease-out;
+    background-image: linear-gradient(90deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.15) 75%, transparent 75%, transparent);
+    background-size: 1rem 1rem;
+  }
+
+  /* Stats card style */
+  .stat-card {
+    @apply bg-white border border-gray-200 rounded-xl p-5 card-hover;
+  }
+
+  /* Gradient backgrounds for stats cards */
+  .stat-card-blue {
+    background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+  }
+  .stat-card-green {
+    background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+  }
+  .stat-card-purple {
+    background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%);
+  }
+  .stat-card-amber {
+    background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
   }
 }

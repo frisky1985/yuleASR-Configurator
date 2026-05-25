@@ -10,22 +10,46 @@ import {
   Clock,
   Layers,
   GitGraph,
+  GitCompare,
   X,
   Loader2,
-  Download
+  Download,
+  AlertTriangle,
+  BarChart3,
+  FileBox,
+  Zap
 } from 'lucide-react'
 import { useEffect, useState, lazy, Suspense, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { ModuleConfigWizard } from '@/components/ModuleConfigWizard'
 import { YuleasrImportDialog } from '@/components/YuleasrImportDialog'
+import { ConfigCompareDialog } from '@/components/ConfigCompareDialog'
 import { formatDate, cn } from '@/lib/utils'
 import { useConfigStore } from '@/stores/configStore'
-import type { ModuleConfig } from '@/types'
+import type { ModuleConfig, ConfigFile } from '@/types'
 
 
 // Lazy load ModuleGraph component
 const ModuleGraph = lazy(() => import('@/components/ModuleGraph').then(m => ({ default: m.ModuleGraph })))
+
+/** Compute completion percentage from module configStatuses */
+function computeCompletionPercent(modules: { configStatus?: string }[]): number {
+  if (!modules || modules.length === 0) return 0
+  let total = 0
+  for (const m of modules) {
+    if (m.configStatus === 'configured') total += 100
+    else if (m.configStatus === 'partial') total += 50
+    else total += 0
+  }
+  return Math.round(total / modules.length)
+}
+
+/** Count warnings from loaded config */
+function countWarnings(config: ConfigFile): number {
+  if (config.lastValidation?.warningCount) return config.lastValidation.warningCount
+  return 0
+}
 
 export function Dashboard() {
   const navigate = useNavigate()
@@ -48,6 +72,52 @@ export function Dashboard() {
   const [graphModules, setGraphModules] = useState<ModuleConfig[]>([])
   const [isLoadingGraph, setIsLoadingGraph] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Compare dialog state
+  const [showCompareDialog, setShowCompareDialog] = useState(false)
+  const [compareConfigAId, setCompareConfigAId] = useState<string>('')
+  const [compareConfigBId, setCompareConfigBId] = useState<string>('')
+
+  // Stats computed from loaded config data
+  const [configDetails, setConfigDetails] = useState<ConfigFile[]>([])
+
+  // Load full config details for stats computation
+  useEffect(() => {
+    const loaded: ConfigFile[] = []
+    for (const item of configList) {
+      try {
+        const raw = localStorage.getItem(`yuleasr_config_${item.id}`)
+        if (raw) {
+          loaded.push(JSON.parse(raw) as ConfigFile)
+        }
+      } catch {
+        // skip unparseable configs
+      }
+    }
+    setConfigDetails(loaded)
+  }, [configList])
+
+  // Compute dashboard stats
+  const stats = {
+    totalConfigs: configList.length,
+    totalModules: configList.reduce((sum, c) => sum + c.moduleCount, 0),
+    avgCompletion: configDetails.length > 0
+      ? Math.round(configDetails.reduce((s, cfg) => s + computeCompletionPercent(cfg.modules), 0) / configDetails.length)
+      : 0,
+    warningsCount: configDetails.reduce((s, cfg) => s + countWarnings(cfg), 0),
+  }
+
+  const handleOpenCompare = (configId: string) => {
+    setCompareConfigAId(configId)
+    setCompareConfigBId('')
+    setShowCompareDialog(true)
+  }
+
+  const handleCompareTwo = (configAId: string, configBId: string) => {
+    setCompareConfigAId(configAId)
+    setCompareConfigBId(configBId)
+    setShowCompareDialog(true)
+  }
 
   useEffect(() => {
     loadConfigList()
@@ -191,6 +261,25 @@ export function Dashboard() {
     setIsLoadingGraph(false)
   }
 
+  /** Progress bar color based on completion percentage */
+  const progressColor = (pct: number) => {
+    if (pct >= 100) return 'bg-green-500'
+    if (pct >= 50) return 'bg-yellow-500'
+    return 'bg-gray-300'
+  }
+
+  /** Get completion % for a config from loaded details */
+  const getConfigCompletion = (configId: string): number | null => {
+    const detail = configDetails.find(d => d.id === configId)
+    if (!detail || !detail.modules) return null
+    return computeCompletionPercent(detail.modules)
+  }
+
+  /** Get the config detail object for a given config id */
+  const getConfigDetail = (configId: string): ConfigFile | undefined => {
+    return configDetails.find(d => d.id === configId)
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -203,218 +292,322 @@ export function Dashboard() {
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all shadow-sm hover:shadow-md active:scale-[0.98]"
         >
           <Plus className="w-4 h-4" />
           New Configuration
         </button>
       </div>
 
-      {/* Configuration Overview Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Total Configs</p>
-              <p className="text-2xl font-bold text-gray-900">{configList.length}</p>
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Total Configs */}
+        <div className="stat-card stat-card-blue">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-sm font-medium text-blue-700">Total Configurations</p>
+            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+              <FileBox className="w-5 h-5 text-blue-600" />
             </div>
-            <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
-              <FolderOpen className="w-6 h-6 text-blue-600" />
+          </div>
+          <p className="text-3xl font-bold text-gray-900">{stats.totalConfigs}</p>
+          <p className="text-xs text-blue-600 mt-1">
+            {stats.totalConfigs === 1 ? '1 configuration' : `${stats.totalConfigs} configurations`}
+          </p>
+        </div>
+
+        {/* Total Modules */}
+        <div className="stat-card stat-card-purple">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-sm font-medium text-purple-700">Total Modules</p>
+            <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center">
+              <Layers className="w-5 h-5 text-purple-600" />
             </div>
+          </div>
+          <p className="text-3xl font-bold text-gray-900">{stats.totalModules}</p>
+          <p className="text-xs text-purple-600 mt-1">
+            Across all configurations
+          </p>
+        </div>
+
+        {/* Avg Completion */}
+        <div className="stat-card stat-card-green">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-sm font-medium text-green-700">Avg Completion</p>
+            <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
+              <BarChart3 className="w-5 h-5 text-green-600" />
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <p className="text-3xl font-bold text-gray-900">{stats.avgCompletion}%</p>
+          </div>
+          <div className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div
+              className={cn(
+                "h-full rounded-full transition-all duration-700 ease-out progress-bar-animated",
+                stats.avgCompletion >= 100 ? "bg-green-500" : stats.avgCompletion >= 50 ? "bg-yellow-500" : "bg-gray-300"
+              )}
+              style={{ width: `${stats.avgCompletion}%` }}
+            />
           </div>
         </div>
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Configured</p>
-              <p className="text-2xl font-bold text-green-600">
-                {configList.filter(c => c.moduleCount > 0).length}
-              </p>
-            </div>
-            <div className="w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center">
-              <Settings className="w-6 h-6 text-green-600" />
+
+        {/* Warnings */}
+        <div className="stat-card stat-card-amber">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-sm font-medium text-amber-700">Warnings</p>
+            <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center">
+              <AlertTriangle className="w-5 h-5 text-amber-600" />
             </div>
           </div>
-        </div>
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Total Modules</p>
-              <p className="text-2xl font-bold text-purple-600">
-                {configList.reduce((sum, c) => sum + c.moduleCount, 0)}
-              </p>
-            </div>
-            <div className="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
-              <Layers className="w-6 h-6 text-purple-600" />
-            </div>
-          </div>
-        </div>
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Last Modified</p>
-              <p className="text-lg font-bold text-gray-900">
-                {configList.length > 0 
-                  ? formatDate(configList[0]?.lastModified || new Date().toISOString())
-                  : 'N/A'}
-              </p>
-            </div>
-            <div className="w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center">
-              <Clock className="w-6 h-6 text-orange-600" />
-            </div>
-          </div>
+          <p className={cn(
+            "text-3xl font-bold",
+            stats.warningsCount > 0 ? "text-amber-600" : "text-gray-900"
+          )}>
+            {stats.warningsCount}
+          </p>
+          <p className="text-xs text-amber-600 mt-1">
+            {stats.warningsCount === 0 ? 'No warnings — all clear' : `${stats.warningsCount} issue${stats.warningsCount > 1 ? 's' : ''} found`}
+          </p>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <button 
-          onClick={handleOpenExisting}
-          className="p-4 bg-white border border-gray-200 rounded-lg hover:border-primary-300 hover:shadow-sm transition-all text-left"
-        >
-          <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center mb-3">
-            <FolderOpen className="w-5 h-5 text-blue-600" />
-          </div>
-          <h3 className="font-medium text-gray-900">Open Existing</h3>
-          <p className="text-sm text-gray-500 mt-1">Browse local config files</p>
-        </button>
-        
-        {/* Hidden file input for opening existing configs */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".json"
-          onChange={handleFileSelect}
-          className="hidden"
-        />
-        
-        <button 
-          onClick={() => setShowImportDialog(true)}
-          className="p-4 bg-white border border-gray-200 rounded-lg hover:border-primary-300 hover:shadow-sm transition-all text-left"
-        >
-          <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center mb-3">
-            <FileJson className="w-5 h-5 text-purple-600" />
-          </div>
-          <h3 className="font-medium text-gray-900">Import yuleASR</h3>
-          <p className="text-sm text-gray-500 mt-1">Import from yuleASR config</p>
-        </button>
-        
-        <button 
-          onClick={() => setShowModuleWizard(true)}
-          className="p-4 bg-white border border-gray-200 rounded-lg hover:border-primary-300 hover:shadow-sm transition-all text-left"
-        >
-          <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mb-3">
-            <Settings className="w-5 h-5 text-green-600" />
-          </div>
-          <h3 className="font-medium text-gray-900">Module Wizard</h3>
-          <p className="text-sm text-gray-500 mt-1">Configure modules step-by-step</p>
-        </button>
+      <div>
+        <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-3">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+          <button 
+            onClick={handleOpenExisting}
+            className="p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-300 hover:shadow-md transition-all text-left group card-hover"
+          >
+            <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-blue-100 transition-colors">
+              <FolderOpen className="w-5 h-5 text-blue-600" />
+            </div>
+            <h3 className="font-medium text-gray-900">Open Existing</h3>
+            <p className="text-sm text-gray-500 mt-1">Browse local config files</p>
+          </button>
+          
+          {/* Hidden file input for opening existing configs */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json"
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+          
+          <button 
+            onClick={() => setShowImportDialog(true)}
+            className="p-4 bg-white border border-gray-200 rounded-xl hover:border-purple-300 hover:shadow-md transition-all text-left group card-hover"
+          >
+            <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-purple-100 transition-colors">
+              <FileJson className="w-5 h-5 text-purple-600" />
+            </div>
+            <h3 className="font-medium text-gray-900">Import yuleASR</h3>
+            <p className="text-sm text-gray-500 mt-1">Import from yuleASR config</p>
+          </button>
+          
+          <button 
+            onClick={() => setShowModuleWizard(true)}
+            className="p-4 bg-white border border-gray-200 rounded-xl hover:border-green-300 hover:shadow-md transition-all text-left group card-hover"
+          >
+            <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-green-100 transition-colors">
+              <Settings className="w-5 h-5 text-green-600" />
+            </div>
+            <h3 className="font-medium text-gray-900">Module Wizard</h3>
+            <p className="text-sm text-gray-500 mt-1">Configure modules step-by-step</p>
+          </button>
 
-        <button 
-          onClick={() => handleShowGraph('config-1')}
-          className="p-4 bg-white border border-gray-200 rounded-lg hover:border-primary-300 hover:shadow-sm transition-all text-left group"
-        >
-          <div className="w-10 h-10 bg-pink-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-pink-100 transition-colors">
-            <GitGraph className="w-5 h-5 text-pink-600" />
-          </div>
-          <h3 className="font-medium text-gray-900">Dependency Graph</h3>
-          <p className="text-sm text-gray-500 mt-1">View module relationships</p>
-        </button>
+          <button 
+            onClick={() => handleShowGraph('config-1')}
+            className="p-4 bg-white border border-gray-200 rounded-xl hover:border-pink-300 hover:shadow-md transition-all text-left group card-hover"
+          >
+            <div className="w-10 h-10 bg-pink-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-pink-100 transition-colors">
+              <GitGraph className="w-5 h-5 text-pink-600" />
+            </div>
+            <h3 className="font-medium text-gray-900">Dependency Graph</h3>
+            <p className="text-sm text-gray-500 mt-1">View module relationships</p>
+          </button>
+        </div>
       </div>
 
       {/* Config List */}
-      <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900">Recent Configurations</h2>
+          {configList.length > 0 && (
+            <span className="text-xs text-gray-500 bg-white px-2.5 py-1 rounded-full border border-gray-200">
+              {configList.length} config{configList.length !== 1 ? 's' : ''}
+            </span>
+          )}
         </div>
         
         {isLoading ? (
-          <div className="p-8 text-center">
-            <div className="animate-spin w-8 h-8 border-2 border-primary-600 border-t-transparent rounded-full mx-auto" />
-            <p className="text-gray-500 mt-2">Loading configurations...</p>
+          <div className="p-12 text-center">
+            <div className="animate-spin w-10 h-10 border-3 border-blue-600 border-t-transparent rounded-full mx-auto" />
+            <p className="text-gray-500 mt-3 font-medium">Loading configurations...</p>
           </div>
         ) : configList.length === 0 ? (
-          <div className="p-8 text-center">
-            <FileJson className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <h3 className="text-gray-900 font-medium">No configurations yet</h3>
-            <p className="text-gray-500 mt-1">Create your first configuration to get started</p>
+          /* Enhanced Empty State */
+          <div className="py-16 px-8 text-center">
+            <div className="w-20 h-20 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-5">
+              <Zap className="w-10 h-10 text-blue-400" />
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">Create your first configuration</h3>
+            <p className="text-gray-500 max-w-md mx-auto mb-8">
+              Get started by creating a new yuleASR configuration or importing an existing one. 
+              Configure modules, set parameters, and build your embedded system.
+            </p>
+            <div className="flex items-center justify-center gap-3">
+              <button
+                onClick={() => setShowCreateModal(true)}
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all shadow-sm hover:shadow-md active:scale-[0.98]"
+              >
+                <Plus className="w-4 h-4" />
+                New Configuration
+              </button>
+              <button
+                onClick={handleOpenExisting}
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all active:scale-[0.98]"
+              >
+                <FolderOpen className="w-4 h-4" />
+                Open Existing
+              </button>
+              <button
+                onClick={() => setShowImportDialog(true)}
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all active:scale-[0.98]"
+              >
+                <FileJson className="w-4 h-4" />
+                Import
+              </button>
+            </div>
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
-            {configList.map((config) => (
-              <div
-                key={config.id}
-                className="flex items-center justify-between px-6 py-4 hover:bg-gray-50 transition-colors group"
-              >
-                <button
-                  onClick={() => navigate(`/editor/${config.id}`)}
-                  className="flex-1 text-left"
+            {configList.map((config) => {
+              const completion = getConfigCompletion(config.id)
+              const configDetail = getConfigDetail(config.id)
+              return (
+                <div
+                  key={config.id}
+                  className="px-6 py-4 hover:bg-gray-50 transition-colors group"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center">
-                      <Settings className="w-5 h-5 text-primary-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-gray-900">{config.name}</h3>
-                      <p className="text-sm text-gray-500">{config.description}</p>
-                      <div className="flex items-center gap-4 mt-1 text-xs text-gray-400">
-                        <span className="flex items-center gap-1">
-                          <Layers className="w-3 h-3" />
-                          {config.moduleCount} modules
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          {formatDate(config.lastModified)}
-                        </span>
+                  <div className="flex items-center justify-between gap-4">
+                    <button
+                      onClick={() => navigate(`/editor/${config.id}`)}
+                      className="flex-1 text-left min-w-0"
+                    >
+                      <div className="flex items-center gap-4">
+                        {/* Icon with status ring */}
+                        <div className={cn(
+                          "w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0",
+                          completion !== null && completion >= 100
+                            ? "bg-green-50"
+                            : completion !== null && completion >= 50
+                            ? "bg-yellow-50"
+                            : "bg-blue-50"
+                        )}>
+                          <Settings className={cn(
+                            "w-5 h-5",
+                            completion !== null && completion >= 100
+                              ? "text-green-600"
+                              : completion !== null && completion >= 50
+                              ? "text-yellow-600"
+                              : "text-blue-600"
+                          )} />
+                        </div>
+                        <div className="min-w-0">
+                          <h3 className="font-medium text-gray-900 truncate">{config.name}</h3>
+                          <p className="text-sm text-gray-500 truncate">{config.description || 'No description'}</p>
+                          <div className="flex items-center gap-3 mt-1.5 text-xs text-gray-400">
+                            <span className="flex items-center gap-1">
+                              <Layers className="w-3 h-3" />
+                              {config.moduleCount} module{config.moduleCount !== 1 ? 's' : ''}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3 h-3" />
+                              {formatDate(config.lastModified)}
+                            </span>
+                            {completion !== null && (
+                              <span className={cn(
+                                "flex items-center gap-1 font-medium",
+                                completion >= 100 ? "text-green-500" : completion >= 50 ? "text-yellow-500" : "text-gray-400"
+                              )}>
+                                {completion}% complete
+                              </span>
+                            )}
+                          </div>
+                          {/* Progress bar */}
+                          {completion !== null && (
+                            <div className="mt-2 max-w-xs">
+                              <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                                <div
+                                  className={cn("h-full rounded-full transition-all duration-500", progressColor(completion))}
+                                  style={{ width: `${completion}%` }}
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
+                    </button>
+                    
+                    {/* Action buttons */}
+                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 flex-shrink-0">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleOpenCompare(config.id)
+                        }}
+                        className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        title="Compare Configurations"
+                      >
+                        <GitCompare className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleShowGraph(config.id)
+                        }}
+                        className="p-2 text-gray-400 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
+                        title="View Dependency Graph"
+                      >
+                        <GitGraph className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleExportConfig(config.id, config.name)
+                        }}
+                        className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                        title="Export to yuleASR"
+                      >
+                        <Download className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => navigate(`/editor/${config.id}`)}
+                        className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        title="Edit"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteConfig(config.id)}
+                        disabled={deletingId === config.id}
+                        className={cn(
+                          "p-2 rounded-lg transition-colors",
+                          deletingId === config.id
+                            ? "text-gray-300 cursor-not-allowed"
+                            : "text-gray-400 hover:text-red-600 hover:bg-red-50"
+                        )}
+                        title="Delete"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
-                </button>
-                
-                <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleShowGraph(config.id)
-                    }}
-                    className="p-2 text-gray-400 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
-                    title="View Dependency Graph"
-                  >
-                    <GitGraph className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleExportConfig(config.id, config.name)
-                    }}
-                    className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                    title="Export to yuleASR"
-                  >
-                    <Download className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => navigate(`/editor/${config.id}`)}
-                    className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
-                    title="Edit"
-                  >
-                    <ChevronRight className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => handleDeleteConfig(config.id)}
-                    disabled={deletingId === config.id}
-                    className={cn(
-                      "p-2 rounded-lg transition-colors",
-                      deletingId === config.id
-                        ? "text-gray-300 cursor-not-allowed"
-                        : "text-gray-400 hover:text-red-600 hover:bg-red-50"
-                    )}
-                    title="Delete"
-                  >
-                    <Trash2 className="w-5 h-5" />
-                  </button>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
       </div>
@@ -422,7 +615,7 @@ export function Dashboard() {
       {/* Create Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full mx-4">
             <div className="px-6 py-4 border-b border-gray-200">
               <h3 className="text-lg font-semibold text-gray-900">New Configuration</h3>
             </div>
@@ -436,7 +629,7 @@ export function Dashboard() {
                   value={newConfigName}
                   onChange={(e) => setNewConfigName(e.target.value)}
                   placeholder="My Configuration"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   autoFocus
                 />
               </div>
@@ -449,7 +642,7 @@ export function Dashboard() {
                   onChange={(e) => setNewConfigDesc(e.target.value)}
                   placeholder="Optional description..."
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 />
               </div>
             </div>
@@ -464,10 +657,10 @@ export function Dashboard() {
                 onClick={handleCreateConfig}
                 disabled={!newConfigName.trim() || isLoading}
                 className={cn(
-                  "px-4 py-2 rounded-lg transition-colors",
+                  "px-4 py-2 rounded-lg transition-all",
                   !newConfigName.trim() || isLoading
                     ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-primary-600 text-white hover:bg-primary-700"
+                    : "bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow-md"
                 )}
               >
                 {isLoading ? 'Creating...' : 'Create'}
@@ -507,7 +700,7 @@ export function Dashboard() {
               {isLoadingGraph ? (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
-                    <Loader2 className="w-10 h-10 animate-spin text-primary-600 mx-auto mb-3" />
+                    <Loader2 className="w-10 h-10 animate-spin text-blue-600 mx-auto mb-3" />
                     <p className="text-gray-600 font-medium">Loading module graph...</p>
                     <p className="text-sm text-gray-400 mt-1">Calculating dependencies</p>
                   </div>
@@ -516,7 +709,7 @@ export function Dashboard() {
                 <Suspense fallback={
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <Loader2 className="w-10 h-10 animate-spin text-primary-600 mx-auto mb-3" />
+                      <Loader2 className="w-10 h-10 animate-spin text-blue-600 mx-auto mb-3" />
                       <p className="text-gray-600 font-medium">Initializing graph...</p>
                     </div>
                   </div>
@@ -549,6 +742,14 @@ export function Dashboard() {
           setShowModuleWizard(false)
           // 这里可以将配置添加到当前配置
         }}
+      />
+
+      {/* Config Compare Dialog */}
+      <ConfigCompareDialog
+        isOpen={showCompareDialog}
+        onClose={() => setShowCompareDialog(false)}
+        configAId={compareConfigAId || undefined}
+        configBId={compareConfigBId || undefined}
       />
     </div>
   )

@@ -90,6 +90,26 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
     }
   }
 
+  /** Get progress bar color based on percentage */
+  const getProgressColor = (pct: number) => {
+    if (pct >= 100) return 'bg-green-500'
+    if (pct >= 50) return 'bg-yellow-500'
+    return 'bg-gray-300'
+  }
+
+  /** Small horizontal progress bar */
+  const MiniProgressBar = ({ value, max, className }: { value: number; max: number; className?: string }) => {
+    const pct = max > 0 ? Math.round((value / max) * 100) : 0
+    return (
+      <div className={cn("w-full h-1.5 bg-gray-200 rounded-full overflow-hidden", className)}>
+        <div
+          className={cn("h-full rounded-full transition-all duration-500 progress-bar-animated", getProgressColor(pct))}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+    )
+  }
+
   return (
     <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
       {/* Header */}
@@ -116,11 +136,11 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
             <span className="text-sm text-gray-600">Overall Progress</span>
             <span className="text-sm font-semibold text-gray-900">{stats.progress}%</span>
           </div>
-          <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div className="h-2.5 bg-gray-200 rounded-full overflow-hidden">
             <div 
               className={cn(
-                "h-full transition-all duration-500",
-                stats.progress === 100 ? "bg-green-500" : "bg-primary-500"
+                "h-full rounded-full transition-all duration-700 ease-out progress-bar-animated",
+                stats.progress === 100 ? "bg-green-500" : stats.progress >= 50 ? "bg-yellow-500" : "bg-primary-500"
               )}
               style={{ width: `${stats.progress}%` }}
             />
@@ -131,35 +151,47 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
           </p>
         </div>
 
-        {/* Status Summary */}
+        {/* Status Summary with visual progress bars */}
         <div className="grid grid-cols-2 gap-2">
-          <div className="flex items-center gap-2 p-2 bg-green-50 rounded-lg">
-            <CheckCircle2 className="w-4 h-4 text-green-600" />
-            <div>
-              <p className="text-xs text-gray-600">Configured</p>
-              <p className="text-lg font-semibold text-green-700">{stats.configured}</p>
+          <div className="flex flex-col gap-1 p-2 bg-green-50 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
+                <span className="text-xs font-medium text-gray-600">Configured</span>
+              </div>
+              <span className="text-sm font-semibold text-green-700">{stats.configured}</span>
             </div>
+            <MiniProgressBar value={stats.configured} max={stats.total} />
           </div>
-          <div className="flex items-center gap-2 p-2 bg-blue-50 rounded-lg">
-            <Clock className="w-4 h-4 text-blue-600" />
-            <div>
-              <p className="text-xs text-gray-600">Configuring</p>
-              <p className="text-lg font-semibold text-blue-700">{stats.configuring}</p>
+          <div className="flex flex-col gap-1 p-2 bg-blue-50 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-blue-600" />
+                <span className="text-xs font-medium text-gray-600">Configuring</span>
+              </div>
+              <span className="text-sm font-semibold text-blue-700">{stats.configuring}</span>
             </div>
+            <MiniProgressBar value={stats.configuring} max={stats.total} />
           </div>
-          <div className="flex items-center gap-2 p-2 bg-yellow-50 rounded-lg">
-            <AlertCircle className="w-4 h-4 text-yellow-600" />
-            <div>
-              <p className="text-xs text-gray-600">Partial</p>
-              <p className="text-lg font-semibold text-yellow-700">{stats.partial}</p>
+          <div className="flex flex-col gap-1 p-2 bg-yellow-50 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <AlertCircle className="w-3.5 h-3.5 text-yellow-600" />
+                <span className="text-xs font-medium text-gray-600">Partial</span>
+              </div>
+              <span className="text-sm font-semibold text-yellow-700">{stats.partial}</span>
             </div>
+            <MiniProgressBar value={stats.partial} max={stats.total} />
           </div>
-          <div className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
-            <CircleDashed className="w-4 h-4 text-gray-500" />
-            <div>
-              <p className="text-xs text-gray-600">Unconfigured</p>
-              <p className="text-lg font-semibold text-gray-700">{stats.unconfigured}</p>
+          <div className="flex flex-col gap-1 p-2 bg-gray-50 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <CircleDashed className="w-3.5 h-3.5 text-gray-500" />
+                <span className="text-xs font-medium text-gray-600">Unconfigured</span>
+              </div>
+              <span className="text-sm font-semibold text-gray-700">{stats.unconfigured}</span>
             </div>
+            <MiniProgressBar value={stats.unconfigured} max={stats.total} className="bg-gray-100" />
           </div>
         </div>
 
@@ -177,7 +209,14 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
                 </div>
                 <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-primary-500 rounded-full"
+                    className={cn(
+                      "h-full rounded-full transition-all duration-500",
+                      (ls.total > 0 ? (ls.configured / ls.total) * 100 : 0) >= 100
+                        ? "bg-green-500"
+                        : (ls.total > 0 ? (ls.configured / ls.total) * 100 : 0) >= 50
+                        ? "bg-yellow-500"
+                        : "bg-primary-500"
+                    )}
                     style={{ width: `${ls.total > 0 ? (ls.configured / ls.total) * 100 : 0}%` }}
                   />
                 </div>

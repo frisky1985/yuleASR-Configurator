@@ -1,13 +1,13 @@
 /**
  * Configuration Comparison Dialog
- * UI for comparing two configurations
+ * Two-column layout with color-coded diff indicators
  */
 
-import { X, FileJson, ChevronDown, ChevronUp, Download, Copy, CheckCircle, XCircle, Edit3 } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { X, FileJson, GitCompare, ChevronDown, ChevronRight, Loader2, AlertCircle } from 'lucide-react'
+import { useState, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { configComparer, type ComparisonResult, type ConfigDiff } from '@/core/ConfigComparer'
+import { configComparer, type ComparisonResult, type ConfigDiff, type CompareStatus } from '@/services/compareEngine'
 import { cn } from '@/lib/utils'
 import { useConfigStore } from '@/stores/configStore'
 
@@ -18,15 +18,72 @@ interface ConfigCompareDialogProps {
   configBId?: string
 }
 
+// Color mapping for diff status
+const statusColors: Record<CompareStatus, { bg: string; text: string; border: string; label: string }> = {
+  same: {
+    bg: 'bg-gray-50',
+    text: 'text-gray-600',
+    border: 'border-gray-200',
+    label: 'Same',
+  },
+  different: {
+    bg: 'bg-red-50',
+    text: 'text-red-700',
+    border: 'border-red-300',
+    label: 'Different',
+  },
+  only_a: {
+    bg: 'bg-yellow-50',
+    text: 'text-yellow-700',
+    border: 'border-yellow-300',
+    label: 'Only in A',
+  },
+  only_b: {
+    bg: 'bg-yellow-50',
+    text: 'text-yellow-700',
+    border: 'border-yellow-300',
+    label: 'Only in B',
+  },
+}
+
+// Instance count diff color (blue)
+const instanceDiffColor = 'bg-blue-50 text-blue-700 border-blue-300'
+
+function getStatusStyle(status: CompareStatus, isInstanceDiff?: boolean): { bg: string; text: string; border: string } {
+  if (isInstanceDiff && status === 'different') {
+    return { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-300' }
+  }
+  const s = statusColors[status]
+  return { bg: s.bg, text: s.text, border: s.border }
+}
+
+function getStatusIcon(status: CompareStatus) {
+  switch (status) {
+    case 'same': return null
+    case 'different': return <span className="text-red-500 font-bold">≠</span>
+    case 'only_a': return <span className="text-yellow-500 font-bold">A</span>
+    case 'only_b': return <span className="text-yellow-500 font-bold">B</span>
+  }
+}
+
+function formatValue(val: unknown): string {
+  if (val === undefined || val === null) return '—'
+  if (typeof val === 'boolean') return val ? 'true' : 'false'
+  if (Array.isArray(val)) return `[${val.join(', ')}]`
+  return String(val)
+}
+
 export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: ConfigCompareDialogProps) {
   const { t } = useTranslation()
-  const { configList, loadConfig } = useConfigStore()
+  const { configList, loadConfig, currentConfig } = useConfigStore()
   const [leftConfigId, setLeftConfigId] = useState<string>(configAId || '')
   const [rightConfigId, setRightConfigId] = useState<string>(configBId || '')
   const [result, setResult] = useState<ComparisonResult | null>(null)
   const [isComparing, setIsComparing] = useState(false)
-  const [expandedModules, setExpandedModules] = useState<Set<string>>(new Set())
-  const [filter, setFilter] = useState<'all' | 'added' | 'removed' | 'modified'>('all')
+  const [error, setError] = useState<string | null>(null)
+  const [filter, setFilter] = useState<'all' | 'diff_only'>('all')
+  const [selectedNode, setSelectedNode] = useState<ConfigDiff | null>(null)
+  const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     if (isOpen) {
@@ -35,236 +92,419 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
   }, [isOpen])
 
   const loadConfigList = async () => {
-    // This would load the config list
+    // loadConfigList is already called by the store
   }
 
   const handleCompare = async () => {
-    if (!leftConfigId || !rightConfigId) return
+    if (!leftConfigId || !rightConfigId) {
+      setError(t('compare.selectBoth'))
+      return
+    }
     if (leftConfigId === rightConfigId) {
-      alert(t('compare.sameConfig'))
+      setError(t('compare.sameConfig'))
       return
     }
 
     setIsComparing(true)
+    setError(null)
+    setResult(null)
+    setSelectedNode(null)
+
     try {
       await loadConfig(leftConfigId)
       const configA = useConfigStore.getState().currentConfig
-      
+
       await loadConfig(rightConfigId)
       const configB = useConfigStore.getState().currentConfig
-      
-      if (configA && configB) {
-        const comparison = configComparer.compareConfigs(configA, configB)
-        setResult(comparison)
+
+      if (!configA || !configB) {
+        throw new Error('Could not load configurations')
       }
+
+      const comparison = configComparer.compare(configA, configB)
+      setResult(comparison)
+
+      // Auto-expand all modules
+      const paths = new Set<string>()
+      for (const md of comparison.moduleDiffs) {
+        paths.add(md.moduleName)
+      }
+      setExpandedPaths(paths)
+    } catch (err) {
+      setError((err as Error).message || 'Comparison failed')
     } finally {
       setIsComparing(false)
     }
   }
 
-  const toggleModule = (module: string) => {
-    const newExpanded = new Set(expandedModules)
-    if (newExpanded.has(module)) {
-      newExpanded.delete(module)
-    } else {
-      newExpanded.add(module)
+  // Reset when config IDs change
+  useEffect(() => {
+    if (configAId) setLeftConfigId(configAId)
+    if (configBId) setRightConfigId(configBId)
+    setResult(null)
+    setError(null)
+    setSelectedNode(null)
+  }, [configAId, configBId])
+
+  const diffTree = useMemo(() => {
+    if (!result) return []
+    return configComparer.buildDiffTree(result, filter)
+  }, [result, filter])
+
+  const handleNodeClick = (node: ConfigDiff) => {
+    setSelectedNode(node)
+  }
+
+  const toggleExpand = (path: string) => {
+    setExpandedPaths(prev => {
+      const next = new Set(prev)
+      if (next.has(path)) {
+        next.delete(path)
+      } else {
+        next.add(path)
+      }
+      return next
+    })
+  }
+
+  // Collect params for the selected node
+  const selectedParams = useMemo(() => {
+    if (!selectedNode || !result) return []
+    
+    if (selectedNode.type === 'module') {
+      return result.paramDiffs.filter(p => p.moduleName === selectedNode.name)
     }
-    setExpandedModules(newExpanded)
+    if (selectedNode.type === 'container') {
+      // Container name could be qualified or simple
+      const parts = selectedNode.path.split('.')
+      const containerName = parts[parts.length - 1]
+      const moduleName = parts[0]
+      return result.paramDiffs.filter(
+        p => p.moduleName === moduleName && (
+          p.containerPath === selectedNode.path || 
+          p.containerPath.endsWith(`.${containerName}`)
+        )
+      )
+    }
+    // For parameter-level, show just this param
+    if (selectedNode.type === 'parameter') {
+      return result.paramDiffs.filter(p => {
+        const paramPath = `${p.containerPath}.${p.parameterName}`
+        return paramPath === selectedNode.path
+      })
+    }
+    return []
+  }, [selectedNode, result])
+
+  const renderTreeNode = (node: ConfigDiff, depth: number = 0): React.ReactNode => {
+    const hasChildren = node.children && node.children.length > 0
+    const isExpanded = expandedPaths.has(node.path)
+    const isSelected = selectedNode?.path === node.path
+    const style = getStatusStyle(node.status)
+
+    return (
+      <div key={node.path}>
+        <button
+          onClick={() => {
+            if (hasChildren) toggleExpand(node.path)
+            handleNodeClick(node)
+          }}
+          className={cn(
+            'w-full flex items-center gap-2 px-2 py-1.5 text-left hover:bg-accent/50 transition-colors',
+            'border-l-2',
+            isSelected ? style.border : 'border-transparent',
+            style.bg
+          )}
+          style={{ paddingLeft: `${12 + depth * 16}px` }}
+        >
+          {hasChildren ? (
+            isExpanded ? (
+              <ChevronDown className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+            ) : (
+              <ChevronRight className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+            )
+          ) : (
+            <span className="w-3.5 shrink-0" />
+          )}
+
+          {/* Status indicator dot */}
+          <span className={cn(
+            'w-2 h-2 rounded-full shrink-0',
+            node.status === 'same' && 'bg-gray-400',
+            node.status === 'different' && 'bg-red-500',
+            (node.status === 'only_a' || node.status === 'only_b') && 'bg-yellow-500',
+          )} />
+
+          <span className={cn(
+            'text-sm truncate',
+            style.text,
+            node.status !== 'same' && 'font-medium'
+          )}>
+            {node.name}
+          </span>
+
+          {/* Badge */}
+          {node.status !== 'same' && (
+            <span className={cn(
+              'ml-auto px-1.5 py-0.5 rounded text-[10px] font-medium uppercase',
+              style.bg === 'bg-red-50' ? 'bg-red-100 text-red-600' :
+              style.bg === 'bg-blue-50' ? 'bg-blue-100 text-blue-600' :
+              'bg-yellow-100 text-yellow-600'
+            )}>
+              {node.status === 'different' ? '≠' :
+               node.status === 'only_a' ? 'A' :
+               node.status === 'only_b' ? 'B' : ''}
+            </span>
+          )}
+        </button>
+
+        {hasChildren && isExpanded && (
+          <div>
+            {node.children!.map(child => renderTreeNode(child, depth + 1))}
+          </div>
+        )}
+      </div>
+    )
   }
-
-  const exportToMarkdown = () => {
-    if (!result) return
-    const markdown = configComparer.exportToMarkdown(result)
-    const blob = new Blob([markdown], { type: 'text/markdown' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `compare-${result.configA.name}-vs-${result.configB.name}.md`
-    a.click()
-    URL.revokeObjectURL(url)
-  }
-
-  const filteredDiffs = result?.differences.filter(diff => {
-    if (filter === 'all') return true
-    return diff.type === filter
-  }) || []
-
-  const groupedDiffs = filteredDiffs.reduce((acc, diff) => {
-    const module = diff.module || 'General'
-    if (!acc[module]) acc[module] = []
-    acc[module].push(diff)
-    return acc
-  }, {} as Record<string, ConfigDiff[]>)
 
   if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-card rounded-lg shadow-xl w-full max-w-6xl max-h-[90vh] flex flex-col">
+      <div className="bg-card rounded-lg shadow-xl w-full max-w-7xl max-h-[90vh] flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border">
-          <h2 className="text-xl font-semibold text-foreground">{t('compare.title')}</h2>
-          <button onClick={onClose} className="p-2 hover:bg-accent rounded-lg">
+          <div className="flex items-center gap-3">
+            <GitCompare className="w-5 h-5 text-primary" />
+            <h2 className="text-xl font-semibold text-foreground">{t('compare.title') || 'Compare Configurations'}</h2>
+          </div>
+          <button onClick={onClose} className="p-2 hover:bg-accent rounded-lg transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Config Selection */}
         <div className="p-4 border-b border-border bg-muted/50">
-          <div className="flex items-center gap-4">
+          <div className="flex items-end gap-4">
             <div className="flex-1">
-              <label className="block text-sm text-muted-foreground mb-1">{t('compare.leftConfig')}</label>
+              <label className="block text-sm text-muted-foreground mb-1 font-medium">Configuration A</label>
               <select
                 value={leftConfigId}
                 onChange={(e) => setLeftConfigId(e.target.value)}
-                className="w-full px-3 py-2 bg-background border border-border rounded-lg"
+                className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm"
               >
-                <option value="">{t('compare.selectConfig')}</option>
+                <option value="">{t('compare.selectConfig') || 'Select...'}</option>
                 {configList.map((config) => (
                   <option key={config.id} value={config.id}>{config.name}</option>
                 ))}
               </select>
             </div>
-            <div className="flex items-center pt-6">
-              <span className="text-muted-foreground">vs</span>
+            <div className="flex items-center pb-2">
+              <span className="text-muted-foreground text-sm font-medium px-2">vs</span>
             </div>
             <div className="flex-1">
-              <label className="block text-sm text-muted-foreground mb-1">{t('compare.rightConfig')}</label>
+              <label className="block text-sm text-muted-foreground mb-1 font-medium">Configuration B</label>
               <select
                 value={rightConfigId}
                 onChange={(e) => setRightConfigId(e.target.value)}
-                className="w-full px-3 py-2 bg-background border border-border rounded-lg"
+                className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm"
               >
-                <option value="">{t('compare.selectConfig')}</option>
+                <option value="">{t('compare.selectConfig') || 'Select...'}</option>
                 {configList.map((config) => (
                   <option key={config.id} value={config.id}>{config.name}</option>
                 ))}
               </select>
             </div>
-            <div className="pt-6">
+            <div className="pb-2">
               <button
                 onClick={handleCompare}
                 disabled={!leftConfigId || !rightConfigId || isComparing}
-                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+                className={cn(
+                  "px-5 py-2 rounded-lg text-sm font-medium transition-colors",
+                  "bg-primary text-primary-foreground hover:bg-primary/90",
+                  "disabled:opacity-50 disabled:cursor-not-allowed"
+                )}
               >
-                {isComparing ? t('compare.comparing') : t('compare.compare')}
+                {isComparing ? (
+                  <span className="flex items-center gap-2">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Comparing...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <GitCompare className="w-4 h-4" />
+                    Compare
+                  </span>
+                )}
               </button>
             </div>
           </div>
+
+          {/* Error */}
+          {error && (
+            <div className="mt-3 flex items-center gap-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              {error}
+            </div>
+          )}
         </div>
 
-        {/* Results */}
-        {result && (
-          <>
+        {/* Results Area */}
+        {result ? (
+          <div className="flex flex-col flex-1 overflow-hidden">
             {/* Summary Bar */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-border bg-muted/30">
-              <div className="flex items-center gap-6">
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span className="text-sm">{t('compare.added')}: {result.summary.added}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <XCircle className="w-4 h-4 text-red-500" />
-                  <span className="text-sm">{t('compare.removed')}: {result.summary.removed}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Edit3 className="w-4 h-4 text-yellow-500" />
-                  <span className="text-sm">{t('compare.modified')}: {result.summary.modified}</span>
-                </div>
+            <div className="flex items-center justify-between px-4 py-2.5 border-b border-border bg-muted/30">
+              <div className="flex items-center gap-4 text-sm">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
+                  <span className="font-medium">{result.summary.modulesDifferent + result.summary.containersDifferent + result.summary.paramsDifferent}</span>
+                  <span className="text-muted-foreground">different</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
+                  <span className="font-medium">{result.summary.modulesOnlyA + result.summary.modulesOnlyB + result.summary.containersOnlyA + result.summary.containersOnlyB + result.summary.paramsOnlyA + result.summary.paramsOnlyB}</span>
+                  <span className="text-muted-foreground">missing</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+                  <span className="font-medium">{result.summary.containersDifferent}</span>
+                  <span className="text-muted-foreground">instance diffs</span>
+                </span>
               </div>
               <div className="flex items-center gap-2">
                 <select
                   value={filter}
                   onChange={(e) => setFilter(e.target.value as typeof filter)}
-                  className="px-3 py-1.5 bg-background border border-border rounded-lg text-sm"
+                  className="px-2.5 py-1.5 bg-background border border-border rounded-lg text-xs"
                 >
-                  <option value="all">{t('compare.allChanges')}</option>
-                  <option value="added">{t('compare.addedOnly')}</option>
-                  <option value="removed">{t('compare.removedOnly')}</option>
-                  <option value="modified">{t('compare.modifiedOnly')}</option>
+                  <option value="all">All items</option>
+                  <option value="diff_only">Differences only</option>
                 </select>
-                <button
-                  onClick={exportToMarkdown}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-accent hover:bg-accent/80 rounded-lg text-sm"
-                >
-                  <Download className="w-4 h-4" />
-                  {t('compare.export')}
-                </button>
               </div>
             </div>
 
-            {/* Differences List */}
-            <div className="flex-1 overflow-y-auto p-4">
-              {Object.entries(groupedDiffs).length === 0 ? (
-                <div className="text-center py-12 text-muted-foreground">
-                  {t('compare.noChanges')}
+            {/* Two-column layout */}
+            <div className="flex flex-1 overflow-hidden">
+              {/* Left column - Config A Tree */}
+              <div className="flex-1 border-r border-border overflow-y-auto">
+                <div className="px-3 py-2 bg-muted/20 border-b border-border">
+                  <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-primary-500" />
+                    {result.configA.name}
+                  </h3>
                 </div>
-              ) : (
-                <div className="space-y-4">
-                  {Object.entries(groupedDiffs).map(([module, diffs]) => (
-                    <div key={module} className="border border-border rounded-lg overflow-hidden">
-                      <button
-                        onClick={() => toggleModule(module)}
-                        className="w-full flex items-center justify-between px-4 py-3 bg-muted/50 hover:bg-muted"
-                      >
-                        <div className="flex items-center gap-2">
-                          <FileJson className="w-4 h-4 text-muted-foreground" />
-                          <span className="font-medium">{module}</span>
-                          <span className="text-sm text-muted-foreground">({diffs.length})</span>
-                        </div>
-                        {expandedModules.has(module) ? (
-                          <ChevronUp className="w-4 h-4" />
-                        ) : (
-                          <ChevronDown className="w-4 h-4" />
-                        )}
-                      </button>
-                      {expandedModules.has(module) && (
-                        <div className="divide-y divide-border">
-                          {diffs.map((diff, index) => (
-                            <div key={index} className="px-4 py-3 hover:bg-accent/50">
-                              <div className="flex items-start gap-3">
-                                <span className={cn(
-                                  'px-2 py-0.5 rounded text-xs font-medium',
-                                  diff.type === 'added' && 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-                                  diff.type === 'removed' && 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-                                  diff.type === 'modified' && 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
-                                )}>
-                                  {diff.type.toUpperCase()}
-                                </span>
-                                <div className="flex-1 min-w-0">
-                                  <div className="text-sm font-mono text-muted-foreground truncate">
-                                    {diff.path}
-                                  </div>
-                                  {diff.type === 'modified' ? (
-                                    <div className="mt-1 flex items-center gap-2 text-sm">
-                                      <span className="text-red-600 line-through">{String(diff.oldValue)}</span>
-                                      <span className="text-muted-foreground">→</span>
-                                      <span className="text-green-600">{String(diff.newValue)}</span>
-                                    </div>
-                                  ) : diff.type === 'added' ? (
-                                    <div className="mt-1 text-sm text-green-600">+ {String(diff.newValue)}</div>
-                                  ) : (
-                                    <div className="mt-1 text-sm text-red-600">- {String(diff.oldValue)}</div>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                <div className="py-1">
+                  {diffTree.length === 0 ? (
+                    <div className="p-6 text-center text-muted-foreground text-sm">
+                      No items to display
                     </div>
-                  ))}
+                  ) : (
+                    diffTree.map(node => renderTreeNode(node))
+                  )}
                 </div>
-              )}
-            </div>
-          </>
-        )}
+              </div>
 
-        {!result && (
+              {/* Right column - Config B Tree */}
+              <div className="flex-1 overflow-y-auto">
+                <div className="px-3 py-2 bg-muted/20 border-b border-border">
+                  <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-primary-500" />
+                    {result.configB.name}
+                  </h3>
+                </div>
+                <div className="py-1">
+                  {diffTree.length === 0 ? (
+                    <div className="p-6 text-center text-muted-foreground text-sm">
+                      No items to display
+                    </div>
+                  ) : (
+                    diffTree.map(node => renderTreeNode(node))
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Panel - Detailed Param Diff Table */}
+            {selectedNode && (
+              <div className="border-t border-border max-h-[200px] overflow-y-auto">
+                <div className="px-4 py-2 bg-muted/30 border-b border-border flex items-center justify-between">
+                  <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider">
+                    Parameters for: {selectedNode.name}
+                  </h4>
+                  <span className="text-xs text-muted-foreground">
+                    {selectedParams.filter(p => p.status !== 'same').length} differences
+                  </span>
+                </div>
+                {selectedParams.length > 0 ? (
+                  <table className="w-full text-xs">
+                    <thead>
+                      <tr className="bg-muted/20">
+                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">Parameter</th>
+                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">Type</th>
+                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">Value (A)</th>
+                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">Value (B)</th>
+                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selectedParams.map((param, idx) => {
+                        const pStyle = getStatusStyle(param.status)
+                        return (
+                          <tr
+                            key={`${param.parameterId}-${idx}`}
+                            className={cn(
+                              'border-t border-border hover:bg-accent/30',
+                              param.status !== 'same' && pStyle.bg
+                            )}
+                          >
+                            <td className="px-3 py-1.5 font-mono">{param.parameterName}</td>
+                            <td className="px-3 py-1.5 text-muted-foreground">{param.type || '—'}</td>
+                            <td className={cn(
+                              'px-3 py-1.5 font-mono',
+                              param.status === 'different' && 'text-red-600',
+                              param.status === 'only_a' && 'text-yellow-600 font-medium',
+                              (param.status === 'only_b' || param.status === 'same') && 'text-foreground'
+                            )}>
+                              {param.status === 'only_b' ? '—' : formatValue(param.valueA)}
+                            </td>
+                            <td className={cn(
+                              'px-3 py-1.5 font-mono',
+                              param.status === 'different' && 'text-green-600',
+                              param.status === 'only_b' && 'text-yellow-600 font-medium',
+                              (param.status === 'only_a' || param.status === 'same') && 'text-foreground'
+                            )}>
+                              {param.status === 'only_a' ? '—' : formatValue(param.valueB)}
+                            </td>
+                            <td className="px-3 py-1.5">
+                              <span className={cn(
+                                'px-1.5 py-0.5 rounded text-[10px] font-medium',
+                                pStyle.bg,
+                                pStyle.text
+                              )}>
+                                {param.status === 'same' ? '=' :
+                                 param.status === 'different' ? '≠' :
+                                 param.status === 'only_a' ? 'A only' : 'B only'}
+                              </span>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                ) : (
+                  <div className="p-4 text-center text-muted-foreground text-xs">
+                    No parameters for this item
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ) : (
           <div className="flex-1 flex items-center justify-center text-muted-foreground">
             <div className="text-center">
-              <FileJson className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>{t('compare.selectConfigsToCompare')}</p>
+              <GitCompare className="w-12 h-12 mx-auto mb-4 opacity-30" />
+              <p className="text-sm">Select two configurations and click Compare</p>
+              <p className="text-xs text-muted-foreground mt-1">Color-coded diff indicators will show the differences</p>
             </div>
           </div>
         )}

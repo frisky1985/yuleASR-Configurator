@@ -8,6 +8,7 @@ import { GitSync } from './pages/GitSync'
 import { Migrate } from './pages/Migrate'
 import { Settings } from './pages/Settings'
 import { Templates } from './pages/Templates'
+import { Compare } from './pages/Compare'
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
           <Route path="/migrate" element={<Migrate />} />
           <Route path="/editor/:configId" element={<Editor />} />
           <Route path="/editor/:configId/:moduleId" element={<Editor />} />
+          <Route path="/compare" element={<Compare />} />
+          <Route path="/compare/:configAId" element={<Compare />} />
+          <Route path="/compare/:configAId/:configBId" element={<Compare />} />
         </Routes>
       </Layout>
     </ThemeProvider>
