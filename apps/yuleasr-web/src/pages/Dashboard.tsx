@@ -27,6 +27,7 @@ import { YuleasrImportDialog } from '@/components/YuleasrImportDialog'
 import { ConfigCompareDialog } from '@/components/ConfigCompareDialog'
 import { formatDate, cn } from '@/lib/utils'
 import { useConfigStore } from '@/stores/configStore'
+import { useTranslation } from 'react-i18next'
 import type { ModuleConfig, ConfigFile } from '@/types'
 
 
@@ -53,6 +54,7 @@ function countWarnings(config: ConfigFile): number {
 
 export function Dashboard() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { 
     configList, 
     loadConfigList, 
@@ -285,9 +287,9 @@ export function Dashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-primary">Configurations</h1>
+          <h1 className="text-2xl font-bold text-primary">{t('dashboard.title')}</h1>
           <p className="text-app-text-secondary mt-1">
-            Manage your yuleASR configurations and modules
+            {t('dashboard.subtitle')}
           </p>
         </div>
         <button
@@ -295,7 +297,7 @@ export function Dashboard() {
           className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all shadow-sm hover:shadow-md active:scale-[0.98]"
         >
           <Plus className="w-4 h-4" />
-          New Configuration
+          {t('dashboard.newConfiguration')}
         </button>
       </div>
 
@@ -304,35 +306,35 @@ export function Dashboard() {
         {/* Total Configs */}
         <div className="stat-card stat-card-blue">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm font-medium text-blue-700">Total Configurations</p>
+            <p className="text-sm font-medium text-blue-700">{t('dashboard.totalConfigurations')}</p>
             <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
               <FileBox className="w-5 h-5 text-blue-600" />
             </div>
           </div>
           <p className="text-3xl font-bold text-slate-800">{stats.totalConfigs}</p>
           <p className="text-xs text-blue-600 mt-1">
-            {stats.totalConfigs === 1 ? '1 configuration' : `${stats.totalConfigs} configurations`}
+            {t('dashboard.configCount', { count: stats.totalConfigs })}
           </p>
         </div>
 
         {/* Total Modules */}
         <div className="stat-card stat-card-purple">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm font-medium text-purple-700">Total Modules</p>
+            <p className="text-sm font-medium text-purple-700">{t('dashboard.totalModules')}</p>
             <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center">
               <Layers className="w-5 h-5 text-purple-600" />
             </div>
           </div>
           <p className="text-3xl font-bold text-slate-800">{stats.totalModules}</p>
           <p className="text-xs text-purple-600 mt-1">
-            Across all configurations
+            {t('dashboard.acrossAllConfigs')}
           </p>
         </div>
 
         {/* Avg Completion */}
         <div className="stat-card stat-card-green">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm font-medium text-green-700">Avg Completion</p>
+            <p className="text-sm font-medium text-green-700">{t('dashboard.avgCompletion')}</p>
             <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
               <BarChart3 className="w-5 h-5 text-green-600" />
             </div>
@@ -354,7 +356,7 @@ export function Dashboard() {
         {/* Warnings */}
         <div className="stat-card stat-card-amber">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm font-medium text-amber-700">Warnings</p>
+            <p className="text-sm font-medium text-amber-700">{t('dashboard.warnings')}</p>
             <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center">
               <AlertTriangle className="w-5 h-5 text-amber-600" />
             </div>
@@ -366,14 +368,14 @@ export function Dashboard() {
             {stats.warningsCount}
           </p>
           <p className="text-xs text-amber-600 mt-1">
-            {stats.warningsCount === 0 ? 'No warnings — all clear' : `${stats.warningsCount} issue${stats.warningsCount > 1 ? 's' : ''} found`}
+            {stats.warningsCount === 0 ? t('dashboard.noWarnings') : t('dashboard.warningsFound', { count: stats.warningsCount })}
           </p>
         </div>
       </div>
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">Quick Actions</h2>
+        <h2 className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">{t('dashboard.quickActions')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           <button 
             onClick={handleOpenExisting}
@@ -382,8 +384,8 @@ export function Dashboard() {
             <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-blue-100 transition-colors">
               <FolderOpen className="w-5 h-5 text-blue-600" />
             </div>
-            <h3 className="font-medium text-primary">Open Existing</h3>
-            <p className="text-sm text-app-text-secondary mt-1">Browse local config files</p>
+            <h3 className="font-medium text-primary">{t('dashboard.openExisting')}</h3>
+            <p className="text-sm text-app-text-secondary mt-1">{t('dashboard.browseLocalConfigs')}</p>
           </button>
           
           {/* Hidden file input for opening existing configs */}
@@ -402,8 +404,8 @@ export function Dashboard() {
             <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-purple-100 transition-colors">
               <FileJson className="w-5 h-5 text-purple-600" />
             </div>
-            <h3 className="font-medium text-primary">Import yuleASR</h3>
-            <p className="text-sm text-app-text-secondary mt-1">Import from yuleASR config</p>
+            <h3 className="font-medium text-primary">{t('dashboard.importYuleasr')}</h3>
+            <p className="text-sm text-app-text-secondary mt-1">{t('dashboard.importYuleasrDesc')}</p>
           </button>
           
           <button 
@@ -413,8 +415,8 @@ export function Dashboard() {
             <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-green-100 transition-colors">
               <Settings className="w-5 h-5 text-green-600" />
             </div>
-            <h3 className="font-medium text-primary">Module Wizard</h3>
-            <p className="text-sm text-app-text-secondary mt-1">Configure modules step-by-step</p>
+            <h3 className="font-medium text-primary">{t('dashboard.moduleWizard')}</h3>
+            <p className="text-sm text-app-text-secondary mt-1">{t('dashboard.moduleWizardDesc')}</p>
           </button>
 
           <button 
@@ -424,8 +426,8 @@ export function Dashboard() {
             <div className="w-10 h-10 bg-pink-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-pink-100 transition-colors">
               <GitGraph className="w-5 h-5 text-pink-600" />
             </div>
-            <h3 className="font-medium text-primary">Dependency Graph</h3>
-            <p className="text-sm text-app-text-secondary mt-1">View module relationships</p>
+            <h3 className="font-medium text-primary">{t('dashboard.dependencyGraph')}</h3>
+            <p className="text-sm text-app-text-secondary mt-1">{t('dashboard.dependencyGraphDesc')}</p>
           </button>
         </div>
       </div>
@@ -433,10 +435,10 @@ export function Dashboard() {
       {/* Config List */}
       <div className="bg-app-bg-primary border border-app-border-primary rounded-xl overflow-hidden shadow-sm">
         <div className="px-6 py-4 border-b border-primary bg-secondary flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-primary">Recent Configurations</h2>
+          <h2 className="text-lg font-semibold text-primary">{t('dashboard.recentConfigurations')}</h2>
           {configList.length > 0 && (
             <span className="text-xs text-app-text-secondary bg-app-bg-primary px-2.5 py-1 rounded-full border border-app-border-primary">
-              {configList.length} config{configList.length !== 1 ? 's' : ''}
+              {t('dashboard.configs', { count: configList.length })}
             </span>
           )}
         </div>
@@ -444,7 +446,7 @@ export function Dashboard() {
         {isLoading ? (
           <div className="p-12 text-center">
             <div className="animate-spin w-10 h-10 border-3 border-blue-600 border-t-transparent rounded-full mx-auto" />
-            <p className="text-app-text-secondary mt-3 font-medium">Loading configurations...</p>
+            <p className="text-app-text-secondary mt-3 font-medium">{t('dashboard.loadingConfigs')}</p>
           </div>
         ) : configList.length === 0 ? (
           /* Enhanced Empty State */
@@ -452,10 +454,9 @@ export function Dashboard() {
             <div className="w-20 h-20 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-5">
               <Zap className="w-10 h-10 text-blue-400" />
             </div>
-            <h3 className="text-xl font-semibold text-primary mb-2">Create your first configuration</h3>
+            <h3 className="text-xl font-semibold text-primary mb-2">{t('dashboard.createFirstTitle')}</h3>
             <p className="text-app-text-secondary max-w-md mx-auto mb-8">
-              Get started by creating a new yuleASR configuration or importing an existing one. 
-              Configure modules, set parameters, and build your embedded system.
+              {t('dashboard.createFirstDesc')}
             </p>
             <div className="flex items-center justify-center gap-3">
               <button
@@ -463,21 +464,21 @@ export function Dashboard() {
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all shadow-sm hover:shadow-md active:scale-[0.98]"
               >
                 <Plus className="w-4 h-4" />
-                New Configuration
+                {t('dashboard.newConfiguration')}
               </button>
               <button
                 onClick={handleOpenExisting}
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-primary text-primary-foreground rounded-lg hover:bg-primary-600 hover:border-primary-600 transition-all active:scale-[0.98]"
               >
                 <FolderOpen className="w-4 h-4" />
-                Open Existing
+                {t('dashboard.openExisting')}
               </button>
               <button
                 onClick={() => setShowImportDialog(true)}
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-primary text-primary-foreground rounded-lg hover:bg-primary-600 hover:border-primary-600 transition-all active:scale-[0.98]"
               >
                 <FileJson className="w-4 h-4" />
-                Import
+                {t('dashboard.import')}
               </button>
             </div>
           </div>
@@ -517,11 +518,11 @@ export function Dashboard() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <h3 className="font-medium text-primary truncate">{config.name}</h3>
-                      <p className="text-sm text-app-text-secondary truncate">{config.description || 'No description'}</p>
+                      <p className="text-sm text-app-text-secondary truncate">{config.description || t('dashboard.noDescription')}</p>
                       <div className="flex items-center gap-3 mt-1.5 text-xs text-app-text-tertiary">
                         <span className="flex items-center gap-1">
                           <Layers className="w-3 h-3" />
-                          {config.moduleCount} module{config.moduleCount !== 1 ? 's' : ''}
+                          {t('dashboard.moduleCount', { count: config.moduleCount })}
                         </span>
                         <span className="flex items-center gap-1">
                           <Clock className="w-3 h-3" />
@@ -532,7 +533,7 @@ export function Dashboard() {
                             "flex items-center gap-1 font-medium",
                             completion >= 100 ? "text-green-500" : completion >= 50 ? "text-yellow-500" : "text-app-text-tertiary"
                           )}>
-                            {completion}% complete
+                            {t('dashboard.percentComplete', { count: completion })}
                           </span>
                         )}
                       </div>
@@ -559,7 +560,7 @@ export function Dashboard() {
                           handleOpenCompare(config.id)
                         }}
                         className="p-2 text-app-text-tertiary hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        title="Compare Configurations"
+                        title={t('dashboard.compareConfigs')}
                       >
                         <GitCompare className="w-4 h-4" />
                       </button>
@@ -569,7 +570,7 @@ export function Dashboard() {
                           handleShowGraph(config.id)
                         }}
                         className="p-2 text-app-text-tertiary hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
-                        title="View Dependency Graph"
+                        title={t('dashboard.viewDependencyGraph')}
                       >
                         <GitGraph className="w-4 h-4" />
                       </button>
@@ -579,14 +580,14 @@ export function Dashboard() {
                           handleExportConfig(config.id, config.name)
                         }}
                         className="p-2 text-app-text-tertiary hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                        title="Export to yuleASR"
+                        title={t('dashboard.exportToYuleasr')}
                       >
                         <Download className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => navigate(`/editor/${config.id}`)}
                         className="p-2 text-app-text-tertiary hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        title="Edit"
+                        title={t('common.edit')}
                       >
                         <ChevronRight className="w-4 h-4" />
                       </button>
@@ -599,7 +600,7 @@ export function Dashboard() {
                             ? "text-app-text-tertiary cursor-not-allowed"
                             : "text-app-text-tertiary hover:text-red-600 hover:bg-red-50"
                         )}
-                        title="Delete"
+                        title={t('common.delete')}
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -617,30 +618,30 @@ export function Dashboard() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-app-bg-primary rounded-xl shadow-xl max-w-md w-full mx-4">
             <div className="px-6 py-4 border-b border-primary">
-              <h3 className="text-lg font-semibold text-primary">New Configuration</h3>
+              <h3 className="text-lg font-semibold text-primary">{t('dashboard.newConfiguration')}</h3>
             </div>
             <div className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-primary mb-1">
-                  Name
+                  {t('dashboard.name')}
                 </label>
                 <input
                   type="text"
                   value={newConfigName}
                   onChange={(e) => setNewConfigName(e.target.value)}
-                  placeholder="My Configuration"
+                  placeholder={t('dashboard.myConfig')}
                   className="w-full px-3 py-2 border border-primary rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   autoFocus
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-primary mb-1">
-                  Description
+                  {t('dashboard.description')}
                 </label>
                 <textarea
                   value={newConfigDesc}
                   onChange={(e) => setNewConfigDesc(e.target.value)}
-                  placeholder="Optional description..."
+                  placeholder={t('dashboard.optionalDesc')}
                   rows={3}
                   className="w-full px-3 py-2 border border-primary rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 />
@@ -651,7 +652,7 @@ export function Dashboard() {
                 onClick={() => setShowCreateModal(false)}
                 className="px-4 py-2 text-primary hover:bg-secondary rounded-lg transition-colors"
               >
-                Cancel
+                {t('common.cancel')}
               </button>
               <button
                 onClick={handleCreateConfig}
@@ -663,7 +664,7 @@ export function Dashboard() {
                     : "bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow-md"
                 )}
               >
-                {isLoading ? 'Creating...' : 'Create'}
+                {isLoading ? t('dashboard.creating') : t('common.create')}
               </button>
             </div>
           </div>
@@ -678,10 +679,10 @@ export function Dashboard() {
               <div>
                 <h3 className="text-lg font-semibold text-primary flex items-center gap-2">
                   <GitGraph className="w-5 h-5 text-pink-600" />
-                  Module Dependency Graph
+                  {t('dashboard.moduleDependencyGraph')}
                 </h3>
                 <p className="text-sm text-app-text-secondary mt-0.5">
-                  Visualize module relationships and dependencies
+                  {t('dashboard.visualizeDeps')}
                 </p>
               </div>
               <button
@@ -701,8 +702,8 @@ export function Dashboard() {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
                     <Loader2 className="w-10 h-10 animate-spin text-blue-600 mx-auto mb-3" />
-                    <p className="text-app-text-secondary font-medium">Loading module graph...</p>
-                    <p className="text-sm text-app-text-tertiary mt-1">Calculating dependencies</p>
+                    <p className="text-app-text-secondary font-medium">{t('dashboard.loadingModuleGraph')}</p>
+                    <p className="text-sm text-app-text-tertiary mt-1">{t('dashboard.calculatingDeps')}</p>
                   </div>
                 </div>
               ) : (
@@ -710,7 +711,7 @@ export function Dashboard() {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
                       <Loader2 className="w-10 h-10 animate-spin text-blue-600 mx-auto mb-3" />
-                      <p className="text-app-text-secondary font-medium">Initializing graph...</p>
+                      <p className="text-app-text-secondary font-medium">{t('dashboard.initializingGraph')}</p>
                     </div>
                   </div>
                 }>
