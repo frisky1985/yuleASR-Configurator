@@ -492,64 +492,64 @@ export function Dashboard() {
                   className="px-6 py-4 hover:bg-gray-50 transition-colors group"
                 >
                   <div className="flex items-center justify-between gap-4">
-                    <button
-                      onClick={() => navigate(`/editor/${config.id}`)}
-                      className="flex-1 text-left min-w-0"
-                    >
-                      <div className="flex items-center gap-4">
-                        {/* Icon with status ring */}
-                        <div className={cn(
-                          "w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0",
-                          completion !== null && completion >= 100
-                            ? "bg-green-50"
-                            : completion !== null && completion >= 50
-                            ? "bg-yellow-50"
-                            : "bg-blue-50"
-                        )}>
-                          <Settings className={cn(
-                            "w-5 h-5",
-                            completion !== null && completion >= 100
-                              ? "text-green-600"
-                              : completion !== null && completion >= 50
-                              ? "text-yellow-600"
-                              : "text-blue-600"
-                          )} />
-                        </div>
-                        <div className="min-w-0">
-                          <h3 className="font-medium text-gray-900 truncate">{config.name}</h3>
-                          <p className="text-sm text-gray-500 truncate">{config.description || 'No description'}</p>
-                          <div className="flex items-center gap-3 mt-1.5 text-xs text-gray-400">
-                            <span className="flex items-center gap-1">
-                              <Layers className="w-3 h-3" />
-                              {config.moduleCount} module{config.moduleCount !== 1 ? 's' : ''}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              {formatDate(config.lastModified)}
-                            </span>
-                            {completion !== null && (
-                              <span className={cn(
-                                "flex items-center gap-1 font-medium",
-                                completion >= 100 ? "text-green-500" : completion >= 50 ? "text-yellow-500" : "text-gray-400"
-                              )}>
-                                {completion}% complete
-                              </span>
-                            )}
-                          </div>
-                          {/* Progress bar */}
-                          {completion !== null && (
-                            <div className="mt-2 max-w-xs">
-                              <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                                <div
-                                  className={cn("h-full rounded-full transition-all duration-500", progressColor(completion))}
-                                  style={{ width: `${completion}%` }}
-                                />
-                              </div>
-                            </div>
-                          )}
-                        </div>
+                  <div
+                    onClick={() => navigate(`/editor/${config.id}`)}
+                    className="flex-1 text-left min-w-0 cursor-pointer"
+                  >
+                  <div className="flex items-center gap-4">
+                    {/* Icon with status ring */}
+                    <div className={cn(
+                      "w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0",
+                      completion !== null && completion >= 100
+                        ? "bg-green-50"
+                        : completion !== null && completion >= 50
+                        ? "bg-yellow-50"
+                        : "bg-blue-50"
+                    )}>
+                      <Settings className={cn(
+                        "w-5 h-5",
+                        completion !== null && completion >= 100
+                          ? "text-green-600"
+                          : completion !== null && completion >= 50
+                          ? "text-yellow-600"
+                          : "text-blue-600"
+                      )} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-medium text-gray-900 truncate">{config.name}</h3>
+                      <p className="text-sm text-gray-500 truncate">{config.description || 'No description'}</p>
+                      <div className="flex items-center gap-3 mt-1.5 text-xs text-gray-400">
+                        <span className="flex items-center gap-1">
+                          <Layers className="w-3 h-3" />
+                          {config.moduleCount} module{config.moduleCount !== 1 ? 's' : ''}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          {formatDate(config.lastModified)}
+                        </span>
+                        {completion !== null && (
+                          <span className={cn(
+                            "flex items-center gap-1 font-medium",
+                            completion >= 100 ? "text-green-500" : completion >= 50 ? "text-yellow-500" : "text-gray-400"
+                          )}>
+                            {completion}% complete
+                          </span>
+                        )}
                       </div>
-                    </button>
+                      {/* Progress bar */}
+                      {completion !== null && (
+                        <div className="mt-2 max-w-xs">
+                          <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                            <div
+                              className={cn("h-full rounded-full transition-all duration-500", progressColor(completion))}
+                              style={{ width: `${completion}%` }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                    </div>
                     
                     {/* Action buttons */}
                     <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 flex-shrink-0">

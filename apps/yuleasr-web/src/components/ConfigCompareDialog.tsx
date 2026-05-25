@@ -88,11 +88,17 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
   useEffect(() => {
     if (isOpen) {
       loadConfigList()
+      // Sync with props when dialog opens
+      if (configAId) setLeftConfigId(configAId)
+      if (configBId) setRightConfigId(configBId)
     }
-  }, [isOpen])
+  }, [isOpen, configAId, configBId])
 
   const loadConfigList = async () => {
-    // loadConfigList is already called by the store
+    const store = useConfigStore.getState()
+    if (store.loadConfigList) {
+      await store.loadConfigList()
+    }
   }
 
   const handleCompare = async () => {
