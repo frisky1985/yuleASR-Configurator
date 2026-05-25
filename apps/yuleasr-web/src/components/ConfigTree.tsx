@@ -157,14 +157,26 @@ export function ConfigTree({
           maxIdx = Math.max(maxIdx, parseInt(match[1]))
         }
       }
-      // Get base name
-      const baseName = instances.length > 0 
-        ? instances[0].replace(/_\d+$/, '') 
-        : 'Instance'
+      // Get base name - try from existing instances, or find from template data
+      let baseName = 'Instance'
+      if (instances.length > 0) {
+        baseName = instances[0].replace(/_\d+$/, '') || baseName
+      } else {
+        // Try to find template name from data
+        for (const module of config.modules) {
+          for (const container of module.containers) {
+            const contPath = `layer:${module.layer}/module:${module.id}/container:${container.id}`
+            if (contPath === containerPath && container.subContainers?.length) {
+              const tplName = container.subContainers[0].name.replace(/_\d+$/, '')
+              if (tplName) baseName = tplName
+            }
+          }
+        }
+      }
       instances.push(`${baseName}_${maxIdx + 1}`)
       return { ...prev, [containerPath]: instances }
     })
-  }, [])
+  }, [config])
   
   // Remove a dynamic instance
   const removeInstance = useCallback((containerPath: string, instanceName: string) => {
