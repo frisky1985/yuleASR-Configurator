@@ -17,6 +17,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 
 import { ConfigTree } from '@/components/ConfigTree'
 import type { ConfigTreeHandle } from '@/components/ConfigTree'
+import { parseArxmlContent, arxmlToConfigModules } from '@/services/arxml-parser'
 import { ConfigurationStatusPanel, exportConfigReport } from '@/components/ConfigurationStatusPanel'
 import { GlobalSearch } from '@/components/GlobalSearch'
 import { ModuleConfigWizard } from '@/components/ModuleConfigWizard'
@@ -109,7 +110,9 @@ export function Editor() {
   }
 
   const [importing, setImporting] = useState(false)
+  const [importArxml, setImportArxml] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const arxmlInputRef = useRef<HTMLInputElement>(null)
 
   const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -129,6 +132,46 @@ export function Editor() {
     }
     reader.readAsText(file)
     // Reset input so same file can be re-imported
+    e.target.value = ''
+  }
+
+  const handleImportArxml = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setImportArxml(true)
+    const reader = new FileReader()
+    reader.onload = () => {
+      try {
+        const result = parseArxmlContent(reader.result as string)
+        if (result.errors.length > 0) {
+          alert(`ARXML 解析失败:\n${result.errors.join('\n')}`)
+        } else if (result.modules.length === 0) {
+          alert('未找到 ECUC 模块配置')
+        } else {
+          const modules = arxmlToConfigModules(result.modules)
+          // Merge with current config or create new
+          if (currentConfig) {
+            const updatedModules = [...currentConfig.modules]
+            for (const m of modules) {
+              const idx = updatedModules.findIndex(ex => ex.id === m.id)
+              if (idx >= 0) {
+                updatedModules[idx] = m
+              } else {
+                updatedModules.push(m)
+              }
+            }
+            const updated = { ...currentConfig, modules: updatedModules, updatedAt: new Date().toISOString() }
+            useConfigStore.setState({ currentConfig: updated, isDirty: true })
+            localStorage.setItem('yuleasr_config', JSON.stringify(updated))
+          }
+          alert(`ARXML 导入成功: ${result.modules.length} 个模块`)
+        }
+      } catch (err) {
+        alert(`导入失败: ${err instanceof Error ? err.message : String(err)}`)
+      }
+      setImportArxml(false)
+    }
+    reader.readAsText(file)
     e.target.value = ''
   }
 
@@ -320,6 +363,22 @@ export function Editor() {
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
             Template
           </button>
+          <button
+            onClick={() => arxmlInputRef.current?.click()}
+            disabled={importArxml}
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+            title="Import ARXML configuration file"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+            {importArxml ? 'Parsing...' : 'ARXML'}
+          </button>
+          <input
+            ref={arxmlInputRef}
+            type="file"
+            accept=".arxml"
+            onChange={handleImportArxml}
+            className="hidden"
+          />
           <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
             <MoreVertical className="w-4 h-4" />
           </button>
