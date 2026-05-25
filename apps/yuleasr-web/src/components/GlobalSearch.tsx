@@ -182,7 +182,7 @@ export function GlobalSearch({ isOpen, onClose, onSelectResult }: GlobalSearchPr
       case 'reference':
         return <FileJson className="w-4 h-4 text-purple-500" />
       default:
-        return <Type className="w-4 h-4 text-app-text-app-text-secondary" />
+        return <Type className="w-4 h-4 text-app-text-secondary" />
     }
   }
 

@@ -309,7 +309,7 @@ export function Dashboard() {
               <FileBox className="w-5 h-5 text-blue-600" />
             </div>
           </div>
-          <p className="text-3xl font-bold text-primary">{stats.totalConfigs}</p>
+          <p className="text-3xl font-bold text-slate-800">{stats.totalConfigs}</p>
           <p className="text-xs text-blue-600 mt-1">
             {stats.totalConfigs === 1 ? '1 configuration' : `${stats.totalConfigs} configurations`}
           </p>
@@ -323,7 +323,7 @@ export function Dashboard() {
               <Layers className="w-5 h-5 text-purple-600" />
             </div>
           </div>
-          <p className="text-3xl font-bold text-primary">{stats.totalModules}</p>
+          <p className="text-3xl font-bold text-slate-800">{stats.totalModules}</p>
           <p className="text-xs text-purple-600 mt-1">
             Across all configurations
           </p>
@@ -338,13 +338,13 @@ export function Dashboard() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <p className="text-3xl font-bold text-primary">{stats.avgCompletion}%</p>
+            <p className="text-3xl font-bold text-slate-800">{stats.avgCompletion}%</p>
           </div>
-          <div className="mt-2 h-2 bg-app-bg-app-bg-tertiary rounded-full overflow-hidden">
+          <div className="mt-2 h-2 bg-app-bg-tertiary rounded-full overflow-hidden">
             <div
               className={cn(
                 "h-full rounded-full transition-all duration-700 ease-out progress-bar-animated",
-                stats.avgCompletion >= 100 ? "bg-green-500" : stats.avgCompletion >= 50 ? "bg-yellow-500" : "bg-app-bg-app-bg-tertiary"
+                stats.avgCompletion >= 100 ? "bg-green-500" : stats.avgCompletion >= 50 ? "bg-yellow-500" : "bg-app-bg-tertiary"
               )}
               style={{ width: `${stats.avgCompletion}%` }}
             />
@@ -361,7 +361,7 @@ export function Dashboard() {
           </div>
           <p className={cn(
             "text-3xl font-bold",
-            stats.warningsCount > 0 ? "text-amber-600" : "text-primary"
+            stats.warningsCount > 0 ? "text-amber-600" : "text-slate-800"
           )}>
             {stats.warningsCount}
           </p>
@@ -539,7 +539,7 @@ export function Dashboard() {
                       {/* Progress bar */}
                       {completion !== null && (
                         <div className="mt-2 max-w-xs">
-                          <div className="h-1.5 bg-app-bg-app-bg-tertiary rounded-full overflow-hidden">
+                          <div className="h-1.5 bg-app-bg-tertiary rounded-full overflow-hidden">
                             <div
                               className={cn("h-full rounded-full transition-all duration-500", progressColor(completion))}
                               style={{ width: `${completion}%` }}

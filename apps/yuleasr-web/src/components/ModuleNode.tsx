@@ -127,7 +127,7 @@ function ModuleNodeComponent(props: NodeProps<Node<ModuleNodeData>>) {
         <StatusIcon 
           className={cn(
             'w-4 h-4 flex-shrink-0',
-            nodeData.enabled ? 'text-green-500' : 'text-app-text-app-text-tertiary'
+            nodeData.enabled ? 'text-green-500' : 'text-app-text-tertiary'
           )} 
         />
       </div>
@@ -135,21 +135,21 @@ function ModuleNodeComponent(props: NodeProps<Node<ModuleNodeData>>) {
       {/* Body */}
       <div className="px-4 py-3 space-y-2">
         {nodeData.description && (
-          <p className="text-xs text-app-text-app-text-secondary line-clamp-2">
+          <p className="text-xs text-app-text-secondary line-clamp-2">
             {nodeData.description}
           </p>
         )}
         
         <div className="flex items-center justify-between text-xs">
-          <span className="text-app-text-app-text-secondary">Version</span>
+          <span className="text-app-text-secondary">Version</span>
           <span className="font-medium text-app-text-primary">{nodeData.version}</span>
         </div>
         
         <div className="flex items-center justify-between text-xs">
-          <span className="text-app-text-app-text-secondary">Parameters</span>
+          <span className="text-app-text-secondary">Parameters</span>
           <span className={cn(
             'font-medium px-2 py-0.5 rounded-full',
-            nodeData.parameterCount > 0 ? 'bg-primary-100 text-primary-700' : 'bg-app-bg-app-bg-tertiary text-app-text-app-text-secondary'
+            nodeData.parameterCount > 0 ? 'bg-primary-100 text-primary-700' : 'bg-app-bg-tertiary text-app-text-secondary'
           )}>
             {nodeData.parameterCount}
           </span>
@@ -157,7 +157,7 @@ function ModuleNodeComponent(props: NodeProps<Node<ModuleNodeData>>) {
         
         {nodeData.dependencyCount > 0 && (
           <div className="flex items-center justify-between text-xs">
-            <span className="text-app-text-app-text-secondary">Dependencies</span>
+            <span className="text-app-text-secondary">Dependencies</span>
             <span className="font-medium text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
               {nodeData.dependencyCount}
             </span>

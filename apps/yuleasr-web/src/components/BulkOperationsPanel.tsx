@@ -103,7 +103,7 @@ export function BulkOperationsPanel({ modules, onToggleModules, className }: Bul
       OS: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
       ASW: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
     }
-    return colors[layer] || 'bg-app-bg-app-bg-tertiary text-gray-800 dark:bg-app-bg-app-bg-tertiary dark:text-app-text-app-text-tertiary'
+    return colors[layer] || 'bg-app-bg-tertiary text-gray-800 dark:bg-app-bg-tertiary dark:text-app-text-tertiary'
   }
 
   return (
@@ -249,7 +249,7 @@ export function BulkOperationsPanel({ modules, onToggleModules, className }: Bul
                   </div>
                   <div className={cn(
                     'w-2 h-2 rounded-full',
-                    module.enabled ? 'bg-green-500' : 'bg-app-bg-app-bg-tertiary dark:bg-gray-600'
+                    module.enabled ? 'bg-green-500' : 'bg-app-bg-tertiary dark:bg-gray-600'
                   )} />
                 </div>
               ))}

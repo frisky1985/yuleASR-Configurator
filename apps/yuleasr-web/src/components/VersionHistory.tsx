@@ -124,7 +124,7 @@ export function VersionHistory({
                 'text-xs px-2 py-1 rounded transition-colors',
                 compareMode 
                   ? 'bg-primary-100 text-primary-700' 
-                  : 'text-app-text-app-text-secondary hover:text-app-text-primary'
+                  : 'text-app-text-secondary hover:text-app-text-primary'
               )}
             >
               <GitCompare className="w-3 h-3 inline mr-1" />
@@ -133,7 +133,7 @@ export function VersionHistory({
             <button
               onClick={onRefresh}
               disabled={isLoading}
-              className="text-app-text-app-text-tertiary hover:text-app-text-app-text-secondary transition-colors"
+              className="text-app-text-tertiary hover:text-app-text-secondary transition-colors"
             >
               <RefreshCw className={cn('w-4 h-4', isLoading && 'animate-spin')} />
             </button>
@@ -144,7 +144,7 @@ export function VersionHistory({
         <div className="relative">
           <button
             onClick={() => setShowBranchSelector(!showBranchSelector)}
-            className="flex items-center gap-2 text-xs text-app-text-app-text-secondary hover:text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded px-3 py-1.5 w-full"
+            className="flex items-center gap-2 text-xs text-app-text-secondary hover:text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded px-3 py-1.5 w-full"
           >
             <GitBranch className="w-3.5 h-3.5" />
             <span className="flex-1 text-left">{currentBranch}</span>
@@ -182,7 +182,7 @@ export function VersionHistory({
 
         {/* Search */}
         <div className="relative mt-3">
-          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-app-text-app-text-tertiary" />
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-app-text-tertiary" />
           <input
             type="text"
             placeholder="Search commits..."
@@ -224,13 +224,13 @@ export function VersionHistory({
       <div className="max-h-[calc(100vh-300px)] overflow-y-auto">
         {isLoading ? (
           <div className="p-8 text-center">
-            <RefreshCw className="w-6 h-6 animate-spin text-app-text-app-text-tertiary mx-auto" />
-            <p className="text-app-text-app-text-secondary text-sm mt-2">Loading history...</p>
+            <RefreshCw className="w-6 h-6 animate-spin text-app-text-tertiary mx-auto" />
+            <p className="text-app-text-secondary text-sm mt-2">Loading history...</p>
           </div>
         ) : filteredCommits.length === 0 ? (
           <div className="p-8 text-center">
-            <GitCommit className="w-8 h-8 text-app-text-app-text-tertiary mx-auto mb-2" />
-            <p className="text-app-text-app-text-secondary text-sm">
+            <GitCommit className="w-8 h-8 text-app-text-tertiary mx-auto mb-2" />
+            <p className="text-app-text-secondary text-sm">
               {searchQuery ? 'No commits match your search' : 'No commits yet'}
             </p>
           </div>
@@ -238,7 +238,7 @@ export function VersionHistory({
           <div className="divide-y divide-app-border-primary">
             {Object.entries(commitsByDate).map(([date, dateCommits]) => (
               <div key={date}>
-                <div className="px-4 py-2 bg-app-bg-secondary text-xs font-medium text-app-text-app-text-secondary sticky top-0">
+                <div className="px-4 py-2 bg-app-bg-secondary text-xs font-medium text-app-text-secondary sticky top-0">
                   {date}
                 </div>
                 {dateCommits.map((commit) => {
@@ -257,7 +257,7 @@ export function VersionHistory({
                       )}
                     >
                       {/* Timeline Line */}
-                      <div className="absolute left-6 top-0 bottom-0 w-px bg-app-bg-app-bg-tertiary" />
+                      <div className="absolute left-6 top-0 bottom-0 w-px bg-app-bg-tertiary" />
                       
                       {/* Commit Dot */}
                       <div className="absolute left-4 top-4 w-4 h-4 rounded-full bg-app-bg-primary border-2 border-primary-500 z-10" />
@@ -274,7 +274,7 @@ export function VersionHistory({
                             <p className="text-sm font-medium text-app-text-primary truncate">
                               {commit.message}
                             </p>
-                            <p className="text-xs text-app-text-app-text-secondary mt-0.5">
+                            <p className="text-xs text-app-text-secondary mt-0.5">
                               {commit.oid.substring(0, 7)}
                             </p>
                           </div>
@@ -288,7 +288,7 @@ export function VersionHistory({
                             <p className="text-sm font-medium text-app-text-primary line-clamp-2">
                               {commit.message}
                             </p>
-                            <div className="flex items-center gap-3 mt-1.5 text-xs text-app-text-app-text-secondary">
+                            <div className="flex items-center gap-3 mt-1.5 text-xs text-app-text-secondary">
                               <span className="font-mono text-primary-600">
                                 {commit.oid.substring(0, 7)}
                               </span>
@@ -321,7 +321,7 @@ export function VersionHistory({
                             </button>
                             <button
                               onClick={() => toggleExpanded(commit.oid)}
-                              className="flex items-center gap-1 px-2 py-1 text-xs text-app-text-app-text-secondary hover:bg-app-bg-app-bg-tertiary rounded"
+                              className="flex items-center gap-1 px-2 py-1 text-xs text-app-text-secondary hover:bg-app-bg-tertiary rounded"
                             >
                               {isExpanded ? (
                                 <ChevronDown className="w-3 h-3" />
@@ -336,24 +336,24 @@ export function VersionHistory({
                           {isExpanded && (
                             <div className="mt-3 p-3 bg-app-bg-secondary rounded text-xs space-y-2">
                               <div>
-                                <span className="text-app-text-app-text-secondary">Full Hash:</span>
+                                <span className="text-app-text-secondary">Full Hash:</span>
                                 <code className="ml-2 text-app-text-primary">{commit.oid}</code>
                               </div>
                               <div>
-                                <span className="text-app-text-app-text-secondary">Author:</span>
+                                <span className="text-app-text-secondary">Author:</span>
                                 <span className="ml-2 text-app-text-primary">
                                   {commit.author.name} &lt;{commit.author.email}&gt;
                                 </span>
                               </div>
                               <div>
-                                <span className="text-app-text-app-text-secondary">Date:</span>
+                                <span className="text-app-text-secondary">Date:</span>
                                 <span className="ml-2 text-app-text-primary">
                                   {new Date(commit.author.timestamp).toLocaleString()}
                                 </span>
                               </div>
                               {commit.parent.length > 0 && (
                                 <div>
-                                  <span className="text-app-text-app-text-secondary">Parent:</span>
+                                  <span className="text-app-text-secondary">Parent:</span>
                                   <code className="ml-2 text-app-text-primary">
                                     {commit.parent[0].substring(0, 7)}
                                   </code>
@@ -373,7 +373,7 @@ export function VersionHistory({
       </div>
 
       {/* Footer Stats */}
-      <div className="px-4 py-2 border-t border-app-border-primary bg-app-bg-secondary text-xs text-app-text-app-text-secondary">
+      <div className="px-4 py-2 border-t border-app-border-primary bg-app-bg-secondary text-xs text-app-text-secondary">
         {filteredCommits.length} commit{filteredCommits.length !== 1 ? 's' : ''} on {currentBranch}
       </div>
     </div>

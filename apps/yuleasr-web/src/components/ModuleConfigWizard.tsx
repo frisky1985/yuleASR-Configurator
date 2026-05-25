@@ -1343,7 +1343,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
             <h3 className="text-lg font-semibold text-app-text-primary">
               {t('wizard.title', 'Module Configuration Wizard')}
             </h3>
-            <p className="text-sm text-app-text-app-text-secondary">
+            <p className="text-sm text-app-text-secondary">
               {t('wizard.step', 'Step {{step}} of 3: {{title}}', {
                 step,
                 title: step === 1 ? t('wizard.selectModule', 'Select Module') : 
@@ -1354,7 +1354,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
           </div>
           <button
             onClick={resetAndClose}
-            className="text-app-text-app-text-tertiary hover:text-app-text-app-text-secondary transition-colors"
+            className="text-app-text-tertiary hover:text-app-text-secondary transition-colors"
           >
             <span className="sr-only">Close</span>
             <X className="w-6 h-6" />
@@ -1373,7 +1373,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                       ? "bg-primary-600 text-white"
                       : step > s
                       ? "bg-green-500 text-white"
-                      : "bg-app-bg-app-bg-tertiary text-app-text-app-text-secondary"
+                      : "bg-app-bg-tertiary text-app-text-secondary"
                   )}
                 >
                   {step > s ? <Check className="w-4 h-4" /> : s}
@@ -1382,7 +1382,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                   <div
                     className={cn(
                       "w-12 h-0.5 transition-colors",
-                      step > s ? "bg-green-500" : "bg-app-bg-app-bg-tertiary"
+                      step > s ? "bg-green-500" : "bg-app-bg-tertiary"
                     )}
                   />
                 )}
@@ -1399,7 +1399,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
               <div className="space-y-3">
                 {/* Search */}
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-app-text-app-text-tertiary" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-app-text-tertiary" />
                   <input
                     type="text"
                     value={searchQuery}
@@ -1410,7 +1410,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-app-text-app-text-tertiary hover:text-app-text-app-text-secondary"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-app-text-tertiary hover:text-app-text-secondary"
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -1425,7 +1425,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                       "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
                       selectedLayer === 'all'
                         ? "bg-gray-900 text-white"
-                        : "bg-app-bg-app-bg-tertiary text-app-text-app-text-secondary hover:bg-app-bg-app-bg-tertiary"
+                        : "bg-app-bg-tertiary text-app-text-secondary hover:bg-app-bg-tertiary"
                     )}
                   >
                     <Layers className="w-3.5 h-3.5" />
@@ -1452,7 +1452,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
 
               {/* Module Grid */}
               {Object.keys(groupedModules).length === 0 ? (
-                <div className="text-center py-12 text-app-text-app-text-secondary">
+                <div className="text-center py-12 text-app-text-secondary">
                   <Search className="w-12 h-12 mx-auto mb-3 opacity-30" />
                   <p>{t('wizard.noModules', 'No modules found')}</p>
                   <button
@@ -1513,12 +1513,12 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                                       {module.layer}
                                     </span>
                                   </div>
-                                  <p className="text-sm text-app-text-app-text-secondary mt-1 line-clamp-2">{module.description}</p>
-                                  <div className="flex items-center gap-3 mt-2 text-xs text-app-text-app-text-tertiary">
+                                  <p className="text-sm text-app-text-secondary mt-1 line-clamp-2">{module.description}</p>
+                                  <div className="flex items-center gap-3 mt-2 text-xs text-app-text-tertiary">
                                     <span>{module.parameters.length} {t('wizard.params', 'params')}</span>
                                   </div>
                                 </div>
-                                <ChevronRight className="w-5 h-5 text-app-text-app-text-tertiary group-hover:text-app-text-app-text-secondary flex-shrink-0" />
+                                <ChevronRight className="w-5 h-5 text-app-text-tertiary group-hover:text-app-text-secondary flex-shrink-0" />
                               </div>
                             </button>
                           ))}
@@ -1551,7 +1551,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                       {selectedModule.layer}
                     </span>
                   </div>
-                  <p className="text-sm text-app-text-app-text-secondary">{selectedModule.description}</p>
+                  <p className="text-sm text-app-text-secondary">{selectedModule.description}</p>
                 </div>
               </div>
 
@@ -1561,7 +1561,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                     <label className="block text-sm font-medium text-app-text-primary mb-1">
                       {param.label}
                     </label>
-                    <p className="text-xs text-app-text-app-text-secondary mb-2">{param.description}</p>
+                    <p className="text-xs text-app-text-secondary mb-2">{param.description}</p>
                     
                     {param.type === 'select' ? (
                       <select
@@ -1637,7 +1637,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                   LAYER_COLORS[selectedModule.layer].bg,
                   LAYER_COLORS[selectedModule.layer].border
                 )}>
-                  <span className="text-app-text-app-text-secondary">{t('wizard.module', 'Module')}</span>
+                  <span className="text-app-text-secondary">{t('wizard.module', 'Module')}</span>
                   <div className="flex items-center gap-2">
                     <span className="font-medium">{selectedModule.name}</span>
                     <span className={cn(
@@ -1649,7 +1649,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                   </div>
                 </div>
                 <div className="flex items-center justify-between p-3 bg-app-bg-secondary rounded-lg">
-                  <span className="text-app-text-app-text-secondary">{t('wizard.version', 'Version')}</span>
+                  <span className="text-app-text-secondary">{t('wizard.version', 'Version')}</span>
                   <span className="font-medium">1.0.0</span>
                 </div>
 
@@ -1661,7 +1661,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                         key={param.name}
                         className="flex items-center justify-between p-2 bg-app-bg-secondary rounded"
                       >
-                        <span className="text-sm text-app-text-app-text-secondary">{param.label}</span>
+                        <span className="text-sm text-app-text-secondary">{param.label}</span>
                         <span className="font-medium">
                           {param.options
                             ? param.options.find(o => String(o.value) === String(parameters[param.name]))?.label
@@ -1684,8 +1684,8 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
             className={cn(
               "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors",
               step === 1
-                ? "text-app-text-app-text-tertiary cursor-not-allowed"
-                : "text-app-text-primary hover:bg-app-bg-app-bg-tertiary"
+                ? "text-app-text-tertiary cursor-not-allowed"
+                : "text-app-text-primary hover:bg-app-bg-tertiary"
             )}
           >
             <ChevronLeft className="w-4 h-4" />
@@ -1707,7 +1707,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
               className={cn(
                 "flex items-center gap-2 px-6 py-2 rounded-lg transition-colors",
                 !selectedModule
-                  ? "bg-app-bg-app-bg-tertiary text-app-text-app-text-tertiary cursor-not-allowed"
+                  ? "bg-app-bg-tertiary text-app-text-tertiary cursor-not-allowed"
                   : "bg-primary-600 text-white hover:bg-primary-700"
               )}
             >

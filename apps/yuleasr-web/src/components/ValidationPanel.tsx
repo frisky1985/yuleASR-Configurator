@@ -106,7 +106,7 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
         <button
           onClick={validate}
           disabled={isValidating}
-          className="flex items-center gap-1 px-3 py-1.5 text-sm text-app-text-app-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors disabled:opacity-50"
+          className="flex items-center gap-1 px-3 py-1.5 text-sm text-app-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors disabled:opacity-50"
         >
           <RefreshCw className={cn("w-4 h-4", isValidating && "animate-spin")} />
           Refresh
@@ -121,7 +121,7 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
               <CheckCircle className="w-7 h-7 text-green-500" />
             </div>
             <p className="text-app-text-primary font-medium">Configuration is valid</p>
-            <p className="text-sm text-app-text-app-text-tertiary mt-1">
+            <p className="text-sm text-app-text-tertiary mt-1">
               All {modules.length} modules pass validation
             </p>
           </div>
@@ -145,7 +145,7 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
                   <div className="divide-y divide-gray-50">
                     {Object.entries(groupedErrors).map(([moduleName, moduleErrors]) => (
                       <div key={moduleName} className="px-4 py-2">
-                        <div className="text-xs font-medium text-app-text-app-text-secondary mb-1 uppercase tracking-wide">
+                        <div className="text-xs font-medium text-app-text-secondary mb-1 uppercase tracking-wide">
                           {moduleName}
                         </div>
                         {moduleErrors.map((error: ValidationError, index: number) => (
@@ -158,7 +158,7 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
                               <XCircle className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm text-gray-800">{error.message}</p>
-                                <p className="text-xs text-app-text-app-text-tertiary mt-0.5 font-mono">
+                                <p className="text-xs text-app-text-tertiary mt-0.5 font-mono">
                                   {error.path}
                                 </p>
                               </div>
@@ -190,7 +190,7 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
                   <div className="divide-y divide-gray-50">
                     {Object.entries(groupedWarnings).map(([moduleName, moduleWarnings]) => (
                       <div key={moduleName} className="px-4 py-2">
-                        <div className="text-xs font-medium text-app-text-app-text-secondary mb-1 uppercase tracking-wide">
+                        <div className="text-xs font-medium text-app-text-secondary mb-1 uppercase tracking-wide">
                           {moduleName}
                         </div>
                         {moduleWarnings.map((warning: ValidationError, index: number) => (
@@ -203,7 +203,7 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
                               <AlertTriangle className="w-4 h-4 text-yellow-500 mt-0.5 shrink-0" />
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm text-gray-800">{warning.message}</p>
-                                <p className="text-xs text-app-text-app-text-tertiary mt-0.5 font-mono">
+                                <p className="text-xs text-app-text-tertiary mt-0.5 font-mono">
                                   {warning.path}
                                 </p>
                               </div>
@@ -222,7 +222,7 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
 
       {/* Footer */}
       {(hasErrors || hasWarnings) && (
-        <div className="px-4 py-2 border-t border-app-border-primary bg-app-bg-secondary text-xs text-app-text-app-text-secondary">
+        <div className="px-4 py-2 border-t border-app-border-primary bg-app-bg-secondary text-xs text-app-text-secondary">
           Click on an item to navigate to the configuration
         </div>
       )}
