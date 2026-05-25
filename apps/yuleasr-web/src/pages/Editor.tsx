@@ -411,8 +411,11 @@ export function Editor() {
                   <div className="text-center py-8">
                     <button
                       onClick={() => {
-                        const path = `layer:${selectedModule?.layer}/module:${selectedModule?.id}/container:${selectedContainer.id}`
-                        configTreeRef.current?.addInstance(path)
+                        const containerPath = `layer:${selectedModule?.layer}/module:${selectedModule?.id}/container:${selectedContainer.id}`
+                        const instanceName = configTreeRef.current?.addInstance(containerPath)
+                        if (instanceName) {
+                          setSelectedPath(`${containerPath}/instance:${instanceName}`)
+                        }
                       }}
                       className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-3 hover:bg-primary-50 transition-colors cursor-pointer group"
                       title="添加实例"

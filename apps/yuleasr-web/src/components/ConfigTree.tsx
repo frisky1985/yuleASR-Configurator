@@ -35,8 +35,8 @@ export interface ConfigTreeProps {
 }
 
 export interface ConfigTreeHandle {
-  /** Add a new dynamic instance to the given container path */
-  addInstance: (containerPath: string) => void
+  /** Add a new dynamic instance to the given container path, returns the instance name */
+  addInstance: (containerPath: string) => string | undefined
 }
 
 interface TreeNodeData {
@@ -218,10 +218,31 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
     })
   }, [config])
 
-  // Expose addInstance to parent via ref
+  // Expose addInstance to parent via ref, returns the new instance name
   useImperativeHandle(ref, () => ({
-    addInstance: (containerPath: string) => addInstance(containerPath),
-  }), [addInstance])
+    addInstance: (containerPath: string): string | undefined => {
+      // Read current state to compute the next name synchronously
+      const currentEntries = dynamicInstances[containerPath] || []
+      let maxIdx = -1
+      for (const e of currentEntries) {
+        const match = e.name.match(/_(\d+)$/)
+        if (match) maxIdx = Math.max(maxIdx, parseInt(match[1]))
+      }
+      let baseName = 'Instance'
+      if (currentEntries.length > 0) {
+        baseName = currentEntries[0].name.replace(/_\d+$/, '') || baseName
+      } else {
+        for (const mod of config.modules) {
+          const found = findTemplateName(mod.containers, containerPath, `layer:${mod.layer}/module:${mod.id}`)
+          if (found) { baseName = found; break }
+        }
+      }
+      const newName = `${baseName}_${maxIdx + 1}`
+      // Trigger the actual add (state update)
+      addInstance(containerPath)
+      return newName
+    },
+  }), [addInstance, dynamicInstances, config])
 
   // Find template container by path (returns the container object for param extraction)
   function findTemplateContainer(containers: ConfigContainer[], targetPath: string, parentPath: string): ConfigContainer | null {
