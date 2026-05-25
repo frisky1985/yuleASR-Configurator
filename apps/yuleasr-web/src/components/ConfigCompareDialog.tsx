@@ -22,7 +22,7 @@ interface ConfigCompareDialogProps {
 const statusColors: Record<CompareStatus, { bg: string; text: string; border: string; label: string }> = {
   same: {
     bg: 'bg-secondary',
-    text: 'text-secondary',
+    text: 'text-app-text-secondary',
     border: 'border-primary',
     label: 'Same',
   },
@@ -397,7 +397,7 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
           {/* Status indicator dot */}
           <span className={cn(
             'w-2 h-2 rounded-full shrink-0',
-            node.status === 'same' && 'bg-app-bg-tertiary',
+            node.status === 'same' && 'bg-app-bg-app-bg-tertiary',
             node.status === 'different' && 'bg-red-500',
             (node.status === 'only_a' || node.status === 'only_b') && 'bg-yellow-500',
           )} />

@@ -189,7 +189,7 @@ export function GitSync() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate('/dashboard')}
-            className="p-2 text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-tertiary rounded-lg transition-colors"
+            className="p-2 text-app-text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-app-bg-tertiary rounded-lg transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
@@ -201,7 +201,7 @@ export function GitSync() {
                 {currentBranch}
               </span>
             </div>
-            <p className="text-sm text-app-text-secondary">
+            <p className="text-sm text-app-text-app-text-secondary">
               Manage branches, view history, and sync changes
             </p>
           </div>
@@ -245,7 +245,7 @@ export function GitSync() {
             className={cn(
               'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50',
               isPulling
-                ? 'bg-app-bg-tertiary text-app-text-tertiary'
+                ? 'bg-app-bg-app-bg-tertiary text-app-text-app-text-tertiary'
                 : 'bg-app-bg-primary text-app-text-primary border border-app-border-primary hover:bg-app-bg-secondary'
             )}
           >
@@ -264,7 +264,7 @@ export function GitSync() {
             className={cn(
               'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50',
               isPushing
-                ? 'bg-app-bg-tertiary text-app-text-tertiary'
+                ? 'bg-app-bg-app-bg-tertiary text-app-text-app-text-tertiary'
                 : 'bg-primary-600 text-white hover:bg-primary-700'
             )}
           >
@@ -304,7 +304,7 @@ export function GitSync() {
                   'flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors',
                   activeTab === 'history'
                     ? 'border-primary-500 text-primary-600'
-                    : 'border-transparent text-app-text-secondary hover:text-app-text-primary'
+                    : 'border-transparent text-app-text-app-text-secondary hover:text-app-text-primary'
                 )}
               >
                 <GitCommit className="w-4 h-4" />
@@ -316,7 +316,7 @@ export function GitSync() {
                   'flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors',
                   activeTab === 'diff'
                     ? 'border-primary-500 text-primary-600'
-                    : 'border-transparent text-app-text-secondary hover:text-app-text-primary'
+                    : 'border-transparent text-app-text-app-text-secondary hover:text-app-text-primary'
                 )}
               >
                 <GitCompare className="w-4 h-4" />
@@ -358,7 +358,7 @@ export function GitSync() {
                       <h3 className="text-sm font-semibold text-app-text-primary line-clamp-2">
                         {selectedCommit.message}
                       </h3>
-                      <div className="flex items-center gap-3 mt-1 text-xs text-app-text-secondary">
+                      <div className="flex items-center gap-3 mt-1 text-xs text-app-text-app-text-secondary">
                         <span className="font-mono text-primary-600 bg-primary-50 px-1.5 py-0.5 rounded">
                           {selectedCommit.oid.substring(0, 7)}
                         </span>
@@ -376,9 +376,9 @@ export function GitSync() {
                 </div>
               ) : (
                 <div className="bg-app-bg-primary rounded-lg border border-app-border-primary p-8 text-center">
-                  <GitCompare className="w-12 h-12 text-app-text-tertiary mx-auto mb-3" />
+                  <GitCompare className="w-12 h-12 text-app-text-app-text-tertiary mx-auto mb-3" />
                   <h3 className="text-app-text-primary font-medium">No commit selected</h3>
-                  <p className="text-app-text-secondary mt-1">Select a commit from the history to view its changes</p>
+                  <p className="text-app-text-app-text-secondary mt-1">Select a commit from the history to view its changes</p>
                 </div>
               )}
 

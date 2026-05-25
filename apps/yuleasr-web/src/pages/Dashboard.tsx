@@ -265,7 +265,7 @@ export function Dashboard() {
   const progressColor = (pct: number) => {
     if (pct >= 100) return 'bg-green-500'
     if (pct >= 50) return 'bg-yellow-500'
-    return 'bg-tertiary'
+    return 'bg-app-bg-tertiary'
   }
 
   /** Get completion % for a config from loaded details */
@@ -286,7 +286,7 @@ export function Dashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-primary">Configurations</h1>
-          <p className="text-secondary mt-1">
+          <p className="text-app-text-secondary mt-1">
             Manage your yuleASR configurations and modules
           </p>
         </div>
@@ -340,11 +340,11 @@ export function Dashboard() {
           <div className="flex items-center gap-3">
             <p className="text-3xl font-bold text-primary">{stats.avgCompletion}%</p>
           </div>
-          <div className="mt-2 h-2 bg-app-bg-tertiary rounded-full overflow-hidden">
+          <div className="mt-2 h-2 bg-app-bg-app-bg-tertiary rounded-full overflow-hidden">
             <div
               className={cn(
                 "h-full rounded-full transition-all duration-700 ease-out progress-bar-animated",
-                stats.avgCompletion >= 100 ? "bg-green-500" : stats.avgCompletion >= 50 ? "bg-yellow-500" : "bg-app-bg-tertiary"
+                stats.avgCompletion >= 100 ? "bg-green-500" : stats.avgCompletion >= 50 ? "bg-yellow-500" : "bg-app-bg-app-bg-tertiary"
               )}
               style={{ width: `${stats.avgCompletion}%` }}
             />
@@ -383,7 +383,7 @@ export function Dashboard() {
               <FolderOpen className="w-5 h-5 text-blue-600" />
             </div>
             <h3 className="font-medium text-primary">Open Existing</h3>
-            <p className="text-sm text-secondary mt-1">Browse local config files</p>
+            <p className="text-sm text-app-text-secondary mt-1">Browse local config files</p>
           </button>
           
           {/* Hidden file input for opening existing configs */}
@@ -403,7 +403,7 @@ export function Dashboard() {
               <FileJson className="w-5 h-5 text-purple-600" />
             </div>
             <h3 className="font-medium text-primary">Import yuleASR</h3>
-            <p className="text-sm text-secondary mt-1">Import from yuleASR config</p>
+            <p className="text-sm text-app-text-secondary mt-1">Import from yuleASR config</p>
           </button>
           
           <button 
@@ -414,7 +414,7 @@ export function Dashboard() {
               <Settings className="w-5 h-5 text-green-600" />
             </div>
             <h3 className="font-medium text-primary">Module Wizard</h3>
-            <p className="text-sm text-secondary mt-1">Configure modules step-by-step</p>
+            <p className="text-sm text-app-text-secondary mt-1">Configure modules step-by-step</p>
           </button>
 
           <button 
@@ -425,7 +425,7 @@ export function Dashboard() {
               <GitGraph className="w-5 h-5 text-pink-600" />
             </div>
             <h3 className="font-medium text-primary">Dependency Graph</h3>
-            <p className="text-sm text-secondary mt-1">View module relationships</p>
+            <p className="text-sm text-app-text-secondary mt-1">View module relationships</p>
           </button>
         </div>
       </div>
@@ -435,7 +435,7 @@ export function Dashboard() {
         <div className="px-6 py-4 border-b border-primary bg-secondary flex items-center justify-between">
           <h2 className="text-lg font-semibold text-primary">Recent Configurations</h2>
           {configList.length > 0 && (
-            <span className="text-xs text-secondary bg-primary px-2.5 py-1 rounded-full border border-primary">
+            <span className="text-xs text-app-text-secondary bg-primary px-2.5 py-1 rounded-full border border-primary">
               {configList.length} config{configList.length !== 1 ? 's' : ''}
             </span>
           )}
@@ -444,7 +444,7 @@ export function Dashboard() {
         {isLoading ? (
           <div className="p-12 text-center">
             <div className="animate-spin w-10 h-10 border-3 border-blue-600 border-t-transparent rounded-full mx-auto" />
-            <p className="text-secondary mt-3 font-medium">Loading configurations...</p>
+            <p className="text-app-text-secondary mt-3 font-medium">Loading configurations...</p>
           </div>
         ) : configList.length === 0 ? (
           /* Enhanced Empty State */
@@ -453,7 +453,7 @@ export function Dashboard() {
               <Zap className="w-10 h-10 text-blue-400" />
             </div>
             <h3 className="text-xl font-semibold text-primary mb-2">Create your first configuration</h3>
-            <p className="text-secondary max-w-md mx-auto mb-8">
+            <p className="text-app-text-secondary max-w-md mx-auto mb-8">
               Get started by creating a new yuleASR configuration or importing an existing one. 
               Configure modules, set parameters, and build your embedded system.
             </p>
@@ -517,8 +517,8 @@ export function Dashboard() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <h3 className="font-medium text-primary truncate">{config.name}</h3>
-                      <p className="text-sm text-secondary truncate">{config.description || 'No description'}</p>
-                      <div className="flex items-center gap-3 mt-1.5 text-xs text-tertiary">
+                      <p className="text-sm text-app-text-secondary truncate">{config.description || 'No description'}</p>
+                      <div className="flex items-center gap-3 mt-1.5 text-xs text-app-text-tertiary">
                         <span className="flex items-center gap-1">
                           <Layers className="w-3 h-3" />
                           {config.moduleCount} module{config.moduleCount !== 1 ? 's' : ''}
@@ -530,7 +530,7 @@ export function Dashboard() {
                         {completion !== null && (
                           <span className={cn(
                             "flex items-center gap-1 font-medium",
-                            completion >= 100 ? "text-green-500" : completion >= 50 ? "text-yellow-500" : "text-tertiary"
+                            completion >= 100 ? "text-green-500" : completion >= 50 ? "text-yellow-500" : "text-app-text-tertiary"
                           )}>
                             {completion}% complete
                           </span>
@@ -539,7 +539,7 @@ export function Dashboard() {
                       {/* Progress bar */}
                       {completion !== null && (
                         <div className="mt-2 max-w-xs">
-                          <div className="h-1.5 bg-app-bg-tertiary rounded-full overflow-hidden">
+                          <div className="h-1.5 bg-app-bg-app-bg-tertiary rounded-full overflow-hidden">
                             <div
                               className={cn("h-full rounded-full transition-all duration-500", progressColor(completion))}
                               style={{ width: `${completion}%` }}
@@ -558,7 +558,7 @@ export function Dashboard() {
                           e.stopPropagation()
                           handleOpenCompare(config.id)
                         }}
-                        className="p-2 text-tertiary hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-2 text-app-text-tertiary hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                         title="Compare Configurations"
                       >
                         <GitCompare className="w-4 h-4" />
@@ -568,7 +568,7 @@ export function Dashboard() {
                           e.stopPropagation()
                           handleShowGraph(config.id)
                         }}
-                        className="p-2 text-tertiary hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
+                        className="p-2 text-app-text-tertiary hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
                         title="View Dependency Graph"
                       >
                         <GitGraph className="w-4 h-4" />
@@ -578,14 +578,14 @@ export function Dashboard() {
                           e.stopPropagation()
                           handleExportConfig(config.id, config.name)
                         }}
-                        className="p-2 text-tertiary hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                        className="p-2 text-app-text-tertiary hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                         title="Export to yuleASR"
                       >
                         <Download className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => navigate(`/editor/${config.id}`)}
-                        className="p-2 text-tertiary hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-2 text-app-text-tertiary hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                         title="Edit"
                       >
                         <ChevronRight className="w-4 h-4" />
@@ -596,8 +596,8 @@ export function Dashboard() {
                         className={cn(
                           "p-2 rounded-lg transition-colors",
                           deletingId === config.id
-                            ? "text-tertiary cursor-not-allowed"
-                            : "text-tertiary hover:text-red-600 hover:bg-red-50"
+                            ? "text-app-text-tertiary cursor-not-allowed"
+                            : "text-app-text-tertiary hover:text-red-600 hover:bg-red-50"
                         )}
                         title="Delete"
                       >
@@ -659,7 +659,7 @@ export function Dashboard() {
                 className={cn(
                   "px-4 py-2 rounded-lg transition-all",
                   !newConfigName.trim() || isLoading
-                    ? "bg-tertiary text-secondary cursor-not-allowed"
+                    ? "bg-app-bg-tertiary text-app-text-secondary cursor-not-allowed"
                     : "bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow-md"
                 )}
               >
@@ -680,7 +680,7 @@ export function Dashboard() {
                   <GitGraph className="w-5 h-5 text-pink-600" />
                   Module Dependency Graph
                 </h3>
-                <p className="text-sm text-secondary mt-0.5">
+                <p className="text-sm text-app-text-secondary mt-0.5">
                   Visualize module relationships and dependencies
                 </p>
               </div>
@@ -690,7 +690,7 @@ export function Dashboard() {
                   setGraphModules([])
                   setSelectedConfigForGraph(null)
                 }}
-                className="p-2 text-tertiary hover:text-secondary hover:bg-secondary rounded-lg transition-colors"
+                className="p-2 text-app-text-tertiary hover:text-app-text-secondary hover:bg-secondary rounded-lg transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -701,8 +701,8 @@ export function Dashboard() {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
                     <Loader2 className="w-10 h-10 animate-spin text-blue-600 mx-auto mb-3" />
-                    <p className="text-secondary font-medium">Loading module graph...</p>
-                    <p className="text-sm text-tertiary mt-1">Calculating dependencies</p>
+                    <p className="text-app-text-secondary font-medium">Loading module graph...</p>
+                    <p className="text-sm text-app-text-tertiary mt-1">Calculating dependencies</p>
                   </div>
                 </div>
               ) : (
@@ -710,7 +710,7 @@ export function Dashboard() {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
                       <Loader2 className="w-10 h-10 animate-spin text-blue-600 mx-auto mb-3" />
-                      <p className="text-secondary font-medium">Initializing graph...</p>
+                      <p className="text-app-text-secondary font-medium">Initializing graph...</p>
                     </div>
                   </div>
                 }>

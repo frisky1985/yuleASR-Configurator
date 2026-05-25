@@ -137,7 +137,7 @@ export function BranchManager({
             <button
               onClick={onRefresh}
               disabled={isLoading}
-              className="text-app-text-tertiary hover:text-app-text-secondary transition-colors"
+              className="text-app-text-app-text-tertiary hover:text-app-text-app-text-secondary transition-colors"
             >
               <RefreshCw className={cn('w-4 h-4', isLoading && 'animate-spin')} />
             </button>
@@ -171,7 +171,7 @@ export function BranchManager({
                 autoFocus
               />
             </div>
-            <label className="flex items-center gap-2 text-xs text-app-text-secondary">
+            <label className="flex items-center gap-2 text-xs text-app-text-app-text-secondary">
               <input
                 type="checkbox"
                 checked={checkoutAfterCreate}
@@ -195,7 +195,7 @@ export function BranchManager({
                   setNewBranchName('')
                   setError(null)
                 }}
-                className="px-3 py-1.5 text-xs font-medium text-app-text-secondary hover:text-app-text-primary border border-app-border-primary rounded"
+                className="px-3 py-1.5 text-xs font-medium text-app-text-app-text-secondary hover:text-app-text-primary border border-app-border-primary rounded"
               >
                 Cancel
               </button>
@@ -223,8 +223,8 @@ export function BranchManager({
       <div className="max-h-[300px] overflow-y-auto">
         {branches.length === 0 ? (
           <div className="p-6 text-center">
-            <GitBranch className="w-8 h-8 text-app-text-tertiary mx-auto mb-2" />
-            <p className="text-app-text-secondary text-sm">No branches found</p>
+            <GitBranch className="w-8 h-8 text-app-text-app-text-tertiary mx-auto mb-2" />
+            <p className="text-app-text-app-text-secondary text-sm">No branches found</p>
           </div>
         ) : (
           <ul className="divide-y divide-app-border-primary">
@@ -247,7 +247,7 @@ export function BranchManager({
                     <div className="flex items-center gap-2 min-w-0">
                       <GitBranch className={cn(
                         'w-4 h-4 flex-shrink-0',
-                        isCurrent ? 'text-primary-600' : 'text-app-text-tertiary'
+                        isCurrent ? 'text-primary-600' : 'text-app-text-app-text-tertiary'
                       )} />
                       <div className="min-w-0">
                         <p className={cn(
@@ -256,7 +256,7 @@ export function BranchManager({
                         )}>
                           {branch.name}
                         </p>
-                        <p className="text-xs text-app-text-secondary">
+                        <p className="text-xs text-app-text-app-text-secondary">
                           {branch.commit.substring(0, 7)}
                         </p>
                       </div>
@@ -283,7 +283,7 @@ export function BranchManager({
                             <button
                               onClick={() => handleSwitchBranch(branch.name)}
                               disabled={isSwitchingThis !== null}
-                              className="p-1.5 text-app-text-tertiary hover:text-primary-600 hover:bg-primary-50 rounded transition-colors"
+                              className="p-1.5 text-app-text-app-text-tertiary hover:text-primary-600 hover:bg-primary-50 rounded transition-colors"
                               title="Switch to branch"
                             >
                               {isSwitchingThis ? (
@@ -298,7 +298,7 @@ export function BranchManager({
                           {onMergeBranch && !isConfirmingDelete && (
                             <button
                               onClick={() => setMergeSource(branch.name)}
-                              className="p-1.5 text-app-text-tertiary hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                              className="p-1.5 text-app-text-app-text-tertiary hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
                               title="Merge this branch"
                             >
                               <GitMerge className="w-3.5 h-3.5" />
@@ -321,7 +321,7 @@ export function BranchManager({
                               </button>
                               <button
                                 onClick={cancelDelete}
-                                className="p-1.5 text-app-text-tertiary hover:text-app-text-secondary hover:bg-app-bg-tertiary rounded"
+                                className="p-1.5 text-app-text-app-text-tertiary hover:text-app-text-app-text-secondary hover:bg-app-bg-app-bg-tertiary rounded"
                               >
                                 <X className="w-3.5 h-3.5" />
                               </button>
@@ -329,7 +329,7 @@ export function BranchManager({
                           ) : (
                             <button
                               onClick={() => handleDeleteBranch(branch.name)}
-                              className="p-1.5 text-app-text-tertiary hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                              className="p-1.5 text-app-text-app-text-tertiary hover:text-red-600 hover:bg-red-50 rounded transition-colors"
                               title="Delete branch"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -354,7 +354,7 @@ export function BranchManager({
       </div>
 
       {/* Footer Stats */}
-      <div className="px-4 py-2 border-t border-app-border-primary bg-app-bg-secondary text-xs text-app-text-secondary">
+      <div className="px-4 py-2 border-t border-app-border-primary bg-app-bg-secondary text-xs text-app-text-app-text-secondary">
         {branches.length} branch{branches.length !== 1 ? 'es' : ''}
       </div>
     </div>

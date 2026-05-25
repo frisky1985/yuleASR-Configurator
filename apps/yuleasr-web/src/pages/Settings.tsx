@@ -46,7 +46,7 @@ function SettingSection({ title, description, icon, children }: SettingSectionPr
           <div>
             <h2 className="text-lg font-semibold text-app-text-primary">{title}</h2>
             {description && (
-              <p className="text-sm text-app-text-secondary">{description}</p>
+              <p className="text-sm text-app-text-app-text-secondary">{description}</p>
             )}
           </div>
         </div>
@@ -68,7 +68,7 @@ function SettingItem({ label, description, children }: SettingItemProps) {
       <div className="flex-1">
         <label className="text-sm font-medium text-app-text-primary">{label}</label>
         {description && (
-          <p className="text-sm text-app-text-secondary mt-0.5">{description}</p>
+          <p className="text-sm text-app-text-app-text-secondary mt-0.5">{description}</p>
         )}
       </div>
       <div className="ml-4">{children}</div>
@@ -86,7 +86,7 @@ function Toggle({ checked, onChange, disabled = false }: { checked: boolean; onC
       onClick={() => onChange(!checked)}
       className={cn(
         "relative inline-flex h-6 w-11 items-center rounded-full transition-colors",
-        checked ? "bg-primary-600" : "bg-app-bg-tertiary",
+        checked ? "bg-primary-600" : "bg-app-bg-app-bg-tertiary",
         disabled && "opacity-50 cursor-not-allowed"
       )}
     >
@@ -129,7 +129,7 @@ function Select<T extends string>({
         ))}
       </select>
       <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-        <ChevronRight className="w-4 h-4 text-app-text-tertiary rotate-90" />
+        <ChevronRight className="w-4 h-4 text-app-text-app-text-tertiary rotate-90" />
       </div>
     </div>
   )
@@ -268,7 +268,7 @@ export function Settings() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-app-text-primary">Settings</h1>
-          <p className="text-app-text-secondary mt-1">
+          <p className="text-app-text-app-text-secondary mt-1">
             Configure your yuleASR Configurator preferences
           </p>
         </div>
@@ -329,7 +329,7 @@ export function Settings() {
                   }}
                   className="w-24"
                 />
-                <span className="text-sm text-app-text-secondary">seconds</span>
+                <span className="text-sm text-app-text-app-text-secondary">seconds</span>
               </div>
             </SettingItem>
 
@@ -560,23 +560,23 @@ export function Settings() {
           <SettingSection
             title="About"
             description="Version information and updates"
-            icon={<Info className="w-5 h-5 text-app-text-secondary" />}
+            icon={<Info className="w-5 h-5 text-app-text-app-text-secondary" />}
           >
             <div className="space-y-4">
               <div className="flex items-center justify-between py-2">
-                <span className="text-sm text-app-text-secondary">Version</span>
+                <span className="text-sm text-app-text-app-text-secondary">Version</span>
                 <span className="text-sm font-medium text-app-text-primary">{version}</span>
               </div>
 
               <div className="flex items-center justify-between py-2">
-                <span className="text-sm text-app-text-secondary">License</span>
+                <span className="text-sm text-app-text-app-text-secondary">License</span>
                 <span className="text-sm font-medium text-app-text-primary">MIT</span>
               </div>
 
               {lastCheckedAt && (
                 <div className="flex items-center justify-between py-2">
-                  <span className="text-sm text-app-text-secondary">Last Checked</span>
-                  <span className="text-sm text-app-text-secondary">
+                  <span className="text-sm text-app-text-app-text-secondary">Last Checked</span>
+                  <span className="text-sm text-app-text-app-text-secondary">
                     {new Date(lastCheckedAt).toLocaleDateString()}
                   </span>
                 </div>
@@ -617,7 +617,7 @@ export function Settings() {
                       <CheckCircle2 className="w-5 h-5 text-green-600" />
                       <span className="font-medium">Up to date</span>
                     </div>
-                    <p className="text-sm text-app-text-secondary mt-1">
+                    <p className="text-sm text-app-text-app-text-secondary mt-1">
                       You're running the latest version.
                     </p>
                   </div>
@@ -639,21 +639,21 @@ export function Settings() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-app-text-primary">Reset Settings</h3>
-                  <p className="text-sm text-app-text-secondary">
+                  <p className="text-sm text-app-text-app-text-secondary">
                     This will restore all settings to their default values
                   </p>
                 </div>
               </div>
             </div>
             <div className="px-6 py-4">
-              <p className="text-sm text-app-text-secondary">
+              <p className="text-sm text-app-text-app-text-secondary">
                 Are you sure you want to reset all settings? This action cannot be undone.
               </p>
             </div>
             <div className="px-6 py-4 border-t border-app-border-primary flex justify-end gap-3">
               <button
                 onClick={() => setShowResetConfirm(false)}
-                className="px-4 py-2 text-app-text-primary hover:bg-app-bg-tertiary rounded-lg transition-colors"
+                className="px-4 py-2 text-app-text-primary hover:bg-app-bg-app-bg-tertiary rounded-lg transition-colors"
               >
                 Cancel
               </button>

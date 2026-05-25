@@ -37,7 +37,7 @@ export function OSEditor({ className }: OSEditorProps) {
   if (!os) {
     return (
       <div className={cn('p-8 text-center', className)}>
-        <p className="text-app-text-secondary">No OS configuration found</p>
+        <p className="text-app-text-app-text-secondary">No OS configuration found</p>
       </div>
     )
   }
@@ -69,12 +69,12 @@ export function OSEditor({ className }: OSEditorProps) {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-lg font-semibold text-app-text-primary">{os.name}</h2>
-            <p className="text-sm text-app-text-secondary">OS Version {os.version} • {os.scalabilityClass}</p>
+            <p className="text-sm text-app-text-app-text-secondary">OS Version {os.version} • {os.scalabilityClass}</p>
           </div>
           <div className="flex items-center gap-2">
             <span className={cn(
               'px-2 py-1 text-xs font-medium rounded-full',
-              os.enabled ? 'bg-green-100 text-green-700' : 'bg-app-bg-tertiary text-app-text-secondary'
+              os.enabled ? 'bg-green-100 text-green-700' : 'bg-app-bg-app-bg-tertiary text-app-text-app-text-secondary'
             )}>
               {os.enabled ? 'Enabled' : 'Disabled'}
             </span>
@@ -95,13 +95,13 @@ export function OSEditor({ className }: OSEditorProps) {
                   'flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 whitespace-nowrap',
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-app-text-secondary hover:text-app-text-primary hover:border-app-border-primary'
+                    : 'border-transparent text-app-text-app-text-secondary hover:text-app-text-primary hover:border-app-border-primary'
                 )}
               >
                 <Icon className="w-4 h-4" />
                 {tab.label}
                 {tab.count !== undefined && (
-                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-app-bg-tertiary text-app-text-secondary rounded-full">
+                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-app-bg-app-bg-tertiary text-app-text-app-text-secondary rounded-full">
                     {tab.count}
                   </span>
                 )}
@@ -262,13 +262,13 @@ function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updat
   return (
     <div className="border border-app-border-primary rounded-lg overflow-hidden">
       <div
-        className="flex items-center justify-between px-3 py-2 bg-app-bg-secondary cursor-pointer hover:bg-app-bg-tertiary"
+        className="flex items-center justify-between px-3 py-2 bg-app-bg-secondary cursor-pointer hover:bg-app-bg-app-bg-tertiary"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-2">
-          {isExpanded ? <ChevronDown className="w-4 h-4 text-app-text-secondary" /> : <ChevronRight className="w-4 h-4 text-app-text-secondary" />}
+          {isExpanded ? <ChevronDown className="w-4 h-4 text-app-text-app-text-secondary" /> : <ChevronRight className="w-4 h-4 text-app-text-app-text-secondary" />}
           <span className="font-medium text-sm">{task.name}</span>
-          <span className="text-xs text-app-text-secondary">Priority: {task.priority}</span>
+          <span className="text-xs text-app-text-app-text-secondary">Priority: {task.priority}</span>
           {task.autostart && (
             <span className="px-1.5 py-0.5 text-xs bg-green-100 text-green-700 rounded">Auto</span>
           )}
@@ -285,7 +285,7 @@ function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updat
         <div className="p-3 space-y-3 border-t border-app-border-primary">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-app-text-secondary mb-1">Name</label>
+              <label className="block text-xs font-medium text-app-text-app-text-secondary mb-1">Name</label>
               <input
                 type="text"
                 value={task.name}
@@ -294,7 +294,7 @@ function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updat
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-app-text-secondary mb-1">Priority (1-255)</label>
+              <label className="block text-xs font-medium text-app-text-app-text-secondary mb-1">Priority (1-255)</label>
               <input
                 type="number"
                 min={1}
@@ -308,7 +308,7 @@ function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updat
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-app-text-secondary mb-1">Schedule</label>
+              <label className="block text-xs font-medium text-app-text-app-text-secondary mb-1">Schedule</label>
               <select
                 value={task.schedule}
                 onChange={(e) => onUpdate({ schedule: e.target.value as 'NON' | 'FULL' })}
@@ -319,7 +319,7 @@ function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updat
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-app-text-secondary mb-1">Stack Size (bytes)</label>
+              <label className="block text-xs font-medium text-app-text-app-text-secondary mb-1">Stack Size (bytes)</label>
               <input
                 type="number"
                 value={task.stackSize}
@@ -533,7 +533,7 @@ function CountersEditor({ counters, onUpdate }: { counters: OSCounter[]; onUpdat
             </div>
             <div className="grid grid-cols-3 gap-2">
               <div>
-                <label className="block text-xs text-app-text-secondary mb-1">Max Value</label>
+                <label className="block text-xs text-app-text-app-text-secondary mb-1">Max Value</label>
                 <input
                   type="number"
                   value={counter.maxAllowedValue}
@@ -542,7 +542,7 @@ function CountersEditor({ counters, onUpdate }: { counters: OSCounter[]; onUpdat
                 />
               </div>
               <div>
-                <label className="block text-xs text-app-text-secondary mb-1">Ticks/Base</label>
+                <label className="block text-xs text-app-text-app-text-secondary mb-1">Ticks/Base</label>
                 <input
                   type="number"
                   value={counter.ticksPerBase}
@@ -551,7 +551,7 @@ function CountersEditor({ counters, onUpdate }: { counters: OSCounter[]; onUpdat
                 />
               </div>
               <div>
-                <label className="block text-xs text-app-text-secondary mb-1">Min Cycle</label>
+                <label className="block text-xs text-app-text-app-text-secondary mb-1">Min Cycle</label>
                 <input
                   type="number"
                   value={counter.minCycle}
@@ -632,7 +632,7 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
             
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-xs text-app-text-secondary mb-1">Counter</label>
+                <label className="block text-xs text-app-text-app-text-secondary mb-1">Counter</label>
                 <select
                   value={alarm.counter}
                   onChange={(e) => updateAlarm(index, { counter: e.target.value })}
@@ -644,7 +644,7 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-app-text-secondary mb-1">Action</label>
+                <label className="block text-xs text-app-text-app-text-secondary mb-1">Action</label>
                 <select
                   value={alarm.action}
                   onChange={(e) => updateAlarm(index, { action: e.target.value as OSAlarm['action'] })}
@@ -660,7 +660,7 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
             <div className="grid grid-cols-2 gap-2">
               {alarm.action !== 'ALARMCALLBACK' && (
                 <div>
-                  <label className="block text-xs text-app-text-secondary mb-1">Target Task</label>
+                  <label className="block text-xs text-app-text-app-text-secondary mb-1">Target Task</label>
                   <select
                     value={alarm.task}
                     onChange={(e) => updateAlarm(index, { task: e.target.value })}
@@ -674,7 +674,7 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
               )}
               {alarm.action === 'SETEVENT' && (
                 <div>
-                  <label className="block text-xs text-app-text-secondary mb-1">Event</label>
+                  <label className="block text-xs text-app-text-app-text-secondary mb-1">Event</label>
                   <select
                     value={alarm.event || ''}
                     onChange={(e) => updateAlarm(index, { event: e.target.value })}
@@ -706,7 +706,7 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
                   onChange={(e) => updateAlarm(index, { period: parseInt(e.target.value) })}
                   className="w-20 px-2 py-1 text-sm border border-app-border-primary rounded"
                 />
-                <span className="text-xs text-app-text-secondary">ticks</span>
+                <span className="text-xs text-app-text-app-text-secondary">ticks</span>
               </div>
             </div>
           </div>
@@ -777,7 +777,7 @@ function ISRsEditor({ isrs, resources, onUpdate }: {
             
             <div className="grid grid-cols-3 gap-2">
               <div>
-                <label className="block text-xs text-app-text-secondary mb-1">Category</label>
+                <label className="block text-xs text-app-text-app-text-secondary mb-1">Category</label>
                 <select
                   value={isr.category}
                   onChange={(e) => updateISR(index, { category: parseInt(e.target.value) as 1 | 2 })}
@@ -788,7 +788,7 @@ function ISRsEditor({ isrs, resources, onUpdate }: {
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-app-text-secondary mb-1">Priority</label>
+                <label className="block text-xs text-app-text-app-text-secondary mb-1">Priority</label>
                 <input
                   type="number"
                   min={1}
@@ -799,7 +799,7 @@ function ISRsEditor({ isrs, resources, onUpdate }: {
                 />
               </div>
               <div>
-                <label className="block text-xs text-app-text-secondary mb-1">Vector</label>
+                <label className="block text-xs text-app-text-app-text-secondary mb-1">Vector</label>
                 <input
                   type="text"
                   value={isr.vector}
@@ -811,7 +811,7 @@ function ISRsEditor({ isrs, resources, onUpdate }: {
             </div>
 
             <div>
-              <label className="block text-xs text-app-text-secondary mb-1">Resource (Optional)</label>
+              <label className="block text-xs text-app-text-app-text-secondary mb-1">Resource (Optional)</label>
               <select
                 value={isr.resource || ''}
                 onChange={(e) => updateISR(index, { resource: e.target.value || undefined })}

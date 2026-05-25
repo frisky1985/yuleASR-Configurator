@@ -172,7 +172,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
         {/* Search */}
         <div className="pointer-events-auto bg-app-bg-primary rounded-lg shadow-sm border border-app-border-primary flex items-center">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-app-text-tertiary" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-app-text-app-text-tertiary" />
             <input
               type="text"
               placeholder="Search modules..."
@@ -183,7 +183,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-app-text-tertiary hover:text-app-text-secondary"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-app-text-app-text-tertiary hover:text-app-text-app-text-secondary"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -198,7 +198,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
             'pointer-events-auto p-2 rounded-lg border shadow-sm transition-colors',
             showFilters 
               ? 'bg-primary-50 border-primary-200 text-primary-700' 
-              : 'bg-app-bg-primary border-app-border-primary text-app-text-secondary hover:bg-app-bg-secondary'
+              : 'bg-app-bg-primary border-app-border-primary text-app-text-app-text-secondary hover:bg-app-bg-secondary'
           )}
           title="Toggle filters"
         >
@@ -209,33 +209,33 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
         <div className="pointer-events-auto flex items-center gap-1 bg-app-bg-primary rounded-lg border border-app-border-primary shadow-sm p-1 ml-auto">
           <button
             onClick={() => zoomOut()}
-            className="p-1.5 text-app-text-secondary hover:bg-app-bg-tertiary rounded-md transition-colors"
+            className="p-1.5 text-app-text-app-text-secondary hover:bg-app-bg-app-bg-tertiary rounded-md transition-colors"
             title="Zoom out"
           >
             <ZoomOut className="w-4 h-4" />
           </button>
           <button
             onClick={() => fitView({ padding: 0.2 })}
-            className="p-1.5 text-app-text-secondary hover:bg-app-bg-tertiary rounded-md transition-colors"
+            className="p-1.5 text-app-text-app-text-secondary hover:bg-app-bg-app-bg-tertiary rounded-md transition-colors"
             title="Fit view"
           >
             <Maximize2 className="w-4 h-4" />
           </button>
           <button
             onClick={() => zoomIn()}
-            className="p-1.5 text-app-text-secondary hover:bg-app-bg-tertiary rounded-md transition-colors"
+            className="p-1.5 text-app-text-app-text-secondary hover:bg-app-bg-app-bg-tertiary rounded-md transition-colors"
             title="Zoom in"
           >
             <ZoomIn className="w-4 h-4" />
           </button>
-          <div className="w-px h-4 bg-app-bg-tertiary mx-1" />
+          <div className="w-px h-4 bg-app-bg-app-bg-tertiary mx-1" />
           <button
             onClick={() => setShowMiniMap(!showMiniMap)}
             className={cn(
               'p-1.5 rounded-md transition-colors',
               showMiniMap 
                 ? 'bg-primary-50 text-primary-700' 
-                : 'text-app-text-secondary hover:bg-app-bg-tertiary'
+                : 'text-app-text-app-text-secondary hover:bg-app-bg-app-bg-tertiary'
             )}
             title="Toggle minimap"
           >
@@ -243,7 +243,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
           </button>
           <button
             onClick={handleResetView}
-            className="p-1.5 text-app-text-secondary hover:bg-app-bg-tertiary rounded-md transition-colors"
+            className="p-1.5 text-app-text-app-text-secondary hover:bg-app-bg-app-bg-tertiary rounded-md transition-colors"
             title="Reset view"
           >
             <RotateCcw className="w-4 h-4" />
@@ -294,7 +294,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
               onClick={() => setShowDisabled(!showDisabled)}
               className={cn(
                 'p-1.5 rounded-md transition-colors',
-                showDisabled ? 'text-primary-600' : 'text-app-text-tertiary'
+                showDisabled ? 'text-primary-600' : 'text-app-text-app-text-tertiary'
               )}
             >
               {showDisabled ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
@@ -308,7 +308,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
               onClick={() => setHighlightPath(!highlightPath)}
               className={cn(
                 'w-10 h-5 rounded-full transition-colors relative',
-                highlightPath ? 'bg-primary-500' : 'bg-app-bg-tertiary'
+                highlightPath ? 'bg-primary-500' : 'bg-app-bg-app-bg-tertiary'
               )}
             >
               <span 
@@ -322,7 +322,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
 
           {/* Stats */}
           <div className="pt-3 border-t border-app-border-primary">
-            <div className="grid grid-cols-2 gap-2 text-xs text-app-text-secondary">
+            <div className="grid grid-cols-2 gap-2 text-xs text-app-text-app-text-secondary">
               <div>Total: <span className="font-medium text-app-text-primary">{modules.length}</span></div>
               <div>Visible: <span className="font-medium text-app-text-primary">{filteredModules.length}</span></div>
               <div>Enabled: <span className="font-medium text-green-600">{filteredModules.filter(m => m.enabled).length}</span></div>
@@ -339,12 +339,12 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
             <h4 className="font-medium text-app-text-primary">Module Selected</h4>
             <button
               onClick={() => setSelectedNodeId(null)}
-              className="text-app-text-tertiary hover:text-app-text-secondary"
+              className="text-app-text-app-text-tertiary hover:text-app-text-app-text-secondary"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
-          <p className="text-sm text-app-text-secondary mt-1">
+          <p className="text-sm text-app-text-app-text-secondary mt-1">
             Double-click to edit configuration
           </p>
           <button

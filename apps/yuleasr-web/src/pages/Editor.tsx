@@ -258,7 +258,7 @@ export function Editor() {
       <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
         <div className="text-center">
           <div className="animate-spin w-8 h-8 border-2 border-primary-600 border-t-transparent rounded-full mx-auto" />
-          <p className="text-app-text-secondary mt-2">Loading configuration...</p>
+          <p className="text-app-text-app-text-secondary mt-2">Loading configuration...</p>
         </div>
       </div>
     )
@@ -268,7 +268,7 @@ export function Editor() {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
         <div className="text-center">
-          <AlertCircle className="w-12 h-12 text-app-text-tertiary mx-auto mb-3" />
+          <AlertCircle className="w-12 h-12 text-app-text-app-text-tertiary mx-auto mb-3" />
           <h3 className="text-app-text-primary font-medium">Configuration not found</h3>
           <button
             onClick={() => navigate('/dashboard')}
@@ -288,7 +288,7 @@ export function Editor() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate('/dashboard')}
-            className="p-2 text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-tertiary rounded-lg transition-colors"
+            className="p-2 text-app-text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-app-bg-tertiary rounded-lg transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
@@ -312,7 +312,7 @@ export function Editor() {
                 </span>
               )}
             </div>
-            <p className="text-sm text-app-text-secondary">
+            <p className="text-sm text-app-text-app-text-secondary">
               {currentConfig.targetChip} | {currentConfig.modules.filter(m => m.enabled).length} modules | 
               Last modified: {formatDate(currentConfig.updatedAt)}
             </p>
@@ -328,7 +328,7 @@ export function Editor() {
           >
             <Search className="w-4 h-4" />
             <span className="hidden sm:inline">Search</span>
-            <kbd className="hidden sm:inline-flex px-1.5 py-0.5 bg-app-bg-tertiary rounded text-xs">Ctrl+K</kbd>
+            <kbd className="hidden sm:inline-flex px-1.5 py-0.5 bg-app-bg-app-bg-tertiary rounded text-xs">Ctrl+K</kbd>
           </button>
 
           <button
@@ -349,7 +349,7 @@ export function Editor() {
             className={cn(
               'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors',
               !isDirty || isLoading
-                ? 'bg-app-bg-tertiary text-app-text-tertiary cursor-not-allowed'
+                ? 'bg-app-bg-app-bg-tertiary text-app-text-app-text-tertiary cursor-not-allowed'
                 : 'bg-primary-600 text-white hover:bg-primary-700'
             )}
           >
@@ -445,7 +445,7 @@ export function Editor() {
             onChange={handleImportArxml}
             className="hidden"
           />
-          <button className="p-2 text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-tertiary rounded-lg transition-colors">
+          <button className="p-2 text-app-text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-app-bg-tertiary rounded-lg transition-colors">
             <MoreVertical className="w-4 h-4" />
           </button>
         </div>
@@ -493,7 +493,7 @@ export function Editor() {
                 )}
               </div>
             ) : (
-              <p className="text-sm text-app-text-secondary">Click Validate to check configuration</p>
+              <p className="text-sm text-app-text-app-text-secondary">Click Validate to check configuration</p>
             )}
           </div>
 
@@ -520,11 +520,11 @@ export function Editor() {
                   >
                     <div className="font-medium">{issue.path}</div>
                     <div className="mt-1">{issue.message}</div>
-                    {issue.suggestion && <div className="mt-1 text-app-text-secondary italic">{issue.suggestion}</div>}
+                    {issue.suggestion && <div className="mt-1 text-app-text-app-text-secondary italic">{issue.suggestion}</div>}
                   </div>
                 ))}
                 {validationIssues.length > 10 && (
-                  <div className="text-xs text-app-text-secondary text-center">+{validationIssues.length - 10} more issues</div>
+                  <div className="text-xs text-app-text-app-text-secondary text-center">+{validationIssues.length - 10} more issues</div>
                 )}
               </div>
             </div>
@@ -537,7 +537,7 @@ export function Editor() {
                 <h3 className="text-sm font-semibold text-app-text-primary">
                   {(instanceContainer || selectedContainer).displayName || (instanceContainer || selectedContainer).name}
                 </h3>
-                <span className="text-xs text-app-text-secondary">
+                <span className="text-xs text-app-text-app-text-secondary">
                   {instanceContainer
                     ? `${(instanceContainer).parameters.length} params · ${(instanceContainer).description || ''}`
                     : `${selectedContainer.parameters.length + (selectedContainer.subContainers?.reduce((s, sc) => s + sc.parameters.length, 0) ?? 0)} params`
@@ -556,20 +556,20 @@ export function Editor() {
                           setSelectedPath(`${containerPath}/instance:${instanceName}`)
                         }
                       }}
-                      className="w-12 h-12 rounded-full bg-app-bg-tertiary flex items-center justify-center mx-auto mb-3 hover:bg-primary-50 transition-colors cursor-pointer group"
+                      className="w-12 h-12 rounded-full bg-app-bg-app-bg-tertiary flex items-center justify-center mx-auto mb-3 hover:bg-primary-50 transition-colors cursor-pointer group"
                       title="添加实例"
                     >
-                      <svg className="w-6 h-6 text-app-text-tertiary group-hover:text-primary-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="w-6 h-6 text-app-text-app-text-tertiary group-hover:text-primary-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                       </svg>
                     </button>
                     <p className="text-sm font-medium text-app-text-primary mb-1">
                       {selectedContainer.displayName || selectedContainer.name}
                     </p>
-                    <p className="text-sm text-app-text-secondary">
+                    <p className="text-sm text-app-text-app-text-secondary">
                       点击上方 [+] 添加{selectedContainer.subContainers?.[0]?.displayName || selectedContainer.subContainers?.[0]?.name || '实例'} 实例
                     </p>
-                    <p className="text-xs text-app-text-tertiary mt-2">创建实例后，在树中选择实例查看和编辑参数</p>
+                    <p className="text-xs text-app-text-app-text-tertiary mt-2">创建实例后，在树中选择实例查看和编辑参数</p>
                   </div>
                 ) : (
                   /* Static container or instance selected - show parameters normally */
@@ -624,14 +624,14 @@ export function Editor() {
                 </button>
                 <button
                   onClick={() => setCodeGenResult(null)}
-                  className="p-1.5 text-app-text-tertiary hover:text-app-text-secondary"
+                  className="p-1.5 text-app-text-app-text-tertiary hover:text-app-text-app-text-secondary"
                 >
                   <span className="text-lg">×</span>
                 </button>
               </div>
             </div>
             <div className="px-5 py-2 bg-app-bg-secondary border-b border-app-border-primary flex items-center gap-2">
-              <span className="text-xs font-medium text-app-text-secondary">Filename:</span>
+              <span className="text-xs font-medium text-app-text-app-text-secondary">Filename:</span>
               <span className="text-xs font-mono text-app-text-primary">{codeGenResult.filename}</span>
             </div>
             <div className="flex-1 overflow-auto p-4">

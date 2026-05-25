@@ -94,7 +94,7 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
           </h2>
           <button
             onClick={handleClose}
-            className="text-app-text-tertiary hover:text-app-text-secondary transition-colors"
+            className="text-app-text-app-text-tertiary hover:text-app-text-app-text-secondary transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -129,9 +129,9 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
               </div>
             ) : (
               <div className="flex flex-col items-center gap-2">
-                <Upload className="w-8 h-8 text-app-text-tertiary" />
+                <Upload className="w-8 h-8 text-app-text-app-text-tertiary" />
                 <span className="text-sm font-medium text-app-text-primary">点击选择配置文件</span>
-                <span className="text-xs text-app-text-secondary">支持 JSON 和 ARXML 格式</span>
+                <span className="text-xs text-app-text-app-text-secondary">支持 JSON 和 ARXML 格式</span>
               </div>
             )}
           </div>

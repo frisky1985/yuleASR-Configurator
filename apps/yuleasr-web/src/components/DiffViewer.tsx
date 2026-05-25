@@ -99,7 +99,7 @@ export function DiffViewer({
       case 'renamed':
         return <GitCompare className="w-4 h-4 text-blue-500" />
       default:
-        return <FileEdit className="w-4 h-4 text-app-text-secondary" />
+        return <FileEdit className="w-4 h-4 text-app-text-app-text-secondary" />
     }
   }
 
@@ -158,12 +158,12 @@ export function DiffViewer({
       <div className="px-4 py-3 border-b border-app-border-primary bg-app-bg-secondary">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <GitCompare className="w-5 h-5 text-app-text-secondary" />
+            <GitCompare className="w-5 h-5 text-app-text-app-text-secondary" />
             <h3 className="font-semibold text-app-text-primary">{title}</h3>
             {(oldCommit || newCommit) && (
-              <div className="flex items-center gap-2 text-xs text-app-text-secondary">
+              <div className="flex items-center gap-2 text-xs text-app-text-app-text-secondary">
                 {oldCommit && (
-                  <span className="font-mono bg-app-bg-tertiary px-1.5 py-0.5 rounded">
+                  <span className="font-mono bg-app-bg-app-bg-tertiary px-1.5 py-0.5 rounded">
                     {oldCommit.oid.substring(0, 7)}
                   </span>
                 )}
@@ -191,7 +191,7 @@ export function DiffViewer({
                   'px-2 py-1 text-xs font-medium transition-colors',
                   viewMode === 'unified' 
                     ? 'bg-primary-100 text-primary-700' 
-                    : 'text-app-text-secondary hover:text-app-text-primary'
+                    : 'text-app-text-app-text-secondary hover:text-app-text-primary'
                 )}
               >
                 Unified
@@ -202,7 +202,7 @@ export function DiffViewer({
                   'px-2 py-1 text-xs font-medium transition-colors',
                   viewMode === 'split' 
                     ? 'bg-primary-100 text-primary-700' 
-                    : 'text-app-text-secondary hover:text-app-text-primary'
+                    : 'text-app-text-app-text-secondary hover:text-app-text-primary'
                 )}
               >
                 Split
@@ -212,26 +212,26 @@ export function DiffViewer({
             {/* Actions */}
             <button
               onClick={expandAll}
-              className="text-xs text-app-text-secondary hover:text-app-text-primary px-2 py-1"
+              className="text-xs text-app-text-app-text-secondary hover:text-app-text-primary px-2 py-1"
             >
               Expand All
             </button>
             <button
               onClick={collapseAll}
-              className="text-xs text-app-text-secondary hover:text-app-text-primary px-2 py-1"
+              className="text-xs text-app-text-app-text-secondary hover:text-app-text-primary px-2 py-1"
             >
               Collapse All
             </button>
             <button
               onClick={downloadDiff}
-              className="p-1.5 text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-tertiary rounded"
+              className="p-1.5 text-app-text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-app-bg-tertiary rounded"
               title="Download patch"
             >
               <Download className="w-4 h-4" />
             </button>
             <button
               onClick={() => setShowFullScreen(!showFullScreen)}
-              className="p-1.5 text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-tertiary rounded"
+              className="p-1.5 text-app-text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-app-bg-tertiary rounded"
             >
               {showFullScreen ? (
                 <Minimize2 className="w-4 h-4" />
@@ -242,7 +242,7 @@ export function DiffViewer({
             {onClose && (
               <button
                 onClick={onClose}
-                className="p-1.5 text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-tertiary rounded"
+                className="p-1.5 text-app-text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-app-bg-tertiary rounded"
               >
                 ×
               </button>
@@ -255,8 +255,8 @@ export function DiffViewer({
       <div className={cn('overflow-auto', showFullScreen ? 'h-[calc(100vh-200px)]' : 'max-h-[600px]')}>
         {diffs.length === 0 ? (
           <div className="p-8 text-center">
-            <GitCompare className="w-12 h-12 text-app-text-tertiary mx-auto mb-3" />
-            <p className="text-app-text-secondary">No changes to display</p>
+            <GitCompare className="w-12 h-12 text-app-text-app-text-tertiary mx-auto mb-3" />
+            <p className="text-app-text-app-text-secondary">No changes to display</p>
           </div>
         ) : (
           <div className="divide-y divide-gray-200">
@@ -272,9 +272,9 @@ export function DiffViewer({
                     className="w-full flex items-center gap-3 px-4 py-2 hover:bg-app-bg-secondary transition-colors text-left"
                   >
                     {isExpanded ? (
-                      <ChevronDown className="w-4 h-4 text-app-text-tertiary" />
+                      <ChevronDown className="w-4 h-4 text-app-text-app-text-tertiary" />
                     ) : (
-                      <ChevronRight className="w-4 h-4 text-app-text-tertiary" />
+                      <ChevronRight className="w-4 h-4 text-app-text-app-text-tertiary" />
                     )}
                     {getFileIcon(diff.status)}
                     <span className="flex-1 text-sm font-medium text-app-text-primary truncate">
@@ -294,7 +294,7 @@ export function DiffViewer({
                       <div className="flex items-center gap-2 px-4 py-1.5 bg-app-bg-secondary border-b border-app-border-primary">
                         <button
                           onClick={() => diff.newContent && copyToClipboard(diff.newContent, diff.newPath)}
-                          className="flex items-center gap-1 text-xs text-app-text-secondary hover:text-app-text-primary"
+                          className="flex items-center gap-1 text-xs text-app-text-app-text-secondary hover:text-app-text-primary"
                         >
                           {copiedFile === diff.newPath ? (
                             <>
@@ -357,15 +357,15 @@ function UnifiedDiffView({ hunks, oldContent, newContent }: UnifiedDiffViewProps
           <tbody>
             {oldLines.map((line, i) => (
               <tr key={`old-${i}`} className="bg-red-50">
-                <td className="px-2 py-0.5 text-app-text-tertiary text-right select-none w-12">{i + 1}</td>
-                <td className="px-2 py-0.5 text-app-text-tertiary select-none w-12"></td>
+                <td className="px-2 py-0.5 text-app-text-app-text-tertiary text-right select-none w-12">{i + 1}</td>
+                <td className="px-2 py-0.5 text-app-text-app-text-tertiary select-none w-12"></td>
                 <td className="px-4 py-0.5 whitespace-pre text-red-700">-{line}</td>
               </tr>
             ))}
             {newLines.map((line, i) => (
               <tr key={`new-${i}`} className="bg-green-50">
-                <td className="px-2 py-0.5 text-app-text-tertiary text-right select-none w-12"></td>
-                <td className="px-2 py-0.5 text-app-text-tertiary select-none w-12">{i + 1}</td>
+                <td className="px-2 py-0.5 text-app-text-app-text-tertiary text-right select-none w-12"></td>
+                <td className="px-2 py-0.5 text-app-text-app-text-tertiary select-none w-12">{i + 1}</td>
                 <td className="px-4 py-0.5 whitespace-pre text-green-700">+{line}</td>
               </tr>
             ))}
@@ -380,8 +380,8 @@ function UnifiedDiffView({ hunks, oldContent, newContent }: UnifiedDiffViewProps
       {hunks.map((hunk, hunkIndex) => (
         <table key={hunkIndex} className="w-full text-sm font-mono">
           <thead>
-            <tr className="bg-app-bg-tertiary">
-              <td colSpan={3} className="px-4 py-1 text-xs text-app-text-secondary">
+            <tr className="bg-app-bg-app-bg-tertiary">
+              <td colSpan={3} className="px-4 py-1 text-xs text-app-text-app-text-secondary">
                 @@ -{hunk.oldStart},{hunk.oldLines} +{hunk.newStart},{hunk.newLines} @@
               </td>
             </tr>
@@ -402,10 +402,10 @@ function UnifiedDiffView({ hunks, oldContent, newContent }: UnifiedDiffViewProps
 
               return (
                 <tr key={lineIndex} className={lineBg}>
-                  <td className="px-2 py-0.5 text-app-text-tertiary text-right select-none w-12">
+                  <td className="px-2 py-0.5 text-app-text-app-text-tertiary text-right select-none w-12">
                     {line.type !== 'added' ? hunk.oldStart + lineIndex : ''}
                   </td>
-                  <td className="px-2 py-0.5 text-app-text-tertiary text-right select-none w-12">
+                  <td className="px-2 py-0.5 text-app-text-app-text-tertiary text-right select-none w-12">
                     {line.type !== 'removed' ? hunk.newStart + lineIndex : ''}
                   </td>
                   <td className={cn('px-4 py-0.5 whitespace-pre', lineColor)}>
@@ -437,9 +437,9 @@ function SplitDiffView({ oldContent, newContent }: SplitDiffViewProps) {
     <div className="overflow-x-auto">
       <table className="w-full text-sm font-mono">
         <thead>
-          <tr className="bg-app-bg-tertiary">
-            <th className="px-4 py-1 text-xs text-app-text-secondary text-left w-1/2">Old</th>
-            <th className="px-4 py-1 text-xs text-app-text-secondary text-left w-1/2">New</th>
+          <tr className="bg-app-bg-app-bg-tertiary">
+            <th className="px-4 py-1 text-xs text-app-text-app-text-secondary text-left w-1/2">Old</th>
+            <th className="px-4 py-1 text-xs text-app-text-app-text-secondary text-left w-1/2">New</th>
           </tr>
         </thead>
         <tbody>

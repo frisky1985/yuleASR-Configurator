@@ -94,14 +94,14 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
   const getProgressColor = (pct: number) => {
     if (pct >= 100) return 'bg-green-500'
     if (pct >= 50) return 'bg-yellow-500'
-    return 'bg-app-bg-tertiary'
+    return 'bg-app-bg-app-bg-tertiary'
   }
 
   /** Small horizontal progress bar */
   const MiniProgressBar = ({ value, max, className }: { value: number; max: number; className?: string }) => {
     const pct = max > 0 ? Math.round((value / max) * 100) : 0
     return (
-      <div className={cn("w-full h-1.5 bg-app-bg-tertiary rounded-full overflow-hidden", className)}>
+      <div className={cn("w-full h-1.5 bg-app-bg-app-bg-tertiary rounded-full overflow-hidden", className)}>
         <div
           className={cn("h-full rounded-full transition-all duration-500 progress-bar-animated", getProgressColor(pct))}
           style={{ width: `${pct}%` }}
@@ -133,10 +133,10 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
         {/* Overall Progress */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-secondary">Overall Progress</span>
+            <span className="text-sm text-app-text-secondary">Overall Progress</span>
             <span className="text-sm font-semibold text-app-text-primary">{stats.progress}%</span>
           </div>
-          <div className="h-2.5 bg-app-bg-tertiary rounded-full overflow-hidden">
+          <div className="h-2.5 bg-app-bg-app-bg-tertiary rounded-full overflow-hidden">
             <div 
               className={cn(
                 "h-full rounded-full transition-all duration-700 ease-out progress-bar-animated",
@@ -145,7 +145,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
               style={{ width: `${stats.progress}%` }}
             />
           </div>
-          <p className="text-xs text-secondary mt-1">
+          <p className="text-xs text-app-text-secondary mt-1">
             {stats.configured}/{stats.total} modules configured
             {stats.enabled < stats.total && ` (${stats.enabled} enabled)`}
           </p>
@@ -157,7 +157,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-                <span className="text-xs font-medium text-secondary">Configured</span>
+                <span className="text-xs font-medium text-app-text-secondary">Configured</span>
               </div>
               <span className="text-sm font-semibold text-green-700">{stats.configured}</span>
             </div>
@@ -167,7 +167,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-blue-600" />
-                <span className="text-xs font-medium text-secondary">Configuring</span>
+                <span className="text-xs font-medium text-app-text-secondary">Configuring</span>
               </div>
               <span className="text-sm font-semibold text-blue-700">{stats.configuring}</span>
             </div>
@@ -177,7 +177,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <AlertCircle className="w-3.5 h-3.5 text-yellow-600" />
-                <span className="text-xs font-medium text-secondary">Partial</span>
+                <span className="text-xs font-medium text-app-text-secondary">Partial</span>
               </div>
               <span className="text-sm font-semibold text-yellow-700">{stats.partial}</span>
             </div>
@@ -186,12 +186,12 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
           <div className="flex flex-col gap-1 p-2 bg-secondary rounded-lg">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
-                <CircleDashed className="w-3.5 h-3.5 text-secondary" />
-                <span className="text-xs font-medium text-secondary">Unconfigured</span>
+                <CircleDashed className="w-3.5 h-3.5 text-app-text-secondary" />
+                <span className="text-xs font-medium text-app-text-secondary">Unconfigured</span>
               </div>
               <span className="text-sm font-semibold text-primary">{stats.unconfigured}</span>
             </div>
-            <MiniProgressBar value={stats.unconfigured} max={stats.total} className="bg-app-bg-tertiary" />
+            <MiniProgressBar value={stats.unconfigured} max={stats.total} className="bg-app-bg-app-bg-tertiary" />
           </div>
         </div>
 
@@ -207,7 +207,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
                   {getLayerIcon(ls.layer)}
                   <span className="text-xs font-medium text-primary">{ls.layer}</span>
                 </div>
-                <div className="flex-1 h-1.5 bg-app-bg-tertiary rounded-full overflow-hidden">
+                <div className="flex-1 h-1.5 bg-app-bg-app-bg-tertiary rounded-full overflow-hidden">
                   <div 
                     className={cn(
                       "h-full rounded-full transition-all duration-500",
@@ -220,7 +220,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
                     style={{ width: `${ls.total > 0 ? (ls.configured / ls.total) * 100 : 0}%` }}
                   />
                 </div>
-                <span className="text-xs text-secondary w-12 text-right">
+                <span className="text-xs text-app-text-secondary w-12 text-right">
                   {ls.configured}/{ls.total}
                 </span>
               </div>
@@ -259,7 +259,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
 
         {/* Last Updated */}
         <div className="pt-3 border-t border-primary">
-          <p className="text-xs text-secondary">
+          <p className="text-xs text-app-text-secondary">
             Last updated: {new Date(config.updatedAt).toLocaleString()}
           </p>
         </div>

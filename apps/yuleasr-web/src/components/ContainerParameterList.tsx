@@ -21,7 +21,7 @@ export function ContainerParameterList({
 
   if (!hasParams && !hasSubContainers) {
     return (
-      <p className="text-xs text-app-text-tertiary italic px-2 py-1">
+      <p className="text-xs text-app-text-app-text-tertiary italic px-2 py-1">
         No parameters in {container.displayName || container.name}
       </p>
     )
@@ -74,12 +74,12 @@ function SubContainerGroup({
         className="flex items-center gap-1.5 w-full text-left py-1.5 px-2 rounded hover:bg-app-bg-secondary transition-colors text-xs font-medium text-app-text-primary"
       >
         {isExpanded ? (
-          <ChevronDown className="w-3.5 h-3.5 text-app-text-tertiary flex-shrink-0" />
+          <ChevronDown className="w-3.5 h-3.5 text-app-text-app-text-tertiary flex-shrink-0" />
         ) : (
-          <ChevronRight className="w-3.5 h-3.5 text-app-text-tertiary flex-shrink-0" />
+          <ChevronRight className="w-3.5 h-3.5 text-app-text-app-text-tertiary flex-shrink-0" />
         )}
         <span>{container.displayName || container.name}</span>
-        <span className="text-app-text-tertiary font-normal">
+        <span className="text-app-text-app-text-tertiary font-normal">
           ({container.parameters.length} params)
         </span>
       </button>
@@ -97,7 +97,7 @@ function SubContainerGroup({
               </div>
             ))
           ) : (
-            <p className="text-xs text-app-text-tertiary italic px-2 py-1">
+            <p className="text-xs text-app-text-app-text-tertiary italic px-2 py-1">
               No parameters
             </p>
           )}

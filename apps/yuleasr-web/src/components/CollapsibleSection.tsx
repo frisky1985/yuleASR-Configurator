@@ -33,7 +33,7 @@ export function CollapsibleSection({
             : 'bg-primary hover:bg-secondary'
         )}
       >
-        <span className="flex-shrink-0 text-tertiary">
+        <span className="flex-shrink-0 text-app-text-tertiary">
           {isExpanded ? (
             <ChevronDown className="w-4 h-4" />
           ) : (
@@ -42,7 +42,7 @@ export function CollapsibleSection({
         </span>
         <span className="flex-1 text-sm font-medium text-app-text-primary">{title}</span>
         {subtitle && (
-          <span className="text-xs text-secondary">{subtitle}</span>
+          <span className="text-xs text-app-text-secondary">{subtitle}</span>
         )}
       </button>
 

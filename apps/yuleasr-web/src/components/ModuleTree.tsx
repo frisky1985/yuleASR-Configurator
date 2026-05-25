@@ -109,7 +109,7 @@ export function ModuleTree({
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-sm font-semibold text-app-text-primary">Modules</h3>
           <div className="flex items-center gap-1">
-            <span className="text-xs text-app-text-secondary">
+            <span className="text-xs text-app-text-app-text-secondary">
               {modules.filter((m) => m.enabled).length}/{modules.length} enabled
             </span>
           </div>
@@ -117,7 +117,7 @@ export function ModuleTree({
 
         {/* Search input */}
         <div className="relative">
-          <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-app-text-tertiary" />
+          <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-app-text-app-text-tertiary" />
           <input
             type="text"
             placeholder="Search modules..."
@@ -128,7 +128,7 @@ export function ModuleTree({
           {searchQuery && (
             <button
               onClick={() => handleSearchChange('')}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-app-text-tertiary hover:text-app-text-secondary"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-app-text-app-text-tertiary hover:text-app-text-app-text-secondary"
             >
               <span className="text-xs">×</span>
             </button>
@@ -144,7 +144,7 @@ export function ModuleTree({
                 'inline-flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors',
                 showFilterMenu
                   ? 'bg-primary-100 text-primary-700'
-                  : 'text-app-text-secondary hover:bg-app-bg-tertiary'
+                  : 'text-app-text-app-text-secondary hover:bg-app-bg-app-bg-tertiary'
               )}
             >
               <Filter className="w-3 h-3" />
@@ -169,14 +169,14 @@ export function ModuleTree({
           <div className="flex items-center gap-1">
             <button
               onClick={() => setExpandedLayers(new Set(layerOrder))}
-              className="text-xs text-app-text-secondary hover:text-primary-600 px-2 py-1"
+              className="text-xs text-app-text-app-text-secondary hover:text-primary-600 px-2 py-1"
             >
               Expand all
             </button>
-            <span className="text-app-text-tertiary">|</span>
+            <span className="text-app-text-app-text-tertiary">|</span>
             <button
               onClick={() => setExpandedLayers(new Set())}
-              className="text-xs text-app-text-secondary hover:text-primary-600 px-2 py-1"
+              className="text-xs text-app-text-app-text-secondary hover:text-primary-600 px-2 py-1"
             >
               Collapse
             </button>
@@ -246,7 +246,7 @@ export function ModuleTree({
                         >
                           <div className="flex items-center justify-between">
                             <span>{module.name}</span>
-                            <span className="text-xs text-app-text-tertiary">{module.version}</span>
+                            <span className="text-xs text-app-text-app-text-tertiary">{module.version}</span>
                           </div>
                         </button>
 
@@ -257,7 +257,7 @@ export function ModuleTree({
                             'p-1.5 rounded-md transition-colors mr-1',
                             module.enabled
                               ? 'text-green-600 hover:bg-green-50'
-                              : 'text-app-text-tertiary hover:bg-app-bg-tertiary hover:text-app-text-secondary'
+                              : 'text-app-text-app-text-tertiary hover:bg-app-bg-app-bg-tertiary hover:text-app-text-app-text-secondary'
                           )}
                           title={module.enabled ? 'Disable module' : 'Enable module'}
                         >
@@ -275,9 +275,9 @@ export function ModuleTree({
         {/* Empty state */}
         {filteredModules.length === 0 && (
           <div className="p-6 text-center">
-            <p className="text-sm text-app-text-secondary">No modules found</p>
+            <p className="text-sm text-app-text-app-text-secondary">No modules found</p>
             {searchQuery && (
-              <p className="text-xs text-app-text-tertiary mt-1">
+              <p className="text-xs text-app-text-app-text-tertiary mt-1">
                 Try adjusting your search or filter
               </p>
             )}

@@ -232,7 +232,7 @@ export function ParameterEditor({
               onClick={() => handleChange(!value)}
               className={cn(
                 'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
-                value ? 'bg-primary-600' : 'bg-tertiary'
+                value ? 'bg-primary-600' : 'bg-app-bg-tertiary'
               )}
             >
               <span
@@ -267,7 +267,7 @@ export function ParameterEditor({
                         : parseFloat(e.target.value)
                     handleChange(isNaN(val) ? '' : val)
                   }}
-                  className="flex-1 h-2 bg-tertiary rounded-lg appearance-none cursor-pointer accent-primary-600"
+                  className="flex-1 h-2 bg-app-bg-tertiary rounded-lg appearance-none cursor-pointer accent-primary-600"
                 />
               )}
               <input
@@ -288,7 +288,7 @@ export function ParameterEditor({
               />
             </div>
             {(min !== undefined || max !== undefined) && !showRangeSlider && (
-              <span className="text-xs text-tertiary whitespace-nowrap">
+              <span className="text-xs text-app-text-tertiary whitespace-nowrap">
                 [{min ?? '-∞'}, {max ?? '∞'}]
               </span>
             )}
@@ -302,7 +302,7 @@ export function ParameterEditor({
           return (
             <div className="relative">
               <div className="relative mb-1.5">
-                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-tertiary pointer-events-none" />
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-app-text-tertiary pointer-events-none" />
                 <input
                   ref={searchInputRef}
                   type="text"
@@ -318,7 +318,7 @@ export function ParameterEditor({
               </div>
               <div className="max-h-48 overflow-y-auto border border-primary rounded-md divide-y divide-app-border-primary">
                 {filteredEnumOptions.length === 0 ? (
-                  <div className="px-3 py-2 text-xs text-tertiary text-center">
+                  <div className="px-3 py-2 text-xs text-app-text-tertiary text-center">
                     No options found
                   </div>
                 ) : (
@@ -367,7 +367,7 @@ export function ParameterEditor({
                 </option>
               ))}
             </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-tertiary pointer-events-none" />
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-app-text-tertiary pointer-events-none" />
           </div>
         )
       }
@@ -378,7 +378,7 @@ export function ParameterEditor({
           <div className="space-y-2">
             {arrayValue.map((item, index) => (
               <div key={index} className="flex items-center gap-2">
-                <span className="text-xs text-tertiary w-6">{index + 1}.</span>
+                <span className="text-xs text-app-text-tertiary w-6">{index + 1}.</span>
                 <input
                   type={itemType === 'integer' || itemType === 'float' ? 'number' : 'text'}
                   value={typeof item === 'number' ? item : String(item ?? '')}
@@ -396,7 +396,7 @@ export function ParameterEditor({
                 />
                 <button
                   onClick={() => handleArrayRemove(index)}
-                  className="p-1.5 text-tertiary hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                  className="p-1.5 text-app-text-tertiary hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
                   title="Remove item"
                 >
                   <X className="w-4 h-4" />
@@ -416,7 +416,7 @@ export function ParameterEditor({
       case 'reference':
         return (
           <div className="relative">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-tertiary">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-app-text-tertiary">
               <Link className="w-4 h-4" />
             </div>
             <input
@@ -458,7 +458,7 @@ export function ParameterEditor({
           {type && (
             <span className={cn(
               'text-[10px] uppercase font-semibold px-1 py-0.5 rounded shrink-0',
-              typeBadgeColors[type] || 'bg-tertiary text-secondary'
+              typeBadgeColors[type] || 'bg-app-bg-tertiary text-app-text-secondary'
             )}>
               {type}
             </span>
@@ -466,7 +466,7 @@ export function ParameterEditor({
           {defaultValue !== undefined && isDirty && (
             <button
               onClick={handleReset}
-              className="p-1.5 text-tertiary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors"
+              className="p-1.5 text-app-text-tertiary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors"
               title="Reset to default"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -501,22 +501,22 @@ export function ParameterEditor({
           <label className="text-sm font-medium text-primary">{name}</label>
           <span className={cn(
             'text-xs uppercase font-semibold px-1.5 py-0.5 rounded',
-            typeBadgeColors[type] || 'bg-tertiary text-secondary'
+            typeBadgeColors[type] || 'bg-app-bg-tertiary text-app-text-secondary'
           )}>
             {type}
           </span>
           {/* Description tooltip */}
           {description && (
             <span className="group relative inline-flex items-center">
-              <Info className="w-3.5 h-3.5 text-tertiary cursor-help" />
-              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1.5 text-xs text-white bg-tertiary rounded-md shadow-lg whitespace-normal max-w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none">
+              <Info className="w-3.5 h-3.5 text-app-text-tertiary cursor-help" />
+              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1.5 text-xs text-white bg-app-bg-tertiary rounded-md shadow-lg whitespace-normal max-w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none">
                 {description}
                 <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-800" />
               </span>
             </span>
           )}
           {defaultValue !== undefined && (
-            <span className="text-xs text-tertiary">default: {String(defaultValue)}</span>
+            <span className="text-xs text-app-text-tertiary">default: {String(defaultValue)}</span>
           )}
         </div>
 
@@ -525,7 +525,7 @@ export function ParameterEditor({
           {defaultValue !== undefined && isDirty && (
             <button
               onClick={handleReset}
-              className="inline-flex items-center gap-1 text-xs text-secondary hover:text-primary-600 px-2 py-1 rounded-md hover:bg-primary-50 transition-colors"
+              className="inline-flex items-center gap-1 text-xs text-app-text-secondary hover:text-primary-600 px-2 py-1 rounded-md hover:bg-primary-50 transition-colors"
               title="Reset to default"
             >
               <RotateCcw className="w-3 h-3" />
@@ -560,7 +560,7 @@ export function ParameterEditor({
 
       {/* Range info for numeric types */}
       {(type === 'integer' || type === 'float') && (min !== undefined || max !== undefined) && (
-        <p className="text-xs text-tertiary">
+        <p className="text-xs text-app-text-tertiary">
           Valid range: {min !== undefined ? min : '-∞'} to {max !== undefined ? max : '∞'}
         </p>
       )}
