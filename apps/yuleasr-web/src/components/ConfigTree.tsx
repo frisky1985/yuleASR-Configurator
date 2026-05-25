@@ -218,6 +218,11 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
     })
   }, [config])
 
+  // Expose addInstance to parent via ref
+  useImperativeHandle(ref, () => ({
+    addInstance: (containerPath: string) => addInstance(containerPath),
+  }), [addInstance])
+
   // Find template container by path (returns the container object for param extraction)
   function findTemplateContainer(containers: ConfigContainer[], targetPath: string, parentPath: string): ConfigContainer | null {
     for (const c of containers) {
