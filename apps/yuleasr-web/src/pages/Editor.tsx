@@ -23,9 +23,11 @@ import { ParameterEditor } from '@/components/ParameterEditor'
 import { useTheme } from '@/components/ThemeProvider'
 import { ValidationPanel } from '@/components/ValidationPanel'
 import { CollapsibleSection } from '@/components/CollapsibleSection'
+import { ContainerConfigSection } from '@/components/ContainerConfigSection'
 import { cn, formatDate } from '@/lib/utils'
 import { useConfigStore } from '@/stores/configStore'
 import type { ValidationResult } from '@/types'
+import type { ConfigContainer } from '@/types/config'
 
 export function Editor() {
   const { configId } = useParams<{ configId: string }>()
@@ -100,6 +102,25 @@ export function Editor() {
   // Get selected module from path
   const selectedModule = selectedPath 
     ? currentConfig?.modules.find(m => selectedPath.includes(m.id))
+    : null
+
+  // Extract selected container id from path (e.g. "layer:MCAL/module:adc/container:AdcConfigSet")
+  const selectedContainerId = selectedPath?.match(/container:([^/]+)/)?.[1] ?? null
+
+  // Find the selected container in the module's container tree (deep search)
+  const findContainer = (containers: ConfigContainer[], id: string): ConfigContainer | null => {
+    for (const c of containers) {
+      if (c.id === id) return c
+      if (c.subContainers?.length) {
+        const found = findContainer(c.subContainers, id)
+        if (found) return found
+      }
+    }
+    return null
+  }
+
+  const selectedContainer = selectedContainerId && selectedModule?.containers
+    ? findContainer(selectedModule.containers, selectedContainerId)
     : null
   
   // Check if OS is selected
@@ -236,85 +257,8 @@ export function Editor() {
           />
         </div>
 
-        {/* Center - Overview / Validation / Status */}
-        <div className="col-span-4 h-full overflow-y-auto space-y-4">
-          {/* Configuration Status Panel */}
-          <ConfigurationStatusPanel 
-            config={currentConfig}
-            onExportReport={() => exportConfigReport(currentConfig)}
-          />
-
-          {/* Validation Summary */}
-          <div className="bg-white border border-gray-200 rounded-lg p-4">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">Validation</h3>
-            {validationResult ? (
-              <div className="space-y-2">
-                {validationResult.valid ? (
-                  <div className="flex items-center gap-2 text-green-600">
-                    <CheckCircle className="w-5 h-5" />
-                    <span className="text-sm">All checks passed</span>
-                  </div>
-                ) : (
-                  <>
-                    <div className="flex items-center gap-2 text-red-600">
-                      <AlertCircle className="w-4 h-4" />
-                      <span className="text-sm">{validationResult.errors.length} errors</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-yellow-600">
-                      <AlertTriangle className="w-4 h-4" />
-                      <span className="text-sm">{validationResult.warnings.length} warnings</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-blue-600">
-                      <Info className="w-4 h-4" />
-                      <span className="text-sm">{validationResult.info.length} info</span>
-                    </div>
-                  </>
-                )}
-              </div>
-            ) : (
-              <p className="text-sm text-gray-500">Click Validate to check configuration</p>
-            )}
-          </div>
-
-          {/* Validation Issues List */}
-          {validationIssues.length > 0 && (
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <h3 className="text-sm font-semibold text-gray-900 mb-3">Issues</h3>
-              <div className="space-y-2 max-h-48 overflow-y-auto">
-                {validationIssues.slice(0, 10).map((issue) => (
-                  <div
-                    key={issue.id}
-                    className={cn(
-                      'text-xs p-2 rounded cursor-pointer hover:bg-gray-50',
-                      issue.severity === 'error' && 'bg-red-50 text-red-700 border border-red-100',
-                      issue.severity === 'warning' && 'bg-yellow-50 text-yellow-700 border border-yellow-100',
-                      issue.severity === 'info' && 'bg-blue-50 text-blue-700 border border-blue-100'
-                    )}
-                    onClick={() => {
-                      if (issue.module) {
-                        const module = currentConfig?.modules.find(m => m.name === issue.module)
-                        if (module) {
-                          setSelectedPath(`layer:${module.layer}/module:${module.id}`)
-                        }
-                      }
-                    }}
-                  >
-                    <div className="font-medium">{issue.path}</div>
-                    <div className="mt-1">{issue.message}</div>
-                    {issue.suggestion && (
-                      <div className="mt-1 text-gray-500 italic">{issue.suggestion}</div>
-                    )}
-                  </div>
-                ))}
-                {validationIssues.length > 10 && (
-                  <div className="text-xs text-gray-500 text-center">
-                    +{validationIssues.length - 10} more issues
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
+        {/* Center - Module Info & Validation */}
+        <div className="col-span-3 h-full overflow-y-auto space-y-4">
           {/* Module Info Card */}
           {selectedModule && (
             <div className="bg-white rounded-lg border border-gray-200 p-4">
@@ -341,131 +285,181 @@ export function Editor() {
                 <div className="flex justify-between">
                   <dt className="text-gray-500">Status</dt>
                   <dd className="font-medium">
-                    <span
-                      className={cn(
-                        selectedModule.enabled ? 'text-green-600' : 'text-gray-500'
-                      )}
-                    >
+                    <span className={cn(selectedModule.enabled ? 'text-green-600' : 'text-gray-500')}>
                       {selectedModule.enabled ? 'Active' : 'Inactive'}
                     </span>
                   </dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-gray-500">Parameters</dt>
-                  <dd className="font-medium text-gray-900">
-                    {selectedModule.parameters.length}
-                  </dd>
+                  <dd className="font-medium text-gray-900">{selectedModule.parameters.length}</dd>
                 </div>
                 {selectedModule.containers.length > 0 && (
                   <div className="flex justify-between">
                     <dt className="text-gray-500">Containers</dt>
-                    <dd className="font-medium text-gray-900">
-                      {selectedModule.containers.length}
-                    </dd>
+                    <dd className="font-medium text-gray-900">{selectedModule.containers.length}</dd>
                   </div>
                 )}
               </dl>
             </div>
           )}
+
+          {/* Validation Summary */}
+          <div className="bg-white border border-gray-200 rounded-lg p-4">
+            <h3 className="text-sm font-semibold text-gray-900 mb-3">Validation</h3>
+            {validationResult ? (
+              <div className="space-y-2">
+                {validationResult.valid ? (
+                  <div className="flex items-center gap-2 text-green-600">
+                    <CheckCircle className="w-5 h-5" />
+                    <span className="text-sm">All checks passed</span>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex items-center gap-2 text-red-600">
+                      <AlertCircle className="w-4 h-4" />
+                      <span className="text-sm">{validationResult.errors.length} errors</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-yellow-600">
+                      <AlertTriangle className="w-4 h-4" />
+                      <span className="text-sm">{validationResult.warnings.length} warnings</span>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-500">Click Validate to check configuration</p>
+            )}
+          </div>
+
+          {/* Validation Issues List */}
+          {validationIssues.length > 0 && (
+            <div className="bg-white border border-gray-200 rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-gray-900 mb-3">Issues</h3>
+              <div className="space-y-2 max-h-48 overflow-y-auto">
+                {validationIssues.slice(0, 10).map((issue) => (
+                  <div
+                    key={issue.id}
+                    className={cn(
+                      'text-xs p-2 rounded cursor-pointer hover:bg-gray-50',
+                      issue.severity === 'error' && 'bg-red-50 text-red-700 border border-red-100',
+                      issue.severity === 'warning' && 'bg-yellow-50 text-yellow-700 border border-yellow-100',
+                      issue.severity === 'info' && 'bg-blue-50 text-blue-700 border border-blue-100'
+                    )}
+                    onClick={() => {
+                      if (issue.module) {
+                        const module = currentConfig?.modules.find(m => m.name === issue.module)
+                        if (module) setSelectedPath(`layer:${module.layer}/module:${module.id}`)
+                      }
+                    }}
+                  >
+                    <div className="font-medium">{issue.path}</div>
+                    <div className="mt-1">{issue.message}</div>
+                    {issue.suggestion && <div className="mt-1 text-gray-500 italic">{issue.suggestion}</div>}
+                  </div>
+                ))}
+                {validationIssues.length > 10 && (
+                  <div className="text-xs text-gray-500 text-center">+{validationIssues.length - 10} more issues</div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Right Panel - Expanded Configuration (collapsible items) */}
-        <div className="col-span-5 h-full overflow-hidden">
-          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden h-full flex flex-col">
-            <div className="px-4 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
+        {/* Right Panel - Status + Expanded Configuration */}
+        <div className="col-span-6 h-full overflow-hidden flex flex-col gap-3">
+          {/* Configuration Status Panel */}
+          <div className="flex-shrink-0">
+            <ConfigurationStatusPanel
+              config={currentConfig}
+              onExportReport={() => exportConfigReport(currentConfig)}
+            />
+          </div>
+
+          {/* Module Configuration - collapsible sections */}
+          <div className="flex-1 bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col min-h-0">
+            <div className="px-4 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between flex-shrink-0">
               <h3 className="text-sm font-semibold text-gray-900">
-                {selectedModule ? `${selectedModule.displayName || selectedModule.name} Configuration` : 'Select an Item'}
+                {selectedContainer
+                  ? `${selectedContainer.displayName || selectedContainer.name}`
+                  : selectedModule
+                    ? `${selectedModule.displayName || selectedModule.name} Configuration`
+                    : 'Select an Item'}
               </h3>
               {selectedModule && (
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-500">
-                    {selectedModule.parameters.length} params
-                  </span>
-                </div>
+                <span className="text-xs text-gray-500">
+                  {selectedModule.containers.reduce((s, c) => s + c.parameters.length + (c.subContainers?.reduce((ss, sc) => ss + sc.parameters.length, 0) || 0), 0) + selectedModule.parameters.length} params
+                </span>
               )}
             </div>
 
             {selectedModule ? (
-              <div className="p-4 space-y-3 overflow-y-auto flex-1">
-                <div className="flex items-center gap-2 text-xs text-gray-500 pb-3 border-b border-gray-100">
+              <div className="p-3 space-y-2 overflow-y-auto flex-1">
+                <div className="flex items-center gap-2 text-xs text-gray-500 pb-2 border-b border-gray-100 flex-shrink-0">
                   <span className="px-2 py-1 bg-gray-100 rounded">{selectedModule.layer}</span>
                   <span>Version: {selectedModule.version}</span>
-                  <span
-                    className={cn(
-                      'px-2 py-1 rounded',
-                      selectedModule.enabled
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-gray-100 text-gray-500'
-                    )}
-                  >
+                  <span className={cn('px-2 py-1 rounded', selectedModule.enabled ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500')}>
                     {selectedModule.enabled ? 'Enabled' : 'Disabled'}
                   </span>
+                  {selectedContainer && (
+                    <span className="ml-auto text-primary-600 font-medium text-xs">
+                      Showing: {selectedContainer.displayName || selectedContainer.name}
+                    </span>
+                  )}
                 </div>
 
                 {!selectedModule.enabled && (
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                    <p className="text-sm text-yellow-800">
-                      This module is currently disabled. Enable it in the module tree to activate
-                      its configuration.
-                    </p>
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                    <p className="text-sm text-yellow-800">This module is currently disabled. Enable it in the module tree to activate its configuration.</p>
                   </div>
                 )}
 
-                {/* Group parameters by container */}
-                {selectedModule.containers.length > 0 && selectedModule.containers.map((container) => (
-                  <CollapsibleSection 
-                    key={container.id}
-                    title={container.displayName || container.name}
-                    subtitle={`${container.parameters.length} parameters`}
+                {/* If a container is selected, show only that container */}
+                {selectedContainer ? (
+                  <ContainerConfigSection
+                    container={selectedContainer}
+                    level={0}
                     defaultExpanded={true}
-                  >
-                    <div className="space-y-4">
-                      {container.parameters.map((param) => (
-                        <ParameterEditor
-                          key={param.id}
-                          parameter={param}
-                          onChange={(value) => handleParameterChange(param.name, value)}
+                    onParamChange={(name, value) => handleParameterChange(name, value)}
+                  />
+                ) : (
+                  <>
+                    {/* Group parameters by container */}
+                    {selectedModule.containers.length > 0 && selectedModule.containers.map((container) => (
+                      <CollapsibleSection
+                        key={container.id}
+                        title={container.displayName || container.name}
+                        subtitle={`${container.parameters.length} parameters`}
+                        defaultExpanded={false}
+                      >
+                        <ContainerConfigSection
+                          container={container}
+                          level={0}
+                          defaultExpanded={true}
+                          onParamChange={(name, value) => handleParameterChange(name, value)}
                         />
-                      ))}
-                      {container.subContainers?.map((sub) => (
-                        <CollapsibleSection
-                          key={sub.id}
-                          title={sub.displayName || sub.name}
-                          subtitle={`${sub.parameters.length} parameters`}
-                          defaultExpanded={false}
-                        >
-                          <div className="space-y-4">
-                            {sub.parameters.map((param) => (
-                              <ParameterEditor
-                                key={param.id}
-                                parameter={param}
-                                onChange={(value) => handleParameterChange(param.name, value)}
-                              />
-                            ))}
-                          </div>
-                        </CollapsibleSection>
-                      ))}
-                    </div>
-                  </CollapsibleSection>
-                ))}
+                      </CollapsibleSection>
+                    ))}
 
-                {/* Standalone parameters (not in containers) */}
-                {selectedModule.parameters.length > 0 && (
-                  <CollapsibleSection 
-                    title="Parameters"
-                    subtitle={`${selectedModule.parameters.length} items`}
-                    defaultExpanded={true}
-                  >
-                    <div className="space-y-4">
-                      {selectedModule.parameters.map((param) => (
-                        <ParameterEditor
-                          key={param.id}
-                          parameter={param}
-                          onChange={(value) => handleParameterChange(param.name, value)}
-                        />
-                      ))}
-                    </div>
-                  </CollapsibleSection>
+                    {/* Standalone parameters */}
+                    {selectedModule.parameters.length > 0 && (
+                      <CollapsibleSection
+                        title="Parameters"
+                        subtitle={`${selectedModule.parameters.length} items`}
+                        defaultExpanded={true}
+                      >
+                        <div className="space-y-4">
+                          {selectedModule.parameters.map((param) => (
+                            <ParameterEditor
+                              key={param.id}
+                              parameter={param}
+                              onChange={(value) => handleParameterChange(param.name, value)}
+                            />
+                          ))}
+                        </div>
+                      </CollapsibleSection>
+                    )}
+                  </>
                 )}
               </div>
             ) : isOSSelected ? (
