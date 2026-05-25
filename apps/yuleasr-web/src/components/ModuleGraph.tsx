@@ -197,7 +197,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
           className={cn(
             'pointer-events-auto p-2 rounded-lg border shadow-sm transition-colors',
             showFilters 
-              ? 'bg-primary-50 border-primary-200 text-primary-700' 
+              ? 'bg-primary-50 border-app-border-primary-200 text-primary-700' 
               : 'bg-app-bg-primary border-app-border-primary text-app-text-secondary hover:bg-app-bg-secondary'
           )}
           title="Toggle filters"

@@ -21,9 +21,9 @@ interface ConfigCompareDialogProps {
 // Color mapping for diff status
 const statusColors: Record<CompareStatus, { bg: string; text: string; border: string; label: string }> = {
   same: {
-    bg: 'bg-secondary',
+    bg: 'bg-app-bg-secondary',
     text: 'text-app-text-secondary',
-    border: 'border-primary',
+    border: 'border-app-border-primary',
     label: 'Same',
   },
   different: {

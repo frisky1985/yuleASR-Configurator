@@ -204,7 +204,7 @@ export function BulkOperationsPanel({ modules, onToggleModules, className }: Bul
                   {allSelected ? (
                     <CheckSquare className="w-4 h-4" />
                   ) : someSelected ? (
-                    <div className="w-4 h-4 border-2 border-primary bg-primary/50 rounded" />
+                    <div className="w-4 h-4 border-2 border-app-border-primary bg-primary/50 rounded" />
                   ) : (
                     <Square className="w-4 h-4" />
                   )}

@@ -257,7 +257,7 @@ export function Editor() {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
         <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-2 border-primary-600 border-t-transparent rounded-full mx-auto" />
+          <div className="animate-spin w-8 h-8 border-2 border-app-border-primary-600 border-t-transparent rounded-full mx-auto" />
           <p className="text-app-text-secondary mt-2">Loading configuration...</p>
         </div>
       </div>

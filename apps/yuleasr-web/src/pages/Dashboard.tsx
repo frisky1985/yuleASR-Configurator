@@ -434,7 +434,7 @@ export function Dashboard() {
 
       {/* Config List */}
       <div className="bg-app-bg-primary border border-app-border-primary rounded-xl overflow-hidden shadow-sm">
-        <div className="px-6 py-4 border-b border-primary bg-secondary flex items-center justify-between">
+        <div className="px-6 py-4 border-b border-app-border-primary bg-app-bg-secondary flex items-center justify-between">
           <h2 className="text-lg font-semibold text-primary">{t('dashboard.recentConfigurations')}</h2>
           {configList.length > 0 && (
             <span className="text-xs text-app-text-secondary bg-app-bg-primary px-2.5 py-1 rounded-full border border-app-border-primary">
@@ -468,14 +468,14 @@ export function Dashboard() {
               </button>
               <button
                 onClick={handleOpenExisting}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-primary text-primary-foreground rounded-lg hover:bg-primary-600 hover:border-primary-600 transition-all active:scale-[0.98]"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-app-border-primary text-primary-foreground rounded-lg hover:bg-primary-600 hover:border-primary-600 transition-all active:scale-[0.98]"
               >
                 <FolderOpen className="w-4 h-4" />
                 {t('dashboard.openExisting')}
               </button>
               <button
                 onClick={() => setShowImportDialog(true)}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-primary text-primary-foreground rounded-lg hover:bg-primary-600 hover:border-primary-600 transition-all active:scale-[0.98]"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-app-border-primary text-primary-foreground rounded-lg hover:bg-primary-600 hover:border-primary-600 transition-all active:scale-[0.98]"
               >
                 <FileJson className="w-4 h-4" />
                 {t('dashboard.import')}
@@ -483,14 +483,14 @@ export function Dashboard() {
             </div>
           </div>
         ) : (
-          <div className="divide-y divide-border-primary">
+          <div className="divide-y divide-app-border-primary">
             {configList.map((config) => {
               const completion = getConfigCompletion(config.id)
               const configDetail = getConfigDetail(config.id)
               return (
                 <div
                   key={config.id}
-                  className="px-6 py-4 hover:bg-secondary transition-colors group"
+                  className="px-6 py-4 hover:bg-app-bg-secondary transition-colors group"
                 >
                   <div className="flex items-center justify-between gap-4">
                   <div
@@ -617,7 +617,7 @@ export function Dashboard() {
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-app-bg-primary rounded-xl shadow-xl max-w-md w-full mx-4">
-            <div className="px-6 py-4 border-b border-primary">
+            <div className="px-6 py-4 border-b border-app-border-primary">
               <h3 className="text-lg font-semibold text-primary">{t('dashboard.newConfiguration')}</h3>
             </div>
             <div className="p-6 space-y-4">
@@ -630,7 +630,7 @@ export function Dashboard() {
                   value={newConfigName}
                   onChange={(e) => setNewConfigName(e.target.value)}
                   placeholder={t('dashboard.myConfig')}
-                  className="w-full px-3 py-2 border border-primary rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  className="w-full px-3 py-2 border border-app-border-primary rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   autoFocus
                 />
               </div>
@@ -643,14 +643,14 @@ export function Dashboard() {
                   onChange={(e) => setNewConfigDesc(e.target.value)}
                   placeholder={t('dashboard.optionalDesc')}
                   rows={3}
-                  className="w-full px-3 py-2 border border-primary rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  className="w-full px-3 py-2 border border-app-border-primary rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 />
               </div>
             </div>
-            <div className="px-6 py-4 border-t border-primary flex justify-end gap-3">
+            <div className="px-6 py-4 border-t border-app-border-primary flex justify-end gap-3">
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="px-4 py-2 text-primary hover:bg-secondary rounded-lg transition-colors"
+                className="px-4 py-2 text-primary hover:bg-app-bg-secondary rounded-lg transition-colors"
               >
                 {t('common.cancel')}
               </button>
@@ -675,7 +675,7 @@ export function Dashboard() {
       {showGraphModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-app-bg-primary rounded-xl shadow-2xl w-[95vw] h-[90vh] flex flex-col overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-primary bg-secondary">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-app-border-primary bg-app-bg-secondary">
               <div>
                 <h3 className="text-lg font-semibold text-primary flex items-center gap-2">
                   <GitGraph className="w-5 h-5 text-pink-600" />
@@ -691,7 +691,7 @@ export function Dashboard() {
                   setGraphModules([])
                   setSelectedConfigForGraph(null)
                 }}
-                className="p-2 text-app-text-tertiary hover:text-app-text-secondary hover:bg-secondary rounded-lg transition-colors"
+                className="p-2 text-app-text-tertiary hover:text-app-text-secondary hover:bg-app-bg-secondary rounded-lg transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>

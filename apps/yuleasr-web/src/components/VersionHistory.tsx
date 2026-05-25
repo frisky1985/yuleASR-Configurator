@@ -260,7 +260,7 @@ export function VersionHistory({
                       <div className="absolute left-6 top-0 bottom-0 w-px bg-app-bg-tertiary" />
                       
                       {/* Commit Dot */}
-                      <div className="absolute left-4 top-4 w-4 h-4 rounded-full bg-app-bg-primary border-2 border-primary-500 z-10" />
+                      <div className="absolute left-4 top-4 w-4 h-4 rounded-full bg-app-bg-primary border-2 border-app-border-primary-500 z-10" />
 
                       {compareMode ? (
                         <label className="flex items-start gap-3 cursor-pointer pl-8">

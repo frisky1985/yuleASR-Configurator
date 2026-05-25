@@ -316,7 +316,7 @@ export function ParameterEditor({
                   )}
                 />
               </div>
-              <div className="max-h-48 overflow-y-auto border border-primary rounded-md divide-y divide-app-border-primary">
+              <div className="max-h-48 overflow-y-auto border border-app-border-primary rounded-md divide-y divide-app-border-primary">
                 {filteredEnumOptions.length === 0 ? (
                   <div className="px-3 py-2 text-xs text-app-text-tertiary text-center">
                     No options found

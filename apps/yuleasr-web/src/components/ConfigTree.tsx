@@ -764,7 +764,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
         <div
           className={cn(
             'group flex items-center gap-1.5 py-1.5 pr-2 cursor-pointer transition-colors',
-            isSelected ? 'bg-primary-50' : 'hover:bg-secondary',
+            isSelected ? 'bg-primary-50' : 'hover:bg-app-bg-secondary',
             node.type === 'layer' && layerColors[node.name],
             node.isDynamic && 'cursor-grab active:cursor-grabbing',
             dragOverPath === node.path && dragSource && 'border-t-2 border-blue-400'
@@ -862,7 +862,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
                   }
                   e.stopPropagation()
                 }}
-                className="w-full px-1 py-0.5 text-sm border border-primary-400 rounded bg-app-bg-primary focus:outline-none focus:ring-1 focus:ring-primary-500"
+                className="w-full px-1 py-0.5 text-sm border border-app-border-primary-400 rounded bg-app-bg-primary focus:outline-none focus:ring-1 focus:ring-primary-500"
                 onClick={(e) => e.stopPropagation()}
               />
             ) : (
@@ -981,7 +981,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
   return (
     <div className="bg-app-bg-primary rounded-lg border border-app-border-primary overflow-hidden flex flex-col h-full">
       {/* Header */}
-      <div className="px-3 py-2.5 bg-secondary border-b border-primary">
+      <div className="px-3 py-2.5 bg-app-bg-secondary border-b border-app-border-primary">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-sm font-semibold text-primary">Configuration Tree</h3>
           <span className="text-xs text-app-text-secondary">
@@ -1026,12 +1026,12 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
             </button>
             {showFilterMenu && (
               <div className="absolute top-full left-0 mt-1 w-44 bg-app-bg-primary rounded-md shadow-lg border border-app-border-primary z-10 py-1">
-                <label className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-secondary cursor-pointer">
+                <label className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-app-bg-secondary cursor-pointer">
                   <input
                     type="checkbox"
                     checked={showDisabled}
                     onChange={(e) => {}}
-                    className="w-3.5 h-3.5 rounded border-primary text-primary-600 focus:ring-primary-500"
+                    className="w-3.5 h-3.5 rounded border-app-border-primary text-primary-600 focus:ring-primary-500"
                   />
                   <span>Show disabled modules</span>
                 </label>
@@ -1072,7 +1072,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
       
       {/* Footer - validation summary */}
       {validationIssues.length > 0 && (
-        <div className="px-3 py-2 bg-secondary border-t border-primary">
+        <div className="px-3 py-2 bg-app-bg-secondary border-t border-app-border-primary">
           <div className="flex items-center gap-3 text-xs">
             {validationIssues.filter(i => i.severity === 'error').length > 0 && (
               <span className="flex items-center gap-1 text-red-600">
@@ -1104,7 +1104,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
           onClick={(e) => e.stopPropagation()}
         >
           <button
-            className="w-full px-3 py-2 text-left text-sm text-primary hover:bg-secondary flex items-center gap-2"
+            className="w-full px-3 py-2 text-left text-sm text-primary hover:bg-app-bg-secondary flex items-center gap-2"
             onClick={() => {
               startRename(contextMenu.nodePath, contextMenu.instanceName)
               setContextMenu(null)
@@ -1114,7 +1114,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
             重命名
           </button>
           <button
-            className="w-full px-3 py-2 text-left text-sm text-primary hover:bg-secondary flex items-center gap-2"
+            className="w-full px-3 py-2 text-left text-sm text-primary hover:bg-app-bg-secondary flex items-center gap-2"
             onClick={() => {
               copyInstance(contextMenu.containerPath, contextMenu.instanceName)
               setContextMenu(null)

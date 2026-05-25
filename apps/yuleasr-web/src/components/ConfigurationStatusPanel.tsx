@@ -113,7 +113,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
   return (
     <div className="bg-app-bg-primary rounded-lg border border-app-border-primary overflow-hidden">
       {/* Header */}
-      <div className="px-4 py-3 bg-secondary border-b border-primary flex items-center justify-between">
+      <div className="px-4 py-3 bg-app-bg-secondary border-b border-app-border-primary flex items-center justify-between">
         <h3 className="text-sm font-semibold text-app-text-primary flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-primary-600" />
           Configuration Status
@@ -183,7 +183,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
             </div>
             <MiniProgressBar value={stats.partial} max={stats.total} />
           </div>
-          <div className="flex flex-col gap-1 p-2 bg-secondary rounded-lg">
+          <div className="flex flex-col gap-1 p-2 bg-app-bg-secondary rounded-lg">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <CircleDashed className="w-3.5 h-3.5 text-app-text-secondary" />
@@ -258,7 +258,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
         )}
 
         {/* Last Updated */}
-        <div className="pt-3 border-t border-primary">
+        <div className="pt-3 border-t border-app-border-primary">
           <p className="text-xs text-app-text-secondary">
             Last updated: {new Date(config.updatedAt).toLocaleString()}
           </p>
