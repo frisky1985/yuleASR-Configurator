@@ -880,6 +880,12 @@ export function ConfigTree({
               </button>
               <button
                 onClick={() => {
+                  // Build the deleted instance's full path
+                  const deletedPath = `${deleteTarget.containerPath}/instance:${deleteTarget.instanceName}`
+                  // Clear selection if the deleted instance or any of its children was selected
+                  if (selectedPath?.startsWith(deletedPath)) {
+                    onSelectPath('')
+                  }
                   removeInstance(deleteTarget.containerPath, deleteTarget.instanceName)
                   setDeleteTarget(null)
                 }}
