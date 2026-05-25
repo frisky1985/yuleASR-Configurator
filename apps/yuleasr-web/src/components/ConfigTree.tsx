@@ -110,6 +110,16 @@ export function ConfigTree({
     instanceName: string
   } | null>(null)
   
+  // Inline rename state
+  const [renamingPath, setRenamingPath] = useState<string | null>(null)
+  const [renameValue, setRenameValue] = useState('')
+  
+  // Drag state
+  const [dragSource, setDragSource] = useState<{
+    containerPath: string
+    instanceName: string
+  } | null>(null)
+  
   // Collect initial dynamic instances from module containers
   function collectDynamicContainers(
     containers: ConfigContainer[], 
@@ -163,6 +173,89 @@ export function ConfigTree({
       return { ...prev, [containerPath]: instances }
     })
   }, [])
+  
+  // Rename an instance
+  const renameInstance = useCallback((containerPath: string, oldName: string, newName: string) => {
+    setDynamicInstances(prev => {
+      const instances = (prev[containerPath] || []).map(n => n === oldName ? newName : n)
+      return { ...prev, [containerPath]: instances }
+    })
+  }, [])
+  
+  // Copy an instance (adds a new one with auto-incremented name)
+  const copyInstance = useCallback((containerPath: string, sourceName: string) => {
+    setDynamicInstances(prev => {
+      const instances = [...(prev[containerPath] || [])]
+      let maxIdx = -1
+      for (const inst of instances) {
+        const match = inst.match(/_(\d+)$/)
+        if (match) maxIdx = Math.max(maxIdx, parseInt(match[1]))
+      }
+      const baseName = sourceName.replace(/_\d+$/, '') || sourceName
+      instances.push(`${baseName}_${maxIdx + 1}`)
+      return { ...prev, [containerPath]: instances }
+    })
+  }, [])
+  
+  // Start rename (set editing state)
+  const startRename = useCallback((path: string, currentName: string) => {
+    setRenamingPath(path)
+    setRenameValue(currentName)
+  }, [])
+  
+  // Confirm rename
+  const confirmRename = useCallback((containerPath: string) => {
+    if (renamingPath && renameValue.trim()) {
+      const currentName = dynamicInstances[containerPath]?.find(n => {
+        const instPath = `${containerPath}/instance:${n}`
+        return instPath === renamingPath
+      })
+      if (currentName) {
+        renameInstance(containerPath, currentName, renameValue.trim())
+      }
+    }
+    setRenamingPath(null)
+    setRenameValue('')
+  }, [renamingPath, renameValue, dynamicInstances, renameInstance])
+  
+  // Cancel rename
+  const cancelRename = useCallback(() => {
+    setRenamingPath(null)
+    setRenameValue('')
+  }, [])
+  
+  // Handle drag start
+  const onDragStart = useCallback((containerPath: string, instanceName: string) => {
+    setDragSource({ containerPath, instanceName })
+  }, [])
+  
+  // Handle drag over (prevent default to allow drop)
+  const onDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+  }, [])
+  
+  // Handle drop - reorder instances
+  const onDrop = useCallback((targetContainerPath: string, targetName: string) => {
+    if (!dragSource || dragSource.containerPath !== targetContainerPath) {
+      setDragSource(null)
+      return
+    }
+    const { instanceName: sourceName } = dragSource
+    if (sourceName === targetName) {
+      setDragSource(null)
+      return
+    }
+    setDynamicInstances(prev => {
+      const instances = [...(prev[targetContainerPath] || [])]
+      const fromIdx = instances.indexOf(sourceName)
+      const toIdx = instances.indexOf(targetName)
+      if (fromIdx === -1 || toIdx === -1) return prev
+      instances.splice(fromIdx, 1)
+      instances.splice(toIdx, 0, sourceName)
+      return { ...prev, [targetContainerPath]: instances }
+    })
+    setDragSource(null)
+  }, [dragSource])
   
   // Recursively search inside module containers and parameters
   function searchInModule(module: ConfigModule, query: string): boolean {
@@ -449,9 +542,23 @@ export function ConfigTree({
           className={cn(
             'group flex items-center gap-1.5 py-1.5 pr-2 cursor-pointer transition-colors',
             isSelected ? 'bg-primary-50' : 'hover:bg-gray-50',
-            node.type === 'layer' && layerColors[node.name]
+            node.type === 'layer' && layerColors[node.name],
+            node.isDynamic && 'cursor-grab active:cursor-grabbing'
           )}
           style={{ paddingLeft: `${paddingLeft}px` }}
+          draggable={node.isDynamic}
+          onDragStart={(e) => {
+            if (node.isDynamic && node.parentContainerPath) {
+              onDragStart(node.parentContainerPath, node.instanceName!)
+              e.dataTransfer.effectAllowed = 'move'
+            }
+          }}
+          onDragOver={node.isDynamic ? onDragOver : undefined}
+          onDrop={(e) => {
+            if (node.isDynamic && node.parentContainerPath) {
+              onDrop(node.parentContainerPath, node.instanceName!)
+            }
+          }}
           onClick={() => {
             onSelectPath(node.path)
             if (node.hasChildren) {
@@ -488,7 +595,7 @@ export function ConfigTree({
             {node.icon}
           </span>
           
-          {/* Node name */}
+          {/* Node name - with inline rename for dynamic instances */}
           <span className={cn(
             'flex-1 text-sm truncate',
             isSelected ? 'text-primary-700 font-medium' : 'text-gray-700',
@@ -496,7 +603,37 @@ export function ConfigTree({
             node.type === 'parameter' && 'text-gray-600',
             node.enabled === false && 'opacity-50'
           )}>
-            {node.displayName}
+            {node.isDynamic && renamingPath === node.path ? (
+              <input
+                autoFocus
+                value={renameValue}
+                onChange={(e) => setRenameValue(e.target.value)}
+                onBlur={() => {
+                  if (node.parentContainerPath) confirmRename(node.parentContainerPath)
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && node.parentContainerPath) {
+                    confirmRename(node.parentContainerPath)
+                  } else if (e.key === 'Escape') {
+                    cancelRename()
+                  }
+                  e.stopPropagation()
+                }}
+                className="w-full px-1 py-0.5 text-sm border border-primary-400 rounded bg-white focus:outline-none focus:ring-1 focus:ring-primary-500"
+                onClick={(e) => e.stopPropagation()}
+              />
+            ) : (
+              <span
+                onDoubleClick={() => {
+                  if (node.isDynamic) {
+                    startRename(node.path, node.instanceName || node.name)
+                  }
+                }}
+                title={node.isDynamic ? 'Double-click to rename' : undefined}
+              >
+                {node.displayName}
+              </span>
+            )}
           </span>
           
           {/* Dynamic instance controls */}
@@ -512,22 +649,36 @@ export function ConfigTree({
               +
             </button>
           )}
-          {node.isDynamic && (node.instanceCount ?? 0) > (node.minInstanceCount ?? 0) && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                if (node.parentContainerPath) {
-                  setDeleteTarget({
-                    containerPath: node.parentContainerPath,
-                    instanceName: node.instanceName!
-                  })
-                }
-              }}
-              className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded text-red-400 hover:text-red-600 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity text-sm"
-              title={`Delete ${node.instanceName}`}
-            >
-              ×
-            </button>
+          {node.isDynamic && (
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (node.parentContainerPath) {
+                    copyInstance(node.parentContainerPath, node.instanceName!)
+                  }
+                }}
+                className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded text-blue-500 hover:bg-blue-50 opacity-0 group-hover:opacity-100 transition-opacity text-xs font-medium"
+                title={`Copy ${node.instanceName}`}
+              >
+                ⎘
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (node.parentContainerPath) {
+                    setDeleteTarget({
+                      containerPath: node.parentContainerPath,
+                      instanceName: node.instanceName!
+                    })
+                  }
+                }}
+                className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded text-red-400 hover:text-red-600 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity text-sm"
+                title={`Delete ${node.instanceName}`}
+              >
+                ×
+              </button>
+            </>
           )}
           
           {/* Configuration Status Indicator */}
@@ -567,7 +718,7 @@ export function ConfigTree({
           )}
         </div>
         
-        {/* Children */}
+        {/* Sub-container nodes (including dynamic instances) */}
         {isExpanded && node.children && node.children.length > 0 && (
           <div className="">
             {node.children.map(child => renderNode(child, level + 1))}
