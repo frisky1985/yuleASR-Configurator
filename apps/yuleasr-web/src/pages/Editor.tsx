@@ -22,6 +22,7 @@ import { OSEditor } from '@/components/OSEditor'
 import { ParameterEditor } from '@/components/ParameterEditor'
 import { useTheme } from '@/components/ThemeProvider'
 import { ValidationPanel } from '@/components/ValidationPanel'
+import { CollapsibleSection } from '@/components/CollapsibleSection'
 import { cn, formatDate } from '@/lib/utils'
 import { useConfigStore } from '@/stores/configStore'
 import type { ValidationResult } from '@/types'
@@ -235,78 +236,8 @@ export function Editor() {
           />
         </div>
 
-        {/* Center - Parameter Editor */}
-        <div className="col-span-6 h-full overflow-hidden">
-          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden h-full flex flex-col">
-            <div className="px-4 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-gray-900">
-                {selectedModule ? `${selectedModule.displayName || selectedModule.name} Configuration` : 'Select an Item'}
-              </h3>
-              {selectedModule && (
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-500">
-                    {selectedModule.parameters.length} params
-                  </span>
-                </div>
-              )}
-            </div>
-
-            {selectedModule ? (
-              <div className="p-4 space-y-6 overflow-y-auto flex-1">
-                <div className="flex items-center gap-2 text-xs text-gray-500 pb-4 border-b border-gray-100">
-                  <span className="px-2 py-1 bg-gray-100 rounded">{selectedModule.layer}</span>
-                  <span>Version: {selectedModule.version}</span>
-                  <span
-                    className={cn(
-                      'px-2 py-1 rounded',
-                      selectedModule.enabled
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-gray-100 text-gray-500'
-                    )}
-                  >
-                    {selectedModule.enabled ? 'Enabled' : 'Disabled'}
-                  </span>
-                </div>
-
-                {!selectedModule.enabled && (
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                    <p className="text-sm text-yellow-800">
-                      This module is currently disabled. Enable it in the module tree to activate
-                      its configuration.
-                    </p>
-                  </div>
-                )}
-
-                {selectedModule.parameters.length === 0 ? (
-                  <div className="text-center py-8">
-                    <p className="text-gray-500">
-                      No configurable parameters for this module
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-6">
-                    {selectedModule.parameters.map((param) => (
-                      <ParameterEditor
-                        key={param.id}
-                        parameter={param}
-                        onChange={(value) => handleParameterChange(param.name, value)}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : isOSSelected ? (
-              <OSEditor className="h-full overflow-y-auto" />
-            ) : (
-              <div className="p-8 text-center flex-1 flex items-center justify-center">
-                <p className="text-gray-500">Select a module or container from the tree to configure</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Right Sidebar - Validation & Info */}
-        <div className="col-span-3 space-y-4 h-full overflow-y-auto">
+        {/* Center - Overview / Validation / Status */}
+        <div className="col-span-4 h-full overflow-y-auto space-y-4">
           {/* Configuration Status Panel */}
           <ConfigurationStatusPanel 
             config={currentConfig}
@@ -360,7 +291,6 @@ export function Editor() {
                       issue.severity === 'info' && 'bg-blue-50 text-blue-700 border border-blue-100'
                     )}
                     onClick={() => {
-                      // Navigate to the issue location
                       if (issue.module) {
                         const module = currentConfig?.modules.find(m => m.name === issue.module)
                         if (module) {
@@ -437,6 +367,115 @@ export function Editor() {
               </dl>
             </div>
           )}
+        </div>
+
+        {/* Right Panel - Expanded Configuration (collapsible items) */}
+        <div className="col-span-5 h-full overflow-hidden">
+          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden h-full flex flex-col">
+            <div className="px-4 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-gray-900">
+                {selectedModule ? `${selectedModule.displayName || selectedModule.name} Configuration` : 'Select an Item'}
+              </h3>
+              {selectedModule && (
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-500">
+                    {selectedModule.parameters.length} params
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {selectedModule ? (
+              <div className="p-4 space-y-3 overflow-y-auto flex-1">
+                <div className="flex items-center gap-2 text-xs text-gray-500 pb-3 border-b border-gray-100">
+                  <span className="px-2 py-1 bg-gray-100 rounded">{selectedModule.layer}</span>
+                  <span>Version: {selectedModule.version}</span>
+                  <span
+                    className={cn(
+                      'px-2 py-1 rounded',
+                      selectedModule.enabled
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-gray-100 text-gray-500'
+                    )}
+                  >
+                    {selectedModule.enabled ? 'Enabled' : 'Disabled'}
+                  </span>
+                </div>
+
+                {!selectedModule.enabled && (
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <p className="text-sm text-yellow-800">
+                      This module is currently disabled. Enable it in the module tree to activate
+                      its configuration.
+                    </p>
+                  </div>
+                )}
+
+                {/* Group parameters by container */}
+                {selectedModule.containers.length > 0 && selectedModule.containers.map((container) => (
+                  <CollapsibleSection 
+                    key={container.id}
+                    title={container.displayName || container.name}
+                    subtitle={`${container.parameters.length} parameters`}
+                    defaultExpanded={true}
+                  >
+                    <div className="space-y-4">
+                      {container.parameters.map((param) => (
+                        <ParameterEditor
+                          key={param.id}
+                          parameter={param}
+                          onChange={(value) => handleParameterChange(param.name, value)}
+                        />
+                      ))}
+                      {container.subContainers?.map((sub) => (
+                        <CollapsibleSection
+                          key={sub.id}
+                          title={sub.displayName || sub.name}
+                          subtitle={`${sub.parameters.length} parameters`}
+                          defaultExpanded={false}
+                        >
+                          <div className="space-y-4">
+                            {sub.parameters.map((param) => (
+                              <ParameterEditor
+                                key={param.id}
+                                parameter={param}
+                                onChange={(value) => handleParameterChange(param.name, value)}
+                              />
+                            ))}
+                          </div>
+                        </CollapsibleSection>
+                      ))}
+                    </div>
+                  </CollapsibleSection>
+                ))}
+
+                {/* Standalone parameters (not in containers) */}
+                {selectedModule.parameters.length > 0 && (
+                  <CollapsibleSection 
+                    title="Parameters"
+                    subtitle={`${selectedModule.parameters.length} items`}
+                    defaultExpanded={true}
+                  >
+                    <div className="space-y-4">
+                      {selectedModule.parameters.map((param) => (
+                        <ParameterEditor
+                          key={param.id}
+                          parameter={param}
+                          onChange={(value) => handleParameterChange(param.name, value)}
+                        />
+                      ))}
+                    </div>
+                  </CollapsibleSection>
+                )}
+              </div>
+            ) : isOSSelected ? (
+              <OSEditor className="h-full overflow-y-auto" />
+            ) : (
+              <div className="p-8 text-center flex-1 flex items-center justify-center">
+                <p className="text-gray-500">Select a module or container from the tree to configure</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
