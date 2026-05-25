@@ -18,11 +18,12 @@ import {
 import { useMemo } from 'react'
 
 import { cn } from '@/lib/utils'
-import type { ConfigFile, ConfigModule } from '@/types'
+import type { ConfigFile, ConfigModule, ValidationResult } from '@/types'
 
 interface ConfigurationStatusPanelProps {
   config: ConfigFile
   onExportReport?: () => void
+  validationResult?: ValidationResult | null
 }
 
 interface LayerStats {
@@ -34,20 +35,30 @@ interface LayerStats {
   unconfigured: number
 }
 
-export function ConfigurationStatusPanel({ config, onExportReport }: ConfigurationStatusPanelProps) {
-  // Calculate statistics
+export function ConfigurationStatusPanel({ config, onExportReport, validationResult }: ConfigurationStatusPanelProps) {
+  // Calculate stats
   const stats = useMemo(() => {
     const total = config.modules.length
+    const enabled = config.modules.filter(m => m.enabled).length
     const configured = config.modules.filter(m => m.configStatus === 'configured').length
+    
+    // Calculate score based on validation issues
+    let validationScore = 100
+    if (validationResult) {
+      const errorPenalty = validationResult.errors.length * 15
+      const warningPenalty = validationResult.warnings.length * 5
+      validationScore = Math.max(0, 100 - errorPenalty - warningPenalty)
+    }
+    
+    // Composite score: 60% config + 40% validation
+    const configRatio = total > 0 ? configured / total : 0
+    const progress = Math.round((configRatio * 60 + (validationScore / 100) * 40))
+    
     const configuring = config.modules.filter(m => m.configStatus === 'configuring').length
     const partial = config.modules.filter(m => m.configStatus === 'partial').length
     const unconfigured = config.modules.filter(m => m.configStatus === 'unconfigured').length
-    const enabled = config.modules.filter(m => m.enabled).length
-    
-    const progress = total > 0 ? Math.round((configured / total) * 100) : 0
-    
-    return { total, configured, configuring, partial, unconfigured, enabled, progress }
-  }, [config.modules])
+    return { total, enabled, configured, configuring, partial, unconfigured, progress }
+  }, [config, validationResult])
 
   // Calculate per-layer statistics
   const layerStats = useMemo(() => {

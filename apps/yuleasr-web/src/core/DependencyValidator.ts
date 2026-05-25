@@ -167,7 +167,7 @@ export class DependencyValidator {
         this.validateParameter(param, module.name)
       }
       
-      // Validate container parameters
+      // Validate container parameters (including dynamic instances)
       for (const container of module.containers) {
         this.validateContainer(container, module.name)
       }
@@ -177,7 +177,7 @@ export class DependencyValidator {
   /**
    * Validate a single parameter
    */
-  private validateParameter(param: any, moduleName: string, containerPath?: string): void {
+  private validateParameter(param: any, moduleName: string, containerPath?: string, instanceName?: string): void {
     const path = containerPath 
       ? `${moduleName}.${containerPath}.${param.name}` 
       : `${moduleName}.${param.name}`
@@ -284,8 +284,43 @@ export class DependencyValidator {
    * - Parameters referencing other modules
    */
   private validateCrossModuleReferences(): void {
-    // Implementation for cross-module references
-    // This would check if a parameter in Module A references a valid element in Module B
+    // AUTOSAR implicit dependency rules
+    const dependencyRules: Array<{ module: string; requires: string; severity: 'error' | 'warning' | 'info' }> = [
+      { module: 'Can', requires: 'CanTrcv', severity: 'error' },
+      { module: 'CanTp', requires: 'Can', severity: 'error' },
+      { module: 'CanNm', requires: 'Can', severity: 'error' },
+      { module: 'CanSM', requires: 'Can', severity: 'error' },
+      { module: 'CanSM', requires: 'CanNm', severity: 'error' },
+      { module: 'Dcm', requires: 'CanTp', severity: 'warning' },
+      { module: 'NvM', requires: 'Fee', severity: 'warning' },
+      { module: 'NvM', requires: 'Fls', severity: 'warning' },
+      { module: 'EcuM', requires: 'Mcu', severity: 'warning' },
+      { module: 'Csm', requires: 'Crypto', severity: 'warning' },
+      { module: 'Csm', requires: 'CryIf', severity: 'warning' },
+      { module: 'Crypto', requires: 'CryIf', severity: 'error' },
+      { module: 'CanIf', requires: 'Can', severity: 'error' },
+      { module: 'PduR', requires: 'Can', severity: 'info' },
+    ]
+
+    const moduleMap = new Map(this.config.modules.map(m => [m.name, m]))
+
+    for (const rule of dependencyRules) {
+      const srcModule = moduleMap.get(rule.module)
+      const tgtModule = moduleMap.get(rule.requires)
+
+      if (!srcModule || !srcModule.enabled) continue
+      if (tgtModule && tgtModule.enabled) continue
+
+      this.addIssue({
+        path: `${rule.module}.dependencies`,
+        message: tgtModule
+          ? `"${rule.module}" requires "${rule.requires}" which is not enabled`
+          : `"${rule.module}" requires "${rule.requires}" which is not in the configuration`,
+        severity: rule.severity,
+        module: rule.module,
+        suggestion: `Enable "${rule.requires}" module`,
+      })
+    }
   }
 
   /**

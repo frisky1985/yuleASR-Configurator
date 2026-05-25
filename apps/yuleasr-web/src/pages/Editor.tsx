@@ -522,6 +522,7 @@ export function Editor() {
           <ConfigurationStatusPanel
             config={currentConfig}
             onExportReport={() => exportConfigReport(currentConfig)}
+            validationResult={validationResult}
           />
         </div>
       </div>
