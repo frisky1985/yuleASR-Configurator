@@ -306,6 +306,20 @@ export function Editor() {
             onChange={handleImport}
             className="hidden"
           />
+          <button
+            onClick={() => {
+              const name = prompt('模板名称:', currentConfig?.name || '')
+              if (name) {
+                const desc = prompt('模板描述:', '')
+                useConfigStore.getState().saveTemplate(name, desc || '')
+              }
+            }}
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            title="Save current config as template"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
+            Template
+          </button>
           <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
             <MoreVertical className="w-4 h-4" />
           </button>

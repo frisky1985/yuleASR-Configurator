@@ -18,6 +18,15 @@ interface ConfigState {
   // 配置文件列表
   configList: ConfigListItem[]
   
+  // 模板列表
+  templates: ConfigTemplate[]
+  
+  // 模板操作
+  saveTemplate: (name: string, description: string) => void
+  deleteTemplate: (templateId: string) => void
+  createFromTemplate: (templateId: string) => void
+  loadTemplates: () => void
+  
   // Actions
   setCurrentConfig: (config: ConfigFile | null) => void
   setSelectedPath: (path: string | null) => void
@@ -40,6 +49,16 @@ interface ConfigState {
   loadConfigList: () => Promise<void>
   createConfig: (name: string, description: string) => Promise<void>
   deleteConfig: (configId: string) => Promise<void>
+}
+
+export interface ConfigTemplate {
+  id: string
+  name: string
+  description: string
+  chip: string
+  moduleCount: number
+  config: ConfigFile
+  createdAt: string
 }
 
 // 创建默认配置 - 使用分层配置数据
@@ -407,6 +426,58 @@ export const useConfigStore = create<ConfigState>()(
 
       setConfigList: (list) => {
         set({ configList: list })
+      },
+
+      // Template operations
+      saveTemplate: (name, description) => {
+        const { currentConfig } = get()
+        if (!currentConfig) return
+        const templates = JSON.parse(localStorage.getItem('yuleasr_templates') || '[]') as ConfigTemplate[]
+        const tpl: ConfigTemplate = {
+          id: `tpl-${Date.now()}`,
+          name,
+          description,
+          chip: currentConfig.targetChip || '',
+          moduleCount: currentConfig.modules.filter(m => m.enabled).length,
+          config: JSON.parse(JSON.stringify(currentConfig)),
+          createdAt: new Date().toISOString(),
+        }
+        templates.push(tpl)
+        localStorage.setItem('yuleasr_templates', JSON.stringify(templates))
+        set({ templates })
+      },
+      
+      deleteTemplate: (templateId) => {
+        const templates = (JSON.parse(localStorage.getItem('yuleasr_templates') || '[]') as ConfigTemplate[])
+          .filter(t => t.id !== templateId)
+        localStorage.setItem('yuleasr_templates', JSON.stringify(templates))
+        set({ templates })
+      },
+      
+      createFromTemplate: (templateId) => {
+        const templates = JSON.parse(localStorage.getItem('yuleasr_templates') || '[]') as ConfigTemplate[]
+        const tpl = templates.find(t => t.id === templateId)
+        if (!tpl) return
+        const config = JSON.parse(JSON.stringify(tpl.config))
+        config.id = `config-${Date.now()}`
+        config.name = `${tpl.name} (copy)`
+        config.createdAt = new Date().toISOString()
+        config.updatedAt = new Date().toISOString()
+        const validator = new DependencyValidator(config)
+        const result = validator.validate()
+        set({
+          currentConfig: config,
+          selectedPath: null,
+          validationResult: result,
+          validationIssues: result.errors,
+          isDirty: false,
+        })
+        localStorage.setItem('yuleasr_config', JSON.stringify(config))
+      },
+      
+      loadTemplates: () => {
+        const templates = JSON.parse(localStorage.getItem('yuleasr_templates') || '[]') as ConfigTemplate[]
+        set({ templates })
       },
 
       loadConfigList: async () => {
