@@ -49,6 +49,7 @@ interface ConfigState {
   loadConfigList: () => Promise<void>
   createConfig: (name: string, description: string) => Promise<void>
   deleteConfig: (configId: string) => Promise<void>
+  cloneConfig: (sourceId: string) => Promise<void>
 }
 
 export interface ConfigTemplate {
@@ -354,7 +355,17 @@ export const useConfigStore = create<ConfigState>()(
             updatedAt: new Date().toISOString()
           }
 
-          localStorage.setItem('yuleasr_config', JSON.stringify(updated))
+          localStorage.setItem(`yuleasr_config_${updated.id}`, JSON.stringify(updated))
+          // Update config list
+          try {
+            const configList = JSON.parse(localStorage.getItem('yuleasr_config_list') || '[]')
+            const idx = configList.findIndex((c: any) => c.id === updated.id)
+            if (idx >= 0) {
+              configList[idx].lastModified = updated.updatedAt
+              configList[idx].moduleCount = updated.modules.filter((m: any) => m.enabled).length
+              localStorage.setItem('yuleasr_config_list', JSON.stringify(configList))
+            }
+          } catch {}
           
           set({ 
             isDirty: false,
@@ -368,11 +379,15 @@ export const useConfigStore = create<ConfigState>()(
       loadConfig: async (configId) => {
         set({ isLoading: true })
         try {
-          const saved = localStorage.getItem('yuleasr_config')
+          // Try loading specific config by ID, fall back to generic key
+          let configStr = localStorage.getItem(`yuleasr_config_${configId}`)
+          if (!configStr) {
+            configStr = localStorage.getItem('yuleasr_config')
+          }
           let config: ConfigFile
           
-          if (saved) {
-            config = JSON.parse(saved) as ConfigFile
+          if (configStr) {
+            config = JSON.parse(configStr) as ConfigFile
             if (!config.modules) {
               config = createDefaultConfig(configId)
             }
@@ -400,13 +415,25 @@ export const useConfigStore = create<ConfigState>()(
         try {
           const configId = `config-${Date.now()}`
           const config = createDefaultConfig(configId)
-          config.name = name
-          config.description = description
+          config.name = name || config.name
+          config.description = description || config.description
 
-          console.log('Creating config:', config)
-          await new Promise(resolve => setTimeout(resolve, 500))
+          // Save to localStorage
+          localStorage.setItem(`yuleasr_config_${configId}`, JSON.stringify(config))
           
+          // Update config list
           await get().loadConfigList()
+          
+          // Switch to new config
+          const validator = new DependencyValidator(config)
+          const result = validator.validate()
+          set({
+            currentConfig: config,
+            selectedPath: null,
+            validationResult: result,
+            validationIssues: result.errors,
+            isDirty: false,
+          })
         } finally {
           set({ isLoading: false })
         }
@@ -415,10 +442,18 @@ export const useConfigStore = create<ConfigState>()(
       deleteConfig: async (configId) => {
         set({ isLoading: true })
         try {
-          console.log('Deleting config:', configId)
-          await new Promise(resolve => setTimeout(resolve, 500))
+          localStorage.removeItem(`yuleasr_config_${configId}`)
+          const configList = JSON.parse(localStorage.getItem('yuleasr_config_list') || '[]')
+            .filter((c: ConfigListItem) => c.id !== configId)
+          localStorage.setItem('yuleasr_config_list', JSON.stringify(configList))
           
-          await get().loadConfigList()
+          set({ configList })
+          
+          // If current config was deleted, clear it
+          const { currentConfig } = get()
+          if (currentConfig?.id === configId) {
+            set({ currentConfig: null, selectedPath: null })
+          }
         } finally {
           set({ isLoading: false })
         }
@@ -483,32 +518,26 @@ export const useConfigStore = create<ConfigState>()(
       loadConfigList: async () => {
         set({ isLoading: true })
         try {
-          // 模拟配置列表
-          const mockList: ConfigListItem[] = [
-            {
-              id: 'config-1',
+          const raw = localStorage.getItem('yuleasr_config_list')
+          let list: ConfigListItem[] = []
+          
+          if (raw) {
+            list = JSON.parse(raw)
+          } else {
+            // First time: create a default config
+            const defaultConfig = createDefaultConfig('config-default')
+            localStorage.setItem('yuleasr_config_default', JSON.stringify(defaultConfig))
+            list = [{
+              id: 'config-default',
               name: 'Default Configuration',
               description: 'Complete yuleASR configuration with MCAL, BSW, OS layers',
               moduleCount: allModules.length,
-              lastModified: '2025-05-16T14:30:00Z'
-            },
-            {
-              id: 'config-2',
-              name: 'Production Config',
-              description: 'Production ready configuration with optimized settings',
-              moduleCount: 12,
-              lastModified: '2025-05-15T10:15:00Z'
-            },
-            {
-              id: 'config-3',
-              name: 'Development Config',
-              description: 'Development configuration with debug and diagnostic enabled',
-              moduleCount: 15,
-              lastModified: '2025-05-14T16:45:00Z'
-            }
-          ]
+              lastModified: defaultConfig.updatedAt,
+            }]
+            localStorage.setItem('yuleasr_config_list', JSON.stringify(list))
+          }
           
-          set({ configList: mockList })
+          set({ configList: list })
         } finally {
           set({ isLoading: false })
         }
@@ -521,9 +550,21 @@ export const useConfigStore = create<ConfigState>()(
 // Auto-save to localStorage on any state change
 useConfigStore.subscribe((state) => {
   if (state.isDirty && state.currentConfig) {
-    localStorage.setItem('yuleasr_config', JSON.stringify({
+    const updated = {
       ...state.currentConfig,
       updatedAt: new Date().toISOString()
-    }))
+    }
+    // Save to config-specific key
+    localStorage.setItem(`yuleasr_config_${state.currentConfig.id}`, JSON.stringify(updated))
+    // Also update config list's lastModified
+    try {
+      const configList = JSON.parse(localStorage.getItem('yuleasr_config_list') || '[]')
+      const idx = configList.findIndex((c: any) => c.id === state.currentConfig!.id)
+      if (idx >= 0) {
+        configList[idx].lastModified = updated.updatedAt
+        configList[idx].moduleCount = updated.modules.filter((m: any) => m.enabled).length
+        localStorage.setItem('yuleasr_config_list', JSON.stringify(configList))
+      }
+    } catch {}
   }
 })
