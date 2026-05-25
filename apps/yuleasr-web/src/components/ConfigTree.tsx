@@ -862,7 +862,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
                   }
                   e.stopPropagation()
                 }}
-                className="w-full px-1 py-0.5 text-sm border border-primary-400 rounded bg-primary focus:outline-none focus:ring-1 focus:ring-primary-500"
+                className="w-full px-1 py-0.5 text-sm border border-primary-400 rounded bg-app-bg-primary focus:outline-none focus:ring-1 focus:ring-primary-500"
                 onClick={(e) => e.stopPropagation()}
               />
             ) : (
@@ -979,7 +979,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
   }, [config])
 
   return (
-    <div className="bg-primary rounded-lg border border-primary overflow-hidden flex flex-col h-full">
+    <div className="bg-app-bg-primary rounded-lg border border-app-border-primary overflow-hidden flex flex-col h-full">
       {/* Header */}
       <div className="px-3 py-2.5 bg-secondary border-b border-primary">
         <div className="flex items-center justify-between mb-2">
@@ -997,7 +997,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
             placeholder="Search modules..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-7 pr-7 py-1.5 text-xs border border-primary rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
+            className="w-full pl-7 pr-7 py-1.5 text-xs border border-app-border-primary rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
           />
           {searchQuery && (
             <button
@@ -1025,7 +1025,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
               Filter
             </button>
             {showFilterMenu && (
-              <div className="absolute top-full left-0 mt-1 w-44 bg-primary rounded-md shadow-lg border border-primary z-10 py-1">
+              <div className="absolute top-full left-0 mt-1 w-44 bg-app-bg-primary rounded-md shadow-lg border border-app-border-primary z-10 py-1">
                 <label className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-secondary cursor-pointer">
                   <input
                     type="checkbox"
@@ -1099,7 +1099,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
       {/* Context menu for dynamic instances */}
       {contextMenu && (
         <div
-          className="fixed z-50 bg-primary rounded-lg shadow-xl border border-primary py-1 min-w-[140px]"
+          className="fixed z-50 bg-app-bg-primary rounded-lg shadow-xl border border-app-border-primary py-1 min-w-[140px]"
           style={{ left: contextMenu.x, top: contextMenu.y }}
           onClick={(e) => e.stopPropagation()}
         >
@@ -1143,7 +1143,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
       {/* Delete confirmation dialog */}
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30" onClick={() => setDeleteTarget(null)}>
-          <div className="bg-primary rounded-lg shadow-xl border border-primary w-96 p-5" onClick={e => e.stopPropagation()}>
+          <div className="bg-app-bg-primary rounded-lg shadow-xl border border-app-border-primary w-96 p-5" onClick={e => e.stopPropagation()}>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
                 <AlertTri className="w-5 h-5 text-red-600" />
@@ -1161,7 +1161,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => setDeleteTarget(null)}
-                className="px-4 py-2 text-sm font-medium text-primary bg-primary border border-primary rounded-md hover:bg-secondary transition-colors"
+                className="px-4 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-md hover:bg-app-bg-secondary transition-colors"
               >
                 取消
               </button>

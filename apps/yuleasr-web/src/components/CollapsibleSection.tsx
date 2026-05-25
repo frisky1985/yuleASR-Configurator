@@ -21,7 +21,7 @@ export function CollapsibleSection({
   const [isExpanded, setIsExpanded] = useState(defaultExpanded)
 
   return (
-    <div className={cn('border border-primary rounded-lg overflow-hidden', className)}>
+    <div className={cn('border border-app-border-primary rounded-lg overflow-hidden', className)}>
       {/* Clickable Header */}
       <button
         type="button"
@@ -29,26 +29,20 @@ export function CollapsibleSection({
         className={cn(
           'w-full flex items-center gap-2 px-3 py-2.5 text-left transition-colors',
           isExpanded
-            ? 'bg-secondary border-b border-primary'
-            : 'bg-primary hover:bg-secondary'
+            ? 'bg-app-bg-secondary border-b border-app-border-primary'
+            : 'bg-app-bg-primary hover:bg-app-bg-secondary'
         )}
       >
         <span className="flex-shrink-0 text-app-text-tertiary">
-          {isExpanded ? (
-            <ChevronDown className="w-4 h-4" />
-          ) : (
-            <ChevronRight className="w-4 h-4" />
-          )}
+          {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
         </span>
         <span className="flex-1 text-sm font-medium text-app-text-primary">{title}</span>
         {subtitle && (
           <span className="text-xs text-app-text-secondary">{subtitle}</span>
         )}
       </button>
-
-      {/* Collapsible Content */}
       {isExpanded && (
-        <div className="p-3 space-y-3 bg-primary">
+        <div className="p-3 space-y-3 bg-app-bg-primary">
           {children}
         </div>
       )}

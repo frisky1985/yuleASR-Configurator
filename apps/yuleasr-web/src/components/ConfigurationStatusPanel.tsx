@@ -111,7 +111,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
   }
 
   return (
-    <div className="bg-primary rounded-lg border border-primary overflow-hidden">
+    <div className="bg-app-bg-primary rounded-lg border border-app-border-primary overflow-hidden">
       {/* Header */}
       <div className="px-4 py-3 bg-secondary border-b border-primary flex items-center justify-between">
         <h3 className="text-sm font-semibold text-app-text-primary flex items-center gap-2">

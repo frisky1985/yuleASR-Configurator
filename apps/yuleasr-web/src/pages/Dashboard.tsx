@@ -377,7 +377,7 @@ export function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           <button 
             onClick={handleOpenExisting}
-            className="p-4 bg-primary border border-primary rounded-xl hover:border-blue-300 hover:shadow-md transition-all text-left group card-hover"
+            className="p-4 bg-app-bg-primary border border-app-border-primary rounded-xl hover:border-app-border-secondary hover:shadow-md transition-all text-left group card-hover"
           >
             <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-blue-100 transition-colors">
               <FolderOpen className="w-5 h-5 text-blue-600" />
@@ -397,7 +397,7 @@ export function Dashboard() {
           
           <button 
             onClick={() => setShowImportDialog(true)}
-            className="p-4 bg-primary border border-primary rounded-xl hover:border-purple-300 hover:shadow-md transition-all text-left group card-hover"
+            className="p-4 bg-app-bg-primary border border-app-border-primary rounded-xl hover:border-app-border-secondary hover:shadow-md transition-all text-left group card-hover"
           >
             <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-purple-100 transition-colors">
               <FileJson className="w-5 h-5 text-purple-600" />
@@ -408,7 +408,7 @@ export function Dashboard() {
           
           <button 
             onClick={() => setShowModuleWizard(true)}
-            className="p-4 bg-primary border border-primary rounded-xl hover:border-green-300 hover:shadow-md transition-all text-left group card-hover"
+            className="p-4 bg-app-bg-primary border border-app-border-primary rounded-xl hover:border-app-border-secondary hover:shadow-md transition-all text-left group card-hover"
           >
             <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-green-100 transition-colors">
               <Settings className="w-5 h-5 text-green-600" />
@@ -419,7 +419,7 @@ export function Dashboard() {
 
           <button 
             onClick={() => handleShowGraph('config-1')}
-            className="p-4 bg-primary border border-primary rounded-xl hover:border-pink-300 hover:shadow-md transition-all text-left group card-hover"
+            className="p-4 bg-app-bg-primary border border-app-border-primary rounded-xl hover:border-app-border-secondary hover:shadow-md transition-all text-left group card-hover"
           >
             <div className="w-10 h-10 bg-pink-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-pink-100 transition-colors">
               <GitGraph className="w-5 h-5 text-pink-600" />
@@ -431,11 +431,11 @@ export function Dashboard() {
       </div>
 
       {/* Config List */}
-      <div className="bg-primary border border-primary rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-app-bg-primary border border-app-border-primary rounded-xl overflow-hidden shadow-sm">
         <div className="px-6 py-4 border-b border-primary bg-secondary flex items-center justify-between">
           <h2 className="text-lg font-semibold text-primary">Recent Configurations</h2>
           {configList.length > 0 && (
-            <span className="text-xs text-app-text-secondary bg-primary px-2.5 py-1 rounded-full border border-primary">
+            <span className="text-xs text-app-text-secondary bg-app-bg-primary px-2.5 py-1 rounded-full border border-app-border-primary">
               {configList.length} config{configList.length !== 1 ? 's' : ''}
             </span>
           )}
@@ -467,14 +467,14 @@ export function Dashboard() {
               </button>
               <button
                 onClick={handleOpenExisting}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-primary text-primary rounded-lg hover:bg-secondary hover:border-secondary transition-all active:scale-[0.98]"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-primary text-primary-foreground rounded-lg hover:bg-primary-600 hover:border-primary-600 transition-all active:scale-[0.98]"
               >
                 <FolderOpen className="w-4 h-4" />
                 Open Existing
               </button>
               <button
                 onClick={() => setShowImportDialog(true)}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-primary text-primary rounded-lg hover:bg-secondary hover:border-secondary transition-all active:scale-[0.98]"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-primary text-primary-foreground rounded-lg hover:bg-primary-600 hover:border-primary-600 transition-all active:scale-[0.98]"
               >
                 <FileJson className="w-4 h-4" />
                 Import
@@ -615,7 +615,7 @@ export function Dashboard() {
       {/* Create Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-primary rounded-xl shadow-xl max-w-md w-full mx-4">
+          <div className="bg-app-bg-primary rounded-xl shadow-xl max-w-md w-full mx-4">
             <div className="px-6 py-4 border-b border-primary">
               <h3 className="text-lg font-semibold text-primary">New Configuration</h3>
             </div>
@@ -673,7 +673,7 @@ export function Dashboard() {
       {/* Dependency Graph Modal */}
       {showGraphModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-primary rounded-xl shadow-2xl w-[95vw] h-[90vh] flex flex-col overflow-hidden">
+          <div className="bg-app-bg-primary rounded-xl shadow-2xl w-[95vw] h-[90vh] flex flex-col overflow-hidden">
             <div className="flex items-center justify-between px-6 py-4 border-b border-primary bg-secondary">
               <div>
                 <h3 className="text-lg font-semibold text-primary flex items-center gap-2">
