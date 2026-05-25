@@ -144,6 +144,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
     containerPath: string
     instanceName: string
   } | null>(null)
+  const [dragOverPath, setDragOverPath] = useState<string | null>(null)
   
   // Collect initial dynamic instances from module containers
   function collectDynamicContainers(
@@ -421,11 +422,13 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
   // Handle drag start
   const onDragStart = useCallback((containerPath: string, instanceName: string) => {
     setDragSource({ containerPath, instanceName })
+    setDragOverPath(null)
   }, [])
   
   // Handle drag over (prevent default to allow drop)
   const onDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault()
+    setDragOverPath((e.currentTarget as HTMLElement).getAttribute('data-path'))
   }, [])
   
   // Handle drop - reorder instances
@@ -449,6 +452,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
       return { ...prev, [targetContainerPath]: entries }
     })
     setDragSource(null)
+    setDragOverPath(null)
   }, [dragSource])
   
   // Recursively search inside module containers and parameters
@@ -724,6 +728,28 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
     }
   }
 
+  // Highlight matching text in a string for search
+  function highlightMatch(text: string, query: string): React.ReactNode {
+    if (!query || !text) return text
+    const lowerText = text.toLowerCase()
+    const lowerQuery = query.toLowerCase()
+    const parts: React.ReactNode[] = []
+    let lastIndex = 0
+    let idx = lowerText.indexOf(lowerQuery)
+    while (idx !== -1) {
+      if (idx > lastIndex) {
+        parts.push(text.slice(lastIndex, idx))
+      }
+      parts.push(<mark key={idx} className="bg-yellow-200 rounded px-0.5">{text.slice(idx, idx + query.length)}</mark>)
+      lastIndex = idx + query.length
+      idx = lowerText.indexOf(lowerQuery, lastIndex)
+    }
+    if (lastIndex < text.length) {
+      parts.push(text.slice(lastIndex))
+    }
+    return parts.length > 0 ? <>{parts}</> : text
+  }
+
   // Render tree node
   const renderNode = (node: TreeNodeData, level: number = 0) => {
     const isExpanded = expandedPaths.has(node.path)
@@ -740,9 +766,11 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
             'group flex items-center gap-1.5 py-1.5 pr-2 cursor-pointer transition-colors',
             isSelected ? 'bg-primary-50' : 'hover:bg-gray-50',
             node.type === 'layer' && layerColors[node.name],
-            node.isDynamic && 'cursor-grab active:cursor-grabbing'
+            node.isDynamic && 'cursor-grab active:cursor-grabbing',
+            dragOverPath === node.path && dragSource && 'border-t-2 border-blue-400'
           )}
           style={{ paddingLeft: `${paddingLeft}px` }}
+          data-path={node.path}
           draggable={node.isDynamic}
           onDragStart={(e) => {
             if (node.isDynamic && node.parentContainerPath) {
@@ -751,6 +779,12 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
             }
           }}
           onDragOver={node.isDynamic ? onDragOver : undefined}
+          onDragEnd={() => {
+            if (node.isDynamic) {
+              setDragSource(null)
+              setDragOverPath(null)
+            }
+          }}
           onDrop={(e) => {
             if (node.isDynamic && node.parentContainerPath) {
               onDrop(node.parentContainerPath, node.instanceName!)
@@ -840,7 +874,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
                 }}
                 title={node.isDynamic ? 'Double-click to rename' : undefined}
               >
-                {node.displayName}
+                {searchQuery && node.displayName ? highlightMatch(node.displayName, searchQuery) : node.displayName}
               </span>
             )}
           </span>
@@ -928,11 +962,11 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
         </div>
         
         {/* Sub-container nodes (including dynamic instances) */}
-        {isExpanded && node.children && node.children.length > 0 && (
-          <div className="">
-            {node.children.map(child => renderNode(child, level + 1))}
+        <div className="grid transition-all duration-200 ease-in-out" style={{ gridTemplateRows: isExpanded && node.children && node.children.length > 0 ? '1fr' : '0fr' }}>
+          <div className="overflow-hidden">
+            {node.children && node.children.length > 0 && node.children.map(child => renderNode(child, level + 1))}
           </div>
-        )}
+        </div>
       </div>
     )
   }

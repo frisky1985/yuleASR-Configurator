@@ -26,6 +26,7 @@ import { ModuleConfigWizard } from '@/components/ModuleConfigWizard'
 import { OSEditor } from '@/components/OSEditor'
 import { ParameterEditor } from '@/components/ParameterEditor'
 import { useTheme } from '@/components/ThemeProvider'
+import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp'
 import { ValidationPanel } from '@/components/ValidationPanel'
 import { CollapsibleSection } from '@/components/CollapsibleSection'
 import { ContainerConfigSection } from '@/components/ContainerConfigSection'
@@ -45,6 +46,8 @@ export function Editor() {
   const [isValidating, setIsValidating] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const configTreeRef = useRef<ConfigTreeHandle>(null)
+  const { toggleTheme } = useTheme()
+  const [showShortcutsHelp, setShowShortcutsHelp] = useState(false)
 
   const {
     currentConfig,
@@ -81,6 +84,31 @@ export function Editor() {
         if (isDirty) {
           handleSave()
         }
+      }
+      // Ctrl/Cmd + Shift + V to validate
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'V') {
+        e.preventDefault()
+        handleValidate()
+      }
+      // Ctrl/Cmd + E to export
+      if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+        e.preventDefault()
+        handleExport()
+      }
+      // Ctrl/Cmd + D to toggle dark mode
+      if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+        e.preventDefault()
+        toggleTheme()
+      }
+      // ? to show keyboard shortcuts (not focused on input)
+      if (e.key === '?' && !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement)) {
+        e.preventDefault()
+        setShowShortcutsHelp(true)
+      }
+      // Escape to close shortcuts help
+      if (e.key === 'Escape') {
+        setShowShortcutsHelp(false)
+        setIsSearchOpen(false)
       }
     }
 
@@ -614,6 +642,12 @@ export function Editor() {
           </div>
         </div>
       )}
+
+      {/* Keyboard Shortcuts Help */}
+      <KeyboardShortcutsHelp
+        isOpen={showShortcutsHelp}
+        onClose={() => setShowShortcutsHelp(false)}
+      />
     </div>
   )
 }

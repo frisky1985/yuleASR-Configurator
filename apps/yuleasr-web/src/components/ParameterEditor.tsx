@@ -1,5 +1,5 @@
-import { RotateCcw, Plus, X, Link, AlertCircle, Check, ChevronDown } from 'lucide-react'
-import { useState, useCallback } from 'react'
+import { RotateCcw, Plus, X, Link, AlertCircle, Check, ChevronDown, Info, Search } from 'lucide-react'
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 
 import { cn } from '@/lib/utils'
 import type { ConfigParameter, ValidationIssue } from '@/types'
@@ -37,6 +37,39 @@ export function ParameterEditor({
   const [isDirty, setIsDirty] = useState(false)
   const [localError, setLocalError] = useState<string | null>(null)
   const [isValidating, setIsValidating] = useState(false)
+  const [enumSearch, setEnumSearch] = useState('')
+
+  // Determine if current value matches default
+  const isDefault = useMemo(() => {
+    if (defaultValue === undefined) return false
+    return value === defaultValue
+  }, [value, defaultValue])
+
+  // Filtered enum options for search
+  const filteredEnumOptions = useMemo(() => {
+    if (!options) return []
+    if (!enumSearch) return options
+    return options.filter((option) => {
+      const label = typeof option === 'string' ? option : option.label
+      return label.toLowerCase().includes(enumSearch.toLowerCase())
+    })
+  }, [options, enumSearch])
+
+  // Check if we should show a range slider for numeric types
+  const showRangeSlider = useMemo(() => {
+    if (type !== 'integer' && type !== 'float') return false
+    if (min === undefined || max === undefined) return false
+    const range = max - min
+    return range > 0 && range <= 1000
+  }, [type, min, max])
+
+  const searchInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (type === 'enum' && options && options.length > 5 && searchInputRef.current) {
+      searchInputRef.current.focus()
+    }
+  }, [type, options])
 
   // Validate value
   const validateValue = useCallback(
@@ -178,6 +211,17 @@ export function ParameterEditor({
     isValidating && 'opacity-70'
   )
 
+  // Type badge colors
+  const typeBadgeColors: Record<string, string> = {
+    boolean: 'bg-blue-100 text-blue-700',
+    integer: 'bg-emerald-100 text-emerald-700',
+    float: 'bg-teal-100 text-teal-700',
+    string: 'bg-purple-100 text-purple-700',
+    enum: 'bg-amber-100 text-amber-700',
+    array: 'bg-rose-100 text-rose-700',
+    reference: 'bg-indigo-100 text-indigo-700',
+  }
+
   // Render input based on type
   const renderInput = () => {
     switch (type) {
@@ -207,24 +251,43 @@ export function ParameterEditor({
       case 'integer':
       case 'float':
         return (
-          <div className="flex items-center gap-2">
-            <input
-              type="number"
-              value={typeof value === 'number' ? value : ''}
-              min={min}
-              max={max}
-              step={type === 'float' ? 0.01 : 1}
-              onChange={(e) => {
-                const val =
-                  type === 'integer'
-                    ? parseInt(e.target.value)
-                    : parseFloat(e.target.value)
-                handleChange(isNaN(val) ? '' : val)
-              }}
-              className={baseInputClass}
-              placeholder={`Enter ${type} value...`}
-            />
-            {(min !== undefined || max !== undefined) && (
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              {showRangeSlider && (
+                <input
+                  type="range"
+                  value={typeof value === 'number' ? value : (min ?? 0)}
+                  min={min}
+                  max={max}
+                  step={type === 'float' ? 0.01 : 1}
+                  onChange={(e) => {
+                    const val =
+                      type === 'integer'
+                        ? parseInt(e.target.value)
+                        : parseFloat(e.target.value)
+                    handleChange(isNaN(val) ? '' : val)
+                  }}
+                  className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary-600"
+                />
+              )}
+              <input
+                type="number"
+                value={typeof value === 'number' ? value : ''}
+                min={min}
+                max={max}
+                step={type === 'float' ? 0.01 : 1}
+                onChange={(e) => {
+                  const val =
+                    type === 'integer'
+                      ? parseInt(e.target.value)
+                      : parseFloat(e.target.value)
+                  handleChange(isNaN(val) ? '' : val)
+                }}
+                className={cn(baseInputClass, showRangeSlider ? 'w-24 shrink-0' : 'w-full')}
+                placeholder={`Enter ${type} value...`}
+              />
+            </div>
+            {(min !== undefined || max !== undefined) && !showRangeSlider && (
               <span className="text-xs text-gray-400 whitespace-nowrap">
                 [{min ?? '-∞'}, {max ?? '∞'}]
               </span>
@@ -232,7 +295,61 @@ export function ParameterEditor({
           </div>
         )
 
-      case 'enum':
+      case 'enum': {
+        const hasManyOptions = options && options.length > 5
+
+        if (hasManyOptions) {
+          return (
+            <div className="relative">
+              <div className="relative mb-1.5">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  value={enumSearch}
+                  onChange={(e) => setEnumSearch(e.target.value)}
+                  placeholder="Search options..."
+                  autoFocus
+                  className={cn(
+                    baseInputClass,
+                    'pl-8 py-1.5 text-xs'
+                  )}
+                />
+              </div>
+              <div className="max-h-48 overflow-y-auto border border-gray-200 rounded-md divide-y divide-gray-100">
+                {filteredEnumOptions.length === 0 ? (
+                  <div className="px-3 py-2 text-xs text-gray-400 text-center">
+                    No options found
+                  </div>
+                ) : (
+                  filteredEnumOptions.map((option, index) => {
+                    const optValue = typeof option === 'string' ? option : String(option.value)
+                    const optLabel = typeof option === 'string' ? option : option.label
+                    const isSelected = String(value ?? '') === optValue
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          handleChange(optValue)
+                          setEnumSearch('')
+                        }}
+                        className={cn(
+                          'w-full text-left px-3 py-2 text-xs transition-colors hover:bg-primary-50',
+                          isSelected
+                            ? 'bg-primary-50 text-primary-700 font-medium'
+                            : 'text-gray-700'
+                        )}
+                      >
+                        {optLabel}
+                      </button>
+                    )
+                  })
+                )}
+              </div>
+            </div>
+          )
+        }
+
         return (
           <div className="relative">
             <select
@@ -253,6 +370,7 @@ export function ParameterEditor({
             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
           </div>
         )
+      }
 
       case 'array':
         const arrayValue = Array.isArray(value) ? value : []
@@ -337,6 +455,14 @@ export function ParameterEditor({
       <div className="space-y-1">
         <div className="flex items-center gap-2">
           {renderInput()}
+          {type && (
+            <span className={cn(
+              'text-[10px] uppercase font-semibold px-1 py-0.5 rounded shrink-0',
+              typeBadgeColors[type] || 'bg-gray-100 text-gray-600'
+            )}>
+              {type}
+            </span>
+          )}
           {defaultValue !== undefined && isDirty && (
             <button
               onClick={handleReset}
@@ -362,10 +488,33 @@ export function ParameterEditor({
       {/* Header row */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
+          {/* Default value indicator */}
+          {defaultValue !== undefined && (
+            <span
+              className={cn(
+                'w-2 h-2 rounded-full shrink-0',
+                isDefault ? 'bg-green-500' : 'bg-blue-500'
+              )}
+              title={isDefault ? 'Using default value' : 'Modified from default'}
+            />
+          )}
           <label className="text-sm font-medium text-gray-900">{name}</label>
-          <span className="text-xs text-gray-500 uppercase bg-gray-100 px-1.5 py-0.5 rounded">
+          <span className={cn(
+            'text-xs uppercase font-semibold px-1.5 py-0.5 rounded',
+            typeBadgeColors[type] || 'bg-gray-100 text-gray-600'
+          )}>
             {type}
           </span>
+          {/* Description tooltip */}
+          {description && (
+            <span className="group relative inline-flex items-center">
+              <Info className="w-3.5 h-3.5 text-gray-400 cursor-help" />
+              <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1.5 text-xs text-white bg-gray-800 rounded-md shadow-lg whitespace-normal max-w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 pointer-events-none">
+                {description}
+                <span className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-800" />
+              </span>
+            </span>
+          )}
           {defaultValue !== undefined && (
             <span className="text-xs text-gray-400">default: {String(defaultValue)}</span>
           )}
@@ -390,9 +539,6 @@ export function ParameterEditor({
           )}
         </div>
       </div>
-
-      {/* Description */}
-      {description && <p className="text-xs text-gray-500">{description}</p>}
 
       {/* Input */}
       <div className="pt-1">{renderInput()}</div>
