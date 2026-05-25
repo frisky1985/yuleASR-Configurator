@@ -14,7 +14,7 @@ import {
   Cpu, Settings, Layers, Box, Code, Search, ChevronDown, ChevronRight, 
   Power, AlertCircle, AlertTriangle, Info, Folder, FolderOpen, 
   FileText, Hash, ToggleLeft, List, Filter, ChevronRightSquare,
-  ChevronDownSquare, CircleDot, Layers2
+  ChevronDownSquare, CircleDot, Layers2, Trash2, AlertTriangle as AlertTri
 } from 'lucide-react'
 import { useState, useMemo, useCallback } from 'react'
 
@@ -51,6 +51,10 @@ interface TreeNodeData {
   isDynamicParent?: boolean
   parentContainerPath?: string
   instanceName?: string
+  /** Number of instances for this dynamic parent (for × visibility check) */
+  instanceCount?: number
+  /** Minimum instances (× hidden when count <= min) */
+  minInstanceCount?: number
 }
 
 const layerIcons: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -99,6 +103,12 @@ export function ConfigTree({
     }
     return initial
   })
+  
+  // Delete confirmation state
+  const [deleteTarget, setDeleteTarget] = useState<{
+    containerPath: string
+    instanceName: string
+  } | null>(null)
   
   // Collect initial dynamic instances from module containers
   function collectDynamicContainers(
@@ -153,6 +163,34 @@ export function ConfigTree({
       return { ...prev, [containerPath]: instances }
     })
   }, [])
+  
+  // Recursively search inside module containers and parameters
+  function searchInModule(module: ConfigModule, query: string): boolean {
+    for (const container of module.containers) {
+      if (searchInContainer(container, query)) return true
+    }
+    return false
+  }
+  
+  function searchInContainer(container: ConfigContainer, query: string): boolean {
+    // Check container name
+    if (container.displayName?.toLowerCase().includes(query)) return true
+    if (container.name?.toLowerCase().includes(query)) return true
+    
+    // Check parameters
+    for (const param of container.parameters || []) {
+      if (param.displayName?.toLowerCase().includes(query)) return true
+      if (param.name?.toLowerCase().includes(query)) return true
+      if (String(param.value ?? '').toLowerCase().includes(query)) return true
+    }
+    
+    // Check sub-containers recursively
+    for (const sub of container.subContainers || []) {
+      if (searchInContainer(sub, query)) return true
+    }
+    
+    return false
+  }
 
   // Build tree data structure
   const treeData = useMemo(() => {
@@ -200,7 +238,9 @@ export function ConfigTree({
       const filteredModules = modules.filter(m => {
         const matchesSearch = !searchQuery || 
           m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          m.displayName?.toLowerCase().includes(searchQuery.toLowerCase())
+          m.displayName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          // Search inside containers and parameters
+          searchInModule(m, searchQuery.toLowerCase())
         const matchesEnabled = showDisabled || m.enabled
         return matchesSearch && matchesEnabled
       })
@@ -281,6 +321,7 @@ export function ConfigTree({
       // Render dynamic instances
       const template = container.subContainers![0]
       const instances = dynamicInstances[path] || []
+      const minCount = container.minInstances ?? 1
       
       for (const instName of instances) {
         // Create an instance node based on the template
@@ -307,6 +348,8 @@ export function ConfigTree({
           isDynamic: true,
           parentContainerPath: path,
           instanceName: instName,
+          instanceCount: instances.length,
+          minInstanceCount: minCount,
         })
       }
     } else {
@@ -469,12 +512,15 @@ export function ConfigTree({
               +
             </button>
           )}
-          {node.isDynamic && (
+          {node.isDynamic && (node.instanceCount ?? 0) > (node.minInstanceCount ?? 0) && (
             <button
               onClick={(e) => {
                 e.stopPropagation()
                 if (node.parentContainerPath) {
-                  removeInstance(node.parentContainerPath, node.instanceName!)
+                  setDeleteTarget({
+                    containerPath: node.parentContainerPath,
+                    instanceName: node.instanceName!
+                  })
                 }
               }}
               className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded text-red-400 hover:text-red-600 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity text-sm"
@@ -652,6 +698,45 @@ export function ConfigTree({
                 {validationIssues.filter(i => i.severity === 'info').length} info
               </span>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Delete confirmation dialog */}
+      {deleteTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30" onClick={() => setDeleteTarget(null)}>
+          <div className="bg-white rounded-lg shadow-xl border border-gray-200 w-96 p-5" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                <AlertTri className="w-5 h-5 text-red-600" />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-gray-900">确认删除</h3>
+                <p className="text-sm text-gray-500 mt-0.5">
+                  确定删除 <span className="font-medium text-gray-700">{deleteTarget.instanceName}</span>？
+                </p>
+              </div>
+            </div>
+            <p className="text-sm text-amber-600 bg-amber-50 rounded-md px-3 py-2 mb-4">
+              该实例的所有参数配置将丢失，此操作不可撤销。
+            </p>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setDeleteTarget(null)}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+              >
+                取消
+              </button>
+              <button
+                onClick={() => {
+                  removeInstance(deleteTarget.containerPath, deleteTarget.instanceName)
+                  setDeleteTarget(null)
+                }}
+                className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors"
+              >
+                确认删除
+              </button>
+            </div>
           </div>
         </div>
       )}
