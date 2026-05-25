@@ -16,7 +16,7 @@ import {
   FileText, Hash, ToggleLeft, List, Filter, ChevronRightSquare,
   ChevronDownSquare, CircleDot, Layers2, Trash2, AlertTriangle as AlertTri
 } from 'lucide-react'
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 
 import { cn } from '@/lib/utils'
 import type { ConfigFile, ConfigModule, ConfigContainer, ConfigParameter, ValidationIssue } from '@/types/config'
@@ -114,7 +114,21 @@ export function ConfigTree({
   const [renamingPath, setRenamingPath] = useState<string | null>(null)
   const [renameValue, setRenameValue] = useState('')
   
-  // Drag state
+  // Context menu state
+  const [contextMenu, setContextMenu] = useState<{
+    x: number
+    y: number
+    nodePath: string
+    containerPath: string
+    instanceName: string
+  } | null>(null)
+
+  // Close context menu on click outside
+  useEffect(() => {
+    const handler = () => setContextMenu(null)
+    window.addEventListener('click', handler)
+    return () => window.removeEventListener('click', handler)
+  }, [])
   const [dragSource, setDragSource] = useState<{
     containerPath: string
     instanceName: string
@@ -149,34 +163,46 @@ export function ConfigTree({
   const addInstance = useCallback((containerPath: string) => {
     setDynamicInstances(prev => {
       const instances = [...(prev[containerPath] || [])]
-      // Find next available index
       let maxIdx = -1
       for (const inst of instances) {
         const match = inst.match(/_(\d+)$/)
-        if (match) {
-          maxIdx = Math.max(maxIdx, parseInt(match[1]))
-        }
+        if (match) maxIdx = Math.max(maxIdx, parseInt(match[1]))
       }
-      // Get base name - try from existing instances, or find from template data
+      // Determine baseName from template or existing instances
       let baseName = 'Instance'
       if (instances.length > 0) {
         baseName = instances[0].replace(/_\d+$/, '') || baseName
       } else {
-        // Try to find template name from data
-        for (const module of config.modules) {
-          for (const container of module.containers) {
-            const contPath = `layer:${module.layer}/module:${module.id}/container:${container.id}`
-            if (contPath === containerPath && container.subContainers?.length) {
-              const tplName = container.subContainers[0].name.replace(/_\d+$/, '')
-              if (tplName) baseName = tplName
-            }
-          }
+        // Search through all containers for the template
+        for (const mod of config.modules) {
+          const found = findTemplateName(mod.containers, containerPath, `layer:${mod.layer}/module:${mod.id}`)
+          if (found) { baseName = found; break }
         }
       }
       instances.push(`${baseName}_${maxIdx + 1}`)
       return { ...prev, [containerPath]: instances }
     })
   }, [config])
+
+  // Recursively search for template name matching a container path
+  function findTemplateName(containers: ConfigContainer[], targetPath: string, parentPath: string): string | null {
+    for (const c of containers) {
+      const cp = `${parentPath}/container:${c.id}`
+      if (cp === targetPath) {
+        if (c.subContainers?.length) {
+          // Prefer shortName if available, then strip numeric suffix from name
+          const tpl = c.subContainers[0]
+          return tpl.shortName || tpl.name.replace(/_\d+$/, '') || tpl.name
+        }
+        return null
+      }
+      if (c.subContainers?.length) {
+        const found = findTemplateName(c.subContainers, targetPath, cp)
+        if (found) return found
+      }
+    }
+    return null
+  }
   
   // Remove a dynamic instance
   const removeInstance = useCallback((containerPath: string, instanceName: string) => {
@@ -571,6 +597,18 @@ export function ConfigTree({
               onDrop(node.parentContainerPath, node.instanceName!)
             }
           }}
+          onContextMenu={(e) => {
+            if (node.isDynamic && node.parentContainerPath) {
+              e.preventDefault()
+              setContextMenu({
+                x: e.clientX,
+                y: e.clientY,
+                nodePath: node.path,
+                containerPath: node.parentContainerPath,
+                instanceName: node.instanceName!,
+              })
+            }
+          }}
           onClick={() => {
             onSelectPath(node.path)
             if (node.hasChildren) {
@@ -862,6 +900,50 @@ export function ConfigTree({
               </span>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Context menu for dynamic instances */}
+      {contextMenu && (
+        <div
+          className="fixed z-50 bg-white rounded-lg shadow-xl border border-gray-200 py-1 min-w-[140px]"
+          style={{ left: contextMenu.x, top: contextMenu.y }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+            onClick={() => {
+              startRename(contextMenu.nodePath, contextMenu.instanceName)
+              setContextMenu(null)
+            }}
+          >
+            <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+            重命名
+          </button>
+          <button
+            className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+            onClick={() => {
+              copyInstance(contextMenu.containerPath, contextMenu.instanceName)
+              setContextMenu(null)
+            }}
+          >
+            <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+            复制
+          </button>
+          <div className="border-t border-gray-100 my-1" />
+          <button
+            className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+            onClick={() => {
+              setDeleteTarget({
+                containerPath: contextMenu.containerPath,
+                instanceName: contextMenu.instanceName,
+              })
+              setContextMenu(null)
+            }}
+          >
+            <svg className="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+            删除
+          </button>
         </div>
       )}
 
