@@ -523,17 +523,64 @@ export const useConfigStore = create<ConfigState>()(
           
           if (raw) {
             list = JSON.parse(raw)
+            // Migration: if only 1 old config, seed Production + Development
+            if (list.length === 1 && list[0].id === 'config-default') {
+              const prodConfig = createDefaultConfig('config-production')
+              prodConfig.name = 'Production Config'
+              prodConfig.description = 'Production ready configuration with optimized settings'
+              prodConfig.modules = prodConfig.modules.map(m => ({
+                ...m,
+                enabled: ['adc', 'mcu', 'can', 'cantrcv', 'port', 'dio', 'spi', 'gpt', 'icu', 'nvm', 'ecum'].includes(m.id),
+              }))
+              localStorage.setItem('yuleasr_config_config-production', JSON.stringify(prodConfig))
+              
+              const devConfig = createDefaultConfig('config-dev')
+              devConfig.name = 'Development Config'
+              devConfig.description = 'Development configuration with debug and diagnostic enabled'
+              devConfig.modules = devConfig.modules.map(m => ({ ...m, enabled: true }))
+              localStorage.setItem('yuleasr_config_config-dev', JSON.stringify(devConfig))
+              
+              list.push(
+                { id: 'config-production', name: prodConfig.name, description: prodConfig.description || '', moduleCount: prodConfig.modules.filter(m => m.enabled).length, lastModified: prodConfig.updatedAt },
+                { id: 'config-dev', name: devConfig.name, description: devConfig.description || '', moduleCount: devConfig.modules.filter(m => m.enabled).length, lastModified: devConfig.updatedAt },
+              )
+              localStorage.setItem('yuleasr_config_list', JSON.stringify(list))
+            }
           } else {
-            // First time: create a default config
+            // First time: seed with sample configurations
             const defaultConfig = createDefaultConfig('config-default')
-            localStorage.setItem('yuleasr_config_default', JSON.stringify(defaultConfig))
-            list = [{
-              id: 'config-default',
-              name: 'Default Configuration',
-              description: 'Complete yuleASR configuration with MCAL, BSW, OS layers',
-              moduleCount: allModules.length,
-              lastModified: defaultConfig.updatedAt,
-            }]
+            defaultConfig.name = 'Development Config'
+            defaultConfig.description = 'Development configuration with debug and diagnostic enabled'
+            localStorage.setItem('yuleasr_config_config-default', JSON.stringify(defaultConfig))
+            
+            // Clone for production (fewer modules enabled)
+            const prodConfig = createDefaultConfig('config-production') 
+            prodConfig.name = 'Production Config'
+            prodConfig.description = 'Production ready configuration with optimized settings'
+            prodConfig.modules = prodConfig.modules.map(m => ({
+              ...m,
+              enabled: ['adc', 'mcu', 'can', 'cantrcv', 'port', 'dio', 'spi', 'gpt', 'icu', 'nvm', 'ecum'].includes(m.id),
+            }))
+            localStorage.setItem('yuleasr_config_config-production', JSON.stringify(prodConfig))
+            
+            // Development config - all modules enabled for debugging
+            const devConfig = createDefaultConfig('config-dev')
+            devConfig.name = 'Development Config'
+            devConfig.description = 'Development configuration with debug and diagnostic enabled'
+            devConfig.modules = devConfig.modules.map(m => ({ ...m, enabled: true }))
+            localStorage.setItem('yuleasr_config_config-dev', JSON.stringify(devConfig))
+            
+            // Default config - full config
+            const fullConfig = createDefaultConfig('config-full')
+            fullConfig.name = 'Default Configuration'
+            fullConfig.description = 'Complete yuleASR configuration with MCAL, BSW, OS layers'
+            localStorage.setItem('yuleasr_config_config-full', JSON.stringify(fullConfig))
+            
+            list = [
+              { id: 'config-full', name: fullConfig.name, description: fullConfig.description || '', moduleCount: allModules.length, lastModified: fullConfig.updatedAt },
+              { id: 'config-production', name: prodConfig.name, description: prodConfig.description || '', moduleCount: prodConfig.modules.filter(m => m.enabled).length, lastModified: prodConfig.updatedAt },
+              { id: 'config-dev', name: devConfig.name, description: devConfig.description || '', moduleCount: devConfig.modules.filter(m => m.enabled).length, lastModified: devConfig.updatedAt },
+            ]
             localStorage.setItem('yuleasr_config_list', JSON.stringify(list))
           }
           
