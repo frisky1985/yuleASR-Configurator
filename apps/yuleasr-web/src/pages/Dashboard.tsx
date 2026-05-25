@@ -340,11 +340,11 @@ export function Dashboard() {
           <div className="flex items-center gap-3">
             <p className="text-3xl font-bold text-primary">{stats.avgCompletion}%</p>
           </div>
-          <div className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div className="mt-2 h-2 bg-app-bg-tertiary rounded-full overflow-hidden">
             <div
               className={cn(
                 "h-full rounded-full transition-all duration-700 ease-out progress-bar-animated",
-                stats.avgCompletion >= 100 ? "bg-green-500" : stats.avgCompletion >= 50 ? "bg-yellow-500" : "bg-gray-300"
+                stats.avgCompletion >= 100 ? "bg-green-500" : stats.avgCompletion >= 50 ? "bg-yellow-500" : "bg-app-bg-tertiary"
               )}
               style={{ width: `${stats.avgCompletion}%` }}
             />
@@ -539,7 +539,7 @@ export function Dashboard() {
                       {/* Progress bar */}
                       {completion !== null && (
                         <div className="mt-2 max-w-xs">
-                          <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                          <div className="h-1.5 bg-app-bg-tertiary rounded-full overflow-hidden">
                             <div
                               className={cn("h-full rounded-full transition-all duration-500", progressColor(completion))}
                               style={{ width: `${completion}%` }}

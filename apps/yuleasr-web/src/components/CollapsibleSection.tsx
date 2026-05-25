@@ -40,7 +40,7 @@ export function CollapsibleSection({
             <ChevronRight className="w-4 h-4" />
           )}
         </span>
-        <span className="flex-1 text-sm font-medium text-gray-900">{title}</span>
+        <span className="flex-1 text-sm font-medium text-app-text-primary">{title}</span>
         {subtitle && (
           <span className="text-xs text-secondary">{subtitle}</span>
         )}
