@@ -23,7 +23,9 @@ export const allModules: ConfigModule[] = [
     id: "adcconfigset",
     name: "AdcConfigSet",
     displayName: "AdcConfigSet",
-    description: "ADC Configuration Set with HW units and groups",
+multiple: true,
+    minInstances: 1,
+        description: "ADC Configuration Set with HW units and groups",
     parameters: [],
     subContainers: [
       {
@@ -769,7 +771,9 @@ export const allModules: ConfigModule[] = [
         id: "canconfigset",
         name: "CanConfigSet",
         displayName: "CanConfigSet",
-        description: "CAN Configuration Set",
+multiple: true,
+    minInstances: 1,
+            description: "CAN Configuration Set",
         parameters: [],
         subContainers: [
           {
@@ -897,7 +901,9 @@ export const allModules: ConfigModule[] = [
         id: "cantrcv_configset",
         name: "CanTrcvConfigSet",
         displayName: "CanTrcvConfigSet",
-        description: "CAN Transceiver config set",
+multiple: true,
+    minInstances: 1,
+            description: "CAN Transceiver config set",
         parameters: [],
         subContainers: [
           {
@@ -1117,6 +1123,8 @@ export const allModules: ConfigModule[] = [
         name: "DioConfig",
         displayName: "DioConfig",
         description: "DioConfig 配置容器",
+        multiple: true,
+        minInstances: 4,
         parameters: [
           {
             id: "dioportid",
@@ -1141,7 +1149,6 @@ export const allModules: ConfigModule[] = [
             max: 65535
           }
         ],
-        multiple: false
       },
       {
         id: "diogeneral",
@@ -1621,6 +1628,8 @@ export const allModules: ConfigModule[] = [
         name: "GptChannelConfigSet",
         displayName: "GptChannelConfigSet",
         description: "GptChannelConfigSet 配置容器",
+        multiple: true,
+        minInstances: 3,
         parameters: [
           {
             id: "gptchannelid",
@@ -1770,7 +1779,6 @@ export const allModules: ConfigModule[] = [
             max: 255
           }
         ],
-        multiple: false
       },
       {
         id: "gptchannelconfiguration-4",
@@ -2557,7 +2565,9 @@ export const allModules: ConfigModule[] = [
         id: "icuconfigset",
         name: "IcuConfigSet",
         displayName: "IcuConfigSet",
-        description: "ICU Configuration Set",
+multiple: true,
+    minInstances: 2,
+            description: "ICU Configuration Set",
         parameters: [
           { id: "icumaxchannel", name: "IcuMaxChannel", displayName: "Max Channel", type: "integer", value: 2, defaultValue: 2 },
         ],
@@ -4003,7 +4013,9 @@ export const allModules: ConfigModule[] = [
         id: "mcuclocksetting",
         name: "McuClockSetting",
         displayName: "McuClockSetting",
-        description: "MCU clock & mode settings",
+multiple: true,
+    minInstances: 2,
+            description: "MCU clock & mode settings",
         parameters: [
           { id: "mcucoreclock", name: "McuCoreClock", type: "integer", value: 96000000, min: 1000000, max: 320000000, unit: "Hz" },
         ],
@@ -4225,7 +4237,9 @@ export const allModules: ConfigModule[] = [
         id: "portconfigset",
         name: "PortConfigSet",
         displayName: "PortConfigSet",
-        description: "Port Configuration Set",
+multiple: true,
+    minInstances: 1,
+            description: "Port Configuration Set",
         parameters: [],
         subContainers: [
           {
