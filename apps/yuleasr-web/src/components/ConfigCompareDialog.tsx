@@ -4,7 +4,7 @@
  */
 
 import { X, FileJson, GitCompare, ChevronDown, ChevronRight, Loader2, AlertCircle } from 'lucide-react'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { configComparer, type ComparisonResult, type ConfigDiff, type CompareStatus, type ParamDiff } from '@/services/compareEngine'
@@ -73,6 +73,219 @@ function formatValue(val: unknown): string {
   return String(val)
 }
 
+// ── Report Export Helpers ──
+
+function downloadBlob(content: string, filename: string, mimeType: string) {
+  const blob = new Blob([content], { type: mimeType })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
+function generateHtmlReport(result: ComparisonResult, configA: { id: string; name: string }, configB: { id: string; name: string }): string {
+  const now = new Date().toISOString().replace('T', ' ').substring(0, 19)
+
+  // Build hierarchical diff rows
+  const rows: string[] = []
+
+  for (const md of result.moduleDiffs) {
+    const moduleStatusLabel = md.status === 'same' ? 'Same' : md.status === 'different' ? 'Different' : md.status === 'only_a' ? 'Only in A' : 'Only in B'
+    const moduleRowClass = md.status === 'same' ? 'same' : md.status === 'different' ? 'different' : 'only-one'
+
+    rows.push(`<tr class="${moduleRowClass} module-row"><td class="name"><strong>${md.moduleName}</strong></td><td>—</td><td>—</td><td><span class="badge badge-${moduleRowClass}">${moduleStatusLabel}</span></td><td>Module</td></tr>`)
+
+    // Show enabled status for modules that differ
+    if (md.status === 'different' && md.enabledA !== undefined && md.enabledB !== undefined) {
+      rows.push(`<tr class="different"><td class="name param-name">  enabled</td><td>${md.enabledA}</td><td>${md.enabledB}</td><td><span class="badge badge-different">Different</span></td><td>Param</td></tr>`)
+    }
+
+    // Container-level rows for this module
+    const moduleContainers = result.containerDiffs.filter(c => c.moduleName === md.moduleName)
+    for (const cd of moduleContainers) {
+      const containerStatusLabel = cd.status === 'same' ? 'Same' : cd.status === 'different' ? 'Different' : cd.status === 'only_a' ? 'Only in A' : 'Only in B'
+      const containerRowClass = cd.status === 'same' ? 'same' : cd.status === 'different' ? 'different' : 'only-one'
+
+      let valueA = ''
+      let valueB = ''
+      if (cd.instanceCountA !== undefined) valueA = `Instances: ${cd.instanceCountA}`
+      if (cd.instanceCountB !== undefined) valueB = `Instances: ${cd.instanceCountB}`
+
+      rows.push(`<tr class="${containerRowClass} container-row"><td class="name">  ${cd.containerName}</td><td>${valueA}</td><td>${valueB}</td><td><span class="badge badge-${containerRowClass}">${containerStatusLabel}</span></td><td>Container</td></tr>`)
+
+      // Parameter-level rows for this container
+      const containerPath = cd.containerName.includes('.')
+        ? cd.containerName
+        : `${md.moduleName}.${cd.containerName}`
+      const containerParams = result.paramDiffs.filter(
+        p => p.moduleName === md.moduleName && p.containerPath === containerPath
+      )
+      for (const pd of containerParams) {
+        const paramRowClass = pd.status === 'same' ? 'same' : pd.status === 'different' ? 'different' : 'only-one'
+        const paramStatusLabel = pd.status === 'same' ? 'Same' : pd.status === 'different' ? 'Different' : pd.status === 'only_a' ? 'Only in A' : 'Only in B'
+        const valA = pd.valueA !== undefined ? String(pd.valueA) : '—'
+        const valB = pd.valueB !== undefined ? String(pd.valueB) : '—'
+        rows.push(`<tr class="${paramRowClass}"><td class="name param-name">    ${pd.parameterName}</td><td>${valA}</td><td>${valB}</td><td><span class="badge badge-${paramRowClass}">${paramStatusLabel}</span></td><td>${pd.type || 'Param'}</td></tr>`)
+      }
+    }
+  }
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configuration Comparison Report</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1f2937; background: #f9fafb; padding: 2rem; line-height: 1.5; }
+.container { max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.25rem; }
+.timestamp { color: #6b7280; font-size: 0.875rem; margin-bottom: 1.5rem; }
+.config-info { display: flex; gap: 2rem; margin-bottom: 1.5rem; }
+.config-card { background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; flex: 1; }
+.config-card h3 { font-size: 0.875rem; color: #6b7280; margin-bottom: 0.25rem; }
+.config-card .name { font-size: 1rem; font-weight: 600; }
+.config-card .id { font-size: 0.75rem; color: #9ca3af; }
+.summary { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+.summary-box { background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 0.75rem 1rem; flex: 1; text-align: center; }
+.summary-box .count { font-size: 1.5rem; font-weight: 700; }
+.summary-box .label { font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem; }
+.summary-box.modules { border-top: 3px solid #6366f1; }
+.summary-box.containers { border-top: 3px solid #f59e0b; }
+.summary-box.params { border-top: 3px solid #10b981; }
+.summary-box .count.modules { color: #6366f1; }
+.summary-box .count.containers { color: #f59e0b; }
+.summary-box .count.params { color: #10b981; }
+.summary-box .count.diff { color: #ef4444; }
+.summary-box .count.only { color: #eab308; }
+.summary-box .count.same { color: #22c55e; }
+table { width: 100%; border-collapse: collapse; background: white; border-radius: 0.5rem; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+th { text-align: left; padding: 0.75rem 1rem; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; background: #f3f4f6; border-bottom: 1px solid #e5e7eb; }
+td { padding: 0.625rem 1rem; font-size: 0.875rem; border-bottom: 1px solid #f3f4f6; }
+tr:last-child td { border-bottom: none; }
+.name { font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace; font-size: 0.8125rem; white-space: nowrap; }
+.param-name { color: #374151; }
+.module-row td { font-weight: 600; background: #fafafa; }
+.container-row td { background: #fcfcfc; }
+.same td { background: #f0fdf4; }
+.same .badge { background: #dcfce7; color: #16a34a; }
+.different td { background: #fef2f2; }
+.different .badge { background: #fecaca; color: #dc2626; }
+.only-one td { background: #fefce8; }
+.only-one .badge { background: #fef9c3; color: #ca8a04; }
+.badge { display: inline-block; padding: 0.125rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Configuration Comparison Report</h1>
+<p class="timestamp">Generated: ${now}</p>
+<div class="config-info">
+<div class="config-card">
+<h3>Configuration A</h3>
+<div class="name">${configA.name}</div>
+<div class="id">ID: ${configA.id}</div>
+</div>
+<div class="config-card">
+<h3>Configuration B</h3>
+<div class="name">${configB.name}</div>
+<div class="id">ID: ${configB.id}</div>
+</div>
+</div>
+<h2 style="font-size:1.25rem;margin-bottom:0.75rem;">Summary</h2>
+<div class="summary">
+<div class="summary-box modules"><div class="count modules">${result.moduleDiffs.length}</div><div class="label">Modules</div><div style="font-size:0.7rem;color:#9ca3af;margin-top:0.25rem;">${result.summary.modulesSame} same / ${result.summary.modulesDifferent} diff / ${result.summary.modulesOnlyA + result.summary.modulesOnlyB} only</div></div>
+<div class="summary-box containers"><div class="count containers">${result.containerDiffs.length}</div><div class="label">Containers</div><div style="font-size:0.7rem;color:#9ca3af;margin-top:0.25rem;">${result.summary.containersSame} same / ${result.summary.containersDifferent} diff / ${result.summary.containersOnlyA + result.summary.containersOnlyB} only</div></div>
+<div class="summary-box params"><div class="count params">${result.paramDiffs.length}</div><div class="label">Parameters</div><div style="font-size:0.7rem;color:#9ca3af;margin-top:0.25rem;">${result.summary.paramsSame} same / ${result.summary.paramsDifferent} diff / ${result.summary.paramsOnlyA + result.summary.paramsOnlyB} only</div></div>
+</div>
+<h2 style="font-size:1.25rem;margin-bottom:0.75rem;">Detailed Differences</h2>
+<table>
+<thead><tr><th>Item</th><th>Value (A)</th><th>Value (B)</th><th>Status</th><th>Type</th></tr></thead>
+<tbody>
+${rows.join('\n')}
+</tbody>
+</table>
+</div>
+</body>
+</html>`
+  return html
+}
+
+function generateMarkdownReport(result: ComparisonResult, configA: { id: string; name: string }, configB: { id: string; name: string }): string {
+  const now = new Date().toISOString().replace('T', ' ').substring(0, 19)
+
+  const lines: string[] = []
+
+  lines.push('# Configuration Comparison Report')
+  lines.push('')
+  lines.push(`Generated: ${now}`)
+  lines.push('')
+  lines.push('## Configurations')
+  lines.push('')
+  lines.push(`- **A**: ${configA.name} (${configA.id})`)
+  lines.push(`- **B**: ${configB.name} (${configB.id})`)
+  lines.push('')
+  lines.push('## Summary')
+  lines.push('')
+  lines.push('| Level | Total | Same | Different | Only in A | Only in B |')
+  lines.push('|-------|-------|------|-----------|-----------|-----------|')
+  lines.push(`| Modules | ${result.moduleDiffs.length} | ${result.summary.modulesSame} | ${result.summary.modulesDifferent} | ${result.summary.modulesOnlyA} | ${result.summary.modulesOnlyB} |`)
+  lines.push(`| Containers | ${result.containerDiffs.length} | ${result.summary.containersSame} | ${result.summary.containersDifferent} | ${result.summary.containersOnlyA} | ${result.summary.containersOnlyB} |`)
+  lines.push(`| Parameters | ${result.paramDiffs.length} | ${result.summary.paramsSame} | ${result.summary.paramsDifferent} | ${result.summary.paramsOnlyA} | ${result.summary.paramsOnlyB} |`)
+  lines.push('')
+  lines.push('## Detailed Differences')
+  lines.push('')
+
+  for (const md of result.moduleDiffs) {
+    const moduleMarker = md.status === 'same' ? '🟢' : md.status === 'different' ? '🔴' : '🟡'
+    const moduleStatus = md.status === 'same' ? 'Same' : md.status === 'different' ? 'Different' : md.status === 'only_a' ? 'Only in A' : 'Only in B'
+    lines.push(`### ${moduleMarker} Module: ${md.moduleName} (${moduleStatus})`)
+    lines.push('')
+
+    if (md.status === 'different' && md.enabledA !== undefined && md.enabledB !== undefined) {
+      lines.push(`- enabled: A=${md.enabledA}, B=${md.enabledB}`)
+    }
+    if (md.status === 'only_a' && md.enabledA !== undefined) {
+      lines.push(`- enabled: ${md.enabledA}`)
+    }
+    if (md.status === 'only_b' && md.enabledB !== undefined) {
+      lines.push(`- enabled: ${md.enabledB}`)
+    }
+
+    const moduleContainers = result.containerDiffs.filter(c => c.moduleName === md.moduleName)
+    for (const cd of moduleContainers) {
+      const containerMarker = cd.status === 'same' ? '🟢' : cd.status === 'different' ? '🔴' : '🟡'
+      const containerStatus = cd.status === 'same' ? 'Same' : cd.status === 'different' ? 'Different' : cd.status === 'only_a' ? 'Only in A' : 'Only in B'
+      lines.push(`  ${containerMarker} **Container: ${cd.containerName}** (${containerStatus})`)
+      if (cd.instanceCountA !== undefined || cd.instanceCountB !== undefined) {
+        lines.push(`    - Instances: A=${cd.instanceCountA ?? '—'}, B=${cd.instanceCountB ?? '—'}`)
+      }
+
+      const containerPath = cd.containerName.includes('.')
+        ? cd.containerName
+        : `${md.moduleName}.${cd.containerName}`
+      const containerParams = result.paramDiffs.filter(
+        p => p.moduleName === md.moduleName && p.containerPath === containerPath
+      )
+      for (const pd of containerParams) {
+        const paramMarker = pd.status === 'same' ? '🟢' : pd.status === 'different' ? '🔴' : '🟡'
+        const paramStatus = pd.status === 'same' ? 'Same' : pd.status === 'different' ? 'Different' : pd.status === 'only_a' ? 'Only in A' : 'Only in B'
+        const valA = pd.valueA !== undefined ? String(pd.valueA) : '—'
+        const valB = pd.valueB !== undefined ? String(pd.valueB) : '—'
+        lines.push(`    ${paramMarker} **${pd.parameterName}**: A=\`${valA}\`, B=\`${valB}\` (${paramStatus})`)
+      }
+    }
+    lines.push('')
+  }
+
+  return lines.join('\n')
+}
+
 export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: ConfigCompareDialogProps) {
   const { t } = useTranslation()
   const { configList, loadConfig, currentConfig } = useConfigStore()
@@ -86,6 +299,8 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set())
   const [syncedParamIds, setSyncedParamIds] = useState<Set<string>>(new Set())
   const [navIndex, setNavIndex] = useState(0)
+  const [showExportMenu, setShowExportMenu] = useState(false)
+  const exportMenuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (isOpen) {
@@ -153,6 +368,18 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
     setError(null)
     setSelectedNode(null)
   }, [configAId, configBId])
+
+  // Close export menu on click outside
+  useEffect(() => {
+    if (!showExportMenu) return
+    const handleClick = (e: MouseEvent) => {
+      if (exportMenuRef.current && !exportMenuRef.current.contains(e.target as Node)) {
+        setShowExportMenu(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [showExportMenu])
 
   const diffTree = useMemo(() => {
     if (!result) return []
@@ -560,6 +787,43 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
                     </button>
                   </div>
                 )}
+                {/* Export Report button */}
+                <div className="relative" ref={exportMenuRef}>
+                  <button
+                    onClick={() => setShowExportMenu(!showExportMenu)}
+                    className="px-2.5 py-1.5 text-xs rounded-lg border border-border hover:bg-accent/50 transition-colors flex items-center gap-1"
+                  >
+                    <FileJson className="w-3.5 h-3.5" />
+                    Export Report
+                    <ChevronDown className={`w-3 h-3 transition-transform ${showExportMenu ? 'rotate-180' : ''}`} />
+                  </button>
+                  {showExportMenu && (
+                    <div className="absolute right-0 top-full mt-1 bg-card border border-border rounded-lg shadow-lg z-50 min-w-[160px] py-1">
+                      <button
+                        onClick={() => {
+                          setShowExportMenu(false)
+                          const html = generateHtmlReport(result!, result.configA, result.configB)
+                          downloadBlob(html, `compare-report-${Date.now()}.html`, 'text/html')
+                        }}
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-accent/50 transition-colors flex items-center gap-2"
+                      >
+                        <span className="text-blue-500">🌐</span>
+                        HTML Report
+                      </button>
+                      <button
+                        onClick={() => {
+                          setShowExportMenu(false)
+                          const md = generateMarkdownReport(result!, result.configA, result.configB)
+                          downloadBlob(md, `compare-report-${Date.now()}.md`, 'text/markdown')
+                        }}
+                        className="w-full text-left px-3 py-2 text-xs hover:bg-accent/50 transition-colors flex items-center gap-2"
+                      >
+                        <span className="text-gray-500">📝</span>
+                        Markdown Report
+                      </button>
+                    </div>
+                  )}
+                </div>
                 <select
                   value={filter}
                   onChange={(e) => setFilter(e.target.value as typeof filter)}
