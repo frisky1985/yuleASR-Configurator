@@ -3,6 +3,7 @@ import {
   ArrowLeft,
   Play,
   Download,
+  Upload,
   GitBranch,
   MoreVertical,
   CheckCircle,
@@ -11,7 +12,7 @@ import {
   AlertTriangle,
   Info,
 } from 'lucide-react'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 
 import { ConfigTree } from '@/components/ConfigTree'
@@ -92,6 +93,41 @@ export function Editor() {
 
   const handleSave = async () => {
     await saveConfig()
+  }
+
+  const handleExport = () => {
+    if (!currentConfig) return
+    const blob = new Blob([JSON.stringify(currentConfig, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${currentConfig.name.replace(/\s+/g, '_')}.yuleasr.json`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const [importing, setImporting] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setImporting(true)
+    const reader = new FileReader()
+    reader.onload = () => {
+      try {
+        const config = JSON.parse(reader.result as string)
+        setSelectedPath('')
+        useConfigStore.setState({ currentConfig: config, isDirty: false })
+        localStorage.setItem('yuleasr_config', JSON.stringify(config))
+      } catch (err) {
+        alert('导入失败：无效的配置文件')
+      }
+      setImporting(false)
+    }
+    reader.readAsText(file)
+    // Reset input so same file can be re-imported
+    e.target.value = ''
   }
 
   const handleParameterChange = (paramName: string, value: unknown) => {
@@ -244,13 +280,30 @@ export function Editor() {
             <Save className="w-4 h-4" />
             {isLoading ? 'Saving...' : 'Save'}
           </button>
-          <button className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-            <GitBranch className="w-4 h-4" />
-            Sync
-          </button>
-          <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+          <button
+            onClick={handleExport}
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            title="Export configuration as JSON"
+          >
             <Download className="w-4 h-4" />
+            Export
           </button>
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={importing}
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+            title="Import configuration from JSON"
+          >
+            <Upload className="w-4 h-4" />
+            {importing ? 'Importing...' : 'Import'}
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json,.yuleasr.json"
+            onChange={handleImport}
+            className="hidden"
+          />
           <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
             <MoreVertical className="w-4 h-4" />
           </button>

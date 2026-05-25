@@ -325,21 +325,21 @@ export const useConfigStore = create<ConfigState>()(
 
         set({ isLoading: true })
         try {
-          // 先验证
           const validation = validateConfig()
           if (!validation.valid) {
             console.warn('Configuration has errors, saving anyway')
           }
 
-          console.log('Saving config:', currentConfig)
-          await new Promise(resolve => setTimeout(resolve, 500))
+          const updated = {
+            ...currentConfig,
+            updatedAt: new Date().toISOString()
+          }
+
+          localStorage.setItem('yuleasr_config', JSON.stringify(updated))
           
           set({ 
             isDirty: false,
-            currentConfig: {
-              ...currentConfig,
-              updatedAt: new Date().toISOString()
-            }
+            currentConfig: updated
           })
         } finally {
           set({ isLoading: false })
@@ -349,10 +349,18 @@ export const useConfigStore = create<ConfigState>()(
       loadConfig: async (configId) => {
         set({ isLoading: true })
         try {
-          // 使用默认分层配置
-          const config = createDefaultConfig(configId)
+          const saved = localStorage.getItem('yuleasr_config')
+          let config: ConfigFile
           
-          // 初始验证
+          if (saved) {
+            config = JSON.parse(saved) as ConfigFile
+            if (!config.modules) {
+              config = createDefaultConfig(configId)
+            }
+          } else {
+            config = createDefaultConfig(configId)
+          }
+          
           const validator = new DependencyValidator(config)
           const result = validator.validate()
           
@@ -438,3 +446,13 @@ export const useConfigStore = create<ConfigState>()(
     { name: 'config-store' }
   )
 )
+
+// Auto-save to localStorage on any state change
+useConfigStore.subscribe((state) => {
+  if (state.isDirty && state.currentConfig) {
+    localStorage.setItem('yuleasr_config', JSON.stringify({
+      ...state.currentConfig,
+      updatedAt: new Date().toISOString()
+    }))
+  }
+})
