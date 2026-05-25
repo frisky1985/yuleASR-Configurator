@@ -16,6 +16,7 @@ import { useEffect, useState, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 
 import { ConfigTree } from '@/components/ConfigTree'
+import type { ConfigTreeHandle } from '@/components/ConfigTree'
 import { ConfigurationStatusPanel, exportConfigReport } from '@/components/ConfigurationStatusPanel'
 import { GlobalSearch } from '@/components/GlobalSearch'
 import { ModuleConfigWizard } from '@/components/ModuleConfigWizard'
@@ -40,6 +41,7 @@ export function Editor() {
   const [showDisabled, setShowDisabled] = useState(true)
   const [isValidating, setIsValidating] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const configTreeRef = useRef<ConfigTreeHandle>(null)
 
   const {
     currentConfig,
@@ -315,6 +317,7 @@ export function Editor() {
         {/* Left Sidebar - Hierarchical Config Tree */}
         <div className="col-span-3 h-full">
           <ConfigTree
+            ref={configTreeRef}
             config={currentConfig}
             selectedPath={selectedPath}
             onSelectPath={setSelectedPath}
@@ -406,18 +409,25 @@ export function Editor() {
                 {selectedContainer.multiple && !selectedInstanceName ? (
                   /* Dynamic container with no instance selected - empty state */
                   <div className="text-center py-8">
-                    <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-3">
-                      <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <button
+                      onClick={() => {
+                        const path = `layer:${selectedModule?.layer}/module:${selectedModule?.id}/container:${selectedContainer.id}`
+                        configTreeRef.current?.addInstance(path)
+                      }}
+                      className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-3 hover:bg-primary-50 transition-colors cursor-pointer group"
+                      title="添加实例"
+                    >
+                      <svg className="w-6 h-6 text-gray-400 group-hover:text-primary-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                       </svg>
-                    </div>
+                    </button>
                     <p className="text-sm font-medium text-gray-900 mb-1">
                       {selectedContainer.displayName || selectedContainer.name}
                     </p>
-                    <p className="text-sm text-gray-500 mb-2">
-                      点击左侧 [+] 添加{selectedContainer.subContainers?.[0]?.displayName || selectedContainer.subContainers?.[0]?.name || '实例'} 实例
+                    <p className="text-sm text-gray-500">
+                      点击上方 [+] 添加{selectedContainer.subContainers?.[0]?.displayName || selectedContainer.subContainers?.[0]?.name || '实例'} 实例
                     </p>
-                    <p className="text-xs text-gray-400">创建实例后，在树中选择实例查看和编辑参数</p>
+                    <p className="text-xs text-gray-400 mt-2">创建实例后，在树中选择实例查看和编辑参数</p>
                   </div>
                 ) : (
                   /* Static container or instance selected - show parameters normally */

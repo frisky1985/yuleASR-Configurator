@@ -16,7 +16,7 @@ import {
   FileText, Hash, ToggleLeft, List, Filter, ChevronRightSquare,
   ChevronDownSquare, CircleDot, Layers2, Trash2, AlertTriangle as AlertTri
 } from 'lucide-react'
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useCallback, useEffect, forwardRef, useImperativeHandle } from 'react'
 
 import { cn } from '@/lib/utils'
 import type { ConfigFile, ConfigModule, ConfigContainer, ConfigParameter, ValidationIssue } from '@/types/config'
@@ -32,6 +32,11 @@ export interface ConfigTreeProps {
   filterText?: string
   /** Called when an instance parameter value changes */
   onInstanceParamChange?: (containerPath: string, instanceName: string, paramId: string, value: unknown) => void
+}
+
+export interface ConfigTreeHandle {
+  /** Add a new dynamic instance to the given container path */
+  addInstance: (containerPath: string) => void
 }
 
 interface TreeNodeData {
@@ -79,7 +84,7 @@ const layerColors: Record<string, string> = {
 
 const layerOrder = ['MCAL', 'ECUAL', 'Service', 'OS', 'RTE', 'ASW']
 
-export function ConfigTree({
+export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function ConfigTree({
   config,
   selectedPath,
   onSelectPath,
@@ -88,7 +93,7 @@ export function ConfigTree({
   showDisabled = true,
   onToggleModule,
   filterText = '',
-}: ConfigTreeProps) {
+}: ConfigTreeProps, ref) {
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set())
   const [searchQuery, setSearchQuery] = useState(filterText)
   const [showFilterMenu, setShowFilterMenu] = useState(false)
@@ -134,6 +139,7 @@ export function ConfigTree({
     window.addEventListener('click', handler)
     return () => window.removeEventListener('click', handler)
   }, [])
+
   const [dragSource, setDragSource] = useState<{
     containerPath: string
     instanceName: string
@@ -1038,6 +1044,6 @@ export function ConfigTree({
       )}
     </div>
   )
-}
+})
 
 export default ConfigTree
