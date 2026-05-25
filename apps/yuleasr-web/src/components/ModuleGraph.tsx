@@ -161,8 +161,8 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
     <div 
       ref={containerRef}
       className={cn(
-        'relative w-full h-full rounded-xl overflow-hidden border border-gray-200',
-        'bg-gray-50',
+        'relative w-full h-full rounded-xl overflow-hidden border border-app-border-primary',
+        'bg-app-bg-secondary',
         className
       )}
       style={{ minHeight: '600px' }}
@@ -170,9 +170,9 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
       {/* Toolbar */}
       <div className="absolute top-4 left-4 right-4 z-10 flex items-center gap-2 pointer-events-none">
         {/* Search */}
-        <div className="pointer-events-auto bg-white rounded-lg shadow-sm border border-gray-200 flex items-center">
+        <div className="pointer-events-auto bg-app-bg-primary rounded-lg shadow-sm border border-app-border-primary flex items-center">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-app-text-tertiary" />
             <input
               type="text"
               placeholder="Search modules..."
@@ -183,7 +183,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-app-text-tertiary hover:text-app-text-secondary"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -198,7 +198,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
             'pointer-events-auto p-2 rounded-lg border shadow-sm transition-colors',
             showFilters 
               ? 'bg-primary-50 border-primary-200 text-primary-700' 
-              : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+              : 'bg-app-bg-primary border-app-border-primary text-app-text-secondary hover:bg-app-bg-secondary'
           )}
           title="Toggle filters"
         >
@@ -206,36 +206,36 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
         </button>
 
         {/* View Controls */}
-        <div className="pointer-events-auto flex items-center gap-1 bg-white rounded-lg border border-gray-200 shadow-sm p-1 ml-auto">
+        <div className="pointer-events-auto flex items-center gap-1 bg-app-bg-primary rounded-lg border border-app-border-primary shadow-sm p-1 ml-auto">
           <button
             onClick={() => zoomOut()}
-            className="p-1.5 text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+            className="p-1.5 text-app-text-secondary hover:bg-app-bg-tertiary rounded-md transition-colors"
             title="Zoom out"
           >
             <ZoomOut className="w-4 h-4" />
           </button>
           <button
             onClick={() => fitView({ padding: 0.2 })}
-            className="p-1.5 text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+            className="p-1.5 text-app-text-secondary hover:bg-app-bg-tertiary rounded-md transition-colors"
             title="Fit view"
           >
             <Maximize2 className="w-4 h-4" />
           </button>
           <button
             onClick={() => zoomIn()}
-            className="p-1.5 text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+            className="p-1.5 text-app-text-secondary hover:bg-app-bg-tertiary rounded-md transition-colors"
             title="Zoom in"
           >
             <ZoomIn className="w-4 h-4" />
           </button>
-          <div className="w-px h-4 bg-gray-200 mx-1" />
+          <div className="w-px h-4 bg-app-bg-tertiary mx-1" />
           <button
             onClick={() => setShowMiniMap(!showMiniMap)}
             className={cn(
               'p-1.5 rounded-md transition-colors',
               showMiniMap 
                 ? 'bg-primary-50 text-primary-700' 
-                : 'text-gray-600 hover:bg-gray-100'
+                : 'text-app-text-secondary hover:bg-app-bg-tertiary'
             )}
             title="Toggle minimap"
           >
@@ -243,7 +243,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
           </button>
           <button
             onClick={handleResetView}
-            className="p-1.5 text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+            className="p-1.5 text-app-text-secondary hover:bg-app-bg-tertiary rounded-md transition-colors"
             title="Reset view"
           >
             <RotateCcw className="w-4 h-4" />
@@ -253,10 +253,10 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
 
       {/* Filters Panel */}
       {showFilters && (
-        <div className="absolute top-16 left-4 z-10 w-72 bg-white rounded-lg shadow-lg border border-gray-200 p-4 space-y-4">
+        <div className="absolute top-16 left-4 z-10 w-72 bg-app-bg-primary rounded-lg shadow-lg border border-app-border-primary p-4 space-y-4">
           {/* Layer Filter */}
           <div>
-            <h4 className="text-sm font-medium text-gray-900 mb-2 flex items-center gap-2">
+            <h4 className="text-sm font-medium text-app-text-primary mb-2 flex items-center gap-2">
               <Layers className="w-4 h-4" />
               Layers
             </h4>
@@ -269,7 +269,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
                     'w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-sm transition-colors',
                     selectedLayers.includes(layer)
                       ? 'bg-primary-50 text-primary-700'
-                      : 'hover:bg-gray-50 text-gray-700'
+                      : 'hover:bg-app-bg-secondary text-app-text-primary'
                   )}
                 >
                   <span 
@@ -289,12 +289,12 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
 
           {/* Show Disabled Toggle */}
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-700">Show disabled modules</span>
+            <span className="text-sm text-app-text-primary">Show disabled modules</span>
             <button
               onClick={() => setShowDisabled(!showDisabled)}
               className={cn(
                 'p-1.5 rounded-md transition-colors',
-                showDisabled ? 'text-primary-600' : 'text-gray-400'
+                showDisabled ? 'text-primary-600' : 'text-app-text-tertiary'
               )}
             >
               {showDisabled ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
@@ -303,17 +303,17 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
 
           {/* Highlight Path Toggle */}
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-700">Highlight dependency paths</span>
+            <span className="text-sm text-app-text-primary">Highlight dependency paths</span>
             <button
               onClick={() => setHighlightPath(!highlightPath)}
               className={cn(
                 'w-10 h-5 rounded-full transition-colors relative',
-                highlightPath ? 'bg-primary-500' : 'bg-gray-300'
+                highlightPath ? 'bg-primary-500' : 'bg-app-bg-tertiary'
               )}
             >
               <span 
                 className={cn(
-                  'absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full transition-transform',
+                  'absolute top-0.5 left-0.5 w-4 h-4 bg-app-bg-primary rounded-full transition-transform',
                   highlightPath ? 'translate-x-5' : 'translate-x-0'
                 )}
               />
@@ -321,10 +321,10 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
           </div>
 
           {/* Stats */}
-          <div className="pt-3 border-t border-gray-200">
-            <div className="grid grid-cols-2 gap-2 text-xs text-gray-500">
-              <div>Total: <span className="font-medium text-gray-900">{modules.length}</span></div>
-              <div>Visible: <span className="font-medium text-gray-900">{filteredModules.length}</span></div>
+          <div className="pt-3 border-t border-app-border-primary">
+            <div className="grid grid-cols-2 gap-2 text-xs text-app-text-secondary">
+              <div>Total: <span className="font-medium text-app-text-primary">{modules.length}</span></div>
+              <div>Visible: <span className="font-medium text-app-text-primary">{filteredModules.length}</span></div>
               <div>Enabled: <span className="font-medium text-green-600">{filteredModules.filter(m => m.enabled).length}</span></div>
               <div>Selected: <span className="font-medium text-primary-600">{selectedNodeId ? 1 : 0}</span></div>
             </div>
@@ -334,17 +334,17 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
 
       {/* Selected Node Info */}
       {selectedNodeId && (
-        <div className="absolute bottom-4 left-4 z-10 bg-white rounded-lg shadow-lg border border-gray-200 p-4 max-w-xs">
+        <div className="absolute bottom-4 left-4 z-10 bg-app-bg-primary rounded-lg shadow-lg border border-app-border-primary p-4 max-w-xs">
           <div className="flex items-start justify-between gap-2">
-            <h4 className="font-medium text-gray-900">Module Selected</h4>
+            <h4 className="font-medium text-app-text-primary">Module Selected</h4>
             <button
               onClick={() => setSelectedNodeId(null)}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-app-text-tertiary hover:text-app-text-secondary"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-app-text-secondary mt-1">
             Double-click to edit configuration
           </p>
           <button
@@ -380,10 +380,10 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
           gap={20} 
           size={1}
         />
-        <Controls className="!bg-white !border-gray-200 !shadow-md" />
+        <Controls className="!bg-app-bg-primary !border-app-border-primary !shadow-md" />
         {showMiniMap && (
           <MiniMap 
-            className="!bg-white !border-gray-200 !rounded-lg !shadow-md"
+            className="!bg-app-bg-primary !border-app-border-primary !rounded-lg !shadow-md"
             nodeColor={(node) => {
               const layer = (node.data?.layer as ModuleLayer) || 'MCAL'
               return layerColors[layer] || '#94a3b8'

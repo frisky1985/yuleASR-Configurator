@@ -109,11 +109,11 @@ export function VersionHistory({
   const commitsByDate = groupedCommits()
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div className="bg-app-bg-primary rounded-lg border border-app-border-primary overflow-hidden">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-gray-200 bg-gray-50">
+      <div className="px-4 py-3 border-b border-app-border-primary bg-app-bg-secondary">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+          <h3 className="text-sm font-semibold text-app-text-primary flex items-center gap-2">
             <GitCommit className="w-4 h-4" />
             Version History
           </h3>
@@ -124,7 +124,7 @@ export function VersionHistory({
                 'text-xs px-2 py-1 rounded transition-colors',
                 compareMode 
                   ? 'bg-primary-100 text-primary-700' 
-                  : 'text-gray-500 hover:text-gray-700'
+                  : 'text-app-text-secondary hover:text-app-text-primary'
               )}
             >
               <GitCompare className="w-3 h-3 inline mr-1" />
@@ -133,7 +133,7 @@ export function VersionHistory({
             <button
               onClick={onRefresh}
               disabled={isLoading}
-              className="text-gray-400 hover:text-gray-600 transition-colors"
+              className="text-app-text-tertiary hover:text-app-text-secondary transition-colors"
             >
               <RefreshCw className={cn('w-4 h-4', isLoading && 'animate-spin')} />
             </button>
@@ -144,7 +144,7 @@ export function VersionHistory({
         <div className="relative">
           <button
             onClick={() => setShowBranchSelector(!showBranchSelector)}
-            className="flex items-center gap-2 text-xs text-gray-600 hover:text-gray-900 bg-white border border-gray-300 rounded px-3 py-1.5 w-full"
+            className="flex items-center gap-2 text-xs text-app-text-secondary hover:text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded px-3 py-1.5 w-full"
           >
             <GitBranch className="w-3.5 h-3.5" />
             <span className="flex-1 text-left">{currentBranch}</span>
@@ -156,7 +156,7 @@ export function VersionHistory({
           </button>
 
           {showBranchSelector && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-40 overflow-auto">
+            <div className="absolute top-full left-0 right-0 mt-1 bg-app-bg-primary border border-app-border-primary rounded-lg shadow-lg z-10 max-h-40 overflow-auto">
               {branches.map(branch => (
                 <button
                   key={branch.name}
@@ -165,7 +165,7 @@ export function VersionHistory({
                     setShowBranchSelector(false)
                   }}
                   className={cn(
-                    'w-full flex items-center gap-2 px-3 py-2 text-xs text-left hover:bg-gray-50',
+                    'w-full flex items-center gap-2 px-3 py-2 text-xs text-left hover:bg-app-bg-secondary',
                     branch.current && 'bg-primary-50 text-primary-700'
                   )}
                 >
@@ -182,13 +182,13 @@ export function VersionHistory({
 
         {/* Search */}
         <div className="relative mt-3">
-          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-app-text-tertiary" />
           <input
             type="text"
             placeholder="Search commits..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-primary-500"
+            className="w-full pl-8 pr-3 py-1.5 text-xs border border-app-border-primary rounded focus:outline-none focus:ring-1 focus:ring-primary-500"
           />
         </div>
 
@@ -224,21 +224,21 @@ export function VersionHistory({
       <div className="max-h-[calc(100vh-300px)] overflow-y-auto">
         {isLoading ? (
           <div className="p-8 text-center">
-            <RefreshCw className="w-6 h-6 animate-spin text-gray-400 mx-auto" />
-            <p className="text-gray-500 text-sm mt-2">Loading history...</p>
+            <RefreshCw className="w-6 h-6 animate-spin text-app-text-tertiary mx-auto" />
+            <p className="text-app-text-secondary text-sm mt-2">Loading history...</p>
           </div>
         ) : filteredCommits.length === 0 ? (
           <div className="p-8 text-center">
-            <GitCommit className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-            <p className="text-gray-500 text-sm">
+            <GitCommit className="w-8 h-8 text-app-text-tertiary mx-auto mb-2" />
+            <p className="text-app-text-secondary text-sm">
               {searchQuery ? 'No commits match your search' : 'No commits yet'}
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-app-border-primary">
             {Object.entries(commitsByDate).map(([date, dateCommits]) => (
               <div key={date}>
-                <div className="px-4 py-2 bg-gray-50 text-xs font-medium text-gray-500 sticky top-0">
+                <div className="px-4 py-2 bg-app-bg-secondary text-xs font-medium text-app-text-secondary sticky top-0">
                   {date}
                 </div>
                 {dateCommits.map((commit) => {
@@ -253,14 +253,14 @@ export function VersionHistory({
                         'relative px-4 py-3 transition-colors',
                         isSelected && !compareMode && 'bg-primary-50',
                         isCompareSelected && compareMode && 'bg-blue-50',
-                        !isSelected && !compareMode && 'hover:bg-gray-50'
+                        !isSelected && !compareMode && 'hover:bg-app-bg-secondary'
                       )}
                     >
                       {/* Timeline Line */}
-                      <div className="absolute left-6 top-0 bottom-0 w-px bg-gray-200" />
+                      <div className="absolute left-6 top-0 bottom-0 w-px bg-app-bg-tertiary" />
                       
                       {/* Commit Dot */}
-                      <div className="absolute left-4 top-4 w-4 h-4 rounded-full bg-white border-2 border-primary-500 z-10" />
+                      <div className="absolute left-4 top-4 w-4 h-4 rounded-full bg-app-bg-primary border-2 border-primary-500 z-10" />
 
                       {compareMode ? (
                         <label className="flex items-start gap-3 cursor-pointer pl-8">
@@ -271,10 +271,10 @@ export function VersionHistory({
                             className="mt-1"
                           />
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">
+                            <p className="text-sm font-medium text-app-text-primary truncate">
                               {commit.message}
                             </p>
-                            <p className="text-xs text-gray-500 mt-0.5">
+                            <p className="text-xs text-app-text-secondary mt-0.5">
                               {commit.oid.substring(0, 7)}
                             </p>
                           </div>
@@ -285,10 +285,10 @@ export function VersionHistory({
                             onClick={() => onSelectCommit(commit)}
                             className="w-full text-left"
                           >
-                            <p className="text-sm font-medium text-gray-900 line-clamp-2">
+                            <p className="text-sm font-medium text-app-text-primary line-clamp-2">
                               {commit.message}
                             </p>
-                            <div className="flex items-center gap-3 mt-1.5 text-xs text-gray-500">
+                            <div className="flex items-center gap-3 mt-1.5 text-xs text-app-text-secondary">
                               <span className="font-mono text-primary-600">
                                 {commit.oid.substring(0, 7)}
                               </span>
@@ -321,7 +321,7 @@ export function VersionHistory({
                             </button>
                             <button
                               onClick={() => toggleExpanded(commit.oid)}
-                              className="flex items-center gap-1 px-2 py-1 text-xs text-gray-500 hover:bg-gray-100 rounded"
+                              className="flex items-center gap-1 px-2 py-1 text-xs text-app-text-secondary hover:bg-app-bg-tertiary rounded"
                             >
                               {isExpanded ? (
                                 <ChevronDown className="w-3 h-3" />
@@ -334,27 +334,27 @@ export function VersionHistory({
 
                           {/* Expanded Details */}
                           {isExpanded && (
-                            <div className="mt-3 p-3 bg-gray-50 rounded text-xs space-y-2">
+                            <div className="mt-3 p-3 bg-app-bg-secondary rounded text-xs space-y-2">
                               <div>
-                                <span className="text-gray-500">Full Hash:</span>
-                                <code className="ml-2 text-gray-900">{commit.oid}</code>
+                                <span className="text-app-text-secondary">Full Hash:</span>
+                                <code className="ml-2 text-app-text-primary">{commit.oid}</code>
                               </div>
                               <div>
-                                <span className="text-gray-500">Author:</span>
-                                <span className="ml-2 text-gray-900">
+                                <span className="text-app-text-secondary">Author:</span>
+                                <span className="ml-2 text-app-text-primary">
                                   {commit.author.name} &lt;{commit.author.email}&gt;
                                 </span>
                               </div>
                               <div>
-                                <span className="text-gray-500">Date:</span>
-                                <span className="ml-2 text-gray-900">
+                                <span className="text-app-text-secondary">Date:</span>
+                                <span className="ml-2 text-app-text-primary">
                                   {new Date(commit.author.timestamp).toLocaleString()}
                                 </span>
                               </div>
                               {commit.parent.length > 0 && (
                                 <div>
-                                  <span className="text-gray-500">Parent:</span>
-                                  <code className="ml-2 text-gray-900">
+                                  <span className="text-app-text-secondary">Parent:</span>
+                                  <code className="ml-2 text-app-text-primary">
                                     {commit.parent[0].substring(0, 7)}
                                   </code>
                                 </div>
@@ -373,7 +373,7 @@ export function VersionHistory({
       </div>
 
       {/* Footer Stats */}
-      <div className="px-4 py-2 border-t border-gray-200 bg-gray-50 text-xs text-gray-500">
+      <div className="px-4 py-2 border-t border-app-border-primary bg-app-bg-secondary text-xs text-app-text-secondary">
         {filteredCommits.length} commit{filteredCommits.length !== 1 ? 's' : ''} on {currentBranch}
       </div>
     </div>

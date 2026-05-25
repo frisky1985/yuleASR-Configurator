@@ -37,16 +37,16 @@ interface SettingSectionProps {
 
 function SettingSection({ title, description, icon, children }: SettingSectionProps) {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-200 bg-gray-50/50">
+    <div className="bg-app-bg-primary border border-app-border-primary rounded-lg overflow-hidden">
+      <div className="px-6 py-4 border-b border-app-border-primary bg-app-bg-secondary/50">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center">
             {icon}
           </div>
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+            <h2 className="text-lg font-semibold text-app-text-primary">{title}</h2>
             {description && (
-              <p className="text-sm text-gray-500">{description}</p>
+              <p className="text-sm text-app-text-secondary">{description}</p>
             )}
           </div>
         </div>
@@ -66,9 +66,9 @@ function SettingItem({ label, description, children }: SettingItemProps) {
   return (
     <div className="flex items-center justify-between">
       <div className="flex-1">
-        <label className="text-sm font-medium text-gray-900">{label}</label>
+        <label className="text-sm font-medium text-app-text-primary">{label}</label>
         {description && (
-          <p className="text-sm text-gray-500 mt-0.5">{description}</p>
+          <p className="text-sm text-app-text-secondary mt-0.5">{description}</p>
         )}
       </div>
       <div className="ml-4">{children}</div>
@@ -86,13 +86,13 @@ function Toggle({ checked, onChange, disabled = false }: { checked: boolean; onC
       onClick={() => onChange(!checked)}
       className={cn(
         "relative inline-flex h-6 w-11 items-center rounded-full transition-colors",
-        checked ? "bg-primary-600" : "bg-gray-200",
+        checked ? "bg-primary-600" : "bg-app-bg-tertiary",
         disabled && "opacity-50 cursor-not-allowed"
       )}
     >
       <span
         className={cn(
-          "inline-block h-4 w-4 transform rounded-full bg-white transition-transform",
+          "inline-block h-4 w-4 transform rounded-full bg-app-bg-primary transition-transform",
           checked ? "translate-x-6" : "translate-x-1"
         )}
       />
@@ -118,8 +118,8 @@ function Select<T extends string>({
         disabled={disabled}
         onChange={(e) => onChange(e.target.value as T)}
         className={cn(
-          "appearance-none bg-white border border-gray-300 rounded-lg pl-3 pr-10 py-2 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
-          disabled && "opacity-50 cursor-not-allowed bg-gray-50"
+          "appearance-none bg-app-bg-primary border border-app-border-primary rounded-lg pl-3 pr-10 py-2 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
+          disabled && "opacity-50 cursor-not-allowed bg-app-bg-secondary"
         )}
       >
         {options.map((opt) => (
@@ -129,7 +129,7 @@ function Select<T extends string>({
         ))}
       </select>
       <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-        <ChevronRight className="w-4 h-4 text-gray-400 rotate-90" />
+        <ChevronRight className="w-4 h-4 text-app-text-tertiary rotate-90" />
       </div>
     </div>
   )
@@ -164,8 +164,8 @@ function Input({
       disabled={disabled}
       onChange={(e) => onChange(e.target.value)}
       className={cn(
-        "w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
-        disabled && "opacity-50 cursor-not-allowed bg-gray-50",
+        "w-full px-3 py-2 border border-app-border-primary rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
+        disabled && "opacity-50 cursor-not-allowed bg-app-bg-secondary",
         inputClassName
       )}
     />
@@ -267,14 +267,14 @@ export function Settings() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-          <p className="text-gray-500 mt-1">
+          <h1 className="text-2xl font-bold text-app-text-primary">Settings</h1>
+          <p className="text-app-text-secondary mt-1">
             Configure your yuleASR Configurator preferences
           </p>
         </div>
         <button
           onClick={() => setShowResetConfirm(true)}
-          className="inline-flex items-center gap-2 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
         >
           <RotateCcw className="w-4 h-4" />
           Reset to Defaults
@@ -329,7 +329,7 @@ export function Settings() {
                   }}
                   className="w-24"
                 />
-                <span className="text-sm text-gray-500">seconds</span>
+                <span className="text-sm text-app-text-secondary">seconds</span>
               </div>
             </SettingItem>
 
@@ -349,7 +349,7 @@ export function Settings() {
                       "flex items-center gap-2 px-3 py-2 rounded-lg border text-sm transition-colors",
                       editor.theme === opt.value
                         ? "border-primary-600 bg-primary-50 text-primary-700"
-                        : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                        : "border-app-border-primary hover:border-app-border-primary hover:bg-app-bg-secondary"
                     )}
                   >
                     {opt.icon}
@@ -560,29 +560,29 @@ export function Settings() {
           <SettingSection
             title="About"
             description="Version information and updates"
-            icon={<Info className="w-5 h-5 text-gray-600" />}
+            icon={<Info className="w-5 h-5 text-app-text-secondary" />}
           >
             <div className="space-y-4">
               <div className="flex items-center justify-between py-2">
-                <span className="text-sm text-gray-600">Version</span>
-                <span className="text-sm font-medium text-gray-900">{version}</span>
+                <span className="text-sm text-app-text-secondary">Version</span>
+                <span className="text-sm font-medium text-app-text-primary">{version}</span>
               </div>
 
               <div className="flex items-center justify-between py-2">
-                <span className="text-sm text-gray-600">License</span>
-                <span className="text-sm font-medium text-gray-900">MIT</span>
+                <span className="text-sm text-app-text-secondary">License</span>
+                <span className="text-sm font-medium text-app-text-primary">MIT</span>
               </div>
 
               {lastCheckedAt && (
                 <div className="flex items-center justify-between py-2">
-                  <span className="text-sm text-gray-600">Last Checked</span>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-app-text-secondary">Last Checked</span>
+                  <span className="text-sm text-app-text-secondary">
                     {new Date(lastCheckedAt).toLocaleDateString()}
                   </span>
                 </div>
               )}
 
-              <div className="pt-4 border-t border-gray-100">
+              <div className="pt-4 border-t border-app-border-primary">
                 {updateAvailable === null ? (
                   <button
                     onClick={handleCheckUpdate}
@@ -612,12 +612,12 @@ export function Settings() {
                     </p>
                   </div>
                 ) : (
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
-                    <div className="flex items-center gap-2 text-gray-700">
+                  <div className="bg-app-bg-secondary border border-app-border-primary rounded-lg p-3">
+                    <div className="flex items-center gap-2 text-app-text-primary">
                       <CheckCircle2 className="w-5 h-5 text-green-600" />
                       <span className="font-medium">Up to date</span>
                     </div>
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-app-text-secondary mt-1">
                       You're running the latest version.
                     </p>
                   </div>
@@ -631,29 +631,29 @@ export function Settings() {
       {/* Reset Confirmation Modal */}
       {showResetConfirm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-            <div className="px-6 py-4 border-b border-gray-200">
+          <div className="bg-app-bg-primary rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div className="px-6 py-4 border-b border-app-border-primary">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center">
                   <AlertCircle className="w-5 h-5 text-red-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Reset Settings</h3>
-                  <p className="text-sm text-gray-500">
+                  <h3 className="text-lg font-semibold text-app-text-primary">Reset Settings</h3>
+                  <p className="text-sm text-app-text-secondary">
                     This will restore all settings to their default values
                   </p>
                 </div>
               </div>
             </div>
             <div className="px-6 py-4">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-app-text-secondary">
                 Are you sure you want to reset all settings? This action cannot be undone.
               </p>
             </div>
-            <div className="px-6 py-4 border-t border-gray-200 flex justify-end gap-3">
+            <div className="px-6 py-4 border-t border-app-border-primary flex justify-end gap-3">
               <button
                 onClick={() => setShowResetConfirm(false)}
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                className="px-4 py-2 text-app-text-primary hover:bg-app-bg-tertiary rounded-lg transition-colors"
               >
                 Cancel
               </button>

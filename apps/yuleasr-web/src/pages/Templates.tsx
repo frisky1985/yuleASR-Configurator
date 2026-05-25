@@ -252,7 +252,7 @@ export function Templates() {
     const colors = categoryColors[template.category]
     
     return (
-      <div className="group bg-white border border-gray-200 rounded-lg hover:border-primary-300 hover:shadow-md transition-all overflow-hidden">
+      <div className="group bg-app-bg-primary border border-app-border-primary rounded-lg hover:border-primary-300 hover:shadow-md transition-all overflow-hidden">
         <div className={`h-2 ${colors.bg.replace('50', '200')}`} />
         <div className="p-5">
           <div className="flex items-start justify-between mb-3">
@@ -266,10 +266,10 @@ export function Templates() {
             )}
           </div>
           
-          <h3 className="font-semibold text-gray-900 mb-1">{template.name}</h3>
-          <p className="text-sm text-gray-500 mb-4 line-clamp-2">{template.description}</p>
+          <h3 className="font-semibold text-app-text-primary mb-1">{template.name}</h3>
+          <p className="text-sm text-app-text-secondary mb-4 line-clamp-2">{template.description}</p>
           
-          <div className="flex items-center gap-4 text-xs text-gray-400 mb-4">
+          <div className="flex items-center gap-4 text-xs text-app-text-tertiary mb-4">
             <span className="flex items-center gap-1">
               <Layers className="w-3.5 h-3.5" />
               {template.modules.length} modules
@@ -282,7 +282,7 @@ export function Templates() {
           <div className="flex gap-2">
             <button
               onClick={() => handlePreview(template)}
-              className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+              className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-sm text-app-text-primary bg-app-bg-secondary hover:bg-app-bg-tertiary rounded-lg transition-colors"
             >
               <Eye className="w-4 h-4" />
               Preview
@@ -290,7 +290,7 @@ export function Templates() {
             <button
               onClick={() => handleCreateFromTemplate(template)}
               disabled={creating || isLoading}
-              className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-sm text-white bg-primary-600 hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed rounded-lg transition-colors"
+              className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-sm text-white bg-primary-600 hover:bg-primary-700 disabled:bg-app-bg-tertiary disabled:cursor-not-allowed rounded-lg transition-colors"
             >
               <Plus className="w-4 h-4" />
               Use
@@ -306,14 +306,14 @@ export function Templates() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Configuration Templates</h1>
-          <p className="text-gray-500 mt-1">
+          <h1 className="text-2xl font-bold text-app-text-primary">Configuration Templates</h1>
+          <p className="text-app-text-secondary mt-1">
             Choose a preset template to quickly start your yuleASR configuration
           </p>
         </div>
         <button
           onClick={() => navigate('/dashboard')}
-          className="inline-flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 text-app-text-primary hover:bg-app-bg-tertiary rounded-lg transition-colors"
         >
           Back to Dashboard
         </button>
@@ -335,8 +335,8 @@ export function Templates() {
                 {category === 'full' && <LayoutTemplate className="w-4 h-4" />}
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-gray-900">{label.name}</h2>
-                <p className="text-sm text-gray-500">{label.description}</p>
+                <h2 className="text-lg font-semibold text-app-text-primary">{label.name}</h2>
+                <p className="text-sm text-app-text-secondary">{label.description}</p>
               </div>
             </div>
             
@@ -352,21 +352,21 @@ export function Templates() {
       {/* Preview Modal */}
       {showPreview && selectedTemplate && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+          <div className="bg-app-bg-primary rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
             {/* Modal Header */}
-            <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+            <div className="px-6 py-4 border-b border-app-border-primary flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className={`w-10 h-10 ${categoryColors[selectedTemplate.category].bg} rounded-lg flex items-center justify-center ${categoryColors[selectedTemplate.category].text}`}>
                   {selectedTemplate.icon}
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{selectedTemplate.name}</h3>
-                  <p className="text-sm text-gray-500">Template Preview</p>
+                  <h3 className="text-lg font-semibold text-app-text-primary">{selectedTemplate.name}</h3>
+                  <p className="text-sm text-app-text-secondary">Template Preview</p>
                 </div>
               </div>
               <button
                 onClick={() => setShowPreview(false)}
-                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 text-app-text-tertiary hover:text-app-text-secondary hover:bg-app-bg-tertiary rounded-lg transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -377,13 +377,13 @@ export function Templates() {
               <div className="space-y-6">
                 {/* Description */}
                 <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">Description</h4>
-                  <p className="text-gray-600 bg-gray-50 p-3 rounded-lg">{selectedTemplate.description}</p>
+                  <h4 className="text-sm font-medium text-app-text-primary mb-2">Description</h4>
+                  <p className="text-app-text-secondary bg-app-bg-secondary p-3 rounded-lg">{selectedTemplate.description}</p>
                 </div>
                 
                 {/* Category */}
                 <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">Category</h4>
+                  <h4 className="text-sm font-medium text-app-text-primary mb-2">Category</h4>
                   <span className={`inline-flex px-3 py-1 rounded-full text-sm font-medium ${categoryColors[selectedTemplate.category].badge}`}>
                     {categoryLabels[selectedTemplate.category].name}
                   </span>
@@ -391,18 +391,18 @@ export function Templates() {
                 
                 {/* Modules List */}
                 <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">
+                  <h4 className="text-sm font-medium text-app-text-primary mb-3">
                     Included Modules ({selectedTemplate.modules.length})
                   </h4>
-                  <div className="border border-gray-200 rounded-lg divide-y divide-gray-100">
+                  <div className="border border-app-border-primary rounded-lg divide-y divide-app-border-primary">
                     {selectedTemplate.modules.map((module, index) => (
                       <div key={module.id} className="flex items-center gap-3 px-4 py-3">
                         <div className="w-6 h-6 rounded-full bg-primary-50 flex items-center justify-center">
                           <span className="text-xs font-medium text-primary-600">{index + 1}</span>
                         </div>
                         <div className="flex-1">
-                          <div className="font-medium text-gray-900">{module.name}</div>
-                          <div className="text-xs text-gray-500">{module.layer} Layer</div>
+                          <div className="font-medium text-app-text-primary">{module.name}</div>
+                          <div className="text-xs text-app-text-secondary">{module.layer} Layer</div>
                         </div>
                         <Check className="w-4 h-4 text-green-500" />
                       </div>
@@ -429,10 +429,10 @@ export function Templates() {
             </div>
             
             {/* Modal Footer */}
-            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end gap-3">
+            <div className="px-6 py-4 border-t border-app-border-primary bg-app-bg-secondary flex justify-end gap-3">
               <button
                 onClick={() => setShowPreview(false)}
-                className="px-4 py-2 text-gray-700 hover:bg-white hover:shadow-sm rounded-lg transition-all"
+                className="px-4 py-2 text-app-text-primary hover:bg-app-bg-primary hover:shadow-sm rounded-lg transition-all"
               >
                 Cancel
               </button>
@@ -442,7 +442,7 @@ export function Templates() {
                   handleCreateFromTemplate(selectedTemplate)
                 }}
                 disabled={creating || isLoading}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed rounded-lg transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white hover:bg-primary-700 disabled:bg-app-bg-tertiary disabled:cursor-not-allowed rounded-lg transition-colors"
               >
                 {creating ? (
                   <>

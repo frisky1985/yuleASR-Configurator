@@ -126,7 +126,7 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-app-border-primary">
             {/* Errors Section */}
             {hasErrors && (
               <div>

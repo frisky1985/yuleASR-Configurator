@@ -37,7 +37,7 @@ export function OSEditor({ className }: OSEditorProps) {
   if (!os) {
     return (
       <div className={cn('p-8 text-center', className)}>
-        <p className="text-gray-500">No OS configuration found</p>
+        <p className="text-app-text-secondary">No OS configuration found</p>
       </div>
     )
   }
@@ -63,18 +63,18 @@ export function OSEditor({ className }: OSEditorProps) {
   ]
 
   return (
-    <div className={cn('bg-white rounded-lg border border-gray-200', className)}>
+    <div className={cn('bg-app-bg-primary rounded-lg border border-app-border-primary', className)}>
       {/* Header */}
-      <div className="px-4 py-3 border-b border-gray-200 bg-gray-50 rounded-t-lg">
+      <div className="px-4 py-3 border-b border-app-border-primary bg-app-bg-secondary rounded-t-lg">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">{os.name}</h2>
-            <p className="text-sm text-gray-500">OS Version {os.version} • {os.scalabilityClass}</p>
+            <h2 className="text-lg font-semibold text-app-text-primary">{os.name}</h2>
+            <p className="text-sm text-app-text-secondary">OS Version {os.version} • {os.scalabilityClass}</p>
           </div>
           <div className="flex items-center gap-2">
             <span className={cn(
               'px-2 py-1 text-xs font-medium rounded-full',
-              os.enabled ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
+              os.enabled ? 'bg-green-100 text-green-700' : 'bg-app-bg-tertiary text-app-text-secondary'
             )}>
               {os.enabled ? 'Enabled' : 'Disabled'}
             </span>
@@ -83,7 +83,7 @@ export function OSEditor({ className }: OSEditorProps) {
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-gray-200">
+      <div className="border-b border-app-border-primary">
         <div className="flex overflow-x-auto">
           {tabs.map((tab) => {
             const Icon = tab.icon
@@ -95,13 +95,13 @@ export function OSEditor({ className }: OSEditorProps) {
                   'flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 whitespace-nowrap',
                   activeTab === tab.id
                     ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
+                    : 'border-transparent text-app-text-secondary hover:text-app-text-primary hover:border-app-border-primary'
                 )}
               >
                 <Icon className="w-4 h-4" />
                 {tab.label}
                 {tab.count !== undefined && (
-                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600 rounded-full">
+                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-app-bg-tertiary text-app-text-secondary rounded-full">
                     {tab.count}
                   </span>
                 )}
@@ -131,32 +131,32 @@ function GeneralEditor({ os, onUpdate }: { os: OSConfig; onUpdate: (os: OSConfig
     <div className="space-y-6">
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">OS Name</label>
+          <label className="block text-sm font-medium text-app-text-primary mb-1">OS Name</label>
           <input
             type="text"
             value={os.name}
             onChange={(e) => onUpdate({ ...os, name: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-app-border-primary rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Version</label>
+          <label className="block text-sm font-medium text-app-text-primary mb-1">Version</label>
           <input
             type="text"
             value={os.version}
             onChange={(e) => onUpdate({ ...os, version: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-app-border-primary rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Scalability Class</label>
+          <label className="block text-sm font-medium text-app-text-primary mb-1">Scalability Class</label>
           <select
             value={os.scalabilityClass}
             onChange={(e) => onUpdate({ ...os, scalabilityClass: e.target.value as OSConfig['scalabilityClass'] })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-app-border-primary rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="SC1">SC1 (Single Core, No Hooks)</option>
             <option value="SC2">SC2 (Single Core, With Hooks)</option>
@@ -165,11 +165,11 @@ function GeneralEditor({ os, onUpdate }: { os: OSConfig; onUpdate: (os: OSConfig
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Status Level</label>
+          <label className="block text-sm font-medium text-app-text-primary mb-1">Status Level</label>
           <select
             value={os.statusLevel}
             onChange={(e) => onUpdate({ ...os, statusLevel: e.target.value as OSConfig['statusLevel'] })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-3 py-2 border border-app-border-primary rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="STANDARD">STANDARD</option>
             <option value="EXTENDED">EXTENDED</option>
@@ -178,7 +178,7 @@ function GeneralEditor({ os, onUpdate }: { os: OSConfig; onUpdate: (os: OSConfig
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-3">Hooks Configuration</label>
+        <label className="block text-sm font-medium text-app-text-primary mb-3">Hooks Configuration</label>
         <div className="grid grid-cols-2 gap-4">
           {[
             { key: 'startupHooks', label: 'Startup Hooks' },
@@ -191,9 +191,9 @@ function GeneralEditor({ os, onUpdate }: { os: OSConfig; onUpdate: (os: OSConfig
                 type="checkbox"
                 checked={os[key as keyof OSConfig] as boolean}
                 onChange={(e) => onUpdate({ ...os, [key]: e.target.checked })}
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                className="w-4 h-4 text-blue-600 border-app-border-primary rounded focus:ring-blue-500"
               />
-              <span className="text-sm text-gray-700">{label}</span>
+              <span className="text-sm text-app-text-primary">{label}</span>
             </label>
           ))}
         </div>
@@ -232,7 +232,7 @@ function TasksEditor({ tasks, onUpdate }: { tasks: OSTask[]; onUpdate: (tasks: O
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-sm font-medium text-gray-700">Tasks ({tasks.length})</h3>
+        <h3 className="text-sm font-medium text-app-text-primary">Tasks ({tasks.length})</h3>
         <button
           onClick={addTask}
           className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
@@ -260,15 +260,15 @@ function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updat
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden">
+    <div className="border border-app-border-primary rounded-lg overflow-hidden">
       <div
-        className="flex items-center justify-between px-3 py-2 bg-gray-50 cursor-pointer hover:bg-gray-100"
+        className="flex items-center justify-between px-3 py-2 bg-app-bg-secondary cursor-pointer hover:bg-app-bg-tertiary"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-2">
-          {isExpanded ? <ChevronDown className="w-4 h-4 text-gray-500" /> : <ChevronRight className="w-4 h-4 text-gray-500" />}
+          {isExpanded ? <ChevronDown className="w-4 h-4 text-app-text-secondary" /> : <ChevronRight className="w-4 h-4 text-app-text-secondary" />}
           <span className="font-medium text-sm">{task.name}</span>
-          <span className="text-xs text-gray-500">Priority: {task.priority}</span>
+          <span className="text-xs text-app-text-secondary">Priority: {task.priority}</span>
           {task.autostart && (
             <span className="px-1.5 py-0.5 text-xs bg-green-100 text-green-700 rounded">Auto</span>
           )}
@@ -282,49 +282,49 @@ function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updat
       </div>
 
       {isExpanded && (
-        <div className="p-3 space-y-3 border-t border-gray-200">
+        <div className="p-3 space-y-3 border-t border-app-border-primary">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Name</label>
+              <label className="block text-xs font-medium text-app-text-secondary mb-1">Name</label>
               <input
                 type="text"
                 value={task.name}
                 onChange={(e) => onUpdate({ name: e.target.value })}
-                className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded"
+                className="w-full px-2 py-1.5 text-sm border border-app-border-primary rounded"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Priority (1-255)</label>
+              <label className="block text-xs font-medium text-app-text-secondary mb-1">Priority (1-255)</label>
               <input
                 type="number"
                 min={1}
                 max={255}
                 value={task.priority}
                 onChange={(e) => onUpdate({ priority: parseInt(e.target.value) })}
-                className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded"
+                className="w-full px-2 py-1.5 text-sm border border-app-border-primary rounded"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Schedule</label>
+              <label className="block text-xs font-medium text-app-text-secondary mb-1">Schedule</label>
               <select
                 value={task.schedule}
                 onChange={(e) => onUpdate({ schedule: e.target.value as 'NON' | 'FULL' })}
-                className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded"
+                className="w-full px-2 py-1.5 text-sm border border-app-border-primary rounded"
               >
                 <option value="NON">NON (Non-preemptive)</option>
                 <option value="FULL">FULL (Preemptive)</option>
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-600 mb-1">Stack Size (bytes)</label>
+              <label className="block text-xs font-medium text-app-text-secondary mb-1">Stack Size (bytes)</label>
               <input
                 type="number"
                 value={task.stackSize}
                 onChange={(e) => onUpdate({ stackSize: parseInt(e.target.value) })}
-                className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded"
+                className="w-full px-2 py-1.5 text-sm border border-app-border-primary rounded"
               />
             </div>
           </div>
@@ -345,7 +345,7 @@ function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updat
                 min={1}
                 value={task.activation}
                 onChange={(e) => onUpdate({ activation: parseInt(e.target.value) })}
-                className="w-16 px-2 py-1 text-sm border border-gray-300 rounded"
+                className="w-16 px-2 py-1 text-sm border border-app-border-primary rounded"
               />
               <span className="text-sm">Activation Count</span>
             </label>
@@ -380,7 +380,7 @@ function EventsEditor({ events, onUpdate }: { events: OSEvent[]; onUpdate: (even
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-sm font-medium text-gray-700">Events ({events.length})</h3>
+        <h3 className="text-sm font-medium text-app-text-primary">Events ({events.length})</h3>
         <button
           onClick={addEvent}
           className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
@@ -392,19 +392,19 @@ function EventsEditor({ events, onUpdate }: { events: OSEvent[]; onUpdate: (even
 
       <div className="grid gap-2">
         {events.map((event, index) => (
-          <div key={event.id} className="flex items-center gap-2 p-2 border border-gray-200 rounded-lg">
+          <div key={event.id} className="flex items-center gap-2 p-2 border border-app-border-primary rounded-lg">
             <input
               type="text"
               value={event.name}
               onChange={(e) => updateEvent(index, { name: e.target.value })}
-              className="flex-1 px-2 py-1.5 text-sm border border-gray-300 rounded"
+              className="flex-1 px-2 py-1.5 text-sm border border-app-border-primary rounded"
               placeholder="Event name"
             />
             <input
               type="text"
               value={event.mask}
               onChange={(e) => updateEvent(index, { mask: e.target.value })}
-              className="w-24 px-2 py-1.5 text-sm border border-gray-300 rounded font-mono"
+              className="w-24 px-2 py-1.5 text-sm border border-app-border-primary rounded font-mono"
               placeholder="0x01"
             />
             <button
@@ -444,7 +444,7 @@ function ResourcesEditor({ resources, onUpdate }: { resources: OSResource[]; onU
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-sm font-medium text-gray-700">Resources ({resources.length})</h3>
+        <h3 className="text-sm font-medium text-app-text-primary">Resources ({resources.length})</h3>
         <button
           onClick={addResource}
           className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
@@ -456,12 +456,12 @@ function ResourcesEditor({ resources, onUpdate }: { resources: OSResource[]; onU
 
       <div className="grid gap-2">
         {resources.map((resource, index) => (
-          <div key={resource.id} className="flex items-center gap-2 p-2 border border-gray-200 rounded-lg">
+          <div key={resource.id} className="flex items-center gap-2 p-2 border border-app-border-primary rounded-lg">
             <input
               type="text"
               value={resource.name}
               onChange={(e) => updateResource(index, { name: e.target.value })}
-              className="flex-1 px-2 py-1.5 text-sm border border-gray-300 rounded"
+              className="flex-1 px-2 py-1.5 text-sm border border-app-border-primary rounded"
               placeholder="Resource name"
             />
             <button
@@ -503,7 +503,7 @@ function CountersEditor({ counters, onUpdate }: { counters: OSCounter[]; onUpdat
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-sm font-medium text-gray-700">Counters ({counters.length})</h3>
+        <h3 className="text-sm font-medium text-app-text-primary">Counters ({counters.length})</h3>
         <button
           onClick={addCounter}
           className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
@@ -515,13 +515,13 @@ function CountersEditor({ counters, onUpdate }: { counters: OSCounter[]; onUpdat
 
       <div className="space-y-2">
         {counters.map((counter, index) => (
-          <div key={counter.id} className="p-3 border border-gray-200 rounded-lg space-y-2">
+          <div key={counter.id} className="p-3 border border-app-border-primary rounded-lg space-y-2">
             <div className="flex items-center gap-2">
               <input
                 type="text"
                 value={counter.name}
                 onChange={(e) => updateCounter(index, { name: e.target.value })}
-                className="flex-1 px-2 py-1.5 text-sm border border-gray-300 rounded"
+                className="flex-1 px-2 py-1.5 text-sm border border-app-border-primary rounded"
                 placeholder="Counter name"
               />
               <button
@@ -533,30 +533,30 @@ function CountersEditor({ counters, onUpdate }: { counters: OSCounter[]; onUpdat
             </div>
             <div className="grid grid-cols-3 gap-2">
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Max Value</label>
+                <label className="block text-xs text-app-text-secondary mb-1">Max Value</label>
                 <input
                   type="number"
                   value={counter.maxAllowedValue}
                   onChange={(e) => updateCounter(index, { maxAllowedValue: parseInt(e.target.value) })}
-                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                  className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Ticks/Base</label>
+                <label className="block text-xs text-app-text-secondary mb-1">Ticks/Base</label>
                 <input
                   type="number"
                   value={counter.ticksPerBase}
                   onChange={(e) => updateCounter(index, { ticksPerBase: parseInt(e.target.value) })}
-                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                  className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Min Cycle</label>
+                <label className="block text-xs text-app-text-secondary mb-1">Min Cycle</label>
                 <input
                   type="number"
                   value={counter.minCycle}
                   onChange={(e) => updateCounter(index, { minCycle: parseInt(e.target.value) })}
-                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                  className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                 />
               </div>
             </div>
@@ -601,7 +601,7 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-sm font-medium text-gray-700">Alarms ({alarms.length})</h3>
+        <h3 className="text-sm font-medium text-app-text-primary">Alarms ({alarms.length})</h3>
         <button
           onClick={addAlarm}
           className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
@@ -613,13 +613,13 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
 
       <div className="space-y-2 max-h-96 overflow-y-auto">
         {alarms.map((alarm, index) => (
-          <div key={alarm.id} className="p-3 border border-gray-200 rounded-lg space-y-2">
+          <div key={alarm.id} className="p-3 border border-app-border-primary rounded-lg space-y-2">
             <div className="flex items-center gap-2">
               <input
                 type="text"
                 value={alarm.name}
                 onChange={(e) => updateAlarm(index, { name: e.target.value })}
-                className="flex-1 px-2 py-1.5 text-sm border border-gray-300 rounded"
+                className="flex-1 px-2 py-1.5 text-sm border border-app-border-primary rounded"
                 placeholder="Alarm name"
               />
               <button
@@ -632,11 +632,11 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
             
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Counter</label>
+                <label className="block text-xs text-app-text-secondary mb-1">Counter</label>
                 <select
                   value={alarm.counter}
                   onChange={(e) => updateAlarm(index, { counter: e.target.value })}
-                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                  className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                 >
                   {counters.map((c) => (
                     <option key={c.id} value={c.name}>{c.name}</option>
@@ -644,11 +644,11 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Action</label>
+                <label className="block text-xs text-app-text-secondary mb-1">Action</label>
                 <select
                   value={alarm.action}
                   onChange={(e) => updateAlarm(index, { action: e.target.value as OSAlarm['action'] })}
-                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                  className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                 >
                   <option value="ACTIVATETASK">Activate Task</option>
                   <option value="SETEVENT">Set Event</option>
@@ -660,11 +660,11 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
             <div className="grid grid-cols-2 gap-2">
               {alarm.action !== 'ALARMCALLBACK' && (
                 <div>
-                  <label className="block text-xs text-gray-600 mb-1">Target Task</label>
+                  <label className="block text-xs text-app-text-secondary mb-1">Target Task</label>
                   <select
                     value={alarm.task}
                     onChange={(e) => updateAlarm(index, { task: e.target.value })}
-                    className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                    className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                   >
                     {tasks.map((t) => (
                       <option key={t.id} value={t.name}>{t.name}</option>
@@ -674,11 +674,11 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
               )}
               {alarm.action === 'SETEVENT' && (
                 <div>
-                  <label className="block text-xs text-gray-600 mb-1">Event</label>
+                  <label className="block text-xs text-app-text-secondary mb-1">Event</label>
                   <select
                     value={alarm.event || ''}
                     onChange={(e) => updateAlarm(index, { event: e.target.value })}
-                    className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                    className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                   >
                     {events.map((e) => (
                       <option key={e.id} value={e.name}>{e.name}</option>
@@ -704,9 +704,9 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
                   type="number"
                   value={alarm.period}
                   onChange={(e) => updateAlarm(index, { period: parseInt(e.target.value) })}
-                  className="w-20 px-2 py-1 text-sm border border-gray-300 rounded"
+                  className="w-20 px-2 py-1 text-sm border border-app-border-primary rounded"
                 />
-                <span className="text-xs text-gray-500">ticks</span>
+                <span className="text-xs text-app-text-secondary">ticks</span>
               </div>
             </div>
           </div>
@@ -746,7 +746,7 @@ function ISRsEditor({ isrs, resources, onUpdate }: {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-sm font-medium text-gray-700">ISRs ({isrs.length})</h3>
+        <h3 className="text-sm font-medium text-app-text-primary">ISRs ({isrs.length})</h3>
         <button
           onClick={addISR}
           className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
@@ -758,13 +758,13 @@ function ISRsEditor({ isrs, resources, onUpdate }: {
 
       <div className="space-y-2 max-h-96 overflow-y-auto">
         {isrs.map((isr, index) => (
-          <div key={isr.id} className="p-3 border border-gray-200 rounded-lg space-y-2">
+          <div key={isr.id} className="p-3 border border-app-border-primary rounded-lg space-y-2">
             <div className="flex items-center gap-2">
               <input
                 type="text"
                 value={isr.name}
                 onChange={(e) => updateISR(index, { name: e.target.value })}
-                className="flex-1 px-2 py-1.5 text-sm border border-gray-300 rounded"
+                className="flex-1 px-2 py-1.5 text-sm border border-app-border-primary rounded"
                 placeholder="ISR name"
               />
               <button
@@ -777,45 +777,45 @@ function ISRsEditor({ isrs, resources, onUpdate }: {
             
             <div className="grid grid-cols-3 gap-2">
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Category</label>
+                <label className="block text-xs text-app-text-secondary mb-1">Category</label>
                 <select
                   value={isr.category}
                   onChange={(e) => updateISR(index, { category: parseInt(e.target.value) as 1 | 2 })}
-                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                  className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                 >
                   <option value={1}>Category 1</option>
                   <option value={2}>Category 2</option>
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Priority</label>
+                <label className="block text-xs text-app-text-secondary mb-1">Priority</label>
                 <input
                   type="number"
                   min={1}
                   max={255}
                   value={isr.priority}
                   onChange={(e) => updateISR(index, { priority: parseInt(e.target.value) })}
-                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                  className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-600 mb-1">Vector</label>
+                <label className="block text-xs text-app-text-secondary mb-1">Vector</label>
                 <input
                   type="text"
                   value={isr.vector}
                   onChange={(e) => updateISR(index, { vector: e.target.value })}
-                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                  className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                   placeholder="IRQn"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs text-gray-600 mb-1">Resource (Optional)</label>
+              <label className="block text-xs text-app-text-secondary mb-1">Resource (Optional)</label>
               <select
                 value={isr.resource || ''}
                 onChange={(e) => updateISR(index, { resource: e.target.value || undefined })}
-                className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
               >
                 <option value="">None</option>
                 {resources.map((r) => (

@@ -189,19 +189,19 @@ export function GitSync() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate('/dashboard')}
-            className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-tertiary rounded-lg transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold text-gray-900">Git Sync</h1>
+              <h1 className="text-xl font-bold text-app-text-primary">Git Sync</h1>
               <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-primary-100 text-primary-700 rounded-full">
                 <GitBranch className="w-3 h-3" />
                 {currentBranch}
               </span>
             </div>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-app-text-secondary">
               Manage branches, view history, and sync changes
             </p>
           </div>
@@ -232,7 +232,7 @@ export function GitSync() {
           {/* View Current Changes Button */}
           <button
             onClick={handleViewCurrentDiff}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
           >
             <GitCompare className="w-4 h-4" />
             Changes
@@ -245,8 +245,8 @@ export function GitSync() {
             className={cn(
               'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50',
               isPulling
-                ? 'bg-gray-100 text-gray-400'
-                : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                ? 'bg-app-bg-tertiary text-app-text-tertiary'
+                : 'bg-app-bg-primary text-app-text-primary border border-app-border-primary hover:bg-app-bg-secondary'
             )}
           >
             {isPulling ? (
@@ -264,7 +264,7 @@ export function GitSync() {
             className={cn(
               'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50',
               isPushing
-                ? 'bg-gray-100 text-gray-400'
+                ? 'bg-app-bg-tertiary text-app-text-tertiary'
                 : 'bg-primary-600 text-white hover:bg-primary-700'
             )}
           >
@@ -296,15 +296,15 @@ export function GitSync() {
         {/* Center - Version History / Diff Viewer */}
         <div className="col-span-9">
           {/* Tabs */}
-          <div className="bg-white rounded-lg border border-gray-200 mb-4">
-            <div className="flex items-center border-b border-gray-200">
+          <div className="bg-app-bg-primary rounded-lg border border-app-border-primary mb-4">
+            <div className="flex items-center border-b border-app-border-primary">
               <button
                 onClick={() => setActiveTab('history')}
                 className={cn(
                   'flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors',
                   activeTab === 'history'
                     ? 'border-primary-500 text-primary-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                    : 'border-transparent text-app-text-secondary hover:text-app-text-primary'
                 )}
               >
                 <GitCommit className="w-4 h-4" />
@@ -316,7 +316,7 @@ export function GitSync() {
                   'flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors',
                   activeTab === 'diff'
                     ? 'border-primary-500 text-primary-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                    : 'border-transparent text-app-text-secondary hover:text-app-text-primary'
                 )}
               >
                 <GitCompare className="w-4 h-4" />
@@ -349,16 +349,16 @@ export function GitSync() {
           {activeTab === 'diff' && (
             <div className="space-y-4">
               {selectedCommit ? (
-                <div className="bg-white rounded-lg border border-gray-200 p-4">
+                <div className="bg-app-bg-primary rounded-lg border border-app-border-primary p-4">
                   <div className="flex items-start gap-3">
                     <div className="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center flex-shrink-0">
                       <GitCommit className="w-5 h-5 text-primary-600" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-semibold text-gray-900 line-clamp-2">
+                      <h3 className="text-sm font-semibold text-app-text-primary line-clamp-2">
                         {selectedCommit.message}
                       </h3>
-                      <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
+                      <div className="flex items-center gap-3 mt-1 text-xs text-app-text-secondary">
                         <span className="font-mono text-primary-600 bg-primary-50 px-1.5 py-0.5 rounded">
                           {selectedCommit.oid.substring(0, 7)}
                         </span>
@@ -375,10 +375,10 @@ export function GitSync() {
                   </div>
                 </div>
               ) : (
-                <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
-                  <GitCompare className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                  <h3 className="text-gray-900 font-medium">No commit selected</h3>
-                  <p className="text-gray-500 mt-1">Select a commit from the history to view its changes</p>
+                <div className="bg-app-bg-primary rounded-lg border border-app-border-primary p-8 text-center">
+                  <GitCompare className="w-12 h-12 text-app-text-tertiary mx-auto mb-3" />
+                  <h3 className="text-app-text-primary font-medium">No commit selected</h3>
+                  <p className="text-app-text-secondary mt-1">Select a commit from the history to view its changes</p>
                 </div>
               )}
 

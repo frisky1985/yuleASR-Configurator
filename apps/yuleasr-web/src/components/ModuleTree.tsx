@@ -103,13 +103,13 @@ export function ModuleTree({
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col">
+    <div className="bg-app-bg-primary rounded-lg border border-app-border-primary overflow-hidden flex flex-col">
       {/* Header with search */}
-      <div className="px-4 py-3 bg-gray-50 border-b border-gray-200">
+      <div className="px-4 py-3 bg-app-bg-secondary border-b border-app-border-primary">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-sm font-semibold text-gray-900">Modules</h3>
+          <h3 className="text-sm font-semibold text-app-text-primary">Modules</h3>
           <div className="flex items-center gap-1">
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-app-text-secondary">
               {modules.filter((m) => m.enabled).length}/{modules.length} enabled
             </span>
           </div>
@@ -117,18 +117,18 @@ export function ModuleTree({
 
         {/* Search input */}
         <div className="relative">
-          <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+          <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-app-text-tertiary" />
           <input
             type="text"
             placeholder="Search modules..."
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
-            className="w-full pl-8 pr-8 py-1.5 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
+            className="w-full pl-8 pr-8 py-1.5 text-xs border border-app-border-primary rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
           />
           {searchQuery && (
             <button
               onClick={() => handleSearchChange('')}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-app-text-tertiary hover:text-app-text-secondary"
             >
               <span className="text-xs">×</span>
             </button>
@@ -144,20 +144,20 @@ export function ModuleTree({
                 'inline-flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors',
                 showFilterMenu
                   ? 'bg-primary-100 text-primary-700'
-                  : 'text-gray-600 hover:bg-gray-100'
+                  : 'text-app-text-secondary hover:bg-app-bg-tertiary'
               )}
             >
               <Filter className="w-3 h-3" />
               Filter
             </button>
             {showFilterMenu && (
-              <div className="absolute top-full left-0 mt-1 w-40 bg-white rounded-md shadow-lg border border-gray-200 z-10 py-1">
-                <label className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-gray-50 cursor-pointer">
+              <div className="absolute top-full left-0 mt-1 w-40 bg-app-bg-primary rounded-md shadow-lg border border-app-border-primary z-10 py-1">
+                <label className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-app-bg-secondary cursor-pointer">
                   <input
                     type="checkbox"
                     checked={showDisabled}
                     onChange={(e) => onShowDisabledChange?.(e.target.checked)}
-                    className="w-3.5 h-3.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                    className="w-3.5 h-3.5 rounded border-app-border-primary text-primary-600 focus:ring-primary-500"
                   />
                   <span>Show disabled</span>
                 </label>
@@ -169,14 +169,14 @@ export function ModuleTree({
           <div className="flex items-center gap-1">
             <button
               onClick={() => setExpandedLayers(new Set(layerOrder))}
-              className="text-xs text-gray-600 hover:text-primary-600 px-2 py-1"
+              className="text-xs text-app-text-secondary hover:text-primary-600 px-2 py-1"
             >
               Expand all
             </button>
-            <span className="text-gray-300">|</span>
+            <span className="text-app-text-tertiary">|</span>
             <button
               onClick={() => setExpandedLayers(new Set())}
-              className="text-xs text-gray-600 hover:text-primary-600 px-2 py-1"
+              className="text-xs text-app-text-secondary hover:text-primary-600 px-2 py-1"
             >
               Collapse
             </button>
@@ -186,13 +186,13 @@ export function ModuleTree({
 
       {/* Module tree */}
       <div className="flex-1 overflow-y-auto max-h-[calc(100vh-20rem)]">
-        <div className="divide-y divide-gray-100">
+        <div className="divide-y divide-app-border-primary">
           {layerOrder.map((layer) => {
             const layerModules = groupedModules[layer]
             if (!layerModules || layerModules.length === 0) return null
 
             const Icon = layerIcons[layer] || Settings
-            const colorClass = layerColors[layer] || 'bg-gray-50 text-gray-700'
+            const colorClass = layerColors[layer] || 'bg-app-bg-secondary text-app-text-primary'
             const isExpanded = expandedLayers.has(layer)
             const stats = getLayerStats(layer)
 
@@ -230,7 +230,7 @@ export function ModuleTree({
                           'group flex items-center gap-2 rounded-md transition-colors',
                           selectedModuleId === module.id
                             ? 'bg-primary-50'
-                            : 'hover:bg-gray-50'
+                            : 'hover:bg-app-bg-secondary'
                         )}
                       >
                         {/* Module button */}
@@ -240,13 +240,13 @@ export function ModuleTree({
                             'flex-1 text-left px-3 py-2 text-sm transition-colors',
                             selectedModuleId === module.id
                               ? 'text-primary-700 font-medium'
-                              : 'text-gray-700',
+                              : 'text-app-text-primary',
                             !module.enabled && 'opacity-50'
                           )}
                         >
                           <div className="flex items-center justify-between">
                             <span>{module.name}</span>
-                            <span className="text-xs text-gray-400">{module.version}</span>
+                            <span className="text-xs text-app-text-tertiary">{module.version}</span>
                           </div>
                         </button>
 
@@ -257,7 +257,7 @@ export function ModuleTree({
                             'p-1.5 rounded-md transition-colors mr-1',
                             module.enabled
                               ? 'text-green-600 hover:bg-green-50'
-                              : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'
+                              : 'text-app-text-tertiary hover:bg-app-bg-tertiary hover:text-app-text-secondary'
                           )}
                           title={module.enabled ? 'Disable module' : 'Enable module'}
                         >
@@ -275,9 +275,9 @@ export function ModuleTree({
         {/* Empty state */}
         {filteredModules.length === 0 && (
           <div className="p-6 text-center">
-            <p className="text-sm text-gray-500">No modules found</p>
+            <p className="text-sm text-app-text-secondary">No modules found</p>
             {searchQuery && (
-              <p className="text-xs text-gray-400 mt-1">
+              <p className="text-xs text-app-text-tertiary mt-1">
                 Try adjusting your search or filter
               </p>
             )}

@@ -237,7 +237,7 @@ export function ParameterEditor({
             >
               <span
                 className={cn(
-                  'inline-block h-4 w-4 transform rounded-full bg-white transition-transform',
+                  'inline-block h-4 w-4 transform rounded-full bg-app-bg-primary transition-transform',
                   value ? 'translate-x-6' : 'translate-x-1'
                 )}
               />
@@ -316,7 +316,7 @@ export function ParameterEditor({
                   )}
                 />
               </div>
-              <div className="max-h-48 overflow-y-auto border border-primary rounded-md divide-y divide-gray-100">
+              <div className="max-h-48 overflow-y-auto border border-primary rounded-md divide-y divide-app-border-primary">
                 {filteredEnumOptions.length === 0 ? (
                   <div className="px-3 py-2 text-xs text-tertiary text-center">
                     No options found

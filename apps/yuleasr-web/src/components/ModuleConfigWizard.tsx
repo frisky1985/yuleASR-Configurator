@@ -1336,14 +1336,14 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] flex flex-col">
+      <div className="bg-app-bg-primary rounded-xl shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+        <div className="px-6 py-4 border-b border-app-border-primary flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-app-text-primary">
               {t('wizard.title', 'Module Configuration Wizard')}
             </h3>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-app-text-secondary">
               {t('wizard.step', 'Step {{step}} of 3: {{title}}', {
                 step,
                 title: step === 1 ? t('wizard.selectModule', 'Select Module') : 
@@ -1354,7 +1354,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
           </div>
           <button
             onClick={resetAndClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-app-text-tertiary hover:text-app-text-secondary transition-colors"
           >
             <span className="sr-only">Close</span>
             <X className="w-6 h-6" />
@@ -1362,7 +1362,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
         </div>
 
         {/* Progress */}
-        <div className="px-6 py-3 bg-gray-50 border-b border-gray-200">
+        <div className="px-6 py-3 bg-app-bg-secondary border-b border-app-border-primary">
           <div className="flex items-center gap-2">
             {[1, 2, 3].map((s) => (
               <div key={s} className="flex items-center gap-2">
@@ -1373,7 +1373,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                       ? "bg-primary-600 text-white"
                       : step > s
                       ? "bg-green-500 text-white"
-                      : "bg-gray-200 text-gray-600"
+                      : "bg-app-bg-tertiary text-app-text-secondary"
                   )}
                 >
                   {step > s ? <Check className="w-4 h-4" /> : s}
@@ -1382,7 +1382,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                   <div
                     className={cn(
                       "w-12 h-0.5 transition-colors",
-                      step > s ? "bg-green-500" : "bg-gray-200"
+                      step > s ? "bg-green-500" : "bg-app-bg-tertiary"
                     )}
                   />
                 )}
@@ -1399,18 +1399,18 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
               <div className="space-y-3">
                 {/* Search */}
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-app-text-tertiary" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder={t('wizard.searchModule', 'Search modules...')}
-                    className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                    className="w-full pl-9 pr-4 py-2 border border-app-border-primary rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                   />
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-app-text-tertiary hover:text-app-text-secondary"
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -1425,7 +1425,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                       "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
                       selectedLayer === 'all'
                         ? "bg-gray-900 text-white"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                        : "bg-app-bg-tertiary text-app-text-secondary hover:bg-app-bg-tertiary"
                     )}
                   >
                     <Layers className="w-3.5 h-3.5" />
@@ -1452,7 +1452,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
 
               {/* Module Grid */}
               {Object.keys(groupedModules).length === 0 ? (
-                <div className="text-center py-12 text-gray-500">
+                <div className="text-center py-12 text-app-text-secondary">
                   <Search className="w-12 h-12 mx-auto mb-3 opacity-30" />
                   <p>{t('wizard.noModules', 'No modules found')}</p>
                   <button
@@ -1492,7 +1492,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                               className={cn(
                                 "p-4 border rounded-lg transition-all text-left group",
                                 LAYER_COLORS[layer].hover,
-                                "border-gray-200 hover:shadow-md"
+                                "border-app-border-primary hover:shadow-md"
                               )}
                             >
                               <div className="flex items-start gap-3">
@@ -1505,7 +1505,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2">
-                                    <span className="font-semibold text-gray-900">{module.name}</span>
+                                    <span className="font-semibold text-app-text-primary">{module.name}</span>
                                     <span className={cn(
                                       "px-1.5 py-0.5 text-xs rounded border",
                                       LAYER_COLORS[layer].badge
@@ -1513,12 +1513,12 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                                       {module.layer}
                                     </span>
                                   </div>
-                                  <p className="text-sm text-gray-500 mt-1 line-clamp-2">{module.description}</p>
-                                  <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
+                                  <p className="text-sm text-app-text-secondary mt-1 line-clamp-2">{module.description}</p>
+                                  <div className="flex items-center gap-3 mt-2 text-xs text-app-text-tertiary">
                                     <span>{module.parameters.length} {t('wizard.params', 'params')}</span>
                                   </div>
                                 </div>
-                                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-gray-600 flex-shrink-0" />
+                                <ChevronRight className="w-5 h-5 text-app-text-tertiary group-hover:text-app-text-secondary flex-shrink-0" />
                               </div>
                             </button>
                           ))}
@@ -1538,12 +1538,12 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                 LAYER_COLORS[selectedModule.layer].bg,
                 LAYER_COLORS[selectedModule.layer].border
               )}>
-                <div className="p-2 bg-white rounded-lg shadow-sm">
+                <div className="p-2 bg-app-bg-primary rounded-lg shadow-sm">
                   {selectedModule.icon}
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h4 className="font-semibold text-gray-900">{selectedModule.name}</h4>
+                    <h4 className="font-semibold text-app-text-primary">{selectedModule.name}</h4>
                     <span className={cn(
                       "px-1.5 py-0.5 text-xs rounded border",
                       LAYER_COLORS[selectedModule.layer].badge
@@ -1551,17 +1551,17 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                       {selectedModule.layer}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-500">{selectedModule.description}</p>
+                  <p className="text-sm text-app-text-secondary">{selectedModule.description}</p>
                 </div>
               </div>
 
               <div className="space-y-4">
                 {selectedModule.parameters.map((param) => (
                   <div key={param.name}>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-app-text-primary mb-1">
                       {param.label}
                     </label>
-                    <p className="text-xs text-gray-500 mb-2">{param.description}</p>
+                    <p className="text-xs text-app-text-secondary mb-2">{param.description}</p>
                     
                     {param.type === 'select' ? (
                       <select
@@ -1569,7 +1569,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                         onChange={(e) => handleParameterChange(param.name, e.target.value)}
                         className={cn(
                           "w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
-                          errors[param.name] ? "border-red-300" : "border-gray-300"
+                          errors[param.name] ? "border-red-300" : "border-app-border-primary"
                         )}
                       >
                         {param.options?.map((opt) => (
@@ -1584,9 +1584,9 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                           type="checkbox"
                           checked={Boolean(parameters[param.name])}
                           onChange={(e) => handleParameterChange(param.name, e.target.checked)}
-                          className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                          className="w-4 h-4 text-primary-600 border-app-border-primary rounded focus:ring-primary-500"
                         />
-                        <span className="text-sm text-gray-700">{t('wizard.enabled', 'Enabled')}</span>
+                        <span className="text-sm text-app-text-primary">{t('wizard.enabled', 'Enabled')}</span>
                       </label>
                     ) : (
                       <input
@@ -1602,7 +1602,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                         max={param.max}
                         className={cn(
                           "w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
-                          errors[param.name] ? "border-red-300" : "border-gray-300"
+                          errors[param.name] ? "border-red-300" : "border-app-border-primary"
                         )}
                       />
                     )}
@@ -1637,7 +1637,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                   LAYER_COLORS[selectedModule.layer].bg,
                   LAYER_COLORS[selectedModule.layer].border
                 )}>
-                  <span className="text-gray-600">{t('wizard.module', 'Module')}</span>
+                  <span className="text-app-text-secondary">{t('wizard.module', 'Module')}</span>
                   <div className="flex items-center gap-2">
                     <span className="font-medium">{selectedModule.name}</span>
                     <span className={cn(
@@ -1648,20 +1648,20 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                     </span>
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <span className="text-gray-600">{t('wizard.version', 'Version')}</span>
+                <div className="flex items-center justify-between p-3 bg-app-bg-secondary rounded-lg">
+                  <span className="text-app-text-secondary">{t('wizard.version', 'Version')}</span>
                   <span className="font-medium">1.0.0</span>
                 </div>
 
-                <div className="border-t border-gray-200 pt-4">
-                  <h4 className="font-medium text-gray-900 mb-3">{t('wizard.parameters', 'Parameters')}</h4>
+                <div className="border-t border-app-border-primary pt-4">
+                  <h4 className="font-medium text-app-text-primary mb-3">{t('wizard.parameters', 'Parameters')}</h4>
                   <div className="space-y-2">
                     {selectedModule.parameters.map((param) => (
                       <div
                         key={param.name}
-                        className="flex items-center justify-between p-2 bg-gray-50 rounded"
+                        className="flex items-center justify-between p-2 bg-app-bg-secondary rounded"
                       >
-                        <span className="text-sm text-gray-600">{param.label}</span>
+                        <span className="text-sm text-app-text-secondary">{param.label}</span>
                         <span className="font-medium">
                           {param.options
                             ? param.options.find(o => String(o.value) === String(parameters[param.name]))?.label
@@ -1677,15 +1677,15 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-gray-200 flex justify-between">
+        <div className="px-6 py-4 border-t border-app-border-primary flex justify-between">
           <button
             onClick={handleBack}
             disabled={step === 1}
             className={cn(
               "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors",
               step === 1
-                ? "text-gray-300 cursor-not-allowed"
-                : "text-gray-700 hover:bg-gray-100"
+                ? "text-app-text-tertiary cursor-not-allowed"
+                : "text-app-text-primary hover:bg-app-bg-tertiary"
             )}
           >
             <ChevronLeft className="w-4 h-4" />
@@ -1707,7 +1707,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
               className={cn(
                 "flex items-center gap-2 px-6 py-2 rounded-lg transition-colors",
                 !selectedModule
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  ? "bg-app-bg-tertiary text-app-text-tertiary cursor-not-allowed"
                   : "bg-primary-600 text-white hover:bg-primary-700"
               )}
             >

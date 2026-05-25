@@ -1123,7 +1123,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
             <svg className="w-4 h-4 text-tertiary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
             复制
           </button>
-          <div className="border-t border-gray-100 my-1" />
+          <div className="border-t border-app-border-primary my-1" />
           <button
             className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
             onClick={() => {
@@ -1149,7 +1149,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
                 <AlertTri className="w-5 h-5 text-red-600" />
               </div>
               <div>
-                <h3 className="text-base font-semibold text-gray-900">确认删除</h3>
+                <h3 className="text-base font-semibold text-app-text-primary">确认删除</h3>
                 <p className="text-sm text-secondary mt-0.5">
                   确定删除 <span className="font-medium text-primary">{deleteTarget.instanceName}</span>？
                 </p>

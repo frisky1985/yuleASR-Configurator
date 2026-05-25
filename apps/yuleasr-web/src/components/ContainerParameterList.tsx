@@ -71,7 +71,7 @@ function SubContainerGroup({
       <button
         type="button"
         onClick={() => setIsExpanded(!isExpanded)}
-        className="flex items-center gap-1.5 w-full text-left py-1.5 px-2 rounded hover:bg-gray-50 transition-colors text-xs font-medium text-gray-700"
+        className="flex items-center gap-1.5 w-full text-left py-1.5 px-2 rounded hover:bg-app-bg-secondary transition-colors text-xs font-medium text-app-text-primary"
       >
         {isExpanded ? (
           <ChevronDown className="w-3.5 h-3.5 text-app-text-tertiary flex-shrink-0" />

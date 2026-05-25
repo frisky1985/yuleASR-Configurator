@@ -258,7 +258,7 @@ export function Editor() {
       <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
         <div className="text-center">
           <div className="animate-spin w-8 h-8 border-2 border-primary-600 border-t-transparent rounded-full mx-auto" />
-          <p className="text-gray-500 mt-2">Loading configuration...</p>
+          <p className="text-app-text-secondary mt-2">Loading configuration...</p>
         </div>
       </div>
     )
@@ -268,8 +268,8 @@ export function Editor() {
     return (
       <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
         <div className="text-center">
-          <AlertCircle className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-          <h3 className="text-gray-900 font-medium">Configuration not found</h3>
+          <AlertCircle className="w-12 h-12 text-app-text-tertiary mx-auto mb-3" />
+          <h3 className="text-app-text-primary font-medium">Configuration not found</h3>
           <button
             onClick={() => navigate('/dashboard')}
             className="mt-4 text-primary-600 hover:text-primary-700 font-medium"
@@ -288,13 +288,13 @@ export function Editor() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigate('/dashboard')}
-            className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-tertiary rounded-lg transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold text-gray-900">{currentConfig.name}</h1>
+              <h1 className="text-xl font-bold text-app-text-primary">{currentConfig.name}</h1>
               {isDirty ? (
                 <span className="px-2 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
                   Unsaved
@@ -312,7 +312,7 @@ export function Editor() {
                 </span>
               )}
             </div>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-app-text-secondary">
               {currentConfig.targetChip} | {currentConfig.modules.filter(m => m.enabled).length} modules | 
               Last modified: {formatDate(currentConfig.updatedAt)}
             </p>
@@ -323,21 +323,21 @@ export function Editor() {
           {/* Search Button */}
           <button
             onClick={() => setIsSearchOpen(true)}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
             title="Search (Ctrl+K)"
           >
             <Search className="w-4 h-4" />
             <span className="hidden sm:inline">Search</span>
-            <kbd className="hidden sm:inline-flex px-1.5 py-0.5 bg-gray-100 rounded text-xs">Ctrl+K</kbd>
+            <kbd className="hidden sm:inline-flex px-1.5 py-0.5 bg-app-bg-tertiary rounded text-xs">Ctrl+K</kbd>
           </button>
 
           <button
             onClick={handleValidate}
             disabled={isValidating}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors disabled:opacity-50"
           >
             {isValidating ? (
-              <div className="animate-spin w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full" />
+              <div className="animate-spin w-4 h-4 border-2 border-app-border-secondary border-t-transparent rounded-full" />
             ) : (
               <Play className="w-4 h-4" />
             )}
@@ -349,7 +349,7 @@ export function Editor() {
             className={cn(
               'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors',
               !isDirty || isLoading
-                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                ? 'bg-app-bg-tertiary text-app-text-tertiary cursor-not-allowed'
                 : 'bg-primary-600 text-white hover:bg-primary-700'
             )}
           >
@@ -358,7 +358,7 @@ export function Editor() {
           </button>
           <button
             onClick={handleExport}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
             title="Export configuration as JSON"
           >
             <Download className="w-4 h-4" />
@@ -367,7 +367,7 @@ export function Editor() {
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={importing}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors disabled:opacity-50"
             title="Import configuration from JSON"
           >
             <Upload className="w-4 h-4" />
@@ -388,7 +388,7 @@ export function Editor() {
                 useConfigStore.getState().saveTemplate(name, desc || '')
               }
             }}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
             title="Save current config as template"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
@@ -397,7 +397,7 @@ export function Editor() {
           <button
             onClick={() => arxmlInputRef.current?.click()}
             disabled={importArxml}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors disabled:opacity-50"
             title="Import ARXML configuration file"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
@@ -414,7 +414,7 @@ export function Editor() {
               // Show first file in modal
               setCodeGenResult(files[0])
             }}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
             title="Generate _Cfg.h source files from configuration"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
@@ -432,7 +432,7 @@ export function Editor() {
               a.click()
               URL.revokeObjectURL(url)
             }}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
             title="Export ARXML configuration file"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
@@ -445,7 +445,7 @@ export function Editor() {
             onChange={handleImportArxml}
             className="hidden"
           />
-          <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+          <button className="p-2 text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-tertiary rounded-lg transition-colors">
             <MoreVertical className="w-4 h-4" />
           </button>
         </div>
@@ -470,8 +470,8 @@ export function Editor() {
         {/* Center - Validation + Selected Container Parameters (wide) */}
         <div className="col-span-7 h-full overflow-y-auto space-y-4">
           {/* Validation Summary */}
-          <div className="bg-white border border-gray-200 rounded-lg p-4">
-            <h3 className="text-sm font-semibold text-gray-900 mb-3">Validation</h3>
+          <div className="bg-app-bg-primary border border-app-border-primary rounded-lg p-4">
+            <h3 className="text-sm font-semibold text-app-text-primary mb-3">Validation</h3>
             {validationResult ? (
               <div className="space-y-2">
                 {validationResult.valid ? (
@@ -493,20 +493,20 @@ export function Editor() {
                 )}
               </div>
             ) : (
-              <p className="text-sm text-gray-500">Click Validate to check configuration</p>
+              <p className="text-sm text-app-text-secondary">Click Validate to check configuration</p>
             )}
           </div>
 
           {/* Validation Issues List */}
           {validationIssues.length > 0 && (
-            <div className="bg-white border border-gray-200 rounded-lg p-4">
-              <h3 className="text-sm font-semibold text-gray-900 mb-3">Issues</h3>
+            <div className="bg-app-bg-primary border border-app-border-primary rounded-lg p-4">
+              <h3 className="text-sm font-semibold text-app-text-primary mb-3">Issues</h3>
               <div className="space-y-2 max-h-48 overflow-y-auto">
                 {validationIssues.slice(0, 10).map((issue) => (
                   <div
                     key={issue.id}
                     className={cn(
-                      'text-xs p-2 rounded cursor-pointer hover:bg-gray-50',
+                      'text-xs p-2 rounded cursor-pointer hover:bg-app-bg-secondary',
                       issue.severity === 'error' && 'bg-red-50 text-red-700 border border-red-100',
                       issue.severity === 'warning' && 'bg-yellow-50 text-yellow-700 border border-yellow-100',
                       issue.severity === 'info' && 'bg-blue-50 text-blue-700 border border-blue-100'
@@ -520,11 +520,11 @@ export function Editor() {
                   >
                     <div className="font-medium">{issue.path}</div>
                     <div className="mt-1">{issue.message}</div>
-                    {issue.suggestion && <div className="mt-1 text-gray-500 italic">{issue.suggestion}</div>}
+                    {issue.suggestion && <div className="mt-1 text-app-text-secondary italic">{issue.suggestion}</div>}
                   </div>
                 ))}
                 {validationIssues.length > 10 && (
-                  <div className="text-xs text-gray-500 text-center">+{validationIssues.length - 10} more issues</div>
+                  <div className="text-xs text-app-text-secondary text-center">+{validationIssues.length - 10} more issues</div>
                 )}
               </div>
             </div>
@@ -532,12 +532,12 @@ export function Editor() {
 
           {/* Selected Container Parameters - show when a container is clicked */}
           {selectedContainer && (
-            <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-              <div className="px-4 py-2.5 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-gray-900">
+            <div className="bg-app-bg-primary border border-app-border-primary rounded-lg overflow-hidden">
+              <div className="px-4 py-2.5 bg-app-bg-secondary border-b border-app-border-primary flex items-center justify-between">
+                <h3 className="text-sm font-semibold text-app-text-primary">
                   {(instanceContainer || selectedContainer).displayName || (instanceContainer || selectedContainer).name}
                 </h3>
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-app-text-secondary">
                   {instanceContainer
                     ? `${(instanceContainer).parameters.length} params · ${(instanceContainer).description || ''}`
                     : `${selectedContainer.parameters.length + (selectedContainer.subContainers?.reduce((s, sc) => s + sc.parameters.length, 0) ?? 0)} params`
@@ -556,20 +556,20 @@ export function Editor() {
                           setSelectedPath(`${containerPath}/instance:${instanceName}`)
                         }
                       }}
-                      className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-3 hover:bg-primary-50 transition-colors cursor-pointer group"
+                      className="w-12 h-12 rounded-full bg-app-bg-tertiary flex items-center justify-center mx-auto mb-3 hover:bg-primary-50 transition-colors cursor-pointer group"
                       title="添加实例"
                     >
-                      <svg className="w-6 h-6 text-gray-400 group-hover:text-primary-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="w-6 h-6 text-app-text-tertiary group-hover:text-primary-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                       </svg>
                     </button>
-                    <p className="text-sm font-medium text-gray-900 mb-1">
+                    <p className="text-sm font-medium text-app-text-primary mb-1">
                       {selectedContainer.displayName || selectedContainer.name}
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-app-text-secondary">
                       点击上方 [+] 添加{selectedContainer.subContainers?.[0]?.displayName || selectedContainer.subContainers?.[0]?.name || '实例'} 实例
                     </p>
-                    <p className="text-xs text-gray-400 mt-2">创建实例后，在树中选择实例查看和编辑参数</p>
+                    <p className="text-xs text-app-text-tertiary mt-2">创建实例后，在树中选择实例查看和编辑参数</p>
                   </div>
                 ) : (
                   /* Static container or instance selected - show parameters normally */
@@ -603,9 +603,9 @@ export function Editor() {
       {/* Code Generation Preview Modal */}
       {codeGenResult && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30" onClick={() => setCodeGenResult(null)}>
-          <div className="bg-white rounded-lg shadow-xl border border-gray-200 w-[800px] max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-5 py-3 border-b border-gray-200">
-              <h3 className="text-sm font-semibold text-gray-900">Code Generation Preview</h3>
+          <div className="bg-app-bg-primary rounded-lg shadow-xl border border-app-border-primary w-[800px] max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-5 py-3 border-b border-app-border-primary">
+              <h3 className="text-sm font-semibold text-app-text-primary">Code Generation Preview</h3>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => {
@@ -617,25 +617,25 @@ export function Editor() {
                     a.click()
                     URL.revokeObjectURL(url)
                   }}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded hover:bg-app-bg-secondary"
                 >
                   <Download className="w-3.5 h-3.5" />
                   Download {codeGenResult.filename}
                 </button>
                 <button
                   onClick={() => setCodeGenResult(null)}
-                  className="p-1.5 text-gray-400 hover:text-gray-600"
+                  className="p-1.5 text-app-text-tertiary hover:text-app-text-secondary"
                 >
                   <span className="text-lg">×</span>
                 </button>
               </div>
             </div>
-            <div className="px-5 py-2 bg-gray-50 border-b border-gray-200 flex items-center gap-2">
-              <span className="text-xs font-medium text-gray-500">Filename:</span>
-              <span className="text-xs font-mono text-gray-700">{codeGenResult.filename}</span>
+            <div className="px-5 py-2 bg-app-bg-secondary border-b border-app-border-primary flex items-center gap-2">
+              <span className="text-xs font-medium text-app-text-secondary">Filename:</span>
+              <span className="text-xs font-mono text-app-text-primary">{codeGenResult.filename}</span>
             </div>
             <div className="flex-1 overflow-auto p-4">
-              <pre className="text-xs font-mono leading-relaxed text-gray-800 bg-gray-50 rounded-lg p-4 overflow-x-auto whitespace-pre">
+              <pre className="text-xs font-mono leading-relaxed text-gray-800 bg-app-bg-secondary rounded-lg p-4 overflow-x-auto whitespace-pre">
                 {codeGenResult.content}
               </pre>
             </div>

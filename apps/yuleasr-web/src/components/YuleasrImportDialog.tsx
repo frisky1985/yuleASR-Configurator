@@ -86,15 +86,15 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-lg mx-4">
+      <div className="bg-app-bg-primary rounded-xl shadow-xl w-full max-w-lg mx-4">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-app-border-primary">
+          <h2 className="text-lg font-semibold text-app-text-primary">
             导入 yuleASR 配置
           </h2>
           <button
             onClick={handleClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-app-text-tertiary hover:text-app-text-secondary transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -108,7 +108,7 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
             className={cn(
               'border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors',
               'hover:border-primary-400 hover:bg-primary-50',
-              fileContent ? 'border-green-400 bg-green-50' : 'border-gray-300'
+              fileContent ? 'border-green-400 bg-green-50' : 'border-app-border-primary'
             )}
           >
             <input
@@ -129,9 +129,9 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
               </div>
             ) : (
               <div className="flex flex-col items-center gap-2">
-                <Upload className="w-8 h-8 text-gray-400" />
-                <span className="text-sm font-medium text-gray-700">点击选择配置文件</span>
-                <span className="text-xs text-gray-500">支持 JSON 和 ARXML 格式</span>
+                <Upload className="w-8 h-8 text-app-text-tertiary" />
+                <span className="text-sm font-medium text-app-text-primary">点击选择配置文件</span>
+                <span className="text-xs text-app-text-secondary">支持 JSON 和 ARXML 格式</span>
               </div>
             )}
           </div>
@@ -199,10 +199,10 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-200">
+        <div className="flex justify-end gap-3 px-6 py-4 border-t border-app-border-primary">
           <button
             onClick={handleClose}
-            className="px-4 py-2 text-gray-700 hover:text-gray-900 font-medium"
+            className="px-4 py-2 text-app-text-primary hover:text-app-text-primary font-medium"
           >
             取消
           </button>
