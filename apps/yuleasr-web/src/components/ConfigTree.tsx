@@ -764,7 +764,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
         <div
           className={cn(
             'group flex items-center gap-1.5 py-1.5 pr-2 cursor-pointer transition-colors',
-            isSelected ? 'bg-primary-50' : 'hover:bg-gray-50',
+            isSelected ? 'bg-primary-50' : 'hover:bg-secondary',
             node.type === 'layer' && layerColors[node.name],
             node.isDynamic && 'cursor-grab active:cursor-grabbing',
             dragOverPath === node.path && dragSource && 'border-t-2 border-blue-400'
@@ -819,9 +819,9 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
               className="p-0.5 rounded hover:bg-black/5 transition-colors"
             >
               {isExpanded ? (
-                <ChevronDown className="w-3.5 h-3.5 text-gray-500" />
+                <ChevronDown className="w-3.5 h-3.5 text-secondary" />
               ) : (
-                <ChevronRight className="w-3.5 h-3.5 text-gray-500" />
+                <ChevronRight className="w-3.5 h-3.5 text-secondary" />
               )}
             </button>
           ) : (
@@ -831,9 +831,9 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
           {/* Node icon */}
           <span className={cn(
             'flex-shrink-0',
-            node.type === 'parameter' && 'text-gray-400',
+            node.type === 'parameter' && 'text-tertiary',
             node.type === 'container' && 'text-blue-500',
-            node.type === 'module' && 'text-gray-600',
+            node.type === 'module' && 'text-secondary',
           )}>
             {node.icon}
           </span>
@@ -841,9 +841,9 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
           {/* Node name - with inline rename for dynamic instances */}
           <span className={cn(
             'flex-1 text-sm truncate',
-            isSelected ? 'text-primary-700 font-medium' : 'text-gray-700',
+            isSelected ? 'text-primary-700 font-medium' : 'text-primary',
             node.type === 'layer' && 'font-semibold uppercase tracking-wider text-xs',
-            node.type === 'parameter' && 'text-gray-600',
+            node.type === 'parameter' && 'text-secondary',
             node.enabled === false && 'opacity-50'
           )}>
             {node.isDynamic && renamingPath === node.path ? (
@@ -862,7 +862,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
                   }
                   e.stopPropagation()
                 }}
-                className="w-full px-1 py-0.5 text-sm border border-primary-400 rounded bg-white focus:outline-none focus:ring-1 focus:ring-primary-500"
+                className="w-full px-1 py-0.5 text-sm border border-primary-400 rounded bg-primary focus:outline-none focus:ring-1 focus:ring-primary-500"
                 onClick={(e) => e.stopPropagation()}
               />
             ) : (
@@ -931,7 +931,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
               node.configStatus === 'configured' && 'bg-green-500',
               node.configStatus === 'configuring' && 'bg-blue-500 animate-pulse',
               node.configStatus === 'partial' && 'bg-yellow-500',
-              node.configStatus === 'unconfigured' && 'bg-gray-300'
+              node.configStatus === 'unconfigured' && 'bg-tertiary'
             )} title={`Status: ${node.configStatus}`} />
           )}
           
@@ -941,7 +941,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
               onClick={(e) => handleToggleModule(e, node)}
               className={cn(
                 'p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity',
-                node.enabled ? 'text-green-600 hover:bg-green-50' : 'text-gray-400 hover:bg-gray-100'
+                node.enabled ? 'text-green-600 hover:bg-green-50' : 'text-tertiary hover:bg-tertiary'
               )}
             >
               <Power className="w-3.5 h-3.5" />
@@ -979,30 +979,30 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
   }, [config])
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col h-full">
+    <div className="bg-primary rounded-lg border border-primary overflow-hidden flex flex-col h-full">
       {/* Header */}
-      <div className="px-3 py-2.5 bg-gray-50 border-b border-gray-200">
+      <div className="px-3 py-2.5 bg-secondary border-b border-primary">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-sm font-semibold text-gray-900">Configuration Tree</h3>
-          <span className="text-xs text-gray-500">
+          <h3 className="text-sm font-semibold text-primary">Configuration Tree</h3>
+          <span className="text-xs text-secondary">
             {stats.enabled}/{stats.total} modules
           </span>
         </div>
         
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+          <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-tertiary" />
           <input
             type="text"
             placeholder="Search modules..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-7 pr-7 py-1.5 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
+            className="w-full pl-7 pr-7 py-1.5 text-xs border border-primary rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-tertiary hover:text-secondary"
             >
               <span className="text-xs">×</span>
             </button>
@@ -1018,20 +1018,20 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
                 'inline-flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors',
                 showFilterMenu
                   ? 'bg-primary-100 text-primary-700'
-                  : 'text-gray-600 hover:bg-gray-100'
+                  : 'text-secondary hover:bg-tertiary'
               )}
             >
               <Filter className="w-3 h-3" />
               Filter
             </button>
             {showFilterMenu && (
-              <div className="absolute top-full left-0 mt-1 w-44 bg-white rounded-md shadow-lg border border-gray-200 z-10 py-1">
-                <label className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-gray-50 cursor-pointer">
+              <div className="absolute top-full left-0 mt-1 w-44 bg-primary rounded-md shadow-lg border border-primary z-10 py-1">
+                <label className="flex items-center gap-2 px-3 py-2 text-xs hover:bg-secondary cursor-pointer">
                   <input
                     type="checkbox"
                     checked={showDisabled}
                     onChange={(e) => {}}
-                    className="w-3.5 h-3.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                    className="w-3.5 h-3.5 rounded border-primary text-primary-600 focus:ring-primary-500"
                   />
                   <span>Show disabled modules</span>
                 </label>
@@ -1042,14 +1042,14 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
           <div className="flex items-center gap-1">
             <button
               onClick={expandAll}
-              className="text-xs text-gray-600 hover:text-primary-600 px-2 py-1"
+              className="text-xs text-secondary hover:text-primary-600 px-2 py-1"
             >
               Expand
             </button>
-            <span className="text-gray-300">|</span>
+            <span className="text-tertiary">|</span>
             <button
               onClick={collapseAll}
-              className="text-xs text-gray-600 hover:text-primary-600 px-2 py-1"
+              className="text-xs text-secondary hover:text-primary-600 px-2 py-1"
             >
               Collapse
             </button>
@@ -1061,7 +1061,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
       <div className="flex-1 overflow-y-auto">
         {treeData.length === 0 ? (
           <div className="p-6 text-center">
-            <p className="text-sm text-gray-500">No modules found</p>
+            <p className="text-sm text-secondary">No modules found</p>
           </div>
         ) : (
           <div className="py-1">
@@ -1072,7 +1072,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
       
       {/* Footer - validation summary */}
       {validationIssues.length > 0 && (
-        <div className="px-3 py-2 bg-gray-50 border-t border-gray-200">
+        <div className="px-3 py-2 bg-secondary border-t border-primary">
           <div className="flex items-center gap-3 text-xs">
             {validationIssues.filter(i => i.severity === 'error').length > 0 && (
               <span className="flex items-center gap-1 text-red-600">
@@ -1099,28 +1099,28 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
       {/* Context menu for dynamic instances */}
       {contextMenu && (
         <div
-          className="fixed z-50 bg-white rounded-lg shadow-xl border border-gray-200 py-1 min-w-[140px]"
+          className="fixed z-50 bg-primary rounded-lg shadow-xl border border-primary py-1 min-w-[140px]"
           style={{ left: contextMenu.x, top: contextMenu.y }}
           onClick={(e) => e.stopPropagation()}
         >
           <button
-            className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+            className="w-full px-3 py-2 text-left text-sm text-primary hover:bg-secondary flex items-center gap-2"
             onClick={() => {
               startRename(contextMenu.nodePath, contextMenu.instanceName)
               setContextMenu(null)
             }}
           >
-            <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+            <svg className="w-4 h-4 text-tertiary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
             重命名
           </button>
           <button
-            className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+            className="w-full px-3 py-2 text-left text-sm text-primary hover:bg-secondary flex items-center gap-2"
             onClick={() => {
               copyInstance(contextMenu.containerPath, contextMenu.instanceName)
               setContextMenu(null)
             }}
           >
-            <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+            <svg className="w-4 h-4 text-tertiary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
             复制
           </button>
           <div className="border-t border-gray-100 my-1" />
@@ -1143,15 +1143,15 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
       {/* Delete confirmation dialog */}
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30" onClick={() => setDeleteTarget(null)}>
-          <div className="bg-white rounded-lg shadow-xl border border-gray-200 w-96 p-5" onClick={e => e.stopPropagation()}>
+          <div className="bg-primary rounded-lg shadow-xl border border-primary w-96 p-5" onClick={e => e.stopPropagation()}>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
                 <AlertTri className="w-5 h-5 text-red-600" />
               </div>
               <div>
                 <h3 className="text-base font-semibold text-gray-900">确认删除</h3>
-                <p className="text-sm text-gray-500 mt-0.5">
-                  确定删除 <span className="font-medium text-gray-700">{deleteTarget.instanceName}</span>？
+                <p className="text-sm text-secondary mt-0.5">
+                  确定删除 <span className="font-medium text-primary">{deleteTarget.instanceName}</span>？
                 </p>
               </div>
             </div>
@@ -1161,7 +1161,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => setDeleteTarget(null)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                className="px-4 py-2 text-sm font-medium text-primary bg-primary border border-primary rounded-md hover:bg-secondary transition-colors"
               >
                 取消
               </button>

@@ -265,7 +265,7 @@ export function Dashboard() {
   const progressColor = (pct: number) => {
     if (pct >= 100) return 'bg-green-500'
     if (pct >= 50) return 'bg-yellow-500'
-    return 'bg-gray-300'
+    return 'bg-tertiary'
   }
 
   /** Get completion % for a config from loaded details */
@@ -285,8 +285,8 @@ export function Dashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Configurations</h1>
-          <p className="text-gray-500 mt-1">
+          <h1 className="text-2xl font-bold text-primary">Configurations</h1>
+          <p className="text-secondary mt-1">
             Manage your yuleASR configurations and modules
           </p>
         </div>
@@ -309,7 +309,7 @@ export function Dashboard() {
               <FileBox className="w-5 h-5 text-blue-600" />
             </div>
           </div>
-          <p className="text-3xl font-bold text-gray-900">{stats.totalConfigs}</p>
+          <p className="text-3xl font-bold text-primary">{stats.totalConfigs}</p>
           <p className="text-xs text-blue-600 mt-1">
             {stats.totalConfigs === 1 ? '1 configuration' : `${stats.totalConfigs} configurations`}
           </p>
@@ -323,7 +323,7 @@ export function Dashboard() {
               <Layers className="w-5 h-5 text-purple-600" />
             </div>
           </div>
-          <p className="text-3xl font-bold text-gray-900">{stats.totalModules}</p>
+          <p className="text-3xl font-bold text-primary">{stats.totalModules}</p>
           <p className="text-xs text-purple-600 mt-1">
             Across all configurations
           </p>
@@ -338,7 +338,7 @@ export function Dashboard() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <p className="text-3xl font-bold text-gray-900">{stats.avgCompletion}%</p>
+            <p className="text-3xl font-bold text-primary">{stats.avgCompletion}%</p>
           </div>
           <div className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
             <div
@@ -361,7 +361,7 @@ export function Dashboard() {
           </div>
           <p className={cn(
             "text-3xl font-bold",
-            stats.warningsCount > 0 ? "text-amber-600" : "text-gray-900"
+            stats.warningsCount > 0 ? "text-amber-600" : "text-primary"
           )}>
             {stats.warningsCount}
           </p>
@@ -373,17 +373,17 @@ export function Dashboard() {
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wider mb-3">Quick Actions</h2>
+        <h2 className="text-sm font-semibold text-primary uppercase tracking-wider mb-3">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           <button 
             onClick={handleOpenExisting}
-            className="p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-300 hover:shadow-md transition-all text-left group card-hover"
+            className="p-4 bg-primary border border-primary rounded-xl hover:border-blue-300 hover:shadow-md transition-all text-left group card-hover"
           >
             <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-blue-100 transition-colors">
               <FolderOpen className="w-5 h-5 text-blue-600" />
             </div>
-            <h3 className="font-medium text-gray-900">Open Existing</h3>
-            <p className="text-sm text-gray-500 mt-1">Browse local config files</p>
+            <h3 className="font-medium text-primary">Open Existing</h3>
+            <p className="text-sm text-secondary mt-1">Browse local config files</p>
           </button>
           
           {/* Hidden file input for opening existing configs */}
@@ -397,45 +397,45 @@ export function Dashboard() {
           
           <button 
             onClick={() => setShowImportDialog(true)}
-            className="p-4 bg-white border border-gray-200 rounded-xl hover:border-purple-300 hover:shadow-md transition-all text-left group card-hover"
+            className="p-4 bg-primary border border-primary rounded-xl hover:border-purple-300 hover:shadow-md transition-all text-left group card-hover"
           >
             <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-purple-100 transition-colors">
               <FileJson className="w-5 h-5 text-purple-600" />
             </div>
-            <h3 className="font-medium text-gray-900">Import yuleASR</h3>
-            <p className="text-sm text-gray-500 mt-1">Import from yuleASR config</p>
+            <h3 className="font-medium text-primary">Import yuleASR</h3>
+            <p className="text-sm text-secondary mt-1">Import from yuleASR config</p>
           </button>
           
           <button 
             onClick={() => setShowModuleWizard(true)}
-            className="p-4 bg-white border border-gray-200 rounded-xl hover:border-green-300 hover:shadow-md transition-all text-left group card-hover"
+            className="p-4 bg-primary border border-primary rounded-xl hover:border-green-300 hover:shadow-md transition-all text-left group card-hover"
           >
             <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-green-100 transition-colors">
               <Settings className="w-5 h-5 text-green-600" />
             </div>
-            <h3 className="font-medium text-gray-900">Module Wizard</h3>
-            <p className="text-sm text-gray-500 mt-1">Configure modules step-by-step</p>
+            <h3 className="font-medium text-primary">Module Wizard</h3>
+            <p className="text-sm text-secondary mt-1">Configure modules step-by-step</p>
           </button>
 
           <button 
             onClick={() => handleShowGraph('config-1')}
-            className="p-4 bg-white border border-gray-200 rounded-xl hover:border-pink-300 hover:shadow-md transition-all text-left group card-hover"
+            className="p-4 bg-primary border border-primary rounded-xl hover:border-pink-300 hover:shadow-md transition-all text-left group card-hover"
           >
             <div className="w-10 h-10 bg-pink-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-pink-100 transition-colors">
               <GitGraph className="w-5 h-5 text-pink-600" />
             </div>
-            <h3 className="font-medium text-gray-900">Dependency Graph</h3>
-            <p className="text-sm text-gray-500 mt-1">View module relationships</p>
+            <h3 className="font-medium text-primary">Dependency Graph</h3>
+            <p className="text-sm text-secondary mt-1">View module relationships</p>
           </button>
         </div>
       </div>
 
       {/* Config List */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-        <div className="px-6 py-4 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900">Recent Configurations</h2>
+      <div className="bg-primary border border-primary rounded-xl overflow-hidden shadow-sm">
+        <div className="px-6 py-4 border-b border-primary bg-secondary flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-primary">Recent Configurations</h2>
           {configList.length > 0 && (
-            <span className="text-xs text-gray-500 bg-white px-2.5 py-1 rounded-full border border-gray-200">
+            <span className="text-xs text-secondary bg-primary px-2.5 py-1 rounded-full border border-primary">
               {configList.length} config{configList.length !== 1 ? 's' : ''}
             </span>
           )}
@@ -444,7 +444,7 @@ export function Dashboard() {
         {isLoading ? (
           <div className="p-12 text-center">
             <div className="animate-spin w-10 h-10 border-3 border-blue-600 border-t-transparent rounded-full mx-auto" />
-            <p className="text-gray-500 mt-3 font-medium">Loading configurations...</p>
+            <p className="text-secondary mt-3 font-medium">Loading configurations...</p>
           </div>
         ) : configList.length === 0 ? (
           /* Enhanced Empty State */
@@ -452,8 +452,8 @@ export function Dashboard() {
             <div className="w-20 h-20 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-5">
               <Zap className="w-10 h-10 text-blue-400" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Create your first configuration</h3>
-            <p className="text-gray-500 max-w-md mx-auto mb-8">
+            <h3 className="text-xl font-semibold text-primary mb-2">Create your first configuration</h3>
+            <p className="text-secondary max-w-md mx-auto mb-8">
               Get started by creating a new yuleASR configuration or importing an existing one. 
               Configure modules, set parameters, and build your embedded system.
             </p>
@@ -467,14 +467,14 @@ export function Dashboard() {
               </button>
               <button
                 onClick={handleOpenExisting}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all active:scale-[0.98]"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-primary text-primary rounded-lg hover:bg-secondary hover:border-secondary transition-all active:scale-[0.98]"
               >
                 <FolderOpen className="w-4 h-4" />
                 Open Existing
               </button>
               <button
                 onClick={() => setShowImportDialog(true)}
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all active:scale-[0.98]"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary border border-primary text-primary rounded-lg hover:bg-secondary hover:border-secondary transition-all active:scale-[0.98]"
               >
                 <FileJson className="w-4 h-4" />
                 Import
@@ -482,14 +482,14 @@ export function Dashboard() {
             </div>
           </div>
         ) : (
-          <div className="divide-y divide-gray-100">
+          <div className="divide-y divide-border-primary">
             {configList.map((config) => {
               const completion = getConfigCompletion(config.id)
               const configDetail = getConfigDetail(config.id)
               return (
                 <div
                   key={config.id}
-                  className="px-6 py-4 hover:bg-gray-50 transition-colors group"
+                  className="px-6 py-4 hover:bg-secondary transition-colors group"
                 >
                   <div className="flex items-center justify-between gap-4">
                   <div
@@ -516,9 +516,9 @@ export function Dashboard() {
                       )} />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-medium text-gray-900 truncate">{config.name}</h3>
-                      <p className="text-sm text-gray-500 truncate">{config.description || 'No description'}</p>
-                      <div className="flex items-center gap-3 mt-1.5 text-xs text-gray-400">
+                      <h3 className="font-medium text-primary truncate">{config.name}</h3>
+                      <p className="text-sm text-secondary truncate">{config.description || 'No description'}</p>
+                      <div className="flex items-center gap-3 mt-1.5 text-xs text-tertiary">
                         <span className="flex items-center gap-1">
                           <Layers className="w-3 h-3" />
                           {config.moduleCount} module{config.moduleCount !== 1 ? 's' : ''}
@@ -530,7 +530,7 @@ export function Dashboard() {
                         {completion !== null && (
                           <span className={cn(
                             "flex items-center gap-1 font-medium",
-                            completion >= 100 ? "text-green-500" : completion >= 50 ? "text-yellow-500" : "text-gray-400"
+                            completion >= 100 ? "text-green-500" : completion >= 50 ? "text-yellow-500" : "text-tertiary"
                           )}>
                             {completion}% complete
                           </span>
@@ -558,7 +558,7 @@ export function Dashboard() {
                           e.stopPropagation()
                           handleOpenCompare(config.id)
                         }}
-                        className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-2 text-tertiary hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                         title="Compare Configurations"
                       >
                         <GitCompare className="w-4 h-4" />
@@ -568,7 +568,7 @@ export function Dashboard() {
                           e.stopPropagation()
                           handleShowGraph(config.id)
                         }}
-                        className="p-2 text-gray-400 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
+                        className="p-2 text-tertiary hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
                         title="View Dependency Graph"
                       >
                         <GitGraph className="w-4 h-4" />
@@ -578,14 +578,14 @@ export function Dashboard() {
                           e.stopPropagation()
                           handleExportConfig(config.id, config.name)
                         }}
-                        className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                        className="p-2 text-tertiary hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
                         title="Export to yuleASR"
                       >
                         <Download className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => navigate(`/editor/${config.id}`)}
-                        className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-2 text-tertiary hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                         title="Edit"
                       >
                         <ChevronRight className="w-4 h-4" />
@@ -596,8 +596,8 @@ export function Dashboard() {
                         className={cn(
                           "p-2 rounded-lg transition-colors",
                           deletingId === config.id
-                            ? "text-gray-300 cursor-not-allowed"
-                            : "text-gray-400 hover:text-red-600 hover:bg-red-50"
+                            ? "text-tertiary cursor-not-allowed"
+                            : "text-tertiary hover:text-red-600 hover:bg-red-50"
                         )}
                         title="Delete"
                       >
@@ -615,13 +615,13 @@ export function Dashboard() {
       {/* Create Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-xl max-w-md w-full mx-4">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">New Configuration</h3>
+          <div className="bg-primary rounded-xl shadow-xl max-w-md w-full mx-4">
+            <div className="px-6 py-4 border-b border-primary">
+              <h3 className="text-lg font-semibold text-primary">New Configuration</h3>
             </div>
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-primary mb-1">
                   Name
                 </label>
                 <input
@@ -629,12 +629,12 @@ export function Dashboard() {
                   value={newConfigName}
                   onChange={(e) => setNewConfigName(e.target.value)}
                   placeholder="My Configuration"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  className="w-full px-3 py-2 border border-primary rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                   autoFocus
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-primary mb-1">
                   Description
                 </label>
                 <textarea
@@ -642,14 +642,14 @@ export function Dashboard() {
                   onChange={(e) => setNewConfigDesc(e.target.value)}
                   placeholder="Optional description..."
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  className="w-full px-3 py-2 border border-primary rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                 />
               </div>
             </div>
-            <div className="px-6 py-4 border-t border-gray-200 flex justify-end gap-3">
+            <div className="px-6 py-4 border-t border-primary flex justify-end gap-3">
               <button
                 onClick={() => setShowCreateModal(false)}
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                className="px-4 py-2 text-primary hover:bg-secondary rounded-lg transition-colors"
               >
                 Cancel
               </button>
@@ -659,7 +659,7 @@ export function Dashboard() {
                 className={cn(
                   "px-4 py-2 rounded-lg transition-all",
                   !newConfigName.trim() || isLoading
-                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    ? "bg-tertiary text-secondary cursor-not-allowed"
                     : "bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow-md"
                 )}
               >
@@ -673,14 +673,14 @@ export function Dashboard() {
       {/* Dependency Graph Modal */}
       {showGraphModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-2xl w-[95vw] h-[90vh] flex flex-col overflow-hidden">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50">
+          <div className="bg-primary rounded-xl shadow-2xl w-[95vw] h-[90vh] flex flex-col overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-primary bg-secondary">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <h3 className="text-lg font-semibold text-primary flex items-center gap-2">
                   <GitGraph className="w-5 h-5 text-pink-600" />
                   Module Dependency Graph
                 </h3>
-                <p className="text-sm text-gray-500 mt-0.5">
+                <p className="text-sm text-secondary mt-0.5">
                   Visualize module relationships and dependencies
                 </p>
               </div>
@@ -690,7 +690,7 @@ export function Dashboard() {
                   setGraphModules([])
                   setSelectedConfigForGraph(null)
                 }}
-                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded-lg transition-colors"
+                className="p-2 text-tertiary hover:text-secondary hover:bg-secondary rounded-lg transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -701,8 +701,8 @@ export function Dashboard() {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
                     <Loader2 className="w-10 h-10 animate-spin text-blue-600 mx-auto mb-3" />
-                    <p className="text-gray-600 font-medium">Loading module graph...</p>
-                    <p className="text-sm text-gray-400 mt-1">Calculating dependencies</p>
+                    <p className="text-secondary font-medium">Loading module graph...</p>
+                    <p className="text-sm text-tertiary mt-1">Calculating dependencies</p>
                   </div>
                 </div>
               ) : (
@@ -710,7 +710,7 @@ export function Dashboard() {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
                       <Loader2 className="w-10 h-10 animate-spin text-blue-600 mx-auto mb-3" />
-                      <p className="text-gray-600 font-medium">Initializing graph...</p>
+                      <p className="text-secondary font-medium">Initializing graph...</p>
                     </div>
                   </div>
                 }>

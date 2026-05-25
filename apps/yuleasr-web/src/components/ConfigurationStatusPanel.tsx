@@ -111,9 +111,9 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div className="bg-primary rounded-lg border border-primary overflow-hidden">
       {/* Header */}
-      <div className="px-4 py-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
+      <div className="px-4 py-3 bg-secondary border-b border-primary flex items-center justify-between">
         <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-primary-600" />
           Configuration Status
@@ -133,7 +133,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
         {/* Overall Progress */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-600">Overall Progress</span>
+            <span className="text-sm text-secondary">Overall Progress</span>
             <span className="text-sm font-semibold text-gray-900">{stats.progress}%</span>
           </div>
           <div className="h-2.5 bg-gray-200 rounded-full overflow-hidden">
@@ -145,7 +145,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
               style={{ width: `${stats.progress}%` }}
             />
           </div>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-secondary mt-1">
             {stats.configured}/{stats.total} modules configured
             {stats.enabled < stats.total && ` (${stats.enabled} enabled)`}
           </p>
@@ -157,7 +157,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-                <span className="text-xs font-medium text-gray-600">Configured</span>
+                <span className="text-xs font-medium text-secondary">Configured</span>
               </div>
               <span className="text-sm font-semibold text-green-700">{stats.configured}</span>
             </div>
@@ -167,7 +167,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-blue-600" />
-                <span className="text-xs font-medium text-gray-600">Configuring</span>
+                <span className="text-xs font-medium text-secondary">Configuring</span>
               </div>
               <span className="text-sm font-semibold text-blue-700">{stats.configuring}</span>
             </div>
@@ -177,19 +177,19 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <AlertCircle className="w-3.5 h-3.5 text-yellow-600" />
-                <span className="text-xs font-medium text-gray-600">Partial</span>
+                <span className="text-xs font-medium text-secondary">Partial</span>
               </div>
               <span className="text-sm font-semibold text-yellow-700">{stats.partial}</span>
             </div>
             <MiniProgressBar value={stats.partial} max={stats.total} />
           </div>
-          <div className="flex flex-col gap-1 p-2 bg-gray-50 rounded-lg">
+          <div className="flex flex-col gap-1 p-2 bg-secondary rounded-lg">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
-                <CircleDashed className="w-3.5 h-3.5 text-gray-500" />
-                <span className="text-xs font-medium text-gray-600">Unconfigured</span>
+                <CircleDashed className="w-3.5 h-3.5 text-secondary" />
+                <span className="text-xs font-medium text-secondary">Unconfigured</span>
               </div>
-              <span className="text-sm font-semibold text-gray-700">{stats.unconfigured}</span>
+              <span className="text-sm font-semibold text-primary">{stats.unconfigured}</span>
             </div>
             <MiniProgressBar value={stats.unconfigured} max={stats.total} className="bg-gray-100" />
           </div>
@@ -197,7 +197,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
 
         {/* Layer Breakdown */}
         <div>
-          <h4 className="text-xs font-semibold text-gray-700 uppercase tracking-wider mb-2">
+          <h4 className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">
             By Layer
           </h4>
           <div className="space-y-2">
@@ -205,7 +205,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
               <div key={ls.layer} className="flex items-center gap-3">
                 <div className="flex items-center gap-1.5 w-20">
                   {getLayerIcon(ls.layer)}
-                  <span className="text-xs font-medium text-gray-700">{ls.layer}</span>
+                  <span className="text-xs font-medium text-primary">{ls.layer}</span>
                 </div>
                 <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                   <div 
@@ -220,7 +220,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
                     style={{ width: `${ls.total > 0 ? (ls.configured / ls.total) * 100 : 0}%` }}
                   />
                 </div>
-                <span className="text-xs text-gray-600 w-12 text-right">
+                <span className="text-xs text-secondary w-12 text-right">
                   {ls.configured}/{ls.total}
                 </span>
               </div>
@@ -258,8 +258,8 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
         )}
 
         {/* Last Updated */}
-        <div className="pt-3 border-t border-gray-200">
-          <p className="text-xs text-gray-500">
+        <div className="pt-3 border-t border-primary">
+          <p className="text-xs text-secondary">
             Last updated: {new Date(config.updatedAt).toLocaleString()}
           </p>
         </div>
