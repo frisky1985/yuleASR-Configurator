@@ -123,6 +123,20 @@ export function Editor() {
   const selectedContainer = selectedContainerId && selectedModule?.containers
     ? findContainer(selectedModule.containers, selectedContainerId)
     : null
+
+  // Extract instance name from path (e.g. "layer:MCAL/module:adc/container:adcconfigset/instance:AdcHwUnit_0")
+  const selectedInstanceName = selectedPath?.match(/instance:([^/]+)/)?.[1] ?? null
+
+  // When an instance is selected, create a virtual container from the template
+  const instanceContainer = selectedInstanceName && selectedContainer?.multiple && selectedContainer.subContainers?.length
+    ? {
+        ...selectedContainer.subContainers[0],
+        id: `${selectedContainer.id}_${selectedInstanceName}`,
+        name: selectedInstanceName,
+        displayName: selectedInstanceName,
+        description: `Instance of ${selectedContainer.displayName || selectedContainer.name}`,
+      } as ConfigContainer
+    : null
   
   // Check if OS is selected
   const isOSSelected = selectedPath?.includes('layer:OS') || selectedPath?.includes('/os')
@@ -326,15 +340,18 @@ export function Editor() {
             <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
               <div className="px-4 py-2.5 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
                 <h3 className="text-sm font-semibold text-gray-900">
-                  {selectedContainer.displayName || selectedContainer.name}
+                  {(instanceContainer || selectedContainer).displayName || (instanceContainer || selectedContainer).name}
                 </h3>
                 <span className="text-xs text-gray-500">
-                  {selectedContainer.parameters.length + (selectedContainer.subContainers?.reduce((s, sc) => s + sc.parameters.length, 0) ?? 0)} params
+                  {instanceContainer
+                    ? `${(instanceContainer).parameters.length} params · ${(instanceContainer).description || ''}`
+                    : `${selectedContainer.parameters.length + (selectedContainer.subContainers?.reduce((s, sc) => s + sc.parameters.length, 0) ?? 0)} params`
+                  }
                 </span>
               </div>
               <div className="p-3">
-                {selectedContainer.multiple && !selectedPath?.includes('/instance:') ? (
-                  /* Dynamic container with 0 instances or container selected directly */
+                {selectedContainer.multiple && !selectedInstanceName ? (
+                  /* Dynamic container with no instance selected - empty state */
                   <div className="text-center py-8">
                     <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-3">
                       <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -352,7 +369,7 @@ export function Editor() {
                 ) : (
                   /* Static container or instance selected - show parameters normally */
                   <ContainerParameterList
-                    container={selectedContainer}
+                    container={instanceContainer || selectedContainer}
                     onParamChange={(name, value) => handleParameterChange(name, value)}
                   />
                 )}
