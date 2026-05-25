@@ -20227,7 +20227,7 @@ export const allModules: ConfigModule[] = [
     id: "icu",
     name: "Icu",
     displayName: "ICU Driver",
-    description: "输入捕捉单元",
+    description: "Input Capture Unit driver - AUTOSAR MCAL",
     vendor: "NXP",
     version: "4.4.0",
     autosarVersion: "4.4.0",
@@ -20236,722 +20236,76 @@ export const allModules: ConfigModule[] = [
     parameters: [],
     containers: [
       {
-        id: "commonpublishedinformation",
+        id: "icu_common_pub",
         name: "CommonPublishedInformation",
         displayName: "CommonPublishedInformation",
-        description: "CommonPublishedInformation 配置容器",
+        description: "ICU module metadata",
         parameters: [
-          {
-            id: "arreleasemajorversion",
-            name: "ArReleaseMajorVersion",
-            displayName: "ArReleaseMajorVersion",
-            description: "ArReleaseMajorVersion 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "arreleaseminorversion",
-            name: "ArReleaseMinorVersion",
-            displayName: "ArReleaseMinorVersion",
-            description: "ArReleaseMinorVersion 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "arreleaserevisionversion",
-            name: "ArReleaseRevisionVersion",
-            displayName: "ArReleaseRevisionVersion",
-            description: "ArReleaseRevisionVersion 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "moduleid",
-            name: "ModuleId",
-            displayName: "ModuleId",
-            description: "ModuleId 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "swmajorversion",
-            name: "SwMajorVersion",
-            displayName: "SwMajorVersion",
-            description: "SwMajorVersion 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "swminorversion",
-            name: "SwMinorVersion",
-            displayName: "SwMinorVersion",
-            description: "SwMinorVersion 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "swpatchversion",
-            name: "SwPatchVersion",
-            displayName: "SwPatchVersion",
-            description: "SwPatchVersion 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "vendorid",
-            name: "VendorId",
-            displayName: "VendorId",
-            description: "VendorId 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          }
+          { id: "icu_armajor", name: "ArReleaseMajorVersion", displayName: "AR Major", type: "integer", value: 4, defaultValue: 4 },
+          { id: "icu_arminor", name: "ArReleaseMinorVersion", displayName: "AR Minor", type: "integer", value: 3, defaultValue: 3 },
+          { id: "icu_moduleid", name: "ModuleId", displayName: "Module ID", type: "integer", value: 122, defaultValue: 122 },
+          { id: "icu_vendorid", name: "VendorId", displayName: "Vendor ID", type: "integer", value: 43, defaultValue: 43 },
         ],
-        multiple: false
-      },
-      {
-        id: "icuchannel-canrx",
-        name: "IcuChannel_CANRx",
-        displayName: "IcuChannel_CANRx",
-        description: "IcuChannel_CANRx 配置容器",
-        parameters: [
-          {
-            id: "icuchannelid",
-            name: "IcuChannelId",
-            displayName: "IcuChannelId",
-            description: "IcuChannelId 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "icudmachannelenable",
-            name: "IcuDMAChannelEnable",
-            displayName: "IcuDMAChannelEnable",
-            description: "IcuDMAChannelEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "icuwakeupcapability",
-            name: "IcuWakeupCapability",
-            displayName: "IcuWakeupCapability",
-            description: "IcuWakeupCapability 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "icudefaultstartedge",
-            name: "IcuDefaultStartEdge",
-            displayName: "IcuDefaultStartEdge",
-            description: "IcuDefaultStartEdge 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "icuhwip",
-            name: "IcuHwIP",
-            displayName: "IcuHwIP",
-            description: "IcuHwIP 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "icumeasurementmode",
-            name: "IcuMeasurementMode",
-            displayName: "IcuMeasurementMode",
-            description: "IcuMeasurementMode 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "icuoverflownotification",
-            name: "IcuOverflowNotification",
-            displayName: "IcuOverflowNotification",
-            description: "IcuOverflowNotification 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "icusignalnotification",
-            name: "IcuSignalNotification",
-            displayName: "IcuSignalNotification",
-            description: "IcuSignalNotification 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "icuchannel-sbcint",
-        name: "IcuChannel_SBCINT",
-        displayName: "IcuChannel_SBCINT",
-        description: "IcuChannel_SBCINT 配置容器",
-        parameters: [
-          {
-            id: "icuchannelid",
-            name: "IcuChannelId",
-            displayName: "IcuChannelId",
-            description: "IcuChannelId 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "icudmachannelenable",
-            name: "IcuDMAChannelEnable",
-            displayName: "IcuDMAChannelEnable",
-            description: "IcuDMAChannelEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "icuwakeupcapability",
-            name: "IcuWakeupCapability",
-            displayName: "IcuWakeupCapability",
-            description: "IcuWakeupCapability 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "icudefaultstartedge",
-            name: "IcuDefaultStartEdge",
-            displayName: "IcuDefaultStartEdge",
-            description: "IcuDefaultStartEdge 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "icuhwip",
-            name: "IcuHwIP",
-            displayName: "IcuHwIP",
-            description: "IcuHwIP 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "icumeasurementmode",
-            name: "IcuMeasurementMode",
-            displayName: "IcuMeasurementMode",
-            description: "IcuMeasurementMode 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "icuoverflownotification",
-            name: "IcuOverflowNotification",
-            displayName: "IcuOverflowNotification",
-            description: "IcuOverflowNotification 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "icusignalnotification",
-            name: "IcuSignalNotification",
-            displayName: "IcuSignalNotification",
-            description: "IcuSignalNotification 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
-        ],
-        multiple: false
       },
       {
         id: "icuconfigset",
         name: "IcuConfigSet",
         displayName: "IcuConfigSet",
-        description: "IcuConfigSet 配置容器",
+        description: "ICU Configuration Set",
         parameters: [
-          {
-            id: "icumaxchannel",
-            name: "IcuMaxChannel",
-            displayName: "IcuMaxChannel",
-            description: "IcuMaxChannel 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "icuchannelid",
-            name: "IcuChannelId",
-            displayName: "IcuChannelId",
-            description: "IcuChannelId 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "icudmachannelenable",
-            name: "IcuDMAChannelEnable",
-            displayName: "IcuDMAChannelEnable",
-            description: "IcuDMAChannelEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "icuwakeupcapability",
-            name: "IcuWakeupCapability",
-            displayName: "IcuWakeupCapability",
-            description: "IcuWakeupCapability 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "icuisrenable",
-            name: "IcuIsrEnable",
-            displayName: "IcuIsrEnable",
-            description: "IcuIsrEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "icudefaultstartedge",
-            name: "IcuDefaultStartEdge",
-            displayName: "IcuDefaultStartEdge",
-            description: "IcuDefaultStartEdge 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "icuhwip",
-            name: "IcuHwIP",
-            displayName: "IcuHwIP",
-            description: "IcuHwIP 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "icumeasurementmode",
-            name: "IcuMeasurementMode",
-            displayName: "IcuMeasurementMode",
-            description: "IcuMeasurementMode 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "icuoverflownotification",
-            name: "IcuOverflowNotification",
-            displayName: "IcuOverflowNotification",
-            description: "IcuOverflowNotification 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "icusignalnotification",
-            name: "IcuSignalNotification",
-            displayName: "IcuSignalNotification",
-            description: "IcuSignalNotification 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "icugpiomodule",
-            name: "IcuGpioModule",
-            displayName: "IcuGpioModule",
-            description: "IcuGpioModule 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "icugpiochannel",
-            name: "IcuGpioChannel",
-            displayName: "IcuGpioChannel",
-            description: "IcuGpioChannel 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "icuisrhwid",
-            name: "IcuIsrHwId",
-            displayName: "IcuIsrHwId",
-            description: "IcuIsrHwId 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
+          { id: "icumaxchannel", name: "IcuMaxChannel", displayName: "Max Channel", type: "integer", value: 2, defaultValue: 2 },
         ],
-        multiple: false
+        subContainers: [
+          {
+            id: "icuchannel_canrx",
+            name: "IcuChannel_CANRx",
+            displayName: "IcuChannel_CANRx",
+            shortName: "IcuChannel",
+            description: "ICU channel for CAN Rx detection",
+            parameters: [
+              { id: "icuchannelid_canrx", name: "IcuChannelId", type: "integer", value: 1 },
+              { id: "icuwakeupcapability_canrx", name: "IcuWakeupCapability", type: "boolean", value: true },
+              { id: "icumeasurementmode_canrx", name: "IcuMeasurementMode", type: "string", value: "ICU_MODE_SIGNAL_EDGE_DETECT" },
+            ],
+            subContainers: [
+              { id: "icusignaledgedetection_canrx", name: "IcuSignalEdgeDetection", displayName: "IcuSignalEdgeDetection", shortName: "IcuSignalEdgeDetection", parameters: [ { id: "icusignalnotification_canrx", name: "IcuSignalNotification", type: "string", value: "NULL_PTR" } ] },
+              { id: "icuwakeup_canrx", name: "IcuWakeup_CANRx", displayName: "IcuWakeup_CANRx", shortName: "IcuWakeup", parameters: [] },
+            ],
+          },
+          {
+            id: "icuchannel_sbcint",
+            name: "IcuChannel_SBCINT",
+            displayName: "IcuChannel_SBCINT",
+            shortName: "IcuChannel",
+            description: "ICU channel for SBC interrupt",
+            parameters: [
+              { id: "icuchannelid_sbc", name: "IcuChannelId", type: "integer", value: 0 },
+              { id: "icuwakeupcapability_sbc", name: "IcuWakeupCapability", type: "boolean", value: true },
+              { id: "icumeasurementmode_sbc", name: "IcuMeasurementMode", type: "string", value: "ICU_MODE_SIGNAL_EDGE_DETECT" },
+            ],
+            subContainers: [
+              { id: "icusignaledgedetection_sbc", name: "IcuSignalEdgeDetection", displayName: "IcuSignalEdgeDetection", shortName: "IcuSignalEdgeDetection", parameters: [ { id: "icusignalnotification_sbc", name: "IcuSignalNotification", type: "string", value: "NULL_PTR" } ] },
+              { id: "icuwakeup_sbc", name: "IcuWakeup_SBC", displayName: "IcuWakeup_SBC", shortName: "IcuWakeup", parameters: [] },
+            ],
+          },
+        ],
       },
       {
         id: "icugeneral",
         name: "IcuGeneral",
         displayName: "IcuGeneral",
-        description: "IcuGeneral 配置容器",
+        description: "ICU general configuration",
         parameters: [
-          {
-            id: "icudeverrordetect",
-            name: "IcuDevErrorDetect",
-            displayName: "IcuDevErrorDetect",
-            description: "IcuDevErrorDetect 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "icuenableusermodesupport",
-            name: "IcuEnableUserModeSupport",
-            displayName: "IcuEnableUserModeSupport",
-            description: "IcuEnableUserModeSupport 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "icureportwakeupsource",
-            name: "IcuReportWakeupSource",
-            displayName: "IcuReportWakeupSource",
-            description: "IcuReportWakeupSource 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          }
+          { id: "icudeverrordetect", name: "IcuDevErrorDetect", type: "boolean", value: true },
+          { id: "icureportwakeupsource", name: "IcuReportWakeupSource", type: "boolean", value: true },
         ],
-        multiple: false
       },
-      {
-        id: "icugpiochannels-0",
-        name: "IcuGpioChannels_0",
-        displayName: "IcuGpioChannels_0",
-        description: "IcuGpioChannels_0 配置容器",
-        parameters: [
-          {
-            id: "icugpiochannel",
-            name: "IcuGpioChannel",
-            displayName: "IcuGpioChannel",
-            description: "IcuGpioChannel 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "icugpiochannels-1",
-        name: "IcuGpioChannels_1",
-        displayName: "IcuGpioChannels_1",
-        description: "IcuGpioChannels_1 配置容器",
-        parameters: [
-          {
-            id: "icugpiochannel",
-            name: "IcuGpioChannel",
-            displayName: "IcuGpioChannel",
-            description: "IcuGpioChannel 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "icugpio-0",
-        name: "IcuGpio_0",
-        displayName: "IcuGpio_0",
-        description: "IcuGpio_0 配置容器",
-        parameters: [
-          {
-            id: "icugpiomodule",
-            name: "IcuGpioModule",
-            displayName: "IcuGpioModule",
-            description: "IcuGpioModule 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "icugpiochannel",
-            name: "IcuGpioChannel",
-            displayName: "IcuGpioChannel",
-            description: "IcuGpioChannel 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "icuhwinterruptconfiglist-0",
-        name: "IcuHwInterruptConfigList_0",
-        displayName: "IcuHwInterruptConfigList_0",
-        description: "IcuHwInterruptConfigList_0 配置容器",
-        parameters: [
-          {
-            id: "icuisrenable",
-            name: "IcuIsrEnable",
-            displayName: "IcuIsrEnable",
-            description: "IcuIsrEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "icuisrhwid",
-            name: "IcuIsrHwId",
-            displayName: "IcuIsrHwId",
-            description: "IcuIsrHwId 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "icuhwinterruptconfiglist-1",
-        name: "IcuHwInterruptConfigList_1",
-        displayName: "IcuHwInterruptConfigList_1",
-        description: "IcuHwInterruptConfigList_1 配置容器",
-        parameters: [
-          {
-            id: "icuisrenable",
-            name: "IcuIsrEnable",
-            displayName: "IcuIsrEnable",
-            description: "IcuIsrEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "icuisrhwid",
-            name: "IcuIsrHwId",
-            displayName: "IcuIsrHwId",
-            description: "IcuIsrHwId 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "icuhwinterruptconfiglist-2",
-        name: "IcuHwInterruptConfigList_2",
-        displayName: "IcuHwInterruptConfigList_2",
-        description: "IcuHwInterruptConfigList_2 配置容器",
-        parameters: [
-          {
-            id: "icuisrenable",
-            name: "IcuIsrEnable",
-            displayName: "IcuIsrEnable",
-            description: "IcuIsrEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "icuisrhwid",
-            name: "IcuIsrHwId",
-            displayName: "IcuIsrHwId",
-            description: "IcuIsrHwId 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "icuhwinterruptconfiglist-3",
-        name: "IcuHwInterruptConfigList_3",
-        displayName: "IcuHwInterruptConfigList_3",
-        description: "IcuHwInterruptConfigList_3 配置容器",
-        parameters: [
-          {
-            id: "icuisrenable",
-            name: "IcuIsrEnable",
-            displayName: "IcuIsrEnable",
-            description: "IcuIsrEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "icuisrhwid",
-            name: "IcuIsrHwId",
-            displayName: "IcuIsrHwId",
-            description: "IcuIsrHwId 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "icuhwinterruptconfiglist-4",
-        name: "IcuHwInterruptConfigList_4",
-        displayName: "IcuHwInterruptConfigList_4",
-        description: "IcuHwInterruptConfigList_4 配置容器",
-        parameters: [
-          {
-            id: "icuisrenable",
-            name: "IcuIsrEnable",
-            displayName: "IcuIsrEnable",
-            description: "IcuIsrEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "icuisrhwid",
-            name: "IcuIsrHwId",
-            displayName: "IcuIsrHwId",
-            description: "IcuIsrHwId 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "icuhwinterruptconfiglist-5",
-        name: "IcuHwInterruptConfigList_5",
-        displayName: "IcuHwInterruptConfigList_5",
-        description: "IcuHwInterruptConfigList_5 配置容器",
-        parameters: [
-          {
-            id: "icuisrenable",
-            name: "IcuIsrEnable",
-            displayName: "IcuIsrEnable",
-            description: "IcuIsrEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "icuisrhwid",
-            name: "IcuIsrHwId",
-            displayName: "IcuIsrHwId",
-            description: "IcuIsrHwId 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "icuhwinterruptconfiglist-6",
-        name: "IcuHwInterruptConfigList_6",
-        displayName: "IcuHwInterruptConfigList_6",
-        description: "IcuHwInterruptConfigList_6 配置容器",
-        parameters: [
-          {
-            id: "icuisrenable",
-            name: "IcuIsrEnable",
-            displayName: "IcuIsrEnable",
-            description: "IcuIsrEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "icuisrhwid",
-            name: "IcuIsrHwId",
-            displayName: "IcuIsrHwId",
-            description: "IcuIsrHwId 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
-        ],
-        multiple: false
-      }
     ],
     dependencies: [],
-    createdAt: "2025-05-21T00:00:00Z",
-    updatedAt: "2025-05-21T00:00:00Z",
+    createdAt: "2025-05-25T00:00:00Z",
+    updatedAt: "2025-05-25T00:00:00Z",
     configStatus: "unconfigured"
-  },
-  {
+  },  {
     id: "iohwab",
     name: "Iohwab",
     displayName: "I/O Hardware Abstraction",
@@ -22308,7 +21662,7 @@ export const allModules: ConfigModule[] = [
     id: "mcu",
     name: "Mcu",
     displayName: "Microcontroller Unit",
-    description: "Mcu Configuration",
+    description: "MCU driver - AUTOSAR MCAL",
     vendor: "NXP",
     version: "4.4.0",
     autosarVersion: "4.4.0",
@@ -22317,804 +21671,73 @@ export const allModules: ConfigModule[] = [
     parameters: [],
     containers: [
       {
-        id: "activemodepowersetting",
-        name: "ActiveModePowerSetting",
-        displayName: "ActiveModePowerSetting",
-        description: "ActiveModePowerSetting 配置容器",
-        parameters: [
-          {
-            id: "activemodebandgapbufferenable",
-            name: "ActiveModeBandgapBufferEnable",
-            displayName: "ActiveModeBandgapBufferEnable",
-            description: "ActiveModeBandgapBufferEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "activemodecorehighvoltagedetectenable",
-            name: "ActiveModeCoreHighVoltageDetectEnable",
-            displayName: "ActiveModeCoreHighVoltageDetectEnable",
-            description: "ActiveModeCoreHighVoltageDetectEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "activemodecorelowvoltagedetectenable",
-            name: "ActiveModeCoreLowVoltageDetectEnable",
-            displayName: "ActiveModeCoreLowVoltageDetectEnable",
-            description: "ActiveModeCoreLowVoltageDetectEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "activemodeiohighvoltagedetectenable",
-            name: "ActiveModeIOHighVoltageDetectEnable",
-            displayName: "ActiveModeIOHighVoltageDetectEnable",
-            description: "ActiveModeIOHighVoltageDetectEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "activemodeiolowvoltagedetectenable",
-            name: "ActiveModeIOLowVoltageDetectEnable",
-            displayName: "ActiveModeIOLowVoltageDetectEnable",
-            description: "ActiveModeIOLowVoltageDetectEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "activemodesystemhighvoltagedetectenable",
-            name: "ActiveModeSystemHighVoltageDetectEnable",
-            displayName: "ActiveModeSystemHighVoltageDetectEnable",
-            description: "ActiveModeSystemHighVoltageDetectEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "activemodesystemlowvoltagedetectenable",
-            name: "ActiveModeSystemLowVoltageDetectEnable",
-            displayName: "ActiveModeSystemLowVoltageDetectEnable",
-            description: "ActiveModeSystemLowVoltageDetectEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "activemodevddcoreglitchdetectdisable",
-            name: "ActiveModeVddCoreGlitchDetectDisable",
-            displayName: "ActiveModeVddCoreGlitchDetectDisable",
-            description: "ActiveModeVddCoreGlitchDetectDisable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "activemodebandgapmode",
-            name: "ActiveModeBandgapMode",
-            displayName: "ActiveModeBandgapMode",
-            description: "ActiveModeBandgapMode 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "activemodecoreldovddlvl",
-            name: "ActiveModeCoreLdoVddLvl",
-            displayName: "ActiveModeCoreLdoVddLvl",
-            description: "ActiveModeCoreLdoVddLvl 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "activemodedcdcvdddrivestrength",
-            name: "ActiveModeDCDCVddDriveStrength",
-            displayName: "ActiveModeDCDCVddDriveStrength",
-            description: "ActiveModeDCDCVddDriveStrength 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "activemodedcdcvddvoltagelevel",
-            name: "ActiveModeDCDCVddVoltageLevel",
-            displayName: "ActiveModeDCDCVddVoltageLevel",
-            description: "ActiveModeDCDCVddVoltageLevel 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "activemodesystemldovdddrivestrength",
-            name: "ActiveModeSystemLdoVddDriveStrength",
-            displayName: "ActiveModeSystemLdoVddDriveStrength",
-            description: "ActiveModeSystemLdoVddDriveStrength 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "activemodesystemldovddvoltagelevel",
-            name: "ActiveModeSystemLdoVddVoltageLevel",
-            displayName: "ActiveModeSystemLdoVddVoltageLevel",
-            description: "ActiveModeSystemLdoVddVoltageLevel 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "bandgaptimerconfiguration",
-        name: "BandgapTimerConfiguration",
-        displayName: "BandgapTimerConfiguration",
-        description: "BandgapTimerConfiguration 配置容器",
-        parameters: [
-          {
-            id: "enablebandgaptimer0",
-            name: "EnableBandgapTimer0",
-            displayName: "EnableBandgapTimer0",
-            description: "EnableBandgapTimer0 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "enablebandgaptimer1",
-            name: "EnableBandgapTimer1",
-            displayName: "EnableBandgapTimer1",
-            description: "EnableBandgapTimer1 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "bandgaptimer0timeoutvalue",
-            name: "BandgapTimer0TimeoutValue",
-            displayName: "BandgapTimer0TimeoutValue",
-            description: "BandgapTimer0TimeoutValue 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "bandgaptimer1timeoutvalue",
-            name: "BandgapTimer1TimeoutValue",
-            displayName: "BandgapTimer1TimeoutValue",
-            description: "BandgapTimer1TimeoutValue 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "commonpublishedinformation",
+        id: "mcu_common_pub",
         name: "CommonPublishedInformation",
         displayName: "CommonPublishedInformation",
-        description: "CommonPublishedInformation 配置容器",
+        description: "MCU module metadata",
         parameters: [
-          {
-            id: "arreleasemajorversion",
-            name: "ArReleaseMajorVersion",
-            displayName: "ArReleaseMajorVersion",
-            description: "ArReleaseMajorVersion 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "arreleaseminorversion",
-            name: "ArReleaseMinorVersion",
-            displayName: "ArReleaseMinorVersion",
-            description: "ArReleaseMinorVersion 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "arreleaserevisionversion",
-            name: "ArReleaseRevisionVersion",
-            displayName: "ArReleaseRevisionVersion",
-            description: "ArReleaseRevisionVersion 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "moduleid",
-            name: "ModuleId",
-            displayName: "ModuleId",
-            description: "ModuleId 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "swmajorversion",
-            name: "SwMajorVersion",
-            displayName: "SwMajorVersion",
-            description: "SwMajorVersion 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "swminorversion",
-            name: "SwMinorVersion",
-            displayName: "SwMinorVersion",
-            description: "SwMinorVersion 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "swpatchversion",
-            name: "SwPatchVersion",
-            displayName: "SwPatchVersion",
-            description: "SwPatchVersion 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "vendorid",
-            name: "VendorId",
-            displayName: "VendorId",
-            description: "VendorId 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "vendorapiinfix",
-            name: "VendorApiInfix",
-            displayName: "VendorApiInfix",
-            description: "VendorApiInfix 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
+          { id: "mcu_armajor", name: "ArReleaseMajorVersion", type: "integer", value: 4 },
+          { id: "mcu_arminor", name: "ArReleaseMinorVersion", type: "integer", value: 3 },
+          { id: "mcu_moduleid", name: "ModuleId", type: "integer", value: 80 },
+          { id: "mcu_vendorid", name: "VendorId", type: "integer", value: 43 },
         ],
-        multiple: false
       },
       {
-        id: "coreldosettings",
-        name: "CoreLDOSettings",
-        displayName: "CoreLDOSettings",
-        description: "CoreLDOSettings 配置容器",
+        id: "mcugeneral",
+        name: "McuGeneral",
+        displayName: "McuGeneral",
+        description: "MCU general config",
         parameters: [
-          {
-            id: "coreldodeeppowerdownpulldowndisable",
-            name: "CoreLdoDeepPowerDownPulldownDisable",
-            displayName: "CoreLdoDeepPowerDownPulldownDisable",
-            description: "CoreLdoDeepPowerDownPulldownDisable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "coreldopassthroughenable",
-            name: "CoreLdoPassThroughEnable",
-            displayName: "CoreLdoPassThroughEnable",
-            description: "CoreLdoPassThroughEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "enablecoreldo",
-            name: "EnableCoreLdo",
-            displayName: "EnableCoreLdo",
-            description: "EnableCoreLdo 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          }
+          { id: "mcudeverrordetect", name: "McuDevErrorDetect", type: "boolean", value: true },
+          { id: "mcuversioninfoapi", name: "McuVersionInfoApi", type: "boolean", value: true },
         ],
-        multiple: false
       },
       {
-        id: "dcdcsettings",
-        name: "DCDCSettings",
-        displayName: "DCDCSettings",
-        description: "DCDCSettings 配置容器",
+        id: "mcuclocksetting",
+        name: "McuClockSetting",
+        displayName: "McuClockSetting",
+        description: "MCU clock & mode settings",
         parameters: [
-          {
-            id: "enable2p5vouput",
-            name: "Enable2P5VOuput",
-            displayName: "Enable2P5VOuput",
-            description: "Enable2P5VOuput 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "enabledcdc",
-            name: "EnableDCDC",
-            displayName: "EnableDCDC",
-            description: "EnableDCDC 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "enabledcdcburstfreqcontrol",
-            name: "EnableDCDCBurstFreqControl",
-            displayName: "EnableDCDCBurstFreqControl",
-            description: "EnableDCDCBurstFreqControl 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "enableexternalburstrequest",
-            name: "EnableExternalBurstRequest",
-            displayName: "EnableExternalBurstRequest",
-            description: "EnableExternalBurstRequest 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          }
+          { id: "mcucoreclock", name: "McuCoreClock", type: "integer", value: 96000000, min: 1000000, max: 320000000, unit: "Hz" },
         ],
-        multiple: false
+        subContainers: [
+          {
+            id: "mcumodesetting_run",
+            name: "McuModeSettingConf_Run",
+            displayName: "McuModeSettingConf_Run",
+            shortName: "McuModeSettingConf",
+            parameters: [
+              { id: "mcumode_run", name: "McuMode", type: "integer", value: 0 },
+              { id: "clockmode_run", name: "ClockMode", type: "string", value: "NO_CLOCK_GATE" },
+            ],
+          },
+          {
+            id: "mcumodesetting_sleep",
+            name: "McuModeSettingConf_Sleep",
+            displayName: "McuModeSettingConf_Sleep",
+            shortName: "McuModeSettingConf",
+            parameters: [
+              { id: "mcumode_sleep", name: "McuMode", type: "integer", value: 1 },
+              { id: "clockmode_sleep", name: "ClockMode", type: "string", value: "CORE_PLATFORM_PERIPHERAL_CLOCK_GATE_ENTER_LOWPOWER" },
+            ],
+          },
+        ],
       },
       {
-        id: "externalvoltagedomainconfig",
-        name: "ExternalVoltageDomainConfig",
-        displayName: "ExternalVoltageDomainConfig",
-        description: "ExternalVoltageDomainConfig 配置容器",
+        id: "mcuresetconfig",
+        name: "McuResetConfig",
+        displayName: "McuResetConfig",
+        description: "MCU reset config",
         parameters: [
-          {
-            id: "isolateioabcdomain",
-            name: "IsolateIOAbcDomain",
-            displayName: "IsolateIOAbcDomain",
-            description: "IsolateIOAbcDomain 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "isolateioanadomain",
-            name: "IsolateIOAnaDomain",
-            displayName: "IsolateIOAnaDomain",
-            description: "IsolateIOAnaDomain 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "isolateioddomain",
-            name: "IsolateIODDomain",
-            displayName: "IsolateIODDomain",
-            description: "IsolateIODDomain 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "lowpowerisolateioabcdomain",
-            name: "LowPowerIsolateIOAbcDomain",
-            displayName: "LowPowerIsolateIOAbcDomain",
-            description: "LowPowerIsolateIOAbcDomain 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "lowpowerisolateioanadomain",
-            name: "LowPowerIsolateIOAnaDomain",
-            displayName: "LowPowerIsolateIOAnaDomain",
-            description: "LowPowerIsolateIOAnaDomain 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "lowpowerisolateioddomain",
-            name: "LowPowerIsolateIODDomain",
-            displayName: "LowPowerIsolateIODDomain",
-            description: "LowPowerIsolateIODDomain 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          }
+          { id: "mcuresetpinfilterenable", name: "McuResetPinFilterEnable", type: "boolean", value: false },
         ],
-        multiple: false
       },
-      {
-        id: "fro16kconfiguration",
-        name: "FRO16KConfiguration",
-        displayName: "FRO16KConfiguration",
-        description: "FRO16KConfiguration 配置容器",
-        parameters: [
-          {
-            id: "enablefro16k",
-            name: "EnableFRO16k",
-            displayName: "EnableFRO16k",
-            description: "EnableFRO16k 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "enablefro16koutput",
-            name: "EnableFRO16kOutput",
-            displayName: "EnableFRO16kOutput",
-            description: "EnableFRO16kOutput 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "globallowpowermodepowersetting",
-        name: "GlobalLowPowerModePowerSetting",
-        displayName: "GlobalLowPowerModePowerSetting",
-        description: "GlobalLowPowerModePowerSetting 配置容器",
-        parameters: [
-          {
-            id: "lowpowerbandgapbufferenable",
-            name: "LowPowerBandgapBufferEnable",
-            displayName: "LowPowerBandgapBufferEnable",
-            description: "LowPowerBandgapBufferEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "lowpowercorehighvoltagedetectenable",
-            name: "LowPowerCoreHighVoltageDetectEnable",
-            displayName: "LowPowerCoreHighVoltageDetectEnable",
-            description: "LowPowerCoreHighVoltageDetectEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "lowpowercorelowvoltagedetectenable",
-            name: "LowPowerCoreLowVoltageDetectEnable",
-            displayName: "LowPowerCoreLowVoltageDetectEnable",
-            description: "LowPowerCoreLowVoltageDetectEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "lowpowercorevddivsenable",
-            name: "LowPowerCoreVddIvsEnable",
-            displayName: "LowPowerCoreVddIvsEnable",
-            description: "LowPowerCoreVddIvsEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "lowpoweriohighvoltagedetectenable",
-            name: "LowPowerIOHighVoltageDetectEnable",
-            displayName: "LowPowerIOHighVoltageDetectEnable",
-            description: "LowPowerIOHighVoltageDetectEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "lowpoweriolowvoltagedetectenable",
-            name: "LowPowerIOLowVoltageDetectEnable",
-            displayName: "LowPowerIOLowVoltageDetectEnable",
-            description: "LowPowerIOLowVoltageDetectEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "lowpowerirefenable",
-            name: "LowPowerIREFEnable",
-            displayName: "LowPowerIREFEnable",
-            description: "LowPowerIREFEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "lowpowersystemhighvoltagedetectenable",
-            name: "LowPowerSystemHighVoltageDetectEnable",
-            displayName: "LowPowerSystemHighVoltageDetectEnable",
-            description: "LowPowerSystemHighVoltageDetectEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "lowpowersystemlowvoltagedetectenable",
-            name: "LowPowerSystemLowVoltageDetectEnable",
-            displayName: "LowPowerSystemLowVoltageDetectEnable",
-            description: "LowPowerSystemLowVoltageDetectEnable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "lowpowervddcoreglitchdetectdisable",
-            name: "LowPowerVddCoreGlitchDetectDisable",
-            displayName: "LowPowerVddCoreGlitchDetectDisable",
-            description: "LowPowerVddCoreGlitchDetectDisable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "lowpowerwakeupdelay",
-            name: "LowPowerWakeUpDelay",
-            displayName: "LowPowerWakeUpDelay",
-            description: "LowPowerWakeUpDelay 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          },
-          {
-            id: "lowpowerbandgapmode",
-            name: "LowPowerBandgapMode",
-            displayName: "LowPowerBandgapMode",
-            description: "LowPowerBandgapMode 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "lowpowercoreldodrivestrength",
-            name: "LowPowerCoreLdoDriveStrength",
-            displayName: "LowPowerCoreLdoDriveStrength",
-            description: "LowPowerCoreLdoDriveStrength 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "lowpowercoreldovddlvl",
-            name: "LowPowerCoreLdoVddLvl",
-            displayName: "LowPowerCoreLdoVddLvl",
-            description: "LowPowerCoreLdoVddLvl 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "lowpowerdcdcvdddrivestrength",
-            name: "LowPowerDCDCVddDriveStrength",
-            displayName: "LowPowerDCDCVddDriveStrength",
-            description: "LowPowerDCDCVddDriveStrength 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "lowpowerdcdcvddvoltagelevel",
-            name: "LowPowerDCDCVddVoltageLevel",
-            displayName: "LowPowerDCDCVddVoltageLevel",
-            description: "LowPowerDCDCVddVoltageLevel 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          },
-          {
-            id: "lowpowersystemldovdddrivestrength",
-            name: "LowPowerSystemLdoVddDriveStrength",
-            displayName: "LowPowerSystemLdoVddDriveStrength",
-            description: "LowPowerSystemLdoVddDriveStrength 参数",
-            type: "string",
-            value: "",
-            defaultValue: "",
-            max: 255
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "lowpowermodeflashcontorl",
-        name: "LowPowerModeFlashContorl",
-        displayName: "LowPowerModeFlashContorl",
-        description: "LowPowerModeFlashContorl 配置容器",
-        parameters: [
-          {
-            id: "flashdisable",
-            name: "FlashDisable",
-            displayName: "FlashDisable",
-            description: "FlashDisable 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "flashdoze",
-            name: "FlashDoze",
-            displayName: "FlashDoze",
-            description: "FlashDoze 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          },
-          {
-            id: "flashwake",
-            name: "FlashWake",
-            displayName: "FlashWake",
-            description: "FlashWake 参数",
-            type: "boolean",
-            value: false,
-            defaultValue: false
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "mcu-dap-reset",
-        name: "MCU_DAP_RESET",
-        displayName: "MCU_DAP_RESET",
-        description: "MCU_DAP_RESET 配置容器",
-        parameters: [
-          {
-            id: "mcuresetreason",
-            name: "McuResetReason",
-            displayName: "McuResetReason",
-            description: "McuResetReason 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "mcu-fatal-reset",
-        name: "MCU_FATAL_RESET",
-        displayName: "MCU_FATAL_RESET",
-        description: "MCU_FATAL_RESET 配置容器",
-        parameters: [
-          {
-            id: "mcuresetreason",
-            name: "McuResetReason",
-            displayName: "McuResetReason",
-            description: "McuResetReason 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "mcu-hvd-reset",
-        name: "MCU_HVD_RESET",
-        displayName: "MCU_HVD_RESET",
-        description: "MCU_HVD_RESET 配置容器",
-        parameters: [
-          {
-            id: "mcuresetreason",
-            name: "McuResetReason",
-            displayName: "McuResetReason",
-            description: "McuResetReason 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "mcu-jtag-system-reset",
-        name: "MCU_JTAG_SYSTEM_RESET",
-        displayName: "MCU_JTAG_SYSTEM_RESET",
-        description: "MCU_JTAG_SYSTEM_RESET 配置容器",
-        parameters: [
-          {
-            id: "mcuresetreason",
-            name: "McuResetReason",
-            displayName: "McuResetReason",
-            description: "McuResetReason 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "mcu-lockup-reset",
-        name: "MCU_LOCKUP_RESET",
-        displayName: "MCU_LOCKUP_RESET",
-        description: "MCU_LOCKUP_RESET 配置容器",
-        parameters: [
-          {
-            id: "mcuresetreason",
-            name: "McuResetReason",
-            displayName: "McuResetReason",
-            description: "McuResetReason 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          }
-        ],
-        multiple: false
-      },
-      {
-        id: "mcu-low-power-acknowledge-timeout-reset",
-        name: "MCU_LOW_POWER_ACKNOWLEDGE_TIMEOUT_RESET",
-        displayName: "MCU_LOW_POWER_ACKNOWLEDGE_TIMEOUT_RESET",
-        description: "MCU_LOW_POWER_ACKNOWLEDGE_TIMEOUT_RESET 配置容器",
-        parameters: [
-          {
-            id: "mcuresetreason",
-            name: "McuResetReason",
-            displayName: "McuResetReason",
-            description: "McuResetReason 参数",
-            type: "integer",
-            value: 0,
-            defaultValue: 0,
-            min: 0,
-            max: 65535
-          }
-        ],
-        multiple: false
-      }
     ],
     dependencies: [],
-    createdAt: "2025-05-21T00:00:00Z",
-    updatedAt: "2025-05-21T00:00:00Z",
+    createdAt: "2025-05-25T00:00:00Z",
+    updatedAt: "2025-05-25T00:00:00Z",
     configStatus: "unconfigured"
-  },
-  {
+  },  {
     id: "memif",
     name: "Memif",
     displayName: "Memory Abstraction Interface",
