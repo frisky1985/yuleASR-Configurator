@@ -93,7 +93,9 @@ export function ConfigTree({
     // Initialize with default instances based on minInstances
     const initial: Record<string, string[]> = {}
     for (const module of config.modules) {
-      collectDynamicContainers(module.containers, `module:${module.id}`, initial)
+      // Use the same path format as buildModuleNode
+      const modulePath = `layer:${module.layer}/module:${module.id}`
+      collectDynamicContainers(module.containers, modulePath, initial)
     }
     return initial
   })
@@ -231,7 +233,7 @@ export function ConfigTree({
     }
     
     return nodes
-  }, [config, validationIssues, showDisabled, searchQuery])
+  }, [config, validationIssues, showDisabled, searchQuery, dynamicInstances])
 
   // Build module node recursively
   function buildModuleNode(module: ConfigModule, parentPath: string, issues: ValidationIssue[]): TreeNodeData {
