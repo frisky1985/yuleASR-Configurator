@@ -18,6 +18,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { ConfigTree } from '@/components/ConfigTree'
 import type { ConfigTreeHandle } from '@/components/ConfigTree'
 import { parseArxmlContent, arxmlToConfigModules } from '@/services/arxml-parser'
+import { generateAllHeaders } from '@/services/codegen'
 import { ConfigurationStatusPanel, exportConfigReport } from '@/components/ConfigurationStatusPanel'
 import { GlobalSearch } from '@/components/GlobalSearch'
 import { ModuleConfigWizard } from '@/components/ModuleConfigWizard'
@@ -111,6 +112,7 @@ export function Editor() {
 
   const [importing, setImporting] = useState(false)
   const [importArxml, setImportArxml] = useState(false)
+  const [codeGenResult, setCodeGenResult] = useState<{ filename: string; content: string } | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const arxmlInputRef = useRef<HTMLInputElement>(null)
 
@@ -372,6 +374,23 @@ export function Editor() {
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
             {importArxml ? 'Parsing...' : 'ARXML'}
           </button>
+          <button
+            onClick={() => {
+              if (!currentConfig) return
+              const files = generateAllHeaders(currentConfig.modules)
+              if (files.length === 0) {
+                alert('No enabled modules with code generation support.\nEnable a module (e.g. Adc, Mcu, Can) first.')
+                return
+              }
+              // Show first file in modal
+              setCodeGenResult(files[0])
+            }}
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            title="Generate _Cfg.h source files from configuration"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+            Generate
+          </button>
           <input
             ref={arxmlInputRef}
             type="file"
@@ -533,6 +552,49 @@ export function Editor() {
         onClose={() => setIsSearchOpen(false)}
         onSelectResult={(path) => setSelectedPath(path)}
       />
+
+      {/* Code Generation Preview Modal */}
+      {codeGenResult && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30" onClick={() => setCodeGenResult(null)}>
+          <div className="bg-white rounded-lg shadow-xl border border-gray-200 w-[800px] max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-5 py-3 border-b border-gray-200">
+              <h3 className="text-sm font-semibold text-gray-900">Code Generation Preview</h3>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    const blob = new Blob([codeGenResult.content], { type: 'text/plain' })
+                    const url = URL.createObjectURL(blob)
+                    const a = document.createElement('a')
+                    a.href = url
+                    a.download = codeGenResult.filename
+                    a.click()
+                    URL.revokeObjectURL(url)
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded hover:bg-gray-50"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  Download {codeGenResult.filename}
+                </button>
+                <button
+                  onClick={() => setCodeGenResult(null)}
+                  className="p-1.5 text-gray-400 hover:text-gray-600"
+                >
+                  <span className="text-lg">×</span>
+                </button>
+              </div>
+            </div>
+            <div className="px-5 py-2 bg-gray-50 border-b border-gray-200 flex items-center gap-2">
+              <span className="text-xs font-medium text-gray-500">Filename:</span>
+              <span className="text-xs font-mono text-gray-700">{codeGenResult.filename}</span>
+            </div>
+            <div className="flex-1 overflow-auto p-4">
+              <pre className="text-xs font-mono leading-relaxed text-gray-800 bg-gray-50 rounded-lg p-4 overflow-x-auto whitespace-pre">
+                {codeGenResult.content}
+              </pre>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
