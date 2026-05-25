@@ -94,14 +94,14 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
   const getProgressColor = (pct: number) => {
     if (pct >= 100) return 'bg-green-500'
     if (pct >= 50) return 'bg-yellow-500'
-    return 'bg-app-bg-tertiary'
+    return 'bg-gray-300'
   }
 
   /** Small horizontal progress bar */
   const MiniProgressBar = ({ value, max, className }: { value: number; max: number; className?: string }) => {
     const pct = max > 0 ? Math.round((value / max) * 100) : 0
     return (
-      <div className={cn("w-full h-1.5 bg-app-bg-tertiary rounded-full overflow-hidden", className)}>
+      <div className={cn("w-full h-1.5 bg-gray-200 rounded-full overflow-hidden", className)}>
         <div
           className={cn("h-full rounded-full transition-all duration-500 progress-bar-animated", getProgressColor(pct))}
           style={{ width: `${pct}%` }}
@@ -114,7 +114,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
     <div className="bg-primary rounded-lg border border-primary overflow-hidden">
       {/* Header */}
       <div className="px-4 py-3 bg-secondary border-b border-primary flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-app-text-primary flex items-center gap-2">
+        <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-primary-600" />
           Configuration Status
         </h3>
@@ -134,9 +134,9 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
         <div>
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm text-secondary">Overall Progress</span>
-            <span className="text-sm font-semibold text-app-text-primary">{stats.progress}%</span>
+            <span className="text-sm font-semibold text-gray-900">{stats.progress}%</span>
           </div>
-          <div className="h-2.5 bg-app-bg-tertiary rounded-full overflow-hidden">
+          <div className="h-2.5 bg-gray-200 rounded-full overflow-hidden">
             <div 
               className={cn(
                 "h-full rounded-full transition-all duration-700 ease-out progress-bar-animated",
@@ -191,7 +191,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
               </div>
               <span className="text-sm font-semibold text-primary">{stats.unconfigured}</span>
             </div>
-            <MiniProgressBar value={stats.unconfigured} max={stats.total} className="bg-app-bg-tertiary" />
+            <MiniProgressBar value={stats.unconfigured} max={stats.total} className="bg-gray-100" />
           </div>
         </div>
 
@@ -207,7 +207,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
                   {getLayerIcon(ls.layer)}
                   <span className="text-xs font-medium text-primary">{ls.layer}</span>
                 </div>
-                <div className="flex-1 h-1.5 bg-app-bg-tertiary rounded-full overflow-hidden">
+                <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                   <div 
                     className={cn(
                       "h-full rounded-full transition-all duration-500",
