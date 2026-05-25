@@ -50,6 +50,8 @@ export const allModules: ConfigModule[] = [
         name: "Adc_A8_BAT",
         displayName: "Adc_A8_BAT",
         shortName: "AdcChannel",
+        multiple: true,
+        minInstances: 0,
         description: "ADC Channel instance",
         parameters: [
           { id: "adcchannelid_a8", name: "AdcChannelId", displayName: "AdcChannelId", type: "string", value: "CH_A8", defaultValue: "CH_A8" },
@@ -63,6 +65,8 @@ export const allModules: ConfigModule[] = [
         name: "AdcGroup_0",
         displayName: "AdcGroup_0",
         shortName: "AdcGroup",
+        multiple: true,
+        minInstances: 0,
         description: "ADC Group instance",
         parameters: [
           { id: "adcenablepause", name: "AdcEnablePause", displayName: "AdcEnablePause", type: "boolean", value: false, defaultValue: false },

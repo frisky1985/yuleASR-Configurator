@@ -153,19 +153,37 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
   ) {
     for (const container of containers) {
       const contPath = `${parentPath}/container:${container.id}`
-      if (container.multiple && container.subContainers && container.subContainers.length > 0) {
-        // Generate default instances from template, with param values
-        const template = container.subContainers[0]
-        const baseName = template.name.replace(/_\d+$/, '') || template.name
+      if (container.multiple) {
         const count = container.minInstances ?? 0
-        const entries: InstanceEntry[] = []
-        for (let i = 0; i < count; i++) {
-          entries.push({
-            name: `${baseName}_${i}`,
-            paramValues: extractParamValues(template),
-          })
+        if (container.subContainers && container.subContainers.length > 0) {
+          // Has template in subContainers[0] (existing behavior)
+          const template = container.subContainers[0]
+          const baseName = template.name.replace(/_\d+$/, '') || template.name
+          const entries: InstanceEntry[] = []
+          for (let i = 0; i < count; i++) {
+            entries.push({
+              name: `${baseName}_${i}`,
+              paramValues: extractParamValues(template),
+            })
+          }
+          acc[contPath] = entries
+          // For each instance, also collect nested dynamic containers from template's subContainers
+          for (const entry of entries) {
+            const instPath = `${contPath}/instance:${entry.name}`
+            collectDynamicContainers(template.subContainers || [], instPath, acc)
+          }
+        } else {
+          // Self-template mode: the container itself IS the template
+          const baseName = container.shortName || container.name.replace(/_\d+$/, '') || container.name
+          const entries: InstanceEntry[] = []
+          for (let i = 0; i < count; i++) {
+            entries.push({
+              name: `${baseName}_${i}`,
+              paramValues: extractParamValues(container),
+            })
+          }
+          acc[contPath] = entries
         }
-        acc[contPath] = entries
       }
       if (container.subContainers) {
         collectDynamicContainers(container.subContainers, contPath, acc)
@@ -191,12 +209,12 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
       const entries = [...(prev[containerPath] || [])]
       let maxIdx = -1
       for (const e of entries) {
-        const match = e.name.match(/_(\d+)$/)
+        const match = e.name.match(/_(\\d+)$/)
         if (match) maxIdx = Math.max(maxIdx, parseInt(match[1]))
       }
       let baseName = 'Instance'
       if (entries.length > 0) {
-        baseName = entries[0].name.replace(/_\d+$/, '') || baseName
+        baseName = entries[0].name.replace(/_\\d+$/, '') || baseName
       } else {
         for (const mod of config.modules) {
           const found = findTemplateName(mod.containers, containerPath, `layer:${mod.layer}/module:${mod.id}`)
@@ -214,9 +232,54 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
         }
       }
       entries.push({ name: newName, paramValues: newParams })
-      return { ...prev, [containerPath]: entries }
+      
+      // Also seed nested dynamic containers for the new instance
+      const newPrev = { ...prev, [containerPath]: entries }
+      const instPath = `${containerPath}/instance:${newName}`
+      // Find template and seed nested dynamics
+      for (const mod of config.modules) {
+        const found = findTemplateContainer(mod.containers, containerPath, `layer:${mod.layer}/module:${mod.id}`)
+        if (found) {
+          const template = found.subContainers?.[0] || found
+          seedNestedDynamics(template.subContainers || [], instPath, newPrev)
+          break
+        }
+      }
+      
+      return newPrev
     })
   }, [config])
+
+  // Seed nested dynamic containers for a newly created instance
+  function seedNestedDynamics(containers: ConfigContainer[], parentPath: string, acc: Record<string, InstanceEntry[]>) {
+    for (const container of containers) {
+      const contPath = `${parentPath}/container:${container.id}`
+      if (container.multiple) {
+        const count = container.minInstances ?? 0
+        const baseName = container.shortName || container.name.replace(/_\\d+$/, '') || container.name
+        const nestedEntries: InstanceEntry[] = []
+        for (let i = 0; i < count; i++) {
+          nestedEntries.push({
+            name: `${baseName}_${i}`,
+            paramValues: extractParamValues(container.subContainers?.[0] || container),
+          })
+        }
+        if (nestedEntries.length > 0) {
+          acc[contPath] = nestedEntries
+          // Recurse into each nested instance
+          for (const entry of nestedEntries) {
+            const instPath = `${contPath}/instance:${entry.name}`
+            const template = container.subContainers?.[0] || container
+            seedNestedDynamics(template.subContainers || [], instPath, acc)
+          }
+        }
+      }
+      // Also recurse for static sub-containers
+      if (!container.multiple && container.subContainers) {
+        seedNestedDynamics(container.subContainers, contPath, acc)
+      }
+    }
+  }
 
   // Expose addInstance to parent via ref, returns the new instance name
   useImperativeHandle(ref, () => ({
@@ -244,33 +307,49 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
     },
   }), [addInstance, dynamicInstances, config])
 
-  // Find template container by path (returns the container object for param extraction)
-  function findTemplateContainer(containers: ConfigContainer[], targetPath: string, parentPath: string): ConfigContainer | null {
+  // Strip instance segments (instance:xxx) from a path for config tree lookup
+  function stripPathInstances(path: string): string {
+    return path.replace(/\/instance:[^/]+/g, '')
+  }
+
+  // Recursively search for template name matching a container path
+  // Uses the last container:id segment to find the container in the config tree
+  // (handles paths with instance:xxx segments that don't exist in the static tree)
+  function findTemplateName(containers: ConfigContainer[], targetPath: string, _parentPath: string): string | null {
+    // Extract the last container:id segment to find the matching container
+    const containerSegments = targetPath.split('/').filter(s => s.startsWith('container:'))
+    const lastSeg = containerSegments[containerSegments.length - 1]
+    if (!lastSeg) return null
+    const targetId = lastSeg.split(':')[1]
+    
     for (const c of containers) {
-      const cp = `${parentPath}/container:${c.id}`
-      if (cp === targetPath) return c
+      if (c.id === targetId) {
+        if (c.subContainers?.length) {
+          const tpl = c.subContainers[0]
+          return tpl.shortName || tpl.name.replace(/_\d+$/, '') || tpl.name
+        }
+        return c.shortName || c.name.replace(/_\d+$/, '') || c.name
+      }
       if (c.subContainers?.length) {
-        const found = findTemplateContainer(c.subContainers, targetPath, cp)
+        const found = findTemplateName(c.subContainers, targetPath, _parentPath)
         if (found) return found
       }
     }
     return null
   }
 
-  // Recursively search for template name matching a container path
-  function findTemplateName(containers: ConfigContainer[], targetPath: string, parentPath: string): string | null {
+  // Find template container by path (returns the container object for param extraction)
+  // Uses the last container:id segment to find the container in the config tree
+  function findTemplateContainer(containers: ConfigContainer[], targetPath: string, _parentPath: string): ConfigContainer | null {
+    const containerSegments = targetPath.split('/').filter(s => s.startsWith('container:'))
+    const lastSeg = containerSegments[containerSegments.length - 1]
+    if (!lastSeg) return null
+    const targetId = lastSeg.split(':')[1]
+    
     for (const c of containers) {
-      const cp = `${parentPath}/container:${c.id}`
-      if (cp === targetPath) {
-        if (c.subContainers?.length) {
-          // Prefer shortName if available, then strip numeric suffix from name
-          const tpl = c.subContainers[0]
-          return tpl.shortName || tpl.name.replace(/_\d+$/, '') || tpl.name
-        }
-        return null
-      }
+      if (c.id === targetId) return c
       if (c.subContainers?.length) {
-        const found = findTemplateName(c.subContainers, targetPath, cp)
+        const found = findTemplateContainer(c.subContainers, targetPath, _parentPath)
         if (found) return found
       }
     }
@@ -522,23 +601,26 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
     const warningCount = containerIssues.filter(i => i.severity === 'warning').length
     
     // Check for dynamic instances
-    const isDynamic = container.multiple && container.subContainers && container.subContainers.length > 0
+    const isDynamic = !!(container.multiple)
     const children: TreeNodeData[] = []
     
     if (isDynamic) {
       // Render dynamic instances
-      const template = container.subContainers![0]
       const instances = dynamicInstances[path] || []
       const minCount = container.minInstances ?? 1
+      const hasTemplate = container.subContainers && container.subContainers.length > 0
       
       for (const entry of instances) {
         // Create an instance node based on the template
         const instPath = `${path}/instance:${entry.name}`
         const subChildren: TreeNodeData[] = []
         
-        // Render sub-containers of the template within each instance
-        for (const sub of template.subContainers || []) {
-          subChildren.push(buildContainerNode(sub, instPath, moduleName, issues))
+        if (hasTemplate) {
+          // Render sub-containers of the template within each instance
+          const template = container.subContainers![0]
+          for (const sub of template.subContainers || []) {
+            subChildren.push(buildContainerNode(sub, instPath, moduleName, issues))
+          }
         }
         
         children.push({
