@@ -16,7 +16,7 @@ export function ContainerConfigSection({
   defaultExpanded = true,
   onParamChange,
 }: ContainerConfigSectionProps) {
-  const indentClass = level > 0 ? `ml-${Math.min(level * 4, 8)} border-l-2 border-gray-100 pl-3` : ''
+  const indentClass = level > 0 ? `ml-${Math.min(level * 4, 8)} border-l-2 border-app-border-primary pl-3` : ''
 
   return (
     <div className={cn('space-y-3', indentClass)}>

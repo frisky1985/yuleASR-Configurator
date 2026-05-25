@@ -31,19 +31,18 @@
     --brand-warning: #F59E0B;
     --brand-error: #EF4444;
 
-    /* Theme surface colors (light mode defaults) */
-    --bg-primary: #ffffff;
-    --bg-secondary: #f9fafb;
-    --bg-tertiary: #f3f4f6;
-
-    /* Theme text colors (light mode defaults) */
-    --text-primary: #111827;
-    --text-secondary: #6b7280;
-    --text-tertiary: #9ca3af;
-
-    /* Theme border colors (light mode defaults) */
-    --border-primary: #e5e7eb;
-    --border-secondary: #d1d5db;
+    /* === Light mode (default) === */
+    /* Surface backgrounds */
+    --app-bg-primary: #ffffff;
+    --app-bg-secondary: #f9fafb;
+    --app-bg-tertiary: #f3f4f6;
+    /* Text: keeps gray/black hierarchy */
+    --app-text-primary: #111827;
+    --app-text-secondary: #6b7280;
+    --app-text-tertiary: #9ca3af;
+    /* Borders */
+    --app-border-primary: #e5e7eb;
+    --app-border-secondary: #d1d5db;
   }
 
   .dark {
@@ -67,19 +66,18 @@
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
 
-    /* Theme surface colors (dark mode) */
-    --bg-primary: #0f172a;
-    --bg-secondary: #1e293b;
-    --bg-tertiary: #334155;
-
-    /* Theme text colors (dark mode) */
-    --text-primary: #f1f5f9;
-    --text-secondary: #94a3b8;
-    --text-tertiary: #64748b;
-
-    /* Theme border colors (dark mode) */
-    --border-primary: #334155;
-    --border-secondary: #475569;
+    /* === Dark mode === */
+    /* Surface backgrounds: dark slate */
+    --app-bg-primary: #0f172a;
+    --app-bg-secondary: #1e293b;
+    --app-bg-tertiary: #334155;
+    /* Text: ALL white — user requested gray/black → white */
+    --app-text-primary: #f1f5f9;
+    --app-text-secondary: #f1f5f9;
+    --app-text-tertiary: #f1f5f9;
+    /* Borders */
+    --app-border-primary: #334155;
+    --app-border-secondary: #475569;
   }
 }
 
@@ -100,7 +98,7 @@
   *:focus-visible {
     @apply outline-none ring-2 ring-offset-2;
     ring-color: var(--brand-primary);
-    ring-offset-color: var(--bg-primary);
+    ring-offset-color: var(--app-bg-primary);
   }
 
   /* Brand utility classes */
@@ -129,7 +127,7 @@
 
   /* Stats card style */
   .stat-card {
-    @apply bg-primary border border-primary rounded-xl p-5 card-hover;
+    @apply bg-app-bg-primary border border-app-border-primary rounded-xl p-5 card-hover;
   }
 
   /* Gradient backgrounds for stats cards */

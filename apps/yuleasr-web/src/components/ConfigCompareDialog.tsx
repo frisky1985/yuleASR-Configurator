@@ -7,7 +7,7 @@ import { X, FileJson, GitCompare, ChevronDown, ChevronRight, Loader2, AlertCircl
 import { useState, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { configComparer, type ComparisonResult, type ConfigDiff, type CompareStatus } from '@/services/compareEngine'
+import { configComparer, type ComparisonResult, type ConfigDiff, type CompareStatus, type ParamDiff } from '@/services/compareEngine'
 import { cn } from '@/lib/utils'
 import { useConfigStore } from '@/stores/configStore'
 
@@ -84,6 +84,8 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
   const [filter, setFilter] = useState<'all' | 'diff_only'>('all')
   const [selectedNode, setSelectedNode] = useState<ConfigDiff | null>(null)
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set())
+  const [syncedParamIds, setSyncedParamIds] = useState<Set<string>>(new Set())
+  const [navIndex, setNavIndex] = useState(0)
 
   useEffect(() => {
     if (isOpen) {
@@ -173,6 +175,164 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
     })
   }
 
+  // Re-run comparison after syncing
+  const reCompare = async () => {
+    const store = useConfigStore.getState()
+    if (!leftConfigId || !rightConfigId) return
+
+    await store.loadConfig(leftConfigId)
+    const configA = store.currentConfig
+
+    await store.loadConfig(rightConfigId)
+    const configB = store.currentConfig
+
+    if (configA && configB) {
+      const comparison = configComparer.compare(configA, configB)
+      setResult(comparison)
+      // Auto-expand all modules
+      const paths = new Set<string>()
+      for (const md of comparison.moduleDiffs) {
+        paths.add(md.moduleName)
+      }
+      setExpandedPaths(paths)
+    }
+  }
+
+  // Find parameter in config by parameterId and update its value
+  function updateParamValueInConfig(config: any, paramId: string, value: unknown) {
+    const newConfig = JSON.parse(JSON.stringify(config))
+    for (const mod of newConfig.modules) {
+      for (const p of mod.parameters || []) {
+        if (p.id === paramId) {
+          p.value = value
+          return newConfig
+        }
+      }
+      for (const container of mod.containers || []) {
+        for (const p of container.parameters || []) {
+          if (p.id === paramId) {
+            p.value = value
+            return newConfig
+          }
+        }
+        for (const sub of container.subContainers || []) {
+          for (const p of sub.parameters || []) {
+            if (p.id === paramId) {
+              p.value = value
+              return newConfig
+            }
+          }
+        }
+      }
+    }
+    return newConfig
+  }
+
+  // Sync a single parameter from source to target config
+  const syncParameter = async (param: ParamDiff, direction: 'a_to_b' | 'b_to_a') => {
+    const targetConfigId = direction === 'a_to_b' ? rightConfigId : leftConfigId
+    const value = direction === 'a_to_b' ? param.valueA : param.valueB
+
+    if (!targetConfigId) return
+
+    const configKey = `yuleasr_config_${targetConfigId}`
+    const configStr = localStorage.getItem(configKey)
+    if (!configStr) return
+
+    const config = JSON.parse(configStr)
+    const updatedConfig = updateParamValueInConfig(config, param.parameterId, value)
+    localStorage.setItem(configKey, JSON.stringify(updatedConfig))
+
+    // Re-compare
+    await reCompare()
+
+    // Mark as synced
+    setSyncedParamIds(prev => new Set([...prev, param.parameterId]))
+  }
+
+  // Batch sync all different params in current view
+  const batchSync = async (direction: 'a_to_b' | 'b_to_a') => {
+    const diffParams = selectedParams.filter(p => p.status === 'different')
+    const targetConfigId = direction === 'a_to_b' ? rightConfigId : leftConfigId
+
+    if (!targetConfigId || diffParams.length === 0) return
+
+    const configKey = `yuleasr_config_${targetConfigId}`
+    const configStr = localStorage.getItem(configKey)
+    if (!configStr) return
+
+    let config = JSON.parse(configStr)
+    const synced: string[] = []
+
+    for (const param of diffParams) {
+      const value = direction === 'a_to_b' ? param.valueA : param.valueB
+      const updated = updateParamValueInConfig(config, param.parameterId, value)
+      if (updated !== config) {
+        config = updated
+        synced.push(param.parameterId)
+      }
+    }
+
+    localStorage.setItem(configKey, JSON.stringify(config))
+
+    // Re-compare
+    await reCompare()
+
+    // Mark all as synced
+    setSyncedParamIds(prev => new Set([...prev, ...synced]))
+  }
+
+  // Collect all diff navigation items from tree
+  const collectNavItems = (nodes: ConfigDiff[]): ConfigDiff[] => {
+    const items: ConfigDiff[] = []
+    for (const node of nodes) {
+      if (node.status !== 'same') {
+        items.push(node)
+      }
+      if (node.children) {
+        items.push(...collectNavItems(node.children))
+      }
+    }
+    return items
+  }
+
+  // Computed nav items from diff tree
+  const navItems = useMemo(() => collectNavItems(diffTree), [diffTree])
+
+  // Navigate to a diff item
+  const navigateTo = (direction: 'prev' | 'next') => {
+    if (navItems.length === 0) return
+
+    let newIndex: number
+    if (direction === 'next') {
+      newIndex = (navIndex + 1) % navItems.length
+    } else {
+      newIndex = (navIndex - 1 + navItems.length) % navItems.length
+    }
+    setNavIndex(newIndex)
+
+    const target = navItems[newIndex]
+    setSelectedNode(target)
+
+    // Auto-expand parent paths
+    setExpandedPaths(prev => {
+      const next = new Set(prev)
+      const parts = target.path.split('.')
+      for (let i = 0; i < parts.length; i++) {
+        next.add(parts.slice(0, i + 1).join('.'))
+      }
+      return next
+    })
+
+    // Scroll to the target node
+    setTimeout(() => {
+      const el = document.querySelector(`[data-diff-path="${target.path}"]`)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    }, 50)
+  }
+
   // Collect params for the selected node
   const selectedParams = useMemo(() => {
     if (!selectedNode || !result) return []
@@ -211,6 +371,7 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
     return (
       <div key={node.path}>
         <button
+          data-diff-path={node.path}
           onClick={() => {
             if (hasChildren) toggleExpand(node.path)
             handleNodeClick(node)
@@ -378,6 +539,27 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
                 </span>
               </div>
               <div className="flex items-center gap-2">
+                {navItems.length > 0 && (
+                  <div className="flex items-center gap-1 mr-2 border-r border-border pr-2">
+                    <button
+                      onClick={() => navigateTo('prev')}
+                      className="px-2 py-1 text-xs rounded hover:bg-accent/50 transition-colors border border-border"
+                      title="Previous diff"
+                    >
+                      ⬆ Prev
+                    </button>
+                    <span className="text-xs text-muted-foreground min-w-[3rem] text-center">
+                      {navIndex + 1} / {navItems.length}
+                    </span>
+                    <button
+                      onClick={() => navigateTo('next')}
+                      className="px-2 py-1 text-xs rounded hover:bg-accent/50 transition-colors border border-border"
+                      title="Next diff"
+                    >
+                      ⬇ Next
+                    </button>
+                  </div>
+                )}
                 <select
                   value={filter}
                   onChange={(e) => setFilter(e.target.value as typeof filter)}
@@ -433,6 +615,27 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
             {/* Bottom Panel - Detailed Param Diff Table */}
             {selectedNode && (
               <div className="border-t border-border max-h-[200px] overflow-y-auto">
+                {/* Batch sync toolbar */}
+                {(() => {
+                  const diffCount = selectedParams.filter(p => p.status === 'different').length
+                  if (diffCount === 0) return null
+                  return (
+                    <div className="px-4 py-1.5 bg-muted/20 border-b border-border flex items-center gap-2">
+                      <button
+                        onClick={() => batchSync('a_to_b')}
+                        className="px-2 py-1 text-xs rounded bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 transition-colors"
+                      >
+                        Accept A → B ({diffCount})
+                      </button>
+                      <button
+                        onClick={() => batchSync('b_to_a')}
+                        className="px-2 py-1 text-xs rounded bg-green-50 text-green-700 border border-green-200 hover:bg-green-100 transition-colors"
+                      >
+                        Accept B → A ({diffCount})
+                      </button>
+                    </div>
+                  )
+                })()}
                 <div className="px-4 py-2 bg-muted/30 border-b border-border flex items-center justify-between">
                   <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider">
                     Parameters for: {selectedNode.name}
@@ -450,6 +653,7 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
                         <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">Value (A)</th>
                         <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">Value (B)</th>
                         <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">Status</th>
+                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -491,6 +695,28 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
                                  param.status === 'different' ? '≠' :
                                  param.status === 'only_a' ? 'A only' : 'B only'}
                               </span>
+                            </td>
+                            <td className="px-3 py-1.5">
+                              {syncedParamIds.has(param.parameterId) ? (
+                                <span className="text-green-600 text-[10px] font-medium">✅ Synced</span>
+                              ) : param.status === 'different' ? (
+                                <div className="flex items-center gap-1">
+                                  <button
+                                    onClick={() => syncParameter(param, 'b_to_a')}
+                                    className="px-1.5 py-0.5 rounded text-xs border border-border hover:bg-accent/50 transition-colors"
+                                    title="Copy B → A"
+                                  >
+                                    ←
+                                  </button>
+                                  <button
+                                    onClick={() => syncParameter(param, 'a_to_b')}
+                                    className="px-1.5 py-0.5 rounded text-xs border border-border hover:bg-accent/50 transition-colors"
+                                    title="Copy A → B"
+                                  >
+                                    →
+                                  </button>
+                                </div>
+                              ) : null}
                             </td>
                           </tr>
                         )

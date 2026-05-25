@@ -51,15 +51,23 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Theme surface/text/border CSS variables for dark mode support
-        'bg-primary': 'var(--bg-primary)',
-        'bg-secondary': 'var(--bg-secondary)',
-        'bg-tertiary': 'var(--bg-tertiary)',
-        'text-primary': 'var(--text-primary)',
-        'text-secondary': 'var(--text-secondary)',
-        'text-tertiary': 'var(--text-tertiary)',
-        'border-primary': 'var(--border-primary)',
-        'border-secondary': 'var(--border-secondary)',
+        // App theme colors (dark-mode aware, non-conflicting names)
+        app: {
+          bg: {
+            primary: 'var(--app-bg-primary)',
+            secondary: 'var(--app-bg-secondary)',
+            tertiary: 'var(--app-bg-tertiary)',
+          },
+          text: {
+            primary: 'var(--app-text-primary)',
+            secondary: 'var(--app-text-secondary)',
+            tertiary: 'var(--app-text-tertiary)',
+          },
+          border: {
+            primary: 'var(--app-border-primary)',
+            secondary: 'var(--app-border-secondary)',
+          },
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -21,14 +21,14 @@ export function ContainerParameterList({
 
   if (!hasParams && !hasSubContainers) {
     return (
-      <p className="text-xs text-gray-400 italic px-2 py-1">
+      <p className="text-xs text-app-text-tertiary italic px-2 py-1">
         No parameters in {container.displayName || container.name}
       </p>
     )
   }
 
   return (
-    <div className={cn(level > 0 && 'ml-4 border-l-2 border-gray-100 pl-3')}>
+    <div className={cn(level > 0 && 'ml-4 border-l-2 border-app-border-primary pl-3')}>
       {/* Direct parameters of this container */}
       {container.parameters.map((param) => (
         <div key={param.id} className="py-1.5">
@@ -74,19 +74,19 @@ function SubContainerGroup({
         className="flex items-center gap-1.5 w-full text-left py-1.5 px-2 rounded hover:bg-gray-50 transition-colors text-xs font-medium text-gray-700"
       >
         {isExpanded ? (
-          <ChevronDown className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+          <ChevronDown className="w-3.5 h-3.5 text-app-text-tertiary flex-shrink-0" />
         ) : (
-          <ChevronRight className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+          <ChevronRight className="w-3.5 h-3.5 text-app-text-tertiary flex-shrink-0" />
         )}
         <span>{container.displayName || container.name}</span>
-        <span className="text-gray-400 font-normal">
+        <span className="text-app-text-tertiary font-normal">
           ({container.parameters.length} params)
         </span>
       </button>
 
       {/* Expanded content */}
       {isExpanded && (
-        <div className="ml-4 border-l-2 border-gray-100 pl-3 mt-1">
+        <div className="ml-4 border-l-2 border-app-border-primary pl-3 mt-1">
           {container.parameters.length > 0 ? (
             container.parameters.map((param) => (
               <div key={param.id} className="py-1.5">
@@ -97,7 +97,7 @@ function SubContainerGroup({
               </div>
             ))
           ) : (
-            <p className="text-xs text-gray-400 italic px-2 py-1">
+            <p className="text-xs text-app-text-tertiary italic px-2 py-1">
               No parameters
             </p>
           )}

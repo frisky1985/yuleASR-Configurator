@@ -76,11 +76,11 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
   const isValid = !hasErrors && !hasWarnings
 
   return (
-    <div className={cn("bg-white border border-gray-200 rounded-lg overflow-hidden", className)}>
+    <div className={cn("bg-app-bg-primary border border-app-border-primary rounded-lg overflow-hidden", className)}>
       {/* Header */}
-      <div className="px-4 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
+      <div className="px-4 py-3 border-b border-app-border-primary bg-app-bg-secondary flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <h3 className="font-semibold text-gray-900">Validation</h3>
+          <h3 className="font-semibold text-app-text-primary">Validation</h3>
           {isValid ? (
             <span className="flex items-center gap-1 text-sm text-green-600">
               <CheckCircle className="w-4 h-4" />
@@ -106,7 +106,7 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
         <button
           onClick={validate}
           disabled={isValidating}
-          className="flex items-center gap-1 px-3 py-1.5 text-sm text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors disabled:opacity-50"
+          className="flex items-center gap-1 px-3 py-1.5 text-sm text-app-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors disabled:opacity-50"
         >
           <RefreshCw className={cn("w-4 h-4", isValidating && "animate-spin")} />
           Refresh
@@ -120,8 +120,8 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
             <div className="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-3">
               <CheckCircle className="w-7 h-7 text-green-500" />
             </div>
-            <p className="text-gray-700 font-medium">Configuration is valid</p>
-            <p className="text-sm text-gray-400 mt-1">
+            <p className="text-app-text-primary font-medium">Configuration is valid</p>
+            <p className="text-sm text-app-text-tertiary mt-1">
               All {modules.length} modules pass validation
             </p>
           </div>
@@ -145,20 +145,20 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
                   <div className="divide-y divide-gray-50">
                     {Object.entries(groupedErrors).map(([moduleName, moduleErrors]) => (
                       <div key={moduleName} className="px-4 py-2">
-                        <div className="text-xs font-medium text-gray-500 mb-1 uppercase tracking-wide">
+                        <div className="text-xs font-medium text-app-text-secondary mb-1 uppercase tracking-wide">
                           {moduleName}
                         </div>
                         {moduleErrors.map((error: ValidationError, index: number) => (
                           <div
                             key={`error-${index}`}
-                            className="py-2 hover:bg-gray-50 cursor-pointer rounded px-2 -mx-2"
+                            className="py-2 hover:bg-app-bg-secondary cursor-pointer rounded px-2 -mx-2"
                             onClick={() => handleItemClick(error.path)}
                           >
                             <div className="flex items-start gap-2">
                               <XCircle className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm text-gray-800">{error.message}</p>
-                                <p className="text-xs text-gray-400 mt-0.5 font-mono">
+                                <p className="text-xs text-app-text-tertiary mt-0.5 font-mono">
                                   {error.path}
                                 </p>
                               </div>
@@ -190,20 +190,20 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
                   <div className="divide-y divide-gray-50">
                     {Object.entries(groupedWarnings).map(([moduleName, moduleWarnings]) => (
                       <div key={moduleName} className="px-4 py-2">
-                        <div className="text-xs font-medium text-gray-500 mb-1 uppercase tracking-wide">
+                        <div className="text-xs font-medium text-app-text-secondary mb-1 uppercase tracking-wide">
                           {moduleName}
                         </div>
                         {moduleWarnings.map((warning: ValidationError, index: number) => (
                           <div
                             key={`warning-${index}`}
-                            className="py-2 hover:bg-gray-50 cursor-pointer rounded px-2 -mx-2"
+                            className="py-2 hover:bg-app-bg-secondary cursor-pointer rounded px-2 -mx-2"
                             onClick={() => handleItemClick(warning.path)}
                           >
                             <div className="flex items-start gap-2">
                               <AlertTriangle className="w-4 h-4 text-yellow-500 mt-0.5 shrink-0" />
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm text-gray-800">{warning.message}</p>
-                                <p className="text-xs text-gray-400 mt-0.5 font-mono">
+                                <p className="text-xs text-app-text-tertiary mt-0.5 font-mono">
                                   {warning.path}
                                 </p>
                               </div>
@@ -222,7 +222,7 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
 
       {/* Footer */}
       {(hasErrors || hasWarnings) && (
-        <div className="px-4 py-2 border-t border-gray-200 bg-gray-50 text-xs text-gray-500">
+        <div className="px-4 py-2 border-t border-app-border-primary bg-app-bg-secondary text-xs text-app-text-secondary">
           Click on an item to navigate to the configuration
         </div>
       )}
