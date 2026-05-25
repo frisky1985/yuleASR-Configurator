@@ -175,21 +175,6 @@ export function ConfigTree({
       buildContainerNode(container, path, module.name, issues)
     )
     
-    // Build parameter nodes
-    const paramNodes = module.parameters.map(param => ({
-      id: `${path}/param:${param.id}`,
-      type: 'parameter' as const,
-      name: param.name,
-      displayName: param.displayName || param.name,
-      path: `${path}/param:${param.id}`,
-      icon: getParameterIcon(param.type),
-      hasChildren: false,
-      enabled: module.enabled,
-      errorCount: 0,
-      warningCount: 0,
-      data: param,
-    }))
-    
     return {
       id: path,
       type: 'module',
@@ -197,13 +182,13 @@ export function ConfigTree({
       displayName: module.displayName || module.name,
       path,
       icon: <Folder className="w-4 h-4" />,
-      hasChildren: containerNodes.length > 0 || paramNodes.length > 0,
+      hasChildren: containerNodes.length > 0,
       enabled: module.enabled,
       configStatus: module.configStatus,
       errorCount,
       warningCount,
       data: module,
-      children: [...containerNodes, ...paramNodes],
+      children: containerNodes,
     }
   }
 
@@ -221,20 +206,6 @@ export function ConfigTree({
       buildContainerNode(sub, path, moduleName, issues)
     )
     
-    // Build parameter nodes
-    const paramNodes = (container.parameters || []).map(param => ({
-      id: `${path}/param:${param.id}`,
-      type: 'parameter' as const,
-      name: param.name,
-      displayName: param.displayName || param.name,
-      path: `${path}/param:${param.id}`,
-      icon: getParameterIcon(param.type),
-      hasChildren: false,
-      errorCount: 0,
-      warningCount: 0,
-      data: param,
-    }))
-    
     return {
       id: path,
       type: 'container',
@@ -242,11 +213,11 @@ export function ConfigTree({
       displayName: container.displayName || container.name,
       path,
       icon: container.subContainers?.length ? <FolderOpen className="w-4 h-4" /> : <FileText className="w-4 h-4" />,
-      hasChildren: subContainerNodes.length > 0 || paramNodes.length > 0,
+      hasChildren: subContainerNodes.length > 0,
       errorCount,
       warningCount,
       data: container,
-      children: [...subContainerNodes, ...paramNodes],
+      children: subContainerNodes,
     }
   }
 

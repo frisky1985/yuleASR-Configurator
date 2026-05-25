@@ -258,8 +258,8 @@ export function Editor() {
           />
         </div>
 
-        {/* Center - Validation + Selected Container Parameters */}
-        <div className="col-span-3 h-full overflow-y-auto space-y-4">
+        {/* Center - Validation + Selected Container Parameters (wide) */}
+        <div className="col-span-7 h-full overflow-y-auto space-y-4">
           {/* Validation Summary */}
           <div className="bg-white border border-gray-200 rounded-lg p-4">
             <h3 className="text-sm font-semibold text-gray-900 mb-3">Validation</h3>
@@ -342,102 +342,12 @@ export function Editor() {
           )}
         </div>
 
-        {/* Right Panel - Status + Module Info + Configuration */}
-        <div className="col-span-6 h-full overflow-hidden flex flex-col gap-3">
-          {/* Configuration Status Panel */}
-          <div className="flex-shrink-0">
-            <ConfigurationStatusPanel
-              config={currentConfig}
-              onExportReport={() => exportConfigReport(currentConfig)}
-            />
-          </div>
-
-          {/* Module Configuration */}
-          <div className="flex-1 bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col min-h-0">
-            <div className="px-4 py-3 border-b border-gray-200 bg-gray-50 flex items-center justify-between flex-shrink-0">
-              <h3 className="text-sm font-semibold text-gray-900">
-                {selectedModule
-                  ? `${selectedModule.displayName || selectedModule.name} Configuration`
-                  : 'Select an Item'}
-              </h3>
-              {selectedModule && (
-                <span className="text-xs text-gray-500">
-                  {selectedModule.containers.reduce((s, c) => s + c.parameters.length + (c.subContainers?.reduce((ss, sc) => ss + sc.parameters.length, 0) || 0), 0) + selectedModule.parameters.length} total params
-                </span>
-              )}
-            </div>
-
-            {selectedModule ? (
-              <div className="p-3 space-y-2 overflow-y-auto flex-1">
-                {/* Compact Module Info */}
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-600 pb-2 border-b border-gray-100">
-                  <span className="font-medium text-gray-900">{selectedModule.name}</span>
-                  <span className="px-1.5 py-0.5 bg-gray-100 rounded">{selectedModule.layer}</span>
-                  <span>v{selectedModule.version}</span>
-                  {selectedModule.vendor && <span>{selectedModule.vendor}</span>}
-                  <span className={cn(
-                    'inline-flex items-center gap-1',
-                    selectedModule.enabled ? 'text-green-600' : 'text-gray-400'
-                  )}>
-                    <span className={cn(
-                      'w-1.5 h-1.5 rounded-full',
-                      selectedModule.enabled ? 'bg-green-500' : 'bg-gray-300'
-                    )} />
-                    {selectedModule.enabled ? 'Active' : 'Inactive'}
-                  </span>
-                  <span>{selectedModule.containers.length} containers</span>
-                </div>
-
-                {!selectedModule.enabled && (
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                    <p className="text-sm text-yellow-800">This module is currently disabled. Enable it in the module tree to activate its configuration.</p>
-                  </div>
-                )}
-
-                {/* All containers - collapsible cards */}
-                {selectedModule.containers.length > 0 && selectedModule.containers.map((container) => (
-                  <CollapsibleSection
-                    key={container.id}
-                    title={container.displayName || container.name}
-                    subtitle={`${container.parameters.length} parameters`}
-                    defaultExpanded={false}
-                  >
-                    <ContainerConfigSection
-                      container={container}
-                      level={0}
-                      defaultExpanded={false}
-                      onParamChange={(name, value) => handleParameterChange(name, value)}
-                    />
-                  </CollapsibleSection>
-                ))}
-
-                {/* Standalone parameters */}
-                {selectedModule.parameters.length > 0 && (
-                  <CollapsibleSection
-                    title="Parameters"
-                    subtitle={`${selectedModule.parameters.length} items`}
-                    defaultExpanded={true}
-                  >
-                    <div className="space-y-4">
-                      {selectedModule.parameters.map((param) => (
-                        <ParameterEditor
-                          key={param.id}
-                          parameter={param}
-                          onChange={(value) => handleParameterChange(param.name, value)}
-                        />
-                      ))}
-                    </div>
-                  </CollapsibleSection>
-                )}
-              </div>
-            ) : isOSSelected ? (
-              <OSEditor className="h-full overflow-y-auto" />
-            ) : (
-              <div className="p-8 text-center flex-1 flex items-center justify-center">
-                <p className="text-gray-500">Select a module or container from the tree to configure</p>
-              </div>
-            )}
-          </div>
+        {/* Right - Configuration Status only */}
+        <div className="col-span-2 h-full overflow-y-auto">
+          <ConfigurationStatusPanel
+            config={currentConfig}
+            onExportReport={() => exportConfigReport(currentConfig)}
+          />
         </div>
       </div>
 
