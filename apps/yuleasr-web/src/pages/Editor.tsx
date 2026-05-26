@@ -467,8 +467,8 @@ export function Editor() {
           />
         </div>
 
-        {/* Center - Validation + Selected Container Parameters (wide) */}
-        <div className="col-span-7 h-full overflow-y-auto space-y-4">
+        {/* Center - Validation + Selected Container Parameters */}
+        <div className="col-span-6 h-full overflow-y-auto space-y-4">
           {/* Validation Summary */}
           <div className="bg-app-bg-primary border border-app-border-primary rounded-lg p-4">
             <h3 className="text-sm font-semibold text-app-text-primary mb-3">Validation</h3>
@@ -584,7 +584,7 @@ export function Editor() {
         </div>
 
         {/* Right - Configuration Status only */}
-        <div className="col-span-2 h-full overflow-y-auto">
+        <div className="col-span-3 h-full overflow-y-auto">
           <ConfigurationStatusPanel
             config={currentConfig}
             onExportReport={() => exportConfigReport(currentConfig)}

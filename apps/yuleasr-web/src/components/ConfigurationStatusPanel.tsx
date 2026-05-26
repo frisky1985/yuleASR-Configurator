@@ -157,7 +157,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-                <span className="text-xs font-medium text-app-text-secondary">Configured</span>
+                <span className="text-xs font-medium text-green-700">Configured</span>
               </div>
               <span className="text-sm font-semibold text-green-700">{stats.configured}</span>
             </div>
@@ -167,7 +167,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-blue-600" />
-                <span className="text-xs font-medium text-app-text-secondary">Configuring</span>
+                <span className="text-xs font-medium text-blue-700">Configuring</span>
               </div>
               <span className="text-sm font-semibold text-blue-700">{stats.configuring}</span>
             </div>
@@ -177,7 +177,7 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <AlertCircle className="w-3.5 h-3.5 text-yellow-600" />
-                <span className="text-xs font-medium text-app-text-secondary">Partial</span>
+                <span className="text-xs font-medium text-yellow-700">Partial</span>
               </div>
               <span className="text-sm font-semibold text-yellow-700">{stats.partial}</span>
             </div>
