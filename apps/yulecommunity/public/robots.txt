@@ -1,0 +1,12 @@
+# robots.txt for YuleTech
+# https://frisky1985.github.io/yuleCommunity/
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://frisky1985.github.io/yuleCommunity/sitemap.xml
+
+# Disallow patterns (if any)
+# Disallow: /admin/
+# Disallow: /private/
