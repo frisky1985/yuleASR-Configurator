@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Code2, Menu, X, Shield } from 'lucide-react';
+import { Code2, Menu, X, Shield, ChevronDown, LayoutDashboard, FileEdit, FileJson } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { GlobalSearch } from './GlobalSearch';
 import { NotificationCenter } from './NotificationCenter';
@@ -9,6 +9,9 @@ import { useAdminAuth } from '../hooks/useAdminAuth';
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [configuratorOpen, setConfiguratorOpen] = useState(false);
+  const [mobileConfigOpen, setMobileConfigOpen] = useState(false);
+  const configuratorRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
   const { isAdmin } = useAdminAuth();
 
@@ -34,6 +37,17 @@ export function Navbar() {
     }
   }, [location.pathname]);
 
+  // 点击外部关闭配置器下拉
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (configuratorRef.current && !configuratorRef.current.contains(e.target as Node)) {
+        setConfiguratorOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const navLinks = [
     { label: '开源代码', to: '/opensource' },
     { label: '工具链', to: '/toolchain' },
@@ -49,9 +63,9 @@ export function Navbar() {
   ];
 
   const configuratorLinks = [
-    { label: '仪表盘', href: '/configurator/' },
-    { label: '编辑器', href: '/configurator/dashboard' },
-    { label: '模板', href: '/configurator/templates' },
+    { label: '仪表盘', href: '/configurator/', icon: LayoutDashboard, desc: '配置列表和快速操作' },
+    { label: '编辑器', href: '/configurator/dashboard', icon: FileEdit, desc: '打开配置编辑器' },
+    { label: '模板', href: '/configurator/templates', icon: FileJson, desc: '配置模板管理' },
   ];
 
   return (
@@ -104,20 +118,45 @@ export function Navbar() {
             {/* Divider */}
             <div className="w-px h-6 bg-border" />
 
-            {/* Configurator section */}
-            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground whitespace-nowrap shrink-0">
-              配置器
-            </span>
-            {configuratorLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-sm font-medium transition-colors relative group whitespace-nowrap shrink-0 text-muted-foreground hover:text-foreground"
+            {/* Configurator Dropdown */}
+            <div className="relative" ref={configuratorRef}>
+              <button
+                onClick={() => setConfiguratorOpen(!configuratorOpen)}
+                className="flex items-center gap-1 text-sm font-medium transition-colors relative group whitespace-nowrap shrink-0 text-muted-foreground hover:text-foreground"
               >
-                {link.label}
-                <span className="absolute -bottom-1 left-0 h-0.5 bg-[hsl(var(--accent))] transition-all duration-300 w-0 group-hover:w-full" />
-              </a>
-            ))}
+                配置器
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${configuratorOpen ? 'rotate-180' : ''}`} />
+                <span className={`absolute -bottom-1 left-0 h-0.5 bg-[hsl(var(--accent))] transition-all duration-300 ${configuratorOpen ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+              </button>
+
+              {configuratorOpen && (
+                <div className="absolute right-0 mt-2 w-64 bg-card border border-border rounded-xl shadow-xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                  {configuratorLinks.map((link) => {
+                    const Icon = link.icon
+                    return (
+                      <a
+                        key={link.href}
+                        href={link.href}
+                        onClick={() => setConfiguratorOpen(false)}
+                        className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-muted transition-colors group/link"
+                      >
+                        <div className="p-1.5 rounded-lg bg-primary/10 shrink-0 mt-0.5">
+                          <Icon className="w-4 h-4 text-primary" />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-foreground group-hover/link:text-primary transition-colors">
+                            {link.label}
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-0.5">
+                            {link.desc}
+                          </div>
+                        </div>
+                      </a>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* CTA Buttons */}
@@ -209,19 +248,34 @@ export function Navbar() {
             {/* Mobile Configurator section */}
             <div className="px-4 pt-3 pb-1">
               <div className="w-full h-px bg-border mb-3" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                配置器
-              </span>
-            </div>
-            {configuratorLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="block px-4 py-2 text-sm font-medium rounded-lg transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
+              <button
+                onClick={() => setMobileConfigOpen(!mobileConfigOpen)}
+                className="flex items-center justify-between w-full text-xs font-semibold uppercase tracking-wider text-muted-foreground"
               >
-                {link.label}
-              </a>
-            ))}
+                配置器
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${mobileConfigOpen ? 'rotate-180' : ''}`} />
+              </button>
+            </div>
+            <div
+              className={`overflow-hidden transition-all duration-200 ${
+                mobileConfigOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
+              }`}
+            >
+              {configuratorLinks.map((link) => {
+                const Icon = link.icon
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => { setConfiguratorOpen(false); setIsMobileMenuOpen(false) }}
+                    className="flex items-center gap-3 px-8 py-2.5 text-sm font-medium rounded-lg transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
+                  >
+                    <Icon className="w-4 h-4 text-primary" />
+                    {link.label}
+                  </a>
+                )
+              })}
+            </div>
             <div className="pt-2 flex flex-col gap-2 px-4">
               <div className="flex items-center justify-between py-2 border-b border-border">
                 <span className="text-sm text-muted-foreground">主题</span>
