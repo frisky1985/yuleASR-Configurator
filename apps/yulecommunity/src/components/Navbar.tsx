@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Code2, Menu, X, Shield, ChevronDown, LayoutDashboard, FileEdit, FileJson } from 'lucide-react';
+import { Code2, Menu, X, Shield, ChevronDown, LayoutDashboard, FileEdit, FileJson, Settings } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { GlobalSearch } from './GlobalSearch';
 import { NotificationCenter } from './NotificationCenter';
@@ -51,7 +51,6 @@ export function Navbar() {
   const navLinks = [
     { label: '开源代码', to: '/opensource' },
     { label: '工具链', to: '/toolchain' },
-    { label: 'ASR配置', to: '/yuleasr' },
     { label: '学习成长', to: '/learning' },
     { label: '技术博客', to: '/blog' },
     { label: '文档中心', to: '/docs' },
@@ -66,6 +65,7 @@ export function Navbar() {
     { label: '仪表盘', href: '/configurator/', icon: LayoutDashboard, desc: '配置列表和快速操作' },
     { label: '编辑器', href: '/configurator/dashboard', icon: FileEdit, desc: '打开配置编辑器' },
     { label: '模板', href: '/configurator/templates', icon: FileJson, desc: '配置模板管理' },
+    { label: 'ASR配置', href: '/community/#/yuleasr', icon: Settings, desc: '关于 yuleASR 配置器' },
   ];
 
   return (
@@ -131,7 +131,8 @@ export function Navbar() {
 
               {configuratorOpen && (
                 <div className="absolute right-0 mt-2 w-64 bg-card border border-border rounded-xl shadow-xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                  {configuratorLinks.map((link) => {
+                  {/* Configurator app links */}
+                  {configuratorLinks.slice(0, 3).map((link) => {
                     const Icon = link.icon
                     return (
                       <a
@@ -154,6 +155,35 @@ export function Navbar() {
                       </a>
                     )
                   })}
+
+                  {/* Divider */}
+                  <div className="mx-2 my-1.5 h-px bg-border" />
+
+                  {/* ASR配置 link */}
+                  {(() => {
+                    const link = configuratorLinks[3]
+                    const Icon = link.icon
+                    return (
+                      <a
+                        key={link.href}
+                        href={link.href}
+                        onClick={() => setConfiguratorOpen(false)}
+                        className="flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-muted transition-colors group/link"
+                      >
+                        <div className="p-1.5 rounded-lg bg-primary/10 shrink-0 mt-0.5">
+                          <Icon className="w-4 h-4 text-primary" />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium text-foreground group-hover/link:text-primary transition-colors">
+                            {link.label}
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-0.5">
+                            {link.desc}
+                          </div>
+                        </div>
+                      </a>
+                    )
+                  })()}
                 </div>
               )}
             </div>
@@ -258,10 +288,11 @@ export function Navbar() {
             </div>
             <div
               className={`overflow-hidden transition-all duration-200 ${
-                mobileConfigOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
+                mobileConfigOpen ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0'
               }`}
             >
-              {configuratorLinks.map((link) => {
+              {/* Configurator app links */}
+              {configuratorLinks.slice(0, 3).map((link) => {
                 const Icon = link.icon
                 return (
                   <a
@@ -275,6 +306,26 @@ export function Navbar() {
                   </a>
                 )
               })}
+
+              {/* Divider */}
+              <div className="mx-8 my-1.5 h-px bg-border" />
+
+              {/* ASR配置 link */}
+              {(() => {
+                const link = configuratorLinks[3]
+                const Icon = link.icon
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => { setConfiguratorOpen(false); setIsMobileMenuOpen(false) }}
+                    className="flex items-center gap-3 px-8 py-2.5 text-sm font-medium rounded-lg transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
+                  >
+                    <Icon className="w-4 h-4 text-primary" />
+                    {link.label}
+                  </a>
+                )
+              })()}
             </div>
             <div className="pt-2 flex flex-col gap-2 px-4">
               <div className="flex items-center justify-between py-2 border-b border-border">
