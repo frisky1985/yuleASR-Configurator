@@ -80,7 +80,7 @@ export function ShareDialog({ isOpen, onClose, config }: ShareDialogProps) {
   const [shareUrl, setShareUrl] = useState<string | null>(null)
   const [linkError, setLinkError] = useState<string | null>(null)
 
-  // ── Reset on open ──
+  // ── Reset on open or config change ──
   useEffect(() => {
     if (isOpen) {
       setPostContent('')
@@ -91,7 +91,7 @@ export function ShareDialog({ isOpen, onClose, config }: ShareDialogProps) {
       setShareUrl(null)
       setLinkError(null)
     }
-  }, [isOpen])
+  }, [isOpen, config.id])
 
   // ── Download handler (same logic as Editor handleExport) ──
   const handleDownload = useCallback(() => {
@@ -158,9 +158,6 @@ export function ShareDialog({ isOpen, onClose, config }: ShareDialogProps) {
       // Copy to clipboard
       await navigator.clipboard.writeText(url)
       setLinkState('copied')
-
-      // Auto-reset after 3 seconds
-      setTimeout(() => setLinkState('idle'), 3000)
     } catch (err) {
       setLinkState('error')
       setLinkError(
