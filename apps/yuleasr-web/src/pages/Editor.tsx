@@ -11,6 +11,7 @@ import {
   Search,
   AlertTriangle,
   Info,
+  Share2,
 } from 'lucide-react'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
@@ -27,6 +28,7 @@ import { OSEditor } from '@/components/OSEditor'
 import { ParameterEditor } from '@/components/ParameterEditor'
 import { useTheme } from '@/components/ThemeProvider'
 import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp'
+import { ShareDialog } from '@/components/ShareDialog'
 import { ValidationPanel } from '@/components/ValidationPanel'
 import { CollapsibleSection } from '@/components/CollapsibleSection'
 import { ContainerConfigSection } from '@/components/ContainerConfigSection'
@@ -48,6 +50,7 @@ export function Editor() {
   const configTreeRef = useRef<ConfigTreeHandle>(null)
   const { toggleTheme } = useTheme()
   const [showShortcutsHelp, setShowShortcutsHelp] = useState(false)
+  const [showShareDialog, setShowShareDialog] = useState(false)
 
   const {
     currentConfig,
@@ -357,6 +360,14 @@ export function Editor() {
             {isLoading ? 'Saving...' : 'Save'}
           </button>
           <button
+            onClick={() => setShowShareDialog(true)}
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
+            title="Share configuration"
+          >
+            <Share2 className="w-4 h-4" />
+            Share
+          </button>
+          <button
             onClick={handleExport}
             className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
             title="Export configuration as JSON"
@@ -648,6 +659,15 @@ export function Editor() {
         isOpen={showShortcutsHelp}
         onClose={() => setShowShortcutsHelp(false)}
       />
+
+      {/* Share Dialog */}
+      {currentConfig && (
+        <ShareDialog
+          isOpen={showShareDialog}
+          onClose={() => setShowShareDialog(false)}
+          config={currentConfig}
+        />
+      )}
     </div>
   )
 }
