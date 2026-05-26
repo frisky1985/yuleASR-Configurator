@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
 import { Layout } from './components/Layout'
@@ -5,12 +6,22 @@ import { ThemeProvider } from './components/ThemeProvider'
 import { Dashboard } from './pages/Dashboard'
 import { Editor } from './pages/Editor'
 import { GitSync } from './pages/GitSync'
+import { Login } from './pages/Login'
 import { Migrate } from './pages/Migrate'
+import { Register } from './pages/Register'
 import { Settings } from './pages/Settings'
 import { Templates } from './pages/Templates'
 import { Compare } from './pages/Compare'
+import { useAuthStore } from './stores/authStore'
 
 function App() {
+  const loadFromStorage = useAuthStore((s) => s.loadFromStorage)
+
+  // Restore auth state from localStorage on mount
+  useEffect(() => {
+    loadFromStorage()
+  }, [loadFromStorage])
+
   return (
     <ThemeProvider>
       <Layout>
@@ -26,6 +37,8 @@ function App() {
           <Route path="/compare" element={<Compare />} />
           <Route path="/compare/:configAId" element={<Compare />} />
           <Route path="/compare/:configAId/:configBId" element={<Compare />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </Layout>
     </ThemeProvider>

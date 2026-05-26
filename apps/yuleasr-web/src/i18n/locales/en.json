@@ -175,5 +175,26 @@
     "navigate": "Navigate search results",
     "select": "Select highlighted item",
     "note": "Note: On macOS, use Cmd instead of Ctrl"
+  },
+  "auth": {
+    "login": "Sign In",
+    "register": "Create Account",
+    "email": "Email",
+    "password": "Password",
+    "username": "Username",
+    "confirmPassword": "Confirm Password",
+    "loginTitle": "Welcome Back",
+    "loginSubtitle": "Sign in to your account to continue",
+    "registerTitle": "Create Account",
+    "registerSubtitle": "Register to start managing your configurations",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "logout": "Sign Out",
+    "invalidCredentials": "Invalid email or password",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "registrationFailed": "Registration failed",
+    "genericError": "Something went wrong. Please try again.",
+    "loggedOut": "You have been signed out"
   }
 }
