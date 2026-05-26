@@ -841,7 +841,8 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
           {/* Node name - with inline rename for dynamic instances */}
           <span className={cn(
             'flex-1 text-sm truncate',
-            isSelected ? 'text-primary-700 font-medium' : 'text-primary',
+            !isSelected && node.type !== 'layer' && 'text-primary',
+            isSelected && 'text-primary-700 font-medium',
             node.type === 'layer' && 'font-semibold uppercase tracking-wider text-xs',
             node.type === 'parameter' && 'text-app-text-secondary',
             node.enabled === false && 'opacity-50'
