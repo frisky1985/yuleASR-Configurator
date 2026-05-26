@@ -4,6 +4,8 @@ import { devtools } from 'zustand/middleware'
 import { DependencyValidator } from '@/core/DependencyValidator'
 import { allModules } from '@/data/all-modules'
 import { defaultOSConfig } from '@/data/os-config'
+import { api } from '@/services/api'
+import { useAuthStore } from '@/stores/authStore'
 import type { ConfigFile, ConfigModule, ValidationResult, ConfigListItem, ValidationIssue } from '@/types'
 
 interface ConfigState {
@@ -17,6 +19,9 @@ interface ConfigState {
   
   // 配置文件列表
   configList: ConfigListItem[]
+  
+  // Cloud sync status
+  isCloudSynced: boolean
   
   // 模板列表
   templates: ConfigTemplate[]
@@ -50,6 +55,11 @@ interface ConfigState {
   createConfig: (name: string, description: string) => Promise<void>
   deleteConfig: (configId: string) => Promise<void>
   cloneConfig: (sourceId: string) => Promise<void>
+
+  // Cloud sync operations
+  syncToCloud: () => Promise<void>
+  loadFromCloud: () => Promise<void>
+  updateConfigData: (id: string, data: unknown) => Promise<void>
 }
 
 export interface ConfigTemplate {
@@ -85,6 +95,31 @@ function createDefaultConfig(configId: string): ConfigFile {
   }
 }
 
+/** Check whether the user is authenticated by reading authStore state directly. */
+function isAuthenticated(): boolean {
+  return useAuthStore.getState().isAuthenticated
+}
+
+/** Saves a config to localStorage. */
+function saveToLocalStorage(config: ConfigFile): void {
+  localStorage.setItem(`yuleasr_config_${config.id}`, JSON.stringify(config))
+}
+
+/** Saves the config list to localStorage. */
+function saveConfigListToLocalStorage(list: ConfigListItem[]): void {
+  localStorage.setItem('yuleasr_config_list', JSON.stringify(list))
+}
+
+/** Loads the config list from localStorage. */
+function loadConfigListFromLocalStorage(): ConfigListItem[] {
+  try {
+    const raw = localStorage.getItem('yuleasr_config_list')
+    return raw ? JSON.parse(raw) : []
+  } catch {
+    return []
+  }
+}
+
 export const useConfigStore = create<ConfigState>()(
   devtools(
     (set, get) => ({
@@ -96,8 +131,10 @@ export const useConfigStore = create<ConfigState>()(
       isDirty: false,
       isLoading: false,
       configList: [],
+      isCloudSynced: false,
 
-      // Actions
+      // ── Actions ──────────────────────────────────────────────
+
       setCurrentConfig: (config) => {
         set({ 
           currentConfig: config, 
@@ -339,6 +376,8 @@ export const useConfigStore = create<ConfigState>()(
         set({ isLoading: loading })
       },
 
+      // ── saveConfig ───────────────────────────────────────────
+      // Saves to localStorage first (offline-safe), then syncs to API if authenticated.
       saveConfig: async () => {
         const { currentConfig, validateConfig } = get()
         if (!currentConfig) return
@@ -355,49 +394,77 @@ export const useConfigStore = create<ConfigState>()(
             updatedAt: new Date().toISOString()
           }
 
-          localStorage.setItem(`yuleasr_config_${updated.id}`, JSON.stringify(updated))
-          // Update config list
+          // Always save to localStorage first (offline-safe)
+          saveToLocalStorage(updated)
+
+          // Update config list in localStorage
           try {
-            const configList = JSON.parse(localStorage.getItem('yuleasr_config_list') || '[]')
+            const configList = loadConfigListFromLocalStorage()
             const idx = configList.findIndex((c: any) => c.id === updated.id)
             if (idx >= 0) {
               configList[idx].lastModified = updated.updatedAt
               configList[idx].moduleCount = updated.modules.filter((m: any) => m.enabled).length
-              localStorage.setItem('yuleasr_config_list', JSON.stringify(configList))
+              saveConfigListToLocalStorage(configList)
             }
           } catch {}
-          
+
           set({ 
             isDirty: false,
             currentConfig: updated
           })
+
+          // If authenticated, also sync to API
+          if (isAuthenticated()) {
+            try {
+              await get().syncToCloud()
+              set({ isCloudSynced: true })
+            } catch (err) {
+              console.warn('Cloud sync failed (offline or auth error), local save preserved:', err)
+            }
+          }
         } finally {
           set({ isLoading: false })
         }
       },
 
+      // ── loadConfig ───────────────────────────────────────────
+      // If authenticated: try API first, fall back to localStorage.
+      // If not authenticated: use localStorage (existing behavior).
       loadConfig: async (configId) => {
         set({ isLoading: true })
         try {
-          // Try loading specific config by ID, fall back to generic key
-          let configStr = localStorage.getItem(`yuleasr_config_${configId}`)
-          if (!configStr) {
-            configStr = localStorage.getItem('yuleasr_config')
-          }
-          let config: ConfigFile
-          
-          if (configStr) {
-            config = JSON.parse(configStr) as ConfigFile
-            if (!config.modules) {
-              config = createDefaultConfig(configId)
+          let config: ConfigFile | null = null
+
+          if (isAuthenticated()) {
+            try {
+              config = await api.get<ConfigFile>(`/api/configs/${configId}`)
+              // Cache in localStorage for offline access
+              saveToLocalStorage(config)
+            } catch {
+              // API failed — fall through to localStorage
+              config = null
             }
-          } else {
+          }
+
+          // Fall back to localStorage if API didn't succeed
+          if (!config) {
+            let configStr = localStorage.getItem(`yuleasr_config_${configId}`)
+            if (!configStr) {
+              configStr = localStorage.getItem('yuleasr_config')
+            }
+            if (configStr) {
+              config = JSON.parse(configStr) as ConfigFile
+            }
+          }
+
+          // Create default if nothing found
+          if (!config || !config.modules) {
             config = createDefaultConfig(configId)
           }
-          
+
           const validator = new DependencyValidator(config)
           const result = validator.validate()
-          
+
           set({ 
             currentConfig: config,
             selectedPath: null,
@@ -410,6 +477,184 @@ export const useConfigStore = create<ConfigState>()(
         }
       },
 
+      // ── syncToCloud ──────────────────────────────────────────
+      // Push current config to API (only if authenticated).
+      syncToCloud: async () => {
+        const { currentConfig } = get()
+        if (!currentConfig) return
+        if (!isAuthenticated()) return
+
+        try {
+          await api.put(`/api/configs/${currentConfig.id}`, {
+            name: currentConfig.name,
+            description: currentConfig.description,
+            data: currentConfig,
+          })
+          set({ isCloudSynced: true })
+        } catch (err: any) {
+          // If 404, the config doesn't exist on the server yet — create it
+          if (err?.status === 404) {
+            const created = await api.post<ConfigFile>('/api/configs', {
+              name: currentConfig.name,
+              description: currentConfig.description,
+              data: currentConfig,
+            })
+            // If server assigned a different ID, update local state
+            if (created && created.id && created.id !== currentConfig.id) {
+              const updatedConfig = { ...currentConfig, id: created.id }
+              saveToLocalStorage(updatedConfig)
+              set({ currentConfig: updatedConfig })
+
+              // Also update config list
+              try {
+                const configList = loadConfigListFromLocalStorage()
+                const idx = configList.findIndex((c: any) => c.id === currentConfig.id)
+                if (idx >= 0) {
+                  configList[idx].id = created.id
+                  saveConfigListToLocalStorage(configList)
+                }
+              } catch {}
+            }
+            set({ isCloudSynced: true })
+            return
+          }
+          throw err
+        }
+      },
+
+      // ── loadFromCloud ────────────────────────────────────────
+      // Fetch config list from API (only if authenticated).
+      loadFromCloud: async () => {
+        if (!isAuthenticated()) return
+
+        try {
+          const serverList = await api.get<ConfigListItem[]>('/api/configs')
+          set({ configList: serverList, isCloudSynced: true })
+
+          // Also persist in localStorage for offline fallback
+          saveConfigListToLocalStorage(serverList)
+
+          // Optionally cache each config that's in the list
+          for (const item of serverList) {
+            try {
+              const existing = localStorage.getItem(`yuleasr_config_${item.id}`)
+              if (!existing) {
+                // Only fetch if not already cached locally
+                const detail = await api.get<ConfigFile>(`/api/configs/${item.id}`)
+                saveToLocalStorage(detail)
+              }
+            } catch {
+              // Silently skip individual fetch failures
+            }
+          }
+        } catch (err) {
+          console.warn('Failed to fetch configs from API, using local cache:', err)
+          // Fall back to localStorage
+          const localList = loadConfigListFromLocalStorage()
+          set({ configList: localList })
+        }
+      },
+
+      // ── loadConfigList ───────────────────────────────────────
+      // If authenticated: fetch from API first, merge with localStorage (API wins), fall back to localStorage.
+      // If not authenticated: use localStorage (existing behavior).
+      loadConfigList: async () => {
+        set({ isLoading: true })
+        try {
+          let list: ConfigListItem[] = []
+
+          if (isAuthenticated()) {
+            try {
+              const serverList = await api.get<ConfigListItem[]>('/api/configs')
+              const localList = loadConfigListFromLocalStorage()
+
+              // Merge: API wins for items with the same id, local items not in API remain
+              const serverMap = new Map(serverList.map(c => [c.id, c]))
+              const merged = [...serverList]
+              for (const item of localList) {
+                if (!serverMap.has(item.id)) {
+                  merged.push(item)
+                }
+              }
+              list = merged
+
+              // Persist merged list to localStorage
+              saveConfigListToLocalStorage(list)
+              set({ isCloudSynced: true })
+            } catch {
+              // API failed — fall through to localStorage
+              list = loadConfigListFromLocalStorage()
+            }
+          } else {
+            list = loadConfigListFromLocalStorage()
+          }
+
+          // Seed sample configs if list is empty (existing behavior)
+          if (list.length === 0) {
+            // First time: seed with sample configurations
+            const defaultConfig = createDefaultConfig('config-default')
+            defaultConfig.name = 'Development Config'
+            defaultConfig.description = 'Development configuration with debug and diagnostic enabled'
+            localStorage.setItem('yuleasr_config_config-default', JSON.stringify(defaultConfig))
+
+            const prodConfig = createDefaultConfig('config-production')
+            prodConfig.name = 'Production Config'
+            prodConfig.description = 'Production ready configuration with optimized settings'
+            prodConfig.modules = prodConfig.modules.map(m => ({
+              ...m,
+              enabled: ['adc', 'mcu', 'can', 'cantrcv', 'port', 'dio', 'spi', 'gpt', 'icu', 'nvm', 'ecum'].includes(m.id),
+            }))
+            localStorage.setItem('yuleasr_config_config-production', JSON.stringify(prodConfig))
+
+            const devConfig = createDefaultConfig('config-dev')
+            devConfig.name = 'Development Config'
+            devConfig.description = 'Development configuration with debug and diagnostic enabled'
+            devConfig.modules = devConfig.modules.map(m => ({ ...m, enabled: true }))
+            localStorage.setItem('yuleasr_config_config-dev', JSON.stringify(devConfig))
+
+            const fullConfig = createDefaultConfig('config-full')
+            fullConfig.name = 'Default Configuration'
+            fullConfig.description = 'Complete yuleASR configuration with MCAL, BSW, OS layers'
+            localStorage.setItem('yuleasr_config_config-full', JSON.stringify(fullConfig))
+
+            list = [
+              { id: 'config-full', name: fullConfig.name, description: fullConfig.description || '', moduleCount: allModules.length, lastModified: fullConfig.updatedAt },
+              { id: 'config-production', name: prodConfig.name, description: prodConfig.description || '', moduleCount: prodConfig.modules.filter(m => m.enabled).length, lastModified: prodConfig.updatedAt },
+              { id: 'config-dev', name: devConfig.name, description: devConfig.description || '', moduleCount: devConfig.modules.filter(m => m.enabled).length, lastModified: devConfig.updatedAt },
+            ]
+            saveConfigListToLocalStorage(list)
+          } else if (list.length === 1 && list[0].id === 'config-default') {
+            // Migration: if only 1 old config, seed Production + Development
+            const prodConfig = createDefaultConfig('config-production')
+            prodConfig.name = 'Production Config'
+            prodConfig.description = 'Production ready configuration with optimized settings'
+            prodConfig.modules = prodConfig.modules.map(m => ({
+              ...m,
+              enabled: ['adc', 'mcu', 'can', 'cantrcv', 'port', 'dio', 'spi', 'gpt', 'icu', 'nvm', 'ecum'].includes(m.id),
+            }))
+            localStorage.setItem('yuleasr_config_config-production', JSON.stringify(prodConfig))
+
+            const devConfig = createDefaultConfig('config-dev')
+            devConfig.name = 'Development Config'
+            devConfig.description = 'Development configuration with debug and diagnostic enabled'
+            devConfig.modules = devConfig.modules.map(m => ({ ...m, enabled: true }))
+            localStorage.setItem('yuleasr_config_config-dev', JSON.stringify(devConfig))
+
+            list.push(
+              { id: 'config-production', name: prodConfig.name, description: prodConfig.description || '', moduleCount: prodConfig.modules.filter(m => m.enabled).length, lastModified: prodConfig.updatedAt },
+              { id: 'config-dev', name: devConfig.name, description: devConfig.description || '', moduleCount: devConfig.modules.filter(m => m.enabled).length, lastModified: devConfig.updatedAt },
+            )
+            saveConfigListToLocalStorage(list)
+          }
+
+          set({ configList: list })
+        } finally {
+          set({ isLoading: false })
+        }
+      },
+
+      // ── createConfig ─────────────────────────────────────────
+      // Create in localStorage, then if authenticated also create via API and update local record.
       createConfig: async (name, description) => {
         set({ isLoading: true })
         try {
@@ -418,12 +663,36 @@ export const useConfigStore = create<ConfigState>()(
           config.name = name || config.name
           config.description = description || config.description
 
-          // Save to localStorage
-          localStorage.setItem(`yuleasr_config_${configId}`, JSON.stringify(config))
-          
-          // Update config list
+          // Always save to localStorage first
+          saveToLocalStorage(config)
+
+          // If authenticated, also create via API
+          if (isAuthenticated()) {
+            try {
+              const created = await api.post<ConfigFile>('/api/configs', {
+                name: config.name,
+                description: config.description,
+                data: config,
+              })
+
+              // If server assigned a different ID, update local records
+              if (created && created.id && created.id !== configId) {
+                // Remove old local entry
+                localStorage.removeItem(`yuleasr_config_${configId}`)
+                // Save with server ID
+                config.id = created.id
+                saveToLocalStorage(config)
+              }
+
+              set({ isCloudSynced: true })
+            } catch (err) {
+              console.warn('Failed to create config on server, local copy preserved:', err)
+            }
+          }
+
+          // Reload config list
           await get().loadConfigList()
-          
+
           // Switch to new config
           const validator = new DependencyValidator(config)
           const result = validator.validate()
@@ -439,23 +708,97 @@ export const useConfigStore = create<ConfigState>()(
         }
       },
 
+      // ── deleteConfig ─────────────────────────────────────────
+      // Delete from localStorage, then if authenticated also delete from API.
       deleteConfig: async (configId) => {
         set({ isLoading: true })
         try {
+          // Always delete from localStorage first
           localStorage.removeItem(`yuleasr_config_${configId}`)
-          const configList = JSON.parse(localStorage.getItem('yuleasr_config_list') || '[]')
+          const configList = loadConfigListFromLocalStorage()
             .filter((c: ConfigListItem) => c.id !== configId)
-          localStorage.setItem('yuleasr_config_list', JSON.stringify(configList))
-          
+          saveConfigListToLocalStorage(configList)
+
           set({ configList })
-          
+
           // If current config was deleted, clear it
           const { currentConfig } = get()
           if (currentConfig?.id === configId) {
             set({ currentConfig: null, selectedPath: null })
           }
+
+          // If authenticated, also delete from API
+          if (isAuthenticated()) {
+            try {
+              await api.delete(`/api/configs/${configId}`)
+            } catch (err) {
+              console.warn('Failed to delete config from server, local copy removed:', err)
+            }
+          }
         } finally {
           set({ isLoading: false })
+        }
+      },
+
+      // ── updateConfigData ─────────────────────────────────────
+      // Update the config's data field directly (for the Editor's auto-save).
+      // Writes to localStorage + API if authenticated.
+      updateConfigData: async (id, data) => {
+        const { currentConfig } = get()
+
+        // Update localStorage
+        try {
+          const existingStr = localStorage.getItem(`yuleasr_config_${id}`)
+          if (existingStr) {
+            const existing = JSON.parse(existingStr) as ConfigFile
+            const updated = {
+              ...existing,
+              data,
+              updatedAt: new Date().toISOString(),
+            }
+            saveToLocalStorage(updated)
+
+            // Update config list entry
+            const configList = loadConfigListFromLocalStorage()
+            const idx = configList.findIndex((c: any) => c.id === id)
+            if (idx >= 0) {
+              configList[idx].lastModified = updated.updatedAt
+              saveConfigListToLocalStorage(configList)
+            }
+
+            // Also update currentConfig if it matches
+            if (currentConfig?.id === id) {
+              set({ currentConfig: updated })
+            }
+          }
+        } catch {
+          // Silently handle localStorage errors
+        }
+
+        // If authenticated, also push to API
+        if (isAuthenticated()) {
+          try {
+            await api.put(`/api/configs/${id}`, { data })
+          } catch (err: any) {
+            if (err?.status === 404) {
+              // Config doesn't exist on server — create it
+              try {
+                const configStr = localStorage.getItem(`yuleasr_config_${id}`)
+                if (configStr) {
+                  const config = JSON.parse(configStr) as ConfigFile
+                  await api.post('/api/configs', {
+                    name: config.name,
+                    description: config.description,
+                    data: config,
+                  })
+                }
+              } catch {
+                // Silently fail
+              }
+            } else {
+              console.warn('Failed to sync config data to API:', err)
+            }
+          }
         }
       },
 
@@ -463,7 +806,8 @@ export const useConfigStore = create<ConfigState>()(
         set({ configList: list })
       },
 
-      // Template operations
+      // ── Template operations ──────────────────────────────────
+
       saveTemplate: (name, description) => {
         const { currentConfig } = get()
         if (!currentConfig) return
@@ -498,6 +842,7 @@ export const useConfigStore = create<ConfigState>()(
         config.name = `${tpl.name} (copy)`
         config.createdAt = new Date().toISOString()
         config.updatedAt = new Date().toISOString()
+
         const validator = new DependencyValidator(config)
         const result = validator.validate()
         set({
@@ -514,87 +859,28 @@ export const useConfigStore = create<ConfigState>()(
         const templates = JSON.parse(localStorage.getItem('yuleasr_templates') || '[]') as ConfigTemplate[]
         set({ templates })
       },
-
-      loadConfigList: async () => {
-        set({ isLoading: true })
-        try {
-          const raw = localStorage.getItem('yuleasr_config_list')
-          let list: ConfigListItem[] = []
-          
-          if (raw) {
-            list = JSON.parse(raw)
-            // Migration: if only 1 old config, seed Production + Development
-            if (list.length === 1 && list[0].id === 'config-default') {
-              const prodConfig = createDefaultConfig('config-production')
-              prodConfig.name = 'Production Config'
-              prodConfig.description = 'Production ready configuration with optimized settings'
-              prodConfig.modules = prodConfig.modules.map(m => ({
-                ...m,
-                enabled: ['adc', 'mcu', 'can', 'cantrcv', 'port', 'dio', 'spi', 'gpt', 'icu', 'nvm', 'ecum'].includes(m.id),
-              }))
-              localStorage.setItem('yuleasr_config_config-production', JSON.stringify(prodConfig))
-              
-              const devConfig = createDefaultConfig('config-dev')
-              devConfig.name = 'Development Config'
-              devConfig.description = 'Development configuration with debug and diagnostic enabled'
-              devConfig.modules = devConfig.modules.map(m => ({ ...m, enabled: true }))
-              localStorage.setItem('yuleasr_config_config-dev', JSON.stringify(devConfig))
-              
-              list.push(
-                { id: 'config-production', name: prodConfig.name, description: prodConfig.description || '', moduleCount: prodConfig.modules.filter(m => m.enabled).length, lastModified: prodConfig.updatedAt },
-                { id: 'config-dev', name: devConfig.name, description: devConfig.description || '', moduleCount: devConfig.modules.filter(m => m.enabled).length, lastModified: devConfig.updatedAt },
-              )
-              localStorage.setItem('yuleasr_config_list', JSON.stringify(list))
-            }
-          } else {
-            // First time: seed with sample configurations
-            const defaultConfig = createDefaultConfig('config-default')
-            defaultConfig.name = 'Development Config'
-            defaultConfig.description = 'Development configuration with debug and diagnostic enabled'
-            localStorage.setItem('yuleasr_config_config-default', JSON.stringify(defaultConfig))
-            
-            // Clone for production (fewer modules enabled)
-            const prodConfig = createDefaultConfig('config-production') 
-            prodConfig.name = 'Production Config'
-            prodConfig.description = 'Production ready configuration with optimized settings'
-            prodConfig.modules = prodConfig.modules.map(m => ({
-              ...m,
-              enabled: ['adc', 'mcu', 'can', 'cantrcv', 'port', 'dio', 'spi', 'gpt', 'icu', 'nvm', 'ecum'].includes(m.id),
-            }))
-            localStorage.setItem('yuleasr_config_config-production', JSON.stringify(prodConfig))
-            
-            // Development config - all modules enabled for debugging
-            const devConfig = createDefaultConfig('config-dev')
-            devConfig.name = 'Development Config'
-            devConfig.description = 'Development configuration with debug and diagnostic enabled'
-            devConfig.modules = devConfig.modules.map(m => ({ ...m, enabled: true }))
-            localStorage.setItem('yuleasr_config_config-dev', JSON.stringify(devConfig))
-            
-            // Default config - full config
-            const fullConfig = createDefaultConfig('config-full')
-            fullConfig.name = 'Default Configuration'
-            fullConfig.description = 'Complete yuleASR configuration with MCAL, BSW, OS layers'
-            localStorage.setItem('yuleasr_config_config-full', JSON.stringify(fullConfig))
-            
-            list = [
-              { id: 'config-full', name: fullConfig.name, description: fullConfig.description || '', moduleCount: allModules.length, lastModified: fullConfig.updatedAt },
-              { id: 'config-production', name: prodConfig.name, description: prodConfig.description || '', moduleCount: prodConfig.modules.filter(m => m.enabled).length, lastModified: prodConfig.updatedAt },
-              { id: 'config-dev', name: devConfig.name, description: devConfig.description || '', moduleCount: devConfig.modules.filter(m => m.enabled).length, lastModified: devConfig.updatedAt },
-            ]
-            localStorage.setItem('yuleasr_config_list', JSON.stringify(list))
-          }
-          
-          set({ configList: list })
-        } finally {
-          set({ isLoading: false })
-        }
-      }
     }),
     { name: 'config-store' }
   )
 )
 
-// Auto-save to localStorage on any state change
+// ── Subscribe to authStore changes ─────────────────────────────
+// When the user logs in, try to load configs from the cloud.
+// When they log out, update the cloud sync flag.
+useAuthStore.subscribe((state) => {
+  if (state.isAuthenticated) {
+    // User just logged in — attempt to load from cloud
+    useConfigStore.getState().loadFromCloud().catch(() => {
+      // Silent — localStorage fallback already handled inside loadFromCloud
+    })
+  } else {
+    // User just logged out — mark cloud sync as inactive
+    useConfigStore.getState().setConfigList(loadConfigListFromLocalStorage())
+    useConfigStore.setState({ isCloudSynced: false })
+  }
+})
+
+// Auto-save to localStorage on any state change (keeps existing behavior)
 useConfigStore.subscribe((state) => {
   if (state.isDirty && state.currentConfig) {
     const updated = {
