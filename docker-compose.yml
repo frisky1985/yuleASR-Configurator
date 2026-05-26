@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: yuleasr
+      POSTGRES_USER: yuleasr
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  api:
+    build: ./packages/@yuletech/api-server
+    environment:
+      PORT: 3000
+      HOST: 0.0.0.0
+      DATABASE_URL: postgres://yuleasr:${DB_PASSWORD:-changeme}@postgres:5432/yuleasr
+      JWT_SECRET: ${JWT_SECRET:-change-this-in-production}
+      STATIC_DIR: /app/public
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+volumes:
+  pgdata:
