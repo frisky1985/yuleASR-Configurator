@@ -1,4 +1,4 @@
-import { Home, Settings, FileJson, GitBranch, Moon, Sun, Keyboard, Globe, ArrowLeftRight } from 'lucide-react'
+import { Home, Settings, FileJson, GitBranch, Moon, Sun, Keyboard, Globe, ArrowLeftRight, MessageSquare, BookOpen, FileText, GitFork } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
@@ -43,6 +43,14 @@ export function Layout({ children }: LayoutProps) {
     i18n.changeLanguage(newLang)
   }
 
+  const communityItems = [
+    { path: '/community/#/', label: t('nav.communityHome', '社区首页'), icon: Home },
+    { path: '/community/#/forum', label: t('nav.forum', '论坛'), icon: MessageSquare },
+    { path: '/community/#/blog', label: t('nav.blog', '博客'), icon: BookOpen },
+    { path: '/community/#/docs', label: t('nav.docs', '文档'), icon: FileText },
+    { path: '/community/#/opensource', label: t('nav.opensource', '开源'), icon: GitFork },
+  ]
+
   const navItems = [
     { path: '/dashboard', label: t('nav.dashboard'), icon: Home },
     { path: '/templates', label: t('nav.templates'), icon: FileJson },
@@ -66,6 +74,32 @@ export function Layout({ children }: LayoutProps) {
               </Link>
             </div>
             <nav className="flex items-center space-x-4">
+              {/* Community Links */}
+              {communityItems.map((item) => {
+                const Icon = item.icon
+                const currentUrl = window.location.pathname + window.location.hash
+                const isActive = currentUrl.startsWith(item.path)
+                return (
+                  <a
+                    key={item.path}
+                    href={item.path}
+                    className={cn(
+                      'flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors',
+                      isActive
+                        ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                    )}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {item.label}
+                  </a>
+                )
+              })}
+
+              {/* Divider between community and configurator */}
+              <div className="w-px h-6 bg-border" />
+
+              {/* Configurator Nav Items */}
               {navItems.map((item) => {
                 const Icon = item.icon
                 const isActive = location.pathname.startsWith(item.path)

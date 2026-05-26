@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import {
@@ -19,13 +19,17 @@ import {
   Video,
   PieChart,
   Activity,
+  Loader2,
 } from 'lucide-react';
 import {
   CommunityContentDistribution,
   CommunityActivityTrend,
 } from '../components/admin/CommunityStatsCharts';
+import apiClient from '../services/apiClient';
+import type { ForumPostSummary, ForumTag } from '../services/apiClient';
 
-const forumTopics = [
+/** Fallback static forum topics used when API is unavailable */
+const fallbackForumTopics = [
   {
     title: 'CAN FD 的波特率配置问题',
     author: '张明',
@@ -244,6 +248,59 @@ const tabs = [
 
 export function CommunityPage() {
   const [activeTab, setActiveTab] = useState('forum');
+  const [forumTopics, setForumTopics] = useState(fallbackForumTopics);
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadForumData = async () => {
+      setLoading(true);
+      setApiError(false);
+      try {
+        const posts = await apiClient.getForumPosts();
+        const tags = await apiClient.getForumTags();
+        if (cancelled) return;
+        if (posts && posts.length > 0) {
+          setForumTopics(
+            posts.map((p: ForumPostSummary) => ({
+              title: p.title,
+              author: p.username,
+              avatar: p.username.slice(0, 2).toUpperCase(),
+              role: '社区成员',
+              replies: 0,
+              likes: 0,
+              tags: p.tags.length > 0 ? p.tags : ['讨论'],
+              time: timeAgo(p.createdAt),
+              hot: p.status === 'published' && posts.indexOf(p) < 3,
+            })),
+          );
+        }
+      } catch (err) {
+        console.warn('[CommunityPage] API unavailable, using fallback data:', err);
+        setApiError(true);
+        // fallbackForumTopics already set as default state
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+    loadForumData();
+    return () => { cancelled = true; };
+  }, []);
+
+  const timeAgo = (iso: string) => {
+    const d = new Date(iso);
+    const now = new Date();
+    const diff = now.getTime() - d.getTime();
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+    if (minutes < 1) return '刚刚';
+    if (minutes < 60) return `${minutes}分钟前`;
+    if (hours < 24) return `${hours}小时前`;
+    if (days < 30) return `${days}天前`;
+    return d.toLocaleDateString('zh-CN');
+  };
 
   return (
     <div className="min-h-screen pt-16">
@@ -418,7 +475,13 @@ export function CommunityPage() {
                   发起讨论 <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
-              {forumTopics.map((topic) => (
+              {loading && (
+                <div className="flex items-center justify-center py-12">
+                  <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+                  <span className="ml-2 text-sm text-muted-foreground">加载中...</span>
+                </div>
+              )}
+              {!loading && forumTopics.map((topic) => (
                 <div
                   key={topic.title}
                   className="group bg-card border border-border rounded-xl p-5 hover:border-[hsl(var(--accent))]/30 transition-all hover:shadow-elegant"

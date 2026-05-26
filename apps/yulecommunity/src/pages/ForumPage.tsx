@@ -13,12 +13,15 @@ import {
   Search,
   Filter,
   Pin,
+  Loader2,
 } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useUserSystem } from '../hooks/useUserSystem';
 import { useNotifications } from '../hooks/useNotifications';
 import { initialForumPosts, generateId, migrateForumPosts, type ForumPost, type ForumReply } from '../data/communityData';
 import { CodeBlock } from '../components/CodeBlock';
+import { ConfigCard } from '../components/ConfigCard';
+import apiClient from '../services/apiClient';
 
 function renderRichContent(content: string) {
   const parts: React.ReactNode[] = [];
@@ -58,10 +61,13 @@ const sortOptions = [
   { label: '最多浏览', value: 'views' },
 ];
 
-const allTags = ['全部', 'MCAL', 'ECUAL', 'Service', 'OS', '工具链', '经验分享', 'CAN', 'Pwm', 'i.MX8M', 'Docker', '配置', '量产'];
+const fallbackTags = ['全部', 'MCAL', 'ECUAL', 'Service', 'OS', '工具链', '经验分享', 'CAN', 'Pwm', 'i.MX8M', 'Docker', '配置', '量产'];
 
 export function ForumPage() {
   const [posts, setPosts] = useLocalStorage<ForumPost[]>('yuletech-forum-posts', initialForumPosts);
+  const [loading, setLoading] = useState(true);
+  const [apiError, setApiError] = useState(false);
+  const [allTags, setAllTags] = useState(fallbackTags);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState('全部');
   const [sortBy, setSortBy] = useState('newest');
@@ -76,6 +82,46 @@ export function ForumPage() {
   const { addNotification } = useNotifications();
 
   const activePost = posts.find((p) => p.id === activePostId);
+
+  // Load from API on mount, fallback to static data
+  useEffect(() => {
+    let cancelled = false;
+    const loadFromApi = async () => {
+      setLoading(true);
+      try {
+        const apiPosts = await apiClient.getForumPosts();
+        if (cancelled) return;
+        if (apiPosts && apiPosts.length > 0) {
+          const mapped: ForumPost[] = apiPosts.map((p, idx) => ({
+            id: `api-${p.id}`,
+            title: p.title,
+            content: p.content,
+            author: p.username,
+            avatar: p.username.slice(0, 2).toUpperCase(),
+            role: '社区成员',
+            tags: p.tags.length > 0 ? p.tags : ['讨论'],
+            likes: 0,
+            likedBy: [],
+            replies: [],
+            views: 0,
+            createdAt: p.createdAt,
+            hot: idx < 3,
+            isPinned: false,
+          }));
+          setPosts(mapped);
+        }
+      } catch (err) {
+        console.warn('[ForumPage] API unavailable, using fallback static data:', err);
+        setApiError(true);
+        // initialForumPosts already loaded via useLocalStorage default
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+    loadFromApi();
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Migrate old data on mount
   useEffect(() => {
@@ -280,7 +326,24 @@ export function ForumPage() {
       {/* Posts List */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-4">
-          {filteredPosts.map((post) => (
+          {loading ? (
+            <div className="flex items-center justify-center py-16">
+              <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+              <span className="ml-2 text-sm text-muted-foreground">加载帖子中...</span>
+            </div>
+          ) : filteredPosts.length === 0 ? (
+            <div className="text-center py-16 text-muted-foreground">
+              <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-30" />
+              <p>没有找到相关帖子</p>
+              <button
+                onClick={() => { setSearchQuery(''); setSelectedTag('全部'); }}
+                className="mt-2 text-[hsl(var(--accent))] hover:underline text-sm"
+              >
+                清除筛选条件
+              </button>
+            </div>
+          ) : (
+            filteredPosts.map((post) => (
             <div
               key={post.id}
               onClick={() => {
@@ -335,19 +398,7 @@ export function ForumPage() {
                 <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-[hsl(var(--accent))] transition-colors flex-shrink-0 mt-1" />
               </div>
             </div>
-          ))}
-          {filteredPosts.length === 0 && (
-            <div className="text-center py-16 text-muted-foreground">
-              <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-30" />
-              <p>没有找到相关帖子</p>
-              <button
-                onClick={() => { setSearchQuery(''); setSelectedTag('全部'); }}
-                className="mt-2 text-[hsl(var(--accent))] hover:underline text-sm"
-              >
-                清除筛选条件
-              </button>
-            </div>
-          )}
+          )))}
         </div>
       </div>
 
@@ -379,6 +430,11 @@ export function ForumPage() {
                     <span className="px-1.5 py-0.5 bg-muted rounded text-[10px] text-muted-foreground">{activePost.role}</span>
                     <span className="text-xs text-muted-foreground ml-auto">{formatTime(activePost.createdAt)}</span>
                   </div>
+                  {activePost.configId && (
+                    <div className="mb-4">
+                      <ConfigCard configId={activePost.configId} />
+                    </div>
+                  )}
                   <div>{renderRichContent(activePost.content)}</div>
                   <div className="flex items-center gap-2 mt-3">
                     {activePost.tags.map((tag) => (

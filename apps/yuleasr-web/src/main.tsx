@@ -8,7 +8,7 @@ import './index.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter basename="/yuleASR-Configurator">
+    <BrowserRouter basename="/configurator">
       <App />
     </BrowserRouter>
   </StrictMode>,

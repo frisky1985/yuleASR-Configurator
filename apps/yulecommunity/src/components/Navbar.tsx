@@ -48,6 +48,12 @@ export function Navbar() {
     { label: '下载中心', to: '/downloads' },
   ];
 
+  const configuratorLinks = [
+    { label: '仪表盘', href: '/configurator/' },
+    { label: '编辑器', href: '/configurator/dashboard' },
+    { label: '模板', href: '/configurator/templates' },
+  ];
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -93,6 +99,24 @@ export function Navbar() {
                   </>
                 )}
               </NavLink>
+            ))}
+
+            {/* Divider */}
+            <div className="w-px h-6 bg-border" />
+
+            {/* Configurator section */}
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground whitespace-nowrap shrink-0">
+              配置器
+            </span>
+            {configuratorLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-sm font-medium transition-colors relative group whitespace-nowrap shrink-0 text-muted-foreground hover:text-foreground"
+              >
+                {link.label}
+                <span className="absolute -bottom-1 left-0 h-0.5 bg-[hsl(var(--accent))] transition-all duration-300 w-0 group-hover:w-full" />
+              </a>
             ))}
           </div>
 
@@ -180,6 +204,23 @@ export function Navbar() {
               >
                 {link.label}
               </Link>
+            ))}
+
+            {/* Mobile Configurator section */}
+            <div className="px-4 pt-3 pb-1">
+              <div className="w-full h-px bg-border mb-3" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                配置器
+              </span>
+            </div>
+            {configuratorLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="block px-4 py-2 text-sm font-medium rounded-lg transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
+              >
+                {link.label}
+              </a>
             ))}
             <div className="pt-2 flex flex-col gap-2 px-4">
               <div className="flex items-center justify-between py-2 border-b border-border">
