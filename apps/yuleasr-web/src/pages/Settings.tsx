@@ -118,7 +118,7 @@ function Select<T extends string>({
         disabled={disabled}
         onChange={(e) => onChange(e.target.value as T)}
         className={cn(
-          "appearance-none bg-app-bg-primary border border-app-border-primary rounded-lg pl-3 pr-10 py-2 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
+          "appearance-none bg-app-bg-primary text-app-text-primary border border-app-border-primary rounded-lg pl-3 pr-10 py-2 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
           disabled && "opacity-50 cursor-not-allowed bg-app-bg-secondary"
         )}
       >
@@ -164,7 +164,7 @@ function Input({
       disabled={disabled}
       onChange={(e) => onChange(e.target.value)}
       className={cn(
-        "w-full px-3 py-2 border border-app-border-primary rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
+        "w-full px-3 py-2 border border-app-border-primary rounded-lg text-sm bg-app-bg-primary text-app-text-primary focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
         disabled && "opacity-50 cursor-not-allowed bg-app-bg-secondary",
         inputClassName
       )}
@@ -560,7 +560,7 @@ export function Settings() {
           <SettingSection
             title="About"
             description="Version information and updates"
-            icon={<Info className="w-5 h-5 text-app-text-secondary" />}
+            icon={<Info className="w-5 h-5 text-primary-600" />}
           >
             <div className="space-y-4">
               <div className="flex items-center justify-between py-2">
