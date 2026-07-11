@@ -58,9 +58,9 @@ describe('EcucCodeGenerator', () => {
     });
     const header = result.files.find(f => f.path.endsWith('.h'));
     expect(header).toBeDefined();
-    expect(header!.content).toContain('#ifndef ECUC_CAN_H');
-    expect(header!.content).toContain('#define ECUC_CAN_H');
-    expect(header!.content).toContain('#endif /* ECUC_CAN_H */');
+    expect(header!.content).toContain('#ifndef CAN_CFG_H');
+    expect(header!.content).toContain('#define CAN_CFG_H');
+    expect(header!.content).toContain('#endif /* CAN_CFG_H */');
   });
 
   it('should include parameter macros in header', async () => {
@@ -130,7 +130,7 @@ describe('EcucCodeGenerator', () => {
     });
     expect(result.files.length).toBe(4);
     const paths = result.files.map(f => f.path);
-    expect(paths).toContain('./output/Ecuc_Mcu.h');
+    expect(paths).toContain('./output/Mcu_Cfg.h');
     expect(paths).toContain('./output/Ecuc_Mcu.c');
     expect(paths).toContain('./output/Ecuc_Mcu_PBcfg.c');
     expect(paths).toContain('./output/Ecuc_Mcu_Lcfg.c');
@@ -325,6 +325,6 @@ describe('EcucCodeGenerator - Edge cases', () => {
     const result = await generator.generate(config, schema, { outputDir: './out' });
     expect(result.success).toBe(true);
     const header = result.files[0].content;
-    expect(header).toContain(`ECUC_${longName.toUpperCase()}_H`);
+    expect(header).toContain(`${longName.toUpperCase()}_CFG_H`);
   });
 });

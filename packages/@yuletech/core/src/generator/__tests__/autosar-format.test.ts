@@ -7,6 +7,9 @@ import {
   getCType,
   toHex,
   parseVersion,
+  AUTOSAR_MODULE_IDS,
+  getModuleId,
+  getModuleHeaderName,
 } from '../autosar-format';
 
 describe('autosar-format', () => {
@@ -129,6 +132,47 @@ describe('autosar-format', () => {
 
     it('should default empty version to 4.0.0', () => {
       expect(parseVersion('')).toEqual({ major: 4, minor: 0, patch: 0 });
+    });
+  });
+
+  describe('AUTOSAR_MODULE_IDS', () => {
+    it('should contain standard MCAL module IDs', () => {
+      expect(AUTOSAR_MODULE_IDS['Can']).toBe(80);
+      expect(AUTOSAR_MODULE_IDS['Mcu']).toBe(43);
+      expect(AUTOSAR_MODULE_IDS['Port']).toBe(42);
+      expect(AUTOSAR_MODULE_IDS['Dio']).toBe(41);
+      expect(AUTOSAR_MODULE_IDS['Adc']).toBe(44);
+    });
+
+    it('should contain service layer module IDs', () => {
+      expect(AUTOSAR_MODULE_IDS['Com']).toBe(84);
+      expect(AUTOSAR_MODULE_IDS['NvM']).toBe(150);
+      expect(AUTOSAR_MODULE_IDS['Dcm']).toBe(86);
+      expect(AUTOSAR_MODULE_IDS['EcuM']).toBe(151);
+    });
+  });
+
+  describe('getModuleId', () => {
+    it('should return correct ID for known modules', () => {
+      expect(getModuleId('Can')).toBe(80);
+      expect(getModuleId('Os')).toBe(1);
+      expect(getModuleId('Rte')).toBe(16);
+    });
+
+    it('should return fallback for unknown modules', () => {
+      expect(getModuleId('Unknown')).toBe(0xFFFF);
+    });
+  });
+
+  describe('getModuleHeaderName', () => {
+    it('should return standard header names', () => {
+      expect(getModuleHeaderName('Can')).toBe('Can_Cfg.h');
+      expect(getModuleHeaderName('Mcu')).toBe('Mcu_Cfg.h');
+      expect(getModuleHeaderName('Port')).toBe('Port_Cfg.h');
+    });
+
+    it('should fallback to pattern for unknown modules', () => {
+      expect(getModuleHeaderName('Unknown')).toBe('Unknown_Cfg.h');
     });
   });
 });

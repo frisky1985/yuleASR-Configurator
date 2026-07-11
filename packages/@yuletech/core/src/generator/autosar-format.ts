@@ -84,3 +84,48 @@ export function parseVersion(version: string): { major: number; minor: number; p
     patch: parts[2] || 0,
   };
 }
+
+/** AUTOSAR 标准 Module IDs (BSW Module ID Table per AUTOSAR spec) */
+export const AUTOSAR_MODULE_IDS: Record<string, number> = {
+  // MCAL
+  Mcu: 43, Port: 42, Dio: 41, Can: 80, Spi: 122,
+  Icu: 120, Gpt: 121, Pwm: 123, Adc: 44, Wdg: 45,
+  Lin: 183, Fr: 46, Eth: 47,
+  // ECUAL
+  CanIf: 81, LinIf: 187, FrIf: 48, EthIf: 49,
+  CanTp: 82, LinTp: 188, FrTp: 50, CanTrcv: 83,
+  Fee: 133, Ea: 134, MemIf: 135, IoHwAb: 140,
+  // Service
+  Com: 84, PduR: 85, NvM: 150, Dcm: 86, Dem: 87,
+  EcuM: 151, BswM: 152, WdgM: 153, CanNm: 88,
+  CanSm: 89, CanTSyn: 90, Xcp: 91,
+  // RTE / OS
+  Rte: 16, Os: 1,
+};
+
+/** Get the AUTOSAR standard Module ID for a module name */
+export function getModuleId(moduleName: string): number {
+  return AUTOSAR_MODULE_IDS[moduleName] || 0xFFFF;
+}
+
+/** AUTOSAR standard configuration header file names */
+export const MODULE_HEADER_NAMES: Record<string, string> = {
+  Can: 'Can_Cfg.h',
+  Mcu: 'Mcu_Cfg.h',
+  Port: 'Port_Cfg.h',
+  Dio: 'Dio_Cfg.h',
+  Adc: 'Adc_Cfg.h',
+  Icu: 'Icu_Cfg.h',
+  Gpt: 'Gpt_Cfg.h',
+  Pwm: 'Pwm_Cfg.h',
+  Wdg: 'Wdg_Cfg.h',
+  Lin: 'Lin_Cfg.h',
+  Spi: 'Spi_Cfg.h',
+  Fr: 'Fr_Cfg.h',
+  Eth: 'Eth_Cfg.h',
+};
+
+/** Get the standard header filename for a module */
+export function getModuleHeaderName(moduleName: string): string {
+  return MODULE_HEADER_NAMES[moduleName] || `${moduleName}_Cfg.h`;
+}
