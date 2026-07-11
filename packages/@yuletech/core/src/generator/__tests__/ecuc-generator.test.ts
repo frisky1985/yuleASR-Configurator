@@ -136,3 +136,118 @@ describe('EcucCodeGenerator', () => {
     expect(paths).toContain('./output/Ecuc_Mcu_Lcfg.c');
   });
 });
+
+describe('EcucCodeGenerator - Container generation', () => {
+  const generator = new EcucCodeGenerator();
+
+  const schemaWithContainers: ModuleSchema = {
+    name: 'Can',
+    label: 'CAN Driver',
+    layer: 'MCAL',
+    version: '1.0.0',
+    parameters: [
+      { name: 'canDevErrorDetect', type: 'boolean', required: false },
+    ],
+    containers: [
+      {
+        name: 'CanController',
+        label: 'CAN Controller',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 4,
+        parameters: ['canBaudrate', 'canControllerId'],
+      },
+    ],
+  };
+
+  it('should generate container count macros', async () => {
+    const config: ModuleConfig = {
+      module: 'Can',
+      version: '1.0.0',
+      parameters: { canDevErrorDetect: false },
+      containers: {
+        CanController: [
+          { id: 'ctrl0', parameters: { canBaudrate: 500000, canControllerId: 0 } },
+          { id: 'ctrl1', parameters: { canBaudrate: 250000, canControllerId: 1 } },
+        ],
+      },
+    };
+    const result = await generator.generate(config, schemaWithContainers, {
+      outputDir: './out',
+    });
+    const header = result.files.find(f => f.path.endsWith('.h'))!.content;
+    expect(header).toContain('CAN_CANCONTROLLER_COUNT');
+  });
+
+  it('should reject container count below minimum', async () => {
+    const config: ModuleConfig = {
+      module: 'Can',
+      version: '1.0.0',
+      parameters: {},
+      containers: { CanController: [] }, // 0 < minInstances=1
+    };
+    const result = await generator.generate(config, schemaWithContainers, {
+      outputDir: './out',
+    });
+    expect(result.success).toBe(false);
+    expect(result.errors![0]).toContain('CanController');
+  });
+
+  it('should generate PBcfg file with post-build content', async () => {
+    const config: ModuleConfig = {
+      module: 'Can',
+      version: '1.0.0',
+      parameters: { canDevErrorDetect: false },
+      containers: {
+        CanController: [
+          { id: 'ctrl0', parameters: { canBaudrate: 500000, canControllerId: 0 } },
+        ],
+      },
+    };
+    const result = await generator.generate(config, schemaWithContainers, {
+      outputDir: './out',
+      generateComments: true,
+    });
+    const pbcfg = result.files.find(f => f.path.endsWith('_PBcfg.c'));
+    expect(pbcfg).toBeDefined();
+    expect(pbcfg!.content).toContain('Post-Build Configuration');
+  });
+
+  it('should generate Lcfg file with link-time content', async () => {
+    const config: ModuleConfig = {
+      module: 'Can',
+      version: '1.0.0',
+      parameters: { canDevErrorDetect: false },
+      containers: {
+        CanController: [
+          { id: 'ctrl0', parameters: { canBaudrate: 500000, canControllerId: 0 } },
+        ],
+      },
+    };
+    const result = await generator.generate(config, schemaWithContainers, {
+      outputDir: './out',
+    });
+    const lcfg = result.files.find(f => f.path.endsWith('_Lcfg.c'));
+    expect(lcfg).toBeDefined();
+    expect(lcfg!.content).toContain('Link-Time Configuration');
+  });
+
+  it('should generate container type definitions in header', async () => {
+    const config: ModuleConfig = {
+      module: 'Can',
+      version: '1.0.0',
+      parameters: { canDevErrorDetect: false },
+      containers: {
+        CanController: [
+          { id: 'ctrl0', parameters: { canBaudrate: 500000, canControllerId: 0 } },
+        ],
+      },
+    };
+    const result = await generator.generate(config, schemaWithContainers, {
+      outputDir: './out',
+    });
+    const header = result.files.find(f => f.path.endsWith('.h'))!.content;
+    expect(header).toContain('Can_CanControllerType');
+    expect(header).toContain('Can_ConfigType');
+  });
+});
