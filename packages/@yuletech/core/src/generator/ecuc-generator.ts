@@ -15,6 +15,13 @@ import type {
 
 import type { CodeGenerator, GeneratorOptions, GenerationResult, GeneratedFile } from './index';
 
+import {
+  formatCValue,
+  getCType,
+  toHex,
+  parseVersion,
+} from './autosar-format';
+
 /**
  * Ecuc 代码生成器
  * 支持生成标准 Ecuc 配置结构 (参数、容器、实例)
@@ -169,10 +176,10 @@ export class EcucCodeGenerator implements CodeGenerator {
 
 /*==================[macro definitions]=====================================*/
 /** @brief Module ID for ${moduleName} */
-#define ECUC_${moduleName.toUpperCase()}_MODULE_ID         ((uint16)0x${this.toHex(moduleName.length * 10)})
+#define ECUC_${moduleName.toUpperCase()}_MODULE_ID         ((uint16)0x${toHex(moduleName.length * 10)})
 
 /** @brief Vendor ID */
-#define ECUC_${moduleName.toUpperCase()}_VENDOR_ID          ((uint16)0x${this.toHex(0x1234)})
+#define ECUC_${moduleName.toUpperCase()}_VENDOR_ID          ((uint16)0x${toHex(0x1234)})
 
 /** @brief Instance count */
 #define ${moduleName.toUpperCase()}_INSTANCE_COUNT         ((uint8)${this.getInstanceCount(config)})
@@ -185,9 +192,9 @@ export class EcucCodeGenerator implements CodeGenerator {
     // 生成版本信息宏
     content += `
 /*==================[version information]===================================*/
-#define ${moduleName.toUpperCase()}_SW_MAJOR_VERSION      ((uint8)${this.parseVersion(config.version).major})
-#define ${moduleName.toUpperCase()}_SW_MINOR_VERSION      ((uint8)${this.parseVersion(config.version).minor})
-#define ${moduleName.toUpperCase()}_SW_PATCH_VERSION      ((uint8)${this.parseVersion(config.version).patch})
+#define ${moduleName.toUpperCase()}_SW_MAJOR_VERSION      ((uint8)${parseVersion(config.version).major})
+#define ${moduleName.toUpperCase()}_SW_MINOR_VERSION      ((uint8)${parseVersion(config.version).minor})
+#define ${moduleName.toUpperCase()}_SW_PATCH_VERSION      ((uint8)${parseVersion(config.version).patch})
 
 `;
 
@@ -325,7 +332,7 @@ export class EcucCodeGenerator implements CodeGenerator {
         content += `/** @brief ${param.description} */\n`;
       }
 
-      const formattedValue = this.formatCValue(value, param.type);
+      const formattedValue = formatCValue(value, param.type);
       content += `#define ${macroName}    ${formattedValue}\n`;
     }
 
@@ -362,7 +369,7 @@ export class EcucCodeGenerator implements CodeGenerator {
           for (const paramName of container.parameters) {
             const param = schema.parameters.find(p => p.name === paramName);
             if (param) {
-              const cType = this.getCType(param.type);
+              const cType = getCType(param.type);
               content += `    ${cType} ${param.name};\n`;
             }
           }
@@ -383,7 +390,7 @@ export class EcucCodeGenerator implements CodeGenerator {
     // 参数成员
     for (const param of schema.parameters) {
       if (!config.parameters.hasOwnProperty(param.name)) continue;
-      const cType = this.getCType(param.type);
+      const cType = getCType(param.type);
       content += `    ${cType} ${param.name};\n`;
     }
 
@@ -440,7 +447,7 @@ export class EcucCodeGenerator implements CodeGenerator {
    */
   private generateModuleInfo(config: ModuleConfig, _schema: ModuleSchema): string {
     const moduleName = config.module;
-    const version = this.parseVersion(config.version);
+    const version = parseVersion(config.version);
 
     let content = '/*==================[module information]====================================*/\n';
     content += `/** @brief Module version information */\n`;
@@ -480,14 +487,14 @@ export class EcucCodeGenerator implements CodeGenerator {
     content += `/** @brief ${moduleName} configuration structure */\n`;
     content += `const ${moduleName}_ConfigType ${moduleName}_Config = {\n`;
     content += `    .moduleId = ECUC_${moduleName.toUpperCase()}_MODULE_ID,\n`;
-    content += `    .versionInfo = {${this.parseVersion(config.version).major}, ${this.parseVersion(config.version).minor}, ${this.parseVersion(config.version).patch}},\n`;
+    content += `    .versionInfo = {${parseVersion(config.version).major}, ${parseVersion(config.version).minor}, ${parseVersion(config.version).patch}},\n`;
     content += `    .instanceCount = ${this.getInstanceCount(config)},\n`;
 
     // 参数值
     for (const param of schema.parameters) {
       const value = config.parameters[param.name];
       if (value !== undefined && value !== null) {
-        content += `    .${param.name} = ${this.formatCValue(value, param.type)},\n`;
+        content += `    .${param.name} = ${formatCValue(value, param.type)},\n`;
       }
     }
 
@@ -543,7 +550,7 @@ export class EcucCodeGenerator implements CodeGenerator {
           const param = schema.parameters.find(p => p.name === paramName);
           const value = instance.parameters[paramName];
           if (value !== undefined && param) {
-            content += `    .${paramName} = ${this.formatCValue(value, param.type)},\n`;
+            content += `    .${paramName} = ${formatCValue(value, param.type)},\n`;
           }
         }
       }
@@ -609,7 +616,7 @@ export class EcucCodeGenerator implements CodeGenerator {
       for (const param of pbParams) {
         const value = config.parameters[param.name];
         if (value !== undefined) {
-          content += `    .${param.name} = ${this.formatCValue(value, param.type)},\n`;
+          content += `    .${param.name} = ${formatCValue(value, param.type)},\n`;
         }
       }
       
@@ -637,94 +644,6 @@ export class EcucCodeGenerator implements CodeGenerator {
     content += `};\n`;
 
     return content;
-  }
-
-  /**
-   * 格式化值为 C 语言格式
-   */
-  private formatCValue(value: unknown, type: string): string {
-    switch (type) {
-      case 'boolean':
-        return value === true ? 'STD_ON' : 'STD_OFF';
-      case 'integer':
-        if (typeof value === 'number') {
-          // 处理十六进制格式
-          if (value >= 0 && value <= 0xFFFF) {
-            return `((uint16)${value}U)`;
-          }
-          return `((uint32)${value}U)`;
-        }
-        return String(value);
-      case 'float':
-        return `${value}f`;
-      case 'string':
-        return `"${value}"`;
-      case 'enum':
-        return String(value);
-      case 'array':
-        if (Array.isArray(value)) {
-          const items = value.map(v => this.formatPrimitiveValue(v)).join(', ');
-          return `{ ${items} }`;
-        }
-        return '{ 0 }';
-      case 'reference':
-        return `&${value}`;
-      default:
-        return String(value);
-    }
-  }
-
-  /**
-   * 格式化基本类型的值
-   */
-  private formatPrimitiveValue(value: unknown): string {
-    if (typeof value === 'boolean') return value ? 'TRUE' : 'FALSE';
-    if (typeof value === 'number') return Number.isInteger(value) ? `${value}` : `${value}f`;
-    if (typeof value === 'string') return `"${value}"`;
-    return String(value);
-  }
-
-  /**
-   * 获取 C 类型字符串
-   */
-  private getCType(type: string): string {
-    switch (type) {
-      case 'boolean':
-        return 'boolean';
-      case 'integer':
-        return 'uint32';
-      case 'float':
-        return 'float32';
-      case 'string':
-        return 'const char*';
-      case 'enum':
-        return 'uint8';
-      case 'array':
-        return 'const void*';
-      case 'reference':
-        return 'const void*';
-      default:
-        return 'uint32';
-    }
-  }
-
-  /**
-   * 转换为十六进制字符串
-   */
-  private toHex(value: number): string {
-    return value.toString(16).toUpperCase().padStart(4, '0');
-  }
-
-  /**
-   * 解析版本字符串
-   */
-  private parseVersion(version: string): { major: number; minor: number; patch: number } {
-    const parts = version.split('.').map(Number);
-    return {
-      major: parts[0] || 4,
-      minor: parts[1] || 0,
-      patch: parts[2] || 0
-    };
   }
 
   /**
