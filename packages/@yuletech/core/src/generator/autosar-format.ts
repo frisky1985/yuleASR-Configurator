@@ -29,8 +29,10 @@ export function formatCValue(value: unknown, type?: string): string {
         return `((uint32)${value}U)`;
       }
       return String(value);
-    case 'float':
-      return `${value}f`;
+    case 'float': {
+      const n = Number(value);
+      return Number.isInteger(n) ? `${n}.0f` : `${n}f`;
+    }
     case 'string':
       return `"${value}"`;
     case 'enum':

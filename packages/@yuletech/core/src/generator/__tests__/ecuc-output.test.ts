@@ -366,9 +366,35 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         containers: [],
       },
     },
+    {
+      config: {
+        module: 'EcuM', version: '4.4.0',
+        parameters: {
+          ecuMDefaultShutdownTarget: 1,
+          ecuMWakeupSourceMask: 65535,
+          ecuMSleepInProgressCheck: false,
+          ecuMAppDataCheck: true,
+          ecuMBootTimeout: 100.0,
+          ecuMVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'EcuM', label: 'ECU Manager', layer: 'SERVICE', version: '4.4.0',
+        parameters: [
+          { name: 'ecuMDefaultShutdownTarget', type: 'integer', required: true },
+          { name: 'ecuMWakeupSourceMask', type: 'integer', required: true },
+          { name: 'ecuMSleepInProgressCheck', type: 'boolean', required: false },
+          { name: 'ecuMAppDataCheck', type: 'boolean', required: false },
+          { name: 'ecuMBootTimeout', type: 'float', required: false },
+          { name: 'ecuMVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
   ];
 
-  it('should generate 4 files each for all 7 modules', async () => {
+  it('should generate 4 files each for all 8 modules', async () => {
     for (const def of moduleDefs) {
       const result = await generator.generate(def.config, def.schema, { outputDir: tmpDir });
       expect(result.success).toBe(true);
