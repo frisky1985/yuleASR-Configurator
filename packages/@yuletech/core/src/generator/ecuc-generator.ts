@@ -389,9 +389,9 @@ export class EcucCodeGenerator implements CodeGenerator {
       }
     }
 
-    // 生成模块配置类型
-    const configTypeName = `${moduleName}_ConfigType`;
-    content += `/** @brief ${moduleName} configuration type */\n`;
+    // 生成配置集类型 (ConfigSetType)
+    const configSetTypeName = `${moduleName}_ConfigSetType`;
+    content += `/** @brief ${moduleName} configuration set type */\n`;
     content += `typedef struct {\n`;
     content += `    uint16 moduleId;\n`;
     content += `    uint8 versionInfo[3];\n`;
@@ -404,19 +404,24 @@ export class EcucCodeGenerator implements CodeGenerator {
       content += `    ${cType} ${param.name};\n`;
     }
 
-    // 容器成员
+    // 容器指针引用（用 const 指针替代内联数组）
     if (schema.containers) {
       for (const container of schema.containers) {
         const containerType = `${moduleName}_${container.name}Type`;
         const count = config.containers?.[container.name]?.length || 0;
-        if (container.multiple && count > 0) {
-          content += `    ${containerType} ${container.name}[${count}];\n`;
-        } else if (count > 0) {
-          content += `    ${containerType} ${container.name};\n`;
+        if (count > 0) {
+          content += `    const ${containerType}* ${container.name};\n`;
         }
       }
     }
 
+    content += `} ${configSetTypeName};\n\n`;
+
+    // 生成配置类型 (ConfigType) - 只包含指向 ConfigSet 的指针
+    const configTypeName = `${moduleName}_ConfigType`;
+    content += `/** @brief ${moduleName} configuration type */\n`;
+    content += `typedef struct {\n`;
+    content += `    const ${configSetTypeName}* configSet;\n`;
     content += `} ${configTypeName};\n\n`;
 
     return content;
@@ -430,6 +435,8 @@ export class EcucCodeGenerator implements CodeGenerator {
     let content = '/*==================[external data declarations]============================*/\n';
 
     // 声明配置结构体
+    content += `/** @brief External configuration set structure */\n`;
+    content += `extern const ${moduleName}_ConfigSetType ${moduleName}_ConfigSet;\n`;
     content += `/** @brief External configuration structure */\n`;
     content += `extern const ${moduleName}_ConfigType ${moduleName}_Config;\n\n`;
 
@@ -493,9 +500,9 @@ export class EcucCodeGenerator implements CodeGenerator {
       }
     }
 
-    // 生成主配置结构体
-    content += `/** @brief ${moduleName} configuration structure */\n`;
-    content += `const ${moduleName}_ConfigType ${moduleName}_Config = {\n`;
+    // 生成配置集结构体 (ConfigSetType)
+    content += `/** @brief ${moduleName} configuration set structure */\n`;
+    content += `const ${moduleName}_ConfigSetType ${moduleName}_ConfigSet = {\n`;
     content += `    .moduleId = ${moduleName.toUpperCase()}_MODULE_ID,\n`;
     content += `    .versionInfo = {${parseVersion(config.version).major}, ${parseVersion(config.version).minor}, ${parseVersion(config.version).patch}},\n`;
     content += `    .instanceCount = ${this.getInstanceCount(config)},\n`;
@@ -508,24 +515,22 @@ export class EcucCodeGenerator implements CodeGenerator {
       }
     }
 
-    // 容器引用
+    // 容器指针引用（指向外部实例数组）
     if (schema.containers && config.containers) {
       for (const container of schema.containers) {
         const instances = config.containers[container.name] || [];
         if (instances.length > 0) {
-          if (container.multiple) {
-            content += `    .${container.name} = {\n`;
-            for (let i = 0; i < instances.length; i++) {
-              content += `        ${container.name}_Instance_${i},\n`;
-            }
-            content += `    },\n`;
-          } else {
-            content += `    .${container.name} = ${container.name}_Instance_0,\n`;
-          }
+          content += `    .${container.name} = ${container.name}_Instances,\n`;
         }
       }
     }
 
+    content += `};\n\n`;
+
+    // 生成配置类型 (ConfigType) - 只包含一个指向 ConfigSet 的指针
+    content += `/** @brief ${moduleName} configuration type */\n`;
+    content += `const ${moduleName}_ConfigType ${moduleName}_Config = {\n`;
+    content += `    .configSet = &${moduleName}_ConfigSet,\n`;
     content += `};\n\n`;
 
     return content;
@@ -621,7 +626,7 @@ export class EcucCodeGenerator implements CodeGenerator {
     
     if (pbParams.length > 0) {
       content += `/* Post-Build configurable parameters */\n`;
-      content += `${moduleName}_ConfigType ${moduleName}_PostBuildConfig = {\n`;
+      content += `${moduleName}_ConfigSetType ${moduleName}_PostBuildConfig = {\n`;
       
       for (const param of pbParams) {
         const value = config.parameters[param.name];
@@ -648,7 +653,7 @@ export class EcucCodeGenerator implements CodeGenerator {
     let content = '';
 
     content += `/* Link-Time configurable data structures */\n`;
-    content += `${moduleName}_ConfigType ${moduleName}_Lcfg = {0};`
+    content += `${moduleName}_ConfigSetType ${moduleName}_Lcfg = {0};`
 
     return content;
   }
