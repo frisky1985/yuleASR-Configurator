@@ -138,6 +138,15 @@ function generateModuleXml(module: ConfigModule): string {
   lines.push(`          <DEFINITION-REF DEST="ECUC-MODULE-DEF">${xmlEncode(modRef)}</DEFINITION-REF>`)
   lines.push(`          <IMPLEMENTATION-CONFIG-VARIANT>VARIANT-POST-BUILD</IMPLEMENTATION-CONFIG-VARIANT>`)
 
+  // Module-level parameters
+  if (module.parameters.length > 0) {
+    lines.push(`          <PARAMETER-VALUES>`)
+    for (const param of module.parameters) {
+      lines.push(generateParamXml(param, `            `))
+    }
+    lines.push(`          </PARAMETER-VALUES>`)
+  }
+
   // Containers
   if (module.containers.length > 0) {
     lines.push(`          <CONTAINERS>`)
