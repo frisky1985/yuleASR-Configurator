@@ -54,6 +54,16 @@ export function Editor() {
   const [showShortcutsHelp, setShowShortcutsHelp] = useState(false)
   const [showShareDialog, setShowShareDialog] = useState(false)
 
+  // ── Code gen state (declared early — used by Electron useEffect below) ──
+  const [importing, setImporting] = useState(false)
+  const [importArxml, setImportArxml] = useState(false)
+  const [codeGenResult, setCodeGenResult] = useState<GeneratedFile | null>(null)
+  const [codeGenFiles, setCodeGenFiles] = useState<GeneratedFile[]>([])
+  const [gccResults, setGccResults] = useState<Array<{ filename: string; status: string; errors?: string[] }> | null>(null)
+  const [gccAvailable, setGccAvailable] = useState(false)
+  const [verifying, setVerifying] = useState(false)
+  const verifyFnRef = useRef<() => Promise<void>>(async () => {})
+
   const {
     currentConfig,
     selectedPath,
@@ -164,15 +174,6 @@ export function Editor() {
     a.click()
     URL.revokeObjectURL(url)
   }
-
-  const [importing, setImporting] = useState(false)
-  const [importArxml, setImportArxml] = useState(false)
-  const [codeGenResult, setCodeGenResult] = useState<GeneratedFile | null>(null)
-  const [codeGenFiles, setCodeGenFiles] = useState<GeneratedFile[]>([])
-  const [gccResults, setGccResults] = useState<Array<{ filename: string; status: string; errors?: string[] }> | null>(null)
-  const [gccAvailable, setGccAvailable] = useState(false)
-  const [verifying, setVerifying] = useState(false)
-  const verifyFnRef = useRef<() => Promise<void>>(async () => {})
 
   // Sync verify ref with current codeGenFiles so Electron menu can trigger it
   useEffect(() => {
