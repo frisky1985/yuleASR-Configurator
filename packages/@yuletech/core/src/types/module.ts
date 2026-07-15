@@ -187,6 +187,29 @@ export interface ModuleParameter {
   items?: ModuleParameter;
   /** 对象属性定义 (object 类型) */
   properties?: ModuleParameter[];
+  /** 跨模块参数引用约束 */
+  crossReferences?: CrossModuleReference[];
+}
+
+/**
+ * 跨模块参数引用约束
+ * 声明当前参数与另一个模块的参数之间的数值/枚举关系
+ */
+export interface CrossModuleReference {
+  /** 目标模块名称 */
+  module: string;
+  /** 目标容器名称 (可选，用于容器内参数) */
+  container?: string;
+  /** 目标参数名称 */
+  param: string;
+  /** 关系类型 */
+  relation: 'equals' | 'less_than' | 'greater_than' | 'in_range' | 'in_enum';
+  /** 违反时的严重级别 */
+  severity: 'error' | 'warning';
+  /** 约束描述 (用于错误消息) */
+  description: string;
+  /** 是否双向检查 (默认 false) */
+  bidirectional?: boolean;
 }
 
 /**

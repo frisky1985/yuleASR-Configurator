@@ -3,7 +3,8 @@
  * 基于 yuleASR 规则验证配置的正确性
  */
 
-import type { ModuleConfig, ValidationError } from '../types';
+import type { ModuleConfig, ValidationError, ModuleSchema } from '../types';
+import { CrossModuleValidator } from './cross-module-validator';
 
 // 本地验证规则类型，避免与 types/module.ts 中的 ValidationRule 冲突
 interface YuleasrValidationRule {
@@ -23,6 +24,14 @@ export interface ModuleValidationRules {
  */
 export class YuleasrValidator {
   private moduleRules: Map<string, ModuleValidationRules> = new Map();
+  private crossModuleValidator: CrossModuleValidator | null = null;
+
+  /**
+   * 设置跨模块验证器
+   */
+  setCrossModuleValidator(schemas: ModuleSchema[]): void {
+    this.crossModuleValidator = new CrossModuleValidator(new Map(schemas.map(s => [s.name, s])));
+  }
 
   /**
    * 注册模块验证规则
@@ -137,8 +146,22 @@ export class YuleasrValidator {
     const moduleNames = new Set(configs.map(c => c.module));
     
     // AUTOSAR BSW 标准依赖关系定义
-    const dependencyRules: Record<string, Array<{module: string; severity: 'error' | 'warning'; message: string}>> = {
-      CanIf:    [{module: 'Can', severity: 'error', message: 'CanIf requires Can driver'}],
+    interface DependencyParamCheck {
+      type: 'container_not_empty' | 'value_gt' | 'value_equals';
+      container?: string;
+      param?: string;
+      expected?: unknown;
+    }
+    interface DependencyEntry {
+      module: string;
+      severity: 'error' | 'warning';
+      message: string;
+      paramCheck?: DependencyParamCheck;
+    }
+
+    const dependencyRules: Record<string, DependencyEntry[]> = {
+      CanIf:    [{module: 'Can', severity: 'error', message: 'CanIf requires Can driver'},
+                 {module: 'Can', severity: 'warning', message: 'CanIf requires at least one CAN controller configured', paramCheck: {type: 'container_not_empty', container: 'CanController'}}],
       CanNm:    [{module: 'CanIf', severity: 'error', message: 'CanNm requires CanIf'}, {module: 'Nm', severity: 'error', message: 'CanNm requires Nm'}],
       CanSM:    [{module: 'CanIf', severity: 'error', message: 'CanSM requires CanIf'}, {module: 'ComM', severity: 'warning', message: 'CanSM should have ComM'}],
       CanTp:    [{module: 'CanIf', severity: 'error', message: 'CanTp requires CanIf'}, {module: 'PduR', severity: 'error', message: 'CanTp requires PduR'}],
@@ -166,10 +189,12 @@ export class YuleasrValidator {
       Port:     [{module: 'Mcu', severity: 'warning', message: 'Port should have Mcu'}],
     };
 
+    const configMap = new Map(configs.map(c => [c.module, c]));
+
     for (const config of configs) {
       const rules = dependencyRules[config.module];
       if (!rules) continue;
-      
+
       for (const dep of rules) {
         if (!moduleNames.has(dep.module)) {
           allErrors.push({
@@ -177,8 +202,47 @@ export class YuleasrValidator {
             message: dep.message,
             severity: dep.severity,
           });
+        } else if (dep.paramCheck) {
+          // Module exists — perform parameter-level check
+          const depConfig = configMap.get(dep.module);
+          if (!depConfig) continue;
+
+          const { paramCheck: pc } = dep;
+          let paramFailed = false;
+
+          switch (pc.type) {
+            case 'container_not_empty': {
+              const containerName = pc.container || '';
+              const instances = depConfig.containers?.[containerName];
+              paramFailed = !Array.isArray(instances) || instances.length === 0;
+              break;
+            }
+            case 'value_gt': {
+              const val = depConfig.parameters[pc.param || ''];
+              paramFailed = typeof val !== 'number' || val <= (pc.expected as number || 0);
+              break;
+            }
+            case 'value_equals': {
+              paramFailed = depConfig.parameters[pc.param || ''] !== pc.expected;
+              break;
+            }
+          }
+
+          if (paramFailed) {
+            allErrors.push({
+              path: config.module,
+              message: dep.message,
+              severity: dep.severity,
+            });
+          }
         }
       }
+    }
+
+    // 跨模块参数引用约束检查
+    if (this.crossModuleValidator) {
+      const crossErrors = this.crossModuleValidator.validate(configs);
+      allErrors.push(...crossErrors);
     }
 
     return allErrors;

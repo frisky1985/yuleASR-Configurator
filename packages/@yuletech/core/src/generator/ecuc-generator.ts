@@ -462,8 +462,8 @@ export class EcucCodeGenerator implements CodeGenerator {
     let content = '/*==================[module information]====================================*/\n';
     content += `/** @brief Module version information */\n`;
     content += `static const Std_VersionInfoType ${moduleName}_VersionInfo = {\n`;
-    content += `    .vendorID = ECUC_${moduleName.toUpperCase()}_VENDOR_ID,\n`;
-    content += `    .moduleID = ECUC_${moduleName.toUpperCase()}_MODULE_ID,\n`;
+    content += `    .vendorID = ${moduleName.toUpperCase()}_VENDOR_ID,\n`;
+    content += `    .moduleID = ${moduleName.toUpperCase()}_MODULE_ID,\n`;
     content += `    .sw_major_version = ${version.major},\n`;
     content += `    .sw_minor_version = ${version.minor},\n`;
     content += `    .sw_patch_version = ${version.patch}\n`;
@@ -496,7 +496,7 @@ export class EcucCodeGenerator implements CodeGenerator {
     // 生成主配置结构体
     content += `/** @brief ${moduleName} configuration structure */\n`;
     content += `const ${moduleName}_ConfigType ${moduleName}_Config = {\n`;
-    content += `    .moduleId = ECUC_${moduleName.toUpperCase()}_MODULE_ID,\n`;
+    content += `    .moduleId = ${moduleName.toUpperCase()}_MODULE_ID,\n`;
     content += `    .versionInfo = {${parseVersion(config.version).major}, ${parseVersion(config.version).minor}, ${parseVersion(config.version).patch}},\n`;
     content += `    .instanceCount = ${this.getInstanceCount(config)},\n`;
 
@@ -516,11 +516,11 @@ export class EcucCodeGenerator implements CodeGenerator {
           if (container.multiple) {
             content += `    .${container.name} = {\n`;
             for (let i = 0; i < instances.length; i++) {
-              content += `        ${container.name}_Instances[${i}],\n`;
+              content += `        ${container.name}_Instance_${i},\n`;
             }
             content += `    },\n`;
           } else {
-            content += `    .${container.name} = ${container.name}_Instances[0],\n`;
+            content += `    .${container.name} = ${container.name}_Instance_0,\n`;
           }
         }
       }
@@ -573,7 +573,7 @@ export class EcucCodeGenerator implements CodeGenerator {
       content += `/** @brief ${container.name} instance array */\n`;
       content += `const ${containerType} ${container.name}_Instances[${instances.length}] = {\n`;
       for (let i = 0; i < instances.length; i++) {
-        content += `    &${container.name}_Instance_${i},\n`;
+        content += `    ${container.name}_Instance_${i},\n`;
       }
       content += `};\n\n`;
     }
@@ -621,7 +621,7 @@ export class EcucCodeGenerator implements CodeGenerator {
     
     if (pbParams.length > 0) {
       content += `/* Post-Build configurable parameters */\n`;
-      content += `${moduleName}_PostBuildConfigType ${moduleName}_PostBuildConfig = {\n`;
+      content += `${moduleName}_ConfigType ${moduleName}_PostBuildConfig = {\n`;
       
       for (const param of pbParams) {
         const value = config.parameters[param.name];
@@ -648,10 +648,7 @@ export class EcucCodeGenerator implements CodeGenerator {
     let content = '';
 
     content += `/* Link-Time configurable data structures */\n`;
-    content += `${moduleName}_LcfgType ${moduleName}_Lcfg = {\n`;
-    content += `    .linkTimeConfig = STD_ON,\n`;
-    content += `    /* Add link-time configurable parameters here */\n`;
-    content += `};\n`;
+    content += `${moduleName}_ConfigType ${moduleName}_Lcfg = {0};`
 
     return content;
   }

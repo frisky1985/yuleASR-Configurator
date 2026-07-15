@@ -7,6 +7,69 @@ import { defaultOSConfig } from '@/data/os-config'
 import { api } from '@/services/api'
 import { useAuthStore } from '@/stores/authStore'
 import type { ConfigFile, ConfigModule, ValidationResult, ConfigListItem, ValidationIssue } from '@/types'
+import type { ModuleConfig, ModuleSchema } from '@yuletech/core/types'
+import { CrossModuleValidator } from '@yuletech/core/validators'
+import { schemaExtractor, defaultMcuSchema, defaultCanSchema, defaultGptSchema } from '@yuletech/core/schema-extractor'
+
+/**
+ * 将 web 应用的 ConfigModule 转换为核心 ModuleConfig
+ */
+function toModuleConfig(webModule: ConfigModule): ModuleConfig {
+  const params: Record<string, unknown> = {}
+  for (const p of webModule.parameters) {
+    params[p.name] = p.value
+  }
+  return {
+    module: webModule.name,
+    version: webModule.version,
+    parameters: params,
+  }
+}
+
+/**
+ * 将 web 应用的 ConfigFile 转换为核心 ModuleConfig[]
+ */
+function toModuleConfigs(config: ConfigFile): ModuleConfig[] {
+  return config.modules.filter(m => m.enabled).map(toModuleConfig)
+}
+
+/**
+ * 增量跨模块验证：当用户修改某个参数时，
+ * 只检查受该变更影响的跨模块引用约束
+ */
+function validateCrossModuleChanges(
+  config: ConfigFile,
+  changedModuleName: string,
+  changedParamName: string
+): ValidationIssue[] {
+  try {
+    const schemas: ModuleSchema[] = [
+      defaultMcuSchema,
+      defaultCanSchema,
+      defaultGptSchema,
+      ...schemaExtractor.getAllSchemas(),
+    ]
+    const validator = new CrossModuleValidator(
+      new Map(schemas.map(s => [s.name, s]))
+    )
+    const configs = toModuleConfigs(config)
+
+    const errors = validator.validateAffectedBy(
+      [{ module: changedModuleName, param: changedParamName }],
+      configs
+    )
+
+    return errors.map(e => ({
+      id: `cross-${changedModuleName}-${changedParamName}`,
+      path: e.path,
+      message: e.message,
+      severity: e.severity,
+    }))
+  } catch {
+    // 如果跨模块验证失败，静默降级
+    return []
+  }
+}
 
 interface ConfigState {
   // 当前配置状态
@@ -265,8 +328,28 @@ export const useConfigStore = create<ConfigState>()(
             updatedAt: new Date().toISOString()
           }
 
+          // 增量跨模块验证：只检查受影响的约束
+          const crossIssues = validateCrossModuleChanges(
+            updatedConfig,
+            targetModule.name,
+            targetParam?.name || pathParts[pathParts.length - 1]
+          )
+
+          // 全量运行现有验证器，但合并跨模块增量结果
+          const validator = new DependencyValidator(updatedConfig)
+          const result = validator.validate()
+
           set({
             currentConfig: updatedConfig,
+            validationResult: {
+              ...result,
+              errors: [...result.errors, ...crossIssues.filter(i => i.severity === 'error')],
+              warnings: [...result.warnings, ...crossIssues.filter(i => i.severity === 'warning')],
+            },
+            validationIssues: [
+              ...result.errors, ...result.warnings,
+              ...crossIssues,
+            ],
             isDirty: true
           })
         }

@@ -4,3 +4,9 @@ coverage/
 *.log
 .env
 .DS_Store
+release/
+*.app
+*.dmg
+*.zip
+*.blockmap
+builder-debug.yml

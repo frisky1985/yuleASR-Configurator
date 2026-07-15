@@ -36,6 +36,44 @@ export class ConfigValidator {
       warnings.push(...paramResult.warnings);
     }
 
+    // 验证容器实例数量
+    if (schema.containers) {
+      for (const container of schema.containers) {
+        const instances = config.containers?.[container.name];
+        const count = Array.isArray(instances) ? instances.length : 0;
+
+        if (container.minInstances !== undefined && count < container.minInstances) {
+          errors.push({
+            severity: 'error',
+            message: `容器 ${container.name} 至少需要 ${container.minInstances} 个实例，当前 ${count} 个`,
+            path: `containers.${container.name}`,
+          });
+        }
+        if (container.maxInstances !== undefined && count > container.maxInstances) {
+          errors.push({
+            severity: 'error',
+            message: `容器 ${container.name} 最多允许 ${container.maxInstances} 个实例，当前 ${count} 个`,
+            path: `containers.${container.name}`,
+          });
+        }
+      }
+    }
+
+    // 验证引用参数的目标是否存在
+    for (const param of schema.parameters) {
+      if (param.type !== 'reference' || !param.referenceTarget) continue;
+      const value = config.parameters[param.name];
+      if (value === undefined || value === null || value === '') continue;
+
+      if (!this.schemas.has(param.referenceTarget)) {
+        warnings.push({
+          severity: 'warning',
+          message: `参数 ${param.name} 引用的模块 '${param.referenceTarget}' 不存在于已注册模块中`,
+          path: `parameters.${param.name}`,
+        });
+      }
+    }
+
     // 检查未知参数
     for (const key of Object.keys(config.parameters)) {
       if (!schema.parameters.find(p => p.name === key)) {

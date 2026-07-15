@@ -6,9 +6,12 @@ import './i18n'  // Initialize i18n
 import App from './App'
 import './index.css'
 
+// Desktop (Electron file://) → no basename; Web (HTTP/S) → /configurator
+const basename = window.location.protocol === 'file:' ? '' : '/configurator'
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter basename="/configurator">
+    <BrowserRouter basename={basename}>
       <App />
     </BrowserRouter>
   </StrictMode>,

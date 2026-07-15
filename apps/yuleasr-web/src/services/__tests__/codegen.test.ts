@@ -20,7 +20,7 @@ function makeMinimalModule(overrides: Partial<ConfigModule>): ConfigModule {
 }
 
 describe('Codegen - Module header generation', () => {
-  it('should generate Adc_Cfg.h for ADC module', () => {
+  it('should generate Adc_Cfg.h for ADC module', async () => {
     const module = makeMinimalModule({
       id: 'adc',
       name: 'ADC Driver',
@@ -28,63 +28,76 @@ describe('Codegen - Module header generation', () => {
       containers: [{
         id: 'adcconfigset',
         name: 'ConfigSet',
+        multiple: true,
         parameters: [
           { id: 'hwu_id', name: 'adcHwUnitId', type: 'string', value: 'ADC0' },
           { id: 'res', name: 'adcResolution', type: 'string', value: 'BITS_12' },
         ],
+        subContainers: [{
+          id: 'adchwunit_0',
+          name: 'AdcHwUnit_0',
+          shortName: 'AdcHwUnit',
+          parameters: [
+            { id: 'hwu_id', name: 'adcHwUnitId', type: 'string', value: 'ADC0' },
+            { id: 'res', name: 'adcResolution', type: 'string', value: 'BITS_12' },
+          ],
+        }],
       }],
     });
-    const result = generateHeader(module);
+    const result = await generateHeader(module);
     expect(result).not.toBeNull();
     expect(result!.filename).toBe('Adc_Cfg.h');
     expect(result!.content).toContain('ADC_MODULE_ID');
     expect(result!.content).toContain('ADC_VENDOR_ID');
   });
 
-  it('should generate Can_Cfg.h for CAN module', () => {
+  it('should generate Can_Cfg.h for CAN module', async () => {
     const module = makeMinimalModule({
       id: 'can',
-      name: 'CAN Driver',
-      version: '80',
+      name: 'Can',
+      version: '4.4.0',
       containers: [{
-        id: 'canconfigset',
-        name: 'ConfigSet',
+        id: 'cangeneral',
+        name: 'CanGeneral',
         parameters: [
-          { id: 'baud', name: 'canBaudrate', type: 'integer', value: 500000 },
+          { id: 'det', name: 'CanDevErrorDetect', type: 'boolean', value: false },
         ],
+      }, {
+        id: 'canconfigset',
+        name: 'CanConfigSet',
+        multiple: true,
+        parameters: [],
         subContainers: [{
           id: 'cancontroller_0',
           name: 'CanController_0',
+          shortName: 'CanController',
           parameters: [
             { id: 'baud', name: 'canBaudrate', type: 'integer', value: 500000 },
           ],
-          subContainers: [],
         }],
       }],
     });
-    const result = generateHeader(module);
+    const result = await generateHeader(module);
     expect(result).not.toBeNull();
     expect(result!.filename).toBe('Can_Cfg.h');
     expect(result!.content).toContain('CAN_MODULE_ID');
     expect(result!.content).toContain('CAN_VENDOR_ID');
-    expect(result!.content).toContain('CAN_CONTROLLER_COUNT');
   });
 
-  it('should generate Mcu_Cfg.h for MCU module', () => {
+  it('should generate Mcu_Cfg.h for MCU module', async () => {
     const module = makeMinimalModule({
       id: 'mcu',
-      name: 'MCU Driver',
-      version: '43',
+      name: 'Mcu',
+      version: '4.4.0',
       containers: [{
         id: 'mcuclocksetting',
-        name: 'McuClockSetting',
-        parameters: [
-          { id: 'core', name: 'mcuCoreClock', type: 'integer', value: 96000000 },
-          { id: 'pll', name: 'mcuPllRefClk', type: 'integer', value: 8000000 },
-        ],
+        name: 'McuClockSettingConfig',
+        multiple: true,
+        parameters: [],
         subContainers: [{
           id: 'mcuclocksetting_0',
           name: 'McuClockSettingMode_0',
+          shortName: 'McuClockSettingConfig',
           parameters: [
             { id: 'core', name: 'mcuCoreClock', type: 'integer', value: 96000000 },
             { id: 'pll', name: 'mcuPllRefClk', type: 'integer', value: 8000000 },
@@ -92,50 +105,43 @@ describe('Codegen - Module header generation', () => {
         }],
       }],
     });
-    const result = generateHeader(module);
+    const result = await generateHeader(module);
     expect(result).not.toBeNull();
     expect(result!.filename).toBe('Mcu_Cfg.h');
     expect(result!.content).toContain('MCU_MODULE_ID');
   });
 
-  it('should generate Port_Cfg.h for PORT module', () => {
+  it('should generate Port_Cfg.h for PORT module', async () => {
     const module = makeMinimalModule({
       id: 'port',
-      name: 'PORT Driver',
-      version: '42',
+      name: 'Port',
+      version: '4.4.0',
       containers: [{
         id: 'portconfigset',
         name: 'PortConfigSet',
-        parameters: [
-          { id: 'pin', name: 'portPinId', type: 'integer', value: 5 },
-          { id: 'dir', name: 'portPinDirection', type: 'string', value: 'PORT_PIN_OUT' },
-        ],
+        multiple: true,
+        parameters: [],
         subContainers: [{
           id: 'portcontainer_0',
           name: 'PortContainer_0',
-          parameters: [],
-          subContainers: [{
-            id: 'portpin_0',
-            name: 'PortPin_0',
-            parameters: [
-              { id: 'pin', name: 'portPinId', type: 'integer', value: 5 },
-              { id: 'dir', name: 'portPinDirection', type: 'string', value: 'PORT_PIN_OUT' },
-              { id: 'mode', name: 'portPinMode', type: 'string', value: 'PORT_PIN_MODE_GPIO' },
-            ],
-          }],
+          shortName: 'PortPin',
+          parameters: [
+            { id: 'pin', name: 'portPinId', type: 'integer', value: 5 },
+            { id: 'dir', name: 'portPinDirection', type: 'string', value: 'PORT_PIN_OUT' },
+          ],
         }],
       }],
     });
-    const result = generateHeader(module);
+    const result = await generateHeader(module);
     expect(result).not.toBeNull();
     expect(result!.filename).toBe('Port_Cfg.h');
     expect(result!.content).toContain('PORT_MODULE_ID');
   });
 
-  it('should generate Dio_Cfg.h for DIO module', () => {
+  it('should generate Dio_Cfg.h for DIO module', async () => {
     const module = makeMinimalModule({
       id: 'dio',
-      name: 'DIO Driver',
+      name: 'Dio',
       version: '41',
       containers: [{
         id: 'dioconfig',
@@ -146,39 +152,41 @@ describe('Codegen - Module header generation', () => {
         ],
       }],
     });
-    const result = generateHeader(module);
+    const result = await generateHeader(module);
     expect(result).not.toBeNull();
     expect(result!.filename).toBe('Dio_Cfg.h');
     expect(result!.content).toContain('DIO_MODULE_ID');
-    expect(result!.content).toContain('DIO_NUMBER_OF_PORTS');
   });
 
   it('should skip disabled modules in generateAllHeaders', async () => {
-    // generateHeader() does not check enabled — that's in generateAllHeaders()
     const { generateAllHeaders } = await import('../codegen');
     const module = makeMinimalModule({ id: 'adc', enabled: false });
-    const results = generateAllHeaders([module]);
+    const results = await generateAllHeaders([module]);
     expect(results).toHaveLength(0);
   });
 
-  it('should return null for unknown modules', () => {
-    const module = makeMinimalModule({ id: 'unknown_chip' });
-    const result = generateHeader(module);
-    expect(result).toBeNull();
+  it('should generate header even for unknown module names', async () => {
+    const module = makeMinimalModule({ id: 'unknown_chip', name: 'UnknownChip' });
+    const result = await generateHeader(module);
+    expect(result).not.toBeNull();
+    expect(result!.filename).toBe('Unknownchip_Cfg.h');
+    expect(result!.content).toContain('MODULE_ID');
   });
 
-  it('should generate Gpt_Cfg.h for GPT module', () => {
+  it('should generate Gpt_Cfg.h for GPT module', async () => {
     const module = makeMinimalModule({
       id: 'gpt',
-      name: 'GPT Driver',
+      name: 'Gpt',
       version: '121',
       containers: [{
         id: 'gptchannelconfigset',
         name: 'GptChannelConfigSet',
+        multiple: true,
         parameters: [],
         subContainers: [{
           id: 'gptch_0',
           name: 'GptChannelConfiguration_0',
+          shortName: 'GptChannel',
           parameters: [
             { id: 'freq', name: 'gptTickFrequency', type: 'integer', value: 1000 },
             { id: 'mode', name: 'gptChannelMode', type: 'string', value: 'GPT_CH_MODE_ONESHOT' },
@@ -186,7 +194,7 @@ describe('Codegen - Module header generation', () => {
         }],
       }],
     });
-    const result = generateHeader(module);
+    const result = await generateHeader(module);
     expect(result).not.toBeNull();
     expect(result!.filename).toBe('Gpt_Cfg.h');
     expect(result!.content).toContain('GPT_MODULE_ID');

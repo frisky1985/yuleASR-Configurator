@@ -29,6 +29,19 @@ export interface ModuleParameter {
   max?: number;
   enumValues?: string[];
   optional?: boolean;
+  /** 跨模块参数引用约束 */
+  crossReferences?: CrossModuleReference[];
+}
+
+/** Cross-module parameter reference constraint */
+export interface CrossModuleReference {
+  module: string;
+  container?: string;
+  param: string;
+  relation: 'equals' | 'less_than' | 'greater_than' | 'in_range' | 'in_enum';
+  severity: 'error' | 'warning';
+  description: string;
+  bidirectional?: boolean;
 }
 
 /** Module container definition */

@@ -129,7 +129,37 @@ describe('YuleasrValidator', () => {
         makeConfig('Fls'),
       ]
       const errors = validator.validateModules(configs)
+      // Note: CanIf may emit a warning if Can has no CanController containers
+      // Filter to check only error-severity
       expect(errors.filter((e) => e.severity === 'error')).toHaveLength(0)
+    })
+
+    it('should warn when CanIf depends on Can but Can has no controller', () => {
+      // Can exists but has no CanController container instances
+      const configs = [
+        makeConfig('Can', { baudrate: 500000 }),
+        makeConfig('CanIf'),
+      ]
+      const errors = validator.validateModules(configs)
+      // Should have a warning about missing CanController
+      expect(errors.some((e) => e.severity === 'warning' && e.message.includes('CAN controller'))).toBe(true)
+    })
+
+    it('should pass CanIf param check when Can has controllers', () => {
+      const configs: ModuleConfig[] = [
+        {
+          ...makeConfig('Can', { baudrate: 500000 }),
+          containers: {
+            CanController: [
+              { id: 'ctrl0', parameters: { canBaudrate: 500000 } },
+            ],
+          },
+        },
+        makeConfig('CanIf'),
+      ]
+      const errors = validator.validateModules(configs)
+      // No warning about missing CanController
+      expect(errors.some((e) => e.message.includes('CAN controller'))).toBe(false)
     })
   })
 

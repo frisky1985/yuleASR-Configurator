@@ -34,6 +34,8 @@ import { CollapsibleSection } from '@/components/CollapsibleSection'
 import { ContainerConfigSection } from '@/components/ContainerConfigSection'
 import { ContainerParameterList } from '@/components/ContainerParameterList'
 import { cn, formatDate } from '@/lib/utils'
+import JSZip from 'jszip'
+import type { GeneratedFile } from '@/services/codegen'
 import { useConfigStore } from '@/stores/configStore'
 import type { ValidationResult } from '@/types'
 import type { ConfigContainer } from '@/types/config'
@@ -72,6 +74,27 @@ export function Editor() {
       loadConfig(configId)
     }
   }, [configId, loadConfig])
+
+  // Electron menu event listeners
+  useEffect(() => {
+    if (!window.electronAPI) return
+    window.electronAPI.onExportCode(() => {
+      if (currentConfig) {
+        const blob = new Blob([JSON.stringify(currentConfig, null, 2)], { type: 'application/json' })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `${currentConfig.name.replace(/\s+/g, '_')}.yuleasr.json`
+        a.click()
+        URL.revokeObjectURL(url)
+      }
+    })
+    window.electronAPI.onRunVerify(async () => {
+      if (codeGenFiles.length > 0) {
+        await verifyFnRef.current()
+      }
+    })
+  }, [currentConfig, codeGenFiles])
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -144,7 +167,25 @@ export function Editor() {
 
   const [importing, setImporting] = useState(false)
   const [importArxml, setImportArxml] = useState(false)
-  const [codeGenResult, setCodeGenResult] = useState<{ filename: string; content: string } | null>(null)
+  const [codeGenResult, setCodeGenResult] = useState<GeneratedFile | null>(null)
+  const [codeGenFiles, setCodeGenFiles] = useState<GeneratedFile[]>([])
+  const [gccResults, setGccResults] = useState<Array<{ filename: string; status: string; errors?: string[] }> | null>(null)
+  const [gccAvailable, setGccAvailable] = useState(false)
+  const [verifying, setVerifying] = useState(false)
+  const verifyFnRef = useRef<() => Promise<void>>(async () => {})
+
+  // Sync verify ref with current codeGenFiles so Electron menu can trigger it
+  useEffect(() => {
+    verifyFnRef.current = async () => {
+      if (!window.electronAPI) return
+      setVerifying(true)
+      setGccResults(null)
+      const results = await window.electronAPI.gccVerify(codeGenFiles)
+      setGccResults(results)
+      setVerifying(false)
+    }
+  }, [codeGenFiles])
+
   const fileInputRef = useRef<HTMLInputElement>(null)
   const arxmlInputRef = useRef<HTMLInputElement>(null)
 
@@ -415,15 +456,21 @@ export function Editor() {
             {importArxml ? 'Parsing...' : 'ARXML'}
           </button>
           <button
-            onClick={() => {
+            onClick={async () => {
               if (!currentConfig) return
-              const files = generateAllHeaders(currentConfig.modules)
+              const files = await generateAllHeaders(currentConfig.modules)
               if (files.length === 0) {
                 alert('No enabled modules with code generation support.\nEnable a module (e.g. Adc, Mcu, Can) first.')
                 return
               }
-              // Show first file in modal
+              setCodeGenFiles(files)
               setCodeGenResult(files[0])
+              setGccResults(null)
+              // Check gcc availability in Electron
+              if (window.electronAPI) {
+                const result = await window.electronAPI.gccCheck()
+                setGccAvailable(result.available)
+              }
             }}
             className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
             title="Generate _Cfg.h source files from configuration"
@@ -613,11 +660,68 @@ export function Editor() {
 
       {/* Code Generation Preview Modal */}
       {codeGenResult && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30" onClick={() => setCodeGenResult(null)}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30" onClick={() => { setCodeGenResult(null); setCodeGenFiles([]); }}>
           <div className="bg-app-bg-primary rounded-lg shadow-xl border border-app-border-primary w-[800px] max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between px-5 py-3 border-b border-app-border-primary">
               <h3 className="text-sm font-semibold text-app-text-primary">Code Generation Preview</h3>
               <div className="flex items-center gap-2">
+                {/* Desktop: Save to Folder */}
+                {window.electronAPI && (
+                  <button
+                    onClick={async () => {
+                      const result = await window.electronAPI.saveFiles(codeGenFiles)
+                      if (result.success) {
+                        alert(`✅ ${result.count} files saved to:\n${result.path}`)
+                      }
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded hover:bg-app-bg-secondary"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    Save to Folder
+                  </button>
+                )}
+                {/* Desktop: Verify with GCC */}
+                {window.electronAPI && gccAvailable && (
+                  <button
+                    onClick={async () => {
+                      setVerifying(true)
+                      setGccResults(null)
+                      const results = await window.electronAPI!.gccVerify(codeGenFiles)
+                      setGccResults(results)
+                      setVerifying(false)
+                    }}
+                    disabled={verifying}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded hover:bg-app-bg-secondary disabled:opacity-50"
+                  >
+                    {verifying ? (
+                      <div className="animate-spin w-3 h-3 border-2 border-app-border-secondary border-t-transparent rounded-full" />
+                    ) : (
+                      <Play className="w-3.5 h-3.5" />
+                    )}
+                    {verifying ? 'Verifying...' : 'Verify with GCC'}
+                  </button>
+                )}
+                {codeGenFiles.length > 1 && (
+                  <button
+                    onClick={async () => {
+                      const zip = new JSZip()
+                      for (const f of codeGenFiles) {
+                        zip.file(f.filename, f.content)
+                      }
+                      const blob = await zip.generateAsync({ type: 'blob' })
+                      const url = URL.createObjectURL(blob)
+                      const a = document.createElement('a')
+                      a.href = url
+                      a.download = `yuleasr-generated-code.zip`
+                      a.click()
+                      URL.revokeObjectURL(url)
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded hover:bg-app-bg-secondary"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    Download All ({codeGenFiles.length} files)
+                  </button>
+                )}
                 <button
                   onClick={() => {
                     const blob = new Blob([codeGenResult.content], { type: 'text/plain' })
@@ -634,7 +738,7 @@ export function Editor() {
                   Download {codeGenResult.filename}
                 </button>
                 <button
-                  onClick={() => setCodeGenResult(null)}
+                  onClick={() => { setCodeGenResult(null); setCodeGenFiles([]); }}
                   className="p-1.5 text-app-text-tertiary hover:text-app-text-secondary"
                 >
                   <span className="text-lg">×</span>
@@ -644,7 +748,61 @@ export function Editor() {
             <div className="px-5 py-2 bg-app-bg-secondary border-b border-app-border-primary flex items-center gap-2">
               <span className="text-xs font-medium text-app-text-secondary">Filename:</span>
               <span className="text-xs font-mono text-app-text-primary">{codeGenResult.filename}</span>
+              {codeGenFiles.length > 1 && (
+                <div className="ml-auto flex gap-1">
+                  {codeGenFiles.map((f, i) => (
+                    <button
+                      key={f.filename}
+                      onClick={() => setCodeGenResult(f)}
+                      className={`px-2 py-0.5 text-xs rounded ${
+                        codeGenResult.filename === f.filename
+                          ? 'bg-primary-600 text-white'
+                          : 'bg-app-bg-tertiary text-app-text-secondary hover:bg-app-bg-primary'
+                      }`}
+                    >
+                      {f.filename}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
+            {/* GCC Verification Results */}
+            {gccResults && (
+              <div className="px-5 py-2 bg-app-bg-secondary border-b border-app-border-primary">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-medium text-app-text-secondary">GCC Syntax Check:</span>
+                  {gccResults.every(r => r.status === 'pass') ? (
+                    <span className="flex items-center gap-1 text-xs text-green-600">
+                      <CheckCircle className="w-3 h-3" /> All {gccResults.length} files passed
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-1 text-xs text-red-600">
+                      <AlertCircle className="w-3 h-3" /> {gccResults.filter(r => r.status === 'fail').length} failed
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {gccResults.map(r => (
+                    <span key={r.filename} className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded ${
+                      r.status === 'pass'
+                        ? 'bg-green-100 text-green-800'
+                        : r.status === 'fail'
+                        ? 'bg-red-100 text-red-800'
+                        : 'bg-gray-100 text-gray-500'
+                    }`}>
+                      {r.status === 'pass' ? '✅' : r.status === 'fail' ? '❌' : '⏭️'} {r.filename}
+                    </span>
+                  ))}
+                </div>
+                {gccResults.filter(r => r.status === 'fail' && r.errors).map(r => (
+                  <div key={r.filename + '-errors'} className="mt-2">
+                    <pre className="text-xs font-mono text-red-700 bg-red-50 rounded p-2 overflow-x-auto whitespace-pre-wrap">
+                      {r.errors.join('\n')}
+                    </pre>
+                  </div>
+                ))}
+              </div>
+            )}
             <div className="flex-1 overflow-auto p-4">
               <pre className="text-xs font-mono leading-relaxed text-gray-800 bg-app-bg-secondary rounded-lg p-4 overflow-x-auto whitespace-pre">
                 {codeGenResult.content}
