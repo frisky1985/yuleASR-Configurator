@@ -1202,9 +1202,146 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         containers: [],
       },
     },
+    // === Mcl (Motor Control Layer) ===
+    {
+      config: {
+        module: 'Mcl',
+        version: '4.4.0',
+        parameters: {
+          mclEnabled: true,
+          mclMaxPwmChannel: 8,
+          mclMaxAdcChannel: 4,
+          mclDevErrorDetect: true,
+          mclVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'Mcl',
+        label: 'Motor Control Layer',
+        layer: 'MCAL',
+        version: '4.4.0',
+        parameters: [
+          { name: 'mclEnabled', type: 'boolean', required: true },
+          { name: 'mclMaxPwmChannel', type: 'integer', required: true },
+          { name: 'mclMaxAdcChannel', type: 'integer', required: true },
+          { name: 'mclDevErrorDetect', type: 'boolean', required: false },
+          { name: 'mclVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
+    // === IOHWAb (I/O Hardware Abstraction) ===
+    {
+      config: {
+        module: 'IOHWAb',
+        version: '4.4.0',
+        parameters: {
+          ioHwAbEnabled: true,
+          ioHwAbMaxPortCount: 16,
+          ioHwAbDevErrorDetect: true,
+          ioHwAbVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'IOHWAb',
+        label: 'I/O Hardware Abstraction',
+        layer: 'ECUAL',
+        version: '4.4.0',
+        parameters: [
+          { name: 'ioHwAbEnabled', type: 'boolean', required: true },
+          { name: 'ioHwAbMaxPortCount', type: 'integer', required: true },
+          { name: 'ioHwAbDevErrorDetect', type: 'boolean', required: false },
+          { name: 'ioHwAbVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
+    // === Sbc (SBC Driver) ===
+    {
+      config: {
+        module: 'Sbc',
+        version: '4.4.0',
+        parameters: {
+          sbcEnabled: true,
+          sbcMaxChannelCount: 8,
+          sbcDevErrorDetect: true,
+          sbcVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'Sbc',
+        label: 'SBC Driver',
+        layer: 'MCAL',
+        version: '4.4.0',
+        parameters: [
+          { name: 'sbcEnabled', type: 'boolean', required: true },
+          { name: 'sbcMaxChannelCount', type: 'integer', required: true },
+          { name: 'sbcDevErrorDetect', type: 'boolean', required: false },
+          { name: 'sbcVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
+    // === Ble (BLE Driver) ===
+    {
+      config: {
+        module: 'Ble',
+        version: '4.4.0',
+        parameters: {
+          bleEnabled: true,
+          bleMaxConnectionCount: 4,
+          bleDevErrorDetect: true,
+          bleVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'Ble',
+        label: 'BLE Driver',
+        layer: 'MCAL',
+        version: '4.4.0',
+        parameters: [
+          { name: 'bleEnabled', type: 'boolean', required: true },
+          { name: 'bleMaxConnectionCount', type: 'integer', required: true },
+          { name: 'bleDevErrorDetect', type: 'boolean', required: false },
+          { name: 'bleVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
+    // === Arti (ARTI Trace) ===
+    {
+      config: {
+        module: 'Arti',
+        version: '4.4.0',
+        parameters: {
+          artiEnabled: true,
+          artiMaxTraceBuffer: 4096,
+          artiDevErrorDetect: true,
+          artiVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'Arti',
+        label: 'ARTI Trace',
+        layer: 'MCAL',
+        version: '4.4.0',
+        parameters: [
+          { name: 'artiEnabled', type: 'boolean', required: true },
+          { name: 'artiMaxTraceBuffer', type: 'integer', required: true },
+          { name: 'artiDevErrorDetect', type: 'boolean', required: false },
+          { name: 'artiVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
   ];
 
-  it('should generate 4 files each for all 32 modules', async () => {
+  it('should generate 4 files each for all 37 modules', async () => {
     for (const def of moduleDefs) {
       const result = await generator.generate(def.config, def.schema, { outputDir: tmpDir });
       expect(result.success).toBe(true);
