@@ -682,9 +682,119 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         }],
       },
     },
+    // === Crc ===
+    {
+      config: {
+        module: 'Crc',
+        version: '4.4.0',
+        parameters: {
+          crcEnabled: true,
+          crcMaxBufferSize: 1024,
+          crcHwUnitUsed: false,
+          crcDevErrorDetect: true,
+          crcVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'Crc',
+        label: 'CRC Calculator',
+        layer: 'SERVICE',
+        version: '4.4.0',
+        parameters: [
+          { name: 'crcEnabled', type: 'boolean', required: true },
+          { name: 'crcMaxBufferSize', type: 'integer', required: true },
+          { name: 'crcHwUnitUsed', type: 'boolean', required: false },
+          { name: 'crcDevErrorDetect', type: 'boolean', required: false },
+          { name: 'crcVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
+    // === Icu ===
+    {
+      config: {
+        module: 'Icu',
+        version: '4.4.0',
+        parameters: {
+          icuEnabled: true,
+          icuWakeupSupport: true,
+          icuDevErrorDetect: true,
+          icuVersion: '4.4.0',
+        },
+        containers: {
+          IcuChannel: [
+            { id: 'ch0', parameters: { icuChannelId: 0, icuMeasurementMode: 0, icuSignalEdge: 0 } },
+            { id: 'ch1', parameters: { icuChannelId: 1, icuMeasurementMode: 1, icuSignalEdge: 2 } },
+          ],
+        },
+      },
+      schema: {
+        name: 'Icu',
+        label: 'Input Capture Unit',
+        layer: 'MCAL',
+        version: '4.4.0',
+        parameters: [
+          { name: 'icuEnabled', type: 'boolean', required: true },
+          { name: 'icuWakeupSupport', type: 'boolean', required: true },
+          { name: 'icuDevErrorDetect', type: 'boolean', required: false },
+          { name: 'icuVersion', type: 'string', required: false },
+          { name: 'icuChannelId', type: 'integer', required: false },
+          { name: 'icuMeasurementMode', type: 'integer', required: false },
+          { name: 'icuSignalEdge', type: 'integer', required: false },
+        ],
+        containers: [{
+          name: 'IcuChannel', label: 'Icu Channel', multiple: true,
+          minInstances: 1, maxInstances: 50,
+          parameters: ['icuChannelId', 'icuMeasurementMode', 'icuSignalEdge'],
+        }],
+      },
+    },
+    // === Dcm ===
+    {
+      config: {
+        module: 'Dcm',
+        version: '4.4.0',
+        parameters: {
+          dcmEnabled: true,
+          dcmMaxPduLength: 4096,
+          dcmMaxSid: 100,
+          dcmDevErrorDetect: true,
+          dcmVersion: '4.4.0',
+        },
+        containers: {
+          DcmDsdSid: [
+            { id: 'sid10', parameters: { dcmSid: 0x10, dcmSidSubfunction: 1, dcmSidAllowed: true } },
+            { id: 'sid19', parameters: { dcmSid: 0x19, dcmSidSubfunction: 2, dcmSidAllowed: true } },
+            { id: 'sid22', parameters: { dcmSid: 0x22, dcmSidSubfunction: 0, dcmSidAllowed: true } },
+          ],
+        },
+      },
+      schema: {
+        name: 'Dcm',
+        label: 'Diagnostic Communication Manager',
+        layer: 'SERVICE',
+        version: '4.4.0',
+        parameters: [
+          { name: 'dcmEnabled', type: 'boolean', required: true },
+          { name: 'dcmMaxPduLength', type: 'integer', required: true },
+          { name: 'dcmMaxSid', type: 'integer', required: true },
+          { name: 'dcmDevErrorDetect', type: 'boolean', required: false },
+          { name: 'dcmVersion', type: 'string', required: false },
+          { name: 'dcmSid', type: 'integer', required: false },
+          { name: 'dcmSidSubfunction', type: 'integer', required: false },
+          { name: 'dcmSidAllowed', type: 'boolean', required: false },
+        ],
+        containers: [{
+          name: 'DcmDsdSid', label: 'Dcm DSD SID', multiple: true,
+          minInstances: 1, maxInstances: 100,
+          parameters: ['dcmSid', 'dcmSidSubfunction', 'dcmSidAllowed'],
+        }],
+      },
+    },
   ];
 
-  it('should generate 4 files each for all 16 modules', async () => {
+  it('should generate 4 files each for all 19 modules', async () => {
     for (const def of moduleDefs) {
       const result = await generator.generate(def.config, def.schema, { outputDir: tmpDir });
       expect(result.success).toBe(true);
