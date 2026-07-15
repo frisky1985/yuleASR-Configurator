@@ -55,7 +55,19 @@
 └──────────────────────────────────────────────────────────────┘
 ```
 
-### 🔴 待评审的核心问题
+### 🔴 自审状态（2026-07-15 已完成）
+
+| # | 问题 | 状态 | 说明 |
+|:-:|------|:----:|------|
+| 1 | ConfigType 分层设计 | ✅ | 实用分层已实现 |
+| 2 | PB/LT 数据分离 | ✅ | PBcfg/Lcfg 复用 ConfigSetType |
+| 3 | 容器实例引用 | ✅ | `const Type* 指针` 方案 |
+| 4 | static const vs extern const | ✅ | 实例 static，Config extern |
+| 5 | formatCValue 类型安全 | ✅ | float 整数有小数点，已修复 |
+| 6 | 文件命名 Ecuc_ 前缀 | ✅ | 符合 AUTOSAR 惯例 |
+| 7 | **MemMap.h 集成** | ✅ | **已实现** |
+| 8 | **分层验证管线** | ✅ | **ValidationPipeline 已实现** |
+| 9 | Desktop 分发策略 | ⏳ | 需 Apple Developer 证书 |
 
 #### P0 — 架构级
 
