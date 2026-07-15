@@ -453,9 +453,128 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         }],
       },
     },
+    {
+      config: {
+        module: 'Fls', version: '4.4.0',
+        parameters: {
+          flsEnabled: true,
+          flsAcErase: true,
+          flsAcWrite: true,
+          flsProtectionSet: 2,
+          flsMaxReadyCount: 1000,
+          flsDevErrorDetect: true,
+          flsVersion: '4.4.0',
+        },
+        containers: {
+          FlsSector: [
+            { id: 'sector0', parameters: { flsSectorIndex: 0, flsSectorSize: 8192, flsSectorStartAddress: 0x08000000, flsSectorProtect: false } },
+            { id: 'sector1', parameters: { flsSectorIndex: 1, flsSectorSize: 16384, flsSectorStartAddress: 0x08002000, flsSectorProtect: true } },
+          ],
+        },
+      },
+      schema: {
+        name: 'Fls', label: 'Flash Driver', layer: 'MCAL', version: '4.4.0',
+        parameters: [
+          { name: 'flsEnabled', type: 'boolean', required: true },
+          { name: 'flsAcErase', type: 'boolean', required: true },
+          { name: 'flsAcWrite', type: 'boolean', required: true },
+          { name: 'flsProtectionSet', type: 'integer', required: true },
+          { name: 'flsMaxReadyCount', type: 'integer', required: false },
+          { name: 'flsDevErrorDetect', type: 'boolean', required: false },
+          { name: 'flsVersion', type: 'string', required: false },
+        ],
+        containers: [{
+          name: 'FlsSector', label: 'Flash Sector', multiple: true,
+          minInstances: 1, maxInstances: 100,
+          parameters: ['flsSectorIndex', 'flsSectorSize', 'flsSectorStartAddress', 'flsSectorProtect'],
+        }],
+      },
+    },
+    {
+      config: {
+        module: 'CanIf', version: '4.4.0',
+        parameters: {
+          canIfEnabled: true,
+          canIfMaxRxPdu: 32,
+          canIfMaxTxPdu: 16,
+          canIfDevErrorDetect: true,
+          canIfVersion: '4.4.0',
+        },
+        containers: {
+          CanIfRxPdu: [
+            { id: 'rx0', parameters: { canIfRxPduId: 1, canIfRxPduCanId: 0x100, canIfRxPduDlc: 8 } },
+            { id: 'rx1', parameters: { canIfRxPduId: 2, canIfRxPduCanId: 0x200, canIfRxPduDlc: 4 } },
+          ],
+          CanIfTxPdu: [
+            { id: 'tx0', parameters: { canIfTxPduId: 1, canIfTxPduCanId: 0x300, canIfTxPduDlc: 8 } },
+          ],
+        },
+      },
+      schema: {
+        name: 'CanIf', label: 'CAN Interface', layer: 'SERVICE', version: '4.4.0',
+        parameters: [
+          { name: 'canIfEnabled', type: 'boolean', required: true },
+          { name: 'canIfMaxRxPdu', type: 'integer', required: true },
+          { name: 'canIfMaxTxPdu', type: 'integer', required: true },
+          { name: 'canIfDevErrorDetect', type: 'boolean', required: false },
+          { name: 'canIfVersion', type: 'string', required: false },
+          { name: 'canIfRxPduId', type: 'integer', required: false },
+          { name: 'canIfRxPduCanId', type: 'integer', required: false },
+          { name: 'canIfRxPduDlc', type: 'integer', required: false },
+          { name: 'canIfTxPduId', type: 'integer', required: false },
+          { name: 'canIfTxPduCanId', type: 'integer', required: false },
+          { name: 'canIfTxPduDlc', type: 'integer', required: false },
+        ],
+        containers: [
+          {
+            name: 'CanIfRxPdu', label: 'CanIf Rx PDU', multiple: true,
+            minInstances: 1, maxInstances: 50,
+            parameters: ['canIfRxPduId', 'canIfRxPduCanId', 'canIfRxPduDlc'],
+          },
+          {
+            name: 'CanIfTxPdu', label: 'CanIf Tx PDU', multiple: true,
+            minInstances: 0, maxInstances: 50,
+            parameters: ['canIfTxPduId', 'canIfTxPduCanId', 'canIfTxPduDlc'],
+          },
+        ],
+      },
+    },
+    {
+      config: {
+        module: 'Fee', version: '4.4.0',
+        parameters: {
+          feeEnabled: true,
+          feeMaxBlocks: 32,
+          feeVirtualPageSize: 256,
+          feeDevErrorDetect: true,
+          feeVersion: '4.4.0',
+        },
+        containers: {
+          FeeBlockConfiguration: [
+            { id: 'block0', parameters: { feeBlockNumber: 1, feeBlockSize: 64, feeImmediateData: true, feeNumberOfWriteCycles: 10000 } },
+            { id: 'block1', parameters: { feeBlockNumber: 2, feeBlockSize: 128, feeImmediateData: false, feeNumberOfWriteCycles: 5000 } },
+          ],
+        },
+      },
+      schema: {
+        name: 'Fee', label: 'Flash EEPROM Emulation', layer: 'MCAL', version: '4.4.0',
+        parameters: [
+          { name: 'feeEnabled', type: 'boolean', required: true },
+          { name: 'feeMaxBlocks', type: 'integer', required: true },
+          { name: 'feeVirtualPageSize', type: 'integer', required: true },
+          { name: 'feeDevErrorDetect', type: 'boolean', required: false },
+          { name: 'feeVersion', type: 'string', required: false },
+        ],
+        containers: [{
+          name: 'FeeBlockConfiguration', label: 'Fee Block Configuration', multiple: true,
+          minInstances: 1, maxInstances: 100,
+          parameters: ['feeBlockNumber', 'feeBlockSize', 'feeImmediateData', 'feeNumberOfWriteCycles'],
+        }],
+      },
+    },
   ];
 
-  it('should generate 4 files each for all 10 modules', async () => {
+  it('should generate 4 files each for all 13 modules', async () => {
     for (const def of moduleDefs) {
       const result = await generator.generate(def.config, def.schema, { outputDir: tmpDir });
       expect(result.success).toBe(true);
