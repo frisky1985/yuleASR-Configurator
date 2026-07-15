@@ -1,16 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
-import { Search, X, FileText, MessageSquare, HelpCircle, Calendar, Code } from 'lucide-react';
+import { Search, X, FileText, MessageSquare, HelpCircle, Calendar, Code, BookOpen } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { initialForumPosts, initialQuestions, initialEvents } from '../data/communityData';
-import { articlesData } from '../pages/BlogPage';
+import { articlesData } from '../data/blog/articles';
 import { searchCode } from '../data/codeSearch';
+import { buildSearchIndex } from '../data/autosar/spec-index';
 import type { ForumPost, Question, CommunityEvent } from '../data/communityData';
 
 type SearchResult = {
   id: string;
   title: string;
   excerpt: string;
-  type: 'forum' | 'qa' | 'blog' | 'event' | 'code';
+  type: 'forum' | 'qa' | 'blog' | 'event' | 'code' | 'autosar';
   link: string;
 };
 
@@ -132,6 +133,24 @@ export function GlobalSearch() {
         link: `/opensource/${item.module.toLowerCase()}`,
       });
     });
+
+    // AutoSAR API 搜索
+    const autosarIndex = buildSearchIndex();
+    autosarIndex.forEach((api) => {
+      if (
+        api.name.toLowerCase().includes(q) ||
+        api.brief.toLowerCase().includes(q) ||
+        api.moduleId.toLowerCase().includes(q)
+      ) {
+        results.push({
+          id: `autosar-${api.id}`,
+          title: api.name,
+          excerpt: api.brief,
+          type: 'autosar',
+          link: `/autosar/spec/${api.moduleId}/${api.id}`,
+        });
+      }
+    });
   }
 
   const handleSelect = (link: string) => {
@@ -147,6 +166,7 @@ export function GlobalSearch() {
       case 'blog': return '博客';
       case 'event': return '活动';
       case 'code': return '代码';
+      case 'autosar': return 'AutoSAR';
       default: return type;
     }
   };
@@ -199,6 +219,7 @@ export function GlobalSearch() {
                   {result.type === 'blog' && <FileText className="w-3.5 h-3.5 text-cyan-500" />}
                   {result.type === 'event' && <Calendar className="w-3.5 h-3.5 text-green-500" />}
                   {result.type === 'code' && <Code className="w-3.5 h-3.5 text-purple-500" />}
+                  {result.type === 'autosar' && <BookOpen className="w-3.5 h-3.5 text-cyan-500" />}
                   <span className="text-xs font-medium text-muted-foreground uppercase">
                     {typeLabel(result.type)}
                   </span>

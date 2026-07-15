@@ -21,7 +21,7 @@ import {
   type Question,
   type CommunityEvent,
 } from '../../data/communityData';
-import { articlesData } from '../../pages/BlogPage';
+import { articlesData } from '../../data/blog/articles';
 
 const COLORS = ['#06b6d4', '#10b981', '#f59e0b', '#f43f5e'];
 

@@ -88,7 +88,7 @@ export function RelatedArticles({
 
   // 点击跳转
   const handleClick = useCallback((slug: string) => {
-    navigate(`#/blog/${slug}`);
+    navigate(`/blog/${slug}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [navigate]);
 

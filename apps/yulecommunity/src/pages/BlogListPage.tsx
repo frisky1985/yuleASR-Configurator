@@ -124,7 +124,7 @@ export function BlogListPage() {
 
   // 打开文章详情
   const handleArticleClick = useCallback((slug: string) => {
-    navigate(`#/blog/${slug}`);
+    navigate(`/blog/${slug}`);
   }, [navigate]);
 
   // 是否有活动筛选

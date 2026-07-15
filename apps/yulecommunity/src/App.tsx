@@ -1,7 +1,10 @@
+import { useEffect } from 'react';
 import { Suspense, lazy } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, Link } from 'react-router-dom';
+import { preloadSpecData } from './data/autosar/spec-index';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
+import { BottomTabBar } from './components/BottomTabBar';
 import { OfflineIndicator } from './components/OfflineIndicator';
 import { PageLoader } from './components/PageLoader';
 import { InteractiveCLI } from './components/InteractiveCLI';
@@ -21,6 +24,7 @@ const CommunityPage = lazy(() => import('./pages/CommunityPage').then(m => ({ de
 const ProfilePage = lazy(() => import('./pages/ProfilePage').then(m => ({ default: m.ProfilePage })));
 const BlogListPage = lazy(() => import('./pages/BlogListPage').then(m => ({ default: m.BlogListPage })));
 const BlogDetailPage = lazy(() => import('./pages/BlogDetailPage').then(m => ({ default: m.BlogDetailPage })));
+const PointsPage = lazy(() => import('./pages/PointsPage').then(m => ({ default: m.PointsPage })));
 const DocsPage = lazy(() => import('./pages/DocsPage').then(m => ({ default: m.DocsPage })));
 const ForumPage = lazy(() => import('./pages/ForumPage').then(m => ({ default: m.ForumPage })));
 const QAPage = lazy(() => import('./pages/QAPage').then(m => ({ default: m.QAPage })));
@@ -39,6 +43,17 @@ const AnalyticsPage = lazy(() => import('./pages/AnalyticsPage').then(m => ({ de
 const BookmarksPage = lazy(() => import('./pages/BookmarksPage').then(m => ({ default: m.BookmarksPage })));
 const YuleASRPage = lazy(() => import('./pages/YuleASRPage').then(m => ({ default: m.YuleASRPage })));
 const YuleASREditorPage = lazy(() => import('./pages/YuleASREditorPage').then(m => ({ default: m.YuleASREditorPage })));
+const EnterprisePage = lazy(() => import('./pages/EnterprisePage').then(m => ({ default: m.EnterprisePage })));
+const PricingPage = lazy(() => import('./pages/PricingPage').then(m => ({ default: m.PricingPage })));
+
+// AutoSAR DevHub pages
+const DevHubPage = lazy(() => import('./pages/autosar/DevHubPage').then(m => ({ default: m.DevHubPage })));
+const SpecBrowserPage = lazy(() => import('./pages/autosar/SpecBrowserPage').then(m => ({ default: m.SpecBrowserPage })));
+const SpecComparePage = lazy(() => import('./pages/autosar/SpecComparePage').then(m => ({ default: m.SpecComparePage })));
+const SandboxPage = lazy(() => import('./pages/autosar/SandboxPage').then(m => ({ default: m.SandboxPage })));
+const RegistryPage = lazy(() => import('./pages/autosar/RegistryPage').then(m => ({ default: m.RegistryPage })));
+const RegistryDetailPage = lazy(() => import('./pages/autosar/RegistryDetailPage').then(m => ({ default: m.RegistryDetailPage })));
+const RegistryPublishPage = lazy(() => import('./pages/autosar/RegistryPublishPage').then(m => ({ default: m.RegistryPublishPage })));
 
 // Admin pages - New implementation
 const AdminLogin = lazy(() => import('./admin/pages/Login').then(m => ({ default: m.Login })));
@@ -59,6 +74,8 @@ const ProtectedAdminRoute: React.FC<{ children: React.ReactNode }> = ({ children
 
 function App() {
   const { showHelp, setShowHelp } = useHotkeys();
+  // 后台预加载 AutoSAR 规范数据 (API 优先, 自动降级)
+  useEffect(() => { preloadSpecData(); }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -159,14 +176,27 @@ function App() {
                   <Route path="yuleasr" element={<YuleASRPage />} />
                   <Route path="yuleasr/editor/:configId" element={<YuleASREditorPage />} />
                   <Route path="yuleasr/editor/:configId/:moduleId" element={<YuleASREditorPage />} />
+                  {/* AutoSAR DevHub routes */}
+                  <Route path="autosar" element={<DevHubPage />} />
+                  <Route path="autosar/spec" element={<SpecBrowserPage />} />
+                  <Route path="autosar/spec/:module" element={<SpecBrowserPage />} />
+                  <Route path="autosar/spec/:module/:api" element={<SpecBrowserPage />} />
+                  <Route path="autosar/spec/compare" element={<SpecComparePage />} />
+                  <Route path="autosar/sandbox" element={<SandboxPage />} />
+                  <Route path="autosar/registry" element={<RegistryPage />} />
+                  <Route path="autosar/registry/:moduleId" element={<RegistryDetailPage />} />
+                  <Route path="autosar/registry/publish" element={<RegistryPublishPage />} />
+                  <Route path="points" element={<PointsPage />} />
+                  <Route path="enterprise" element={<EnterprisePage />} />
+                  <Route path="pricing" element={<PricingPage />} />
                   <Route path="*" element={
                     <div className="min-h-screen flex items-center justify-center">
                       <div className="text-center">
                         <h1 className="text-4xl font-bold mb-4">404</h1>
                         <p className="text-muted-foreground mb-6">页面不存在</p>
-                        <a href="#/" className="text-[hsl(var(--primary))] hover:underline">
+                        <Link to="/" className="text-[hsl(var(--primary))] hover:underline">
                           返回首页
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   } />
@@ -174,6 +204,7 @@ function App() {
               </Suspense>
             </main>
             <Footer />
+            <BottomTabBar />
             <InteractiveCLI />
             
             {/* Phase 4: 组件级代码分割 - 使用 LazyEngagement 实现懒加载 */}

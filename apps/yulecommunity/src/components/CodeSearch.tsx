@@ -317,7 +317,7 @@ export function CodeSearch() {
             {/* 底部 */}
             <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-muted/30">
               <a
-                href={`#/opensource/${selectedResult.module.toLowerCase()}`}
+                href={`/opensource/${selectedResult.module.toLowerCase()}`}
                 className="text-sm text-primary hover:underline flex items-center gap-1"
               >
                 <FileText className="w-4 h-4" />

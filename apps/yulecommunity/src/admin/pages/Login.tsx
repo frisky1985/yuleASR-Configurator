@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Shield, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useAdminStore } from '../stores/adminStore';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+
 export const Login: React.FC = () => {
   const navigate = useNavigate();
   const { setUser, setToken, setAuthenticated } = useAdminStore();
@@ -17,22 +19,51 @@ export const Login: React.FC = () => {
     setError('');
     setLoading(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    // Mock authentication
-    if (email === 'admin@example.com' && password === 'admin123') {
-      setUser({
-        id: '1',
-        username: 'Admin',
-        email: 'admin@example.com',
-        role: 'super_admin',
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
       });
-      setToken('mock-jwt-token');
-      setAuthenticated(true);
-      navigate('/admin/dashboard');
-    } else {
-      setError('邮箱或密码错误');
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        setError(err.message || '邮箱或密码错误');
+        setLoading(false);
+        return;
+      }
+
+      const result = await response.json();
+      if (result.success && result.data) {
+        setUser({
+          id: result.data.user.id,
+          username: result.data.user.username,
+          email: result.data.user.email,
+          role: result.data.user.role,
+        });
+        setToken(result.data.token);
+        setAuthenticated(true);
+        navigate('/admin/dashboard');
+      } else {
+        setError('登录失败，请重试');
+      }
+    } catch (err) {
+      console.warn('[AdminLogin] 后端不可用，使用降级模式', err);
+      // 降级: 本地模拟
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (email === 'admin@example.com' && password === 'admin123') {
+        setUser({
+          id: '1',
+          username: 'Admin',
+          email: 'admin@example.com',
+          role: 'super_admin',
+        });
+        setToken('mock-jwt-token');
+        setAuthenticated(true);
+        navigate('/admin/dashboard');
+      } else {
+        setError('邮箱或密码错误');
+      }
     }
 
     setLoading(false);

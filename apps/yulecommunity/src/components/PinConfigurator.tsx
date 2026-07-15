@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { 
   Cpu, 
   Settings, 
@@ -226,6 +226,7 @@ export function PinConfigurator() {
   const copyCode = () => {
     navigator.clipboard.writeText(generateCode());
     setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   // 下载配置
@@ -241,11 +242,6 @@ export function PinConfigurator() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
-
-  // 当引脚配置变化时重置复制状态
-  useEffect(() => {
-    setCopied(false);
-  }, [pins]);
 
   // 统计信息
   const stats = useMemo(() => {

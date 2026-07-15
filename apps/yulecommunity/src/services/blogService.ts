@@ -1,6 +1,6 @@
 /**
- * 博客服务层
- * @description 实现 IArticleService 接口，提供文章相关操作
+ * 博客服务层 (双轨模式)
+ * @description 优先从后端 API 加载，不可用时降级到本地 mock 数据
  */
 
 import type {
@@ -28,12 +28,62 @@ import {
   getCommentsByArticleId as getCommentsByArticleIdFromData,
 } from '@/data/blog/articles';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+
+/** 后端 API 响应信封 */
+interface ApiResponse<T> {
+  success: boolean;
+  message?: string;
+  data?: T;
+  pagination?: { page: number; limit: number; total: number; totalPages: number };
+}
+
+/** 后端返的文章结构 */
+interface ApiArticle {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content?: string;
+  tags: string[];
+  coverImage?: string;
+  author: { id: string; name: string; avatar?: string };
+  category?: { id: string; name: string; slug: string };
+  viewCount: number;
+  likeCount: number;
+  isFeatured: boolean;
+  publishedAt: string;
+  createdAt: string;
+}
+
+/** 后端 API 文章 → 前端 BlogArticle */
+function apiToArticle(a: ApiArticle): BlogArticle {
+  return {
+    id: a.id,
+    title: a.title,
+    slug: a.slug,
+    description: a.excerpt,
+    coverImage: a.coverImage || '',
+    category: a.category?.name || '未分类',
+    tags: a.tags,
+    author: a.author.name,
+    authorAvatar: a.author.avatar || '',
+    publishDate: a.publishedAt || a.createdAt,
+    readTime: Math.max(1, Math.ceil((a.excerpt?.length || 100) / 500)),
+    viewCount: a.viewCount,
+    likeCount: a.likeCount,
+    commentCount: 0,
+    content: '',
+  };
+}
+
 /**
  * 文章服务实现
  */
 class ArticleService implements IArticleService {
   /**
    * 获取文章列表（支持分页和过滤）
+   * 优先从后端 API 查询，失败时降级到本地数据
    */
   async getArticles(params: ArticleQueryParams = {}): Promise<PaginatedResult<BlogArticle>> {
     const {
@@ -46,10 +96,55 @@ class ArticleService implements IArticleService {
       sortOrder = 'desc',
     } = params;
 
-    // 过滤文章
+    try {
+      // 尝试从后端 API 加载
+      const query = new URLSearchParams();
+      query.set('page', String(page));
+      query.set('limit', String(pageSize));
+      query.set('status', 'published');
+      query.set('sort', sortBy === 'date' ? 'published_at' : `${sortBy}_count`);
+      if (category && category !== '全部' && category !== 'All') query.set('category', category);
+      if (tag) query.set('tag', tag);
+      if (search) query.set('search', search);
+
+      const res = await fetch(`${API_BASE}/api/blogs?${query}`, {
+        signal: AbortSignal.timeout(3000),
+      });
+      if (!res.ok) throw new Error(`API error: ${res.status}`);
+
+      const json: ApiResponse<ApiArticle[]> = await res.json();
+      if (!json.success || !json.data) throw new Error('API response invalid');
+
+      const apiArticles = json.data.map(apiToArticle);
+
+      return {
+        data: apiArticles,
+        total: json.pagination?.total || apiArticles.length,
+        page,
+        pageSize,
+        totalPages: json.pagination?.totalPages || 1,
+      };
+    } catch {
+      // 降级: 本地 mock 数据
+      return this._getArticlesLocal(params);
+    }
+  }
+
+  /** 本地降级实现 */
+  private async _getArticlesLocal(params: ArticleQueryParams): Promise<PaginatedResult<BlogArticle>> {
+    const {
+      category,
+      tag,
+      search,
+      page = 1,
+      pageSize = 10,
+      sortBy = 'date',
+      sortOrder = 'desc',
+    } = params;
+
     let filteredArticles = [...articles];
 
-    if (category && category !== '全部') {
+    if (category && category !== '全部' && category !== 'All') {
       filteredArticles = filteredArticles.filter(
         article => article.category === category
       );
@@ -62,22 +157,20 @@ class ArticleService implements IArticleService {
     }
 
     if (search) {
-      const lowercaseSearch = search.toLowerCase();
+      const q = search.toLowerCase();
       filteredArticles = filteredArticles.filter(
         article =>
-          article.title.toLowerCase().includes(lowercaseSearch) ||
-          article.description.toLowerCase().includes(lowercaseSearch) ||
-          article.tags.some(t => t.toLowerCase().includes(lowercaseSearch))
+          article.title.toLowerCase().includes(q) ||
+          article.description.toLowerCase().includes(q) ||
+          article.tags.some(t => t.toLowerCase().includes(q))
       );
     }
 
-    // 排序
     filteredArticles.sort((a, b) => {
       let comparison = 0;
       switch (sortBy) {
         case 'date':
-          comparison =
-            new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime();
+          comparison = new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime();
           break;
         case 'views':
           comparison = b.viewCount - a.viewCount;
@@ -86,26 +179,18 @@ class ArticleService implements IArticleService {
           comparison = b.likeCount - a.likeCount;
           break;
         default:
-          comparison =
-            new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime();
+          comparison = new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime();
       }
       return sortOrder === 'asc' ? -comparison : comparison;
     });
 
-    // 分页
     const total = filteredArticles.length;
     const totalPages = Math.ceil(total / pageSize);
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;
     const paginatedData = filteredArticles.slice(startIndex, endIndex);
 
-    return {
-      data: paginatedData,
-      total,
-      page,
-      pageSize,
-      totalPages,
-    };
+    return { data: paginatedData, total, page, pageSize, totalPages };
   }
 
   /**
@@ -118,21 +203,45 @@ class ArticleService implements IArticleService {
 
   /**
    * 根据 slug 获取单篇文章
+   * 优先从后端 API 查询
    */
   async getArticleBySlug(slug: string): Promise<BlogArticle | null> {
-    const article = getArticleBySlugFromData(slug);
-    if (article) {
-      // 自动增加阅读量
-      await this.incrementViewCount(article.id);
+    try {
+      const res = await fetch(`${API_BASE}/api/blogs/${encodeURIComponent(slug)}`, {
+        signal: AbortSignal.timeout(3000),
+      });
+      if (!res.ok) throw new Error(`API error: ${res.status}`);
+      const json: ApiResponse<ApiArticle> = await res.json();
+      if (!json.success || !json.data) throw new Error('API response invalid');
+
+      const article = apiToArticle(json.data);
+      article.content = (json.data as any).content || '';
+      return article;
+    } catch {
+      // 降级: 本地数据
+      const article = getArticleBySlugFromData(slug);
+      if (article) {
+        await this._incrementViewCountLocal(article.id);
+      }
+      return article || null;
     }
-    return article || null;
   }
 
   /**
-   * 获取热门文章
+   * 获取热门文章 — 从 API 取或本地降级
    */
   async getHotArticles(limit: number = 5): Promise<BlogArticle[]> {
-    return getHotArticlesFromData(limit);
+    try {
+      const res = await fetch(`${API_BASE}/api/blogs?limit=${limit}&sort=view_count&status=published`, {
+        signal: AbortSignal.timeout(3000),
+      });
+      if (!res.ok) throw new Error(`API error: ${res.status}`);
+      const json: ApiResponse<ApiArticle[]> = await res.json();
+      if (!json.success || !json.data) throw new Error('API response invalid');
+      return json.data.map(apiToArticle);
+    } catch {
+      return getHotArticlesFromData(limit);
+    }
   }
 
   /**
@@ -153,6 +262,12 @@ class ArticleService implements IArticleService {
    * 增加文章阅读量
    */
   async incrementViewCount(articleId: string): Promise<void> {
+    // 尝试通知后端（不关心结果）
+    fetch(`${API_BASE}/api/blogs/${articleId}`, { method: 'GET' }).catch(() => {});
+    await this._incrementViewCountLocal(articleId);
+  }
+
+  private async _incrementViewCountLocal(articleId: string): Promise<void> {
     const article = getArticleByIdFromData(articleId);
     if (article) {
       article.viewCount++;

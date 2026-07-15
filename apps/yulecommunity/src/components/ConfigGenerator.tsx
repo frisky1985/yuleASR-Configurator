@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Code,
   Cpu,
@@ -444,6 +444,7 @@ export function ConfigGenerator() {
   function handleCopy() {
     navigator.clipboard.writeText(generatedCode);
     setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   }
 
   function handleDownload() {
@@ -456,11 +457,6 @@ export function ConfigGenerator() {
     a.click();
     URL.revokeObjectURL(url);
   }
-
-  // Reset copied state when generated content changes
-  useEffect(() => {
-    setCopied(false);
-  }, [generatedCode]);
 
   return (
     <section className="py-16 bg-card/30 border-y border-border">

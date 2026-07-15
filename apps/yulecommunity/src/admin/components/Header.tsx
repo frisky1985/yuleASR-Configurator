@@ -19,7 +19,7 @@ export const Header: React.FC<HeaderProps> = ({ title }) => {
 
   const handleLogout = () => {
     logout();
-    window.location.href = '/admin/login';
+    window.location.href = '/yuleCommunity/admin/login';
   };
 
   return (

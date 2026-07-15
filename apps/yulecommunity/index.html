@@ -9,6 +9,27 @@
     <link rel="manifest" href="/yuleCommunity/manifest.json" />
     <meta name="theme-color" content="#0f172a" />
     <link rel="apple-touch-icon" href="/yuleCommunity/icon-192x192.svg" />
+    <script>
+      (function() {
+        var key = 'yule-theme';
+        var theme;
+        try { theme = localStorage.getItem(key); } catch(e) {}
+        if (theme === 'system' || !theme) {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.classList.add(theme);
+        document.documentElement.setAttribute('data-theme', theme);
+        if (theme === 'dark') {
+          document.querySelector('meta[name=theme-color]').content = '#0f172a';
+        }
+        // Restore deep-link after GH Pages 404 redirect
+        var redirect = sessionStorage.getItem('yule-spa-redirect');
+        if (redirect) {
+          sessionStorage.removeItem('yule-spa-redirect');
+          window.history.replaceState(null, '', redirect);
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

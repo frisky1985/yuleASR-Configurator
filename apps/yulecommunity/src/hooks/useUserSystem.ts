@@ -130,5 +130,3 @@ export function useUserSystem() {
     setPoints,
   };
 }
-
-export { DEFAULT_ACTION_POINTS, DEFAULT_LEVEL_THRESHOLDS };

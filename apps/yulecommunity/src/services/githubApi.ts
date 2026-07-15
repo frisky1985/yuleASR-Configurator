@@ -3,6 +3,8 @@
  * 用于获取开源项目的实时数据
  */
 
+import { githubFetch, cacheGet, cacheSet, CACHE_KEYS } from './gitHubClient';
+
 export interface RepoStats {
   name: string;
   stars: number;
@@ -32,17 +34,7 @@ const REPOS = [
  */
 async function fetchRepoStats(repo: string): Promise<RepoStats | null> {
   try {
-    const response = await fetch(`https://api.github.com/repos/${repo}`, {
-      headers: {
-        'Accept': 'application/vnd.github.v3+json',
-      },
-    });
-    
-    if (!response.ok) {
-      console.warn(`Failed to fetch ${repo}: ${response.status}`);
-      return null;
-    }
-    
+    const response = await githubFetch(`https://api.github.com/repos/${repo}`);
     const data = await response.json();
     return {
       name: data.name,
@@ -84,30 +76,48 @@ export function calculateTotals(stats: RepoStats[]) {
   );
 }
 
+/** 使用固定 seed 生成稳定的模拟贡献数据，避免每次渲染数据抖动 */
+function seededRandom(seed: number): number {
+  const x = Math.sin(seed + 1) * 10000;
+  return x - Math.floor(x);
+}
+
 /**
  * 模拟贡献者数据（因为 GitHub API 需要认证才能获取详细贡献数据）
  */
 export function generateMockContributions(days: number = 30): ContributionData[] {
   const data: ContributionData[] = [];
   const today = new Date();
-  
+  const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+
   for (let i = days - 1; i >= 0; i--) {
     const date = new Date(today);
     date.setDate(date.getDate() - i);
-    
-    // 模拟周末贡献较少
+
     const dayOfWeek = date.getDay();
     const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
     const baseCount = isWeekend ? 2 : 8;
-    const randomVariation = Math.floor(Math.random() * 10);
-    
+    const randomVariation = Math.floor(seededRandom(seed + i) * 10);
+
     data.push({
       date: date.toISOString().split('T')[0],
       count: baseCount + randomVariation,
     });
   }
-  
+
   return data;
+}
+
+/**
+ * 获取缓存的仓库统计
+ */
+export async function getCachedRepoStats(): Promise<RepoStats[]> {
+  const cached = cacheGet<RepoStats[]>(CACHE_KEYS.REPO_STATS);
+  if (cached) return cached;
+
+  const stats = await fetchAllRepoStats();
+  cacheSet(CACHE_KEYS.REPO_STATS, stats);
+  return stats;
 }
 
 /**
@@ -126,24 +136,4 @@ export function getModuleProgress() {
     { name: 'NvM', progress: 30, total: 1, completed: 0.3 },
     { name: 'Dcm', progress: 20, total: 1, completed: 0.2 },
   ];
-}
-
-// 缓存机制
-let cachedStats: RepoStats[] | null = null;
-let cacheTime: number = 0;
-const CACHE_DURATION = 5 * 60 * 1000; // 5分钟
-
-/**
- * 获取缓存的仓库统计
- */
-export async function getCachedRepoStats(): Promise<RepoStats[]> {
-  const now = Date.now();
-  
-  if (cachedStats && now - cacheTime < CACHE_DURATION) {
-    return cachedStats;
-  }
-  
-  cachedStats = await fetchAllRepoStats();
-  cacheTime = now;
-  return cachedStats;
 }

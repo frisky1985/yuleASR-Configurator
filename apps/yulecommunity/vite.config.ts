@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 
 export default defineConfig({
-  base: '/community/',
+  base: '/yuleCommunity/',
   plugins: [
     react(),
     VitePWA({
@@ -14,10 +14,10 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB
         // 离线回退配置
-        navigateFallback: '/community/offline.html',
+        navigateFallback: '/yuleCommunity/offline.html',
         navigateFallbackDenylist: [
-          /^\/community\/admin/,
-          /^\/community\/api/,
+          /^\/yuleCommunity\/admin/, // 管理后台不缓存离线页面
+          /^\/yuleCommunity\/api/,   // API 请求不缓存
         ],
         runtimeCaching: [
           {

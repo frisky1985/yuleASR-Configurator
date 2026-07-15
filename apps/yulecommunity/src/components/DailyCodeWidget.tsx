@@ -153,7 +153,7 @@ export function DailyCodeWidget() {
         {/* 底部链接 */}
         <div className="flex items-center justify-center gap-4 mt-4">
           <a
-            href={`#/opensource/${snippet.module.toLowerCase()}`}
+            href={`/opensource/${snippet.module.toLowerCase()}`}
             className="text-sm text-primary hover:text-primary/80 flex items-center gap-1 transition-colors"
           >
             <BookOpen className="w-4 h-4" />
@@ -161,7 +161,7 @@ export function DailyCodeWidget() {
           </a>
           <span className="text-border">|</span>
           <a
-            href="#/learning"
+            href="/learning"
             className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
           >
             更多学习资源 →

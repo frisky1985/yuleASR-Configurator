@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { 
   FileText, 
   Download, 
@@ -239,6 +239,7 @@ export function ReadmeGenerator() {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(generateReadme());
     setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   // 下载 README
@@ -290,11 +291,6 @@ export function ReadmeGenerator() {
   };
 
   const readme = useMemo(() => generateReadme(), [config, selectedTemplate]);
-
-  // Reset copied state when generated content changes
-  useEffect(() => {
-    setCopied(false);
-  }, [config, selectedTemplate]);
 
   return (
     <div className="w-full bg-card rounded-xl border border-border overflow-hidden">

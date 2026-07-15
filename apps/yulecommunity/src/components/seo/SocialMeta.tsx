@@ -198,7 +198,7 @@ export function HomeSocialMeta() {
       title="YuleTech - 汽车基础软件开源社区 | AutoSAR BSW"
       description="YuleTech 是国内领先的汽车基础软件开源社区，提供 AutoSAR BSW 开源代码、开发工具链、学习成长平台和硬件开发板，做工程师的合作伙伴。"
       url="/"
-      image="/images/hero-bg.png"
+      image="/images/hero-bg.webp"
       type="website"
     />
   );

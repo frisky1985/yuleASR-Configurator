@@ -3,7 +3,7 @@
  * @description 增强型代码块，支持复制功能和语法高亮
  */
 
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, Copy, ChevronDown, ChevronUp } from 'lucide-react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -33,6 +33,8 @@ export interface CodeBlockProps {
 export interface CopyButtonProps {
   /** 要复制的文本 */
   text: string;
+  /** 复制成功显示时长 (ms) (默认: 2000) */
+  successDuration?: number;
   /** 复制成功回调 */
   onCopy?: () => void;
   /** 按钮大小 (默认: 'sm') */
@@ -46,23 +48,33 @@ export interface CopyButtonProps {
  */
 export function CopyButton({
   text,
+  successDuration = 2000,
   onCopy,
   size = 'sm',
   className,
 }: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleCopy = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
       onCopy?.();
+
+      // 重置复制状态
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setCopied(false);
+      }, successDuration);
     } catch (err) {
       console.error('Failed to copy:', err);
       // 降级方案
       fallbackCopy(text);
     }
-  }, [text, onCopy]);
+  }, [text, onCopy, successDuration]);
 
   const fallbackCopy = (copyText: string) => {
     const textarea = document.createElement('textarea');
@@ -75,6 +87,12 @@ export function CopyButton({
     try {
       document.execCommand('copy');
       setCopied(true);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setCopied(false);
+      }, successDuration);
     } catch (err) {
       console.error('Fallback copy failed:', err);
     } finally {

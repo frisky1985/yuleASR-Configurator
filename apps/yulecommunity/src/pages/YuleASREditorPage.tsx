@@ -8,16 +8,11 @@ import {
   GitBranch,
   CheckCircle,
   AlertCircle,
-  Search,
   Settings,
-  ChevronRight,
-  MoreVertical,
   Code,
   Terminal,
   Cpu,
-  Wrench,
-  Check,
-  Copy
+  Wrench
 } from 'lucide-react';
 import { AnimatedPage } from '../components/AnimatedPage';
 
@@ -65,12 +60,9 @@ export function YuleASREditorPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isDirty, setIsDirty] = useState(false);
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [showDisabled, setShowDisabled] = useState(true);
   const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
   const [isValidating, setIsValidating] = useState(false);
   const [activeTab, setActiveTab] = useState<'params' | 'code' | 'build'>('params');
-  const [copied, setCopied] = useState(false);
 
   // 加载配置
   useEffect(() => {
@@ -284,17 +276,6 @@ export function YuleASREditorPage() {
     code += `#endif /* YULEASR_CONFIG_H */\n`;
     return code;
   };
-
-  // 复制代码到剪贴板
-  const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(generateCode());
-    setCopied(true);
-  }, []);
-
-  // 当配置变化时重置复制状态
-  useEffect(() => {
-    setCopied(false);
-  }, [config]);
 
   if (isLoading) {
     return (
@@ -648,16 +629,7 @@ export function YuleASREditorPage() {
             <div className="bg-card rounded-xl border border-border overflow-hidden">
               <div className="px-4 py-3 border-b border-border bg-muted/50 flex items-center justify-between">
                 <span className="font-medium text-sm">生成的配置代码</span>
-                <button
-                  onClick={handleCopy}
-                  className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
-                >
-                  {copied ? (
-                    <><Check className="w-4 h-4" />已复制</>
-                  ) : (
-                    <><Copy className="w-4 h-4" />复制到剪贴板</>
-                  )}
-                </button>
+                <button className="text-sm text-primary hover:underline">复制到剪贴板</button>
               </div>
               <pre className="p-4 text-sm font-mono bg-muted/30 overflow-x-auto max-h-[calc(100vh-300px)] overflow-y-auto">
                 <code>{generateCode()}</code>

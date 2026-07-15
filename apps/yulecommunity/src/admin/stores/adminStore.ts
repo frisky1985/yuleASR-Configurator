@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist, type PersistOptions } from 'zustand/middleware';
+import { persist, createJSONStorage, type PersistOptions } from 'zustand/middleware';
 import type { Role, Permission } from '../utils/permissions';
 import { hasPermission, canAccessAdmin } from '../utils/permissions';
 
@@ -68,6 +68,7 @@ export const useAdminStore = create<AdminState>()(
     }),
     {
       name: 'admin-storage',
+      storage: createJSONStorage(() => sessionStorage),
       partialize: (state: AdminState): AdminStorePersist => ({
         token: state.token,
         refreshToken: state.refreshToken,

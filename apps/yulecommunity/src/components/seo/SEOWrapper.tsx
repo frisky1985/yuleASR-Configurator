@@ -127,7 +127,7 @@ export function HomeSEOWrapper({ children }: { children: ReactNode }) {
         'ECUAL',
       ]}
       url="/"
-      ogImage="/images/hero-bg.png"
+      ogImage="/images/hero-bg.webp"
       ogType="website"
       structuredData={[
         {
@@ -254,7 +254,7 @@ export function BlogListSEOWrapper({ children }: { children: ReactNode }) {
       description="深度技术文章分享，涵盖 AutoSAR、MCAL、ECUAL、工具链等汽车软件开发核心领域。"
       keywords={['技术博客', 'AutoSAR', '汽车软件', '教程']}
       url="/blog"
-      ogImage="/images/hero-bg.png"
+      ogImage="/images/hero-bg.webp"
       ogType="website"
       structuredData={[
         {

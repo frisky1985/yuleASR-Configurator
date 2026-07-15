@@ -215,8 +215,8 @@ export function SSOPage() {
                 <ProviderCard
                   key={provider.id}
                   provider={provider}
-                  onToggle={(id) => console.log('Toggle', id)}
-                  onConfigure={(p) => console.log('Configure', p.id)}
+                  onToggle={() => {}}
+                  onConfigure={() => {}}
                 />
               ))}
             </div>

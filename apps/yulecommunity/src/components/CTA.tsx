@@ -4,7 +4,7 @@ export function CTA() {
   return (
     <section className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent))] opacity-90" />
-      <div className="absolute inset-0 bg-[url('/images/hero-bg.png')] opacity-10 mix-blend-overlay" />
+      <div className="absolute inset-0 bg-[url('/images/hero-bg.webp')] opacity-10 mix-blend-overlay" />
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium mb-6">

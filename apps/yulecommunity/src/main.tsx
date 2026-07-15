@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { HashRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { ThemeProvider } from './contexts/ThemeContext'
 import App from './App'
@@ -10,9 +10,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <HelmetProvider>
       <ThemeProvider defaultTheme="system">
-        <HashRouter>
+        <BrowserRouter basename="/yuleCommunity">
           <App />
-        </HashRouter>
+        </BrowserRouter>
       </ThemeProvider>
     </HelmetProvider>
   </React.StrictMode>,

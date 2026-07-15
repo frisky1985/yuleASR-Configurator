@@ -24,7 +24,6 @@ export interface ForumPost {
   createdAt: string;
   hot: boolean;
   isPinned?: boolean;
-  configId?: string;
 }
 
 export interface Answer {

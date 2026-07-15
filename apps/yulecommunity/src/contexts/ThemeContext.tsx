@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, useMemo, useCallback, useRef, type ReactNode } from 'react';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -12,10 +12,6 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const STORAGE_KEY = 'yule-theme';
-
-function getSystemTheme(): 'light' | 'dark' {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
 
 function getStoredTheme(): Theme | null {
   try {
@@ -33,80 +29,61 @@ function storeTheme(theme: Theme): void {
   }
 }
 
+function applyThemeToDOM(resolved: 'light' | 'dark') {
+  const root = document.documentElement;
+  root.classList.remove('light', 'dark');
+  root.classList.add(resolved);
+  root.setAttribute('data-theme', resolved);
+  const meta = document.querySelector<HTMLMetaElement>('meta[name=theme-color]');
+  if (meta) meta.content = resolved === 'dark' ? '#0f172a' : '#f8fafc';
+}
+
 interface ThemeProviderProps {
   children: ReactNode;
   defaultTheme?: Theme;
 }
 
 export function ThemeProvider({ children, defaultTheme = 'system' }: ThemeProviderProps) {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    // 初始化时同步读取存储的主题
-    const stored = getStoredTheme();
-    return stored || defaultTheme;
-  });
-  const [mounted, setMounted] = useState(false);
+  const [theme, setThemeState] = useState<Theme>(() => getStoredTheme() || defaultTheme);
+  const [systemPref, setSystemPref] = useState<'light' | 'dark'>(() =>
+    document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+  );
 
-  // 计算解析后的主题
-  const resolvedTheme = theme === 'system' ? getSystemTheme() : theme;
+  const resolvedTheme = useMemo<'light' | 'dark'>(
+    () => (theme === 'system' ? systemPref : theme),
+    [theme, systemPref]
+  );
 
-  // 标记已挂载
+  const isFirstRender = useRef(true);
+
+  // Sync React state with DOM when resolved theme changes (skip initial mount — inline script already did it)
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (isFirstRender.current) { isFirstRender.current = false; return; }
+    applyThemeToDOM(resolvedTheme);
+  }, [resolvedTheme]);
 
-  // 更新文档主题类
+  // Listen for system theme changes when in 'system' mode
   useEffect(() => {
-    if (!mounted) return;
-    
-    const root = document.documentElement;
-    root.classList.remove('light', 'dark');
-    root.classList.add(resolvedTheme);
-    root.setAttribute('data-theme', resolvedTheme);
-  }, [resolvedTheme, mounted]);
-
-  // 监听系统主题变化
-  useEffect(() => {
-    if (theme !== 'system' || !mounted) return;
+    if (theme !== 'system') return;
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handler = (e: MediaQueryListEvent) => {
-      const newResolvedTheme = e.matches ? 'dark' : 'light';
-      const root = document.documentElement;
-      root.classList.remove('light', 'dark');
-      root.classList.add(newResolvedTheme);
-      root.setAttribute('data-theme', newResolvedTheme);
+      setSystemPref(e.matches ? 'dark' : 'light');
     };
 
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
-  }, [theme, mounted]);
+  }, [theme]);
 
-  const setTheme = (newTheme: Theme) => {
+  const setTheme = useCallback((newTheme: Theme) => {
     setThemeState(newTheme);
     storeTheme(newTheme);
-  };
+  }, []);
 
-  const toggleTheme = () => {
-    const current = theme === 'system' ? getSystemTheme() : theme;
-    const next = current === 'light' ? 'dark' : 'light';
+  const toggleTheme = useCallback(() => {
+    const next = resolvedTheme === 'light' ? 'dark' : 'light';
     setTheme(next);
-  };
-
-  // Prevent flash of wrong theme
-  if (!mounted) {
-    return (
-      <ThemeContext.Provider value={{
-        theme: defaultTheme,
-        resolvedTheme: 'light',
-        setTheme: () => {},
-        toggleTheme: () => {}
-      }}>
-        <div style={{ visibility: 'hidden' }}>
-          {children}
-        </div>
-      </ThemeContext.Provider>
-    );
-  }
+  }, [resolvedTheme, setTheme]);
 
   return (
     <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme, toggleTheme }}>
