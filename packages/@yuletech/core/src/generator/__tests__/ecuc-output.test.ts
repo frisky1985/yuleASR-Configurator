@@ -392,9 +392,70 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         containers: [],
       },
     },
+    {
+      config: {
+        module: 'Det', version: '4.4.0',
+        parameters: {
+          detEnabled: true,
+          detErrorBufferSize: 32,
+          detLogLevel: 2,
+          detReportRuntimeErrors: true,
+          detReportTransientFaults: false,
+          detVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'Det', label: 'Default Error Tracer', layer: 'SERVICE', version: '4.4.0',
+        parameters: [
+          { name: 'detEnabled', type: 'boolean', required: true },
+          { name: 'detErrorBufferSize', type: 'integer', required: true },
+          { name: 'detLogLevel', type: 'integer', required: true },
+          { name: 'detReportRuntimeErrors', type: 'boolean', required: false },
+          { name: 'detReportTransientFaults', type: 'boolean', required: false },
+          { name: 'detVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
+    {
+      config: {
+        module: 'Dem', version: '4.4.0',
+        parameters: {
+          demEnabled: true,
+          demMaxNumberOfEvents: 256,
+          demDebounceCounterBased: true,
+          demDebounceTimeBased: false,
+          demStorageEnabled: true,
+          demVersion: '4.4.0',
+        },
+        containers: {
+          DemEventParameter: [
+            { id: 'event0', parameters: { demEventId: 100, demEventPriority: 1, demEventKind: 0, demEventFailureCycle: 5 } },
+            { id: 'event1', parameters: { demEventId: 200, demEventPriority: 2, demEventKind: 2, demEventFailureCycle: 0 } },
+          ],
+        },
+      },
+      schema: {
+        name: 'Dem', label: 'Diagnostic Event Manager', layer: 'SERVICE', version: '4.4.0',
+        parameters: [
+          { name: 'demEnabled', type: 'boolean', required: true },
+          { name: 'demMaxNumberOfEvents', type: 'integer', required: true },
+          { name: 'demDebounceCounterBased', type: 'boolean', required: false },
+          { name: 'demDebounceTimeBased', type: 'boolean', required: false },
+          { name: 'demStorageEnabled', type: 'boolean', required: false },
+          { name: 'demVersion', type: 'string', required: false },
+        ],
+        containers: [{
+          name: 'DemEventParameter', label: 'Dem Event Parameter', multiple: true,
+          minInstances: 1, maxInstances: 100,
+          parameters: ['demEventId', 'demEventPriority', 'demEventKind', 'demEventFailureCycle'],
+        }],
+      },
+    },
   ];
 
-  it('should generate 4 files each for all 8 modules', async () => {
+  it('should generate 4 files each for all 10 modules', async () => {
     for (const def of moduleDefs) {
       const result = await generator.generate(def.config, def.schema, { outputDir: tmpDir });
       expect(result.success).toBe(true);
