@@ -89,7 +89,10 @@ export function ForumPage() {
     const loadFromApi = async () => {
       setLoading(true);
       try {
-        const apiPosts = await apiClient.getForumPosts();
+        const [apiPosts, apiTags] = await Promise.all([
+          apiClient.getForumPosts(),
+          apiClient.getForumTags(),
+        ]);
         if (cancelled) return;
         if (apiPosts && apiPosts.length > 0) {
           const mapped: ForumPost[] = apiPosts.map((p, idx) => ({
@@ -109,6 +112,9 @@ export function ForumPage() {
             isPinned: false,
           }));
           setPosts(mapped);
+        }
+        if (apiTags && apiTags.length > 0) {
+          setAllTags(['全部', ...apiTags.map(t => t.name)]);
         }
       } catch (err) {
         console.warn('[ForumPage] API unavailable, using fallback static data:', err);

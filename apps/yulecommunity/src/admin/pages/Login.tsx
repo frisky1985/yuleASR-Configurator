@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useAdminStore } from '../stores/adminStore';
+import apiClient, { setApiToken, ApiClientError } from '../../services/apiClient';
 
 export const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -17,25 +18,46 @@ export const Login: React.FC = () => {
     setError('');
     setLoading(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    // Mock authentication
-    if (email === 'admin@example.com' && password === 'admin123') {
+    try {
+      const response = await apiClient.login({ email, password });
+      
+      // Set API token for subsequent requests
+      setApiToken(response.token);
+      
+      // Map API response to admin store (id comes as number, convert to string)
       setUser({
-        id: '1',
-        username: 'Admin',
-        email: 'admin@example.com',
+        id: String(response.user.id),
+        username: response.user.username,
+        email: response.user.email,
         role: 'super_admin',
       });
-      setToken('mock-jwt-token');
+      setToken(response.token);
       setAuthenticated(true);
       navigate('/admin/dashboard');
-    } else {
-      setError('邮箱或密码错误');
+    } catch (err) {
+      console.warn('[Login] API login failed, using fallback mock:', err);
+      
+      // Fallback: mock authentication if API is unavailable
+      if (email === 'admin@example.com' && password === 'admin123') {
+        setUser({
+          id: '1',
+          username: 'Admin',
+          email: 'admin@example.com',
+          role: 'super_admin',
+        });
+        setToken('mock-jwt-token');
+        setAuthenticated(true);
+        navigate('/admin/dashboard');
+      } else {
+        if (err instanceof ApiClientError) {
+          setError(err.message || '登录失败，请检查邮箱和密码');
+        } else {
+          setError('邮箱或密码错误');
+        }
+      }
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (

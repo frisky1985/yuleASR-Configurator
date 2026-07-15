@@ -120,7 +120,7 @@ export function ShareDialog({ isOpen, onClose, config }: ShareDialogProps) {
         title: config.name,
         content: postContent || `分享配置「${config.name}」的配置方案，欢迎讨论和反馈。`,
         tags: generateTags(config),
-        configId: config.id,
+        configId: Number(config.id),
         status: 'published' as const,
       }
       const result = await api.post<{ id: string; slug?: string }>('/api/posts', body)

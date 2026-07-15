@@ -8,7 +8,7 @@
 const BASE_URL =
   (typeof import.meta !== 'undefined' &&
     (import.meta as Record<string, any>).env?.VITE_API_BASE_URL) ||
-  'http://localhost:3002/api'
+  'http://localhost:3002'
 
 // ---------------------------------------------------------------------------
 // Types — aligned with existing data types in @/types/blog and the API server

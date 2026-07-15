@@ -28,6 +28,7 @@ import type { BlogArticle, TocItem } from '@/types/blog';
 import { articleService } from '@/services/blogService';
 import { BlogArticleSEOWrapper } from '@/components/seo';
 import { BookmarkButton, NewsletterSignup, RelatedArticles } from '@/components/engagement';
+import apiClient from '@/services/apiClient';
 
 /**
  * 博客详情页组件
@@ -45,7 +46,7 @@ export function BlogDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [isLiked, setIsLiked] = useState(false);
 
-  // 加载文章数据
+  // 加载文章数据 — 优先从 API 加载，失败时回退到静态数据
   useEffect(() => {
     const loadArticle = async () => {
       if (!slug) {
@@ -58,22 +59,42 @@ export function BlogDetailPage() {
       setError(null);
 
       try {
-        const [articleData, relatedData] = await Promise.all([
-          articleService.getArticleBySlug(slug),
-          articleService.getRelatedArticles(slug, 4),
-        ]);
-
-        if (!articleData) {
-          setError('文章不存在或已被删除');
-        } else {
-          setArticle(articleData);
+        // 尝试从 API 加载
+        const articleData = await apiClient.getBlogPost(slug);
+        
+        setArticle(articleData as unknown as BlogArticle);
+        // 检查是否已点赞（使用本地存储）
+        setIsLiked(articleService.isArticleLiked(String(articleData.id)));
+        
+        // 尝试获取相关文章（API 无此端点，使用静态数据回退）
+        try {
+          const relatedData = await articleService.getRelatedArticles(slug, 4);
           setRelatedArticles(relatedData);
-          // 检查是否已点赞
-          setIsLiked(articleService.isArticleLiked(articleData.id));
+        } catch {
+          setRelatedArticles([]);
         }
       } catch (err) {
-        setError('加载文章失败，请稍后重试');
-        console.error('Failed to load article:', err);
+        console.warn('[BlogDetailPage] API unavailable, falling back to static data:', err);
+        
+        // Fallback: 使用静态数据
+        try {
+          const [articleData, relatedData] = await Promise.all([
+            articleService.getArticleBySlug(slug),
+            articleService.getRelatedArticles(slug, 4),
+          ]);
+
+          if (!articleData) {
+            setError('文章不存在或已被删除');
+          } else {
+            setArticle(articleData);
+            setRelatedArticles(relatedData);
+            // 检查是否已点赞
+            setIsLiked(articleService.isArticleLiked(articleData.id));
+          }
+        } catch (fallbackErr) {
+          setError('加载文章失败，请稍后重试');
+          console.error('Failed to load article from fallback:', fallbackErr);
+        }
       } finally {
         setLoading(false);
       }

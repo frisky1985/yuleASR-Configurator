@@ -14,7 +14,8 @@ import {
   Cpu, Settings, Layers, Box, Code, Search, ChevronDown, ChevronRight, 
   Power, AlertCircle, AlertTriangle, Info, Folder, FolderOpen, 
   FileText, Hash, ToggleLeft, List, Filter, ChevronRightSquare,
-  ChevronDownSquare, CircleDot, Layers2, Trash2, AlertTriangle as AlertTri
+  ChevronDownSquare, CircleDot, Layers2, Trash2, AlertTriangle as AlertTri,
+  CheckCircle, XCircle
 } from 'lucide-react'
 import { useState, useMemo, useCallback, useEffect, forwardRef, useImperativeHandle } from 'react'
 
@@ -949,17 +950,18 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
             </button>
           )}
           
-          {/* Error/Warning badges */}
-          {hasErrors && (
-            <span className="flex-shrink-0 flex items-center justify-center w-4 h-4 text-xs font-medium bg-red-100 text-red-700 rounded-full">
-              {node.errorCount}
-            </span>
-          )}
-          {!hasErrors && hasWarnings && (
-            <span className="flex-shrink-0 flex items-center justify-center w-4 h-4 text-xs font-medium bg-yellow-100 text-yellow-700 rounded-full">
-              {node.warningCount}
-            </span>
-          )}
+          {/* Validation indicator: red X for errors, amber triangle for warnings only, green check for clean */}
+          <span className="flex-shrink-0 w-5 h-5 flex items-center justify-center" title={
+            hasErrors ? `${node.errorCount} error(s)` : hasWarnings ? `${node.warningCount} warning(s)` : 'Passed'
+          }>
+            {hasErrors ? (
+              <XCircle className="w-3.5 h-3.5 text-red-500" />
+            ) : hasWarnings ? (
+              <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
+            ) : (
+              <CheckCircle className="w-3.5 h-3.5 text-green-500" />
+            )}
+          </span>
         </div>
         
         {/* Sub-container nodes (including dynamic instances) */}

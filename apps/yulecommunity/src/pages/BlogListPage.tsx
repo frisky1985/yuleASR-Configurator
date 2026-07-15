@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 import type { BlogArticle, BlogTag, PaginatedResult, BlogCategory } from '@/types/blog';
 import { articleService, tagService } from '@/services/blogService';
 import { categories } from '@/data/blog/articles';
+import apiClient from '@/services/apiClient';
 
 const PAGE_SIZE = 9;
 
@@ -38,16 +39,16 @@ export function BlogListPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // 加载数据
+  // 加载数据 — 优先从 API 加载，失败时回退到静态数据
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
       setError(null);
 
       try {
-        // 并行加载数据
-        const [articlesResult, hotResult, tagsResult] = await Promise.all([
-          articleService.getArticles({
+        // 尝试从 API 加载
+        const [articlesResult, tagsResult] = await Promise.all([
+          apiClient.getBlogPosts({
             category: categoryParam as BlogCategory,
             tag: tagParam || undefined,
             search: searchQuery || undefined,
@@ -56,16 +57,45 @@ export function BlogListPage() {
             sortBy: 'date',
             sortOrder: 'desc',
           }),
-          articleService.getHotArticles(5),
-          tagService.getHotTags(15),
+          apiClient.getBlogTags(),
         ]);
 
-        setArticles(articlesResult);
-        setHotArticles(hotResult);
-        setTags(tagsResult);
+        setArticles(articlesResult as unknown as PaginatedResult<BlogArticle>);
+        setTags(tagsResult as BlogTag[]);
+        
+        // 从 API 数据中提取热门文章（按 viewCount 排序）
+        if (articlesResult.data.length > 0) {
+          const hotSorted = [...articlesResult.data]
+            .sort((a, b) => b.viewCount - a.viewCount)
+            .slice(0, 5);
+          setHotArticles(hotSorted as unknown as BlogArticle[]);
+        }
       } catch (err) {
-        setError('加载文章失败，请稍后重试');
-        console.error('Failed to load blog data:', err);
+        console.warn('[BlogListPage] API unavailable, falling back to static data:', err);
+        
+        // Fallback: 使用静态数据
+        try {
+          const [articlesResult, hotResult, tagsResult] = await Promise.all([
+            articleService.getArticles({
+              category: categoryParam as BlogCategory,
+              tag: tagParam || undefined,
+              search: searchQuery || undefined,
+              page: pageParam,
+              pageSize: PAGE_SIZE,
+              sortBy: 'date',
+              sortOrder: 'desc',
+            }),
+            articleService.getHotArticles(5),
+            tagService.getHotTags(15),
+          ]);
+
+          setArticles(articlesResult);
+          setHotArticles(hotResult);
+          setTags(tagsResult);
+        } catch (fallbackErr) {
+          setError('加载文章失败，请稍后重试');
+          console.error('Failed to load blog data from fallback:', fallbackErr);
+        }
       } finally {
         setLoading(false);
       }
