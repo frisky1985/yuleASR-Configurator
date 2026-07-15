@@ -175,3 +175,52 @@ GitHub: github.com/frisky1985/yuleASR-Configurator
 ---
 
 *本评审文档由 AI 辅助生成，yuleASR 项目维护。请通过飞书评论或线下会议反馈。*
+
+---
+
+## 🧠 Brainstorming Session（2026-07-15）
+
+### 议题一：ConfigType 结构体
+
+**决策：实用分层方案**
+- `Can_ControllerType`（容器级参数）→ `Can_ConfigSetType`（配置集，含 moduleId/version/instances/controllers 数组）→ `Can_ConfigType`（顶层）
+- 不做完整 AUTOSAR 4.4 元模型，只加一层 ConfigSet
+- 生成器改动：`generateConfigType()` 拆为 `generateContainerTypes()` + `generateConfigSetType()` + `generateConfigType()`
+- PBcfg/Lcfg 复用同一 ConfigSetType
+
+### 议题二：条件引擎与约束传播（Phase 3 Review）
+
+**决策：**
+- ✅ 同步传播保持不动（50 容器以内 < 1ms）
+- 🔴 **立即加 MAX_DEPTH=20 熔断保护**防止循环依赖
+- ✅ 条件语法保持 `@condition(...)` 不动，不改 YAML/JSON DSL
+
+### 议题三：Web 与桌面 UI
+
+**决策：**
+- 布局保持 IDE 式左树右编辑，不加拖拽可视化图
+- Electron 保留但不继续投入（当前"网页穿壳"够用，未来接入 gcc 验证管道时再加强）
+- 🔴 **最高优先级**：前端加自动验证指示器，保存时跑 `validateAll()`，左侧配置树标红/绿
+
+### 议题四：yuleCommunity 定位
+
+**决策：**
+- 全面商用+开源的社区平台和工具平台
+- 作为 yuleASR-Configurator 的配置分享和协作社区
+- 代码已存在 `apps/yulecommunity/`，20+ 页面 + 管理后台
+
+### 议题五：后端搭建
+
+**决策：**
+- 后端先本地运行，验证通过后购买云服务器
+- 技术栈：Fastify + Prisma + SQLite（本地）/ PostgreSQL（生产）
+- 端口 3002（本地 dev），3000（生产）
+- 本地启动：`cd packages/@yuletech/api-server && npm install && npx prisma db push && npx tsx src/index.ts`
+- Seed 数据：Admin (admin@yule.dev) + Demo + 3 篇博客 + 2 个帖子 + 9 个标签
+
+### 下一步行动计划
+
+1. 🔴 **配置分享 MVP** — ASR-Configurator 导出 JSON → 分享链接 → yuleCommunity 展示
+2. 🟡 **前端联调** — yulecommunity 前端接入后端 API（auth/forum/blog）
+3. 🟢 **yuleASR 验证指示器** — 前端高优先级改动
+4. 🟢 **生产部署** — 购买云服务器后 Docker Compose 一键部署

@@ -4,6 +4,7 @@ coverage/
 *.log
 .env
 .DS_Store
+*.db
 release/
 *.app
 *.dmg

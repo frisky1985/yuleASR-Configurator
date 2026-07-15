@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  username  String   @unique
+  password  String
+  avatar    String?
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  posts    ForumPost[]
+  comments ForumComment[]
+  blogs    BlogPost[]
+  blogComments BlogComment[]
+}
+
+model ForumPost {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  configId  Int?
+  title     String
+  content   String
+  tags      String   @default("[]") // JSON array stored as string (SQLite)
+  status    String   @default("published")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user     User          @relation(fields: [userId], references: [id])
+  comments ForumComment[]
+}
+
+model ForumComment {
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  userId    Int
+  content   String
+  createdAt DateTime @default(now())
+
+  post ForumPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User     @relation(fields: [userId], references: [id])
+}
+
+model BlogPost {
+  id           String    @id @default(uuid())
+  title        String
+  slug         String    @unique
+  description  String
+  content      String
+  authorId     Int
+  category     String    @default("全部")
+  tags         String    @default("[]") // JSON array as string
+  coverImage   String?
+  isHot        Boolean   @default(false)
+  viewCount    Int       @default(0)
+  likeCount    Int       @default(0)
+  commentCount Int       @default(0)
+  publishedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  author   User           @relation(fields: [authorId], references: [id])
+  comments BlogComment[]
+}
+
+model BlogComment {
+  id        String   @id @default(uuid())
+  articleId String
+  parentId  String?
+  content   String
+  authorId  Int
+  likes     Int      @default(0)
+  likedBy   String   @default("[]")
+  createdAt DateTime @default(now())
+
+  article BlogPost     @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  parent  BlogComment? @relation("BlogCommentReplies", fields: [parentId], references: [id])
+  replies BlogComment[] @relation("BlogCommentReplies")
+  author  User         @relation(fields: [authorId], references: [id])
+}
+
+model Tag {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  postCount Int      @default(0)
+  createdAt DateTime @default(now())
+}

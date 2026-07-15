@@ -1,68 +1,80 @@
-import { FastifyRequest, FastifyReply } from 'fastify'
+import type { FastifyInstance } from 'fastify'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
-import { db } from '../db/index.js'
-import { users } from '../db/schema.js'
-import { eq } from 'drizzle-orm'
-
-const registerSchema = z.object({
-  email: z.string().email(),
-  username: z.string().min(2).max(100),
-  password: z.string().min(6).max(100),
-})
 
 const loginSchema = z.object({
   email: z.string().email(),
-  password: z.string(),
+  password: z.string().min(6),
 })
 
-export async function register(request: FastifyRequest, reply: FastifyReply) {
-  const body = registerSchema.parse(request.body)
-  
-  const existing = await db.select().from(users).where(eq(users.email, body.email)).limit(1)
-  if (existing.length > 0) {
-    return reply.status(409).send({ error: 'Email already registered' })
-  }
+const registerSchema = z.object({
+  email: z.string().email(),
+  username: z.string().min(2).max(32),
+  password: z.string().min(6),
+})
 
-  const passwordHash = await bcrypt.hash(body.password, 10)
-  const [user] = await db.insert(users).values({
-    email: body.email,
-    username: body.username,
-    passwordHash,
-  }).returning()
+export async function authRoutes(app: FastifyInstance) {
+  app.post('/login', async (request, reply) => {
+    const parsed = loginSchema.safeParse(request.body)
+    if (!parsed.success) {
+      return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() })
+    }
 
-  const token = request.server.jwt.sign({ userId: user.id, email: user.email })
-  return reply.status(201).send({
-    token,
-    user: { id: user.id, email: user.email, username: user.username },
+    const { email, password } = parsed.data
+    const { prisma } = await import('../lib/prisma.js')
+
+    const user = await prisma.user.findUnique({ where: { email } })
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return reply.status(401).send({ message: 'Invalid email or password' })
+    }
+
+    const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role })
+    return {
+      token,
+      user: { id: user.id, email: user.email, username: user.username, role: user.role },
+    }
   })
-}
 
-export async function login(request: FastifyRequest, reply: FastifyReply) {
-  const body = loginSchema.parse(request.body)
-  
-  const [user] = await db.select().from(users).where(eq(users.email, body.email)).limit(1)
-  if (!user) {
-    return reply.status(401).send({ error: 'Invalid email or password' })
-  }
+  app.post('/register', async (request, reply) => {
+    const parsed = registerSchema.safeParse(request.body)
+    if (!parsed.success) {
+      return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() })
+    }
 
-  const valid = await bcrypt.compare(body.password, user.passwordHash)
-  if (!valid) {
-    return reply.status(401).send({ error: 'Invalid email or password' })
-  }
+    const { email, username, password } = parsed.data
+    const { prisma } = await import('../lib/prisma.js')
 
-  const token = request.server.jwt.sign({ userId: user.id, email: user.email })
-  return reply.send({
-    token,
-    user: { id: user.id, email: user.email, username: user.username },
+    const existing = await prisma.user.findFirst({
+      where: { OR: [{ email }, { username }] },
+    })
+    if (existing) {
+      return reply.status(409).send({
+        message: existing.email === email ? 'Email already registered' : 'Username already taken',
+      })
+    }
+
+    const hashed = await bcrypt.hash(password, 10)
+    const user = await prisma.user.create({
+      data: { email, username, password: hashed },
+    })
+
+    const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role })
+    return {
+      token,
+      user: { id: user.id, email: user.email, username: user.username, role: user.role },
+    }
   })
-}
 
-export async function me(request: FastifyRequest, reply: FastifyReply) {
-  const { userId } = request.user as { userId: number }
-  const [user] = await db.select().from(users).where(eq(users.id, userId)).limit(1)
-  if (!user) {
-    return reply.status(404).send({ error: 'User not found' })
-  }
-  return reply.send({ id: user.id, email: user.email, username: user.username })
+  app.get('/me', { onRequest: [(app as any).authenticate] }, async (request) => {
+    const { id } = request.user as { id: number }
+    const { prisma } = await import('../lib/prisma.js')
+    const user = await prisma.user.findUnique({
+      where: { id },
+      select: { id: true, email: true, username: true, avatar: true, role: true, createdAt: true },
+    })
+    if (!user) {
+      throw { statusCode: 404, message: 'User not found' }
+    }
+    return user
+  })
 }

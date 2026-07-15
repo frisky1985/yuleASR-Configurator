@@ -1,66 +1,68 @@
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
 import jwt from '@fastify/jwt'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import swagger from '@fastify/swagger'
+import swaggerUi from '@fastify/swagger-ui'
+import { authRoutes } from './routes/auth.js'
+import { postsRoutes } from './routes/posts.js'
+import { blogRoutes } from './routes/blog.js'
+import { tagsRoutes } from './routes/tags.js'
+import { prisma } from './lib/prisma.js'
 
-import { config } from './config.js'
-import { register, login, me } from './routes/auth.js'
-import { list, get, create, update, remove, getVersions } from './routes/configs.js'
-import { getByShareToken } from './routes/share.js'
-import { listPosts, getPost, createPost, updatePost, deletePost, listTags } from './routes/community.js'
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const PORT = parseInt(process.env.PORT || '3000', 10)
+const HOST = process.env.HOST || '0.0.0.0'
+const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production'
 
 const app = Fastify({ logger: true })
 
-// Plugins
-await app.register(cors, { origin: true })
-await app.register(jwt, { secret: config.jwtSecret })
+// ── Plugins ──────────────────────────────────────────────────────────────
 
-// Auth decorator
-async function authenticate(request: any, reply: any) {
+await app.register(cors, { origin: true })
+await app.register(jwt, { secret: JWT_SECRET })
+await app.register(swagger, {
+  openapi: {
+    info: { title: 'yuleCommunity API', version: '0.1.0' },
+  },
+})
+await app.register(swaggerUi, { routePrefix: '/docs' })
+
+// ── Decorate request with authenticate ──────────────────────────────────
+
+app.decorate('authenticate', async function (request: any, reply: any) {
   try {
     await request.jwtVerify()
   } catch {
-    return reply.status(401).send({ error: 'Unauthorized' })
+    reply.status(401).send({ message: 'Unauthorized' })
   }
-}
+})
 
-// Auth routes (public)
-app.post('/api/auth/register', register)
-app.post('/api/auth/login', login)
-app.get('/api/auth/me', { preHandler: [authenticate] }, me)
+// ── Routes ──────────────────────────────────────────────────────────────
 
-// Config routes (protected)
-app.get('/api/configs', { preHandler: [authenticate] }, list)
-app.get('/api/configs/:id', { preHandler: [authenticate] }, get)
-app.post('/api/configs', { preHandler: [authenticate] }, create)
-app.put('/api/configs/:id', { preHandler: [authenticate] }, update)
-app.delete('/api/configs/:id', { preHandler: [authenticate] }, remove)
-app.get('/api/configs/:id/versions', { preHandler: [authenticate] }, getVersions)
-
-// Share route (public)
-app.get('/api/share/:token', getByShareToken)
-
-// Community routes (public)
-app.get('/api/posts', listPosts)
-app.get('/api/posts/:id', getPost)
-app.get('/api/tags', listTags)
-
-// Community routes (protected)
-app.post('/api/posts', { preHandler: [authenticate] }, createPost)
-app.put('/api/posts/:id', { preHandler: [authenticate] }, updatePost)
-app.delete('/api/posts/:id', { preHandler: [authenticate] }, deletePost)
+await app.register(authRoutes, { prefix: '/auth' })
+await app.register(postsRoutes, { prefix: '/posts' })
+await app.register(blogRoutes, { prefix: '/blog' })
+await app.register(tagsRoutes, { prefix: '/tags' })
 
 // Health check
-app.get('/api/health', async () => ({ status: 'ok', time: new Date().toISOString() }))
+app.get('/health', async () => ({ status: 'ok', timestamp: new Date().toISOString() }))
 
-// Start
+// ── Start ────────────────────────────────────────────────────────────────
+
 try {
-  await app.listen({ port: config.port, host: config.host })
-  console.log(`🚀 Server running at http://${config.host}:${config.port}`)
+  await app.listen({ port: PORT, host: HOST })
+  console.log(`🚀 yuleCommunity API running at http://${HOST}:${PORT}`)
+  console.log(`📚 API docs at http://${HOST}:${PORT}/docs`)
 } catch (err) {
   app.log.error(err)
+  await prisma.$disconnect()
   process.exit(1)
 }
+
+// Graceful shutdown
+const shutdown = async () => {
+  await app.close()
+  await prisma.$disconnect()
+  process.exit(0)
+}
+process.on('SIGINT', shutdown)
+process.on('SIGTERM', shutdown)
