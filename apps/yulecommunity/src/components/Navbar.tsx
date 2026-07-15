@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigationType } from 'react-router-dom';
 import { Code2, Menu, X, Shield, ChevronDown, LayoutDashboard, FileEdit, FileJson } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { GlobalSearch } from './GlobalSearch';
@@ -23,10 +23,13 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 路由变化时滚动到顶部 (移除 setState)
+  // Scroll to top on route change, but preserve scroll on browser back/forward
+  const navigationType = useNavigationType();
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
+    if (navigationType !== 'POP') {
+      window.scrollTo(0, 0);
+    }
+  }, [location.pathname, navigationType]);
 
   // 路由变化时关闭移动菜单 (使用 ref 追踪)
   const prevPathname = useRef(location.pathname);
