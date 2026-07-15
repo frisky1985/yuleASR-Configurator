@@ -44,6 +44,12 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
 #include "Std_Types.h"
 #endif
 `);
+    writeFileSync(join(tmpDir, 'MemMap.h'), `
+#ifndef MEMMAP_H
+#define MEMMAP_H
+/* Empty stubs — all section macros resolve to nothing */
+#endif
+`);
   });
 
   afterAll(() => {
@@ -220,6 +226,12 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
 #ifndef ECUC_H
 #define ECUC_H
 #include "Std_Types.h"
+#endif
+`);
+    writeFileSync(join(tmpDir, 'MemMap.h'), `
+#ifndef MEMMAP_H
+#define MEMMAP_H
+/* Empty stubs — all section macros resolve to nothing */
 #endif
 `);
   });

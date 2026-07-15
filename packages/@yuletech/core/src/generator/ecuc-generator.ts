@@ -428,28 +428,34 @@ export class EcucCodeGenerator implements CodeGenerator {
   }
 
   /**
-   * 生成外部声明
+   * 生成外部声明，用 MemMap.h 段标记包裹 const 数据声明
    */
   private generateExternDeclarations(config: ModuleConfig, schema: ModuleSchema): string {
     const moduleName = config.module;
     let content = '/*==================[external data declarations]============================*/\n';
 
+    // 收集数据声明部分
+    let dataDecl = '';
+
     // 声明配置结构体
-    content += `/** @brief External configuration set structure */\n`;
-    content += `extern const ${moduleName}_ConfigSetType ${moduleName}_ConfigSet;\n`;
-    content += `/** @brief External configuration structure */\n`;
-    content += `extern const ${moduleName}_ConfigType ${moduleName}_Config;\n\n`;
+    dataDecl += `/** @brief External configuration set structure */\n`;
+    dataDecl += `extern const ${moduleName}_ConfigSetType ${moduleName}_ConfigSet;\n`;
+    dataDecl += `/** @brief External configuration structure */\n`;
+    dataDecl += `extern const ${moduleName}_ConfigType ${moduleName}_Config;\n\n`;
 
     // 声明容器实例
     if (schema.containers) {
       for (const container of schema.containers) {
         const count = config.containers?.[container.name]?.length || 0;
         if (count > 0) {
-          content += `/** @brief ${container.name} container instances */\n`;
-          content += `extern const ${moduleName}_${container.name}Type ${container.name}_Instances[${count}];\n`;
+          dataDecl += `/** @brief ${container.name} container instances */\n`;
+          dataDecl += `extern const ${moduleName}_${container.name}Type ${container.name}_Instances[${count}];\n`;
         }
       }
     }
+
+    // 用 MemMap.h 段标记包裹数据声明
+    content += this.wrapMemMapSection(moduleName, 'CONST_UNSPECIFIED', dataDecl);
 
     content += '\n/*==================[function declarations]=================================*/\n';
     content += `Std_ReturnType ${moduleName}_Init(const ${moduleName}_ConfigType* ConfigPtr);\n`;
@@ -457,6 +463,26 @@ export class EcucCodeGenerator implements CodeGenerator {
     content += `void ${moduleName}_GetVersionInfo(Std_VersionInfoType* versioninfo);\n\n`;
 
     return content;
+  }
+
+  /**
+   * 用 Autosar MemMap.h 段标记包裹一段代码
+   *
+   * @param moduleName  模块名称（如 Can）
+   * @param section     段名（如 CONST_UNSPECIFIED, VAR_INIT, CODE）
+   * @param body        要包裹的代码块
+   * @returns           带 MEMORY 段标记的代码
+   */
+  private wrapMemMapSection(moduleName: string, section: string, body: string): string {
+    const secName = `${moduleName.toUpperCase()}_START_SEC_${section}`;
+    const endSecName = `${moduleName.toUpperCase()}_STOP_SEC_${section}`;
+    return (
+      `#define ${secName}\n` +
+      `#include "MemMap.h"\n` +
+      `${body}` +
+      `#define ${endSecName}\n` +
+      `#include "MemMap.h"\n\n`
+    );
   }
 
   /**
@@ -480,7 +506,7 @@ export class EcucCodeGenerator implements CodeGenerator {
   }
 
   /**
-   * 生成配置数据
+   * 生成配置数据（用 MemMap.h 段标记包裹 const 数据定义）
    */
   private generateConfigData(
     config: ModuleConfig,
@@ -490,28 +516,31 @@ export class EcucCodeGenerator implements CodeGenerator {
     const moduleName = config.module;
     let content = '/*==================[configuration data]==================================*/\n';
 
+    // 收集所有 const 数据定义到一个块中，统一包裹 MemMap.h 段标记
+    let dataBlock = '';
+
     // 生成容器实例数据
     if (schema.containers && config.containers) {
       for (const container of schema.containers) {
         const instances = config.containers[container.name] || [];
         if (instances.length === 0) continue;
 
-        content += this.generateContainerInstances(container, instances, schema, moduleName, options);
+        dataBlock += this.generateContainerInstances(container, instances, schema, moduleName, options);
       }
     }
 
     // 生成配置集结构体 (ConfigSetType)
-    content += `/** @brief ${moduleName} configuration set structure */\n`;
-    content += `const ${moduleName}_ConfigSetType ${moduleName}_ConfigSet = {\n`;
-    content += `    .moduleId = ${moduleName.toUpperCase()}_MODULE_ID,\n`;
-    content += `    .versionInfo = {${parseVersion(config.version).major}, ${parseVersion(config.version).minor}, ${parseVersion(config.version).patch}},\n`;
-    content += `    .instanceCount = ${this.getInstanceCount(config)},\n`;
+    dataBlock += `/** @brief ${moduleName} configuration set structure */\n`;
+    dataBlock += `const ${moduleName}_ConfigSetType ${moduleName}_ConfigSet = {\n`;
+    dataBlock += `    .moduleId = ${moduleName.toUpperCase()}_MODULE_ID,\n`;
+    dataBlock += `    .versionInfo = {${parseVersion(config.version).major}, ${parseVersion(config.version).minor}, ${parseVersion(config.version).patch}},\n`;
+    dataBlock += `    .instanceCount = ${this.getInstanceCount(config)},\n`;
 
     // 参数值
     for (const param of schema.parameters) {
       const value = config.parameters[param.name];
       if (value !== undefined && value !== null) {
-        content += `    .${param.name} = ${formatCValue(value, param.type)},\n`;
+        dataBlock += `    .${param.name} = ${formatCValue(value, param.type)},\n`;
       }
     }
 
@@ -520,18 +549,21 @@ export class EcucCodeGenerator implements CodeGenerator {
       for (const container of schema.containers) {
         const instances = config.containers[container.name] || [];
         if (instances.length > 0) {
-          content += `    .${container.name} = ${container.name}_Instances,\n`;
+          dataBlock += `    .${container.name} = ${container.name}_Instances,\n`;
         }
       }
     }
 
-    content += `};\n\n`;
+    dataBlock += `};\n\n`;
 
     // 生成配置类型 (ConfigType) - 只包含一个指向 ConfigSet 的指针
-    content += `/** @brief ${moduleName} configuration type */\n`;
-    content += `const ${moduleName}_ConfigType ${moduleName}_Config = {\n`;
-    content += `    .configSet = &${moduleName}_ConfigSet,\n`;
-    content += `};\n\n`;
+    dataBlock += `/** @brief ${moduleName} configuration type */\n`;
+    dataBlock += `const ${moduleName}_ConfigType ${moduleName}_Config = {\n`;
+    dataBlock += `    .configSet = &${moduleName}_ConfigSet,\n`;
+    dataBlock += `};\n\n`;
+
+    // 用 MemMap.h 段标记包裹整个数据块
+    content += this.wrapMemMapSection(moduleName, 'CONST_UNSPECIFIED', dataBlock);
 
     return content;
   }
