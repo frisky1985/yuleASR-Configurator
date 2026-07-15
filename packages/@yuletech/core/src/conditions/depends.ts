@@ -77,6 +77,9 @@ export class DependencyGraph {
     return sorted;
   }
 
+  /** Maximum recursion depth allowed during cycle detection */
+  static readonly MAX_DEPTH = 20;
+
   /**
    * Detect cycles in the dependency graph.
    * Returns an array of cycle paths (each cycle is a string[] of keys).
@@ -87,8 +90,15 @@ export class DependencyGraph {
     const visited = new Set<string>();
     const recursionStack = new Set<string>();
     const path: string[] = [];
+    let depth = 0;
 
     const dfs = (key: string) => {
+      if (++depth > DependencyGraph.MAX_DEPTH) {
+        depth = 0;
+        throw new Error(
+          `MAX_DEPTH (${DependencyGraph.MAX_DEPTH}) exceeded during cycle detection. Possible circular dependency near: ${key}`,
+        );
+      }
       if (recursionStack.has(key)) {
         // Found a cycle — extract the cycle path
         const cycleStart = path.indexOf(key);
@@ -114,6 +124,7 @@ export class DependencyGraph {
 
       path.pop();
       recursionStack.delete(key);
+      depth--;
     };
 
     for (const key of this.nodes.keys()) {

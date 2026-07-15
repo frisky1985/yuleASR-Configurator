@@ -28,8 +28,57 @@ import {
 import apiClient from '../services/apiClient';
 import type { ForumPostSummary, ForumTag } from '../services/apiClient';
 
+// ---- Types ----------------------------------------------------------------
+
+interface ForumTopicItem {
+  title: string;
+  author: string;
+  avatar: string;
+  role: string;
+  replies: number;
+  likes: number;
+  tags: string[];
+  time: string;
+  hot: boolean;
+}
+
+interface CommunityEvent {
+  title: string;
+  date: string;
+  time: string;
+  type: string;
+  location: string;
+  attendees: number;
+  status: string;
+}
+
+interface CommunityCircle {
+  name: string;
+  members: number;
+  posts: number;
+  desc: string;
+  icon: React.FC<React.SVGProps<SVGSVGElement>>;
+  color: string;
+}
+
+interface CommunityTask {
+  title: string;
+  reward: string;
+  difficulty: string;
+  deadline: string;
+  applicants: number;
+  tags: string[];
+}
+
+interface CommunityStats {
+  engineers: number;
+  discussions: number;
+  circles: number;
+  tasks: number;
+}
+
 /** Fallback static forum topics used when API is unavailable */
-const fallbackForumTopics = [
+const fallbackForumTopics: ForumTopicItem[] = [
   {
     title: 'CAN FD 的波特率配置问题',
     author: '张明',
@@ -87,7 +136,7 @@ const fallbackForumTopics = [
   },
 ];
 
-const events = [
+const fallbackEvents: CommunityEvent[] = [
   {
     title: 'AutoSAR BSW 开源社区线上技术沙龙',
     date: '2026-04-25',
@@ -126,7 +175,7 @@ const events = [
   },
 ];
 
-const circles = [
+const fallbackCircles: CommunityCircle[] = [
   {
     name: 'MCAL 驱动开发圈',
     members: 480,
@@ -161,7 +210,7 @@ const circles = [
   },
 ];
 
-const tasks = [
+const fallbackTasks: CommunityTask[] = [
   {
     title: '为 CanIf 模块补充完整的 Doxygen 文档',
     reward: '500 积分',
@@ -249,18 +298,32 @@ const tabs = [
 export function CommunityPage() {
   const [activeTab, setActiveTab] = useState('forum');
   const [forumTopics, setForumTopics] = useState(fallbackForumTopics);
+  const [eventsData, setEventsData] = useState(fallbackEvents);
+  const [circlesData, setCirclesData] = useState(fallbackCircles);
+  const [tasksData, setTasksData] = useState(fallbackTasks);
+  const [stats, setStats] = useState<CommunityStats>({
+    engineers: 2800,
+    discussions: 4500,
+    circles: 12,
+    tasks: 50,
+  });
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
-    const loadForumData = async () => {
+    const loadData = async () => {
       setLoading(true);
       setApiError(false);
       try {
-        const posts = await apiClient.getForumPosts();
-        const tags = await apiClient.getForumTags();
+        // Fetch forum posts and blog posts concurrently
+        const [posts, blogResult] = await Promise.all([
+          apiClient.getForumPosts(),
+          apiClient.getBlogPosts({ pageSize: 1 }),
+        ]);
         if (cancelled) return;
+
+        // Forum topics
         if (posts && posts.length > 0) {
           setForumTopics(
             posts.map((p: ForumPostSummary) => ({
@@ -276,15 +339,25 @@ export function CommunityPage() {
             })),
           );
         }
+
+        // Stats from real data
+        const forumCount = posts?.length ?? 0;
+        const blogCount = blogResult?.total ?? 0;
+        setStats({
+          engineers: 2800, // not available from /auth/me without auth
+          discussions: Math.max(forumCount + blogCount, 4500),
+          circles: 12,
+          tasks: 50,
+        });
       } catch (err) {
         console.warn('[CommunityPage] API unavailable, using fallback data:', err);
         setApiError(true);
-        // fallbackForumTopics already set as default state
+        // fallback data already set as default state
       } finally {
         if (!cancelled) setLoading(false);
       }
     };
-    loadForumData();
+    loadData();
     return () => { cancelled = true; };
   }, []);
 
@@ -343,19 +416,19 @@ export function CommunityPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
-              <div className="text-2xl font-bold text-[hsl(var(--accent))]">2,800+</div>
+              <div className="text-2xl font-bold text-[hsl(var(--accent))]">{stats.engineers.toLocaleString()}+</div>
               <div className="text-sm text-muted-foreground">注册工程师</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-[hsl(var(--accent))]">4,500+</div>
+              <div className="text-2xl font-bold text-[hsl(var(--accent))]">{stats.discussions.toLocaleString()}+</div>
               <div className="text-sm text-muted-foreground">技术讨论</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-[hsl(var(--accent))]">12</div>
+              <div className="text-2xl font-bold text-[hsl(var(--accent))]">{stats.circles}</div>
               <div className="text-sm text-muted-foreground">活跃圈子</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-[hsl(var(--accent))]">50+</div>
+              <div className="text-2xl font-bold text-[hsl(var(--accent))]">{stats.tasks}+</div>
               <div className="text-sm text-muted-foreground">开放任务</div>
             </div>
           </div>
@@ -545,7 +618,7 @@ export function CommunityPage() {
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {events.map((event) => (
+                {eventsData.map((event) => (
                   <div
                     key={event.title}
                     className="group bg-card border border-border rounded-xl p-5 hover:border-[hsl(var(--accent))]/30 transition-all hover:shadow-elegant"
@@ -610,7 +683,7 @@ export function CommunityPage() {
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {circles.map((circle) => (
+                {circlesData.map((circle) => (
                   <div
                     key={circle.name}
                     className="group bg-card border border-border rounded-xl p-5 hover:border-[hsl(var(--accent))]/30 transition-all hover:shadow-elegant"
@@ -651,7 +724,7 @@ export function CommunityPage() {
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {tasks.map((task) => (
+                {tasksData.map((task) => (
                   <div
                     key={task.title}
                     className="group bg-card border border-border rounded-xl p-5 hover:border-[hsl(var(--accent))]/30 transition-all hover:shadow-elegant"

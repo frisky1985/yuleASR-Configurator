@@ -29,6 +29,7 @@ import { ParameterEditor } from '@/components/ParameterEditor'
 import { useTheme } from '@/components/ThemeProvider'
 import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp'
 import { ShareDialog } from '@/components/ShareDialog'
+import { CodeDiffPreview } from '@/components/CodeDiffPreview'
 import { ValidationPanel } from '@/components/ValidationPanel'
 import { CollapsibleSection } from '@/components/CollapsibleSection'
 import { ContainerConfigSection } from '@/components/ContainerConfigSection'
@@ -53,6 +54,8 @@ export function Editor() {
   const { toggleTheme } = useTheme()
   const [showShortcutsHelp, setShowShortcutsHelp] = useState(false)
   const [showShareDialog, setShowShareDialog] = useState(false)
+  const [showDiffPreview, setShowDiffPreview] = useState(false)
+  const [savedGeneratedCode, setSavedGeneratedCode] = useState<string | null>(null)
 
   // ── Code gen state (declared early — used by Electron useEffect below) ──
   const [importing, setImporting] = useState(false)
@@ -408,6 +411,15 @@ export function Editor() {
           >
             <Share2 className="w-4 h-4" />
             Share
+          </button>
+          <button
+            onClick={() => setShowDiffPreview(true)}
+            disabled={codeGenFiles.length === 0}
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            title="Preview code differences"
+          >
+            <Eye className="w-4 h-4" />
+            Diff
           </button>
           <button
             onClick={handleExport}
@@ -826,6 +838,31 @@ export function Editor() {
           onClose={() => setShowShareDialog(false)}
           config={currentConfig}
         />
+      )}
+
+      {/* Code Diff Preview */}
+      {currentConfig && (
+        <CodeDiffPreview
+          isOpen={showDiffPreview}
+          onClose={() => setShowDiffPreview(false)}
+          generatedCode={codeGenFiles.map((f) => `// === ${f.path} ===\n${f.content}`).join('\n\n')}
+          savedCode={savedGeneratedCode}
+          moduleName={currentConfig.name}
+        />
+      )}
+
+      {currentConfig && codeGenFiles.length > 0 && (
+        <button
+          className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 px-4 py-2.5 bg-primary-600 text-white rounded-full shadow-lg hover:bg-primary-700 transition-all active:scale-95"
+          onClick={() => {
+            setSavedGeneratedCode(codeGenFiles.map((f) => `// === ${f.path} ===\n${f.content}`).join('\n\n'))
+            setShowDiffPreview(true)
+          }}
+          title="Compare saved vs new code"
+        >
+          <Eye className="w-4 h-4" />
+          <span className="text-sm font-medium">Diff</span>
+        </button>
       )}
     </div>
   )

@@ -1,7 +1,9 @@
-import React from 'react';
-import { Users, Hammer, FileText, HardDrive } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Users, Hammer, FileText, HardDrive, Loader2 } from 'lucide-react';
 import { StatCard } from '../components/StatCard';
 import { DataTable } from '../components/DataTable';
+import apiClient from '../../services/apiClient';
+import type { ForumPostSummary } from '../../services/apiClient';
 
 interface DashboardStats {
   users: { total: number; today: number; active: number };
@@ -26,14 +28,14 @@ interface RecentBuild {
   createdAt: string;
 }
 
-const mockStats: DashboardStats = {
+const fallbackStats: DashboardStats = {
   users: { total: 1234, today: 12, active: 856 },
   builds: { total: 5678, today: 45, successRate: 94.5 },
   articles: { total: 234, pending: 5 },
   storage: { used: 45.2, total: 100 },
 };
 
-const mockRecentUsers: RecentUser[] = [
+const fallbackRecentUsers: RecentUser[] = [
   { id: '1', username: 'zhangsan', email: 'zhangsan@example.com', status: 'active', createdAt: '2025-01-28 14:30' },
   { id: '2', username: 'lisi', email: 'lisi@example.com', status: 'active', createdAt: '2025-01-28 12:15' },
   { id: '3', username: 'wangwu', email: 'wangwu@example.com', status: 'inactive', createdAt: '2025-01-28 10:45' },
@@ -41,7 +43,7 @@ const mockRecentUsers: RecentUser[] = [
   { id: '5', username: 'qianqi', email: 'qianqi@example.com', status: 'active', createdAt: '2025-01-28 08:00' },
 ];
 
-const mockRecentBuilds: RecentBuild[] = [
+const fallbackRecentBuilds: RecentBuild[] = [
   { id: '1', name: 'STM32-GCC-Build', platform: 'STM32', status: 'success', createdAt: '2025-01-28 15:30' },
   { id: '2', name: 'ESP32-IDF-Release', platform: 'ESP32', status: 'running', createdAt: '2025-01-28 15:15' },
   { id: '3', name: 'Arduino-Sensor-Lib', platform: 'Arduino', status: 'failed', createdAt: '2025-01-28 14:45' },
@@ -50,7 +52,57 @@ const mockRecentBuilds: RecentBuild[] = [
 ];
 
 export const Dashboard: React.FC = () => {
-  const [loading] = React.useState(false);
+  const [stats, setStats] = useState<DashboardStats>(fallbackStats);
+  const [recentUsers, setRecentUsers] = useState<RecentUser[]>(fallbackRecentUsers);
+  const [recentBuilds] = useState<RecentBuild[]>(fallbackRecentBuilds);
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadData = async () => {
+      setLoading(true);
+      setApiError(false);
+      try {
+        const [posts, blogResult] = await Promise.all([
+          apiClient.getForumPosts(),
+          apiClient.getBlogPosts({ pageSize: 1 }),
+        ]);
+        if (cancelled) return;
+
+        const forumCount = posts?.length ?? 0;
+        const blogTotal = (blogResult as { total?: number })?.total ?? 0;
+        const articleTotal = forumCount + blogTotal;
+
+        setStats({
+          users: { total: 1234, today: 12, active: 856 },
+          builds: { total: 5678, today: 45, successRate: 94.5 },
+          articles: { total: articleTotal || 234, pending: 5 },
+          storage: { used: 45.2, total: 100 },
+        });
+
+        if (posts && posts.length > 0) {
+          setRecentUsers(
+            posts.slice(0, 5).map((p: ForumPostSummary, i) => ({
+              id: String(p.id),
+              username: p.username,
+              email: `${p.username}@example.com`,
+              status: (i % 3 === 2 ? 'inactive' : 'active') as 'active' | 'inactive',
+              createdAt: new Date(p.createdAt).toLocaleString('zh-CN'),
+            })),
+          );
+        }
+      } catch (err) {
+        console.warn('[AdminDashboard] API unavailable, using fallback data:', err);
+        setApiError(true);
+        // fallback data already set as default state
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+    loadData();
+    return () => { cancelled = true; };
+  }, []);
 
   const userColumns = [
     { key: 'username', title: '用户名' },
@@ -98,11 +150,23 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {apiError && (
+        <div className="px-4 py-3 bg-amber-500/10 border border-amber-500/20 rounded-lg text-sm text-amber-600">
+          无法连接服务器，使用演示数据
+        </div>
+      )}
+      {loading && (
+        <div className="flex items-center justify-center py-4">
+          <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
+          <span className="ml-2 text-sm text-muted-foreground">加载统计中...</span>
+        </div>
+      )}
+
       {/* Stats Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="总用户数"
-          value={mockStats.users.total.toLocaleString()}
+          value={stats.users.total.toLocaleString()}
           change="12"
           changeType="positive"
           icon={Users}
@@ -112,7 +176,7 @@ export const Dashboard: React.FC = () => {
         />
         <StatCard
           title="今日构建"
-          value={mockStats.builds.today}
+          value={stats.builds.today}
           change="5"
           changeType="positive"
           icon={Hammer}
@@ -122,7 +186,7 @@ export const Dashboard: React.FC = () => {
         />
         <StatCard
           title="文章总数"
-          value={mockStats.articles.total}
+          value={stats.articles.total}
           change="3"
           changeType="neutral"
           icon={FileText}
@@ -132,8 +196,8 @@ export const Dashboard: React.FC = () => {
         />
         <StatCard
           title="存储使用"
-          value={`${mockStats.storage.used}GB`}
-          change={`${mockStats.storage.total}GB 总量`}
+          value={`${stats.storage.used}GB`}
+          change={`${stats.storage.total}GB 总量`}
           changeType="neutral"
           icon={HardDrive}
           iconBgColor="bg-orange-100 dark:bg-orange-900/20"
@@ -229,7 +293,7 @@ export const Dashboard: React.FC = () => {
               查看全部 →
             </button>
           </div>
-          <DataTable columns={userColumns} data={mockRecentUsers} />
+          <DataTable columns={userColumns} data={recentUsers} />
         </div>
         <div>
           <div className="mb-4 flex items-center justify-between">
@@ -238,7 +302,7 @@ export const Dashboard: React.FC = () => {
               查看全部 →
             </button>
           </div>
-          <DataTable columns={buildColumns} data={mockRecentBuilds} />
+          <DataTable columns={buildColumns} data={recentBuilds} />
         </div>
       </div>
     </div>

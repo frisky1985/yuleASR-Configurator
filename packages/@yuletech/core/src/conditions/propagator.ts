@@ -287,6 +287,16 @@ export class ConstraintPropagator {
   constructor(rules: PropagationRule[]) {
     this.rules = rules;
     this.depGraph = this.buildDependencyGraph(rules);
+
+    // Warn on circular dependencies at construction time
+    const cycles = this.depGraph.detectCycles();
+    if (cycles.length > 0) {
+      console.warn(
+        `[ConstraintPropagator] Circular dependencies detected in propagation rules:\n${cycles
+          .map((c) => `  cycle: ${c.join(' → ')}`)
+          .join('\n')}`,
+      );
+    }
   }
 
   /**

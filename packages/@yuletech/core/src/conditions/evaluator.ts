@@ -24,6 +24,10 @@ import type { ModuleConfig } from '../types';
  * - Unresolvable paths       → false (fails closed — invisible / disabled)
  */
 export class ConditionEvaluator {
+  /** Maximum recursion depth during expression evaluation */
+  static readonly MAX_DEPTH = 50;
+  private evalDepth = 0;
+
   /**
    * Evaluate a condition expression tree against an array of module configs.
    */
@@ -34,6 +38,12 @@ export class ConditionEvaluator {
   // ─── internal recursion ────────────────────────────────────────────
 
   private evaluateNode(node: ConditionExpr, configs: ModuleConfig[]): unknown {
+    if (++this.evalDepth > ConditionEvaluator.MAX_DEPTH) {
+      this.evalDepth = 0;
+      throw new Error(
+        `MAX_DEPTH (${ConditionEvaluator.MAX_DEPTH}) exceeded in condition evaluation. Possible malformed expression.`,
+      );
+    }
     switch (node.type) {
       case 'path':
         return this.evaluatePath(node, configs);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import {
   HelpCircle,
@@ -16,11 +16,14 @@ import {
   Clock,
   ChevronDown,
   ChevronUp,
+  Loader2,
 } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useUserSystem } from '../hooks/useUserSystem';
 import { useNotifications } from '../hooks/useNotifications';
-import { initialQuestions, generateId, type Question, type Answer } from '../data/communityData';
+import { generateId, type Question, type Answer } from '../data/communityData';
+import apiClient from '../services/apiClient';
+import type { ForumPostSummary } from '../services/apiClient';
 
 const sortOptions = [
   { label: '最新提问', value: 'newest' },
@@ -34,11 +37,35 @@ const statusFilters = [
   { label: '已解决', value: 'resolved' },
 ];
 
+/** Map a ForumPostSummary from the API to the app's Question type */
+function postToQuestion(p: ForumPostSummary): Question {
+  return {
+    id: String(p.id),
+    title: p.title,
+    content: p.content,
+    author: p.username,
+    avatar: p.username.slice(0, 2).toUpperCase(),
+    role: '社区成员',
+    tags: p.tags.length > 0 ? p.tags : ['问答'],
+    status: p.status === 'published' ? 'open' : 'open',
+    bounty: 0,
+    views: 0,
+    answers: [],
+    createdAt: p.createdAt,
+  };
+}
+
+// ---- Fallback data --------------------------------------------------------
+
+const fallbackQuestions: Question[] = [];
+
 export function QAPage() {
-  const [questions, setQuestions] = useLocalStorage<Question[]>('yuletech-qa-questions', initialQuestions);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [sortBy, setSortBy] = useState('newest');
+  const [questions, setQuestions] = useLocalStorage<Question[]>('yuletech-qa-questions', fallbackQuestions);
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState(false);
+  const [searchQueryVal, setSearchQuery] = useState('');
+  const [statusFilterVal, setStatusFilter] = useState('all');
+  const [sortByVal, setSortBy] = useState('newest');
   const [expandedQuestionId, setExpandedQuestionId] = useState<string | null>(null);
   const [showNewQuestion, setShowNewQuestion] = useState(false);
   const [newTitle, setNewTitle] = useState('');
@@ -50,18 +77,51 @@ export function QAPage() {
   const { addPoints } = useUserSystem();
   const { addNotification } = useNotifications();
 
+  // ---- Initial data load from API -----------------------------------------
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadQuestions = async () => {
+      setLoading(true);
+      setApiError(false);
+      try {
+        const posts = await apiClient.getForumPosts({ tag: '求助' });
+        if (cancelled) return;
+        if (posts && posts.length > 0) {
+          setQuestions(posts.map(postToQuestion));
+        }
+      } catch (err) {
+        console.warn('[QAPage] API unavailable, using fallback data:', err);
+        setApiError(true);
+        // localStorage data remains as fallback
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    // Only load from API if no questions in localStorage
+    const stored = JSON.parse(localStorage.getItem('yuletech-qa-questions') || '[]');
+    if (stored.length === 0) {
+      loadQuestions();
+    } else {
+      // Data already exists in localStorage; still try API for refresh
+      loadQuestions();
+    }
+    return () => { cancelled = true; };
+  }, []);
+
   const filteredQuestions = questions
     .filter((q) => {
       const matchSearch =
-        q.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        q.content.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchStatus = statusFilter === 'all' || q.status === statusFilter;
+        q.title.toLowerCase().includes(searchQueryVal.toLowerCase()) ||
+        q.content.toLowerCase().includes(searchQueryVal.toLowerCase());
+      const matchStatus = statusFilterVal === 'all' || q.status === statusFilterVal;
       return matchSearch && matchStatus;
     })
     .sort((a, b) => {
-      if (sortBy === 'newest') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      if (sortBy === 'bounty') return b.bounty - a.bounty;
-      if (sortBy === 'views') return b.views - a.views;
+      if (sortByVal === 'newest') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      if (sortByVal === 'bounty') return b.bounty - a.bounty;
+      if (sortByVal === 'views') return b.views - a.views;
       return 0;
     });
 
@@ -93,7 +153,7 @@ export function QAPage() {
         if (q.id !== questionId) return q;
         return {
           ...q,
-          status: 'resolved',
+          status: 'resolved' as const,
           answers: q.answers.map((ans) => ({
             ...ans,
             isAccepted: ans.id === answerId,
@@ -141,7 +201,7 @@ export function QAPage() {
     }
   };
 
-  const handleCreateQuestion = () => {
+  const handleCreateQuestion = async () => {
     if (!newTitle.trim() || !newContent.trim()) return;
     const tags = newTags
       .split(/[,，]/)
@@ -154,7 +214,7 @@ export function QAPage() {
       author: currentUser,
       avatar: '我',
       role: '社区成员',
-      tags: tags.length ? tags : ['问答'],
+      tags: tags.length ? tags : ['求助'],
       status: 'open',
       bounty: newBounty,
       views: 0,
@@ -168,6 +228,18 @@ export function QAPage() {
     setNewBounty(10);
     setShowNewQuestion(false);
     addPoints('post', '发布问题');
+
+    // Try to persist via API (fire-and-forget)
+    try {
+      await apiClient.createForumPost({
+        title: newQuestion.title,
+        content: newQuestion.content,
+        tags: newQuestion.tags,
+      });
+    } catch (err) {
+      console.warn('[QAPage] Could not persist question to API:', err);
+      // Already saved to localStorage via useLocalStorage
+    }
   };
 
   const formatTime = (iso: string) => {
@@ -214,7 +286,7 @@ export function QAPage() {
               <input
                 type="text"
                 placeholder="搜索问题..."
-                value={searchQuery}
+                value={searchQueryVal}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
               />
@@ -222,7 +294,7 @@ export function QAPage() {
             <div className="flex items-center gap-2">
               <Filter className="w-4 h-4 text-muted-foreground" />
               <select
-                value={sortBy}
+                value={sortByVal}
                 onChange={(e) => setSortBy(e.target.value)}
                 className="px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
               >
@@ -242,7 +314,7 @@ export function QAPage() {
                 key={f.value}
                 onClick={() => setStatusFilter(f.value)}
                 className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  statusFilter === f.value
+                  statusFilterVal === f.value
                     ? 'bg-[hsl(var(--accent))] text-white'
                     : 'bg-muted text-muted-foreground hover:text-foreground'
                 }`}
@@ -254,8 +326,23 @@ export function QAPage() {
         </div>
       </div>
 
+      {/* Loading indicator */}
+      {loading && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+            <span className="ml-2 text-sm text-muted-foreground">加载中...</span>
+          </div>
+        </div>
+      )}
+
       {/* Questions List */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {apiError && (
+          <div className="mb-4 px-4 py-3 bg-amber-500/10 border border-amber-500/20 rounded-lg text-sm text-amber-600">
+            无法连接服务器，使用本地数据。改动仅保存在本地浏览器中。
+          </div>
+        )}
         <div className="space-y-4">
           {filteredQuestions.map((q) => {
             const isExpanded = expandedQuestionId === q.id;
@@ -414,7 +501,7 @@ export function QAPage() {
               </div>
             );
           })}
-          {filteredQuestions.length === 0 && (
+          {!loading && filteredQuestions.length === 0 && (
             <div className="text-center py-16 text-muted-foreground">
               <HelpCircle className="w-12 h-12 mx-auto mb-4 opacity-30" />
               <p>没有找到相关问题</p>
