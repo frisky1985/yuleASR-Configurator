@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, NavLink, useLocation, useNavigationType } from 'react-router-dom';
-import { Menu, Trophy } from 'lucide-react';
-import { GlobalSearch } from './GlobalSearch';
+import { Code2, Menu, X, Shield } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
-import { MoreDropdown } from './MoreDropdown';
-import { ProductDropdown } from './ProductDropdown';
-import { MobileDrawer } from './MobileDrawer';
+import { GlobalSearch } from './GlobalSearch';
+import { NotificationCenter } from './NotificationCenter';
+import { useAdminAuth } from '../hooks/useAdminAuth';
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
-  const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigationType = useNavigationType();
+  const location = useLocation();
+  const { isAdmin } = useAdminAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,10 +28,33 @@ export function Navbar() {
     }
   }, [location.pathname, navigationType]);
 
+  // 路由变化时关闭移动菜单 (使用 ref 追踪)
+  const prevPathname = useRef(location.pathname);
+  useEffect(() => {
+    if (prevPathname.current !== location.pathname) {
+      setIsMobileMenuOpen(false);
+      prevPathname.current = location.pathname;
+    }
+  }, [location.pathname]);
+
   const navLinks = [
-    { label: '开发者中心', to: '/autosar' },
     { label: '开源代码', to: '/opensource' },
+    { label: '工具链', to: '/toolchain' },
+    { label: 'ASR配置', to: '/yuleasr' },
     { label: '学习成长', to: '/learning' },
+    { label: '技术博客', to: '/blog' },
+    { label: '文档中心', to: '/docs' },
+    { label: '论坛', to: '/forum' },
+    { label: '问答', to: '/qa' },
+    { label: '活动', to: '/events' },
+    { label: '开发板', to: '/hardware' },
+    { label: '下载中心', to: '/downloads' },
+  ];
+
+  const configuratorLinks = [
+    { label: '仪表盘', href: '/configurator/' },
+    { label: '编辑器', href: '/configurator/dashboard' },
+    { label: '模板', href: '/configurator/templates' },
   ];
 
   return (
@@ -47,7 +70,7 @@ export function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent))] flex items-center justify-center">
-              <span className="text-xs font-bold text-white tracking-tight">YL</span>
+              <Code2 className="w-5 h-5 text-white" />
             </div>
             <span className="font-bold text-lg tracking-tight">
               Yule<span className="text-gradient-accent">Tech</span>
@@ -56,7 +79,6 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-6">
-            <ProductDropdown />
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
@@ -81,48 +103,155 @@ export function Navbar() {
                 )}
               </NavLink>
             ))}
-            <NavLink
-              to="/points"
-              className={({ isActive }) =>
-                `flex items-center gap-1 text-sm font-medium transition-colors ${
-                  isActive ? 'text-amber-500' : 'text-muted-foreground hover:text-amber-500'
-                }`
-              }
-            >
-              <Trophy className="w-4 h-4" />
-              积分
-            </NavLink>
-            <MoreDropdown />
+
+            {/* Divider */}
+            <div className="w-px h-6 bg-border" />
+
+            {/* Configurator section */}
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground whitespace-nowrap shrink-0">
+              配置器
+            </span>
+            {configuratorLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-sm font-medium transition-colors relative group whitespace-nowrap shrink-0 text-muted-foreground hover:text-foreground"
+              >
+                {link.label}
+                <span className="absolute -bottom-1 left-0 h-0.5 bg-[hsl(var(--accent))] transition-all duration-300 w-0 group-hover:w-full" />
+              </a>
+            ))}
           </div>
 
-          {/* Desktop Right Side */}
+          {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-3">
             <GlobalSearch />
+            <NotificationCenter />
             <ThemeToggle />
-            <Link
-              to="/join"
-              className="bg-primary text-primary-foreground px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-[hsl(var(--primary-glow))] transition-colors whitespace-nowrap shrink-0"
-            >
-              免费加入
-            </Link>
-          </div>
+            {isAdmin && (
+              <Link
+                to="/admin/dashboard"
+                className="p-2 text-muted-foreground hover:text-[hsl(var(--accent))] transition-colors rounded-lg hover:bg-muted"
+                title="管理后台"
+              >
+                <Shield className="w-4 h-4" />
+              </Link>
+            )}
 
-          {/* Mobile: Search + Hamburger */}
-          <div className="flex lg:hidden items-center gap-1">
-            <GlobalSearch />
-            <button
-              className="p-2 text-muted-foreground hover:text-foreground"
-              onClick={() => setIsMobileDrawerOpen(true)}
-              aria-label="打开导航"
+            <Link
+              to="/profile"
+              className={`text-sm font-medium transition-colors px-3 py-2 whitespace-nowrap shrink-0 ${
+                location.pathname === '/profile'
+                  ? 'text-foreground'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
             >
-              <Menu className="w-5 h-5" />
+              个人中心
+            </Link>
+            <button className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-2 whitespace-nowrap shrink-0">
+              登录
+            </button>
+            <button className="text-sm font-medium bg-[hsl(var(--primary))] text-primary-foreground hover:bg-[hsl(var(--primary-glow))] transition-colors px-4 py-2 rounded-lg whitespace-nowrap shrink-0">
+              免费加入
             </button>
           </div>
-        </div>
-      </div>
 
-      {/* Mobile Drawer */}
-      <MobileDrawer isOpen={isMobileDrawerOpen} onClose={() => setIsMobileDrawerOpen(false)} />
+          {/* Mobile Actions */}
+          <div className="flex lg:hidden items-center gap-1">
+            <GlobalSearch />
+            <NotificationCenter />
+            {isAdmin && (
+              <Link
+                to="/admin/dashboard"
+                className="p-2 text-muted-foreground hover:text-[hsl(var(--accent))] transition-colors"
+                title="管理后台"
+              >
+                <Shield className="w-4 h-4" />
+              </Link>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="lg:hidden p-2 text-muted-foreground hover:text-foreground"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden pb-4 space-y-2">
+            <Link
+              to="/"
+              className={`block px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                location.pathname === '/'
+                  ? 'text-foreground bg-muted'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+              }`}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              首页
+            </Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`block px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  location.pathname === link.to
+                    ? 'text-foreground bg-muted'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
+
+            {/* Mobile Configurator section */}
+            <div className="px-4 pt-3 pb-1">
+              <div className="w-full h-px bg-border mb-3" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                配置器
+              </span>
+            </div>
+            {configuratorLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="block px-4 py-2 text-sm font-medium rounded-lg transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
+              >
+                {link.label}
+              </a>
+            ))}
+            <div className="pt-2 flex flex-col gap-2 px-4">
+              <div className="flex items-center justify-between py-2 border-b border-border">
+                <span className="text-sm text-muted-foreground">主题</span>
+                <ThemeToggle />
+              </div>
+              <Link
+                to="/profile"
+                className={`text-sm font-medium py-2 transition-colors ${
+                  location.pathname === '/profile'
+                    ? 'text-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                个人中心
+              </Link>
+
+              <button className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2 text-left">
+                登录
+              </button>
+              <button className="text-sm font-medium bg-[hsl(var(--primary))] text-primary-foreground hover:bg-[hsl(var(--primary-glow))] transition-colors px-4 py-2 rounded-lg">
+                免费加入
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </nav>
   );
 }
