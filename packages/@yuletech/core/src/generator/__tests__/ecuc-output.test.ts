@@ -792,9 +792,117 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         }],
       },
     },
+    // === CanNm (CAN Network Management) ===
+    {
+      config: {
+        module: 'CanNm',
+        version: '4.4.0',
+        parameters: {
+          canNmEnabled: true,
+          canNmMsgCycleTime: 1000,
+          canNmRepeatMsgTime: 500,
+          canNmNodeId: 1,
+          canNmDevErrorDetect: true,
+          canNmVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'CanNm',
+        label: 'CAN Network Management',
+        layer: 'SERVICE',
+        version: '4.4.0',
+        parameters: [
+          { name: 'canNmEnabled', type: 'boolean', required: true },
+          { name: 'canNmMsgCycleTime', type: 'integer', required: true },
+          { name: 'canNmRepeatMsgTime', type: 'integer', required: true },
+          { name: 'canNmNodeId', type: 'integer', required: true },
+          { name: 'canNmDevErrorDetect', type: 'boolean', required: false },
+          { name: 'canNmVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
+    // === CanSM (CAN State Manager) ===
+    {
+      config: {
+        module: 'CanSM',
+        version: '4.4.0',
+        parameters: {
+          canSmEnabled: true,
+          canSmMaxNetworkCount: 5,
+          canSmBorTime: 1000,
+          canSmDevErrorDetect: true,
+          canSmVersion: '4.4.0',
+        },
+        containers: {
+          CanSmNetwork: [
+            { id: 'net0', parameters: { canSmNetworkIndex: 0, canSmComMChannel: 1 } },
+          ],
+        },
+      },
+      schema: {
+        name: 'CanSM',
+        label: 'CAN State Manager',
+        layer: 'SERVICE',
+        version: '4.4.0',
+        parameters: [
+          { name: 'canSmEnabled', type: 'boolean', required: true },
+          { name: 'canSmMaxNetworkCount', type: 'integer', required: true },
+          { name: 'canSmBorTime', type: 'integer', required: true },
+          { name: 'canSmDevErrorDetect', type: 'boolean', required: false },
+          { name: 'canSmVersion', type: 'string', required: false },
+          { name: 'canSmNetworkIndex', type: 'integer', required: false },
+          { name: 'canSmComMChannel', type: 'integer', required: false },
+        ],
+        containers: [{
+          name: 'CanSmNetwork', label: 'CanSm Network', multiple: true,
+          minInstances: 1, maxInstances: 50,
+          parameters: ['canSmNetworkIndex', 'canSmComMChannel'],
+        }],
+      },
+    },
+    // === CanTrcv (CAN Transceiver Driver) ===
+    {
+      config: {
+        module: 'CanTrcv',
+        version: '4.4.0',
+        parameters: {
+          canTrcvEnabled: true,
+          canTrcvWakeupSupport: true,
+          canTrcvDevErrorDetect: true,
+          canTrcvVersion: '4.4.0',
+        },
+        containers: {
+          CanTrcvChannel: [
+            { id: 'trcv0', parameters: { canTrcvChannelId: 0, canTrcvBaudrate: 500000, canTrcvWakeupMode: 2 } },
+          ],
+        },
+      },
+      schema: {
+        name: 'CanTrcv',
+        label: 'CAN Transceiver Driver',
+        layer: 'MCAL',
+        version: '4.4.0',
+        parameters: [
+          { name: 'canTrcvEnabled', type: 'boolean', required: true },
+          { name: 'canTrcvWakeupSupport', type: 'boolean', required: true },
+          { name: 'canTrcvDevErrorDetect', type: 'boolean', required: false },
+          { name: 'canTrcvVersion', type: 'string', required: false },
+          { name: 'canTrcvChannelId', type: 'integer', required: false },
+          { name: 'canTrcvBaudrate', type: 'integer', required: false },
+          { name: 'canTrcvWakeupMode', type: 'integer', required: false },
+        ],
+        containers: [{
+          name: 'CanTrcvChannel', label: 'CanTrcv Channel', multiple: true,
+          minInstances: 1, maxInstances: 50,
+          parameters: ['canTrcvChannelId', 'canTrcvBaudrate', 'canTrcvWakeupMode'],
+        }],
+      },
+    },
   ];
 
-  it('should generate 4 files each for all 19 modules', async () => {
+  it('should generate 4 files each for all 22 modules', async () => {
     for (const def of moduleDefs) {
       const result = await generator.generate(def.config, def.schema, { outputDir: tmpDir });
       expect(result.success).toBe(true);
