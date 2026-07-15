@@ -900,9 +900,201 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         }],
       },
     },
+    // === Comm (Communication Manager) ===
+    {
+      config: {
+        module: 'Comm',
+        version: '4.4.0',
+        parameters: {
+          commEnabled: true,
+          commMaxChannelCount: 10,
+          commDevErrorDetect: true,
+          commVersion: '4.4.0',
+        },
+        containers: {
+          CommChannel: [
+            { id: 'ch0', parameters: { commChannelId: 0, commChannelProtocol: 0, commChannelBaudrate: 500000 } },
+          ],
+        },
+      },
+      schema: {
+        name: 'Comm',
+        label: 'Communication Manager',
+        layer: 'SERVICE',
+        version: '4.4.0',
+        parameters: [
+          { name: 'commEnabled', type: 'boolean', required: true },
+          { name: 'commMaxChannelCount', type: 'integer', required: true },
+          { name: 'commDevErrorDetect', type: 'boolean', required: false },
+          { name: 'commVersion', type: 'string', required: false },
+          { name: 'commChannelId', type: 'integer', required: false },
+          { name: 'commChannelProtocol', type: 'integer', required: false },
+          { name: 'commChannelBaudrate', type: 'integer', required: false },
+        ],
+        containers: [{
+          name: 'CommChannel', label: 'Comm Channel', multiple: true,
+          minInstances: 1, maxInstances: 50,
+          parameters: ['commChannelId', 'commChannelProtocol', 'commChannelBaudrate'],
+        }],
+      },
+    },
+    // === Os (Operating System) ===
+    {
+      config: {
+        module: 'Os',
+        version: '4.4.0',
+        parameters: {
+          osEnabled: true,
+          osMaxTaskCount: 32,
+          osMaxAlarmCount: 16,
+          osTickDuration: 1000,
+          osDevErrorDetect: true,
+          osVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'Os',
+        label: 'Operating System',
+        layer: 'SERVICE',
+        version: '4.4.0',
+        parameters: [
+          { name: 'osEnabled', type: 'boolean', required: true },
+          { name: 'osMaxTaskCount', type: 'integer', required: true },
+          { name: 'osMaxAlarmCount', type: 'integer', required: true },
+          { name: 'osTickDuration', type: 'integer', required: true },
+          { name: 'osDevErrorDetect', type: 'boolean', required: false },
+          { name: 'osVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
+    // === NvM (NVRAM Manager) ===
+    {
+      config: {
+        module: 'NvM',
+        version: '4.4.0',
+        parameters: {
+          nvmEnabled: true,
+          nvmMaxBlockCount: 50,
+          nvmMaxDatasetCount: 100,
+          nvmDevErrorDetect: true,
+          nvmVersion: '4.4.0',
+        },
+        containers: {
+          NvmBlock: [
+            { id: 'block0', parameters: { nvmBlockNumber: 1, nvmBlockSize: 256, nvmBlockRomBased: false } },
+          ],
+        },
+      },
+      schema: {
+        name: 'NvM',
+        label: 'NVRAM Manager',
+        layer: 'SERVICE',
+        version: '4.4.0',
+        parameters: [
+          { name: 'nvmEnabled', type: 'boolean', required: true },
+          { name: 'nvmMaxBlockCount', type: 'integer', required: true },
+          { name: 'nvmMaxDatasetCount', type: 'integer', required: true },
+          { name: 'nvmDevErrorDetect', type: 'boolean', required: false },
+          { name: 'nvmVersion', type: 'string', required: false },
+          { name: 'nvmBlockNumber', type: 'integer', required: false },
+          { name: 'nvmBlockSize', type: 'integer', required: false },
+          { name: 'nvmBlockRomBased', type: 'boolean', required: false },
+        ],
+        containers: [{
+          name: 'NvmBlock', label: 'Nvm Block', multiple: true,
+          minInstances: 1, maxInstances: 100,
+          parameters: ['nvmBlockNumber', 'nvmBlockSize', 'nvmBlockRomBased'],
+        }],
+      },
+    },
+    // === PduR (PDU Router) ===
+    {
+      config: {
+        module: 'PduR',
+        version: '4.4.0',
+        parameters: {
+          pduREnabled: true,
+          pduRMaxRoutingPath: 50,
+          pduRDevErrorDetect: true,
+          pduRVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'PduR',
+        label: 'PDU Router',
+        layer: 'SERVICE',
+        version: '4.4.0',
+        parameters: [
+          { name: 'pduREnabled', type: 'boolean', required: true },
+          { name: 'pduRMaxRoutingPath', type: 'integer', required: true },
+          { name: 'pduRDevErrorDetect', type: 'boolean', required: false },
+          { name: 'pduRVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
+    // === MemIf (Memory Interface) ===
+    {
+      config: {
+        module: 'MemIf',
+        version: '4.4.0',
+        parameters: {
+          memIfEnabled: true,
+          memIfMaxDeviceCount: 4,
+          memIfDevErrorDetect: true,
+          memIfVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'MemIf',
+        label: 'Memory Interface',
+        layer: 'SERVICE',
+        version: '4.4.0',
+        parameters: [
+          { name: 'memIfEnabled', type: 'boolean', required: true },
+          { name: 'memIfMaxDeviceCount', type: 'integer', required: true },
+          { name: 'memIfDevErrorDetect', type: 'boolean', required: false },
+          { name: 'memIfVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
+    // === Rte (Runtime Environment) ===
+    {
+      config: {
+        module: 'Rte',
+        version: '4.4.0',
+        parameters: {
+          rteEnabled: true,
+          rteMaxRunnableCount: 100,
+          rteMaxTriggerCount: 50,
+          rteDevErrorDetect: true,
+          rteVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'Rte',
+        label: 'Runtime Environment',
+        layer: 'SERVICE',
+        version: '4.4.0',
+        parameters: [
+          { name: 'rteEnabled', type: 'boolean', required: true },
+          { name: 'rteMaxRunnableCount', type: 'integer', required: true },
+          { name: 'rteMaxTriggerCount', type: 'integer', required: true },
+          { name: 'rteDevErrorDetect', type: 'boolean', required: false },
+          { name: 'rteVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
   ];
 
-  it('should generate 4 files each for all 22 modules', async () => {
+  it('should generate 4 files each for all 28 modules', async () => {
     for (const def of moduleDefs) {
       const result = await generator.generate(def.config, def.schema, { outputDir: tmpDir });
       expect(result.success).toBe(true);
