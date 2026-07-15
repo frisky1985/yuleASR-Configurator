@@ -1092,9 +1092,119 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         containers: [],
       },
     },
+    // === Crypto (Crypto Driver) ===
+    {
+      config: {
+        module: 'Crypto',
+        version: '4.4.0',
+        parameters: {
+          cryptoEnabled: true,
+          cryptoMaxKeyCount: 10,
+          cryptoDevErrorDetect: true,
+          cryptoVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'Crypto',
+        label: 'Crypto Driver',
+        layer: 'MCAL',
+        version: '4.4.0',
+        parameters: [
+          { name: 'cryptoEnabled', type: 'boolean', required: true },
+          { name: 'cryptoMaxKeyCount', type: 'integer', required: true },
+          { name: 'cryptoDevErrorDetect', type: 'boolean', required: false },
+          { name: 'cryptoVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
+    // === Csm (Crypto Service Manager) ===
+    {
+      config: {
+        module: 'Csm',
+        version: '4.4.0',
+        parameters: {
+          csmEnabled: true,
+          csmMaxJobCount: 8,
+          csmMaxKeyCount: 10,
+          csmDevErrorDetect: true,
+          csmVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'Csm',
+        label: 'Crypto Service Manager',
+        layer: 'SERVICE',
+        version: '4.4.0',
+        parameters: [
+          { name: 'csmEnabled', type: 'boolean', required: true },
+          { name: 'csmMaxJobCount', type: 'integer', required: true },
+          { name: 'csmMaxKeyCount', type: 'integer', required: true },
+          { name: 'csmDevErrorDetect', type: 'boolean', required: false },
+          { name: 'csmVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
+    // === CryIf (Crypto Interface) ===
+    {
+      config: {
+        module: 'CryIf',
+        version: '4.4.0',
+        parameters: {
+          cryIfEnabled: true,
+          cryIfMaxKeyCount: 16,
+          cryIfDevErrorDetect: true,
+          cryIfVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'CryIf',
+        label: 'Crypto Interface',
+        layer: 'SERVICE',
+        version: '4.4.0',
+        parameters: [
+          { name: 'cryIfEnabled', type: 'boolean', required: true },
+          { name: 'cryIfMaxKeyCount', type: 'integer', required: true },
+          { name: 'cryIfDevErrorDetect', type: 'boolean', required: false },
+          { name: 'cryIfVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
+    // === Nm (Network Management Base) ===
+    {
+      config: {
+        module: 'Nm',
+        version: '4.4.0',
+        parameters: {
+          nmEnabled: true,
+          nmMaxNodeCount: 16,
+          nmDevErrorDetect: true,
+          nmVersion: '4.4.0',
+        },
+        containers: {},
+      },
+      schema: {
+        name: 'Nm',
+        label: 'Network Management Base',
+        layer: 'SERVICE',
+        version: '4.4.0',
+        parameters: [
+          { name: 'nmEnabled', type: 'boolean', required: true },
+          { name: 'nmMaxNodeCount', type: 'integer', required: true },
+          { name: 'nmDevErrorDetect', type: 'boolean', required: false },
+          { name: 'nmVersion', type: 'string', required: false },
+        ],
+        containers: [],
+      },
+    },
   ];
 
-  it('should generate 4 files each for all 28 modules', async () => {
+  it('should generate 4 files each for all 32 modules', async () => {
     for (const def of moduleDefs) {
       const result = await generator.generate(def.config, def.schema, { outputDir: tmpDir });
       expect(result.success).toBe(true);
