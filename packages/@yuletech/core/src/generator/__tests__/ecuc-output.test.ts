@@ -572,9 +572,119 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         }],
       },
     },
+    {
+      config: {
+        module: 'CanTp', version: '4.4.0',
+        parameters: {
+          canTpEnabled: true,
+          canTpMaxRxBuf: 4096,
+          canTpMaxTxBuf: 4096,
+          canTpBlockSize: 256,
+          canTpSeparationTime: 10,
+          canTpDevErrorDetect: true,
+          canTpVersion: '4.4.0',
+        },
+        containers: {
+          CanTpChannel: [
+            { id: 'diag', parameters: { canTpRxId: 0x7E0, canTpTxId: 0x7E8, canTpRxBufSize: 4096, canTpTxBufSize: 4096 } },
+          ],
+        },
+      },
+      schema: {
+        name: 'CanTp', label: 'CAN Transport Layer', layer: 'SERVICE', version: '4.4.0',
+        parameters: [
+          { name: 'canTpEnabled', type: 'boolean', required: true },
+          { name: 'canTpMaxRxBuf', type: 'integer', required: true },
+          { name: 'canTpMaxTxBuf', type: 'integer', required: true },
+          { name: 'canTpBlockSize', type: 'integer', required: true },
+          { name: 'canTpSeparationTime', type: 'integer', required: true },
+          { name: 'canTpDevErrorDetect', type: 'boolean', required: false },
+          { name: 'canTpVersion', type: 'string', required: false },
+        ],
+        containers: [{
+          name: 'CanTpChannel', label: 'CanTp Channel', multiple: true,
+          minInstances: 1, maxInstances: 50,
+          parameters: ['canTpRxId', 'canTpTxId', 'canTpRxBufSize', 'canTpTxBufSize'],
+        }],
+      },
+    },
+    {
+      config: {
+        module: 'Com', version: '4.4.0',
+        parameters: {
+          comEnabled: true,
+          comMaxIPdu: 50,
+          comMaxSignal: 500,
+          comTimeoutDuration: 100,
+          comDevErrorDetect: true,
+          comVersion: '4.4.0',
+        },
+        containers: {
+          ComIPdu: [
+            { id: 'ipdu0', parameters: { comIPduId: 1, comIPduDirection: 0, comIPduSignalCount: 8, comIPduCycleTime: 10 } },
+            { id: 'ipdu1', parameters: { comIPduId: 2, comIPduDirection: 1, comIPduSignalCount: 4 } },
+          ],
+        },
+      },
+      schema: {
+        name: 'Com', label: 'COM Module', layer: 'SERVICE', version: '4.4.0',
+        parameters: [
+          { name: 'comEnabled', type: 'boolean', required: true },
+          { name: 'comMaxIPdu', type: 'integer', required: true },
+          { name: 'comMaxSignal', type: 'integer', required: true },
+          { name: 'comTimeoutDuration', type: 'integer', required: false },
+          { name: 'comDevErrorDetect', type: 'boolean', required: false },
+          { name: 'comVersion', type: 'string', required: false },
+          { name: 'comIPduId', type: 'integer', required: false },
+          { name: 'comIPduDirection', type: 'integer', required: false },
+          { name: 'comIPduSignalCount', type: 'integer', required: false },
+          { name: 'comIPduCycleTime', type: 'integer', required: false },
+        ],
+        containers: [{
+          name: 'ComIPdu', label: 'COM I-PDU', multiple: true,
+          minInstances: 1, maxInstances: 100,
+          parameters: ['comIPduId', 'comIPduDirection', 'comIPduSignalCount', 'comIPduCycleTime'],
+        }],
+      },
+    },
+    {
+      config: {
+        module: 'BswM', version: '4.4.0',
+        parameters: {
+          bswMEnabled: true,
+          bswMmaxInitBlock: 10,
+          bswMmaxActionList: 20,
+          bswMDevErrorDetect: true,
+          bswMVersion: '4.4.0',
+        },
+        containers: {
+          BswMMode: [
+            { id: 'mode0', parameters: { bswMMode: 1, bswMInitBlock: 2, bswMAction: 3 } },
+          ],
+        },
+      },
+      schema: {
+        name: 'BswM', label: 'Basic Software Manager', layer: 'SERVICE', version: '4.4.0',
+        parameters: [
+          { name: 'bswMEnabled', type: 'boolean', required: true },
+          { name: 'bswMmaxInitBlock', type: 'integer', required: true },
+          { name: 'bswMmaxActionList', type: 'integer', required: true },
+          { name: 'bswMDevErrorDetect', type: 'boolean', required: false },
+          { name: 'bswMVersion', type: 'string', required: false },
+          { name: 'bswMMode', type: 'integer', required: false },
+          { name: 'bswMInitBlock', type: 'integer', required: false },
+          { name: 'bswMAction', type: 'integer', required: false },
+        ],
+        containers: [{
+          name: 'BswMMode', label: 'BswM Mode', multiple: true,
+          minInstances: 1, maxInstances: 50,
+          parameters: ['bswMMode', 'bswMInitBlock', 'bswMAction'],
+        }],
+      },
+    },
   ];
 
-  it('should generate 4 files each for all 13 modules', async () => {
+  it('should generate 4 files each for all 16 modules', async () => {
     for (const def of moduleDefs) {
       const result = await generator.generate(def.config, def.schema, { outputDir: tmpDir });
       expect(result.success).toBe(true);
