@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
 import { Layout } from './components/Layout'
@@ -17,6 +17,8 @@ import { ConfigDiff } from './pages/ConfigDiff'
 import { useAuthStore } from './stores/authStore'
 import { LicenseActivation } from './pages/LicenseActivation'
 import { AdminBranding } from './pages/AdminBranding'
+
+const PluginManager = lazy(() => import('./pages/PluginManager'))
 
 import './styles/branding.css'
 
@@ -39,6 +41,7 @@ function App() {
             <Route path="/sync" element={<GitSync />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/settings/license" element={<LicenseActivation />} />
+            <Route path="/plugins" element={<Suspense fallback={<div className="flex items-center justify-center py-20 text-muted-foreground">加载插件管理...</div>}><PluginManager /></Suspense>} />
             <Route path="/migrate" element={<Migrate />} />
             <Route path="/editor/:configId" element={<Editor />} />
             <Route path="/editor/:configId/:moduleId" element={<Editor />} />

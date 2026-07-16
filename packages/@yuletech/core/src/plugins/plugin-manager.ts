@@ -17,6 +17,7 @@ import type {
   PluginContext,
   CodeGeneratorPlugin,
   ValidatorPlugin,
+  DataExporterPlugin,
 } from '@yuletech/plugin-sdk';
 import { pluginRegistry, type RegisteredPlugin } from './plugin-registry';
 
@@ -96,6 +97,14 @@ class PluginManagerImpl {
         };
         pluginRegistry.registerValidator(prefixed);
         logger.info(`Registered validator: ${val.name}`);
+      },
+      registerDataExporter: (exporter: DataExporterPlugin) => {
+        const prefixed: DataExporterPlugin = {
+          ...exporter,
+          name: `${pluginId}:${exporter.name}`,
+        };
+        pluginRegistry.registerDataExporter(prefixed);
+        logger.info(`Registered data exporter: ${exporter.name}`);
       },
     };
   }
@@ -179,7 +188,7 @@ class PluginManagerImpl {
     }
 
     existing.meta.enabled = false;
-    // Remove owned generators & validators
+    // Remove owned generators & validators & exporters
     for (const [name, gen] of pluginRegistry['codeGenerators']) {
       if (gen.name.startsWith(`${id}:`)) {
         pluginRegistry.unregisterCodeGenerator(name);
@@ -188,6 +197,11 @@ class PluginManagerImpl {
     for (const [name, val] of pluginRegistry['validators']) {
       if (val.name.startsWith(`${id}:`)) {
         pluginRegistry.unregisterValidator(name);
+      }
+    }
+    for (const [name, exp] of pluginRegistry['dataExporters']) {
+      if (exp.name.startsWith(`${id}:`)) {
+        pluginRegistry.unregisterDataExporter(name);
       }
     }
 

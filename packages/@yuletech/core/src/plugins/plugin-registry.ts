@@ -9,6 +9,7 @@ import type {
   YulePlugin,
   CodeGeneratorPlugin,
   ValidatorPlugin,
+  DataExporterPlugin,
   PluginMeta,
   PluginType,
 } from '@yuletech/plugin-sdk';
@@ -38,6 +39,9 @@ class PluginRegistryImpl {
   /** Validators registered by all plugins, keyed by validator name */
   private validators = new Map<string, ValidatorPlugin>();
 
+  /** Data exporters registered by all plugins, keyed by exporter name */
+  private dataExporters = new Map<string, DataExporterPlugin>();
+
   // ── Plugin lifecycle ──────────────────────────────────────────
 
   /**
@@ -49,7 +53,7 @@ class PluginRegistryImpl {
   }
 
   /**
-   * Unregister a plugin and all its registered generators / validators.
+   * Unregister a plugin and all its registered generators / validators / exporters.
    * Calls deactivate() if the instance provides it.
    */
   async unregister(id: string): Promise<boolean> {
@@ -61,15 +65,22 @@ class PluginRegistryImpl {
       await entry.instance.deactivate();
     }
 
-    // Remove owned generators & validators
+    // Remove owned generators
     for (const [name, gen] of this.codeGenerators) {
       if (gen.name.startsWith(`${id}:`)) {
         this.codeGenerators.delete(name);
       }
     }
+    // Remove owned validators
     for (const [name, val] of this.validators) {
       if (val.name.startsWith(`${id}:`)) {
         this.validators.delete(name);
+      }
+    }
+    // Remove owned data exporters
+    for (const [name, exp] of this.dataExporters) {
+      if (exp.name.startsWith(`${id}:`)) {
+        this.dataExporters.delete(name);
       }
     }
 
@@ -163,6 +174,24 @@ class PluginRegistryImpl {
     );
   }
 
+  // ── Data Exporters ─────────────────────────────────────────────
+
+  registerDataExporter(exporter: DataExporterPlugin): void {
+    this.dataExporters.set(exporter.name, exporter);
+  }
+
+  unregisterDataExporter(name: string): void {
+    this.dataExporters.delete(name);
+  }
+
+  getDataExporter(name: string): DataExporterPlugin | undefined {
+    return this.dataExporters.get(name);
+  }
+
+  getAllDataExporters(): DataExporterPlugin[] {
+    return Array.from(this.dataExporters.values());
+  }
+
   // ── Serialisation ─────────────────────────────────────────────
 
   /** Export metadata for all plugins (no runtime instances) */
@@ -175,6 +204,7 @@ class PluginRegistryImpl {
     this.plugins.clear();
     this.codeGenerators.clear();
     this.validators.clear();
+    this.dataExporters.clear();
   }
 }
 

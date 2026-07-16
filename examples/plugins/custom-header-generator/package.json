@@ -1,0 +1,18 @@
+{
+  "name": "example-custom-header-generator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Example plugin: adds a custom copyright header to generated C files",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@yuletech/plugin-sdk": "file:../../../packages/@yuletech/plugin-sdk"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0"
+  }
+}
