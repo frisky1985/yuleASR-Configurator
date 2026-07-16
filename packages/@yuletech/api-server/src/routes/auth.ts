@@ -31,6 +31,7 @@ export async function authRoutes(app: FastifyInstance) {
     const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role })
     return {
       token,
+      provider: 'email',
       user: { id: user.id, email: user.email, username: user.username, role: user.role },
     }
   })
@@ -61,6 +62,7 @@ export async function authRoutes(app: FastifyInstance) {
     const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role })
     return {
       token,
+      provider: 'email',
       user: { id: user.id, email: user.email, username: user.username, role: user.role },
     }
   })
@@ -70,11 +72,14 @@ export async function authRoutes(app: FastifyInstance) {
     const { prisma } = await import('../lib/prisma.js')
     const user = await prisma.user.findUnique({
       where: { id },
-      select: { id: true, email: true, username: true, avatar: true, role: true, score: true, createdAt: true },
+      select: { id: true, email: true, username: true, avatar: true, role: true, score: true, ssoProvider: true, ssoId: true, createdAt: true },
     })
     if (!user) {
       throw { statusCode: 404, message: 'User not found' }
     }
-    return user
+    return {
+      ...user,
+      ssoBound: !!(user.ssoProvider && user.ssoProvider !== 'email'),
+    }
   })
 }

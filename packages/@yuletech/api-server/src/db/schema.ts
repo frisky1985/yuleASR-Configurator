@@ -72,5 +72,26 @@ export type Post = typeof posts.$inferSelect
 export type NewPost = typeof posts.$inferInsert
 export type Comment = typeof comments.$inferSelect
 export type NewComment = typeof comments.$inferInsert
+export const brandSettings = pgTable('brand_settings', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 255 }).notNull(),
+  logoUrl: text('logo_url'),
+  faviconUrl: text('favicon_url'),
+  primaryColor: varchar('primary_color', { length: 7 }).default('#2563EB'),
+  secondaryColor: varchar('secondary_color', { length: 7 }).default('#6366F1'),
+  accentColor: varchar('accent_color', { length: 7 }).default('#06B6D4'),
+  companyName: varchar('company_name', { length: 255 }),
+  supportEmail: varchar('support_email', { length: 255 }),
+  termsUrl: text('terms_url'),
+  privacyUrl: text('privacy_url'),
+  customDomain: varchar('custom_domain', { length: 255 }),
+  emailTemplateHeader: text('email_template_header'),
+  emailTemplateFooter: text('email_template_footer'),
+  allowedDomains: jsonb('allowed_domains').default([]),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+})
+
 export type Tag = typeof tags.$inferSelect
 export type NewTag = typeof tags.$inferInsert
+export type BrandSetting = typeof brandSettings.$inferSelect
+export type NewBrandSetting = typeof brandSettings.$inferInsert

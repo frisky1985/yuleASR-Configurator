@@ -33,3 +33,7 @@ export {
   convertArxmlToYuleasr,
   type ArxmlParseResult
 } from './adapters/arxml-parser';
+
+// 导出插件系统
+export { pluginRegistry, pluginManager } from './plugins';
+export type { RegisteredPlugin } from './plugins';

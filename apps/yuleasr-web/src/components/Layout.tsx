@@ -1,4 +1,4 @@
-import { Home, Settings, FileJson, GitBranch, Moon, Sun, Keyboard, Globe, ArrowLeftRight, MessageSquare, BookOpen, FileText, GitFork, ExternalLink } from 'lucide-react'
+import { Home, Settings, FileJson, GitBranch, Moon, Sun, Keyboard, Globe, ArrowLeftRight, MessageSquare, BookOpen, FileText, GitFork, ExternalLink, Palette } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
@@ -6,6 +6,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp'
 import { LicenseBadge } from '@/components/LicenseBadge'
 import { useTheme } from '@/components/ThemeProvider'
+import { useAuthStore } from '@/stores/authStore'
 import { cn } from '@/lib/utils'
 
 interface LayoutProps {
@@ -16,6 +17,7 @@ export function Layout({ children }: LayoutProps) {
   const location = useLocation()
   const { t, i18n } = useTranslation()
   const { effectiveTheme, toggleTheme } = useTheme()
+  const { user } = useAuthStore()
   const [showShortcuts, setShowShortcuts] = useState(false)
 
   // Global keyboard shortcuts
@@ -138,6 +140,22 @@ export function Layout({ children }: LayoutProps) {
                     </Link>
                   )
                 })}
+
+                {/* Admin link — only for admin users */}
+                {user?.role === 'admin' && (
+                  <Link
+                    to="/admin/branding"
+                    className={cn(
+                      'flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors',
+                      location.pathname.startsWith('/admin')
+                        ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                    )}
+                  >
+                    <Palette className="w-4 h-4" />
+                    <span className="hidden sm:inline">品牌</span>
+                  </Link>
+                )}
 
                 {/* Divider */}
                 <div className="w-px h-5 bg-border mx-1" />

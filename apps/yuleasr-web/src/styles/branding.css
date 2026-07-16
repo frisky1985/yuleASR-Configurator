@@ -1,0 +1,98 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Branding CSS Variables
+   — Applied dynamically via BrandContext from backend brand settings
+   — Defaults: yuleASR brand colors
+   ======================================================================= */
+
+:root {
+  /* ── OEM Brand Colors ──────────────────────────────────────────────── */
+  --brand-primary: #2563EB;
+  --brand-secondary: #6366F1;
+  --brand-accent: #06B6D4;
+  --brand-logo-url: none;
+
+  /* ── OEM Brand Text / Info ─────────────────────────────────────────── */
+  --brand-company-name: "yuleASR";
+  --brand-support-email: "";
+  --brand-terms-url: "";
+  --brand-privacy-url: "";
+
+  /* ── Derived / Interactive ─────────────────────────────────────────── */
+  --brand-primary-hover: color-mix(in srgb, var(--brand-primary) 85%, black);
+  --brand-primary-light: color-mix(in srgb, var(--brand-primary) 15%, white);
+  --brand-secondary-hover: color-mix(in srgb, var(--brand-secondary) 85%, black);
+  --brand-accent-hover: color-mix(in srgb, var(--brand-accent) 85%, black);
+}
+
+/* ── Utility Classes ──────────────────────────────────────────────── */
+
+.brand-bg-primary {
+  background-color: var(--brand-primary);
+}
+
+.brand-text-primary {
+  color: var(--brand-primary);
+}
+
+.brand-border-primary {
+  border-color: var(--brand-primary);
+}
+
+.brand-bg-secondary {
+  background-color: var(--brand-secondary);
+}
+
+.brand-text-secondary {
+  color: var(--brand-secondary);
+}
+
+.brand-bg-accent {
+  background-color: var(--brand-accent);
+}
+
+.brand-text-accent {
+  color: var(--brand-accent);
+}
+
+/* ── Logo Display ────────────────────────────────────────────────── */
+
+.brand-logo {
+  background-image: var(--brand-logo-url);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 32px;
+  height: 32px;
+}
+
+/* ── Button Variants ─────────────────────────────────────────────── */
+
+.btn-brand-primary {
+  background-color: var(--brand-primary);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-brand-primary:hover {
+  background-color: color-mix(in srgb, var(--brand-primary) 85%, black);
+}
+
+.btn-brand-outline {
+  background: transparent;
+  color: var(--brand-primary);
+  border: 1px solid var(--brand-primary);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-brand-outline:hover {
+  background-color: color-mix(in srgb, var(--brand-primary) 10%, transparent);
+}

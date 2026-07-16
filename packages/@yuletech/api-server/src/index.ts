@@ -4,6 +4,7 @@ import jwt from '@fastify/jwt'
 import swagger from '@fastify/swagger'
 import swaggerUi from '@fastify/swagger-ui'
 import { authRoutes } from './routes/auth.js'
+import { ssoRoutes } from './routes/auth-sso.js'
 import { postsRoutes } from './routes/posts.js'
 import { blogRoutes } from './routes/blog.js'
 import { tagsRoutes } from './routes/tags.js'
@@ -13,6 +14,8 @@ import { bswTemplatesRoutes } from './routes/bswTemplates.js'
 import { templateReviewsRoutes } from './routes/templateReviews.js'
 import { sharedConfigsRoutes } from './routes/sharedConfigs.js'
 import { qaRoutes } from './routes/qa.js'
+import { brandingRoutes } from './routes/branding.js'
+import { pluginRoutes } from './routes/plugins.js'
 import { prisma } from './lib/prisma.js'
 
 const PORT = parseInt(process.env.PORT || '3000', 10)
@@ -45,6 +48,7 @@ app.decorate('authenticate', async function (request: any, reply: any) {
 // ── Routes ──────────────────────────────────────────────────────────────
 
 await app.register(authRoutes, { prefix: '/v1/auth' })
+await app.register(ssoRoutes, { prefix: '/v1/auth' })
 await app.register(postsRoutes, { prefix: '/v1/posts' })
 await app.register(blogRoutes, { prefix: '/v1/blog' })
 await app.register(tagsRoutes, { prefix: '/v1/tags' })
@@ -54,6 +58,12 @@ await app.register(bswTemplatesRoutes, { prefix: '/v1/api/bsw-templates' })
 await app.register(templateReviewsRoutes, { prefix: '/v1/api' })
 await app.register(sharedConfigsRoutes, { prefix: '/v1/api/shared-configs' })
 await app.register(qaRoutes, { prefix: '/v1/api' })
+
+// ── Branding (OEM White-Label) ─────────────────────────────────────────
+await app.register(brandingRoutes, { prefix: '/v1/api/branding' })
+
+// ── Plugin Management ─────────────────────────────────────────────────
+await app.register(pluginRoutes, { prefix: '/v1/api/plugins' })
 
 // Health check
 app.get('/health', async () => {

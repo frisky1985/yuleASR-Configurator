@@ -61,6 +61,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
+    "@yuletech/plugin-sdk": "workspace:*",
     "ajv": "^8.12.0",
     "ajv-formats": "^3.0.0"
   },

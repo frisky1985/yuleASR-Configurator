@@ -8,15 +8,18 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String   @unique
-  password  String
-  avatar    String?
-  role      String   @default("user")
-  score     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  username     String   @unique
+  password     String
+  avatar       String?
+  role         String   @default("user")
+  score        Int      @default(0)
+  ssoProvider  String?  // "oidc" | "ldap" | "email"
+  ssoId        String?  // external identity provider user ID
+  ssoMetadata  String?  // JSON string of raw token/claim info
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   posts    ForumPost[]
   comments ForumComment[]

@@ -36,6 +36,19 @@ import {
   CompilerAbstraction,
 } from './autosar-format';
 
+import { pluginRegistry } from '../plugins/plugin-registry';
+
+/** Logger for plugin delegation events */
+function logPluginDelegation(
+  moduleName: string,
+  pluginGeneratorName: string,
+  warning: string[],
+): void {
+  const msg = `[ecuc-generator] Delegating generation of "${moduleName}" to plugin generator "${pluginGeneratorName}"`;
+  console.info(msg);
+  warning.push(`使用插件生成器: ${pluginGeneratorName}`);
+}
+
 /**
  * Ecuc 代码生成器
  * 支持生成标准 Ecuc 配置结构 (参数、容器、实例)
@@ -64,6 +77,27 @@ export class EcucCodeGenerator implements CodeGenerator {
     const warnings: string[] = [];
 
     try {
+      // ── Plugin generator delegation check ──────────────────────
+      // If a plugin code generator supports this module, delegate
+      // generation entirely to the plugin and skip built-in generation.
+      const pluginGen = pluginRegistry.findCodeGeneratorForModule(config.module);
+      if (pluginGen) {
+        logPluginDelegation(config.module, pluginGen.name, warnings);
+        const pluginResult = await pluginGen.generate(
+          config as unknown as Record<string, unknown>,
+          options as unknown as Record<string, unknown>,
+        );
+        return {
+          success: true,
+          files: pluginResult.files.map((f) => ({
+            path: f.path,
+            content: f.content,
+            language: f.path.endsWith('.h') ? 'h' : 'c',
+          })),
+          warnings,
+        };
+      }
+
       // 验证配置
       const validationResult = this.validateConfig(config, schema);
       if (!validationResult.valid) {
