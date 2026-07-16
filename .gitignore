@@ -12,3 +12,5 @@ release/
 *.blockmap
 builder-debug.yml
 verification/
+test-results/
+playwright-report/
