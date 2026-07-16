@@ -13,6 +13,7 @@ import { Settings } from './pages/Settings'
 import { Templates } from './pages/Templates'
 import { Compare } from './pages/Compare'
 import { useAuthStore } from './stores/authStore'
+import { LicenseActivation } from './pages/LicenseActivation'
 
 function App() {
   const loadFromStorage = useAuthStore((s) => s.loadFromStorage)
@@ -31,6 +32,7 @@ function App() {
           <Route path="/templates" element={<Templates />} />
           <Route path="/sync" element={<GitSync />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/settings/license" element={<LicenseActivation />} />
           <Route path="/migrate" element={<Migrate />} />
           <Route path="/editor/:configId" element={<Editor />} />
           <Route path="/editor/:configId/:moduleId" element={<Editor />} />

@@ -1,15 +1,27 @@
 /**
  * ARXML Parser for AUTOSAR ECUC configuration files
- * 
- * Parses .arxml files and extracts module/container/parameter definitions
- * Compatible with AUTOSAR 4.0 - 4.4 schema
+ *
+ * Uses fast-xml-parser (Node.js & browser compatible) instead of DOMParser.
+ * Parses .arxml files and extracts module/container/parameter definitions.
+ * Compatible with AUTOSAR 4.0 - 4.4 schema.
+ *
+ * Key features:
+ * - Handles default namespace (xmlns="http://autosar.org/schema/r4.0")
+ * - Supports CONTAINERS / SUB-CONTAINERS / PARAMETER-VALUES hierarchy
+ * - Restores parameter types from DEST attributes (BOOLEAN, INTEGER, FLOAT, ENUM, STRING)
+ * - Recovers AUTOSAR 4.4 ContainerType hierarchy
+ * - Round-trip safe: export → import → verify
  */
 
-const ARXML_NS = 'http://autosar.org/schema/r4.0'
+import { XMLParser } from 'fast-xml-parser'
 
 export interface ParsedModuleDef {
   shortName: string
   definitionRef: string
+  definitionDest?: string
+  implementationConfigVariant?: string
+  /** Module-level parameters (from module PARAMETER-VALUES) */
+  parameters: ParsedParamValue[]
   containers: ParsedContainerValue[]
 }
 
@@ -24,7 +36,7 @@ export interface ParsedContainerValue {
 export interface ParsedParamValue {
   shortName: string
   definitionRef: string
-  definitionDest?: string
+  definitionDest: string
   value: string
   type: 'numerical' | 'textual' | 'boolean' | 'integer' | 'float' | 'enum' | 'string'
 }
@@ -35,6 +47,37 @@ export interface ArxmlParseResult {
   warnings: string[]
 }
 
+// ---------------------------------------------------------------------------
+// Parser factory
+// ---------------------------------------------------------------------------
+
+function createXmlParser(): XMLParser {
+  return new XMLParser({
+    ignoreAttributes: false,
+    attributeNamePrefix: '@_',
+    textNodeName: '#text',
+    // Force these tags to always produce arrays, even when only one child exists
+    isArray: (name: string) => [
+      'AR-PACKAGE',
+      'ECUC-MODULE-CONFIGURATION-VALUES',
+      'ECUC-CONTAINER-VALUE',
+      'ECUC-NUMERICAL-PARAM-VALUE',
+      'ECUC-TEXTUAL-PARAM-VALUE',
+      'ECUC-BOOLEAN-PARAM-VALUE',
+      'ECUC-INTEGER-PARAM-VALUE',
+      'ECUC-FLOAT-PARAM-VALUE',
+      'ECUC-ENUMERATION-PARAM-VALUE',
+      'ECUC-STRING-PARAM-VALUE',
+      // ARXML element wrappers that may have >1 child
+      'ECUC-CHOICE-CONTAINER-VALUE',
+    ].includes(name),
+  })
+}
+
+// ---------------------------------------------------------------------------
+// Main entry point
+// ---------------------------------------------------------------------------
+
 /**
  * Parse ARXML content string and extract ECUC module configurations
  */
@@ -42,87 +85,127 @@ export function parseArxmlContent(xmlContent: string): ArxmlParseResult {
   const result: ArxmlParseResult = { modules: [], errors: [], warnings: [] }
 
   try {
-    const parser = new DOMParser()
-    const doc = parser.parseFromString(xmlContent, 'application/xml')
-    
-    // Check for parse errors
-    const parseError = doc.querySelector('parsererror')
-    if (parseError) {
-      result.errors.push(`XML parse error: ${parseError.textContent}`)
+    const parser = createXmlParser()
+    const parsed = parser.parse(xmlContent)
+
+    // Extract AUTOSAR root
+    const autosar = parsed.AUTOSAR
+    if (!autosar) {
+      result.errors.push('Missing AUTOSAR root element')
       return result
     }
 
-    // Query all ECUC-MODULE-CONFIGURATION-VALUES elements
-    const ns = `[namespace-uri()='${ARXML_NS}']`
-    const xpath = `.//*[local-name()='ECUC-MODULE-CONFIGURATION-VALUES'${ns}]`
-    const moduleNodes = evaluateXPath(doc, xpath) as Element[]
+    // Navigate: AUTOSAR → AR-PACKAGES → AR-PACKAGE[]
+    const arPackages = ensureArray(
+      autosar['AR-PACKAGES']?.['AR-PACKAGE']
+    )
 
-    for (const moduleNode of moduleNodes) {
-      const modDef = parseModuleConfig(moduleNode)
-      if (modDef) {
-        result.modules.push(modDef)
+    for (const pkg of arPackages) {
+      const elements = pkg.ELEMENTS
+      if (!elements) continue
+
+      const moduleNodes = ensureArray(
+        elements['ECUC-MODULE-CONFIGURATION-VALUES']
+      )
+
+      for (const modNode of moduleNodes) {
+        const modDef = parseModuleConfig(modNode)
+        if (modDef) {
+          result.modules.push(modDef)
+        }
       }
     }
 
     if (result.modules.length === 0) {
       result.warnings.push('No ECUC module configurations found in the ARXML')
     }
-
   } catch (err) {
-    result.errors.push(`Unexpected error: ${err instanceof Error ? err.message : String(err)}`)
+    result.errors.push(
+      `Parse error: ${err instanceof Error ? err.message : String(err)}`
+    )
   }
 
   return result
 }
 
-/**
- * Parse a single ECUC-MODULE-CONFIGURATION-VALUES element
- */
-function parseModuleConfig(moduleEl: Element): ParsedModuleDef | null {
-  const shortName = getChildText(moduleEl, 'SHORT-NAME')
+// ---------------------------------------------------------------------------
+// Module parser
+// ---------------------------------------------------------------------------
+
+function parseModuleConfig(
+  node: any
+): ParsedModuleDef | null {
+  const shortName = getTextContent(node, 'SHORT-NAME')
   if (!shortName) return null
 
-  const definitionRef = getChildDefRef(moduleEl) || ''
-  const containers = parseContainerList(moduleEl)
+  const defRefNode = getChild(node, 'DEFINITION-REF')
+  const definitionRef = defRefNode
+    ? getNodeText(defRefNode) || ''
+    : ''
+  const definitionDest = defRefNode
+    ? getAttribute(defRefNode, 'DEST')
+    : undefined
+  const implVar = getTextContent(node, 'IMPLEMENTATION-CONFIG-VARIANT')
 
-  return { shortName, definitionRef, containers }
+  // Extract module-level parameters and containers
+  const parameters = parseParameterValues(node)
+  const containers = parseContainersFromWrapper(node, 'CONTAINERS')
+
+  return {
+    shortName,
+    definitionRef,
+    definitionDest,
+    implementationConfigVariant: implVar || undefined,
+    parameters,
+    containers,
+  }
 }
 
+// ---------------------------------------------------------------------------
+// Container parser
+// ---------------------------------------------------------------------------
+
 /**
- * Parse ECUC-CONTAINER-VALUE list from parent element's CONTAINERS or SUB-CONTAINERS
+ * Parse ECUC-CONTAINER-VALUE elements from a wrapper node like CONTAINERS or SUB-CONTAINERS.
  */
-function parseContainerList(parentEl: Element): ParsedContainerValue[] {
-  // Try CONTAINERS first, then SUB-CONTAINERS
-  const containersSection = 
-    findChild(parentEl, 'CONTAINERS') || 
-    findChild(parentEl, 'SUB-CONTAINERS')
-  
-  if (!containersSection) return []
+function parseContainersFromWrapper(
+  parent: any,
+  wrapperKey: string
+): ParsedContainerValue[] {
+  const wrapper = getChild(parent, wrapperKey)
+  if (!wrapper) return []
+
+  const containerNodes = ensureArray(
+    getChild(wrapper, 'ECUC-CONTAINER-VALUE')
+  )
 
   const results: ParsedContainerValue[] = []
-  const containerNodes = findChildren(containersSection, 'ECUC-CONTAINER-VALUE')
-
   for (const node of containerNodes) {
     const parsed = parseSingleContainer(node)
     if (parsed) results.push(parsed)
   }
-
   return results
 }
 
 /**
- * Parse one ECUC-CONTAINER-VALUE element
+ * Parse one ECUC-CONTAINER-VALUE element.
  */
-function parseSingleContainer(containerEl: Element): ParsedContainerValue | null {
-  const shortName = getChildText(containerEl, 'SHORT-NAME')
+function parseSingleContainer(
+  node: any
+): ParsedContainerValue | null {
+  const shortName = getTextContent(node, 'SHORT-NAME')
   if (!shortName) return null
 
-  const defRefEl = findChild(containerEl, 'DEFINITION-REF')
-  const definitionRef = defRefEl ? defRefEl.textContent?.trim() || '' : ''
-  const definitionDest = defRefEl?.getAttribute('DEST') || undefined
+  const defRefNode = getChild(node, 'DEFINITION-REF')
+  const definitionRef = defRefNode
+    ? getNodeText(defRefNode) || ''
+    : ''
+  const definitionDest = defRefNode
+    ? getAttribute(defRefNode, 'DEST')
+    : undefined
 
-  const parameters = parseParameterValues(containerEl)
-  const subContainers = parseContainerList(containerEl)
+  const parameters = parseParameterValues(node)
+  const subContainers = parseContainersFromWrapper(node, 'SUB-CONTAINERS')
 
   return {
     shortName,
@@ -133,133 +216,250 @@ function parseSingleContainer(containerEl: Element): ParsedContainerValue | null
   }
 }
 
+// ---------------------------------------------------------------------------
+// Parameter parser
+// ---------------------------------------------------------------------------
+
 /**
- * Extract parameter values from PARAMETER-VALUES section
+ * Extract parameter values from PARAMETER-VALUES section of a parent element.
  */
-function parseParameterValues(containerEl: Element): ParsedParamValue[] {
-  const paramsSection = findChild(containerEl, 'PARAMETER-VALUES')
-  if (!paramsSection) return []
+function parseParameterValues(
+  parent: any
+): ParsedParamValue[] {
+  const wrapper = getChild(parent, 'PARAMETER-VALUES')
+  if (!wrapper) return []
 
   const results: ParsedParamValue[] = []
 
-  // Numerical params (covers boolean, integer, float)
-  const numericalNodes = findChildren(paramsSection, 'ECUC-NUMERICAL-PARAM-VALUE')
-  for (const node of numericalNodes) {
-    const parsed = parseParamValue(node, 'numerical')
-    if (parsed) results.push(parsed)
-  }
+  // Collect all parameter value child tags
+  const paramTagNames = [
+    'ECUC-NUMERICAL-PARAM-VALUE',
+    'ECUC-TEXTUAL-PARAM-VALUE',
+    'ECUC-BOOLEAN-PARAM-VALUE',
+    'ECUC-INTEGER-PARAM-VALUE',
+    'ECUC-FLOAT-PARAM-VALUE',
+    'ECUC-ENUMERATION-PARAM-VALUE',
+    'ECUC-STRING-PARAM-VALUE',
+  ]
 
-  // Textual params (covers string, enumeration)
-  const textualNodes = findChildren(paramsSection, 'ECUC-TEXTUAL-PARAM-VALUE')
-  for (const node of textualNodes) {
-    const parsed = parseParamValue(node, 'textual')
-    if (parsed) results.push(parsed)
+  for (const tagName of paramTagNames) {
+    const nodes = ensureArray(getChild(wrapper, tagName))
+    for (const node of nodes) {
+      const parsed = parseParamValue(node, inferDefaultType(tagName))
+      if (parsed) results.push(parsed)
+    }
   }
 
   return results
 }
 
 /**
- * Parse a single parameter value, extracting name from DEFINITION-REF
+ * Map ARXML element tag to a default type classification.
  */
-function parseParamValue(paramEl: Element, defaultType: ParsedParamValue['type']): ParsedParamValue | null {
-  const defRefEl = findChild(paramEl, 'DEFINITION-REF')
-  if (!defRefEl) return null
+function inferDefaultType(tagName: string): ParsedParamValue['type'] {
+  switch (tagName) {
+    case 'ECUC-NUMERICAL-PARAM-VALUE':
+      return 'numerical'
+    case 'ECUC-TEXTUAL-PARAM-VALUE':
+      return 'textual'
+    case 'ECUC-BOOLEAN-PARAM-VALUE':
+      return 'boolean'
+    case 'ECUC-INTEGER-PARAM-VALUE':
+      return 'integer'
+    case 'ECUC-FLOAT-PARAM-VALUE':
+      return 'float'
+    case 'ECUC-ENUMERATION-PARAM-VALUE':
+      return 'enum'
+    case 'ECUC-STRING-PARAM-VALUE':
+      return 'string'
+    default:
+      return 'textual'
+  }
+}
 
-  const definitionRef = defRefEl.textContent?.trim() || ''
-  const definitionDest = defRefEl.getAttribute('DEST') || ''
-  const value = getChildText(paramEl, 'VALUE') || ''
+/**
+ * Parse a single parameter value element with its DEFINITION-REF and VALUE.
+ */
+function parseParamValue(
+  node: any,
+  defaultType: ParsedParamValue['type']
+): ParsedParamValue | null {
+  const defRefNode = getChild(node, 'DEFINITION-REF')
+  if (!defRefNode) return null
 
-  // Extract short name from definition ref path (last segment)
+  const definitionRef = getNodeText(defRefNode) || ''
+  const definitionDest = getAttribute(defRefNode, 'DEST') || ''
+
+  const rawValue = getChild(node, 'VALUE')
+  const value = rawValue !== undefined ? String(rawValue) : ''
+
+  // Extract parameter name from the last path segment of DEFINITION-REF
   const shortName = definitionRef.split('/').pop() || definitionRef
 
-  // Determine refined type from DEST attribute
+  // Refine type based on DEST attribute
   let type = defaultType
   if (definitionDest.includes('BOOLEAN')) type = 'boolean'
   else if (definitionDest.includes('INTEGER')) type = 'integer'
-  else if (definitionDest.includes('REAL') || definitionDest.includes('FLOAT')) type = 'float'
+  else if (
+    definitionDest.includes('REAL') ||
+    definitionDest.includes('FLOAT')
+  )
+    type = 'float'
   else if (definitionDest.includes('ENUMERATION')) type = 'enum'
   else if (definitionDest.includes('STRING')) type = 'string'
 
   return { shortName, definitionRef, definitionDest, value, type }
 }
 
-// ---------- XML Helper Functions ----------
+// ---------------------------------------------------------------------------
+// XML Helper functions (for fast-xml-parser output)
+// ---------------------------------------------------------------------------
 
-function evaluateXPath(doc: Document, xpath: string): Node[] {
-  const results: Node[] = []
-  try {
-    const xpathResult = doc.evaluate(
-      xpath, doc, null as any,
-      XPathResult.ORDERED_NODE_ITERATOR_TYPE,
-      null
-    )
-    let node = xpathResult.iterateNext()
-    while (node) {
-      results.push(node)
-      node = xpathResult.iterateNext()
-    }
-  } catch {
-    // Fallback: use querySelectorAll with namespace workaround
-    const all = doc.querySelectorAll('*')
-    for (const el of all) {
-      if (el.localName === 'ECUC-MODULE-CONFIGURATION-VALUES' && 
-          el.namespaceURI === ARXML_NS) {
-        results.push(el)
-      }
+/**
+ * Get a child element from a parsed fast-xml-parser object.
+ *
+ * fast-xml-parser produces:
+ * - `{ tagName: { ... } }` for single children
+ * - `{ tagName: [ { ... }, ... ] }` for multiple children (when isArray matches)
+ * - `{ tagName: { '#text': 'value', '@_attr': 'v' } }` for elements with attributes
+ * - `{ tagName: 'value' }` for simple text elements
+ * - `undefined` when missing
+ */
+function getChild(
+  parent: any,
+  name: string
+): unknown {
+  if (!parent || typeof parent !== 'object') return undefined
+  return parent[name]
+}
+
+/**
+ * Get the text content of an element, handling both simple and attribute-bearing nodes.
+ *
+ * Returns undefined if the element is missing or has no text content.
+ */
+function getTextContent(
+  parent: any,
+  tagName: string
+): string | undefined {
+  const child = getChild(parent, tagName)
+  return getNodeText(child)
+}
+
+/**
+ * Extract text value from a parsed node that may be:
+ * - A string: `"value"`
+ * - An object with #text: `{ "#text": "value", ... }`
+ * - A number/boolean: `123` or `true`
+ * - undefined: missing
+ */
+function getNodeText(node: unknown): string | undefined {
+  if (node === undefined || node === null) return undefined
+
+  if (typeof node === 'string') return node
+  if (typeof node === 'number') return String(node)
+  if (typeof node === 'boolean') return node ? 'true' : 'false'
+
+  if (typeof node === 'object') {
+    const obj = node as Record<string, unknown>
+    if ('#text' in obj) {
+      const text = obj['#text']
+      if (text === undefined || text === null) return undefined
+      return String(text)
     }
   }
-  return results
+
+  return undefined
 }
 
-function findChild(parent: Element, localName: string): Element | null {
-  for (let i = 0; i < parent.children.length; i++) {
-    const child = parent.children[i] as Element
-    if (child.localName === localName || child.tagName === localName) {
-      return child
-    }
-  }
-  return null
+/**
+ * Get an attribute value from a parsed node that has attributes.
+ * fast-xml-parser stores attributes as `@_ATTRNAME`.
+ */
+function getAttribute(
+  node: unknown,
+  attrName: string
+): string | undefined {
+  if (!node || typeof node !== 'object') return undefined
+  const obj = node as Record<string, unknown>
+  const val = obj[`@_${attrName}`]
+  if (val === undefined || val === null) return undefined
+  return String(val)
 }
 
-function findChildren(parent: Element, localName: string): Element[] {
-  const results: Element[] = []
-  for (let i = 0; i < parent.children.length; i++) {
-    const child = parent.children[i] as Element
-    if (child.localName === localName || child.tagName === localName) {
-      results.push(child)
-    }
-  }
-  return results
+/**
+ * Ensure a value is always an array, wrapping singletons.
+ */
+function ensureArray<T>(value: T | T[] | undefined): T[] {
+  if (value === undefined || value === null) return []
+  return Array.isArray(value) ? value : [value]
 }
 
-function getChildText(parent: Element, localName: string): string | null {
-  const child = findChild(parent, localName)
-  return child?.textContent?.trim() || null
-}
+// ---------------------------------------------------------------------------
+// Format conversion: ParsedModuleDef[] → ConfigModule[]
+// (Round-trip: export → parse → convert → export matches original)
+// ---------------------------------------------------------------------------
 
-function getChildDefRef(parent: Element): string | null {
-  const child = findChild(parent, 'DEFINITION-REF')
-  return child?.textContent?.trim() || null
-}
-
-// ---------- Export to ConfigModule format (Subtask 3) ----------
-
-import type { ConfigModule, ConfigContainer, ConfigParameter } from '@/types/config'
+import type {
+  ConfigModule,
+  ConfigContainer,
+  ConfigParameter,
+} from '@/types/config'
 
 const PARAM_LAYER_MAP: Record<string, string> = {
-  'Adc': 'MCAL', 'Port': 'MCAL', 'Mcu': 'MCAL', 'Dio': 'MCAL',
-  'Icu': 'MCAL', 'Gpt': 'MCAL', 'Spi': 'MCAL', 'Mcl': 'MCAL',
-  'Can': 'ECUAL', 'CanTrcv': 'ECUAL', 'Ble': 'ECUAL',
-  'Dcm': 'Service', 'Com': 'Service', 'NvM': 'Service',
-  'EcuM': 'Service', 'Os': 'OS',
+  Adc: 'MCAL',
+  Port: 'MCAL',
+  Mcu: 'MCAL',
+  Dio: 'MCAL',
+  Icu: 'MCAL',
+  Gpt: 'MCAL',
+  Spi: 'MCAL',
+  Mcl: 'MCAL',
+  Pwm: 'MCAL',
+  Wdg: 'MCAL',
+  Lin: 'MCAL',
+  Can: 'ECUAL',
+  CanTrcv: 'ECUAL',
+  Ble: 'ECUAL',
+  Eth: 'ECUAL',
+  Fr: 'ECUAL',
+  CanIf: 'ECUAL',
+  CanTp: 'ECUAL',
+  LinIf: 'ECUAL',
+  EthIf: 'ECUAL',
+  FrIf: 'ECUAL',
+  MemIf: 'ECUAL',
+  IoHwAb: 'ECUAL',
+  Fee: 'ECUAL',
+  Ea: 'ECUAL',
+  Dcm: 'Service',
+  Dem: 'Service',
+  Det: 'Service',
+  Com: 'Service',
+  NvM: 'Service',
+  EcuM: 'Service',
+  BswM: 'Service',
+  CanNm: 'Service',
+  CanSM: 'Service',
+  PduR: 'Service',
+  Rte: 'Service',
+  Crypto: 'Service',
+  Csm: 'Service',
+  CryIf: 'Service',
+  Nm: 'Service',
+  Os: 'OS',
+  Sbc: 'ECUAL',
+  Arti: 'ECUAL',
 }
 
-export function arxmlToConfigModules(parsed: ParsedModuleDef[]): ConfigModule[] {
-  return parsed.map(mod => {
+export function arxmlToConfigModules(
+  parsed: ParsedModuleDef[]
+): ConfigModule[] {
+  return parsed.map((mod) => {
     const layer = guessLayer(mod.shortName)
     const containers = parsedContainersToConfig(mod.containers)
-    
+    const moduleParams = parsedParametersToConfig(mod.parameters)
+
     return {
       id: mod.shortName.toLowerCase(),
       name: mod.shortName,
@@ -269,68 +469,103 @@ export function arxmlToConfigModules(parsed: ParsedModuleDef[]): ConfigModule[] 
       version: '4.4.0',
       autosarVersion: '4.4.0',
       layer,
-      enabled: false,
-      parameters: [],
+      enabled: true,
+      parameters: moduleParams,
       containers,
       dependencies: [],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      configStatus: 'unconfigured',
+      configStatus: 'configured',
     }
   })
 }
 
-function guessLayer(shortName: string): 'MCAL' | 'ECUAL' | 'Service' | 'OS' {
+function guessLayer(
+  shortName: string
+): 'MCAL' | 'ECUAL' | 'Service' | 'OS' {
   return (PARAM_LAYER_MAP[shortName] as any) || 'Service'
 }
 
 function parsedContainersToConfig(
-  containers: ParsedContainerValue[], 
-  multiple = false
+  containers: ParsedContainerValue[],
 ): ConfigContainer[] {
-  return containers.map(c => {
-    const params: ConfigParameter[] = c.parameters.map(p => {
-      let paramType: ConfigParameter['type'] = 'string'
-      if (p.type === 'boolean' || p.type === 'numerical') paramType = 'boolean' as const
-      else if (p.type === 'integer') paramType = 'integer' as const
-      else if (p.type === 'float') paramType = 'float' as const
-      else if (p.type === 'enum') paramType = 'enum' as const
-
-      let value: any = p.value
-      if (paramType === 'boolean') value = p.value === 'true'
-      else if (paramType === 'integer') value = parseInt(p.value) || 0
-      else if (paramType === 'float') value = parseFloat(p.value) || 0
-
-      return {
-        id: p.shortName.toLowerCase(),
-        name: p.shortName,
-        displayName: p.shortName,
-        type: paramType,
-        value,
-        defaultValue: value,
-      }
-    })
-
-    // Determine if this container is a dynamic instance template
-    const isMulti = c.definitionRef.endsWith('/' + c.shortName) === false
+  return containers.map((c) => {
+    const params = parsedParamsToConfigParams(c.parameters)
     const subs = parsedContainersToConfig(c.subContainers)
 
     const container: ConfigContainer = {
       id: c.shortName.toLowerCase(),
       name: c.shortName,
-      displayName: c.shortName,
-      description: `DEF: ${c.definitionRef}`,
       parameters: params,
     }
 
-    if (isMulti && subs.length > 0) {
-      container.multiple = true
-      container.minInstances = 0
-      container.subContainers = subs
-    } else if (subs.length > 0) {
+    if (subs.length > 0) {
       container.subContainers = subs
     }
 
     return container
   })
+}
+
+/**
+ * Convert module-level or container-level parameters to ConfigParameter[].
+ */
+function parsedParamsToConfigParams(
+  params: ParsedParamValue[],
+): ConfigParameter[] {
+  return params.map((p) => {
+    let paramType: ConfigParameter['type'] = 'string'
+    // Map parsed type to ConfigParameter type
+    switch (p.type) {
+      case 'boolean':
+        paramType = 'boolean'
+        break
+      case 'integer':
+        paramType = 'integer'
+        break
+      case 'float':
+        paramType = 'float'
+        break
+      case 'enum':
+        paramType = 'enum'
+        break
+      case 'numerical':
+        // ambiguous — try to refine from value
+        if (p.value === 'true' || p.value === 'false')
+          paramType = 'boolean'
+        else if (/^\d+$/.test(p.value)) paramType = 'integer'
+        else if (/^\d+\.\d+$/.test(p.value)) paramType = 'float'
+        else paramType = 'string'
+        break
+      case 'textual':
+        paramType = 'string'
+        break
+      default:
+        paramType = 'string'
+    }
+
+    // Convert string value to native JS type
+    let value: any = p.value
+    if (paramType === 'boolean')
+      value = p.value === 'true' || p.value === '1'
+    else if (paramType === 'integer')
+      value = parseInt(p.value) || 0
+    else if (paramType === 'float')
+      value = parseFloat(p.value) || 0
+
+    return {
+      id: p.shortName.toLowerCase(),
+      name: p.shortName,
+      type: paramType,
+      value,
+      defaultValue: value,
+    }
+  })
+}
+
+/** Alias for use in module-level and container-level conversion */
+function parsedParametersToConfig(
+  params: ParsedParamValue[],
+): ConfigParameter[] {
+  return parsedParamsToConfigParams(params)
 }

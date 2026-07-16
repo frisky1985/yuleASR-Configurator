@@ -91,8 +91,10 @@ describe('EcucCodeGenerator', () => {
     });
     const header = result.files.find(f => f.path.endsWith('.h'))!.content;
     expect(header).toContain('Std_ReturnType Can_Init');
-    expect(header).toContain('void Can_DeInit');
+    expect(header).toContain('Std_ReturnType Can_DeInit');
     expect(header).toContain('void Can_GetVersionInfo');
+    expect(header).toContain('void Can_MainFunction');
+    expect(header).toContain('boolean Can_IsInitialized');
   });
 
   it('should fail on missing required parameter', async () => {

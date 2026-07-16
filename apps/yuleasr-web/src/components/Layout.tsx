@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 
 import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp'
+import { LicenseBadge } from '@/components/LicenseBadge'
 import { useTheme } from '@/components/ThemeProvider'
 import { cn } from '@/lib/utils'
 
@@ -94,7 +95,8 @@ export function Layout({ children }: LayoutProps) {
               </div>
 
               {/* Right side of banner (optional: show current path) */}
-              <div className="hidden sm:block text-[11px] text-muted-foreground">
+              <div className="hidden sm:flex items-center gap-2 text-[11px] text-muted-foreground">
+                <LicenseBadge />
                 yuleASR BSW Configurator
               </div>
             </div>

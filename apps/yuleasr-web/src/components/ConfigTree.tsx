@@ -15,12 +15,13 @@ import {
   Power, AlertCircle, AlertTriangle, Info, Folder, FolderOpen, 
   FileText, Hash, ToggleLeft, List, Filter, ChevronRightSquare,
   ChevronDownSquare, CircleDot, Layers2, Trash2, AlertTriangle as AlertTri,
-  CheckCircle, XCircle
+  CheckCircle, XCircle, Lock, Crown
 } from 'lucide-react'
 import { useState, useMemo, useCallback, useEffect, forwardRef, useImperativeHandle } from 'react'
 
 import { cn } from '@/lib/utils'
 import type { ConfigFile, ConfigModule, ConfigContainer, ConfigParameter, ValidationIssue } from '@/types/config'
+import { useLicenseStore } from '@/stores/licenseStore'
 
 export interface ConfigTreeProps {
   config: ConfigFile
@@ -63,6 +64,8 @@ interface TreeNodeData {
   instanceCount?: number
   /** Minimum instances (× hidden when count <= min) */
   minInstanceCount?: number
+  /** Pro plan: module locked behind upgrade */
+  locked?: boolean
 }
 
 const layerIcons: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -146,6 +149,18 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
     instanceName: string
   } | null>(null)
   const [dragOverPath, setDragOverPath] = useState<string | null>(null)
+  
+  const licenseTier = useLicenseStore(s => s.tier)
+  const maxModules = useLicenseStore(s => s.getFeatureLimit('maxModules'))
+  const lockedModuleIds = useMemo(() => {
+    if (licenseTier !== 'free') return new Set<string>()
+    const enabledModules = config.modules.filter(m => m.enabled)
+    const locked = new Set<string>()
+    for (let i = maxModules; i < enabledModules.length; i++) {
+      locked.add(enabledModules[i].id)
+    }
+    return locked
+  }, [config.modules, licenseTier, maxModules])
   
   // Collect initial dynamic instances from module containers
   function collectDynamicContainers(
@@ -560,7 +575,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
         errorCount,
         warningCount,
         data: null as any,
-        children: filteredModules.map(module => buildModuleNode(module, layerPath, validationIssues)),
+        children: filteredModules.map(module => buildModuleNode(module, layerPath, validationIssues, lockedModuleIds.has(module.id))),
       })
     }
     
@@ -568,7 +583,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
   }, [config, validationIssues, showDisabled, searchQuery, dynamicInstances])
 
   // Build module node recursively
-  function buildModuleNode(module: ConfigModule, parentPath: string, issues: ValidationIssue[]): TreeNodeData {
+  function buildModuleNode(module: ConfigModule, parentPath: string, issues: ValidationIssue[], locked: boolean = false): TreeNodeData {
     const path = `${parentPath}/module:${module.id}`
     const moduleIssues = issues.filter(i => i.module === module.name)
     const errorCount = moduleIssues.filter(i => i.severity === 'error').length
@@ -592,6 +607,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
       errorCount,
       warningCount,
       data: module,
+      locked,
       children: containerNodes,
     }
   }
@@ -962,10 +978,18 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
               <CheckCircle className="w-3.5 h-3.5 text-green-500" />
             )}
           </span>
+          
+          {/* Lock indicator for Pro modules */}
+          {node.locked && (
+            <span className="flex-shrink-0 flex items-center gap-1 px-1.5 py-0.5 rounded text-amber-600 bg-amber-50 text-[10px] font-medium" title="Upgrade to Pro to unlock">
+              <Lock className="w-3 h-3" />
+              Pro
+            </span>
+          )}
         </div>
         
         {/* Sub-container nodes (including dynamic instances) */}
-        <div className="grid transition-all duration-200 ease-in-out" style={{ gridTemplateRows: isExpanded && node.children && node.children.length > 0 ? '1fr' : '0fr' }}>
+        <div className="grid transition-all duration-200 ease-in-out" style={{ gridTemplateRows: isExpanded && node.children && node.children.length > 0 && !node.locked ? '1fr' : '0fr' }}>
           <div className="overflow-hidden">
             {node.children && node.children.length > 0 && node.children.map(child => renderNode(child, level + 1))}
           </div>

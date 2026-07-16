@@ -16,10 +16,15 @@ import {
   Shield,
   FileJson,
   FileCode,
+  Crown,
+  Sparkles,
+  Key,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { cn } from '@/lib/utils'
+import { useLicenseStore } from '@/stores/licenseStore'
 import { 
   useSettingsStore, 
   type EditorTheme, 
@@ -187,6 +192,9 @@ export function Settings() {
     setLastCheckedAt,
     resetAllSettings,
   } = useSettingsStore()
+  const navigate = useNavigate()
+  const licenseTier = useLicenseStore((s) => s.tier)
+  const licenseExpiresAt = useLicenseStore((s) => s.expiresAt)
 
   const [savedMessage, setSavedMessage] = useState<string | null>(null)
   const [checkingUpdate, setCheckingUpdate] = useState(false)
@@ -554,6 +562,52 @@ export function Settings() {
                 }}
               />
             </SettingItem>
+          </SettingSection>
+
+          {/* License Status */}
+          <SettingSection
+            title="License Status"
+            description="Your yuleASR plan and subscription"
+            icon={<Shield className="w-5 h-5 text-amber-600" />}
+          >
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-app-text-secondary">Current Plan</span>
+                <button
+                  onClick={() => navigate('/settings/license')}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-semibold transition-all hover:shadow-sm"
+                >
+                  {licenseTier === 'pro' ? (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-100 to-amber-200 text-amber-800 dark:from-amber-900/40 dark:to-amber-800/40 dark:text-amber-300">
+                      <Crown className="w-3.5 h-3.5" />
+                      Pro
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-app-bg-tertiary text-app-text-secondary">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      Free
+                    </span>
+                  )}
+                </button>
+              </div>
+
+              {licenseTier === 'pro' && licenseExpiresAt && (
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-app-text-secondary">Expires</span>
+                  <span className="text-sm text-app-text-primary">
+                    {new Date(licenseExpiresAt).toLocaleDateString('zh-CN')}
+                  </span>
+                </div>
+              )}
+
+              <button
+                onClick={() => navigate('/settings/license')}
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+              >
+                <Key className="w-4 h-4" />
+                {licenseTier === 'pro' ? 'Manage License' : 'Upgrade to Pro'}
+              </button>
+            </div>
           </SettingSection>
 
           {/* About */}

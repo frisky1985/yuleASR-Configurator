@@ -7,6 +7,8 @@ import { authRoutes } from './routes/auth.js'
 import { postsRoutes } from './routes/posts.js'
 import { blogRoutes } from './routes/blog.js'
 import { tagsRoutes } from './routes/tags.js'
+import { licenseRoutes } from './routes/license.js'
+import { paymentRoutes } from './routes/payment.js'
 import { prisma } from './lib/prisma.js'
 
 const PORT = parseInt(process.env.PORT || '3000', 10)
@@ -42,6 +44,8 @@ await app.register(authRoutes, { prefix: '/auth' })
 await app.register(postsRoutes, { prefix: '/posts' })
 await app.register(blogRoutes, { prefix: '/blog' })
 await app.register(tagsRoutes, { prefix: '/tags' })
+await app.register(licenseRoutes, { prefix: '/api/license' })
+await app.register(paymentRoutes, { prefix: '/api/payment' })
 
 // Health check
 app.get('/health', async () => ({ status: 'ok', timestamp: new Date().toISOString() }))
