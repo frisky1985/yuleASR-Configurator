@@ -263,7 +263,7 @@ test.describe('End-to-End Workflows', () => {
     await expect(editor.saveButton).toBeEnabled()
     
     // Click reset button
-    const resetButton = page.getByRole('button', { name: /Reset/i }).first()
+    const resetButton = page.getByRole('button', { name: /重置/i }).first()
     await resetButton.click()
     await page.waitForTimeout(300)
     

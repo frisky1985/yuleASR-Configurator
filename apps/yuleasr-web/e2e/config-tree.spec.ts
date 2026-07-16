@@ -4,14 +4,14 @@ test.describe('Configuration Tree / Module Navigation', () => {
   test('should render the dashboard with configuration list area', async ({ page }) => {
     await page.goto('/configurator/dashboard')
     // Dashboard should have a configuration list area or empty state
-    const configSection = page.locator('text=/Recent Configurations|Create your first|No configurations/i')
+    const configSection = page.locator('text=/最近配置|Create your first|No configurations/i')
     await expect(configSection).toBeVisible()
   })
 
   test('should display Quick Actions panel', async ({ page }) => {
     await page.goto('/configurator/dashboard')
     // The quick actions section should be visible
-    const quickActions = page.locator('text=/Quick Actions/i')
+    const quickActions = page.locator('text=/快速操作/')
     await expect(quickActions).toBeVisible()
   })
 
@@ -25,20 +25,20 @@ test.describe('Configuration Tree / Module Navigation', () => {
 
   test('should display dependency graph button', async ({ page }) => {
     await page.goto('/configurator/dashboard')
-    // The dependency graph quick action button
-    const depGraphBtn = page.getByRole('button', { name: /Dependency Graph/i })
+    // The dependency graph quick action button — Chinese label with hint
+    const depGraphBtn = page.locator('button').filter({ hasText: /依赖关系图/i })
     await expect(depGraphBtn).toBeVisible()
   })
 
   test('should display Module Wizard button', async ({ page }) => {
     await page.goto('/configurator/dashboard')
-    const moduleWizardBtn = page.getByRole('button', { name: /Module Wizard/i })
+    const moduleWizardBtn = page.getByRole('button', { name: /模块向导/i })
     await expect(moduleWizardBtn).toBeVisible()
   })
 
   test('should display Import Config button', async ({ page }) => {
     await page.goto('/configurator/dashboard')
-    const importBtn = page.getByRole('button', { name: /Import/i })
+    const importBtn = page.getByRole('button', { name: /导入/i })
     await expect(importBtn).toBeVisible()
   })
 })

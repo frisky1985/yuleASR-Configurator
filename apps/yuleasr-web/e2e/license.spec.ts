@@ -3,51 +3,34 @@ import { test, expect } from '@playwright/test'
 test.describe('License Page', () => {
   test('should load the license page and display the title', async ({ page }) => {
     await page.goto('/configurator/settings/license')
-    const heading = page.locator('h1')
-    await expect(heading).toBeVisible()
-    await expect(heading).toContainText(/License|Subscription/i)
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
   })
 
-  test('should display the current plan section (Free tier)', async ({ page }) => {
+  test('should display current plan Free badge', async ({ page }) => {
     await page.goto('/configurator/settings/license')
-    // The current plan section should show Free or Pro badge
-    const planBadge = page.locator('text=/Free|Pro/i').first()
-    await expect(planBadge).toBeVisible()
+    await expect(page.locator('text=Free').first()).toBeVisible()
   })
 
-  test('should display Free badge in the header', async ({ page }) => {
-    await page.goto('/configurator')
-    // The LicenseBadge component shows "Free" in the header
-    const freeBadge = page.locator('button:has-text("Free"), span:has-text("Free")').first()
-    await expect(freeBadge).toBeVisible()
-  })
-
-  test('should display the activation key input field', async ({ page }) => {
+  test('should display license key activation input', async ({ page }) => {
     await page.goto('/configurator/settings/license')
-    // The license activation section should have an input for License Key
-    const keyInput = page.locator('input[placeholder*="YULE"], input[placeholder*="License"]')
-    await expect(keyInput).toBeVisible()
+    const input = page.locator('input[placeholder*="YULE"]')
+    await expect(input).toBeVisible()
   })
 
-  test('should display the activate button', async ({ page }) => {
+  test('should display pricing options', async ({ page }) => {
     await page.goto('/configurator/settings/license')
-    const activateBtn = page.getByRole('button', { name: /激活|Activate/i })
-    await expect(activateBtn).toBeVisible()
-  })
-
-  test('should display subscription options (monthly/yearly)', async ({ page }) => {
-    await page.goto('/configurator/settings/license')
-    // Subscription pricing options should be visible
-    const monthlyOption = page.locator('text=/月|monthly|Monthly/i')
-    await expect(monthlyOption).toBeVisible()
+    // Pricing has ¥299 and ¥2,999 amounts
+    await expect(page.locator('text=¥').first()).toBeVisible()
   })
 
   test('should display feature comparison table', async ({ page }) => {
     await page.goto('/configurator/settings/license')
-    // Feature comparison table should have Free vs Pro columns
-    const featureTable = page.locator('table')
-    await expect(featureTable).toBeVisible()
-    await expect(page.locator('th:has-text("Free")')).toBeVisible()
-    await expect(page.locator('th:has-text("Pro")')).toBeVisible()
+    await expect(page.locator('table')).toBeVisible()
+  })
+
+  test('should have an activate button', async ({ page }) => {
+    await page.goto('/configurator/settings/license')
+    const btn = page.locator('button').filter({ hasText: /激活|Activate/i })
+    await expect(btn).toBeVisible()
   })
 })

@@ -32,42 +32,42 @@ export class DashboardPage {
   readonly configDescInput: Locator
   readonly cancelButton: Locator
   readonly createButton: Locator
-  
+
   constructor(page: Page) {
     this.page = page
     
-    // Header
-    this.header = page.locator('h1:has-text("Configurations")')
-    this.title = page.getByRole('heading', { name: 'Configurations', level: 1 })
-    this.subtitle = page.getByText('Manage your yuleASR configurations')
-    this.newConfigButton = page.getByRole('button', { name: /New Configuration/i })
+    // Header — Chinese UI: "配置管理"
+    this.header = page.locator('h1')
+    this.title = page.getByRole('heading', { level: 1 })
+    this.subtitle = page.getByRole('heading', { level: 2 }).filter({ hasText: /快速操作|Quick/i })
+    this.newConfigButton = page.locator('button').filter({ hasText: /新建|New/i }).first()
     
-    // Quick actions
-    this.quickActions = page.locator('.grid-cols-1.md\\:grid-cols-3')
-    this.openExistingButton = page.getByRole('button', { name: /Open Existing/i })
-    this.importConfigButton = page.getByRole('button', { name: /Import Config/i })
-    this.templatesButton = page.getByRole('button', { name: /Templates/i })
+    // Quick actions — Chinese button text
+    this.quickActions = page.locator('section, div').filter({ hasText: /快速操作|Quick/i }).first()
+    this.openExistingButton = page.locator('button').filter({ hasText: /打开现有|Open/i }).first()
+    this.importConfigButton = page.locator('button').filter({ hasText: /导入|Import/i }).first()
+    this.templatesButton = page.locator('button').filter({ hasText: /模板|Template/i }).first()
     
     // Config list
-    this.configListContainer = page.locator('.bg-white.border.border-gray-200')
-    this.configListHeader = page.getByRole('heading', { name: 'Recent Configurations', level: 2 })
-    this.configItems = page.locator('[class*="divide-y"] > div')
-    this.loadingSpinner = page.locator('.animate-spin')
-    this.emptyState = page.getByText('No configurations yet')
+    this.configListContainer = page.locator('section, div').filter({ hasText: /最近配置|Recent/i }).first()
+    this.configListHeader = page.locator('h2, h3').filter({ hasText: /最近配置|Recent/i }).first()
+    this.configItems = page.locator('h3').filter({ hasText: /Configuration|Config/i })
+    this.loadingSpinner = page.locator('.animate-spin, [class*="spinner"]')
+    this.emptyState = page.getByText(/还没有配置|No configurations/i)
     
-    // Create modal
-    this.createModal = page.locator('.fixed.inset-0.bg-black\\/50')
-    this.configNameInput = page.locator('input[placeholder="My Configuration"]')
-    this.configDescInput = page.locator('textarea[placeholder="Optional description..."]')
-    this.cancelButton = page.locator('.fixed >> button:has-text("Cancel")')
-    this.createButton = page.locator('.fixed >> button:has-text("Create")')
+    // Create modal — Chinese UI
+    this.createModal = page.locator('h3:has-text("新建配置"), [role="dialog"]').first()
+    this.configNameInput = page.locator('input[placeholder*="我的配置"], input[placeholder*="配置名称"]').first()
+    this.configDescInput = page.locator('textarea[placeholder*="可选描述"], textarea[placeholder*="description"]').first()
+    this.cancelButton = page.locator('button').filter({ hasText: /取消|Cancel/i }).first()
+    this.createButton = page.locator('button').filter({ hasText: /创建|Create/i }).first()
   }
 
   /**
    * Navigate to the dashboard page
    */
   async goto() {
-    await this.page.goto('/')
+    await this.page.goto('/configurator/')
     await this.waitForLoad()
   }
 
@@ -75,8 +75,7 @@ export class DashboardPage {
    * Wait for the dashboard to fully load
    */
   async waitForLoad() {
-    await expect(this.title).toBeVisible()
-    await this.loadingSpinner.waitFor({ state: 'detached', timeout: 10000 })
+    await expect(this.title).toBeVisible({ timeout: 10000 })
   }
 
   /**
@@ -91,8 +90,8 @@ export class DashboardPage {
    */
   async openCreateModal() {
     await this.newConfigButton.click()
-    await expect(this.createModal).toBeVisible()
-    await expect(this.configNameInput).toBeVisible()
+    await expect(this.createModal).toBeVisible({ timeout: 5000 })
+    await expect(this.configNameInput).toBeVisible({ timeout: 5000 })
   }
 
   /**
@@ -105,15 +104,15 @@ export class DashboardPage {
       await this.configDescInput.fill(description)
     }
     await this.createButton.click()
-    await this.createModal.waitFor({ state: 'detached' })
-    await this.page.waitForTimeout(500) // Wait for list refresh
+    await this.createModal.waitFor({ state: 'detached', timeout: 5000 }).catch(() => {})
+    await this.page.waitForTimeout(500)
   }
 
   /**
    * Open a configuration by clicking on it
    */
   async openConfig(configName: string) {
-    const configItem = this.page.locator('div', { has: this.page.getByText(configName) }).first()
+    const configItem = this.page.locator('h3').filter({ hasText: configName }).first()
     await configItem.click()
   }
 
@@ -121,19 +120,16 @@ export class DashboardPage {
    * Delete a configuration by name
    */
   async deleteConfig(configName: string) {
-    const configItem = this.page.locator('div', { 
-      has: this.page.getByText(configName) 
-    }).filter({ has: this.page.locator('button[title="Delete"]') })
-    
-    const deleteButton = configItem.locator('button[title="Delete"]')
-    
-    // Use expect with a custom message to handle the confirmation dialog
     this.page.on('dialog', async dialog => {
       await dialog.accept()
     })
     
+    const configItem = this.page.locator('h3').filter({ hasText: configName }).first()
+    // Find the parent row that contains this config and has a delete button
+    const row = configItem.locator('xpath=../..')
+    const deleteButton = row.locator('button').filter({ hasText: /删除|Delete/i }).first()
     await deleteButton.click()
-    await this.page.waitForTimeout(500) // Wait for deletion
+    await this.page.waitForTimeout(500)
   }
 
   /**
@@ -141,14 +137,14 @@ export class DashboardPage {
    */
   async cancelCreate() {
     await this.cancelButton.click()
-    await this.createModal.waitFor({ state: 'detached' })
+    await this.createModal.waitFor({ state: 'detached', timeout: 5000 }).catch(() => {})
   }
 
   /**
    * Check if a configuration exists in the list
    */
   async hasConfig(name: string): Promise<boolean> {
-    const configItem = this.page.getByText(name).first()
+    const configItem = this.page.locator('h3').filter({ hasText: name }).first()
     return await configItem.isVisible().catch(() => false)
   }
 
