@@ -30,7 +30,7 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')` */
     /* Note: Vite config has base: '/configurator/', so the app lives at /configurator/ */
-    baseURL: process.env.E2E_BASE_URL || 'http://localhost:3000/configurator',
+    baseURL: process.env.E2E_BASE_URL || 'http://localhost:3000',
     
     /* Collect trace when retrying the failed test */
     trace: 'on-first-retry',
@@ -52,7 +52,7 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { ...devices['Desktop Chrome'], locale: 'zh-CN' },
     },
   ],
 
