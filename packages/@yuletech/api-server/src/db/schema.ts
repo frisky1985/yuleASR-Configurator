@@ -5,6 +5,7 @@ export const users = pgTable('users', {
   email: varchar('email', { length: 255 }).unique().notNull(),
   username: varchar('username', { length: 100 }).notNull(),
   passwordHash: text('password_hash').notNull(),
+  score: integer('score').default(0).notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 })
@@ -53,6 +54,14 @@ export const tags = pgTable('tags', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 100 }).unique().notNull(),
   postCount: integer('post_count').default(0).notNull(),
+})
+
+export const configLocks = pgTable('config_locks', {
+  id: serial('id').primaryKey(),
+  configId: integer('config_id').references(() => configs.id).notNull(),
+  userId: integer('user_id').references(() => users.id).notNull(),
+  lockedAt: timestamp('locked_at').defaultNow().notNull(),
+  expiresAt: timestamp('expires_at').notNull(),
 })
 
 export type User = typeof users.$inferSelect

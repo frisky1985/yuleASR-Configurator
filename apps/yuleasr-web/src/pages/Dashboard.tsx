@@ -11,6 +11,7 @@ import {
   Layers,
   GitGraph,
   GitCompare,
+  GitBranch,
   X,
   Loader2,
   Download,
@@ -554,6 +555,16 @@ export function Dashboard() {
                     
                     {/* Action buttons */}
                     <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 flex-shrink-0">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          navigate(`/diff/${config.id}`)
+                        }}
+                        className="p-2 text-app-text-tertiary hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                        title={t('dashboard.diffConfigs') || 'Compare in Diff View'}
+                      >
+                        <GitBranch className="w-4 h-4" />
+                      </button>
                       <button
                         onClick={(e) => {
                           e.stopPropagation()

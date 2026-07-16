@@ -98,3 +98,25 @@ export const api = {
 
 export { ApiError }
 export type { ApiResponse }
+
+// ── Config Lock API ────────────────────────────────────────────────────────
+
+export interface LockStatus {
+  locked: boolean
+  userId?: number
+  username?: string
+  lockedAt?: string
+  expiresAt?: string
+}
+
+export async function lockConfig(configId: number): Promise<{ locked: boolean; expiresAt: string }> {
+  return api.post(`/api/configs/${configId}/lock`)
+}
+
+export async function unlockConfig(configId: number): Promise<{ locked: boolean }> {
+  return api.post(`/api/configs/${configId}/unlock`)
+}
+
+export async function getConfigLockStatus(configId: number): Promise<LockStatus> {
+  return api.get(`/api/configs/${configId}/lock-status`)
+}

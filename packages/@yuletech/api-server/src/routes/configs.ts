@@ -1,8 +1,8 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
 import { db } from '../db/index.js'
-import { configs, configVersions } from '../db/schema.js'
-import { eq, desc } from 'drizzle-orm'
+import { configs, configVersions, configLocks, users } from '../db/schema.js'
+import { eq, desc, and, gt } from 'drizzle-orm'
 import crypto from 'crypto'
 
 const createSchema = z.object({
@@ -64,6 +64,20 @@ export async function update(request: FastifyRequest, reply: FastifyReply) {
     return reply.status(404).send({ error: 'Config not found' })
   }
 
+  // Check config lock
+  const now = new Date()
+  const [activeLock] = await db.select().from(configLocks)
+    .where(
+      and(
+        eq(configLocks.configId, existing.id),
+        gt(configLocks.expiresAt, now),
+      )
+    )
+    .limit(1)
+  if (activeLock && activeLock.userId !== userId) {
+    return reply.status(423).send({ error: 'Config is locked by another user' })
+  }
+
   // Save current version to history before updating
   await db.insert(configVersions).values({
     configId: existing.id,
@@ -119,5 +133,107 @@ export async function getByShareToken(request: FastifyRequest, reply: FastifyRep
     description: config.description,
     data: config.data,
     version: config.version,
+  })
+}
+
+// ── Config Lock ────────────────────────────────────────────────────────────
+
+const LOCK_DURATION_MS = 30 * 60 * 1000 // 30 minutes
+
+export async function lock(request: FastifyRequest, reply: FastifyReply) {
+  const { userId } = request.user as { userId: number }
+  const { id } = request.params as { id: string }
+  const configId = parseInt(id, 10)
+
+  const [existing] = await db.select().from(configs).where(eq(configs.id, configId)).limit(1)
+  if (!existing) {
+    return reply.status(404).send({ error: 'Config not found' })
+  }
+
+  // Check if there's an active lock held by someone else
+  const now = new Date()
+  const [activeLock] = await db.select().from(configLocks)
+    .where(
+      and(
+        eq(configLocks.configId, configId),
+        gt(configLocks.expiresAt, now),
+      )
+    )
+    .limit(1)
+
+  if (activeLock && activeLock.userId !== userId) {
+    // Look up who locked it
+    const [lockUser] = await db.select({ username: users.username })
+      .from(users).where(eq(users.id, activeLock.userId)).limit(1)
+    return reply.status(423).send({
+      error: 'Config is locked by another user',
+      lockedBy: lockUser?.username || 'Unknown',
+      lockedAt: activeLock.lockedAt,
+      expiresAt: activeLock.expiresAt,
+    })
+  }
+
+  // Upsert lock (same user can refresh their lock)
+  if (activeLock) {
+    // Refresh existing lock
+    const expiresAt = new Date(Date.now() + LOCK_DURATION_MS)
+    await db.update(configLocks)
+      .set({ lockedAt: now, expiresAt })
+      .where(eq(configLocks.id, activeLock.id))
+    return reply.send({ locked: true, expiresAt })
+  }
+
+  const expiresAt = new Date(Date.now() + LOCK_DURATION_MS)
+  await db.insert(configLocks).values({
+    configId,
+    userId,
+    lockedAt: now,
+    expiresAt,
+  })
+  return reply.send({ locked: true, expiresAt })
+}
+
+export async function unlock(request: FastifyRequest, reply: FastifyReply) {
+  const { userId } = request.user as { userId: number }
+  const { id } = request.params as { id: string }
+  const configId = parseInt(id, 10)
+
+  await db.delete(configLocks)
+    .where(
+      and(
+        eq(configLocks.configId, configId),
+        eq(configLocks.userId, userId),
+      )
+    )
+  return reply.send({ locked: false })
+}
+
+export async function getLockStatus(request: FastifyRequest, reply: FastifyReply) {
+  const { id } = request.params as { id: string }
+  const configId = parseInt(id, 10)
+
+  const now = new Date()
+  const [activeLock] = await db.select().from(configLocks)
+    .where(
+      and(
+        eq(configLocks.configId, configId),
+        gt(configLocks.expiresAt, now),
+      )
+    )
+    .limit(1)
+
+  if (!activeLock) {
+    return reply.send({ locked: false })
+  }
+
+  const [lockUser] = await db.select({ id: users.id, username: users.username })
+    .from(users).where(eq(users.id, activeLock.userId)).limit(1)
+
+  return reply.send({
+    locked: true,
+    userId: activeLock.userId,
+    username: lockUser?.username || 'Unknown',
+    lockedAt: activeLock.lockedAt,
+    expiresAt: activeLock.expiresAt,
   })
 }

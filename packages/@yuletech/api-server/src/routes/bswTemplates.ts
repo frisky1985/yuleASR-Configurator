@@ -222,6 +222,9 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
       include: {
         author: { select: { id: true, username: true, avatar: true } },
         versions: { orderBy: { version: 'desc' } },
+        reviews: {
+          select: { rating: true },
+        },
       },
     })
 
@@ -229,20 +232,31 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
       throw { statusCode: 404, message: 'Template not found' }
     }
 
+    // Calculate avgRating and reviewCount
+    const reviews = template.reviews || []
+    const reviewCount = reviews.length
+    const avgRating = reviewCount > 0
+      ? Math.round((reviews.reduce((sum, r) => sum + r.rating, 0) / reviewCount) * 10) / 10
+      : 0
+
     // Increment view count (fire and forget)
     prisma.bSWTemplate.update({
       where: { id: templateId },
       data: { viewCount: { increment: 1 } },
     }).catch(() => {})
 
+    const { reviews: _, ...templateWithoutReviews } = template
+
     return {
-      ...template,
+      ...templateWithoutReviews,
       tags: jsonParseSafe(template.tags, []),
       modules: jsonParseSafe(template.modules, []),
       versions: template.versions.map(v => ({
         ...v,
         modules: jsonParseSafe(v.modules, []),
       })),
+      avgRating,
+      reviewCount,
     }
   })
 

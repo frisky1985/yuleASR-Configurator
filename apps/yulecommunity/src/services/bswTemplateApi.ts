@@ -9,6 +9,7 @@ import type {
   BSWTemplateUpload,
   BSWTemplateListParams,
   PaginatedTemplateResult,
+  BSWTemplateReview,
 } from '../types/bswTemplate'
 
 const BASE_URL =
@@ -138,6 +139,23 @@ export const bswTemplateApi = {
   // ── Admin: update status ──────────────────────────────────────────────
   updateStatus(id: number, status: string, reviewNote?: string): Promise<BSWTemplate> {
     return request<BSWTemplate>('PUT', `/api/bsw-templates/${id}/status`, { status, reviewNote })
+  },
+
+  // ── Reviews ───────────────────────────────────────────────────────────
+  getReviews(templateId: number): Promise<BSWTemplateReview[]> {
+    return request<BSWTemplateReview[]>('GET', `/api/bsw-templates/${templateId}/reviews`)
+  },
+
+  createReview(templateId: number, data: { rating: number; content?: string }): Promise<BSWTemplateReview> {
+    return request<BSWTemplateReview>('POST', `/api/bsw-templates/${templateId}/reviews`, data)
+  },
+
+  updateReview(reviewId: number, data: { rating?: number; content?: string }): Promise<BSWTemplateReview> {
+    return request<BSWTemplateReview>('PUT', `/api/template-reviews/${reviewId}`, data)
+  },
+
+  deleteReview(reviewId: number): Promise<void> {
+    return request<void>('DELETE', `/api/template-reviews/${reviewId}`)
   },
 }
 

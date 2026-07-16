@@ -12,6 +12,7 @@ import { Register } from './pages/Register'
 import { Settings } from './pages/Settings'
 import { Templates } from './pages/Templates'
 import { Compare } from './pages/Compare'
+import { ConfigDiff } from './pages/ConfigDiff'
 import { useAuthStore } from './stores/authStore'
 import { LicenseActivation } from './pages/LicenseActivation'
 
@@ -39,6 +40,9 @@ function App() {
           <Route path="/compare" element={<Compare />} />
           <Route path="/compare/:configAId" element={<Compare />} />
           <Route path="/compare/:configAId/:configBId" element={<Compare />} />
+          <Route path="/diff" element={<ConfigDiff />} />
+          <Route path="/diff/:configAId" element={<ConfigDiff />} />
+          <Route path="/diff/:configAId/:configBId" element={<ConfigDiff />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>

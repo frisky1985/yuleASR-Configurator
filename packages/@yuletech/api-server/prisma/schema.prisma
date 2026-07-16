@@ -14,6 +14,7 @@ model User {
   password  String
   avatar    String?
   role      String   @default("user")
+  score     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -24,6 +25,11 @@ model User {
   licenses LicenseKey[]
   templates BSWTemplate[] @relation("BSWTemplateAuthor")
   reviewedTemplates BSWTemplate[] @relation("BSWTemplateReviewer")
+  questions Question[] @relation("QuestionAuthor")
+  answers   Answer[]
+  qaVotes   QAVote[]
+  templateReviews BSWTemplateReview[]
+  sharedConfigs   SharedConfig[]
 }
 
 model ForumPost {
@@ -152,6 +158,7 @@ model BSWTemplate {
   updatedAt DateTime @updatedAt
 
   versions BSWTemplateVersion[]
+  reviews  BSWTemplateReview[]
 }
 
 model BSWTemplateVersion {
@@ -183,4 +190,89 @@ model PaymentEvent {
   lemonCustomerId String?
   lemonProductId  String?
   lemonVariantId  String?
+}
+
+// ── QA System ──────────────────────────────────────────────────────────────
+
+model Question {
+  id               Int      @id @default(autoincrement())
+  title            String
+  content          String
+  authorId         Int
+  tags             String   @default("[]") // JSON array stored as string (SQLite)
+  viewCount        Int      @default(0)
+  likeCount        Int      @default(0)
+  answerCount      Int      @default(0)
+  acceptedAnswerId Int?
+  status           String   @default("open") // open | resolved | closed
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  author   User     @relation("QuestionAuthor", fields: [authorId], references: [id])
+  answers  Answer[]
+  votes    QAVote[] @relation("QAVoteQuestion")
+}
+
+model Answer {
+  id         Int      @id @default(autoincrement())
+  questionId Int
+  authorId   Int
+  content    String
+  isAccepted Boolean  @default(false)
+  likeCount  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  author   User     @relation(fields: [authorId], references: [id])
+  votes    QAVote[] @relation("QAVoteAnswer")
+}
+
+model QAVote {
+  id         Int      @id @default(autoincrement())
+  targetType String   // "question" | "answer"
+  targetId   Int
+  userId     Int
+  voteType   String   // "up" | "down"
+  createdAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id])
+  question   Question? @relation("QAVoteQuestion", fields: [targetId], references: [id])
+  answer     Answer?   @relation("QAVoteAnswer", fields: [targetId], references: [id])
+
+  @@unique([targetType, targetId, userId])
+}
+
+// ── BSW Template Reviews ─────────────────────────────────────────────────
+
+model BSWTemplateReview {
+  id        Int      @id @default(autoincrement())
+  templateId Int
+  template  BSWTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  rating    Int      // 1-5
+  content   String?
+  createdAt DateTime @default(now())
+
+  @@unique([templateId, userId])
+}
+
+// ── Shared Configurations (Gallery) ─────────────────────────────────────
+
+model SharedConfig {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String    @default("")
+  mcuType     String?
+  modules     String    @default("[]")   // JSON array
+  configData  String?   // JSON string of full configuration
+  screenshotUrl String?
+  tags        String    @default("[]")   // JSON array of tag strings
+  viewCount   Int       @default(0)
+  likeCount   Int       @default(0)
+  authorId    Int
+  author      User      @relation(fields: [authorId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }

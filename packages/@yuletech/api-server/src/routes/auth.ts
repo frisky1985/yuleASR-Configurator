@@ -70,7 +70,7 @@ export async function authRoutes(app: FastifyInstance) {
     const { prisma } = await import('../lib/prisma.js')
     const user = await prisma.user.findUnique({
       where: { id },
-      select: { id: true, email: true, username: true, avatar: true, role: true, createdAt: true },
+      select: { id: true, email: true, username: true, avatar: true, role: true, score: true, createdAt: true },
     })
     if (!user) {
       throw { statusCode: 404, message: 'User not found' }

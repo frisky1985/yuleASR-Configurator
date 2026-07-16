@@ -96,3 +96,52 @@ export interface PaginatedTemplateResult {
   pageSize: number
   totalPages: number
 }
+
+// ── Template Reviews ────────────────────────────────────────────────────
+
+export interface BSWTemplateReview {
+  id: number
+  templateId: number
+  userId: number
+  rating: number
+  content?: string | null
+  createdAt: string
+  user: {
+    id: number
+    username: string
+    avatar?: string | null
+  }
+}
+
+// ── Shared Configs ──────────────────────────────────────────────────────
+
+export interface SharedConfig {
+  id: number
+  name: string
+  description: string
+  mcuType?: string | null
+  modules: any[]
+  configData?: any
+  screenshotUrl?: string | null
+  tags: string[]
+  viewCount: number
+  likeCount: number
+  authorId: number
+  author: {
+    id: number
+    username: string
+    avatar?: string | null
+  }
+  createdAt: string
+  updatedAt: string
+}
+
+export interface SharedConfigListParams {
+  search?: string
+  tag?: string
+  mcuType?: string
+  sortBy?: 'createdAt' | 'likeCount' | 'viewCount'
+  sortOrder?: 'asc' | 'desc'
+  page?: number
+  pageSize?: number
+}

@@ -13,6 +13,7 @@ import {
   Info,
   Share2,
   Eye,
+  FileJson,
 } from 'lucide-react'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
@@ -36,6 +37,7 @@ import { CollapsibleSection } from '@/components/CollapsibleSection'
 import { ContainerConfigSection } from '@/components/ContainerConfigSection'
 import { ContainerParameterList } from '@/components/ContainerParameterList'
 import { cn, formatDate } from '@/lib/utils'
+import { downloadAuditReport } from '@/services/configReportGenerator'
 import JSZip from 'jszip'
 import type { GeneratedFile } from '@/services/codegen'
 import { useConfigStore } from '@/stores/configStore'
@@ -57,6 +59,8 @@ export function Editor() {
   const [showShareDialog, setShowShareDialog] = useState(false)
   const [showDiffPreview, setShowDiffPreview] = useState(false)
   const [savedGeneratedCode, setSavedGeneratedCode] = useState<string | null>(null)
+  const [showExportMenu, setShowExportMenu] = useState(false)
+  const exportMenuRef = useRef<HTMLDivElement>(null)
 
   // ── Code gen state (declared early — used by Electron useEffect below) ──
   const [importing, setImporting] = useState(false)
@@ -88,6 +92,18 @@ export function Editor() {
       loadConfig(configId)
     }
   }, [configId, loadConfig])
+
+  // Close export menu on click outside
+  useEffect(() => {
+    if (!showExportMenu) return
+    const handleClick = (e: MouseEvent) => {
+      if (exportMenuRef.current && !exportMenuRef.current.contains(e.target as Node)) {
+        setShowExportMenu(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [showExportMenu])
 
   // Electron menu event listeners
   useEffect(() => {
@@ -422,14 +438,44 @@ export function Editor() {
             <Eye className="w-4 h-4" />
             Diff
           </button>
-          <button
-            onClick={handleExport}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
-            title="Export configuration as JSON"
-          >
-            <Download className="w-4 h-4" />
-            Export
-          </button>
+          {/* Export Dropdown */}
+          <div className="relative" ref={exportMenuRef}>
+            <button
+              onClick={() => setShowExportMenu(!showExportMenu)}
+              className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
+              title="Export"
+            >
+              <Download className="w-4 h-4" />
+              Export
+              <svg className={`w-3 h-3 transition-transform ${showExportMenu ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            {showExportMenu && (
+              <div className="absolute right-0 top-full mt-1 bg-app-bg-primary border border-app-border-primary rounded-lg shadow-lg z-50 min-w-[180px] py-1">
+                <button
+                  onClick={() => {
+                    setShowExportMenu(false)
+                    handleExport()
+                  }}
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-app-bg-secondary transition-colors flex items-center gap-2"
+                >
+                  <FileJson className="w-4 h-4 text-blue-500" />
+                  Export JSON
+                </button>
+                <button
+                  onClick={() => {
+                    setShowExportMenu(false)
+                    if (currentConfig) {
+                      downloadAuditReport(currentConfig)
+                    }
+                  }}
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-app-bg-secondary transition-colors flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                  Export Audit Report
+                </button>
+              </div>
+            )}
+          </div>
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={importing}

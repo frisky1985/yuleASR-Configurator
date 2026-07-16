@@ -158,7 +158,7 @@ export function ProfilePage() {
           avatar: user.username.slice(0, 2).toUpperCase(),
           level: 'Lv.1',
           levelTitle: '新手',
-          points: 0,
+          points: (user as any).score || 0,
           nextLevel: 100,
           joinDate: new Date().toISOString().slice(0, 10),
           bio: 'YuleTech 社区成员',

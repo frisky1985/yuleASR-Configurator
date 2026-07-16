@@ -16,10 +16,18 @@ import {
   Tag,
   Calendar,
   BarChart3,
+  MessageSquare,
+  ThumbsUp,
+  Trash2,
+  Edit3,
+  Send,
+  AlertCircle,
+  Check,
+  X,
 } from 'lucide-react'
 import { bswTemplateApi } from '../services/bswTemplateApi'
 import { getApiToken } from '../services/apiClient'
-import type { BSWTemplate, BSWTemplateVersion } from '../types/bswTemplate'
+import type { BSWTemplate, BSWTemplateVersion, BSWTemplateReview } from '../types/bswTemplate'
 
 const categoryLabels: Record<string, { label: string; color: string }> = {
   mcal: { label: 'MCAL', color: 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' },
@@ -46,6 +54,20 @@ export function BSWTemplateDetailPage() {
   const [downloading, setDownloading] = useState(false)
   const isLoggedIn = !!getApiToken()
 
+  // Review state
+  const [reviews, setReviews] = useState<BSWTemplateReview[]>([])
+  const [reviewsLoading, setReviewsLoading] = useState(false)
+  const [userRating, setUserRating] = useState(0)
+  const [userReviewContent, setUserReviewContent] = useState('')
+  const [submittingReview, setSubmittingReview] = useState(false)
+  const [reviewError, setReviewError] = useState<string | null>(null)
+  const [reviewSuccess, setReviewSuccess] = useState(false)
+  const [editingReviewId, setEditingReviewId] = useState<number | null>(null)
+  const [editRating, setEditRating] = useState(0)
+  const [editContent, setEditContent] = useState('')
+  const [hoverRating, setHoverRating] = useState(0)
+  const [editHoverRating, setEditHoverRating] = useState(0)
+
   useEffect(() => {
     if (!id) return
     setLoading(true)
@@ -53,6 +75,16 @@ export function BSWTemplateDetailPage() {
       .then(setTemplate)
       .catch(err => setError(err.message || 'Failed to load template'))
       .finally(() => setLoading(false))
+  }, [id])
+
+  // Fetch reviews when template loads
+  useEffect(() => {
+    if (!id) return
+    setReviewsLoading(true)
+    bswTemplateApi.getReviews(parseInt(id, 10))
+      .then(setReviews)
+      .catch(() => {})
+      .finally(() => setReviewsLoading(false))
   }, [id])
 
   const handleDownload = async () => {
@@ -89,6 +121,77 @@ export function BSWTemplateDetailPage() {
       setDownloading(false)
     }
   }
+
+  // ── Review handlers ──────────────────────────────────────────────────
+
+  const handleSubmitReview = async () => {
+    if (!template || userRating === 0) return
+    setSubmittingReview(true)
+    setReviewError(null)
+    setReviewSuccess(false)
+    try {
+      const review = await bswTemplateApi.createReview(template.id, {
+        rating: userRating,
+        content: userReviewContent || undefined,
+      })
+      setReviews(prev => [review, ...prev])
+      setUserRating(0)
+      setUserReviewContent('')
+      setReviewSuccess(true)
+      setTimeout(() => setReviewSuccess(false), 3000)
+    } catch (err: any) {
+      setReviewError(err.message || 'Failed to submit review')
+    } finally {
+      setSubmittingReview(false)
+    }
+  }
+
+  const handleStartEdit = (review: BSWTemplateReview) => {
+    setEditingReviewId(review.id)
+    setEditRating(review.rating)
+    setEditContent(review.content || '')
+  }
+
+  const handleCancelEdit = () => {
+    setEditingReviewId(null)
+    setEditRating(0)
+    setEditContent('')
+  }
+
+  const handleSaveEdit = async (reviewId: number) => {
+    setReviewError(null)
+    try {
+      const updated = await bswTemplateApi.updateReview(reviewId, {
+        rating: editRating,
+        content: editContent || undefined,
+      })
+      setReviews(prev => prev.map(r => r.id === reviewId ? updated : r))
+      setEditingReviewId(null)
+    } catch (err: any) {
+      setReviewError(err.message || 'Failed to update review')
+    }
+  }
+
+  const handleDeleteReview = async (reviewId: number) => {
+    if (!window.confirm('确定删除这条评价？')) return
+    try {
+      await bswTemplateApi.deleteReview(reviewId)
+      setReviews(prev => prev.filter(r => r.id !== reviewId))
+    } catch (err: any) {
+      setReviewError(err.message || 'Failed to delete review')
+    }
+  }
+
+  // Find current user's review
+  const currentUserId = (() => {
+    try {
+      const token = getApiToken()
+      if (!token) return null
+      const payload = JSON.parse(atob(token.split('.')[1]))
+      return payload.id
+    } catch { return null }
+  })()
+  const myReview = reviews.find(r => r.userId === currentUserId)
 
   if (loading) {
     return (
@@ -271,6 +374,221 @@ export function BSWTemplateDetailPage() {
               </div>
             </div>
           )}
+
+          {/* ── Reviews Section ────────────────────────────────────────────── */}
+          <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+              <MessageSquare className="w-5 h-5" />
+              评价 ({reviews.length || 0})
+            </h2>
+
+            {/* Review form - only if logged in and hasn't reviewed yet */}
+            {isLoggedIn && !myReview && (
+              <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-100 dark:border-slate-600">
+                <h3 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
+                  发表评价
+                </h3>
+
+                {/* Star rating input */}
+                <div className="flex items-center gap-1 mb-3">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setUserRating(star)}
+                      onMouseEnter={() => setHoverRating(star)}
+                      onMouseLeave={() => setHoverRating(0)}
+                      className="p-0.5 transition-colors"
+                    >
+                      <Star
+                        className={`w-6 h-6 ${
+                          star <= (hoverRating || userRating)
+                            ? 'fill-amber-400 text-amber-400'
+                            : 'text-slate-300 dark:text-slate-500'
+                        }`}
+                      />
+                    </button>
+                  ))}
+                  {userRating > 0 && (
+                    <span className="ml-2 text-sm text-slate-500 dark:text-slate-400">
+                      {['', '很差', '较差', '一般', '较好', '很好'][userRating]}
+                    </span>
+                  )}
+                </div>
+
+                <textarea
+                  value={userReviewContent}
+                  onChange={(e) => setUserReviewContent(e.target.value)}
+                  placeholder="分享你的使用体验（选填）"
+                  rows={3}
+                  className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none mb-3"
+                />
+
+                {reviewError && (
+                  <div className="flex items-start gap-2 p-2.5 mb-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                    <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
+                    <span className="text-sm text-red-700 dark:text-red-400">{reviewError}</span>
+                  </div>
+                )}
+
+                {reviewSuccess && (
+                  <div className="flex items-center gap-2 p-2.5 mb-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                    <Check className="w-4 h-4 text-green-500" />
+                    <span className="text-sm text-green-700 dark:text-green-400">评价提交成功！</span>
+                  </div>
+                )}
+
+                <button
+                  onClick={handleSubmitReview}
+                  disabled={userRating === 0 || submittingReview}
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-slate-300 dark:disabled:bg-slate-600 disabled:cursor-not-allowed transition-colors"
+                >
+                  {submittingReview ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Send className="w-4 h-4" />
+                  )}
+                  {submittingReview ? '提交中...' : '提交评价'}
+                </button>
+              </div>
+            )}
+
+            {!isLoggedIn && (
+              <div className="mb-6 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-100 dark:border-slate-600 text-center">
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  <Link to="/login" className="text-primary-600 hover:underline">登录</Link> 后即可发表评价
+                </p>
+              </div>
+            )}
+
+            {/* Reviews list */}
+            {reviewsLoading ? (
+              <div className="flex justify-center py-8">
+                <Loader2 className="w-6 h-6 animate-spin text-primary-600" />
+              </div>
+            ) : reviews.length === 0 ? (
+              <p className="text-sm text-slate-500 dark:text-slate-400 text-center py-8">
+                暂无评价，来做第一个评价的人吧
+              </p>
+            ) : (
+              <div className="space-y-4">
+                {reviews.map((review) => (
+                  <div
+                    key={review.id}
+                    className="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg border border-slate-100 dark:border-slate-600"
+                  >
+                    {editingReviewId === review.id ? (
+                      /* Edit mode */
+                      <div>
+                        <div className="flex items-center gap-1 mb-3">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <button
+                              key={star}
+                              type="button"
+                              onClick={() => setEditRating(star)}
+                              onMouseEnter={() => setEditHoverRating(star)}
+                              onMouseLeave={() => setEditHoverRating(0)}
+                              className="p-0.5"
+                            >
+                              <Star
+                                className={`w-5 h-5 ${
+                                  star <= (editHoverRating || editRating)
+                                    ? 'fill-amber-400 text-amber-400'
+                                    : 'text-slate-300 dark:text-slate-500'
+                                }`}
+                              />
+                            </button>
+                          ))}
+                        </div>
+                        <textarea
+                          value={editContent}
+                          onChange={(e) => setEditContent(e.target.value)}
+                          rows={3}
+                          className="w-full px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none mb-3"
+                        />
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleSaveEdit(review.id)}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                          >
+                            <Check className="w-3.5 h-3.5" />
+                            保存
+                          </button>
+                          <button
+                            onClick={handleCancelEdit}
+                            className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-400 bg-slate-200 dark:bg-slate-600 rounded-lg hover:bg-slate-300 dark:hover:bg-slate-500 transition-colors"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                            取消
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      /* Display mode */
+                      <>
+                        <div className="flex items-start justify-between mb-2">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-xs font-bold text-primary-600 dark:text-primary-400 shrink-0">
+                              {review.user.avatar ? (
+                                <img src={review.user.avatar} alt="" className="w-8 h-8 rounded-full object-cover" />
+                              ) : (
+                                review.user.username.charAt(0).toUpperCase()
+                              )}
+                            </div>
+                            <div>
+                              <span className="text-sm font-medium text-slate-800 dark:text-slate-200">
+                                {review.user.username}
+                              </span>
+                              <div className="flex items-center gap-1 mt-0.5">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <Star
+                                    key={star}
+                                    className={`w-3.5 h-3.5 ${
+                                      star <= review.rating
+                                        ? 'fill-amber-400 text-amber-400'
+                                        : 'text-slate-300 dark:text-slate-500'
+                                    }`}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-slate-400 dark:text-slate-500">
+                              {new Date(review.createdAt).toLocaleDateString()}
+                            </span>
+                            {review.userId === currentUserId && (
+                              <div className="flex items-center gap-1">
+                                <button
+                                  onClick={() => handleStartEdit(review)}
+                                  className="p-1 text-slate-400 hover:text-primary-600 transition-colors"
+                                  title="编辑"
+                                >
+                                  <Edit3 className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteReview(review.id)}
+                                  className="p-1 text-slate-400 hover:text-red-500 transition-colors"
+                                  title="删除"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        {review.content && (
+                          <p className="text-sm text-slate-600 dark:text-slate-400 ml-11">
+                            {review.content}
+                          </p>
+                        )}
+                      </>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Sidebar */}

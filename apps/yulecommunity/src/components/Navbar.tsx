@@ -59,6 +59,7 @@ export function Navbar() {
     { label: '活动', to: '/events' },
     { label: '开发板', to: '/hardware' },
     { label: '模板市场', to: '/templates-market' },
+    { label: '配置分享', to: '/gallery' },
     { label: '下载中心', to: '/downloads' },
   ];
 

@@ -24,6 +24,10 @@ const BlogDetailPage = lazy(() => import('./pages/BlogDetailPage').then(m => ({ 
 const DocsPage = lazy(() => import('./pages/DocsPage').then(m => ({ default: m.DocsPage })))
 const ForumPage = lazy(() => import('./pages/ForumPage').then(m => ({ default: m.ForumPage })))
 const QAPage = lazy(() => import('./pages/QAPage').then(m => ({ default: m.QAPage })))
+const QAHome = lazy(() => import('./pages/QAHome').then(m => ({ default: m.QAHome })))
+const QAQuestion = lazy(() => import('./pages/QAQuestion').then(m => ({ default: m.QAQuestion })))
+const QAAAsk = lazy(() => import('./pages/QAAAsk').then(m => ({ default: m.QAAAsk })))
+const QAEditAnswer = lazy(() => import('./pages/QAEditAnswer').then(m => ({ default: m.QAEditAnswer })))
 const EventsPage = lazy(() => import('./pages/EventsPage').then(m => ({ default: m.EventsPage })))
 const HardwarePage = lazy(() => import('./pages/HardwarePage').then(m => ({ default: m.HardwarePage })))
 const DownloadPage = lazy(() => import('./pages/DownloadPage').then(m => ({ default: m.DownloadPage })))
@@ -42,6 +46,8 @@ const YuleASREditorPage = lazy(() => import('./pages/YuleASREditorPage').then(m 
 const BSWTemplateMarketPage = lazy(() => import('./pages/BSWTemplateMarketPage').then(m => ({ default: m.BSWTemplateMarketPage })))
 const BSWTemplateDetailPage = lazy(() => import('./pages/BSWTemplateDetailPage').then(m => ({ default: m.BSWTemplateDetailPage })))
 const BSWTemplateUploadPage = lazy(() => import('./pages/BSWTemplateUploadPage').then(m => ({ default: m.BSWTemplateUploadPage })))
+const ConfigGallery = lazy(() => import('./pages/ConfigGallery').then(m => ({ default: m.ConfigGallery })))
+const ConfigGalleryDetail = lazy(() => import('./pages/ConfigGalleryDetail').then(m => ({ default: m.ConfigGalleryDetail })))
 
 // Admin pages
 const AdminLogin = lazy(() => import('./admin/pages/Login').then(m => ({ default: m.Login })))
@@ -147,7 +153,10 @@ export function CommunityRoutes() {
                   <Route path="bookmarks" element={<BookmarksPage />} />
                   <Route path="docs" element={<DocsPage />} />
                   <Route path="forum" element={<ForumPage />} />
-                  <Route path="qa" element={<QAPage />} />
+                  <Route path="qa" element={<QAHome />} />
+                  <Route path="qa/ask" element={<QAAAsk />} />
+                  <Route path="qa/:id" element={<QAQuestion />} />
+                  <Route path="qa/answer/:id/edit" element={<QAEditAnswer />} />
                   <Route path="events" element={<EventsPage />} />
                   <Route path="hardware" element={<HardwarePage />} />
                   <Route path="downloads" element={<DownloadPage />} />
@@ -157,6 +166,8 @@ export function CommunityRoutes() {
                   <Route path="templates-market" element={<BSWTemplateMarketPage />} />
                   <Route path="templates-market/:id" element={<BSWTemplateDetailPage />} />
                   <Route path="templates-market/upload" element={<BSWTemplateUploadPage />} />
+                  <Route path="gallery" element={<ConfigGallery />} />
+                  <Route path="gallery/:id" element={<ConfigGalleryDetail />} />
                   <Route path="*" element={
                     <div className="min-h-screen flex items-center justify-center">
                       <div className="text-center">

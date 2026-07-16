@@ -359,7 +359,127 @@ export function ShareDialog({ isOpen, onClose, config }: ShareDialogProps) {
           </div>
 
           {/* ────────────────────────────────── */}
-          {/* Option 2: Download to Local        */}
+          {/* Option 2: Share to Gallery         */}
+          {/* ────────────────────────────────── */}
+          <div
+            className={cn(
+              'border rounded-xl p-5 transition-all duration-200',
+              'border-app-border-primary bg-app-bg-primary',
+              'hover:border-primary-300 hover:shadow-sm',
+            )}
+          >
+            {!isAuthenticated ? (
+              <div className="flex items-start gap-4">
+                <div className="p-2.5 rounded-lg bg-app-bg-tertiary shrink-0">
+                  <Globe className="w-5 h-5 text-app-text-secondary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-app-text-primary">
+                    分享到 Gallery
+                  </h3>
+                  <p className="text-sm text-app-text-secondary mt-1">
+                    登录后即可将配置分享到 Gallery，展示给所有 yuleASR 用户
+                  </p>
+                  <button
+                    onClick={() => navigate('/login')}
+                    className="mt-3 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary-600 bg-primary-50 border border-primary-200 rounded-lg hover:bg-primary-100 transition-colors"
+                  >
+                    <LogIn className="w-4 h-4" />
+                    登录后分享
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-start gap-4">
+                <div className="p-2.5 rounded-lg bg-app-bg-tertiary shrink-0">
+                  <Globe className="w-5 h-5 text-app-text-secondary" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-medium text-app-text-primary">
+                    分享到 Gallery
+                  </h3>
+                  <p className="text-sm text-app-text-secondary mt-1">
+                    将配置分享到社区 Gallery，展示给所有 yuleASR 用户
+                  </p>
+                  <button
+                    onClick={async () => {
+                      setPublishState('loading')
+                      try {
+                        const tags = generateTags(config)
+                        const modules = config.modules.map(m => ({
+                          id: m.id || m.name,
+                          name: m.name,
+                          layer: m.layer || 'General',
+                          parameters: m.parameters || {},
+                        }))
+                        await api.post('/api/shared-configs', {
+                          name: config.name,
+                          description: postContent || `分享配置「${config.name}」`,
+                          mcuType: config.targetPlatform || config.targetChip || undefined,
+                          modules,
+                          configData: config,
+                          tags,
+                        })
+                        setPublishState('success')
+                      } catch (err) {
+                        setPublishState('error')
+                        setPublishError(
+                          err instanceof Error ? err.message : '分享失败，请重试',
+                        )
+                      }
+                    }}
+                    disabled={publishState === 'loading'}
+                    className={cn(
+                      'mt-3 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200',
+                      publishState === 'loading'
+                        ? 'bg-primary-400 text-white cursor-not-allowed'
+                        : 'bg-primary-600 text-white hover:bg-primary-700 active:scale-[0.98]',
+                    )}
+                  >
+                    {publishState === 'loading' ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        分享中...
+                      </>
+                    ) : publishState === 'success' ? (
+                      <>
+                        <CheckCircle className="w-4 h-4" />
+                        已分享 ✓
+                      </>
+                    ) : (
+                      <>
+                        <Globe className="w-4 h-4" />
+                        分享到 Gallery →
+                      </>
+                    )}
+                  </button>
+
+                  {publishState === 'error' && publishError && (
+                    <div className="mt-3 flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
+                      <span className="text-sm text-red-700">{publishError}</span>
+                    </div>
+                  )}
+
+                  {publishState === 'success' && (
+                    <button
+                      onClick={() => {
+                        window.open(`/community/#/gallery`, '_blank')
+                        onClose()
+                      }}
+                      className="mt-3 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      查看 Gallery
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* ────────────────────────────────── */}
+          {/* Option 3: Download to Local        */}
           {/* ────────────────────────────────── */}
           <div
             className={cn(
