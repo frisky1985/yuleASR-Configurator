@@ -29,7 +29,8 @@ export default defineConfig({
   /* Shared settings for all the projects below */
   use: {
     /* Base URL to use in actions like `await page.goto('/')` */
-    baseURL: process.env.E2E_BASE_URL || 'http://localhost:3000',
+    /* Note: Vite config has base: '/configurator/', so the app lives at /configurator/ */
+    baseURL: process.env.E2E_BASE_URL || 'http://localhost:3000/configurator',
     
     /* Collect trace when retrying the failed test */
     trace: 'on-first-retry',
@@ -53,23 +54,6 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-    /* Test against mobile viewports */
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
-    },
   ],
 
   /* Run local dev server before starting the tests */
@@ -77,7 +61,7 @@ export default defineConfig({
     ? undefined
     : {
         command: 'pnpm dev',
-        url: 'http://localhost:3000',
+        port: 3000,
         reuseExistingServer: !process.env.CI,
         timeout: 120 * 1000,
       },

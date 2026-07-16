@@ -16,7 +16,7 @@ import type {
   ContainerSchema 
 } from '../types';
 
-import type { CodeGenerator, GeneratorOptions, GenerationResult, GeneratedFile } from './index';
+import type { CodeGenerator, GeneratorOptions, GenerationResult, GeneratedFile, CompilerType } from './index';
 
 import {
   formatCValue,
@@ -32,6 +32,8 @@ import {
   generateDetReportError,
   wrapDevErrorDetect,
   DetErrorCode,
+  getCompilerAbstraction,
+  CompilerAbstraction,
 } from './autosar-format';
 
 /**
@@ -43,6 +45,7 @@ export class EcucCodeGenerator implements CodeGenerator {
   name = 'EcucCodeGenerator';
   version = '1.0.0';
   supportedModules: string[] = ['*']; // 支持所有模块
+  private compilerAbstraction: CompilerAbstraction = new (getCompilerAbstraction(undefined).constructor as new () => CompilerAbstraction)();
 
   supports(moduleName: string): boolean {
     return this.supportedModules.includes('*') || this.supportedModules.includes(moduleName);
@@ -53,6 +56,9 @@ export class EcucCodeGenerator implements CodeGenerator {
     schema: ModuleSchema,
     options: GeneratorOptions
   ): Promise<GenerationResult> {
+    // 设置编译器抽象层
+    this.compilerAbstraction = getCompilerAbstraction(options.compiler);
+    
     const files: GeneratedFile[] = [];
     const errors: string[] = [];
     const warnings: string[] = [];
@@ -635,15 +641,7 @@ export class EcucCodeGenerator implements CodeGenerator {
    * @returns           带 MEMORY 段标记的代码
    */
   private wrapMemMapSection(moduleName: string, section: string, body: string): string {
-    const secName = `${moduleName.toUpperCase()}_START_SEC_${section}`;
-    const endSecName = `${moduleName.toUpperCase()}_STOP_SEC_${section}`;
-    return (
-      `#define ${secName}\n` +
-      `#include "MemMap.h"\n` +
-      `${body}` +
-      `#define ${endSecName}\n` +
-      `#include "MemMap.h"\n\n`
-    );
+    return this.compilerAbstraction.wrapMemMapSection(moduleName, section, body);
   }
 
   /**

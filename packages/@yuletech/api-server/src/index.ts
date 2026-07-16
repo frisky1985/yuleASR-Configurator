@@ -44,16 +44,16 @@ app.decorate('authenticate', async function (request: any, reply: any) {
 
 // ── Routes ──────────────────────────────────────────────────────────────
 
-await app.register(authRoutes, { prefix: '/auth' })
-await app.register(postsRoutes, { prefix: '/posts' })
-await app.register(blogRoutes, { prefix: '/blog' })
-await app.register(tagsRoutes, { prefix: '/tags' })
-await app.register(licenseRoutes, { prefix: '/api/license' })
-await app.register(paymentRoutes, { prefix: '/api/payment' })
-await app.register(bswTemplatesRoutes, { prefix: '/api/bsw-templates' })
-await app.register(templateReviewsRoutes, { prefix: '/api' })
-await app.register(sharedConfigsRoutes, { prefix: '/api/shared-configs' })
-await app.register(qaRoutes, { prefix: '/api' })
+await app.register(authRoutes, { prefix: '/v1/auth' })
+await app.register(postsRoutes, { prefix: '/v1/posts' })
+await app.register(blogRoutes, { prefix: '/v1/blog' })
+await app.register(tagsRoutes, { prefix: '/v1/tags' })
+await app.register(licenseRoutes, { prefix: '/v1/api/license' })
+await app.register(paymentRoutes, { prefix: '/v1/api/payment' })
+await app.register(bswTemplatesRoutes, { prefix: '/v1/api/bsw-templates' })
+await app.register(templateReviewsRoutes, { prefix: '/v1/api' })
+await app.register(sharedConfigsRoutes, { prefix: '/v1/api/shared-configs' })
+await app.register(qaRoutes, { prefix: '/v1/api' })
 
 // Health check
 app.get('/health', async () => {

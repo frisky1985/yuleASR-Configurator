@@ -6,6 +6,7 @@
 export * from './ecuc-generator';
 export * from './rte-generator';
 export * from './swc-generator';
+export * from './os-generator';
 
 import type { ModuleConfig, ModuleSchema } from '../types';
 
@@ -36,6 +37,11 @@ export interface GenerationResult {
 }
 
 /**
+ * Supported compiler types for AUTOSAR code generation
+ */
+export type CompilerType = 'gcc' | 'iar' | 'tasking' | 'ghs';
+
+/**
  * 生成器选项
  */
 export interface GeneratorOptions {
@@ -44,7 +50,7 @@ export interface GeneratorOptions {
   /** 目标平台 */
   targetPlatform?: string;
   /** 编译器 */
-  compiler?: 'gcc' | 'iar' | 'ghs';
+  compiler?: CompilerType;
   /** 是否生成注释 */
   generateComments?: boolean;
   /** 是否格式化代码 */
@@ -188,3 +194,7 @@ function generateExternDeclarations(_config: ModuleConfig, schema: ModuleSchema)
   const externName = `${schema.name}_Config`;
   return `extern const ${schema.name}_ConfigType ${externName};`;
 }
+
+// Register default generators
+import { osCodeGenerator } from './os-generator';
+generatorRegistry.register(osCodeGenerator);

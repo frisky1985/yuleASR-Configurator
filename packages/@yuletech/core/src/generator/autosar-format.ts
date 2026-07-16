@@ -5,6 +5,8 @@
  * Implements AUTOSAR 4.4 standard formatting and conventions
  */
 
+import type { CompilerType } from './index';
+
 /** Convert a filename to an include guard name (e.g., "Adc_Cfg.h" → "ADC_CFG_H") */
 export function toGuardName(filename: string): string {
   return filename.replace(/\./g, '_').toUpperCase();
@@ -89,6 +91,345 @@ export function parseVersion(version: string): { major: number; minor: number; p
   };
 }
 
+// =========================================================================
+// Multi-Compiler Abstraction
+// =========================================================================
+
+/**
+ * CompilerAbstraction interface
+ * Provides compiler-specific syntax for AUTOSAR C code generation.
+ * Supports: GCC, IAR Embedded Workbench, Tasking (Tricore), Green Hills (GHS)
+ */
+export interface CompilerAbstraction {
+  /** Compiler identifier */
+  readonly compiler: CompilerType;
+
+  /**
+   * Get the interrupt function attribute prefix
+   * @param irqNumber Optional IRQ vector number
+   */
+  interruptAttribute(irqNumber?: number): string;
+
+  /**
+   * Get the attribute for placing a variable at a specific memory address
+   * @param address Target memory address
+   */
+  addressAttribute(address: number): string;
+
+  /**
+   * Get the memory section attribute/pragma for a variable/function placement
+   * @param section Section name (e.g., ".text", ".data")
+   */
+  sectionAttribute(section: string): string;
+
+  /**
+   * Get the register qualifier for a specific direction
+   * @param direction Register direction
+   */
+  registerQualifier(direction: 'in' | 'out' | 'inout'): string;
+
+  /**
+   * Get the no-initialization attribute for uninitialized RAM variables
+   */
+  noInitAttribute(): string;
+
+  /**
+   * Get the root/retain attribute to prevent linker from discarding the symbol
+   */
+  rootAttribute(): string;
+
+  /**
+   * Wrap a code block with MemMap.h section markers
+   * @param moduleName Module name (e.g., "Can")
+   * @param section Section type (e.g., "CONST_UNSPECIFIED", "CODE", "VAR_INIT")
+   * @param body Code to wrap
+   */
+  wrapMemMapSection(moduleName: string, section: string, body: string): string;
+
+  /**
+   * Generate the start pragma for a section
+   * @param moduleName Module name
+   * @param section Section type
+   */
+  sectionStartPragma(moduleName: string, section: string): string;
+
+  /**
+   * Generate the stop pragma for a section
+   * @param moduleName Module name
+   * @param section Section type
+   */
+  sectionStopPragma(moduleName: string, section: string): string;
+}
+
+/**
+ * Get the CompilerAbstraction instance for the given compiler type
+ * Falls back to GCC if compiler is undefined or unrecognized
+ */
+export function getCompilerAbstraction(compiler?: CompilerType): CompilerAbstraction {
+  switch (compiler) {
+    case 'iar': return new IarCompilerAbstraction();
+    case 'tasking': return new TaskingCompilerAbstraction();
+    case 'ghs': return new GhsCompilerAbstraction();
+    case 'gcc':
+    default:
+      return new GccCompilerAbstraction();
+  }
+}
+
+// -------------------------------------------------------------------------
+// GCC Compiler Abstraction (default)
+// -------------------------------------------------------------------------
+
+/**
+ * GCC Compiler Abstraction
+ * Uses __attribute__ syntax for section placement and interrupt declarations.
+ * MemMap.h uses AUTOSAR standard #define/#include pattern.
+ */
+export class GccCompilerAbstraction implements CompilerAbstraction {
+  readonly compiler: CompilerType = 'gcc';
+
+  interruptAttribute(_irqNumber?: number): string {
+    return '__attribute__((interrupt()))';
+  }
+
+  addressAttribute(address: number): string {
+    return `__attribute__((section(".data"))) __attribute__((at(0x${address.toString(16)})))`;
+  }
+
+  sectionAttribute(section: string): string {
+    return `__attribute__((section("${section}")))`;
+  }
+
+  registerQualifier(direction: 'in' | 'out' | 'inout'): string {
+    switch (direction) {
+      case 'in': return 'const volatile';
+      case 'out': return 'volatile';
+      case 'inout': return 'volatile';
+    }
+  }
+
+  noInitAttribute(): string {
+    return '__attribute__((section(".noinit")))';
+  }
+
+  rootAttribute(): string {
+    return '__attribute__((used))';
+  }
+
+  sectionStartPragma(moduleName: string, section: string): string {
+    return `#define ${moduleName.toUpperCase()}_START_SEC_${section}\n#include "MemMap.h"`;
+  }
+
+  sectionStopPragma(moduleName: string, section: string): string {
+    return `#define ${moduleName.toUpperCase()}_STOP_SEC_${section}\n#include "MemMap.h"`;
+  }
+
+  wrapMemMapSection(moduleName: string, section: string, body: string): string {
+    return (
+      `#define ${moduleName.toUpperCase()}_START_SEC_${section}\n` +
+      `#include "MemMap.h"\n` +
+      `${body}\n` +
+      `#define ${moduleName.toUpperCase()}_STOP_SEC_${section}\n` +
+      `#include "MemMap.h"\n`
+    );
+  }
+}
+
+// -------------------------------------------------------------------------
+// IAR Compiler Abstraction
+// -------------------------------------------------------------------------
+
+/**
+ * IAR Embedded Workbench Compiler Abstraction
+ * Uses #pragma syntax for section placement and __interrupt/__irq for ISRs.
+ * Address placement uses @ operator.
+ * Memory qualifiers: __no_init, __root
+ * Register qualifiers: __IO, __I, __O
+ */
+export class IarCompilerAbstraction implements CompilerAbstraction {
+  readonly compiler: CompilerType = 'iar';
+
+  interruptAttribute(irqNumber?: number): string {
+    return irqNumber !== undefined
+      ? `__interrupt __irq`
+      : `__interrupt`;
+  }
+
+  addressAttribute(address: number): string {
+    return `@ 0x${address.toString(16)}`;
+  }
+
+  sectionAttribute(section: string): string {
+    return `@ "${section}"`;
+  }
+
+  registerQualifier(direction: 'in' | 'out' | 'inout'): string {
+    switch (direction) {
+      case 'in': return '__I';
+      case 'out': return '__O';
+      case 'inout': return '__IO';
+    }
+  }
+
+  noInitAttribute(): string {
+    return '__no_init';
+  }
+
+  rootAttribute(): string {
+    return '__root';
+  }
+
+  sectionStartPragma(_moduleName: string, _section: string): string {
+    return '#pragma diag_suppress=Pe999'; /* Placeholder — IAR uses MemMap.h sections */
+  }
+
+  sectionStopPragma(_moduleName: string, _section: string): string {
+    return '#pragma diag_default=Pe999';
+  }
+
+  wrapMemMapSection(moduleName: string, section: string, body: string): string {
+    return (
+      `/* IAR: MemMap section ${moduleName}_START_SEC_${section} */\n` +
+      `#pragma section = "${section}"\n` +
+      `#pragma location = "${section}"\n` +
+      `${body}\n` +
+      `/* IAR: MemMap section ${moduleName}_STOP_SEC_${section} */\n`
+    );
+  }
+}
+
+// -------------------------------------------------------------------------
+// Tasking Compiler Abstraction
+// -------------------------------------------------------------------------
+
+/**
+ * Tasking (Tricore) Compiler Abstraction
+ * Uses #pragma section for memory placement.
+ * ISR() macro for interrupt service routines.
+ * __near / __far / __at() for address placement.
+ */
+export class TaskingCompilerAbstraction implements CompilerAbstraction {
+  readonly compiler: CompilerType = 'tasking';
+
+  interruptAttribute(irqNumber?: number): string {
+    return irqNumber !== undefined
+      ? `ISR(${irqNumber})`
+      : `ISR(0)`;
+  }
+
+  addressAttribute(address: number): string {
+    return `__at(0x${address.toString(16)})`;
+  }
+
+  sectionAttribute(section: string): string {
+    if (section.includes('.text') || section.includes('CODE')) {
+      return `__far`;
+    }
+    if (section.includes('.bss') || section.includes('NOINIT')) {
+      return `__near`;
+    }
+    return `__far`;
+  }
+
+  registerQualifier(direction: 'in' | 'out' | 'inout'): string {
+    switch (direction) {
+      case 'in': return '__far const';
+      case 'out': return '__far';
+      case 'inout': return '__far';
+    }
+  }
+
+  noInitAttribute(): string {
+    return '__near';
+  }
+
+  rootAttribute(): string {
+    return '#pragma section farrom'; /* Keeps symbol in ROM */
+  }
+
+  sectionStartPragma(moduleName: string, section: string): string {
+    return `#pragma section farrom "${moduleName}_${section}"`;
+  }
+
+  sectionStopPragma(moduleName: string, section: string): string {
+    return `#pragma section farrom restore`;
+  }
+
+  wrapMemMapSection(moduleName: string, section: string, body: string): string {
+    return (
+      `/* Tasking: MemMap section ${moduleName}_START_SEC_${section} */\n` +
+      `#pragma section farrom "${moduleName.toUpperCase()}_${section}"\n` +
+      `${body}\n` +
+      `/* Tasking: MemMap section ${moduleName}_STOP_SEC_${section} */\n` +
+      `#pragma section farrom restore\n`
+    );
+  }
+}
+
+// -------------------------------------------------------------------------
+// GHS (Green Hills) Compiler Abstraction
+// -------------------------------------------------------------------------
+
+/**
+ * Green Hills (GHS) Compiler Abstraction
+ * Uses #pragma ghs section for memory placement.
+ * __interrupt keyword for ISR declarations.
+ * __attribute__((section())) for GCC-compatible section placement.
+ */
+export class GhsCompilerAbstraction implements CompilerAbstraction {
+  readonly compiler: CompilerType = 'ghs';
+
+  interruptAttribute(_irqNumber?: number): string {
+    return '__interrupt';
+  }
+
+  addressAttribute(address: number): string {
+    return `__attribute__((at(0x${address.toString(16)})))`;
+  }
+
+  sectionAttribute(section: string): string {
+    return `__attribute__((section("${section}")))`;
+  }
+
+  registerQualifier(direction: 'in' | 'out' | 'inout'): string {
+    switch (direction) {
+      case 'in': return 'const volatile';
+      case 'out': return 'volatile';
+      case 'inout': return 'volatile';
+    }
+  }
+
+  noInitAttribute(): string {
+    return '__attribute__((section(".noinit")))';
+  }
+
+  rootAttribute(): string {
+    return '__attribute__((used))';
+  }
+
+  sectionStartPragma(moduleName: string, section: string): string {
+    return `#pragma ghs section text="${moduleName}_${section}"`;
+  }
+
+  sectionStopPragma(moduleName: string, section: string): string {
+    return `#pragma ghs section text=default`;
+  }
+
+  wrapMemMapSection(moduleName: string, section: string, body: string): string {
+    return (
+      `/* GHS: MemMap section ${moduleName}_START_SEC_${section} */\n` +
+      `#pragma ghs section text="${moduleName.toUpperCase()}_${section}"\n` +
+      `${body}\n` +
+      `/* GHS: MemMap section ${moduleName}_STOP_SEC_${section} */\n` +
+      `#pragma ghs section text=default\n`
+    );
+  }
+}
+
+// =========================================================================
+// End of Compiler Abstraction
+// =========================================================================
+
 /** AUTOSAR 标准 Module IDs (BSW Module ID Table per AUTOSAR spec 4.4) */
 export const AUTOSAR_MODULE_IDS: Record<string, number> = {
   // MCAL
@@ -127,6 +468,7 @@ export const MODULE_HEADER_NAMES: Record<string, string> = {
   Spi: 'Spi_Cfg.h',
   Fr: 'Fr_Cfg.h',
   Eth: 'Eth_Cfg.h',
+  Os: 'Os_Cfg.h',
 };
 
 /** Get the standard header filename for a module */

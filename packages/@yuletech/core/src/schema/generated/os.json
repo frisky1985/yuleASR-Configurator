@@ -2,719 +2,589 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/os.json",
   "title": "Os Configuration",
-  "description": "操作系统",
+  "description": "AUTOSAR Operating System (OS) Configuration — Tasks, ISRs, Counters, Alarms, Schedule Tables, Events, Resources, and Applications",
   "type": "object",
   "properties": {
-    "Adc0_Isr_Bat": {
-      "description": "Adc0_Isr_Bat 配置容器",
+    "OsGeneral": {
+      "description": "OS 通用配置容器",
       "type": "object",
       "properties": {
-        "OsIsrInterruptSource": {
+        "OsMaxTasks": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 255,
+          "default": 16,
+          "description": "最大任务数"
+        },
+        "OsMaxIsrs": {
           "type": "integer",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrInterruptSource 参数"
+          "maximum": 255,
+          "default": 32,
+          "description": "最大 ISR 数"
         },
-        "OsIsrInterruptPriority": {
+        "OsMaxAlarms": {
           "type": "integer",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrInterruptPriority 参数"
+          "maximum": 255,
+          "default": 8,
+          "description": "最大告警数"
         },
-        "OsIsrStackSize": {
+        "OsMaxResources": {
           "type": "integer",
           "minimum": 0,
+          "maximum": 255,
+          "default": 8,
+          "description": "最大资源数"
+        },
+        "OsMaxEvents": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64,
+          "default": 8,
+          "description": "最大事件数"
+        },
+        "OsMaxScheduleTables": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64,
+          "default": 4,
+          "description": "最大调度表数"
+        },
+        "OsStackMonitoring": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否启用栈监控"
+        },
+        "OsTimeProtection": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否启用时间保护"
+        },
+        "OsMemoryProtection": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否启用内存保护 (MPU)"
+        },
+        "OsServiceTrace": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否启用 OS 服务追踪"
+        },
+        "OsScheduleCounter": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "调度表使用的默认计数器名"
+        },
+        "OsIdleTaskName": {
+          "type": "string",
+          "maxLength": 128,
+          "default": "IdleTask",
+          "description": "空闲任务名称"
+        },
+        "OsIdleTaskStackSize": {
+          "type": "integer",
+          "minimum": 64,
           "maximum": 65535,
-          "description": "OsIsrStackSize 参数"
-        },
-        "OsIsrEnableNesting": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrEnableNesting 参数"
-        },
-        "OsIsrUsesFpu": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrUsesFpu 参数"
-        },
-        "OsIsrInitialEnableInterruptSource": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrInitialEnableInterruptSource 参数"
-        },
-        "OsIsrCategory": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrCategory 参数"
-        },
-        "OsIsrInterruptType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrInterruptType 参数"
-        },
-        "OsIsrSpecialFunctionName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrSpecialFunctionName 参数"
+          "default": 512,
+          "description": "空闲任务栈大小"
         }
       },
       "additionalProperties": true
     },
-    "BLE_Host_Task": {
-      "description": "BLE_Host_Task 配置容器",
-      "type": "object",
-      "properties": {
-        "OsTaskActivation": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskActivation 参数"
+    "OsTask": {
+      "description": "OS 任务配置容器 (可多实例)",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "OsTaskName": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "任务名称 (唯一标识)"
+          },
+          "OsTaskPriority": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255,
+            "default": 1,
+            "description": "任务优先级"
+          },
+          "OsTaskSchedule": {
+            "type": "string",
+            "enum": ["FULL", "NON", "MIXED"],
+            "default": "FULL",
+            "description": "调度策略: FULL(完全抢占), NON(非抢占), MIXED(混合)"
+          },
+          "OsTaskStackSize": {
+            "type": "integer",
+            "minimum": 64,
+            "maximum": 65535,
+            "default": 1024,
+            "description": "任务栈大小 (bytes)"
+          },
+          "OsTaskActivationLimit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 255,
+            "default": 1,
+            "description": "最大激活次数限制"
+          },
+          "OsTaskType": {
+            "type": "string",
+            "enum": ["BCC", "ECC"],
+            "default": "BCC",
+            "description": "任务类型: BCC(基础任务), ECC(扩展任务-支持事件)"
+          },
+          "OsTaskAutostart": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否自动启动"
+          },
+          "OsTaskUsesFpu": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否使用 FPU"
+          },
+          "OsTaskTrusted": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否可信任务"
+          },
+          "OsTaskAppModeMask": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 65535,
+            "default": 1,
+            "description": "应用模式掩码位"
+          },
+          "OsTaskStackSharing": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否共享栈"
+          }
         },
-        "OsTaskPriority": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskPriority 参数"
-        },
-        "OsTaskStackSharing": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsTaskStackSharing 参数"
-        },
-        "OsTaskStackSize": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskStackSize 参数"
-        },
-        "OsTaskUsesFpu": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsTaskUsesFpu 参数"
-        },
-        "OsTaskSchedule": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsTaskSchedule 参数"
-        },
-        "OsTaskType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsTaskType 参数"
-        }
-      },
-      "additionalProperties": true
+        "required": ["OsTaskName", "OsTaskPriority", "OsTaskSchedule", "OsTaskStackSize"],
+        "additionalProperties": true
+      }
     },
-    "BLE_Host_TimerTask": {
-      "description": "BLE_Host_TimerTask 配置容器",
-      "type": "object",
-      "properties": {
-        "OsTaskActivation": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskActivation 参数"
+    "OsIsr": {
+      "description": "OS 中断服务函数配置容器 (可多实例)",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "OsIsrName": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "ISR 名称 (唯一标识)"
+          },
+          "OsIsrCategory": {
+            "type": "integer",
+            "enum": [1, 2],
+            "default": 2,
+            "description": "ISR 分类: 1(Category 1 - 不使用OS服务), 2(Category 2 - 可使用OS服务)"
+          },
+          "OsIsrInterruptPriority": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255,
+            "default": 1,
+            "description": "中断优先级"
+          },
+          "OsIsrInterruptSource": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 65535,
+            "description": "中断源编号"
+          },
+          "OsIsrStackSize": {
+            "type": "integer",
+            "minimum": 64,
+            "maximum": 65535,
+            "default": 512,
+            "description": "中断栈大小 (bytes)"
+          },
+          "OsIsrEnableNesting": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否允许嵌套中断"
+          },
+          "OsIsrUsesFpu": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否使用 FPU"
+          },
+          "OsIsrInterruptType": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "中断类型"
+          },
+          "OsIsrSpecialFunctionName": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "中断处理函数名"
+          }
         },
-        "OsTaskPriority": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskPriority 参数"
-        },
-        "OsTaskStackSharing": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsTaskStackSharing 参数"
-        },
-        "OsTaskStackSize": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskStackSize 参数"
-        },
-        "OsTaskUsesFpu": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsTaskUsesFpu 参数"
-        },
-        "OsTaskSchedule": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsTaskSchedule 参数"
-        },
-        "OsTaskType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsTaskType 参数"
-        }
-      },
-      "additionalProperties": true
+        "required": ["OsIsrName", "OsIsrCategory", "OsIsrInterruptPriority"],
+        "additionalProperties": true
+      }
     },
-    "CRYPTO_CMD_ISR": {
-      "description": "CRYPTO_CMD_ISR 配置容器",
-      "type": "object",
-      "properties": {
-        "OsIsrInterruptSource": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrInterruptSource 参数"
+    "OsCounter": {
+      "description": "OS 计数器配置容器 (可多实例)",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "OsCounterName": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "计数器名称 (唯一标识)"
+          },
+          "OsCounterTicksPerBase": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4294967295,
+            "default": 1000,
+            "description": "每分钟最大 ticks (分辨率)"
+          },
+          "OsCounterMaxAllowedValue": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4294967295,
+            "default": 65535,
+            "description": "最大允许计数值"
+          },
+          "OsCounterMinCycle": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4294967295,
+            "default": 1,
+            "description": "最小周期 (ticks)"
+          },
+          "OsCounterIsHardware": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否为硬件计数器"
+          },
+          "OsCounterHardwareReference": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "硬件引用 (如 GPT 通道名)"
+          }
         },
-        "OsIsrInterruptPriority": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrInterruptPriority 参数"
-        },
-        "OsIsrStackSize": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrStackSize 参数"
-        },
-        "OsIsrEnableNesting": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrEnableNesting 参数"
-        },
-        "OsIsrUsesFpu": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrUsesFpu 参数"
-        },
-        "OsIsrInitialEnableInterruptSource": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrInitialEnableInterruptSource 参数"
-        },
-        "OsIsrCategory": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrCategory 参数"
-        },
-        "OsIsrInterruptType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrInterruptType 参数"
-        },
-        "OsIsrSpecialFunctionName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrSpecialFunctionName 参数"
-        }
-      },
-      "additionalProperties": true
+        "required": ["OsCounterName", "OsCounterTicksPerBase", "OsCounterMaxAllowedValue"],
+        "additionalProperties": true
+      }
     },
-    "Can_30_Flexcan4Isr_0": {
-      "description": "Can_30_Flexcan4Isr_0 配置容器",
-      "type": "object",
-      "properties": {
-        "OsIsrInterruptSource": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrInterruptSource 参数"
+    "OsAlarm": {
+      "description": "OS 告警配置容器 (可多实例)",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "OsAlarmName": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "告警名称 (唯一标识)"
+          },
+          "OsAlarmCounterRef": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "关联计数器名称引用"
+          },
+          "OsAlarmActionType": {
+            "type": "string",
+            "enum": ["ActivateTask", "SetEvent", "Callback"],
+            "default": "ActivateTask",
+            "description": "到期动作类型"
+          },
+          "OsAlarmActionTaskRef": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "目标任务引用 (ActivateTask/SetEvent)"
+          },
+          "OsAlarmActionEventMask": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4294967295,
+            "description": "事件掩码 (SetEvent)"
+          },
+          "OsAlarmActionCallback": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "回调函数名 (Callback)"
+          },
+          "OsAlarmStartValue": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4294967295,
+            "default": 0,
+            "description": "首次触发时间 (ticks)"
+          },
+          "OsAlarmCycleValue": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4294967295,
+            "default": 0,
+            "description": "周期触发时间 (0=单次)"
+          },
+          "OsAlarmAutostart": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否自动启动"
+          },
+          "OsAlarmAppModeMask": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 65535,
+            "default": 1,
+            "description": "应用模式掩码位"
+          }
         },
-        "OsIsrInterruptPriority": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrInterruptPriority 参数"
-        },
-        "OsIsrStackSize": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrStackSize 参数"
-        },
-        "OsIsrEnableNesting": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrEnableNesting 参数"
-        },
-        "OsIsrUsesFpu": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrUsesFpu 参数"
-        },
-        "OsIsrInitialEnableInterruptSource": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrInitialEnableInterruptSource 参数"
-        },
-        "OsIsrCategory": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrCategory 参数"
-        },
-        "OsIsrInterruptType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrInterruptType 参数"
-        },
-        "OsIsrSpecialFunctionName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrSpecialFunctionName 参数"
-        }
-      },
-      "additionalProperties": true
+        "required": ["OsAlarmName", "OsAlarmCounterRef", "OsAlarmActionType", "OsAlarmStartValue"],
+        "additionalProperties": true
+      }
     },
-    "Core0": {
-      "description": "Core0 配置容器",
-      "type": "object",
-      "properties": {
-        "OsPhysicalCoreId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsPhysicalCoreId 参数"
+    "OsScheduleTable": {
+      "description": "OS 调度表配置容器 (可多实例)",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "OsScheduleTableName": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "调度表名称 (唯一标识)"
+          },
+          "OsScheduleTableDuration": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4294967295,
+            "default": 1000,
+            "description": "调度表总时长 (ticks)"
+          },
+          "OsScheduleTableSyncStrategy": {
+            "type": "string",
+            "enum": ["NONE", "SINGLE", "IMPLICIT"],
+            "default": "NONE",
+            "description": "同步策略: NONE(无), SINGLE(单次), IMPLICIT(隐式)"
+          },
+          "OsScheduleTableAutostart": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否自动启动"
+          },
+          "OsScheduleTableAppModeMask": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 65535,
+            "default": 1,
+            "description": "应用模式掩码位"
+          },
+          "OsScheduleTableExpiryPoints": {
+            "type": "array",
+            "description": "到期点列表",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ExpiryPointOffset": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4294967295,
+                  "description": "到期时间偏移 (ticks)"
+                },
+                "ExpiryPointActionType": {
+                  "type": "string",
+                  "enum": ["ActivateTask", "SetEvent", "Callback"],
+                  "default": "ActivateTask",
+                  "description": "到期动作类型"
+                },
+                "ExpiryPointTaskRef": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "description": "目标任务引用"
+                },
+                "ExpiryPointCallback": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "description": "回调函数名"
+                },
+                "ExpiryPointEventMask": {
+                  "type": "integer",
+                  "description": "事件掩码"
+                }
+              },
+              "required": ["ExpiryPointOffset"],
+              "additionalProperties": true
+            }
+          }
         },
-        "OsPhysicalCoreExceptionSources": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsPhysicalCoreExceptionSources 参数"
-        },
-        "OsPhysicalCoreIsAutostart": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsPhysicalCoreIsAutostart 参数"
-        },
-        "OsPhysicalCoreMasterStartAllowed": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsPhysicalCoreMasterStartAllowed 参数"
-        },
-        "OsPhysicalCorePrivelegedHwAccess": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsPhysicalCorePrivelegedHwAccess 参数"
-        },
-        "OsPhysicalCoreMpuMaxRegions": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsPhysicalCoreMpuMaxRegions 参数"
-        },
-        "OsPhysicalCoreMpuId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsPhysicalCoreMpuId 参数"
-        },
-        "OsPhysicalCoreType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsPhysicalCoreType 参数"
-        },
-        "OsPhysicalCoreDefaultEntrySymbol": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsPhysicalCoreDefaultEntrySymbol 参数"
-        },
-        "OsPhysicalCoreMpuType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsPhysicalCoreMpuType 参数"
-        }
-      },
-      "additionalProperties": true
+        "required": ["OsScheduleTableName", "OsScheduleTableDuration"],
+        "additionalProperties": true
+      }
     },
-    "Core0_MPU": {
-      "description": "Core0_MPU 配置容器",
-      "type": "object",
-      "properties": {
-        "OsPhysicalCoreMpuMaxRegions": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsPhysicalCoreMpuMaxRegions 参数"
+    "OsEvent": {
+      "description": "OS 事件配置容器 (可多实例，用于 ECC 任务同步)",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "OsEventName": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "事件名称 (唯一标识)"
+          },
+          "OsEventTaskRef": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "关联任务引用 (ECC 任务)"
+          },
+          "OsEventMask": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4294967295,
+            "default": 1,
+            "description": "事件掩码 (位掩码, 2^n)"
+          }
         },
-        "OsPhysicalCoreMpuId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsPhysicalCoreMpuId 参数"
-        },
-        "OsPhysicalCoreMpuType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsPhysicalCoreMpuType 参数"
-        }
-      },
-      "additionalProperties": true
+        "required": ["OsEventName", "OsEventTaskRef", "OsEventMask"],
+        "additionalProperties": true
+      }
     },
-    "CounterIsr_SystemTimer": {
-      "description": "CounterIsr_SystemTimer 配置容器",
-      "type": "object",
-      "properties": {
-        "OsIsrInterruptPriority": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrInterruptPriority 参数"
+    "OsResource": {
+      "description": "OS 资源配置容器 (可多实例，用于任务同步)",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "OsResourceName": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "资源名称 (唯一标识)"
+          },
+          "OsResourcePriority": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 255,
+            "default": 1,
+            "description": "资源优先级上限"
+          },
+          "OsResourceIsInternal": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否内部资源"
+          }
         },
-        "OsIsrInterruptSource": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrInterruptSource 参数"
-        },
-        "OsIsrInitialEnableInterruptSource": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrInitialEnableInterruptSource 参数"
-        },
-        "OsIsrStackSize": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrStackSize 参数"
-        },
-        "OsIsrEnableNesting": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrEnableNesting 参数"
-        },
-        "OsIsrUsesFpu": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrUsesFpu 参数"
-        },
-        "OsIsrCategory": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrCategory 参数"
-        },
-        "OsIsrInterruptType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrInterruptType 参数"
-        },
-        "OsIsrSpecialFunctionName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrSpecialFunctionName 参数"
-        }
-      },
-      "additionalProperties": true
+        "required": ["OsResourceName", "OsResourcePriority"],
+        "additionalProperties": true
+      }
     },
-    "Default_BSW_Async_Task": {
-      "description": "Default_BSW_Async_Task 配置容器",
-      "type": "object",
-      "properties": {
-        "OsTaskActivation": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskActivation 参数"
+    "OsApplication": {
+      "description": "OS 应用配置容器 (可多实例，用于内存保护/分区)",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "OsApplicationName": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "应用名称 (唯一标识)"
+          },
+          "OsApplicationTrusted": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否为可信应用"
+          },
+          "OsApplicationTasks": {
+            "type": "array",
+            "items": { "type": "string", "maxLength": 128 },
+            "description": "应用包含的任务引用列表"
+          },
+          "OsApplicationIsrs": {
+            "type": "array",
+            "items": { "type": "string", "maxLength": 128 },
+            "description": "应用包含的 ISR 引用列表"
+          },
+          "OsApplicationScheduleTables": {
+            "type": "array",
+            "items": { "type": "string", "maxLength": 128 },
+            "description": "应用包含的调度表引用列表"
+          },
+          "OsApplicationHooks": {
+            "type": "array",
+            "items": { "type": "string", "maxLength": 256 },
+            "description": "应用关联的 hook 函数列表"
+          }
         },
-        "OsTaskPriority": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskPriority 参数"
-        },
-        "OsTaskStackSharing": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsTaskStackSharing 参数"
-        },
-        "OsTaskStackSize": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskStackSize 参数"
-        },
-        "OsTaskUsesFpu": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsTaskUsesFpu 参数"
-        },
-        "OsTaskSchedule": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsTaskSchedule 参数"
-        },
-        "OsTaskType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsTaskType 参数"
-        }
-      },
-      "additionalProperties": true
+        "required": ["OsApplicationName"],
+        "additionalProperties": true
+      }
     },
-    "Default_Init_Task": {
-      "description": "Default_Init_Task 配置容器",
-      "type": "object",
-      "properties": {
-        "OsTaskActivation": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskActivation 参数"
+    "OsPhysicalCore": {
+      "description": "OS 物理核配置容器 (可多实例，多核系统)",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "OsPhysicalCoreId": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 15,
+            "description": "物理核 ID"
+          },
+          "OsPhysicalCoreIsAutostart": {
+            "type": "boolean",
+            "default": true,
+            "description": "是否自动启动"
+          },
+          "OsPhysicalCoreType": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "内核类型"
+          },
+          "OsPhysicalCoreMasterStartAllowed": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否允许主核启动从核"
+          },
+          "OsPhysicalCorePrivelegedHwAccess": {
+            "type": "boolean",
+            "default": false,
+            "description": "是否允许特权硬件访问"
+          },
+          "OsPhysicalCoreDefaultEntrySymbol": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "默认入口符号"
+          },
+          "OsPhysicalCoreExceptionSources": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 65535,
+            "description": "异常源掩码"
+          },
+          "OsPhysicalCoreMpuMaxRegions": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 64,
+            "default": 8,
+            "description": "MPU 最大区域数"
+          },
+          "OsPhysicalCoreMpuType": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "MPU 类型"
+          }
         },
-        "OsTaskPriority": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskPriority 参数"
-        },
-        "OsTaskStackSharing": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsTaskStackSharing 参数"
-        },
-        "OsTaskStackSize": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskStackSize 参数"
-        },
-        "OsTaskUsesFpu": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsTaskUsesFpu 参数"
-        },
-        "OsTaskSchedule": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsTaskSchedule 参数"
-        },
-        "OsTaskType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsTaskType 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "Default_Init_Task_Trusted": {
-      "description": "Default_Init_Task_Trusted 配置容器",
-      "type": "object",
-      "properties": {
-        "OsTaskActivation": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskActivation 参数"
-        },
-        "OsTaskPriority": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskPriority 参数"
-        },
-        "OsTaskStackSharing": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsTaskStackSharing 参数"
-        },
-        "OsTaskStackSize": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskStackSize 参数"
-        },
-        "OsTaskUsesFpu": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsTaskUsesFpu 参数"
-        },
-        "OsTaskSchedule": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsTaskSchedule 参数"
-        },
-        "OsTaskType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsTaskType 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "Default_RTE_Mode_switch_Task": {
-      "description": "Default_RTE_Mode_switch_Task 配置容器",
-      "type": "object",
-      "properties": {
-        "OsTaskActivation": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskActivation 参数"
-        },
-        "OsTaskPriority": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskPriority 参数"
-        },
-        "OsTaskStackSharing": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsTaskStackSharing 参数"
-        },
-        "OsTaskStackSize": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsTaskStackSize 参数"
-        },
-        "OsTaskUsesFpu": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsTaskUsesFpu 参数"
-        },
-        "OsTaskSchedule": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsTaskSchedule 参数"
-        },
-        "OsTaskType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsTaskType 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "EXECUTE_ALLOWED": {
-      "description": "EXECUTE_ALLOWED 配置容器",
-      "type": "object",
-      "properties": {
-        "OsMemoryRegionAccessRights": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsMemoryRegionAccessRights 参数"
-        },
-        "OsMemoryRegionAccessType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsMemoryRegionAccessType 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "GPT_LPTMR0_ISR": {
-      "description": "GPT_LPTMR0_ISR 配置容器",
-      "type": "object",
-      "properties": {
-        "OsIsrInterruptSource": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrInterruptSource 参数"
-        },
-        "OsIsrInterruptPriority": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrInterruptPriority 参数"
-        },
-        "OsIsrStackSize": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrStackSize 参数"
-        },
-        "OsIsrEnableNesting": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrEnableNesting 参数"
-        },
-        "OsIsrUsesFpu": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrUsesFpu 参数"
-        },
-        "OsIsrInitialEnableInterruptSource": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrInitialEnableInterruptSource 参数"
-        },
-        "OsIsrCategory": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrCategory 参数"
-        },
-        "OsIsrInterruptType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrInterruptType 参数"
-        },
-        "OsIsrSpecialFunctionName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrSpecialFunctionName 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "GPT_LPTMR1_ISR": {
-      "description": "GPT_LPTMR1_ISR 配置容器",
-      "type": "object",
-      "properties": {
-        "OsIsrInterruptSource": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrInterruptSource 参数"
-        },
-        "OsIsrInterruptPriority": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrInterruptPriority 参数"
-        },
-        "OsIsrStackSize": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "OsIsrStackSize 参数"
-        },
-        "OsIsrEnableNesting": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrEnableNesting 参数"
-        },
-        "OsIsrUsesFpu": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrUsesFpu 参数"
-        },
-        "OsIsrInitialEnableInterruptSource": {
-          "type": "boolean",
-          "default": false,
-          "description": "OsIsrInitialEnableInterruptSource 参数"
-        },
-        "OsIsrCategory": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrCategory 参数"
-        },
-        "OsIsrInterruptType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrInterruptType 参数"
-        },
-        "OsIsrSpecialFunctionName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "OsIsrSpecialFunctionName 参数"
-        }
-      },
-      "additionalProperties": true
+        "required": ["OsPhysicalCoreId"],
+        "additionalProperties": true
+      }
     }
   },
-  "required": [
-    "Adc0_Isr_Bat",
-    "BLE_Host_Task",
-    "BLE_Host_TimerTask"
-  ],
+  "required": ["OsGeneral"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "AUTOSAR-OS-Spec"
 }
