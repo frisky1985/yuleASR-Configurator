@@ -1,0 +1,58 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Extension (Dev Web)",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/out/**/*.js"
+      ],
+      "preLaunchTask": "Build Extension",
+      "env": {
+        "NODE_ENV": "development",
+        "VSCODE_DEBUG": "true",
+        "VSCODE_DEV": "1"
+      }
+    },
+    {
+      "name": "Run Extension (Webview Built)",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/out/**/*.js"
+      ],
+      "preLaunchTask": "Build All (Ext + Webview)",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    },
+    {
+      "name": "Extension Tests",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/out/test/**/*.js"
+      ],
+      "preLaunchTask": "Build Extension"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Debug (Dev Web + Vite)",
+      "configurations": ["Run Extension (Dev Web)"],
+      "preLaunchTask": "Start Web Dev Server",
+      "stopAll": true
+    }
+  ]
+}

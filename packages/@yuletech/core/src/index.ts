@@ -16,6 +16,9 @@ export * from './adapters/yuleasr-adapter';
 // 导出 Schema 提取器
 export * from './schema-extractor';
 
+// 导出 SWC 模块
+export * from './swc';
+
 // 导出 yuleASR 验证器 (使用别名避免冲突)
 export { 
   YuleasrValidator, 

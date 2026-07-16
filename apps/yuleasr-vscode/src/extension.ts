@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 
 import { registerCommands } from './commands';
 import { ConfigTreeProvider, ConfigTreeItem } from './providers/ConfigTreeProvider';
+import { ConfigEditorPanel } from './panels/ConfigEditorPanel';
 
 export function activate(context: vscode.ExtensionContext): void {
     console.log('yuleASR Configurator extension is now active');
@@ -18,6 +19,15 @@ export function activate(context: vscode.ExtensionContext): void {
 
     // Register all commands
     registerCommands(context, treeProvider);
+
+    // Register command: Open Dashboard (full web configurator)
+    const openDashboardCmd = vscode.commands.registerCommand(
+        'yuleasr.openDashboard',
+        () => {
+            ConfigEditorPanel.createOrShow(context.extensionUri);
+        }
+    );
+    context.subscriptions.push(openDashboardCmd);
 
     // Add to subscriptions
     context.subscriptions.push(treeView);

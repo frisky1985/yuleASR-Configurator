@@ -13,3 +13,4 @@ vsc-extension-quickstart.md
 node_modules/**
 !node_modules/@yuletech/**
 !node_modules/yuleasr-editor-core/**
+!media/webview/**

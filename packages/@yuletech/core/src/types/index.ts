@@ -6,3 +6,4 @@
 export * from './module';
 export * from './validation';
 export * from './parameter';
+export * from './swc';

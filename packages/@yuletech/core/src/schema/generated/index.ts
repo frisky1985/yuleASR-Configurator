@@ -1,4 +1,5 @@
 export { default as Adc } from './adc.json';
+export { default as AppSwc } from './appswc.json';
 export { default as Arti } from './arti.json';
 export { default as Ble } from './ble.json';
 export { default as BswM } from './bswm.json';
@@ -10,6 +11,7 @@ export { default as CanTp } from './cantp.json';
 export { default as CanTrcv } from './cantrcv.json';
 export { default as Com } from './com.json';
 export { default as ComM } from './comm.json';
+export { default as CompSwc } from './compswc.json';
 export { default as Crc } from './crc.json';
 export { default as CryIf } from './cryif.json';
 export { default as Crypto } from './crypto.json';

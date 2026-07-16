@@ -12,6 +12,17 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U yuleasr -d yuleasr"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   api:
     build: ./packages/@yuletech/api-server
@@ -21,11 +32,31 @@ services:
       DATABASE_URL: postgres://yuleasr:${DB_PASSWORD:-changeme}@postgres:5432/yuleasr
       JWT_SECRET: ${JWT_SECRET:-change-this-in-production}
       STATIC_DIR: /app/public
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173}
+      # LemonSqueezy payment gateway
+      LEMONSQUEEZY_API_KEY: ${LEMONSQUEEZY_API_KEY:-}
+      LEMONSQUEEZY_STORE_ID: ${LEMONSQUEEZY_STORE_ID:-}
+      LEMONSQUEEZY_WEBHOOK_SECRET: ${LEMONSQUEEZY_WEBHOOK_SECRET:-}
+      LEMON_VARIANT_ID_MONTHLY: ${LEMON_VARIANT_ID_MONTHLY:-}
+      LEMON_VARIANT_ID_YEARLY: ${LEMON_VARIANT_ID_YEARLY:-}
+      PAYMENT_MODE: ${PAYMENT_MODE:-mock}
     ports:
-      - "3000:3000"
+      - "${API_PORT:-3000}:3000"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   pgdata:

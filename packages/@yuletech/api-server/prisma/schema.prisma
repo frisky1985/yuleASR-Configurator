@@ -110,6 +110,10 @@ model LicenseKey {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  // LemonSqueezy fields
+  lemonOrderId    String?  @unique
+  lemonCustomerId String?
+
   user User? @relation(fields: [userId], references: [id])
 }
 
@@ -173,4 +177,10 @@ model PaymentEvent {
   rawBody       String   // JSON string of the original payload
   processed     Boolean  @default(false)
   createdAt     DateTime @default(now())
+
+  // LemonSqueezy fields
+  lemonOrderId    String?
+  lemonCustomerId String?
+  lemonProductId  String?
+  lemonVariantId  String?
 }

@@ -15,8 +15,8 @@ function getSchemaFiles(): string[] {
 describe('JSON Schema Validation', () => {
   const files = getSchemaFiles()
 
-  it('should have exactly 37 schema files', () => {
-    expect(files.length).toBe(37)
+  it('should have exactly 39 schema files', () => {
+    expect(files.length).toBe(39)
   })
 
   it.each(files)('should parse %s as valid JSON', (file) => {
@@ -43,8 +43,8 @@ describe('JSON Schema Validation', () => {
   it('should cover all expected BSW modules', () => {
     const names = files.map((f) => f.replace('.json', ''))
     const expected = [
-      'adc', 'arti', 'ble', 'bswm', 'can', 'canif', 'cannm', 'cansm',
-      'cantp', 'cantrcv', 'com', 'comm', 'crc', 'cryif', 'crypto', 'csm',
+      'adc', 'appswc', 'arti', 'ble', 'bswm', 'can', 'canif', 'cannm', 'cansm',
+      'cantp', 'cantrcv', 'com', 'comm', 'compswc', 'crc', 'cryif', 'crypto', 'csm',
       'dcm', 'dem', 'det', 'dio', 'ecum', 'fee', 'fls', 'gpt', 'icu',
       'iohwab', 'mcl', 'mcu', 'memif', 'nm', 'nvm', 'os', 'pdur', 'port',
       'rte', 'sbc', 'spi',

@@ -1,0 +1,49 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Extension",
+      "type": "npm",
+      "script": "build",
+      "path": "apps/yuleasr-vscode",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$esbuild-watch"],
+      "detail": "Compile VS Code extension extension.ts → out/extension.js"
+    },
+    {
+      "label": "Build Web App",
+      "type": "npm",
+      "script": "build:webview",
+      "path": "apps/yuleasr-vscode",
+      "group": "build",
+      "detail": "Build yuleasr-web for VS Code embedding and copy to media/webview/"
+    },
+    {
+      "label": "Build All (Ext + Webview)",
+      "type": "shell",
+      "command": "cd apps/yuleasr-vscode && pnpm build && pnpm build:webview",
+      "group": "build",
+      "detail": "Build both the extension and the webview app bundle"
+    },
+    {
+      "label": "Start Web Dev Server",
+      "type": "npm",
+      "script": "dev",
+      "path": "apps/yuleasr-web",
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "➜"
+        },
+        "background": {
+          "beginsPattern": "VITE.*",
+          "endsPattern": "➜"
+        }
+      },
+      "detail": "Start Vite dev server on port 3000 for the web app"
+    }
+  ]
+}

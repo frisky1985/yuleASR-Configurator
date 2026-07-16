@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/compswc.json",
+  "title": "Composition SWC Configuration",
+  "description": "AUTOSAR CompositionSwComponentType configuration for yuleASR Configurator",
+  "type": "object",
+  "x-layer": "ASW",
+  "properties": {
+    "ComponentName": {
+      "type": "string",
+      "description": "Name of the composition SW component",
+      "minLength": 1
+    },
+    "ComponentDescription": {
+      "type": "string",
+      "description": "Description of the composition"
+    },
+    "SubComponents": {
+      "type": "array",
+      "description": "Sub-component references within the composition",
+      "items": {
+        "type": "object",
+        "properties": {
+          "SubComponentName": { "type": "string" },
+          "SubComponentTypeRef": { "type": "string" }
+        }
+      }
+    },
+    "PortInterfaces": {
+      "type": "array",
+      "description": "Port interface definitions for the composition boundary",
+      "items": {
+        "type": "object",
+        "properties": {
+          "PortInterfaceName": { "type": "string" },
+          "PortInterfaceKind": { "type": "string", "enum": ["SenderReceiverInterface", "ClientServerInterface", "ModeSwitchInterface", "ParameterInterface", "NvDataInterface"] },
+          "PortInterfaceDescription": { "type": "string" }
+        }
+      }
+    },
+    "Ports": {
+      "type": "array",
+      "description": "Composition boundary port prototypes",
+      "items": {
+        "type": "object",
+        "properties": {
+          "PortName": { "type": "string" },
+          "PortDirection": { "type": "string", "enum": ["IN", "OUT", "INOUT"] },
+          "PortInterfaceRef": { "type": "string" },
+          "PortDescription": { "type": "string" }
+        }
+      }
+    },
+    "AssemblyConnectors": {
+      "type": "array",
+      "description": "Assembly SW connectors (sub-component to sub-component)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ConnectorName": { "type": "string" },
+          "ConnectorSourceComponent": { "type": "string" },
+          "ConnectorSourcePort": { "type": "string" },
+          "ConnectorTargetComponent": { "type": "string" },
+          "ConnectorTargetPort": { "type": "string" }
+        }
+      }
+    },
+    "DelegationConnectors": {
+      "type": "array",
+      "description": "Delegation SW connectors (boundary port to sub-component port)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "DelegateName": { "type": "string" },
+          "DelegateOuterPort": { "type": "string" },
+          "DelegateInnerComponent": { "type": "string" },
+          "DelegateInnerPort": { "type": "string" }
+        }
+      }
+    }
+  },
+  "required": ["ComponentName"]
+}

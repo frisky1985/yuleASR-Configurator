@@ -36,6 +36,11 @@
         "icon": "$(open-editors-view-icon)"
       },
       {
+        "command": "yuleasr.openDashboard",
+        "title": "Open yuleASR Configurator",
+        "icon": "$(dashboard)"
+      },
+      {
         "command": "yuleasr.refreshExplorer",
         "title": "Refresh Explorer",
         "icon": "$(refresh)"
@@ -186,6 +191,7 @@
   "scripts": {
     "build": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --minify",
     "dev": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --sourcemap --watch",
+    "build:webview": "cd ../yuleasr-web && npx vite build --config vite.config.vscode.ts && cp -r dist-vscode/. ../yuleasr-vscode/media/webview/",
     "typecheck": "tsc --noEmit",
     "vscode:prepublish": "pnpm build",
     "clean": "rm -rf out",

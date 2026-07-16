@@ -50,7 +50,20 @@ await app.register(paymentRoutes, { prefix: '/api/payment' })
 await app.register(bswTemplatesRoutes, { prefix: '/api/bsw-templates' })
 
 // Health check
-app.get('/health', async () => ({ status: 'ok', timestamp: new Date().toISOString() }))
+app.get('/health', async () => {
+  let dbStatus = 'ok'
+  try {
+    await prisma.$queryRaw`SELECT 1`
+  } catch {
+    dbStatus = 'error'
+  }
+  return {
+    status: dbStatus === 'ok' ? 'ok' : 'degraded',
+    timestamp: new Date().toISOString(),
+    database: dbStatus,
+    uptime: process.uptime(),
+  }
+})
 
 // ── Start ────────────────────────────────────────────────────────────────
 

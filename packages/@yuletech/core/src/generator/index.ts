@@ -5,6 +5,7 @@
 
 export * from './ecuc-generator';
 export * from './rte-generator';
+export * from './swc-generator';
 
 import type { ModuleConfig, ModuleSchema } from '../types';
 

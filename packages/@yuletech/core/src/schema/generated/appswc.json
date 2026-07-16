@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/appswc.json",
+  "title": "Application SWC Configuration",
+  "description": "AUTOSAR ApplicationSwComponentType configuration for yuleASR Configurator",
+  "type": "object",
+  "x-layer": "ASW",
+  "properties": {
+    "ComponentName": {
+      "type": "string",
+      "description": "Name of the application SW component",
+      "minLength": 1
+    },
+    "ComponentDescription": {
+      "type": "string",
+      "description": "Description of the component"
+    },
+    "ImplementationRef": {
+      "type": "string",
+      "description": "Reference to the implementation (code file name)"
+    },
+    "PortInterfaces": {
+      "type": "array",
+      "description": "Port interface definitions",
+      "items": {
+        "type": "object",
+        "properties": {
+          "PortInterfaceName": { "type": "string" },
+          "PortInterfaceKind": { "type": "string", "enum": ["SenderReceiverInterface", "ClientServerInterface", "ModeSwitchInterface", "ParameterInterface", "NvDataInterface"] },
+          "PortInterfaceDescription": { "type": "string" },
+          "PortInterfaceIsService": { "type": "boolean" },
+          "DataElements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "DataElementName": { "type": "string" },
+                "DataElementTypeRef": { "type": "string" },
+                "DataElementQueueLength": { "type": "integer", "minimum": 0 },
+                "DataElementDescription": { "type": "string" }
+              }
+            }
+          },
+          "Operations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "OperationName": { "type": "string" },
+                "OperationDescription": { "type": "string" },
+                "OperationArguments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ArgName": { "type": "string" },
+                      "ArgTypeRef": { "type": "string" },
+                      "ArgDirection": { "type": "string", "enum": ["IN", "OUT", "INOUT"] },
+                      "ArgDescription": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Ports": {
+      "type": "array",
+      "description": "Component port prototypes",
+      "items": {
+        "type": "object",
+        "properties": {
+          "PortName": { "type": "string" },
+          "PortDirection": { "type": "string", "enum": ["IN", "OUT", "INOUT"] },
+          "PortInterfaceRef": { "type": "string" },
+          "PortDescription": { "type": "string" }
+        }
+      }
+    },
+    "Runnables": {
+      "type": "array",
+      "description": "Runnable entities",
+      "items": {
+        "type": "object",
+        "properties": {
+          "RunnableName": { "type": "string" },
+          "RunnableSymbol": { "type": "string" },
+          "RunnableInvocationType": { "type": "string", "enum": ["cyclic", "event", "triggered", "onEntry", "onExit", "onTransition"] },
+          "RunnableInterval": { "type": "number", "minimum": 0 },
+          "RunnableCanBeConcurrent": { "type": "boolean" },
+          "RunnableDescription": { "type": "string" }
+        }
+      }
+    },
+    "InterRunnableVariables": {
+      "type": "array",
+      "description": "Inter-runnable variables (IRV)",
+      "items": {
+        "type": "object",
+        "properties": {
+          "IrvName": { "type": "string" },
+          "IrvTypeRef": { "type": "string" },
+          "IrvInitValue": {},
+          "IrvDescription": { "type": "string" }
+        }
+      }
+    },
+    "DataTypeMappings": {
+      "type": "array",
+      "description": "ApplicationDataType to ImplementationDataType mappings",
+      "items": {
+        "type": "object",
+        "properties": {
+          "MappingApplicationType": { "type": "string" },
+          "MappingImplementationType": { "type": "string" }
+        }
+      }
+    },
+    "DataAccessPoints": {
+      "type": "array",
+      "description": "Runnable data access points",
+      "items": {
+        "type": "object",
+        "properties": {
+          "AccessName": { "type": "string" },
+          "AccessRunnableRef": { "type": "string" },
+          "AccessPortRef": { "type": "string" },
+          "AccessDataElementRef": { "type": "string" },
+          "AccessKind": { "type": "string", "enum": ["READ", "WRITE"] }
+        }
+      }
+    },
+    "ServerCallPoints": {
+      "type": "array",
+      "description": "Server call points for client-server operations",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ScpName": { "type": "string" },
+          "ScpRunnableRef": { "type": "string" },
+          "ScpPortRef": { "type": "string" },
+          "ScpOperationRef": { "type": "string" },
+          "ScpTimeout": { "type": "number", "minimum": 0 }
+        }
+      }
+    }
+  },
+  "required": ["ComponentName"]
+}
