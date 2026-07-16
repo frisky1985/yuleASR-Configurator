@@ -311,12 +311,23 @@ export function Templates() {
             Choose a preset template to quickly start your yuleASR configuration
           </p>
         </div>
-        <button
-          onClick={() => navigate('/dashboard')}
-          className="inline-flex items-center gap-2 px-4 py-2 text-app-text-primary hover:bg-app-bg-tertiary rounded-lg transition-colors"
-        >
-          Back to Dashboard
-        </button>
+        <div className="flex items-center gap-3">
+          <a
+            href="http://localhost:3002/community/#/templates-market"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm text-primary-600 bg-primary-50 hover:bg-primary-100 rounded-lg transition-colors"
+          >
+            <LayoutTemplate className="w-4 h-4" />
+            Browse Community Market
+          </a>
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="inline-flex items-center gap-2 px-4 py-2 text-app-text-primary hover:bg-app-bg-tertiary rounded-lg transition-colors"
+          >
+            Back to Dashboard
+          </button>
+        </div>
       </div>
 
       {/* Categories */}

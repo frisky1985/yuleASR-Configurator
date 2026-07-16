@@ -1,126 +1,169 @@
+/**
+ * Seed script for BSW Templates — adds sample template data.
+ * Run: npx tsx prisma/seed.ts
+ */
 import { PrismaClient } from '@prisma/client'
-import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
+const sampleTemplates = [
+  {
+    name: 'MCU Base',
+    description: 'Microcontroller driver with clock configuration, core settings and basic MCU initialization',
+    category: 'mcal',
+    tags: ['MCAL', 'MCU', 'base'],
+    moduleType: 'MCAL',
+    modules: [
+      { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
+      { id: 'port', name: 'Port', layer: 'MCAL' }
+    ],
+    isOfficial: true,
+  },
+  {
+    name: 'CAN Communication',
+    description: 'CAN driver with baudrate configuration, message objects and communication settings',
+    category: 'ecual',
+    tags: ['ECUAL', 'CAN', 'communication'],
+    moduleType: 'ECUAL',
+    modules: [
+      { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
+      { id: 'port', name: 'Port', layer: 'MCAL' },
+      { id: 'can', name: 'Can', layer: 'ECUAL' }
+    ],
+    isOfficial: true,
+  },
+  {
+    name: 'NVRAM Storage',
+    description: 'Non-Volatile Memory Manager for persistent data storage and memory management',
+    category: 'service',
+    tags: ['Service', 'NvM', 'storage'],
+    moduleType: 'Service',
+    modules: [
+      { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
+      { id: 'port', name: 'Port', layer: 'MCAL' },
+      { id: 'dio', name: 'Dio', layer: 'MCAL' },
+      { id: 'nvm', name: 'NvM', layer: 'Service' }
+    ],
+    isOfficial: true,
+  },
+  {
+    name: 'Full Autosar',
+    description: 'Complete AUTOSAR configuration with all layers and common services',
+    category: 'full',
+    tags: ['full', 'AUTOSAR', 'complete'],
+    moduleType: 'RTE',
+    modules: [
+      { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
+      { id: 'port', name: 'Port', layer: 'MCAL' },
+      { id: 'dio', name: 'Dio', layer: 'MCAL' },
+      { id: 'gpt', name: 'Gpt', layer: 'MCAL' },
+      { id: 'pwm', name: 'Pwm', layer: 'MCAL' },
+      { id: 'adc', name: 'Adc', layer: 'MCAL' },
+      { id: 'can', name: 'Can', layer: 'ECUAL' },
+      { id: 'eth', name: 'Eth', layer: 'ECUAL' },
+      { id: 'nvm', name: 'NvM', layer: 'Service' },
+      { id: 'com', name: 'Com', layer: 'Service' },
+      { id: 'dcm', name: 'Dcm', layer: 'Service' }
+    ],
+    isOfficial: true,
+  },
+  {
+    name: 'Port & DIO',
+    description: 'Port and Digital I/O configuration for GPIO control',
+    category: 'mcal',
+    tags: ['MCAL', 'Port', 'DIO'],
+    moduleType: 'MCAL',
+    modules: [
+      { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
+      { id: 'port', name: 'Port', layer: 'MCAL' },
+      { id: 'dio', name: 'Dio', layer: 'MCAL' }
+    ],
+    isOfficial: false,
+  },
+  {
+    name: 'Ethernet Stack',
+    description: 'Ethernet driver configuration for TCP/IP communication and network interface',
+    category: 'ecual',
+    tags: ['ECUAL', 'Ethernet', 'TCP/IP'],
+    moduleType: 'ECUAL',
+    modules: [
+      { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
+      { id: 'port', name: 'Port', layer: 'MCAL' },
+      { id: 'eth', name: 'Eth', layer: 'ECUAL' }
+    ],
+    isOfficial: false,
+  },
+  {
+    name: 'Diagnostic Stack',
+    description: 'DCM (Diagnostic Communication Manager) for UDS diagnostic services',
+    category: 'service',
+    tags: ['Service', 'DCM', 'diagnostic'],
+    moduleType: 'Service',
+    modules: [
+      { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
+      { id: 'port', name: 'Port', layer: 'MCAL' },
+      { id: 'can', name: 'Can', layer: 'ECUAL' },
+      { id: 'dcm', name: 'Dcm', layer: 'Service' }
+    ],
+    isOfficial: false,
+  },
+]
+
 async function main() {
-  console.log('🌱 Seeding database...')
-
-  // Create admin user
-  const adminPassword = await bcrypt.hash('admin123456', 10)
-  const admin = await prisma.user.upsert({
-    where: { email: 'admin@yule.dev' },
-    update: {},
-    create: {
-      email: 'admin@yule.dev',
-      username: '管理员',
-      password: adminPassword,
-      role: 'admin',
-    },
-  })
-  console.log(`✅ Admin user: ${admin.email}`)
-
-  // Create demo user
-  const demoPassword = await bcrypt.hash('demo123456', 10)
-  const demo = await prisma.user.upsert({
-    where: { email: 'demo@yule.dev' },
-    update: {},
-    create: {
-      email: 'demo@yule.dev',
-      username: 'Demo用户',
-      password: demoPassword,
-      role: 'user',
-    },
-  })
-  console.log(`✅ Demo user: ${demo.email}`)
-
-  // Create sample blog posts
-  const posts = [
-    {
-      title: 'AUTOSAR MCAL Can模块配置指南',
-      slug: 'autosar-mcal-can-config-guide',
-      description: '从零开始配置AUTOSAR CAN驱动模块，涵盖波特率、控制器模式和中断配置。',
-      content: '# AUTOSAR MCAL Can模块配置指南\n\n## 1. 概述\n\nCAN (Controller Area Network) 是汽车电子中最常用的通信协议之一。本文将介绍如何在 yuleASR-Configurator 中配置 Can 模块。\n\n## 2. 关键参数\n\n- **CanBaudrate**: 波特率配置，常见值 500Kbps\n- **CanControllerId**: 控制器 ID\n- **CanWakeup**: 唤醒功能使能\n\n## 3. 配置步骤\n\n...\n',
-      category: 'MCAL',
-      tags: ['Can', 'MCAL', '入门'],
-      authorId: admin.id,
-    },
-    {
-      title: 'yuleASR-Configurator 架构解析',
-      slug: 'yuleasr-configurator-architecture',
-      description: '深入理解 yuleASR-Configurator 的架构设计，包括代码生成器、条件引擎和约束传播系统。',
-      content: '# yuleASR-Configurator 架构解析\n\n## 分层架构\n\n- **Core**: 核心代码生成引擎\n- **Web**: React 配置界面\n- **Desktop**: Electron 桌面应用\n- **Community**: 社区平台\n\n## 条件引擎\n\nSOP/XOP 模式切换，递归依赖求值...\n',
-      category: '架构设计',
-      tags: ['架构', 'yuleASR', '设计模式'],
-      authorId: admin.id,
-    },
-    {
-      title: 'AUTOSAR 功能安全基础',
-      slug: 'autosar-functional-safety-basics',
-      description: 'AUTOSAR 中的功能安全概念，ISO 26262 标准与 MCAL 配置的关系。',
-      content: '# AUTOSAR 功能安全基础\n\n## ISO 26262\n\n功能安全标准，定义 ASIL 等级...\n',
-      category: '功能安全',
-      tags: ['功能安全', 'ISO26262', 'ASIL'],
-      authorId: admin.id,
-    },
-  ]
-
-  for (const post of posts) {
-    await prisma.blogPost.upsert({
-      where: { slug: post.slug },
-      update: {},
-      create: {
-        ...post,
-        tags: JSON.stringify(post.tags),
-        publishedAt: new Date(),
-        isHot: post.category === 'MCAL',
-      },
-    })
+  // Find or create a system user for official templates
+  let systemUser = await prisma.user.findFirst({ where: { role: 'admin' } })
+  if (!systemUser) {
+    systemUser = await prisma.user.findFirst()
   }
-  console.log(`✅ ${posts.length} blog posts created`)
+  if (!systemUser) {
+    console.error('No user found. Please run auth seed first.')
+    process.exit(1)
+  }
 
-  // Create sample forum posts
-  const forumPosts = [
-    {
-      title: 'Can模块配置问题：波特率设置无效',
-      content: '我设置了CanBaudrate=500000，但生成的代码中这个值没有生效，有人遇到过吗？',
-      tags: ['Can', '求助'],
-      userId: demo.id,
-    },
-    {
-      title: '分享：我的 Port 模块配置经验',
-      content: '经过几次调试，总结了一些 Port 模块的配置技巧...',
-      tags: ['Port', '经验分享'],
-      userId: admin.id,
-      configId: 1,
-    },
-  ]
+  console.log(`Using user: ${systemUser.username} (id: ${systemUser.id})`)
 
-  for (const fp of forumPosts) {
-    await prisma.forumPost.create({
+  for (const tpl of sampleTemplates) {
+    const existing = await prisma.bSWTemplate.findFirst({ where: { name: tpl.name } })
+    if (existing) {
+      console.log(`  Skipping existing template: ${tpl.name}`)
+      continue
+    }
+
+    const template = await prisma.bSWTemplate.create({
       data: {
-        ...fp,
-        tags: JSON.stringify(fp.tags),
+        name: tpl.name,
+        description: tpl.description,
+        category: tpl.category,
+        tags: JSON.stringify(tpl.tags),
+        moduleType: tpl.moduleType,
+        modules: JSON.stringify(tpl.modules),
+        isPublic: true,
+        isOfficial: tpl.isOfficial,
         status: 'published',
+        visibility: 'public',
+        minTier: 'free',
+        authorId: systemUser.id,
+        version: 1,
+        downloadCount: Math.floor(Math.random() * 100),
+        viewCount: Math.floor(Math.random() * 500),
       },
     })
-  }
-  console.log(`✅ ${forumPosts.length} forum posts created`)
 
-  // Create tags
-  const tagNames = ['Can', 'MCAL', 'Port', 'Dio', '入门', '求助', '经验分享', '架构', 'yuleASR']
-  for (const name of tagNames) {
-    await prisma.tag.upsert({
-      where: { name },
-      update: {},
-      create: { name, postCount: 1 },
+    await prisma.bSWTemplateVersion.create({
+      data: {
+        templateId: template.id,
+        version: 1,
+        name: tpl.name,
+        description: tpl.description,
+        modules: JSON.stringify(tpl.modules),
+        changelog: 'Initial version',
+      },
     })
-  }
-  console.log(`✅ ${tagNames.length} tags created`)
 
-  console.log('\n🎉 Seeding complete!')
-  console.log('   Admin: admin@yule.dev / admin123456')
-  console.log('   Demo:  demo@yule.dev / demo123456')
+    console.log(`  Created template: ${tpl.name}`)
+  }
+
+  console.log('\n✅ Seed complete!')
 }
 
 main()
@@ -128,4 +171,6 @@ main()
     console.error(e)
     process.exit(1)
   })
-  .finally(() => prisma.$disconnect())
+  .finally(async () => {
+    await prisma.$disconnect()
+  })

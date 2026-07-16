@@ -9,6 +9,7 @@ import { blogRoutes } from './routes/blog.js'
 import { tagsRoutes } from './routes/tags.js'
 import { licenseRoutes } from './routes/license.js'
 import { paymentRoutes } from './routes/payment.js'
+import { bswTemplatesRoutes } from './routes/bswTemplates.js'
 import { prisma } from './lib/prisma.js'
 
 const PORT = parseInt(process.env.PORT || '3000', 10)
@@ -46,6 +47,7 @@ await app.register(blogRoutes, { prefix: '/blog' })
 await app.register(tagsRoutes, { prefix: '/tags' })
 await app.register(licenseRoutes, { prefix: '/api/license' })
 await app.register(paymentRoutes, { prefix: '/api/payment' })
+await app.register(bswTemplatesRoutes, { prefix: '/api/bsw-templates' })
 
 // Health check
 app.get('/health', async () => ({ status: 'ok', timestamp: new Date().toISOString() }))

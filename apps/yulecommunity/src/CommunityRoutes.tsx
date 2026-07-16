@@ -39,6 +39,9 @@ const AnalyticsPage = lazy(() => import('./pages/AnalyticsPage').then(m => ({ de
 const BookmarksPage = lazy(() => import('./pages/BookmarksPage').then(m => ({ default: m.BookmarksPage })))
 const YuleASRPage = lazy(() => import('./pages/YuleASRPage').then(m => ({ default: m.YuleASRPage })))
 const YuleASREditorPage = lazy(() => import('./pages/YuleASREditorPage').then(m => ({ default: m.YuleASREditorPage })))
+const BSWTemplateMarketPage = lazy(() => import('./pages/BSWTemplateMarketPage').then(m => ({ default: m.BSWTemplateMarketPage })))
+const BSWTemplateDetailPage = lazy(() => import('./pages/BSWTemplateDetailPage').then(m => ({ default: m.BSWTemplateDetailPage })))
+const BSWTemplateUploadPage = lazy(() => import('./pages/BSWTemplateUploadPage').then(m => ({ default: m.BSWTemplateUploadPage })))
 
 // Admin pages
 const AdminLogin = lazy(() => import('./admin/pages/Login').then(m => ({ default: m.Login })))
@@ -151,6 +154,9 @@ export function CommunityRoutes() {
                   <Route path="yuleasr" element={<YuleASRPage />} />
                   <Route path="yuleasr/editor/:configId" element={<YuleASREditorPage />} />
                   <Route path="yuleasr/editor/:configId/:moduleId" element={<YuleASREditorPage />} />
+                  <Route path="templates-market" element={<BSWTemplateMarketPage />} />
+                  <Route path="templates-market/:id" element={<BSWTemplateDetailPage />} />
+                  <Route path="templates-market/upload" element={<BSWTemplateUploadPage />} />
                   <Route path="*" element={
                     <div className="min-h-screen flex items-center justify-center">
                       <div className="text-center">

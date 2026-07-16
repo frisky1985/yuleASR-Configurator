@@ -22,6 +22,8 @@ model User {
   blogs    BlogPost[]
   blogComments BlogComment[]
   licenses LicenseKey[]
+  templates BSWTemplate[] @relation("BSWTemplateAuthor")
+  reviewedTemplates BSWTemplate[] @relation("BSWTemplateReviewer")
 }
 
 model ForumPost {
@@ -109,6 +111,56 @@ model LicenseKey {
   updatedAt     DateTime @updatedAt
 
   user User? @relation(fields: [userId], references: [id])
+}
+
+// ── BSW Template Market ──────────────────────────────────────────────────
+
+model BSWTemplate {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String
+  category    String    // mcal | ecual | service | full | bsw
+  tags        String    @default("[]")  // JSON array string (SQLite compat)
+  moduleType  String?   // Primary layer: MCAL | ECUAL | Service | RTE
+  configData  String?   // Full ConfigFile JSON string
+  modules     String    @default("[]")  // JSON array of TemplateModule
+  version     Int       @default(1)
+  downloads   Int       @default(0)
+  rating      Int       @default(0)
+  isPublic    Boolean   @default(true)
+  status      String    @default("published") // draft | published | rejected | archived
+  visibility  String    @default("public")  // public | private | team
+  isOfficial  Boolean   @default(false)
+  minTier     String    @default("free")    // free | pro
+
+  authorId       Int
+  author         User         @relation("BSWTemplateAuthor", fields: [authorId], references: [id])
+  reviewedById   Int?
+  reviewedBy     User?        @relation("BSWTemplateReviewer", fields: [reviewedById], references: [id])
+
+  latestVersionId Int?
+
+  downloadCount  Int  @default(0)
+  viewCount      Int  @default(0)
+  favoriteCount  Int  @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  versions BSWTemplateVersion[]
+}
+
+model BSWTemplateVersion {
+  id          Int      @id @default(autoincrement())
+  templateId  Int
+  template    BSWTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  version     Int
+  name        String    @default("")
+  description String    @default("")
+  modules     String    @default("[]")
+  configData  String?   // Full ConfigFile JSON string
+  changelog   String?
+  createdAt   DateTime  @default(now())
 }
 
 model PaymentEvent {

@@ -11,3 +11,4 @@ release/
 *.zip
 *.blockmap
 builder-debug.yml
+verification/

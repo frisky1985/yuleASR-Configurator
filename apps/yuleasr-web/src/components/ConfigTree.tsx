@@ -22,6 +22,7 @@ import { useState, useMemo, useCallback, useEffect, forwardRef, useImperativeHan
 import { cn } from '@/lib/utils'
 import type { ConfigFile, ConfigModule, ConfigContainer, ConfigParameter, ValidationIssue } from '@/types/config'
 import { useLicenseStore } from '@/stores/licenseStore'
+import { UpgradeDialog } from '@/components/UpgradeDialog'
 
 export interface ConfigTreeProps {
   config: ConfigFile
@@ -149,7 +150,9 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
     instanceName: string
   } | null>(null)
   const [dragOverPath, setDragOverPath] = useState<string | null>(null)
-  
+
+  const [upgradeDialogOpen, setUpgradeDialogOpen] = useState(false)
+
   const licenseTier = useLicenseStore(s => s.tier)
   const maxModules = useLicenseStore(s => s.getFeatureLimit('maxModules'))
   const lockedModuleIds = useMemo(() => {
@@ -820,6 +823,10 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
             }
           }}
           onClick={() => {
+            if (node.locked) {
+              setUpgradeDialogOpen(true)
+              return
+            }
             onSelectPath(node.path)
             if (node.hasChildren) {
               toggleExpansion(node.path)
@@ -1211,6 +1218,9 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
           </div>
         </div>
       )}
+
+      {/* Upgrade Dialog for locked Pro modules */}
+      <UpgradeDialog isOpen={upgradeDialogOpen} onClose={() => setUpgradeDialogOpen(false)} />
     </div>
   )
 })

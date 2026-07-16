@@ -12,6 +12,7 @@ import {
   AlertTriangle,
   Info,
   Share2,
+  Eye,
 } from 'lucide-react'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'

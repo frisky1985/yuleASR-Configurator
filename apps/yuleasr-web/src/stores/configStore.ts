@@ -123,6 +123,9 @@ interface ConfigState {
   syncToCloud: () => Promise<void>
   loadFromCloud: () => Promise<void>
   updateConfigData: (id: string, data: unknown) => Promise<void>
+
+  // 从社区模板市场导入模板
+  importTemplateFromMarket: (templateName: string, templateDescription: string, configData: ConfigFile) => Promise<void>
 }
 
 export interface ConfigTemplate {
@@ -941,6 +944,61 @@ export const useConfigStore = create<ConfigState>()(
       loadTemplates: () => {
         const templates = JSON.parse(localStorage.getItem('yuleasr_templates') || '[]') as ConfigTemplate[]
         set({ templates })
+      },
+
+      // ── Import from community template market ─────────────────
+
+      importTemplateFromMarket: async (templateName, templateDescription, configData) => {
+        const configId = `config-${Date.now()}`
+        const config: ConfigFile = {
+          ...configData,
+          id: configId,
+          name: templateName || configData.name || 'Imported Template',
+          description: templateDescription || configData.description || 'Imported from BSW Template Market',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        }
+
+        // Save to localStorage
+        saveToLocalStorage(config)
+
+        // Add to config list
+        const configList = loadConfigListFromLocalStorage()
+        configList.unshift({
+          id: config.id,
+          name: config.name,
+          description: config.description || '',
+          moduleCount: config.modules?.filter((m: any) => m.enabled !== false).length || 0,
+          lastModified: config.updatedAt,
+        })
+        saveConfigListToLocalStorage(configList)
+
+        // Set as current config
+        const validator = new DependencyValidator(config)
+        const result = validator.validate()
+        set({
+          currentConfig: config,
+          configList,
+          selectedPath: null,
+          validationResult: result,
+          validationIssues: result.errors,
+          isDirty: false,
+          isLoading: false,
+        })
+
+        // If authenticated, also save to API
+        if (isAuthenticated()) {
+          try {
+            await api.post('/api/configs', {
+              name: config.name,
+              description: config.description,
+              data: config,
+            })
+            set({ isCloudSynced: true })
+          } catch (err) {
+            console.warn('Failed to sync imported config to cloud:', err)
+          }
+        }
       },
     }),
     { name: 'config-store' }
