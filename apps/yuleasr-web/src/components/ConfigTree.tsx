@@ -1031,7 +1031,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
             placeholder="Search modules..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-7 pr-7 py-1.5 text-xs border border-app-border-primary rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
+            className="w-full pl-7 pr-7 py-1.5 text-xs border border-app-border-primary rounded-md bg-app-bg-primary text-app-text-primary focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
           />
           {searchQuery && (
             <button

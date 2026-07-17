@@ -188,7 +188,7 @@ export function VersionHistory({
             placeholder="Search commits..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 text-xs border border-app-border-primary rounded focus:outline-none focus:ring-1 focus:ring-primary-500"
+            className="w-full pl-8 pr-3 py-1.5 text-xs border border-app-border-primary rounded bg-app-bg-primary text-app-text-primary focus:outline-none focus:ring-1 focus:ring-primary-500"
           />
         </div>
 

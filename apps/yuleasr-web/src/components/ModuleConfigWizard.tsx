@@ -1405,7 +1405,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder={t('wizard.searchModule', 'Search modules...')}
-                    className="w-full pl-9 pr-4 py-2 border border-app-border-primary rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                    className="w-full pl-9 pr-4 py-2 border border-app-border-primary rounded-lg bg-app-bg-primary text-app-text-primary focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                   />
                   {searchQuery && (
                     <button
