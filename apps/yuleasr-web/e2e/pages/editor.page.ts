@@ -16,8 +16,15 @@ export class EditorPage {
   // Toolbar buttons
   readonly validateButton: Locator
   readonly saveButton: Locator
+  readonly saveDropdownArrow: Locator
+  readonly saveAsTemplateOption: Locator
   readonly searchButton: Locator
-  readonly shareButton: Locator
+  readonly exportButton: Locator
+  readonly exportArxmlOption: Locator
+  readonly importButton: Locator
+  readonly overflowButton: Locator
+  readonly shareOption: Locator
+  readonly viewDiffOption: Locator
   
   // Module Tree (Left sidebar)
   readonly moduleTree: Locator
@@ -48,8 +55,15 @@ export class EditorPage {
     // Toolbar — buttons in the editor toolbar area
     this.validateButton = page.getByRole('button', { name: /^Validate$/i })
     this.saveButton = page.getByRole('button', { name: /^Save$/i })
+    this.saveDropdownArrow = page.locator('div.relative.flex button[title="More save options"]')
+    this.saveAsTemplateOption = page.getByRole('button', { name: /Save as Template/i })
     this.searchButton = page.getByRole('button', { name: /Search/i })
-    this.shareButton = page.getByRole('button', { name: /^Share$/i })
+    this.exportButton = page.getByRole('button', { name: /^Export$/i })
+    this.exportArxmlOption = page.getByRole('button', { name: /Export ARXML/i })
+    this.importButton = page.getByRole('button', { name: /^Import/i })
+    this.overflowButton = page.locator('button[title="More actions"]')
+    this.shareOption = page.getByRole('button', { name: /Share Configuration/i })
+    this.viewDiffOption = page.getByRole('button', { name: /View Diff/i })
     
     // Module Tree — section with heading "Configuration Tree"
     this.moduleTree = page.getByRole('heading', { name: /Configuration Tree/i })

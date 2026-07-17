@@ -265,6 +265,7 @@ export class YuleasrValidator {
 }
 
 // 默认验证器实例
+// TODO(#11): 全局单例 — 多配置并行时需要按 Config 实例化，移除此处单例
 export const yuleasrValidator = new YuleasrValidator();
 
 // 注册默认验证规则

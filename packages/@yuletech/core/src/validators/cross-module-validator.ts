@@ -15,6 +15,12 @@ import type {
 
 /**
  * 跨模块验证器
+ *
+ * TODO(#11): 当前为单例模式，通过 YuleasrValidator.crossModuleValidator 持有。
+ * 多配置并行编辑时，校验状态会互相污染。届时需：
+ *   1. CrossModuleValidator 实例与 Config 实例绑定
+ *   2. 每个 Config 持有自己的 Validator 实例
+ *   3. 移除全局 yuleasrValidator 单例，改为工厂函数按需创建
  */
 export class CrossModuleValidator {
   constructor(private schemas: Map<string, ModuleSchema>) {}

@@ -423,13 +423,13 @@ export function Editor() {
             )}
             Validate
           </button>
-          {/* Save Dropdown — Save + Save as Template */}
-          <div className="relative" ref={saveMenuRef}>
+          {/* Save Split Button — left: save, right: dropdown arrow (always clickable) */}
+          <div className="relative flex" ref={saveMenuRef}>
             <button
-              onClick={() => setShowSaveMenu(!showSaveMenu)}
+              onClick={handleSave}
               disabled={!isDirty || isLoading}
               className={cn(
-                'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors',
+                'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-l-lg transition-colors border-r border-primary-700',
                 !isDirty || isLoading
                   ? 'bg-app-bg-tertiary text-app-text-tertiary cursor-not-allowed'
                   : 'bg-primary-600 text-white hover:bg-primary-700'
@@ -437,21 +437,21 @@ export function Editor() {
             >
               <Save className="w-4 h-4" />
               {isLoading ? 'Saving...' : 'Save'}
-              <svg className={`w-3 h-3 transition-transform ${showSaveMenu && !isDirty && !isLoading ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            <button
+              onClick={() => setShowSaveMenu(!showSaveMenu)}
+              className={cn(
+                'inline-flex items-center px-2 py-2 text-sm font-medium rounded-r-lg transition-colors',
+                !isDirty || isLoading
+                  ? 'bg-app-bg-tertiary text-app-text-tertiary'
+                  : 'bg-primary-600 text-white hover:bg-primary-700'
+              )}
+              title="More save options"
+            >
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             {showSaveMenu && (
               <div className="absolute right-0 top-full mt-1 bg-app-bg-primary border border-app-border-primary rounded-lg shadow-lg z-50 min-w-[190px] py-1">
-                <button
-                  onClick={() => {
-                    setShowSaveMenu(false)
-                    handleSave()
-                  }}
-                  disabled={!isDirty || isLoading}
-                  className="w-full text-left px-3 py-2 text-sm hover:bg-app-bg-secondary transition-colors flex items-center gap-2 disabled:opacity-40"
-                >
-                  <Save className="w-4 h-4 text-primary-500" />
-                  Save
-                </button>
                 <button
                   onClick={() => {
                     setShowSaveMenu(false)
