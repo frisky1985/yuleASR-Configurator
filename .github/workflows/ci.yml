@@ -108,7 +108,7 @@ jobs:
         run: pnpm install --no-frozen-lockfile
 
       - name: Build packages (exclude desktop — needs electron-builder platform env)
-        run: pnpm -r build --filter '!yuleasr-desktop'
+        run: pnpm --filter "yuleasr-web..." build && pnpm --filter yuleasr-vscode build
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
