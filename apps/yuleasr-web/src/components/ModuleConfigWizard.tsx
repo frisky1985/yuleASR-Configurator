@@ -71,29 +71,37 @@ const LAYER_COLORS: Record<
     bg: 'bg-blue-50 dark:bg-blue-950/40',
     text: 'text-blue-700 dark:text-blue-300',
     border: 'border-blue-200 dark:border-blue-800/60',
-    hover: 'hover:border-blue-300 hover:bg-blue-50 dark:hover:border-blue-700 dark:hover:bg-blue-950/50',
-    badge: 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/50 dark:text-blue-200 dark:border-blue-700/50',
+    hover:
+      'hover:border-blue-300 hover:bg-blue-50 dark:hover:border-blue-700 dark:hover:bg-blue-950/50',
+    badge:
+      'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/50 dark:text-blue-200 dark:border-blue-700/50',
   },
   ECUAL: {
     bg: 'bg-green-50 dark:bg-green-950/40',
     text: 'text-green-700 dark:text-green-300',
     border: 'border-green-200 dark:border-green-800/60',
-    hover: 'hover:border-green-300 hover:bg-green-50 dark:hover:border-green-700 dark:hover:bg-green-950/50',
-    badge: 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/50 dark:text-green-200 dark:border-green-700/50',
+    hover:
+      'hover:border-green-300 hover:bg-green-50 dark:hover:border-green-700 dark:hover:bg-green-950/50',
+    badge:
+      'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/50 dark:text-green-200 dark:border-green-700/50',
   },
   Service: {
     bg: 'bg-purple-50 dark:bg-purple-950/40',
     text: 'text-purple-700 dark:text-purple-300',
     border: 'border-purple-200 dark:border-purple-800/60',
-    hover: 'hover:border-purple-300 hover:bg-purple-50 dark:hover:border-purple-700 dark:hover:bg-purple-950/50',
-    badge: 'bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-900/50 dark:text-purple-200 dark:border-purple-700/50',
+    hover:
+      'hover:border-purple-300 hover:bg-purple-50 dark:hover:border-purple-700 dark:hover:bg-purple-950/50',
+    badge:
+      'bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-900/50 dark:text-purple-200 dark:border-purple-700/50',
   },
   RTE: {
     bg: 'bg-orange-50 dark:bg-orange-950/40',
     text: 'text-orange-700 dark:text-orange-300',
     border: 'border-orange-200 dark:border-orange-800/60',
-    hover: 'hover:border-orange-300 hover:bg-orange-50 dark:hover:border-orange-700 dark:hover:bg-orange-950/50',
-    badge: 'bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/50 dark:text-orange-200 dark:border-orange-700/50',
+    hover:
+      'hover:border-orange-300 hover:bg-orange-50 dark:hover:border-orange-700 dark:hover:bg-orange-950/50',
+    badge:
+      'bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/50 dark:text-orange-200 dark:border-orange-700/50',
   },
 };
 

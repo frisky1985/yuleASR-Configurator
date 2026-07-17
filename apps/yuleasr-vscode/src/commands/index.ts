@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 
 import { ConfigEditorPanel } from '../panels/ConfigEditorPanel';
-import { ConfigTreeProvider, ConfigTreeItem, ModuleLayer } from '../providers/ConfigTreeProvider';
+import { ConfigTreeProvider, ConfigTreeItem } from '../providers/ConfigTreeProvider';
 
 /**
  * Register all yuleASR commands
@@ -25,7 +25,6 @@ export function registerCommands(
       }
 
       // Check if we should use the webview editor or native editor
-      const config = vscode.workspace.getConfiguration('yuleasr');
       const useWebview = true; // Always use webview for now
 
       if (useWebview) {
@@ -148,7 +147,7 @@ export function registerCommands(
 /**
  * Sync configuration with yuleASR repository
  */
-async function syncWithYuleASR(item?: ConfigTreeItem): Promise<void> {
+async function syncWithYuleASR(_item?: ConfigTreeItem): Promise<void> {
   const config = vscode.workspace.getConfiguration('yuleasr');
   const yuleASRPath = config.get<string>('yuleASRPath');
 

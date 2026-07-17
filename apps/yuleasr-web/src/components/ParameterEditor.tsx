@@ -327,7 +327,9 @@ export function ParameterEditor({
                         }}
                         className={cn(
                           'w-full text-left px-3 py-2 text-xs transition-colors hover:bg-primary-50 dark:hover:bg-primary-900/40',
-                          isSelected ? 'bg-primary-50 text-primary-700 font-medium dark:bg-primary-900/30 dark:text-primary-300' : 'text-primary'
+                          isSelected
+                            ? 'bg-primary-50 text-primary-700 font-medium dark:bg-primary-900/30 dark:text-primary-300'
+                            : 'text-primary'
                         )}
                       >
                         {optLabel}

@@ -807,10 +807,12 @@ export function Editor() {
                     key={issue.id}
                     className={cn(
                       'text-xs p-2 rounded cursor-pointer hover:bg-app-bg-secondary',
-                      issue.severity === 'error' && 'bg-red-50 text-red-700 border border-red-100 dark:bg-red-950/40 dark:text-red-300 dark:border-red-800/60',
+                      issue.severity === 'error' &&
+                        'bg-red-50 text-red-700 border border-red-100 dark:bg-red-950/40 dark:text-red-300 dark:border-red-800/60',
                       issue.severity === 'warning' &&
                         'bg-yellow-50 text-yellow-700 border border-yellow-100 dark:bg-yellow-950/40 dark:text-yellow-300 dark:border-yellow-800/60',
-                      issue.severity === 'info' && 'bg-blue-50 text-blue-700 border border-blue-100 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800/60'
+                      issue.severity === 'info' &&
+                        'bg-blue-50 text-blue-700 border border-blue-100 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800/60'
                     )}
                     onClick={() => {
                       if (issue.module) {

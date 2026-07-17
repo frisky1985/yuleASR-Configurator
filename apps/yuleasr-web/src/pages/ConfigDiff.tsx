@@ -218,7 +218,12 @@ function getStatusStyle(status: string) {
         dot: 'bg-yellow-500',
       };
     case 'only_a':
-      return { bg: 'bg-red-50 dark:bg-red-950/40', text: 'text-red-700 dark:text-red-300', border: 'border-red-300 dark:border-red-800/60', dot: 'bg-red-500' };
+      return {
+        bg: 'bg-red-50 dark:bg-red-950/40',
+        text: 'text-red-700 dark:text-red-300',
+        border: 'border-red-300 dark:border-red-800/60',
+        dot: 'bg-red-500',
+      };
     case 'only_b':
       return {
         bg: 'bg-green-50 dark:bg-green-950/40',
@@ -443,10 +448,14 @@ export function ConfigDiff() {
           <span
             className={cn(
               'ml-auto px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase shrink-0',
-              node.status === 'same' && 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300',
-              node.status === 'different' && 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-300',
-              node.status === 'only_a' && 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300',
-              node.status === 'only_b' && 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300'
+              node.status === 'same' &&
+                'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300',
+              node.status === 'different' &&
+                'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-300',
+              node.status === 'only_a' &&
+                'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300',
+              node.status === 'only_b' &&
+                'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300'
             )}
           >
             {sl.short}

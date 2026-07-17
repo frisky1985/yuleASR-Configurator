@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 import { registerCommands } from './commands';
-import { ConfigTreeProvider, ConfigTreeItem } from './providers/ConfigTreeProvider';
+import { ConfigTreeProvider } from './providers/ConfigTreeProvider';
 import { ConfigEditorPanel } from './panels/ConfigEditorPanel';
 
 export function activate(context: vscode.ExtensionContext): void {

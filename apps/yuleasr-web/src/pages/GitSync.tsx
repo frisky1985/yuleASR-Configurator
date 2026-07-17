@@ -217,7 +217,9 @@ export function GitSync() {
             <div
               className={cn(
                 'flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm',
-                syncStatus === 'success' ? 'bg-green-50 text-green-700 dark:bg-green-950/40 dark:text-green-300' : 'bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-300'
+                syncStatus === 'success'
+                  ? 'bg-green-50 text-green-700 dark:bg-green-950/40 dark:text-green-300'
+                  : 'bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-300'
               )}
             >
               {syncStatus === 'success' ? (

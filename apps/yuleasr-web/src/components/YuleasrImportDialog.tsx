@@ -108,7 +108,9 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
             className={cn(
               'border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors',
               'hover:border-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/30',
-              fileContent ? 'border-green-400 bg-green-50 dark:bg-green-950/40 dark:border-green-700' : 'border-app-border-primary'
+              fileContent
+                ? 'border-green-400 bg-green-50 dark:bg-green-950/40 dark:border-green-700'
+                : 'border-app-border-primary'
             )}
           >
             <input
@@ -141,7 +143,9 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
             <div
               className={cn(
                 'p-4 rounded-lg border',
-                validationResult.valid ? 'bg-green-50 border-green-200 dark:bg-green-950/40 dark:border-green-800/60' : 'bg-red-50 border-red-200 dark:bg-red-950/40 dark:border-red-800/60'
+                validationResult.valid
+                  ? 'bg-green-50 border-green-200 dark:bg-green-950/40 dark:border-green-800/60'
+                  : 'bg-red-50 border-red-200 dark:bg-red-950/40 dark:border-red-800/60'
               )}
             >
               <div className="flex items-center gap-2">

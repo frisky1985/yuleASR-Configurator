@@ -215,10 +215,12 @@ export function CodeDiffPreview({
         <div className="flex items-center justify-between px-6 py-3 border-t border-app-border-primary shrink-0 bg-app-bg-secondary">
           <div className="flex items-center gap-3 text-xs text-app-text-tertiary">
             <span className="inline-flex items-center gap-1">
-              <span className="w-3 h-3 rounded bg-green-100 border border-green-300 dark:bg-green-900/50 dark:border-green-700" /> 新增
+              <span className="w-3 h-3 rounded bg-green-100 border border-green-300 dark:bg-green-900/50 dark:border-green-700" />{' '}
+              新增
             </span>
             <span className="inline-flex items-center gap-1">
-              <span className="w-3 h-3 rounded bg-red-50 border border-red-300 dark:bg-red-950/40 dark:border-red-700" /> 删除
+              <span className="w-3 h-3 rounded bg-red-50 border border-red-300 dark:bg-red-950/40 dark:border-red-700" />{' '}
+              删除
             </span>
             <span className="inline-flex items-center gap-1">
               <span className="w-3 h-3 rounded bg-app-bg-primary border border-app-border-primary" />{' '}

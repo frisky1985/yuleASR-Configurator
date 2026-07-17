@@ -340,7 +340,9 @@ function TaskItem({
           <span className="font-medium text-sm">{task.name}</span>
           <span className="text-xs text-app-text-secondary">Priority: {task.priority}</span>
           {task.autostart && (
-            <span className="px-1.5 py-0.5 text-xs bg-green-100 text-green-700 rounded dark:bg-green-900/50 dark:text-green-300">Auto</span>
+            <span className="px-1.5 py-0.5 text-xs bg-green-100 text-green-700 rounded dark:bg-green-900/50 dark:text-green-300">
+              Auto
+            </span>
           )}
         </div>
         <button

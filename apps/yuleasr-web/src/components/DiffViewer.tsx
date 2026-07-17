@@ -462,7 +462,10 @@ function SplitDiffView({ oldContent, newContent }: SplitDiffViewProps) {
             const isChanged = oldLine !== newLine;
 
             return (
-              <tr key={i} className={isChanged ? 'bg-yellow-50 dark:bg-yellow-950/40' : 'bg-app-bg-primary'}>
+              <tr
+                key={i}
+                className={isChanged ? 'bg-yellow-50 dark:bg-yellow-950/40' : 'bg-app-bg-primary'}
+              >
                 <td
                   className={cn(
                     'px-4 py-0.5 whitespace-pre border-r border-app-border-primary',
