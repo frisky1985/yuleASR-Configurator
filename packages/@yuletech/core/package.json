@@ -8,48 +8,39 @@
   "exports": {
     ".": {
       "import": "./src/index.ts",
-      "require": "./src/index.ts",
-      "types": "./src/index.ts"
+      "require": "./src/index.ts"
     },
     "./schema": {
       "import": "./src/schema/index.ts",
-      "require": "./src/schema/index.ts",
-      "types": "./src/schema/index.ts"
+      "require": "./src/schema/index.ts"
     },
     "./schema/generated": {
       "import": "./src/schema/generated/index.ts",
-      "require": "./src/schema/generated/index.ts",
-      "types": "./src/schema/generated/index.ts"
+      "require": "./src/schema/generated/index.ts"
     },
     "./types": {
       "import": "./src/types/index.ts",
-      "require": "./src/types/index.ts",
-      "types": "./src/types/index.ts"
+      "require": "./src/types/index.ts"
     },
     "./validator": {
       "import": "./src/validator/index.ts",
-      "require": "./src/validator/index.ts",
-      "types": "./src/validator/index.ts"
+      "require": "./src/validator/index.ts"
     },
     "./generator": {
       "import": "./src/generator/index.ts",
-      "require": "./src/generator/index.ts",
-      "types": "./src/generator/index.ts"
+      "require": "./src/generator/index.ts"
     },
     "./schema-extractor": {
       "import": "./src/schema-extractor/index.ts",
-      "require": "./src/schema-extractor/index.ts",
-      "types": "./src/schema-extractor/index.ts"
+      "require": "./src/schema-extractor/index.ts"
     },
     "./validators": {
       "import": "./src/validators/index.ts",
-      "require": "./src/validators/index.ts",
-      "types": "./src/validators/index.ts"
+      "require": "./src/validators/index.ts"
     },
     "./conditions": {
       "import": "./src/conditions/index.ts",
-      "require": "./src/conditions/index.ts",
-      "types": "./src/conditions/index.ts"
+      "require": "./src/conditions/index.ts"
     }
   },
   "scripts": {

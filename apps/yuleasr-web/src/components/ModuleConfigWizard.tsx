@@ -1377,7 +1377,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
         </div>
 
         {/* Progress */}
-        <div className="px-6 py-3 bg-app-bg-secondary border-b border-app-border-primary">
+        <div className="px-6 py-3 bg-app-bg-secondary dark:bg-slate-800/60 border-b border-app-border-primary">
           <div className="flex items-center gap-2">
             {[1, 2, 3].map(s => (
               <div key={s} className="flex items-center gap-2">
@@ -1385,9 +1385,9 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                   className={cn(
                     'w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors',
                     step === s
-                      ? 'bg-primary-600 text-white'
+                      ? 'bg-primary-600 dark:bg-primary-500 text-white'
                       : step > s
-                        ? 'bg-green-500 text-white'
+                        ? 'bg-green-500 dark:bg-green-600 text-white'
                         : 'bg-app-bg-tertiary text-app-text-secondary'
                   )}
                 >
@@ -1439,7 +1439,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                     className={cn(
                       'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors',
                       selectedLayer === 'all'
-                        ? 'bg-gray-900 text-white'
+                        ? 'bg-gray-900 dark:bg-slate-700 text-white'
                         : 'bg-app-bg-tertiary text-app-text-secondary hover:bg-app-bg-tertiary'
                     )}
                   >
@@ -1480,7 +1480,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                       setSearchQuery('');
                       setSelectedLayer('all');
                     }}
-                    className="mt-2 text-primary-600 hover:text-primary-700 text-sm"
+                    className="mt-2 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm"
                   >
                     {t('wizard.clearFilters', 'Clear filters')}
                   </button>
@@ -1515,7 +1515,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                               key={module.id}
                               onClick={() => handleSelectModule(module)}
                               className={cn(
-                                'p-4 border rounded-lg transition-all text-left group',
+                                'p-4 border rounded-lg transition-all text-left group dark:bg-slate-800/30',
                                 LAYER_COLORS[layer].hover,
                                 'border-app-border-primary hover:shadow-md'
                               )}
