@@ -24,11 +24,11 @@ const layerIcons: Record<string, React.ComponentType<{ className?: string }>> = 
 }
 
 const layerColors: Record<string, string> = {
-  MCAL: 'bg-blue-50 text-blue-700 border-blue-200',
-  ECUAL: 'bg-green-50 text-green-700 border-green-200',
-  Service: 'bg-purple-50 text-purple-700 border-purple-200',
-  RTE: 'bg-orange-50 text-orange-700 border-orange-200',
-  ASW: 'bg-pink-50 text-pink-700 border-pink-200',
+  MCAL: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800',
+  ECUAL: 'bg-green-50 text-green-700 border-green-200 dark:bg-green-950/40 dark:text-green-300 dark:border-green-800',
+  Service: 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/40 dark:text-purple-300 dark:border-purple-800',
+  RTE: 'bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-950/40 dark:text-orange-300 dark:border-orange-800',
+  ASW: 'bg-pink-50 text-pink-700 border-pink-200 dark:bg-pink-950/40 dark:text-pink-300 dark:border-pink-800',
 }
 
 const layerOrder = ['MCAL', 'ECUAL', 'Service', 'RTE', 'ASW']

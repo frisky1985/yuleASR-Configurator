@@ -27,31 +27,31 @@ const statusColors: Record<CompareStatus, { bg: string; text: string; border: st
     label: 'Same',
   },
   different: {
-    bg: 'bg-red-50',
-    text: 'text-red-700',
-    border: 'border-red-300',
+    bg: 'bg-red-50 dark:bg-red-950/40',
+    text: 'text-red-700 dark:text-red-300',
+    border: 'border-red-300 dark:border-red-800',
     label: 'Different',
   },
   only_a: {
-    bg: 'bg-yellow-50',
-    text: 'text-yellow-700',
-    border: 'border-yellow-300',
+    bg: 'bg-yellow-50 dark:bg-yellow-950/40',
+    text: 'text-yellow-700 dark:text-yellow-300',
+    border: 'border-yellow-300 dark:border-yellow-800',
     label: 'Only in A',
   },
   only_b: {
-    bg: 'bg-yellow-50',
-    text: 'text-yellow-700',
-    border: 'border-yellow-300',
+    bg: 'bg-yellow-50 dark:bg-yellow-950/40',
+    text: 'text-yellow-700 dark:text-yellow-300',
+    border: 'border-yellow-300 dark:border-yellow-800',
     label: 'Only in B',
   },
 }
 
 // Instance count diff color (blue)
-const instanceDiffColor = 'bg-blue-50 text-blue-700 border-blue-300'
+const instanceDiffColor = 'bg-blue-50 text-blue-700 border-blue-300 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800'
 
 function getStatusStyle(status: CompareStatus, isInstanceDiff?: boolean): { bg: string; text: string; border: string } {
   if (isInstanceDiff && status === 'different') {
-    return { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-300' }
+    return { bg: 'bg-blue-50 dark:bg-blue-950/40', text: 'text-blue-700 dark:text-blue-300', border: 'border-blue-300 dark:border-blue-800' }
   }
   const s = statusColors[status]
   return { bg: s.bg, text: s.text, border: s.border }
@@ -641,9 +641,9 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
           {node.status !== 'same' && (
             <span className={cn(
               'ml-auto px-1.5 py-0.5 rounded text-[10px] font-medium uppercase',
-              style.bg === 'bg-red-50' ? 'bg-red-100 text-red-600' :
-              style.bg === 'bg-blue-50' ? 'bg-blue-100 text-blue-600' :
-              'bg-yellow-100 text-yellow-600'
+              style.bg === 'bg-red-50' ? 'bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300' :
+              style.bg === 'bg-blue-50' ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300' :
+              'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-600 dark:text-yellow-300'
             )}>
               {node.status === 'different' ? '≠' :
                node.status === 'only_a' ? 'A' :
@@ -887,13 +887,13 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
                     <div className="px-4 py-1.5 bg-muted/20 border-b border-border flex items-center gap-2">
                       <button
                         onClick={() => batchSync('a_to_b')}
-                        className="px-2 py-1 text-xs rounded bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 transition-colors"
+                        className="px-2 py-1 text-xs rounded bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 transition-colors dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800 dark:hover:bg-blue-900/50"
                       >
                         Accept A → B ({diffCount})
                       </button>
                       <button
                         onClick={() => batchSync('b_to_a')}
-                        className="px-2 py-1 text-xs rounded bg-green-50 text-green-700 border border-green-200 hover:bg-green-100 transition-colors"
+                        className="px-2 py-1 text-xs rounded bg-green-50 text-green-700 border border-green-200 hover:bg-green-100 transition-colors dark:bg-green-950/40 dark:text-green-300 dark:border-green-800 dark:hover:bg-green-900/50"
                       >
                         Accept B → A ({diffCount})
                       </button>

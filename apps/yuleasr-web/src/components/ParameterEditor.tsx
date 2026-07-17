@@ -213,13 +213,13 @@ export function ParameterEditor({
 
   // Type badge colors
   const typeBadgeColors: Record<string, string> = {
-    boolean: 'bg-blue-100 text-blue-700',
-    integer: 'bg-emerald-100 text-emerald-700',
-    float: 'bg-teal-100 text-teal-700',
-    string: 'bg-purple-100 text-purple-700',
-    enum: 'bg-amber-100 text-amber-700',
-    array: 'bg-rose-100 text-rose-700',
-    reference: 'bg-indigo-100 text-indigo-700',
+    boolean: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300',
+    integer: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300',
+    float: 'bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300',
+    string: 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300',
+    enum: 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300',
+    array: 'bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300',
+    reference: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300',
   }
 
   // Render input based on type
