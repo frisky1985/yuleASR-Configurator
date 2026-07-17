@@ -196,7 +196,7 @@ export function GitSync() {
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-xl font-bold text-app-text-primary">Git Sync</h1>
-              <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-primary-100 text-primary-700 rounded-full">
+              <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300 rounded-full">
                 <GitBranch className="w-3 h-3" />
                 {currentBranch}
               </span>
@@ -322,7 +322,7 @@ export function GitSync() {
                 <GitCompare className="w-4 h-4" />
                 Diff
                 {showDiffViewer && diffs.length > 0 && (
-                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary-100 text-primary-700 rounded">
+                  <span className="ml-1 px-1.5 py-0.5 text-xs bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300 rounded">
                     {diffs.length}
                   </span>
                 )}
@@ -351,7 +351,7 @@ export function GitSync() {
               {selectedCommit ? (
                 <div className="bg-app-bg-primary rounded-lg border border-app-border-primary p-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-primary-50 dark:bg-primary-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
                       <GitCommit className="w-5 h-5 text-primary-600" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -359,7 +359,7 @@ export function GitSync() {
                         {selectedCommit.message}
                       </h3>
                       <div className="flex items-center gap-3 mt-1 text-xs text-app-text-secondary">
-                        <span className="font-mono text-primary-600 bg-primary-50 px-1.5 py-0.5 rounded">
+                        <span className="font-mono text-primary-600 bg-primary-50 dark:bg-primary-900/30 px-1.5 py-0.5 rounded">
                           {selectedCommit.oid.substring(0, 7)}
                         </span>
                         <span className="flex items-center gap-1">

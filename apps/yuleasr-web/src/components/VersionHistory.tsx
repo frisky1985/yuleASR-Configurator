@@ -166,7 +166,7 @@ export function VersionHistory({
                   }}
                   className={cn(
                     'w-full flex items-center gap-2 px-3 py-2 text-xs text-left hover:bg-app-bg-secondary',
-                    branch.current && 'bg-primary-50 text-primary-700'
+                    branch.current && 'bg-primary-50 dark:bg-slate-700 text-primary-700 dark:text-primary-300'
                   )}
                 >
                   <GitBranch className="w-3.5 h-3.5" />
@@ -211,7 +211,7 @@ export function VersionHistory({
                   setCompareMode(false)
                   setCompareCommits([])
                 }}
-                className="px-2 py-1 text-blue-600 hover:bg-blue-100 rounded"
+                className="px-2 py-1 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded"
               >
                 Cancel
               </button>
@@ -251,8 +251,8 @@ export function VersionHistory({
                       key={commit.oid}
                       className={cn(
                         'relative px-4 py-3 transition-colors',
-                        isSelected && !compareMode && 'bg-primary-50',
-                        isCompareSelected && compareMode && 'bg-blue-50',
+                        isSelected && !compareMode && 'bg-primary-50 dark:bg-slate-700',
+                        isCompareSelected && compareMode && 'bg-blue-50 dark:bg-blue-950/40',
                         !isSelected && !compareMode && 'hover:bg-app-bg-secondary'
                       )}
                     >
@@ -307,7 +307,7 @@ export function VersionHistory({
                           <div className="flex items-center gap-2 mt-2">
                             <button
                               onClick={() => onSelectCommit(commit)}
-                              className="flex items-center gap-1 px-2 py-1 text-xs text-primary-600 hover:bg-primary-50 rounded"
+                              className="flex items-center gap-1 px-2 py-1 text-xs text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/40 rounded"
                             >
                               <Eye className="w-3 h-3" />
                               View

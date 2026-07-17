@@ -227,7 +227,7 @@ export function ShareDialog({ isOpen, onClose, config }: ShareDialogProps) {
                   </p>
                   <button
                     onClick={() => navigate('/login')}
-                    className="mt-3 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary-600 bg-primary-50 border border-primary-200 rounded-lg hover:bg-primary-100 transition-colors"
+                    className="mt-3 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary-600 bg-primary-50 border border-primary-200 rounded-lg hover:bg-primary-100 dark:bg-primary-900/30 dark:text-primary-300 dark:border-primary-800 dark:hover:bg-primary-900/50 transition-colors"
                   >
                     <LogIn className="w-4 h-4" />
                     登录后发布
@@ -382,7 +382,7 @@ export function ShareDialog({ isOpen, onClose, config }: ShareDialogProps) {
                   </p>
                   <button
                     onClick={() => navigate('/login')}
-                    className="mt-3 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary-600 bg-primary-50 border border-primary-200 rounded-lg hover:bg-primary-100 transition-colors"
+                    className="mt-3 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary-600 bg-primary-50 border border-primary-200 rounded-lg hover:bg-primary-100 dark:bg-primary-900/30 dark:text-primary-300 dark:border-primary-800 dark:hover:bg-primary-900/50 transition-colors"
                   >
                     <LogIn className="w-4 h-4" />
                     登录后分享

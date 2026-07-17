@@ -278,7 +278,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
                   />
                   <span className="flex-1 text-left">{layerNames[layer]}</span>
                   {selectedLayers.includes(layer) && (
-                    <span className="text-xs bg-primary-100 text-primary-700 px-1.5 py-0.5 rounded">
+                    <span className="text-xs bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300 px-1.5 py-0.5 rounded">
                       {filteredModules.filter(m => m.layer === layer).length}
                     </span>
                   )}

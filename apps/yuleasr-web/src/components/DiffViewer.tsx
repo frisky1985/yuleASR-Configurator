@@ -169,7 +169,7 @@ export function DiffViewer({
                 )}
                 <span>→</span>
                 {newCommit && (
-                  <span className="font-mono bg-primary-100 text-primary-700 px-1.5 py-0.5 rounded">
+                  <span className="font-mono bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300 px-1.5 py-0.5 rounded">
                     {newCommit.oid.substring(0, 7)}
                   </span>
                 )}
@@ -190,7 +190,7 @@ export function DiffViewer({
                 className={cn(
                   'px-2 py-1 text-xs font-medium transition-colors',
                   viewMode === 'unified' 
-                    ? 'bg-primary-100 text-primary-700' 
+                    ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' 
                     : 'text-app-text-secondary hover:text-app-text-primary'
                 )}
               >

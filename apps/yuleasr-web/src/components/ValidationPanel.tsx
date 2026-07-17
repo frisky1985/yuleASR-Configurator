@@ -106,7 +106,7 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
         <button
           onClick={validate}
           disabled={isValidating}
-          className="flex items-center gap-1 px-3 py-1.5 text-sm text-app-text-secondary hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors disabled:opacity-50"
+          className="flex items-center gap-1 px-3 py-1.5 text-sm text-app-text-secondary hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/40 rounded-lg transition-colors disabled:opacity-50"
         >
           <RefreshCw className={cn("w-4 h-4", isValidating && "animate-spin")} />
           Refresh

@@ -784,7 +784,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
         <div
           className={cn(
             'group flex items-center gap-1.5 py-1.5 pr-2 cursor-pointer transition-colors',
-            isSelected ? 'bg-primary-50' : 'hover:bg-app-bg-secondary',
+            isSelected ? 'bg-primary-50 dark:bg-slate-700' : 'hover:bg-app-bg-secondary',
             node.type === 'layer' && layerColors[node.name],
             node.isDynamic && 'cursor-grab active:cursor-grabbing',
             dragOverPath === node.path && dragSource && 'border-t-2 border-blue-400'
@@ -840,7 +840,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
                 e.stopPropagation()
                 toggleExpansion(node.path)
               }}
-              className="p-0.5 rounded hover:bg-black/5 transition-colors"
+              className="p-0.5 rounded hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
             >
               {isExpanded ? (
                 <ChevronDown className="w-3.5 h-3.5 text-app-text-secondary" />
@@ -911,7 +911,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
                 e.stopPropagation()
                 addInstance(node.path)
               }}
-              className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded text-green-600 hover:bg-green-50 opacity-0 group-hover:opacity-100 transition-opacity text-sm font-bold"
+              className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded text-green-600 hover:bg-green-50 dark:hover:bg-green-900/40 opacity-0 group-hover:opacity-100 transition-opacity text-sm font-bold"
               title={`Add ${node.displayName} instance`}
             >
               +
@@ -926,7 +926,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
                     copyInstance(node.parentContainerPath, node.instanceName!)
                   }
                 }}
-                className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded text-blue-500 hover:bg-blue-50 opacity-0 group-hover:opacity-100 transition-opacity text-xs font-medium"
+                className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/40 opacity-0 group-hover:opacity-100 transition-opacity text-xs font-medium"
                 title={`Copy ${node.instanceName}`}
               >
                 ⎘
@@ -941,7 +941,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
                     })
                   }
                 }}
-                className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded text-red-400 hover:text-red-600 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity text-sm"
+                className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/40 opacity-0 group-hover:opacity-100 transition-opacity text-sm"
                 title={`Delete ${node.instanceName}`}
               >
                 ×
@@ -966,7 +966,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
               onClick={(e) => handleToggleModule(e, node)}
               className={cn(
                 'p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity',
-                node.enabled ? 'text-green-600 hover:bg-green-50' : 'text-app-text-tertiary hover:bg-app-bg-tertiary'
+                node.enabled ? 'text-green-600 hover:bg-green-50 dark:hover:bg-green-900/40' : 'text-app-text-tertiary hover:bg-app-bg-tertiary'
               )}
             >
               <Power className="w-3.5 h-3.5" />
@@ -1051,7 +1051,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
               className={cn(
                 'inline-flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors',
                 showFilterMenu
-                  ? 'bg-primary-100 text-primary-700'
+                  ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
                   : 'text-app-text-secondary hover:bg-app-bg-tertiary'
               )}
             >

@@ -264,14 +264,14 @@ export function BranchManager({
 
                     <div className="flex items-center gap-1 ml-2">
                       {isCurrent ? (
-                        <span className="px-2 py-0.5 text-xs font-medium text-primary-700 bg-primary-100 rounded">
+                        <span className="px-2 py-0.5 text-xs font-medium text-primary-700 bg-primary-100 dark:text-primary-300 dark:bg-primary-900/30 rounded">
                           current
                         </span>
                       ) : mergeSource && mergeSource !== branch.name ? (
                         <button
                           onClick={() => handleMerge(branch.name)}
                           disabled={isSwitchingThis}
-                          className="flex items-center gap-1 px-2 py-1 text-xs text-blue-600 hover:bg-blue-100 rounded"
+                          className="flex items-center gap-1 px-2 py-1 text-xs text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded"
                         >
                           <GitMerge className="w-3 h-3" />
                           {isSwitchingThis ? '...' : 'Merge'}
@@ -298,7 +298,7 @@ export function BranchManager({
                           {onMergeBranch && !isConfirmingDelete && (
                             <button
                               onClick={() => setMergeSource(branch.name)}
-                              className="p-1.5 text-app-text-tertiary hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                              className="p-1.5 text-app-text-tertiary hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/40 rounded transition-colors"
                               title="Merge this branch"
                             >
                               <GitMerge className="w-3.5 h-3.5" />

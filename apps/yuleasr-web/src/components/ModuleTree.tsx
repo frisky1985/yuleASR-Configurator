@@ -143,7 +143,7 @@ export function ModuleTree({
               className={cn(
                 'inline-flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors',
                 showFilterMenu
-                  ? 'bg-primary-100 text-primary-700'
+                  ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
                   : 'text-app-text-secondary hover:bg-app-bg-tertiary'
               )}
             >
@@ -229,7 +229,7 @@ export function ModuleTree({
                         className={cn(
                           'group flex items-center gap-2 rounded-md transition-colors',
                           selectedModuleId === module.id
-                            ? 'bg-primary-50'
+                            ? 'bg-primary-50 dark:bg-slate-700'
                             : 'hover:bg-app-bg-secondary'
                         )}
                       >
@@ -239,7 +239,7 @@ export function ModuleTree({
                           className={cn(
                             'flex-1 text-left px-3 py-2 text-sm transition-colors',
                             selectedModuleId === module.id
-                              ? 'text-primary-700 font-medium'
+                              ? 'text-primary-700 dark:text-primary-300 font-medium'
                               : 'text-app-text-primary',
                             !module.enabled && 'opacity-50'
                           )}
@@ -256,7 +256,7 @@ export function ModuleTree({
                           className={cn(
                             'p-1.5 rounded-md transition-colors mr-1',
                             module.enabled
-                              ? 'text-green-600 hover:bg-green-50'
+                              ? 'text-green-600 hover:bg-green-50 dark:hover:bg-green-900/40'
                               : 'text-app-text-tertiary hover:bg-app-bg-tertiary hover:text-app-text-secondary'
                           )}
                           title={module.enabled ? 'Disable module' : 'Enable module'}
