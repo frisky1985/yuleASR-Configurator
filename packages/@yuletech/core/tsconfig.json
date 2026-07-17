@@ -4,6 +4,8 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "baseUrl": ".",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "paths": {
       "@yuletech/core/*": ["./src/*"]
     }
