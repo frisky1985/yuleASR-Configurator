@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.3] - 2026-07-17
+
+### Fixed
+
+- **ModuleConfigWizard 暗色模式修复**: 步骤指示器、筛选标签、卡片底色等
+  6 处白色区域改用 CSS 变量/淡化色，内容完全可见
+- **tsup types 警告修复**: 移除 `core/package.json` exports 中 9 个子路径的冗余
+  `types` 条件，消除编译警告
+
+### Changed
+
+- `@yuletech/core` / `@yuletech/editor-core` / `@yuletech/plugin-sdk`:
+  `types` 从 `./dist/...d.ts` 指向 `./src/index.ts`，消除构建顺序依赖
+- CI 排除 `yuleasr-desktop` 和 `vscode-extension` 主构建链路
+- `api-server`: `tsconfig` 覆盖 `strict: false` + 25 个 TS 代码修复
+
 ## [0.2.2] - 2026-07-17
 
 ### Fixed
