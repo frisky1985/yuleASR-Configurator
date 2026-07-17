@@ -202,7 +202,7 @@ export function ParameterEditor({
 
   // Base input class
   const baseInputClass = cn(
-    'w-full px-3 py-2 border rounded-md text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500',
+    'w-full px-3 py-2 border rounded-md text-sm transition-colors bg-app-bg-primary text-app-text-primary focus:outline-none focus:ring-2 focus:ring-primary-500',
     error || localError
       ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
       : warning

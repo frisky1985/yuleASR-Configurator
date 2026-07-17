@@ -1568,7 +1568,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                         value={String(parameters[param.name])}
                         onChange={(e) => handleParameterChange(param.name, e.target.value)}
                         className={cn(
-                          "w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
+                          "w-full px-3 py-2 border rounded-lg bg-app-bg-primary text-app-text-primary focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
                           errors[param.name] ? "border-red-300" : "border-app-border-primary"
                         )}
                       >
@@ -1601,7 +1601,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                         min={param.min}
                         max={param.max}
                         className={cn(
-                          "w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
+                          "w-full px-3 py-2 border rounded-lg bg-app-bg-primary text-app-text-primary focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
                           errors[param.name] ? "border-red-300" : "border-app-border-primary"
                         )}
                       />
