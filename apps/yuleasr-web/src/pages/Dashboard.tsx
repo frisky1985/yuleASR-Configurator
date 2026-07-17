@@ -318,7 +318,7 @@ export function Dashboard() {
             <p className="text-sm font-medium text-blue-700">
               {t('dashboard.totalConfigurations')}
             </p>
-            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center dark:bg-blue-900/50">
               <FileBox className="w-5 h-5 text-blue-600" />
             </div>
           </div>
@@ -332,7 +332,7 @@ export function Dashboard() {
         <div className="stat-card stat-card-purple">
           <div className="flex items-center justify-between mb-2">
             <p className="text-sm font-medium text-purple-700">{t('dashboard.totalModules')}</p>
-            <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center dark:bg-purple-950/40">
               <Layers className="w-5 h-5 text-purple-600" />
             </div>
           </div>
@@ -344,7 +344,7 @@ export function Dashboard() {
         <div className="stat-card stat-card-green">
           <div className="flex items-center justify-between mb-2">
             <p className="text-sm font-medium text-green-700">{t('dashboard.avgCompletion')}</p>
-            <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center dark:bg-green-950/40">
               <BarChart3 className="w-5 h-5 text-green-600" />
             </div>
           </div>
@@ -370,7 +370,7 @@ export function Dashboard() {
         <div className="stat-card stat-card-amber">
           <div className="flex items-center justify-between mb-2">
             <p className="text-sm font-medium text-amber-700">{t('dashboard.warnings')}</p>
-            <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center">
+            <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center dark:bg-amber-950/40">
               <AlertTriangle className="w-5 h-5 text-amber-600" />
             </div>
           </div>
@@ -400,7 +400,7 @@ export function Dashboard() {
             onClick={handleOpenExisting}
             className="p-4 bg-app-bg-primary border border-app-border-primary rounded-xl hover:border-app-border-secondary hover:shadow-md transition-all text-left group card-hover"
           >
-            <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-blue-100 transition-colors">
+            <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-blue-100 transition-colors dark:bg-blue-950/40 dark:group-hover:bg-blue-900/50">
               <FolderOpen className="w-5 h-5 text-blue-600" />
             </div>
             <h3 className="font-medium text-primary">{t('dashboard.openExisting')}</h3>
@@ -422,7 +422,7 @@ export function Dashboard() {
             onClick={() => setShowImportDialog(true)}
             className="p-4 bg-app-bg-primary border border-app-border-primary rounded-xl hover:border-app-border-secondary hover:shadow-md transition-all text-left group card-hover"
           >
-            <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-purple-100 transition-colors">
+            <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-purple-100 transition-colors dark:bg-purple-950/40 dark:group-hover:bg-purple-900/50">
               <FileJson className="w-5 h-5 text-purple-600" />
             </div>
             <h3 className="font-medium text-primary">{t('dashboard.importYuleasr')}</h3>
@@ -435,7 +435,7 @@ export function Dashboard() {
             onClick={() => setShowModuleWizard(true)}
             className="p-4 bg-app-bg-primary border border-app-border-primary rounded-xl hover:border-app-border-secondary hover:shadow-md transition-all text-left group card-hover"
           >
-            <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-green-100 transition-colors">
+            <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-green-100 transition-colors dark:bg-green-950/40 dark:group-hover:bg-green-900/50">
               <Settings className="w-5 h-5 text-green-600" />
             </div>
             <h3 className="font-medium text-primary">{t('dashboard.moduleWizard')}</h3>
@@ -448,7 +448,7 @@ export function Dashboard() {
             onClick={() => handleShowGraph('config-1')}
             className="p-4 bg-app-bg-primary border border-app-border-primary rounded-xl hover:border-app-border-secondary hover:shadow-md transition-all text-left group card-hover"
           >
-            <div className="w-10 h-10 bg-pink-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-pink-100 transition-colors">
+            <div className="w-10 h-10 bg-pink-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-pink-100 transition-colors dark:bg-pink-950/40 dark:group-hover:bg-pink-900/50">
               <GitGraph className="w-5 h-5 text-pink-600" />
             </div>
             <h3 className="font-medium text-primary">{t('dashboard.dependencyGraph')}</h3>
@@ -482,7 +482,7 @@ export function Dashboard() {
         ) : configList.length === 0 ? (
           /* Enhanced Empty State */
           <div className="py-16 px-8 text-center">
-            <div className="w-20 h-20 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-5">
+            <div className="w-20 h-20 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-5 dark:bg-blue-950/40">
               <Zap className="w-10 h-10 text-blue-400" />
             </div>
             <h3 className="text-xl font-semibold text-primary mb-2">
@@ -536,10 +536,10 @@ export function Dashboard() {
                           className={cn(
                             'w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0',
                             completion !== null && completion >= 100
-                              ? 'bg-green-50'
+                              ? 'bg-green-50 dark:bg-green-950/40'
                               : completion !== null && completion >= 50
-                                ? 'bg-yellow-50'
-                                : 'bg-blue-50'
+                                ? 'bg-yellow-50 dark:bg-yellow-950/40'
+                                : 'bg-blue-50 dark:bg-blue-950/40'
                           )}
                         >
                           <Settings
@@ -607,7 +607,7 @@ export function Dashboard() {
                           e.stopPropagation();
                           navigate(`/diff/${config.id}`);
                         }}
-                        className="p-2 text-app-text-tertiary hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                        className="p-2 text-app-text-tertiary hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 rounded-lg transition-colors"
                         title={t('dashboard.diffConfigs') || 'Compare in Diff View'}
                       >
                         <GitBranch className="w-4 h-4" />
@@ -617,7 +617,7 @@ export function Dashboard() {
                           e.stopPropagation();
                           handleOpenCompare(config.id);
                         }}
-                        className="p-2 text-app-text-tertiary hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-2 text-app-text-tertiary hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/50 rounded-lg transition-colors"
                         title={t('dashboard.compareConfigs')}
                       >
                         <GitCompare className="w-4 h-4" />
@@ -627,7 +627,7 @@ export function Dashboard() {
                           e.stopPropagation();
                           handleShowGraph(config.id);
                         }}
-                        className="p-2 text-app-text-tertiary hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
+                        className="p-2 text-app-text-tertiary hover:text-pink-600 hover:bg-pink-50 dark:hover:bg-pink-950/50 rounded-lg transition-colors"
                         title={t('dashboard.viewDependencyGraph')}
                       >
                         <GitGraph className="w-4 h-4" />
@@ -637,14 +637,14 @@ export function Dashboard() {
                           e.stopPropagation();
                           handleExportConfig(config.id, config.name);
                         }}
-                        className="p-2 text-app-text-tertiary hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                        className="p-2 text-app-text-tertiary hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-950/50 rounded-lg transition-colors"
                         title={t('dashboard.exportToYuleasr')}
                       >
                         <Download className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => navigate(`/editor/${config.id}`)}
-                        className="p-2 text-app-text-tertiary hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        className="p-2 text-app-text-tertiary hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950/50 rounded-lg transition-colors"
                         title={t('common.edit')}
                       >
                         <ChevronRight className="w-4 h-4" />
@@ -656,7 +656,7 @@ export function Dashboard() {
                           'p-2 rounded-lg transition-colors',
                           deletingId === config.id
                             ? 'text-app-text-tertiary cursor-not-allowed'
-                            : 'text-app-text-tertiary hover:text-red-600 hover:bg-red-50'
+                            : 'text-app-text-tertiary hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/50'
                         )}
                         title={t('common.delete')}
                       >

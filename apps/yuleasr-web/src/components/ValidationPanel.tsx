@@ -141,7 +141,7 @@ export function ValidationPanel({
       <div className="max-h-80 overflow-auto">
         {isValid ? (
           <div className="p-6 text-center">
-            <div className="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-3">
+            <div className="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-3 dark:bg-green-950/40">
               <CheckCircle className="w-7 h-7 text-green-500" />
             </div>
             <p className="text-app-text-primary font-medium">Configuration is valid</p>
@@ -156,7 +156,7 @@ export function ValidationPanel({
               <div>
                 <button
                   onClick={() => toggleGroup('errors')}
-                  className="w-full px-4 py-2 bg-red-50 text-red-700 text-sm font-medium flex items-center justify-between hover:bg-red-100 transition-colors"
+                  className="w-full px-4 py-2 bg-red-50 text-red-700 text-sm font-medium flex items-center justify-between hover:bg-red-100 transition-colors dark:bg-red-950/40 dark:text-red-300 dark:hover:bg-red-900/50"
                 >
                   <span>Errors ({stats.errorCount})</span>
                   {expandedGroups.has('errors') ? (
@@ -201,7 +201,7 @@ export function ValidationPanel({
               <div>
                 <button
                   onClick={() => toggleGroup('warnings')}
-                  className="w-full px-4 py-2 bg-yellow-50 text-yellow-700 text-sm font-medium flex items-center justify-between hover:bg-yellow-100 transition-colors"
+                  className="w-full px-4 py-2 bg-yellow-50 text-yellow-700 text-sm font-medium flex items-center justify-between hover:bg-yellow-100 transition-colors dark:bg-yellow-950/40 dark:text-yellow-300 dark:hover:bg-yellow-900/50"
                 >
                   <span>Warnings ({stats.warningCount})</span>
                   {expandedGroups.has('warnings') ? (

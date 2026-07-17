@@ -30,31 +30,31 @@ const layerConfig: Record<
   MCAL: {
     icon: Cpu,
     color: 'text-blue-600',
-    bgColor: 'bg-blue-50',
+    bgColor: 'bg-blue-50 dark:bg-blue-950/40',
     borderColor: 'border-blue-200',
   },
   ECUAL: {
     icon: Layers,
     color: 'text-purple-600',
-    bgColor: 'bg-purple-50',
+    bgColor: 'bg-purple-50 dark:bg-purple-950/40',
     borderColor: 'border-purple-200',
   },
   Service: {
     icon: Settings,
     color: 'text-orange-600',
-    bgColor: 'bg-orange-50',
+    bgColor: 'bg-orange-50 dark:bg-orange-950/40',
     borderColor: 'border-orange-200',
   },
   RTE: {
     icon: Code,
     color: 'text-pink-600',
-    bgColor: 'bg-pink-50',
+    bgColor: 'bg-pink-50 dark:bg-pink-950/40',
     borderColor: 'border-pink-200',
   },
   ASW: {
     icon: Box,
     color: 'text-green-600',
-    bgColor: 'bg-green-50',
+    bgColor: 'bg-green-50 dark:bg-green-950/40',
     borderColor: 'border-green-200',
   },
   OS: {
@@ -143,7 +143,7 @@ function ModuleNodeComponent(props: NodeProps<Node<ModuleNodeData>>) {
             className={cn(
               'font-medium px-2 py-0.5 rounded-full',
               nodeData.parameterCount > 0
-                ? 'bg-primary-100 text-primary-700'
+                ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
                 : 'bg-app-bg-tertiary text-app-text-secondary'
             )}
           >
@@ -154,7 +154,7 @@ function ModuleNodeComponent(props: NodeProps<Node<ModuleNodeData>>) {
         {nodeData.dependencyCount > 0 && (
           <div className="flex items-center justify-between text-xs">
             <span className="text-app-text-secondary">Dependencies</span>
-            <span className="font-medium text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">
+            <span className="font-medium text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full dark:bg-blue-900/50 dark:text-blue-300">
               {nodeData.dependencyCount}
             </span>
           </div>

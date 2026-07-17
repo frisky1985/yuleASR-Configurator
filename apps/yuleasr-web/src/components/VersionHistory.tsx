@@ -124,7 +124,7 @@ export function VersionHistory({
               className={cn(
                 'text-xs px-2 py-1 rounded transition-colors',
                 compareMode
-                  ? 'bg-primary-100 text-primary-700'
+                  ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
                   : 'text-app-text-secondary hover:text-app-text-primary'
               )}
             >
@@ -196,7 +196,7 @@ export function VersionHistory({
 
         {/* Compare Mode Indicator */}
         {compareMode && (
-          <div className="mt-3 p-2 bg-blue-50 border border-blue-200 rounded text-xs">
+          <div className="mt-3 p-2 bg-blue-50 border border-blue-200 rounded text-xs dark:bg-blue-950/40 dark:border-blue-800/60">
             <p className="text-blue-700 mb-2">
               Select 2 commits to compare ({compareCommits.length}/2 selected)
             </p>
@@ -316,7 +316,7 @@ export function VersionHistory({
                             </button>
                             <button
                               onClick={() => onRollback(commit)}
-                              className="flex items-center gap-1 px-2 py-1 text-xs text-orange-600 hover:bg-orange-50 rounded"
+                              className="flex items-center gap-1 px-2 py-1 text-xs text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/50 rounded"
                             >
                               <RotateCcw className="w-3 h-3" />
                               Rollback

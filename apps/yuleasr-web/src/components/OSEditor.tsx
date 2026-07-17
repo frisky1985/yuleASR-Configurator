@@ -86,7 +86,7 @@ export function OSEditor({ className }: OSEditorProps) {
               className={cn(
                 'px-2 py-1 text-xs font-medium rounded-full',
                 os.enabled
-                  ? 'bg-green-100 text-green-700'
+                  ? 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300'
                   : 'bg-app-bg-tertiary text-app-text-secondary'
               )}
             >
@@ -340,7 +340,7 @@ function TaskItem({
           <span className="font-medium text-sm">{task.name}</span>
           <span className="text-xs text-app-text-secondary">Priority: {task.priority}</span>
           {task.autostart && (
-            <span className="px-1.5 py-0.5 text-xs bg-green-100 text-green-700 rounded">Auto</span>
+            <span className="px-1.5 py-0.5 text-xs bg-green-100 text-green-700 rounded dark:bg-green-900/50 dark:text-green-300">Auto</span>
           )}
         </div>
         <button
@@ -348,7 +348,7 @@ function TaskItem({
             e.stopPropagation();
             onRemove();
           }}
-          className="p-1 text-red-500 hover:bg-red-50 rounded"
+          className="p-1 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/50 rounded"
         >
           <Trash2 className="w-4 h-4" />
         </button>
@@ -497,7 +497,7 @@ function EventsEditor({
             />
             <button
               onClick={() => removeEvent(index)}
-              className="p-1.5 text-red-500 hover:bg-red-50 rounded"
+              className="p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/50 rounded"
             >
               <Trash2 className="w-4 h-4" />
             </button>
@@ -565,7 +565,7 @@ function ResourcesEditor({
             />
             <button
               onClick={() => removeResource(index)}
-              className="p-1.5 text-red-500 hover:bg-red-50 rounded"
+              className="p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/50 rounded"
             >
               <Trash2 className="w-4 h-4" />
             </button>
@@ -634,7 +634,7 @@ function CountersEditor({
               />
               <button
                 onClick={() => removeCounter(index)}
-                className="p-1.5 text-red-500 hover:bg-red-50 rounded"
+                className="p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/50 rounded"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -740,7 +740,7 @@ function AlarmsEditor({
               />
               <button
                 onClick={() => removeAlarm(index)}
-                className="p-1.5 text-red-500 hover:bg-red-50 rounded"
+                className="p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/50 rounded"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -897,7 +897,7 @@ function ISRsEditor({
               />
               <button
                 onClick={() => removeISR(index)}
-                className="p-1.5 text-red-500 hover:bg-red-50 rounded"
+                className="p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/50 rounded"
               >
                 <Trash2 className="w-4 h-4" />
               </button>

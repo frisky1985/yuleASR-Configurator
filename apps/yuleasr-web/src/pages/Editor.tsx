@@ -807,10 +807,10 @@ export function Editor() {
                     key={issue.id}
                     className={cn(
                       'text-xs p-2 rounded cursor-pointer hover:bg-app-bg-secondary',
-                      issue.severity === 'error' && 'bg-red-50 text-red-700 border border-red-100',
+                      issue.severity === 'error' && 'bg-red-50 text-red-700 border border-red-100 dark:bg-red-950/40 dark:text-red-300 dark:border-red-800/60',
                       issue.severity === 'warning' &&
-                        'bg-yellow-50 text-yellow-700 border border-yellow-100',
-                      issue.severity === 'info' && 'bg-blue-50 text-blue-700 border border-blue-100'
+                        'bg-yellow-50 text-yellow-700 border border-yellow-100 dark:bg-yellow-950/40 dark:text-yellow-300 dark:border-yellow-800/60',
+                      issue.severity === 'info' && 'bg-blue-50 text-blue-700 border border-blue-100 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800/60'
                     )}
                     onClick={() => {
                       if (issue.module) {
@@ -861,7 +861,7 @@ export function Editor() {
                           setSelectedPath(`${containerPath}/instance:${instanceName}`);
                         }
                       }}
-                      className="w-12 h-12 rounded-full bg-app-bg-tertiary flex items-center justify-center mx-auto mb-3 hover:bg-primary-50 transition-colors cursor-pointer group"
+                      className="w-12 h-12 rounded-full bg-app-bg-tertiary flex items-center justify-center mx-auto mb-3 hover:bg-primary-50 dark:hover:bg-primary-900/40 transition-colors cursor-pointer group"
                       title="添加实例"
                     >
                       <svg
@@ -1069,7 +1069,7 @@ export function Editor() {
                       key={r.filename}
                       className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded ${
                         r.status === 'pass'
-                          ? 'bg-green-100 text-green-800'
+                          ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300'
                           : r.status === 'fail'
                             ? 'bg-red-100 text-red-800'
                             : 'bg-gray-100 text-gray-500'
@@ -1083,7 +1083,7 @@ export function Editor() {
                   .filter(r => r.status === 'fail' && r.errors)
                   .map(r => (
                     <div key={r.filename + '-errors'} className="mt-2">
-                      <pre className="text-xs font-mono text-red-700 bg-red-50 rounded p-2 overflow-x-auto whitespace-pre-wrap">
+                      <pre className="text-xs font-mono text-red-700 bg-red-50 dark:bg-red-950/40 dark:text-red-300 rounded p-2 overflow-x-auto whitespace-pre-wrap">
                         {r.errors.join('\n')}
                       </pre>
                     </div>

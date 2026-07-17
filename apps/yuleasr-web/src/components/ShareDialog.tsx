@@ -227,7 +227,7 @@ export function ShareDialog({ isOpen, onClose, config }: ShareDialogProps) {
             ) : publishState === 'success' ? (
               /* Success state */
               <div className="flex items-start gap-4">
-                <div className="p-2.5 rounded-lg bg-green-100 shrink-0">
+                <div className="p-2.5 rounded-lg bg-green-100 shrink-0 dark:bg-green-900/50">
                   <CheckCircle className="w-5 h-5 text-green-600" />
                 </div>
                 <div className="flex-1 min-w-0">
@@ -282,7 +282,7 @@ export function ShareDialog({ isOpen, onClose, config }: ShareDialogProps) {
                         {generateTags(config).map(tag => (
                           <span
                             key={tag}
-                            className="inline-flex items-center px-2 py-0.5 text-xs font-medium bg-primary-50 text-primary-700 border border-primary-200 rounded-full"
+                            className="inline-flex items-center px-2 py-0.5 text-xs font-medium bg-primary-50 text-primary-700 border border-primary-200 rounded-full dark:bg-primary-900/30 dark:text-primary-300 dark:border-primary-800/60"
                           >
                             {tag}
                           </span>
@@ -310,7 +310,7 @@ export function ShareDialog({ isOpen, onClose, config }: ShareDialogProps) {
 
                   {/* Error state */}
                   {publishState === 'error' && publishError && (
-                    <div className="mt-3 flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <div className="mt-3 flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg dark:bg-red-950/40 dark:border-red-800/60">
                       <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
                       <span className="text-sm text-red-700">{publishError}</span>
                     </div>
@@ -435,7 +435,7 @@ export function ShareDialog({ isOpen, onClose, config }: ShareDialogProps) {
                   </button>
 
                   {publishState === 'error' && publishError && (
-                    <div className="mt-3 flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <div className="mt-3 flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg dark:bg-red-950/40 dark:border-red-800/60">
                       <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
                       <span className="text-sm text-red-700">{publishError}</span>
                     </div>
@@ -525,7 +525,7 @@ export function ShareDialog({ isOpen, onClose, config }: ShareDialogProps) {
 
                 {/* Error state */}
                 {linkState === 'error' && linkError && (
-                  <div className="mt-3 flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="mt-3 flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg dark:bg-red-950/40 dark:border-red-800/60">
                     <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
                     <span className="text-sm text-red-700">{linkError}</span>
                   </div>
@@ -538,7 +538,7 @@ export function ShareDialog({ isOpen, onClose, config }: ShareDialogProps) {
                   className={cn(
                     'mt-3 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200',
                     linkState === 'copied'
-                      ? 'bg-green-100 text-green-700 border border-green-200'
+                      ? 'bg-green-100 text-green-700 border border-green-200 dark:bg-green-900/50 dark:text-green-300 dark:border-green-800/60'
                       : linkState === 'loading'
                         ? 'bg-app-bg-tertiary text-app-text-tertiary cursor-not-allowed border border-app-border-primary'
                         : 'text-app-text-primary bg-app-bg-primary border border-app-border-primary hover:bg-app-bg-secondary hover:border-primary-300 active:scale-[0.98]'

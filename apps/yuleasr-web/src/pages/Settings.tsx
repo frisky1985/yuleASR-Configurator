@@ -45,7 +45,7 @@ function SettingSection({ title, description, icon, children }: SettingSectionPr
     <div className="bg-app-bg-primary border border-app-border-primary rounded-lg overflow-hidden">
       <div className="px-6 py-4 border-b border-app-border-primary bg-app-bg-secondary/50">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center dark:bg-primary-900/30">
             {icon}
           </div>
           <div>
@@ -296,7 +296,7 @@ export function Settings() {
       {/* Saved notification */}
       {savedMessage && (
         <div className="fixed top-20 right-6 z-50 animate-in fade-in slide-in-from-top-2">
-          <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg shadow-lg flex items-center gap-2">
+          <div className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 dark:bg-green-950/40 dark:border-green-800/60 dark:text-green-300">
             <Check className="w-5 h-5" />
             <span className="font-medium">{savedMessage}</span>
           </div>
@@ -357,7 +357,7 @@ export function Settings() {
                     className={cn(
                       'flex items-center gap-2 px-3 py-2 rounded-lg border text-sm transition-colors',
                       editor.theme === opt.value
-                        ? 'border-primary-600 bg-primary-50 text-primary-700'
+                        ? 'border-primary-600 bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300 dark:border-primary-700'
                         : 'border-app-border-primary hover:border-app-border-primary hover:bg-app-bg-secondary'
                     )}
                   >
@@ -650,7 +650,7 @@ export function Settings() {
                     )}
                   </button>
                 ) : updateAvailable ? (
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3 dark:bg-green-950/40 dark:border-green-800/60">
                     <div className="flex items-center gap-2 text-green-800">
                       <CheckCircle2 className="w-5 h-5" />
                       <span className="font-medium">Update available!</span>
@@ -682,7 +682,7 @@ export function Settings() {
           <div className="bg-app-bg-primary rounded-lg shadow-xl max-w-md w-full mx-4">
             <div className="px-6 py-4 border-b border-app-border-primary">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center dark:bg-red-950/40">
                   <AlertCircle className="w-5 h-5 text-red-600" />
                 </div>
                 <div>

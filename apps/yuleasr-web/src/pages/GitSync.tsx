@@ -217,7 +217,7 @@ export function GitSync() {
             <div
               className={cn(
                 'flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm',
-                syncStatus === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+                syncStatus === 'success' ? 'bg-green-50 text-green-700 dark:bg-green-950/40 dark:text-green-300' : 'bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-300'
               )}
             >
               {syncStatus === 'success' ? (
@@ -354,7 +354,7 @@ export function GitSync() {
               {selectedCommit ? (
                 <div className="bg-app-bg-primary rounded-lg border border-app-border-primary p-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-primary-50 dark:bg-primary-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-primary-50 rounded-lg flex items-center justify-center flex-shrink-0 dark:bg-primary-900/30">
                       <GitCommit className="w-5 h-5 text-primary-600" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -362,7 +362,7 @@ export function GitSync() {
                         {selectedCommit.message}
                       </h3>
                       <div className="flex items-center gap-3 mt-1 text-xs text-app-text-secondary">
-                        <span className="font-mono text-primary-600 bg-primary-50 dark:bg-primary-900/30 px-1.5 py-0.5 rounded">
+                        <span className="font-mono text-primary-600 bg-primary-50 dark:bg-primary-900/30 dark:text-primary-300 px-1.5 py-0.5 rounded">
                           {selectedCommit.oid.substring(0, 7)}
                         </span>
                         <span className="flex items-center gap-1">

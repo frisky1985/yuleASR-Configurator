@@ -134,7 +134,7 @@ export function CodeDiffPreview({
         <div className="flex-1 overflow-auto p-0">
           {isFirstGeneration ? (
             <div className="p-12 text-center">
-              <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-4 dark:bg-primary-900/30">
                 <FileCode className="w-8 h-8 text-primary-500" />
               </div>
               <h3 className="text-lg font-medium text-app-text-primary mb-2">首次生成代码</h3>
@@ -215,10 +215,10 @@ export function CodeDiffPreview({
         <div className="flex items-center justify-between px-6 py-3 border-t border-app-border-primary shrink-0 bg-app-bg-secondary">
           <div className="flex items-center gap-3 text-xs text-app-text-tertiary">
             <span className="inline-flex items-center gap-1">
-              <span className="w-3 h-3 rounded bg-green-100 border border-green-300" /> 新增
+              <span className="w-3 h-3 rounded bg-green-100 border border-green-300 dark:bg-green-900/50 dark:border-green-700" /> 新增
             </span>
             <span className="inline-flex items-center gap-1">
-              <span className="w-3 h-3 rounded bg-red-50 border border-red-300" /> 删除
+              <span className="w-3 h-3 rounded bg-red-50 border border-red-300 dark:bg-red-950/40 dark:border-red-700" /> 删除
             </span>
             <span className="inline-flex items-center gap-1">
               <span className="w-3 h-3 rounded bg-app-bg-primary border border-app-border-primary" />{' '}

@@ -326,8 +326,8 @@ export function ParameterEditor({
                           setEnumSearch('');
                         }}
                         className={cn(
-                          'w-full text-left px-3 py-2 text-xs transition-colors hover:bg-primary-50',
-                          isSelected ? 'bg-primary-50 text-primary-700 font-medium' : 'text-primary'
+                          'w-full text-left px-3 py-2 text-xs transition-colors hover:bg-primary-50 dark:hover:bg-primary-900/40',
+                          isSelected ? 'bg-primary-50 text-primary-700 font-medium dark:bg-primary-900/30 dark:text-primary-300' : 'text-primary'
                         )}
                       >
                         {optLabel}
@@ -386,7 +386,7 @@ export function ParameterEditor({
                 />
                 <button
                   onClick={() => handleArrayRemove(index)}
-                  className="p-1.5 text-app-text-tertiary hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                  className="p-1.5 text-app-text-tertiary hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/50 rounded-md transition-colors"
                   title="Remove item"
                 >
                   <X className="w-4 h-4" />
@@ -395,7 +395,7 @@ export function ParameterEditor({
             ))}
             <button
               onClick={handleArrayAdd}
-              className="inline-flex items-center gap-1.5 text-xs text-primary-600 hover:text-primary-700 font-medium px-2 py-1.5 rounded-md hover:bg-primary-50 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs text-primary-600 hover:text-primary-700 font-medium px-2 py-1.5 rounded-md hover:bg-primary-50 dark:hover:bg-primary-900/40 transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               Add item
@@ -456,7 +456,7 @@ export function ParameterEditor({
           {defaultValue !== undefined && isDirty && (
             <button
               onClick={handleReset}
-              className="p-1.5 text-app-text-tertiary hover:text-primary-600 hover:bg-primary-50 rounded-md transition-colors"
+              className="p-1.5 text-app-text-tertiary hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/40 rounded-md transition-colors"
               title="Reset to default"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -517,7 +517,7 @@ export function ParameterEditor({
           {defaultValue !== undefined && isDirty && (
             <button
               onClick={handleReset}
-              className="inline-flex items-center gap-1 text-xs text-app-text-secondary hover:text-primary-600 px-2 py-1 rounded-md hover:bg-primary-50 transition-colors"
+              className="inline-flex items-center gap-1 text-xs text-app-text-secondary hover:text-primary-600 px-2 py-1 rounded-md hover:bg-primary-50 dark:hover:bg-primary-900/40 transition-colors"
               title="Reset to default"
             >
               <RotateCcw className="w-3 h-3" />
@@ -537,14 +537,14 @@ export function ParameterEditor({
 
       {/* Validation feedback */}
       {displayError && (
-        <div className="flex items-center gap-1.5 text-xs text-red-600 bg-red-50 px-2 py-1.5 rounded">
+        <div className="flex items-center gap-1.5 text-xs text-red-600 bg-red-50 px-2 py-1.5 rounded dark:bg-red-950/40 dark:text-red-300">
           <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
           <span>{displayError}</span>
         </div>
       )}
 
       {displayWarning && !displayError && (
-        <div className="flex items-center gap-1.5 text-xs text-yellow-700 bg-yellow-50 px-2 py-1.5 rounded">
+        <div className="flex items-center gap-1.5 text-xs text-yellow-700 bg-yellow-50 px-2 py-1.5 rounded dark:bg-yellow-950/40 dark:text-yellow-300">
           <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
           <span>{displayWarning}</span>
         </div>

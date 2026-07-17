@@ -146,7 +146,7 @@ export function BranchManager({
 
         {/* Error Message */}
         {error && (
-          <div className="mt-3 p-2 bg-red-50 border border-red-200 rounded text-xs text-red-700 flex items-start gap-2">
+          <div className="mt-3 p-2 bg-red-50 border border-red-200 rounded text-xs text-red-700 flex items-start gap-2 dark:bg-red-950/40 dark:border-red-800/60 dark:text-red-300">
             <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
             <span>{error}</span>
             <button
@@ -205,7 +205,7 @@ export function BranchManager({
 
         {/* Merge Mode */}
         {mergeSource && (
-          <div className="mt-3 p-2 bg-blue-50 border border-blue-200 rounded text-xs">
+          <div className="mt-3 p-2 bg-blue-50 border border-blue-200 rounded text-xs dark:bg-blue-950/40 dark:border-blue-800/60">
             <p className="text-blue-700 mb-2">
               Select target branch to merge <strong>{mergeSource}</strong> into
             </p>
@@ -239,8 +239,8 @@ export function BranchManager({
                   key={branch.name}
                   className={cn(
                     'px-4 py-3 transition-colors',
-                    isCurrent && 'bg-primary-50',
-                    mergeSource === branch.name && 'bg-blue-50'
+                    isCurrent && 'bg-primary-50 dark:bg-primary-900/30',
+                    mergeSource === branch.name && 'bg-blue-50 dark:bg-blue-950/40'
                   )}
                 >
                   <div className="flex items-center justify-between">
@@ -315,7 +315,7 @@ export function BranchManager({
                               <button
                                 onClick={() => handleDeleteBranch(branch.name)}
                                 disabled={isDeletingThis !== null}
-                                className="p-1.5 text-red-600 hover:bg-red-50 rounded"
+                                className="p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/50 rounded"
                               >
                                 {isDeletingThis ? (
                                   <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -333,7 +333,7 @@ export function BranchManager({
                           ) : (
                             <button
                               onClick={() => handleDeleteBranch(branch.name)}
-                              className="p-1.5 text-app-text-tertiary hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                              className="p-1.5 text-app-text-tertiary hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/50 rounded transition-colors"
                               title="Delete branch"
                             >
                               <Trash2 className="w-3.5 h-3.5" />

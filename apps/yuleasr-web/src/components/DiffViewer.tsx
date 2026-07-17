@@ -105,10 +105,10 @@ export function DiffViewer({
 
   const getStatusBadge = (status: DiffInfo['status']) => {
     const styles: Record<DiffInfo['status'], string> = {
-      added: 'bg-green-100 text-green-700',
-      deleted: 'bg-red-100 text-red-700',
-      modified: 'bg-yellow-100 text-yellow-700',
-      renamed: 'bg-blue-100 text-blue-700',
+      added: 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300',
+      deleted: 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300',
+      modified: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-300',
+      renamed: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300',
     };
 
     return (
@@ -203,7 +203,7 @@ export function DiffViewer({
                 className={cn(
                   'px-2 py-1 text-xs font-medium transition-colors',
                   viewMode === 'split'
-                    ? 'bg-primary-100 text-primary-700'
+                    ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
                     : 'text-app-text-secondary hover:text-app-text-primary'
                 )}
               >
@@ -362,7 +362,7 @@ function UnifiedDiffView({ hunks, oldContent, newContent }: UnifiedDiffViewProps
         <table className="w-full text-sm font-mono">
           <tbody>
             {oldLines.map((line, i) => (
-              <tr key={`old-${i}`} className="bg-red-50">
+              <tr key={`old-${i}`} className="bg-red-50 dark:bg-red-950/40">
                 <td className="px-2 py-0.5 text-app-text-tertiary text-right select-none w-12">
                   {i + 1}
                 </td>
@@ -371,7 +371,7 @@ function UnifiedDiffView({ hunks, oldContent, newContent }: UnifiedDiffViewProps
               </tr>
             ))}
             {newLines.map((line, i) => (
-              <tr key={`new-${i}`} className="bg-green-50">
+              <tr key={`new-${i}`} className="bg-green-50 dark:bg-green-950/40">
                 <td className="px-2 py-0.5 text-app-text-tertiary text-right select-none w-12"></td>
                 <td className="px-2 py-0.5 text-app-text-tertiary select-none w-12">{i + 1}</td>
                 <td className="px-4 py-0.5 whitespace-pre text-green-700">+{line}</td>
@@ -398,9 +398,9 @@ function UnifiedDiffView({ hunks, oldContent, newContent }: UnifiedDiffViewProps
             {hunk.lines.map((line: { type: string; content: string }, lineIndex: number) => {
               const lineBg =
                 line.type === 'added'
-                  ? 'bg-green-50'
+                  ? 'bg-green-50 dark:bg-green-950/40'
                   : line.type === 'removed'
-                    ? 'bg-red-50'
+                    ? 'bg-red-50 dark:bg-red-950/40'
                     : 'bg-app-bg-primary';
 
               const lineColor =
@@ -462,7 +462,7 @@ function SplitDiffView({ oldContent, newContent }: SplitDiffViewProps) {
             const isChanged = oldLine !== newLine;
 
             return (
-              <tr key={i} className={isChanged ? 'bg-yellow-50' : 'bg-app-bg-primary'}>
+              <tr key={i} className={isChanged ? 'bg-yellow-50 dark:bg-yellow-950/40' : 'bg-app-bg-primary'}>
                 <td
                   className={cn(
                     'px-4 py-0.5 whitespace-pre border-r border-app-border-primary',

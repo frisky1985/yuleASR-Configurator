@@ -203,7 +203,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
           className={cn(
             'pointer-events-auto p-2 rounded-lg border shadow-sm transition-colors',
             showFilters
-              ? 'bg-primary-50 border-app-border-primary-200 text-primary-700'
+              ? 'bg-primary-50 dark:bg-primary-900/30 border-app-border-primary-200 text-primary-700'
               : 'bg-app-bg-primary border-app-border-primary text-app-text-secondary hover:bg-app-bg-secondary'
           )}
           title="Toggle filters"
@@ -240,7 +240,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
             className={cn(
               'p-1.5 rounded-md transition-colors',
               showMiniMap
-                ? 'bg-primary-50 text-primary-700'
+                ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700'
                 : 'text-app-text-secondary hover:bg-app-bg-tertiary'
             )}
             title="Toggle minimap"
@@ -274,7 +274,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
                   className={cn(
                     'w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-sm transition-colors',
                     selectedLayers.includes(layer)
-                      ? 'bg-primary-50 text-primary-700'
+                      ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700'
                       : 'hover:bg-app-bg-secondary text-app-text-primary'
                   )}
                 >

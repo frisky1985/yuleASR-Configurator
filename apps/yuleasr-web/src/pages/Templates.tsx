@@ -228,28 +228,28 @@ const categoryLabels = {
 const categoryColors: Record<string, { bg: string; text: string; border: string; badge: string }> =
   {
     mcal: {
-      bg: 'bg-blue-50',
+      bg: 'bg-blue-50 dark:bg-blue-950/40',
       text: 'text-blue-600',
       border: 'border-blue-200',
-      badge: 'bg-blue-100 text-blue-700',
+      badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300',
     },
     ecual: {
-      bg: 'bg-green-50',
+      bg: 'bg-green-50 dark:bg-green-950/40',
       text: 'text-green-600',
       border: 'border-green-200',
-      badge: 'bg-green-100 text-green-700',
+      badge: 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300',
     },
     service: {
-      bg: 'bg-purple-50',
+      bg: 'bg-purple-50 dark:bg-purple-950/40',
       text: 'text-purple-600',
       border: 'border-purple-200',
-      badge: 'bg-purple-100 text-purple-700',
+      badge: 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300',
     },
     full: {
-      bg: 'bg-amber-50',
+      bg: 'bg-amber-50 dark:bg-amber-950/40',
       text: 'text-amber-600',
       border: 'border-amber-200',
-      badge: 'bg-amber-100 text-amber-700',
+      badge: 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300',
     },
   };
 
@@ -299,7 +299,7 @@ export function Templates() {
               {template.icon}
             </div>
             {template.recommended && (
-              <span className="px-2 py-0.5 bg-primary-100 text-primary-700 text-xs font-medium rounded-full">
+              <span className="px-2 py-0.5 bg-primary-100 text-primary-700 text-xs font-medium rounded-full dark:bg-primary-900/30 dark:text-primary-300">
                 Recommended
               </span>
             )}
@@ -357,7 +357,7 @@ export function Templates() {
             href="http://localhost:3002/community/#/templates-market"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 text-sm text-primary-600 bg-primary-50 hover:bg-primary-100 rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm text-primary-600 bg-primary-50 hover:bg-primary-100 dark:bg-primary-900/30 dark:text-primary-300 dark:hover:bg-primary-900/50 rounded-lg transition-colors"
           >
             <LayoutTemplate className="w-4 h-4" />
             Browse Community Market
@@ -459,7 +459,7 @@ export function Templates() {
                   <div className="border border-app-border-primary rounded-lg divide-y divide-app-border-primary">
                     {selectedTemplate.modules.map((module, index) => (
                       <div key={module.id} className="flex items-center gap-3 px-4 py-3">
-                        <div className="w-6 h-6 rounded-full bg-primary-50 flex items-center justify-center">
+                        <div className="w-6 h-6 rounded-full bg-primary-50 flex items-center justify-center dark:bg-primary-900/30">
                           <span className="text-xs font-medium text-primary-600">{index + 1}</span>
                         </div>
                         <div className="flex-1">
@@ -475,7 +475,7 @@ export function Templates() {
                 </div>
 
                 {/* Dependencies Note */}
-                <div className="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 dark:bg-blue-950/40 dark:border-blue-800/60">
                   <div className="flex items-start gap-3">
                     <div className="w-5 h-5 text-blue-600 mt-0.5">
                       <Settings className="w-5 h-5" />

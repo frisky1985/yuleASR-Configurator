@@ -107,8 +107,8 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
             onClick={() => fileInputRef.current?.click()}
             className={cn(
               'border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors',
-              'hover:border-primary-400 hover:bg-primary-50',
-              fileContent ? 'border-green-400 bg-green-50' : 'border-app-border-primary'
+              'hover:border-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/30',
+              fileContent ? 'border-green-400 bg-green-50 dark:bg-green-950/40 dark:border-green-700' : 'border-app-border-primary'
             )}
           >
             <input
@@ -141,7 +141,7 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
             <div
               className={cn(
                 'p-4 rounded-lg border',
-                validationResult.valid ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'
+                validationResult.valid ? 'bg-green-50 border-green-200 dark:bg-green-950/40 dark:border-green-800/60' : 'bg-red-50 border-red-200 dark:bg-red-950/40 dark:border-red-800/60'
               )}
             >
               <div className="flex items-center gap-2">
@@ -172,7 +172,7 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
 
           {/* Error */}
           {error && (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div className="p-4 bg-red-50 border border-red-200 rounded-lg dark:bg-red-950/40 dark:border-red-800/60">
               <div className="flex items-center gap-2">
                 <AlertCircle className="w-5 h-5 text-red-500" />
                 <span className="font-medium text-red-700">错误</span>
@@ -182,7 +182,7 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
           )}
 
           {/* Info */}
-          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-950/40 dark:border-blue-800/60">
             <div className="flex items-start gap-3">
               <FileCode className="w-5 h-5 text-blue-500 mt-0.5" />
               <div>

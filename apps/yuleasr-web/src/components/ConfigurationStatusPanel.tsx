@@ -143,7 +143,7 @@ export function ConfigurationStatusPanel({
         {onExportReport && (
           <button
             onClick={onExportReport}
-            className="text-xs text-primary-600 hover:text-primary-700 flex items-center gap-1 px-2 py-1 rounded hover:bg-primary-50 transition-colors"
+            className="text-xs text-primary-600 hover:text-primary-700 flex items-center gap-1 px-2 py-1 rounded hover:bg-primary-50 dark:hover:bg-primary-900/40 transition-colors"
           >
             <Download className="w-3 h-3" />
             Export Report
@@ -179,7 +179,7 @@ export function ConfigurationStatusPanel({
 
         {/* Status Summary with visual progress bars */}
         <div className="grid grid-cols-2 gap-2">
-          <div className="flex flex-col gap-1 p-2 bg-green-50 rounded-lg">
+          <div className="flex flex-col gap-1 p-2 bg-green-50 rounded-lg dark:bg-green-950/40">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
@@ -189,7 +189,7 @@ export function ConfigurationStatusPanel({
             </div>
             <MiniProgressBar value={stats.configured} max={stats.total} />
           </div>
-          <div className="flex flex-col gap-1 p-2 bg-blue-50 rounded-lg">
+          <div className="flex flex-col gap-1 p-2 bg-blue-50 rounded-lg dark:bg-blue-950/40">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5 text-blue-600" />
@@ -199,7 +199,7 @@ export function ConfigurationStatusPanel({
             </div>
             <MiniProgressBar value={stats.configuring} max={stats.total} />
           </div>
-          <div className="flex flex-col gap-1 p-2 bg-yellow-50 rounded-lg">
+          <div className="flex flex-col gap-1 p-2 bg-yellow-50 rounded-lg dark:bg-yellow-950/40">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <AlertCircle className="w-3.5 h-3.5 text-yellow-600" />

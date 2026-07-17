@@ -205,25 +205,25 @@ function getStatusStyle(status: string) {
   switch (status) {
     case 'same':
       return {
-        bg: 'bg-green-50',
-        text: 'text-green-700',
-        border: 'border-green-300',
+        bg: 'bg-green-50 dark:bg-green-950/40',
+        text: 'text-green-700 dark:text-green-300',
+        border: 'border-green-300 dark:border-green-800/60',
         dot: 'bg-green-400',
       };
     case 'different':
       return {
-        bg: 'bg-yellow-50',
-        text: 'text-yellow-700',
-        border: 'border-yellow-300',
+        bg: 'bg-yellow-50 dark:bg-yellow-950/40',
+        text: 'text-yellow-700 dark:text-yellow-300',
+        border: 'border-yellow-300 dark:border-yellow-800/60',
         dot: 'bg-yellow-500',
       };
     case 'only_a':
-      return { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-300', dot: 'bg-red-500' };
+      return { bg: 'bg-red-50 dark:bg-red-950/40', text: 'text-red-700 dark:text-red-300', border: 'border-red-300 dark:border-red-800/60', dot: 'bg-red-500' };
     case 'only_b':
       return {
-        bg: 'bg-green-50',
-        text: 'text-green-700',
-        border: 'border-green-300',
+        bg: 'bg-green-50 dark:bg-green-950/40',
+        text: 'text-green-700 dark:text-green-300',
+        border: 'border-green-300 dark:border-green-800/60',
         dot: 'bg-green-500',
       };
     default:
@@ -443,10 +443,10 @@ export function ConfigDiff() {
           <span
             className={cn(
               'ml-auto px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase shrink-0',
-              node.status === 'same' && 'bg-green-100 text-green-700',
-              node.status === 'different' && 'bg-yellow-100 text-yellow-700',
-              node.status === 'only_a' && 'bg-red-100 text-red-700',
-              node.status === 'only_b' && 'bg-green-100 text-green-700'
+              node.status === 'same' && 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300',
+              node.status === 'different' && 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/50 dark:text-yellow-300',
+              node.status === 'only_a' && 'bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300',
+              node.status === 'only_b' && 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300'
             )}
           >
             {sl.short}
@@ -569,7 +569,7 @@ export function ConfigDiff() {
 
         {/* Error */}
         {error && (
-          <div className="mt-3 flex items-center gap-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+          <div className="mt-3 flex items-center gap-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2 dark:bg-red-950/40 dark:text-red-300 dark:border-red-800/60">
             <AlertTriangle className="w-4 h-4 shrink-0" />
             {error}
           </div>

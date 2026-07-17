@@ -1,15 +1,17 @@
 {
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
+    "composite": true,
     "outDir": "./dist",
     "rootDir": "./src",
     "baseUrl": ".",
+    "lib": ["ES2022", "DOM"],
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "paths": {
       "@yuletech/core/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*.ts", "src/**/*.json"],
   "exclude": ["dist", "node_modules", "**/*.test.ts"]
 }
