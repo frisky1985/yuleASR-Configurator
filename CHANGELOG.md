@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.1] - 2026-07-17
+
+### Added
+- 新增 5 个 E2E 测试：Save 下拉 / Export 展开 / Import 展开 / Overflow 展开及关闭 (#13)
+- GH Pages 部署 CI 适配 `/configurator/` 子路径
+
+### Changed
+- Save 按钮改造为 Split Button：左键直接保存，右键箭头展开 Save as Template (#12)
+- 工具栏下拉菜单选择器优化，Page Object 新增 dropdown locators
+
+### Fixed
+- CrossModuleValidator 全局状态风险 — 添加 TODO 标记，记录多配置并行时的重构路径 (#11)
+
 ## [0.2.0] - 2026-07-16
 
 ### Added
