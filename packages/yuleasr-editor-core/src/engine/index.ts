@@ -13,6 +13,7 @@ import type {
   ParameterValueModel,
   ConfigChangeEvent,
   ParameterValue,
+  ValidationWarning,
 } from '../models';
 
 /**
@@ -568,10 +569,9 @@ export class ConfigEngine extends EventEmitter<EngineEvents> {
               code: 'PARAMETER_ERROR',
               message: error,
               path: `${moduleName}.${paramName}`,
-              parameter: paramName,
             };
             errors.push(validationError);
-            module.errors.push(error);
+            module.errors.push(validationError);
           }
         }
       }

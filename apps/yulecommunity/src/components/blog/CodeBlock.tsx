@@ -3,7 +3,7 @@
  * @description 增强型代码块，支持复制功能和语法高亮
  */
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, Copy, ChevronDown, ChevronUp } from 'lucide-react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -39,13 +39,27 @@ export interface CopyButtonProps {
   size?: 'sm' | 'md' | 'lg';
   /** 自定义类名 */
   className?: string;
+  /** 复制成功状态的持续时间(ms) (默认: 2000) */
+  successDuration?: number;
 }
 
 /**
  * 复制按钮组件
  */
-export function CopyButton({ text, onCopy, size = 'sm', className }: CopyButtonProps) {
+export function CopyButton({
+  text,
+  onCopy,
+  size = 'sm',
+  className,
+  successDuration = 2000,
+}: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!copied) return;
+    const timer = setTimeout(() => setCopied(false), successDuration);
+    return () => clearTimeout(timer);
+  }, [copied, successDuration]);
 
   const handleCopy = useCallback(async () => {
     try {

@@ -4,52 +4,52 @@
   "description": "Core types, schemas, and validators for yuleASR configurator",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./src/index.ts",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
       "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./src/index.ts"
     },
     "./schema": {
       "import": "./dist/schema/index.mjs",
       "require": "./dist/schema/index.js",
-      "types": "./dist/schema/index.d.ts"
+      "types": "./src/schema/index.ts"
     },
     "./schema/generated": {
       "import": "./dist/schema/generated/index.mjs",
       "require": "./dist/schema/generated/index.js",
-      "types": "./dist/schema/generated/index.d.ts"
+      "types": "./src/schema/generated/index.ts"
     },
     "./types": {
       "import": "./dist/types/index.mjs",
       "require": "./dist/types/index.js",
-      "types": "./dist/types/index.d.ts"
+      "types": "./src/types/index.ts"
     },
     "./validator": {
       "import": "./dist/validator/index.mjs",
       "require": "./dist/validator/index.js",
-      "types": "./dist/validator/index.d.ts"
+      "types": "./src/validator/index.ts"
     },
     "./generator": {
       "import": "./dist/generator/index.mjs",
       "require": "./dist/generator/index.js",
-      "types": "./dist/generator/index.d.ts"
+      "types": "./src/generator/index.ts"
     },
     "./schema-extractor": {
       "import": "./dist/schema-extractor/index.mjs",
       "require": "./dist/schema-extractor/index.js",
-      "types": "./dist/schema-extractor/index.d.ts"
+      "types": "./src/schema-extractor/index.ts"
     },
     "./validators": {
       "import": "./dist/validators/index.mjs",
       "require": "./dist/validators/index.js",
-      "types": "./dist/validators/index.d.ts"
+      "types": "./src/validators/index.ts"
     },
     "./conditions": {
       "import": "./dist/conditions/index.mjs",
       "require": "./dist/conditions/index.js",
-      "types": "./dist/conditions/index.d.ts"
+      "types": "./src/conditions/index.ts"
     }
   },
   "scripts": {

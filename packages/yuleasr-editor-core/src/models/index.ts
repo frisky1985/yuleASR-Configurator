@@ -14,6 +14,9 @@ import type {
 // 本地别名：验证警告类型 (兼容旧代码)
 export type ValidationWarning = ValidationError;
 
+// Re-export core types for use by other packages
+export type { ModuleConfig, ModuleSchema, ParameterValue, ValidationResult, ValidationError };
+
 /**
  * 配置模型 - 代表一个完整的配置文件
  */

@@ -221,7 +221,6 @@ export class ValidationService {
       code: string;
       message: string;
       path: string;
-      parameter?: string;
     }> = [];
 
     for (const [paramName, param] of module.parameters) {
@@ -235,10 +234,9 @@ export class ValidationService {
           code: 'REQUIRED',
           message: `参数 ${paramName} 为必填项`,
           path: `${moduleName}.${paramName}`,
-          parameter: paramName,
         };
         errors.push(error);
-        module.errors.push(error.message);
+        module.errors.push(error);
       }
     }
 
@@ -304,7 +302,6 @@ export class ValidationService {
             code: 'PARAMETER_NOT_FOUND',
             message: `参数 ${paramName} 不存在`,
             path,
-            parameter: paramName,
           },
         ],
         warnings: [],
@@ -343,7 +340,7 @@ export class ValidationService {
     // 更新参数错误状态
     if (!result.valid) {
       param.errors = result.errors.map(e => e.message);
-      module.errors.push(...param.errors);
+      module.errors.push(...result.errors);
     } else {
       param.errors = undefined;
     }

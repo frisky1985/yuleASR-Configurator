@@ -31500,14 +31500,12 @@ function iw(r, a, n) {
     const l = [G0, F0, H0, ...Bo.getAllSchemas()],
       o = new B0(new Map(l.map(p => [p.name, p]))),
       c = rw(r);
-    return o
-      .validateAffectedBy([{ module: a, param: n }], c)
-      .map(p => ({
-        id: `cross-${a}-${n}`,
-        path: p.path,
-        message: p.message,
-        severity: p.severity,
-      }));
+    return o.validateAffectedBy([{ module: a, param: n }], c).map(p => ({
+      id: `cross-${a}-${n}`,
+      path: p.path,
+      message: p.message,
+      severity: p.severity,
+    }));
   } catch {
     return [];
   }
@@ -39282,19 +39280,17 @@ function NA({ config: r, onExportReport: a, validationResult: n }) {
                       s.jsxs('div', {
                         className: 'mt-1 flex flex-wrap gap-1',
                         children: [
-                          c
-                            .slice(0, 5)
-                            .map(f =>
-                              s.jsx(
-                                'span',
-                                {
-                                  className:
-                                    'inline-flex items-center px-2 py-0.5 rounded text-xs bg-amber-100 text-amber-700',
-                                  children: f.name,
-                                },
-                                f.id
-                              )
-                            ),
+                          c.slice(0, 5).map(f =>
+                            s.jsx(
+                              'span',
+                              {
+                                className:
+                                  'inline-flex items-center px-2 py-0.5 rounded text-xs bg-amber-100 text-amber-700',
+                                children: f.name,
+                              },
+                              f.id
+                            )
+                          ),
                           c.length > 5 &&
                             s.jsxs('span', {
                               className: 'text-xs text-amber-600',
