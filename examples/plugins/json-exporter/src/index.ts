@@ -10,11 +10,7 @@
 //   - Using PluginContext.config for user settings (e.g. indent level)
 // ==================================================================
 
-import type {
-  YulePlugin,
-  PluginContext,
-  DataExporterPlugin,
-} from '@yuletech/plugin-sdk';
+import type { YulePlugin, PluginContext, DataExporterPlugin } from '@yuletech/plugin-sdk';
 
 // ── Plug-in constants ───────────────────────────────────────────────────────
 
@@ -29,18 +25,15 @@ const EXCLUDED_KEYS = new Set(['_internal', '__meta', '_version']);
 /**
  * Deep-clean a config object by removing excluded keys and empty containers.
  */
-function cleanConfig(
-  obj: unknown,
-  depth: number,
-): unknown {
+function cleanConfig(obj: unknown, depth: number): unknown {
   if (obj === null || obj === undefined) {
     return obj;
   }
 
   if (Array.isArray(obj)) {
     const cleaned = obj
-      .map((item) => cleanConfig(item, depth + 1))
-      .filter((item) => item !== undefined && item !== null);
+      .map(item => cleanConfig(item, depth + 1))
+      .filter(item => item !== undefined && item !== null);
     return cleaned.length > 0 ? cleaned : undefined;
   }
 
@@ -65,7 +58,7 @@ function cleanConfig(
 function buildJsonReport(
   config: Record<string, unknown>,
   indent: number,
-  includeTimestamp: boolean,
+  includeTimestamp: boolean
 ): string {
   const cleaned = cleanConfig(config, 0) as Record<string, unknown>;
 
@@ -90,8 +83,7 @@ const jsonExporter: YulePlugin = {
   name: 'JSON Configuration Exporter',
   version: '1.0.0',
   type: 'data-export',
-  description:
-    'Exports the yuleASR project configuration as a formatted JSON report with metadata',
+  description: 'Exports the yuleASR project configuration as a formatted JSON report with metadata',
   author: 'YuleTech Examples',
 
   async activate(context: PluginContext): Promise<void> {
@@ -99,33 +91,27 @@ const jsonExporter: YulePlugin = {
 
     // Read user preferences from plugin config
     const indent = (context.config.indent as number) ?? DEFAULT_INDENT;
-    const includeTimestamp =
-      (context.config.includeTimestamp as boolean) ?? true;
+    const includeTimestamp = (context.config.includeTimestamp as boolean) ?? true;
 
-    context.logger.info(
-      `Configuration: indent=${indent}, includeTimestamp=${includeTimestamp}`,
-    );
+    context.logger.info(`Configuration: indent=${indent}, includeTimestamp=${includeTimestamp}`);
 
     const exporter: DataExporterPlugin = {
       name: 'JsonExporter',
-      description:
-        'Exports the full configuration as a pretty-printed JSON report',
+      description: 'Exports the full configuration as a pretty-printed JSON report',
       outputExtension: 'json',
 
       async export(
         config: Record<string, unknown>,
-        options: Record<string, unknown>,
+        options: Record<string, unknown>
       ): Promise<{ content: string; extension: string }> {
         // Allow per-call override of indentation
-        const effectiveIndent =
-          (options.indent as number) ?? indent;
-        const effectiveTimestamp =
-          (options.includeTimestamp as boolean) ?? includeTimestamp;
+        const effectiveIndent = (options.indent as number) ?? indent;
+        const effectiveTimestamp = (options.includeTimestamp as boolean) ?? includeTimestamp;
 
         const content = buildJsonReport(config, effectiveIndent, effectiveTimestamp);
 
         context.logger.info(
-          `Exported JSON report (${content.length} bytes, ${effectiveIndent}-space indent)`,
+          `Exported JSON report (${content.length} bytes, ${effectiveIndent}-space indent)`
         );
 
         return {

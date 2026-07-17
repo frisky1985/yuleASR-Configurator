@@ -32,7 +32,7 @@ export function useGitHubRepos(): UseGitHubReposReturn {
   // 初始加载数据
   useEffect(() => {
     let mounted = true;
-    
+
     const loadData = async () => {
       setLoading(true);
       setError(null);
@@ -51,9 +51,9 @@ export function useGitHubRepos(): UseGitHubReposReturn {
         }
       }
     };
-    
+
     loadData();
-    
+
     return () => {
       mounted = false;
     };

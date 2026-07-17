@@ -1293,11 +1293,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "AutosarExt",
-    "CommonPublishedInformation",
-    "FlsConfigSet"
-  ],
+  "required": ["AutosarExt", "CommonPublishedInformation", "FlsConfigSet"],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",

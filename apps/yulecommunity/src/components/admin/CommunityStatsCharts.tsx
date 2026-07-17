@@ -90,15 +90,15 @@ export function CommunityActivityTrend() {
     const days: { label: string; count: number }[] = [];
 
     const allTimestamps: string[] = [];
-    posts.forEach((p) => {
+    posts.forEach(p => {
       allTimestamps.push(p.createdAt);
-      p.replies.forEach((r) => allTimestamps.push(r.createdAt));
+      p.replies.forEach(r => allTimestamps.push(r.createdAt));
     });
-    questions.forEach((q) => {
+    questions.forEach(q => {
       allTimestamps.push(q.createdAt);
-      q.answers.forEach((a) => allTimestamps.push(a.createdAt));
+      q.answers.forEach(a => allTimestamps.push(a.createdAt));
     });
-    events.forEach((e) => {
+    events.forEach(e => {
       e.attendees.forEach(() => allTimestamps.push(`${e.date}T00:00:00`));
     });
 
@@ -109,7 +109,7 @@ export function CommunityActivityTrend() {
       dailyCounts.set(getDateKey(d), 0);
     }
 
-    allTimestamps.forEach((ts) => {
+    allTimestamps.forEach(ts => {
       const key = ts.split('T')[0];
       if (dailyCounts.has(key)) {
         dailyCounts.set(key, (dailyCounts.get(key) || 0) + 1);

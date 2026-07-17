@@ -23,7 +23,9 @@ const outputDir = process.argv[2] || mkdtempSync(join(tmpdir(), 'ecuc-multi-'));
 
 function writeAUTOSARStubs(dir) {
   // Std_Types.h
-  writeFileSync(join(dir, 'Std_Types.h'), `
+  writeFileSync(
+    join(dir, 'Std_Types.h'),
+    `
 #ifndef STD_TYPES_H
 #define STD_TYPES_H
 typedef unsigned char boolean;
@@ -47,54 +49,80 @@ typedef uint16 Std_ReturnType;
 #define E_NOT_OK ((Std_ReturnType)1u)
 typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8 sw_minor_version; uint8 sw_patch_version; } Std_VersionInfoType;
 #endif
-`);
-  writeFileSync(join(dir, 'Ecuc.h'), `
+`
+  );
+  writeFileSync(
+    join(dir, 'Ecuc.h'),
+    `
 #ifndef ECUC_H
 #define ECUC_H
 #include "Std_Types.h"
 #endif
-`);
+`
+  );
 }
 
 const moduleDefs = [
   {
-    module: 'Can', label: 'CAN Driver', version: '4.4.0',
+    module: 'Can',
+    label: 'CAN Driver',
+    version: '4.4.0',
     parameters: { canBaudrate: 500000, canDevErrorDetect: false },
     paramDefs: [
       { name: 'canBaudrate', type: 'integer', required: true },
       { name: 'canDevErrorDetect', type: 'boolean', required: false },
     ],
     containers: {
-      CanController: [
-        { id: 'c0', parameters: { canBaudrate: 500000, canControllerId: 0 } },
-      ],
+      CanController: [{ id: 'c0', parameters: { canBaudrate: 500000, canControllerId: 0 } }],
     },
-    containerDefs: [{
-      name: 'CanController', label: 'CAN Controller', multiple: true,
-      minInstances: 1, maxInstances: 4,
-      parameters: ['canBaudrate', 'canControllerId'],
-    }],
+    containerDefs: [
+      {
+        name: 'CanController',
+        label: 'CAN Controller',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 4,
+        parameters: ['canBaudrate', 'canControllerId'],
+      },
+    ],
   },
   {
-    module: 'Mcu', label: 'MCU Driver', version: '4.4.0',
+    module: 'Mcu',
+    label: 'MCU Driver',
+    version: '4.4.0',
     parameters: { mcuClockSetting: 16000000, mcuRamSectors: 4 },
     paramDefs: [
-      { name: 'mcuClockSetting', type: 'integer', required: true, description: 'MCU main clock frequency in Hz' },
-      { name: 'mcuRamSectors', type: 'integer', required: false, description: 'Number of RAM sectors' },
+      {
+        name: 'mcuClockSetting',
+        type: 'integer',
+        required: true,
+        description: 'MCU main clock frequency in Hz',
+      },
+      {
+        name: 'mcuRamSectors',
+        type: 'integer',
+        required: false,
+        description: 'Number of RAM sectors',
+      },
     ],
     containers: {
-      McuClockSettingConfig: [
-        { id: 'clk0', parameters: { clockId: 0, clockFrequency: 16000000 } },
-      ],
+      McuClockSettingConfig: [{ id: 'clk0', parameters: { clockId: 0, clockFrequency: 16000000 } }],
     },
-    containerDefs: [{
-      name: 'McuClockSettingConfig', label: 'Clock Setting', multiple: true,
-      minInstances: 1, maxInstances: 8,
-      parameters: ['clockId', 'clockFrequency'],
-    }],
+    containerDefs: [
+      {
+        name: 'McuClockSettingConfig',
+        label: 'Clock Setting',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 8,
+        parameters: ['clockId', 'clockFrequency'],
+      },
+    ],
   },
   {
-    module: 'Port', label: 'PORT Driver', version: '4.4.0',
+    module: 'Port',
+    label: 'PORT Driver',
+    version: '4.4.0',
     parameters: { portDevErrorDetect: true, portPinCount: 8 },
     paramDefs: [
       { name: 'portDevErrorDetect', type: 'boolean', required: false, description: 'DET enable' },
@@ -106,11 +134,16 @@ const moduleDefs = [
         { id: 'p1', parameters: { pinId: 1, pinDirection: 0 } },
       ],
     },
-    containerDefs: [{
-      name: 'PortPin', label: 'Port Pin', multiple: true,
-      minInstances: 1, maxInstances: 64,
-      parameters: ['pinId', 'pinDirection'],
-    }],
+    containerDefs: [
+      {
+        name: 'PortPin',
+        label: 'Port Pin',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 64,
+        parameters: ['pinId', 'pinDirection'],
+      },
+    ],
   },
 ];
 
@@ -166,17 +199,20 @@ console.log(` Total files generated: ${allFiles.length}\n`);
 // Syntax check all files
 console.log('=== GCC Syntax Check ===\n');
 
-let pass = 0, fail = 0;
+let pass = 0,
+  fail = 0;
 for (const file of allFiles) {
   const label = file.path.replace(outputDir + '/', '');
   try {
     if (file.language === 'h') {
       execSync(`gcc -fsyntax-only -x c -I ${outputDir} ${file.path}`, {
-        stdio: 'pipe', timeout: 15000,
+        stdio: 'pipe',
+        timeout: 15000,
       });
     } else {
       execSync(`gcc -fsyntax-only -I ${outputDir} -include ${outputDir}/Std_Types.h ${file.path}`, {
-        stdio: 'pipe', timeout: 15000,
+        stdio: 'pipe',
+        timeout: 15000,
       });
     }
     console.log(`  ✅ ${label}`);
@@ -184,7 +220,10 @@ for (const file of allFiles) {
   } catch (e) {
     const stderr = e.stderr?.toString() || '';
     console.log(`  ⚠️  ${label}:`);
-    stderr.split('\n').filter(l => l.includes('error:')).forEach(l => console.log(`    ${l.trim()}`));
+    stderr
+      .split('\n')
+      .filter(l => l.includes('error:'))
+      .forEach(l => console.log(`    ${l.trim()}`));
     fail++;
   }
 }

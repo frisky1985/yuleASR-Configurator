@@ -4,111 +4,133 @@
  * Similar to Vector Configurator's status overview
  */
 
-import { 
-  CheckCircle2, 
-  AlertCircle, 
-  Clock, 
+import {
+  CheckCircle2,
+  AlertCircle,
+  Clock,
   CircleDashed,
   Layers,
   Cpu,
   Settings,
   Download,
-  FileText
-} from 'lucide-react'
-import { useMemo } from 'react'
+} from 'lucide-react';
+import { useMemo } from 'react';
 
-import { cn } from '@/lib/utils'
-import type { ConfigFile, ConfigModule, ValidationResult } from '@/types'
+import { cn } from '@/lib/utils';
+import type { ConfigFile, ConfigModule, ValidationResult } from '@/types';
 
 interface ConfigurationStatusPanelProps {
-  config: ConfigFile
-  onExportReport?: () => void
-  validationResult?: ValidationResult | null
+  config: ConfigFile;
+  onExportReport?: () => void;
+  validationResult?: ValidationResult | null;
 }
 
 interface LayerStats {
-  layer: string
-  total: number
-  configured: number
-  configuring: number
-  partial: number
-  unconfigured: number
+  layer: string;
+  total: number;
+  configured: number;
+  configuring: number;
+  partial: number;
+  unconfigured: number;
 }
 
-export function ConfigurationStatusPanel({ config, onExportReport, validationResult }: ConfigurationStatusPanelProps) {
+export function ConfigurationStatusPanel({
+  config,
+  onExportReport,
+  validationResult,
+}: ConfigurationStatusPanelProps) {
   // Calculate stats
   const stats = useMemo(() => {
-    const total = config.modules.length
-    const enabled = config.modules.filter(m => m.enabled).length
-    const configured = config.modules.filter(m => m.configStatus === 'configured').length
-    
+    const total = config.modules.length;
+    const enabled = config.modules.filter(m => m.enabled).length;
+    const configured = config.modules.filter(m => m.configStatus === 'configured').length;
+
     // Calculate score based on validation issues
-    let validationScore = 100
+    let validationScore = 100;
     if (validationResult) {
-      const errorPenalty = validationResult.errors.length * 15
-      const warningPenalty = validationResult.warnings.length * 5
-      validationScore = Math.max(0, 100 - errorPenalty - warningPenalty)
+      const errorPenalty = validationResult.errors.length * 15;
+      const warningPenalty = validationResult.warnings.length * 5;
+      validationScore = Math.max(0, 100 - errorPenalty - warningPenalty);
     }
-    
+
     // Composite score: 60% config + 40% validation
-    const configRatio = total > 0 ? configured / total : 0
-    const progress = Math.round((configRatio * 60 + (validationScore / 100) * 40))
-    
-    const configuring = config.modules.filter(m => m.configStatus === 'configuring').length
-    const partial = config.modules.filter(m => m.configStatus === 'partial').length
-    const unconfigured = config.modules.filter(m => m.configStatus === 'unconfigured').length
-    return { total, enabled, configured, configuring, partial, unconfigured, progress }
-  }, [config, validationResult])
+    const configRatio = total > 0 ? configured / total : 0;
+    const progress = Math.round(configRatio * 60 + (validationScore / 100) * 40);
+
+    const configuring = config.modules.filter(m => m.configStatus === 'configuring').length;
+    const partial = config.modules.filter(m => m.configStatus === 'partial').length;
+    const unconfigured = config.modules.filter(m => m.configStatus === 'unconfigured').length;
+    return { total, enabled, configured, configuring, partial, unconfigured, progress };
+  }, [config, validationResult]);
 
   // Calculate per-layer statistics
   const layerStats = useMemo(() => {
-    const layers = ['MCAL', 'ECUAL', 'Service', 'OS']
-    return layers.map(layer => {
-      const modules = config.modules.filter(m => m.layer === layer)
-      return {
-        layer,
-        total: modules.length,
-        configured: modules.filter(m => m.configStatus === 'configured').length,
-        configuring: modules.filter(m => m.configStatus === 'configuring').length,
-        partial: modules.filter(m => m.configStatus === 'partial').length,
-        unconfigured: modules.filter(m => m.configStatus === 'unconfigured').length,
-      }
-    }).filter(ls => ls.total > 0)
-  }, [config.modules])
+    const layers = ['MCAL', 'ECUAL', 'Service', 'OS'];
+    return layers
+      .map(layer => {
+        const modules = config.modules.filter(m => m.layer === layer);
+        return {
+          layer,
+          total: modules.length,
+          configured: modules.filter(m => m.configStatus === 'configured').length,
+          configuring: modules.filter(m => m.configStatus === 'configuring').length,
+          partial: modules.filter(m => m.configStatus === 'partial').length,
+          unconfigured: modules.filter(m => m.configStatus === 'unconfigured').length,
+        };
+      })
+      .filter(ls => ls.total > 0);
+  }, [config.modules]);
 
   // Get unconfigured modules
   const unconfiguredModules = useMemo(() => {
-    return config.modules.filter(m => m.configStatus === 'unconfigured' && m.enabled)
-  }, [config.modules])
+    return config.modules.filter(m => m.configStatus === 'unconfigured' && m.enabled);
+  }, [config.modules]);
 
   const getLayerIcon = (layer: string) => {
     switch (layer) {
-      case 'MCAL': return <Cpu className="w-4 h-4" />
-      case 'ECUAL': return <Settings className="w-4 h-4" />
-      case 'Service': return <Layers className="w-4 h-4" />
-      default: return <Layers className="w-4 h-4" />
+      case 'MCAL':
+        return <Cpu className="w-4 h-4" />;
+      case 'ECUAL':
+        return <Settings className="w-4 h-4" />;
+      case 'Service':
+        return <Layers className="w-4 h-4" />;
+      default:
+        return <Layers className="w-4 h-4" />;
     }
-  }
+  };
 
   /** Get progress bar color based on percentage */
   const getProgressColor = (pct: number) => {
-    if (pct >= 100) return 'bg-green-500'
-    if (pct >= 50) return 'bg-yellow-500'
-    return 'bg-app-bg-tertiary'
-  }
+    if (pct >= 100) return 'bg-green-500';
+    if (pct >= 50) return 'bg-yellow-500';
+    return 'bg-app-bg-tertiary';
+  };
 
   /** Small horizontal progress bar */
-  const MiniProgressBar = ({ value, max, className }: { value: number; max: number; className?: string }) => {
-    const pct = max > 0 ? Math.round((value / max) * 100) : 0
+  const MiniProgressBar = ({
+    value,
+    max,
+    className,
+  }: {
+    value: number;
+    max: number;
+    className?: string;
+  }) => {
+    const pct = max > 0 ? Math.round((value / max) * 100) : 0;
     return (
-      <div className={cn("w-full h-1.5 bg-app-bg-tertiary rounded-full overflow-hidden", className)}>
+      <div
+        className={cn('w-full h-1.5 bg-app-bg-tertiary rounded-full overflow-hidden', className)}
+      >
         <div
-          className={cn("h-full rounded-full transition-all duration-500 progress-bar-animated", getProgressColor(pct))}
+          className={cn(
+            'h-full rounded-full transition-all duration-500 progress-bar-animated',
+            getProgressColor(pct)
+          )}
           style={{ width: `${pct}%` }}
         />
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className="bg-app-bg-primary rounded-lg border border-app-border-primary overflow-hidden">
@@ -137,10 +159,14 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
             <span className="text-sm font-semibold text-app-text-primary">{stats.progress}%</span>
           </div>
           <div className="h-2.5 bg-app-bg-tertiary rounded-full overflow-hidden">
-            <div 
+            <div
               className={cn(
-                "h-full rounded-full transition-all duration-700 ease-out progress-bar-animated",
-                stats.progress === 100 ? "bg-green-500" : stats.progress >= 50 ? "bg-yellow-500" : "bg-primary-500"
+                'h-full rounded-full transition-all duration-700 ease-out progress-bar-animated',
+                stats.progress === 100
+                  ? 'bg-green-500'
+                  : stats.progress >= 50
+                    ? 'bg-yellow-500'
+                    : 'bg-primary-500'
               )}
               style={{ width: `${stats.progress}%` }}
             />
@@ -191,7 +217,11 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
               </div>
               <span className="text-sm font-semibold text-primary">{stats.unconfigured}</span>
             </div>
-            <MiniProgressBar value={stats.unconfigured} max={stats.total} className="bg-app-bg-tertiary" />
+            <MiniProgressBar
+              value={stats.unconfigured}
+              max={stats.total}
+              className="bg-app-bg-tertiary"
+            />
           </div>
         </div>
 
@@ -208,14 +238,14 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
                   <span className="text-xs font-medium text-primary">{ls.layer}</span>
                 </div>
                 <div className="flex-1 h-1.5 bg-app-bg-tertiary rounded-full overflow-hidden">
-                  <div 
+                  <div
                     className={cn(
-                      "h-full rounded-full transition-all duration-500",
+                      'h-full rounded-full transition-all duration-500',
                       (ls.total > 0 ? (ls.configured / ls.total) * 100 : 0) >= 100
-                        ? "bg-green-500"
+                        ? 'bg-green-500'
                         : (ls.total > 0 ? (ls.configured / ls.total) * 100 : 0) >= 50
-                        ? "bg-yellow-500"
-                        : "bg-primary-500"
+                          ? 'bg-yellow-500'
+                          : 'bg-primary-500'
                     )}
                     style={{ width: `${ls.total > 0 ? (ls.configured / ls.total) * 100 : 0}%` }}
                   />
@@ -235,11 +265,12 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
               <AlertCircle className="w-4 h-4 text-amber-600 mt-0.5" />
               <div className="flex-1">
                 <p className="text-sm font-medium text-amber-800">
-                  {unconfiguredModules.length} module{unconfiguredModules.length > 1 ? 's' : ''} need configuration
+                  {unconfiguredModules.length} module{unconfiguredModules.length > 1 ? 's' : ''}{' '}
+                  need configuration
                 </p>
                 <div className="mt-1 flex flex-wrap gap-1">
                   {unconfiguredModules.slice(0, 5).map(m => (
-                    <span 
+                    <span
                       key={m.id}
                       className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-amber-100 text-amber-700"
                     >
@@ -265,69 +296,73 @@ export function ConfigurationStatusPanel({ config, onExportReport, validationRes
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 // Generate configuration report
 export function generateConfigReport(config: ConfigFile): string {
-  const lines: string[] = []
-  
-  lines.push(`# Configuration Report: ${config.name}`)
-  lines.push(`Generated: ${new Date().toISOString()}`)
-  lines.push(`Version: ${config.version}`)
-  lines.push(`Target: ${config.targetPlatform} - ${config.targetChip}`)
-  lines.push('')
-  
+  const lines: string[] = [];
+
+  lines.push(`# Configuration Report: ${config.name}`);
+  lines.push(`Generated: ${new Date().toISOString()}`);
+  lines.push(`Version: ${config.version}`);
+  lines.push(`Target: ${config.targetPlatform} - ${config.targetChip}`);
+  lines.push('');
+
   // Summary
-  const total = config.modules.length
-  const configured = config.modules.filter(m => m.configStatus === 'configured').length
-  const progress = Math.round((configured / total) * 100)
-  
-  lines.push(`## Summary`)
-  lines.push(`- Total Modules: ${total}`)
-  lines.push(`- Configured: ${configured} (${progress}%)`)
-  lines.push(`- Configuring: ${config.modules.filter(m => m.configStatus === 'configuring').length}`)
-  lines.push(`- Partial: ${config.modules.filter(m => m.configStatus === 'partial').length}`)
-  lines.push(`- Unconfigured: ${config.modules.filter(m => m.configStatus === 'unconfigured').length}`)
-  lines.push('')
-  
+  const total = config.modules.length;
+  const configured = config.modules.filter(m => m.configStatus === 'configured').length;
+  const progress = Math.round((configured / total) * 100);
+
+  lines.push(`## Summary`);
+  lines.push(`- Total Modules: ${total}`);
+  lines.push(`- Configured: ${configured} (${progress}%)`);
+  lines.push(
+    `- Configuring: ${config.modules.filter(m => m.configStatus === 'configuring').length}`
+  );
+  lines.push(`- Partial: ${config.modules.filter(m => m.configStatus === 'partial').length}`);
+  lines.push(
+    `- Unconfigured: ${config.modules.filter(m => m.configStatus === 'unconfigured').length}`
+  );
+  lines.push('');
+
   // By Layer
-  lines.push(`## Configuration by Layer`)
-  const layers = ['MCAL', 'ECUAL', 'Service', 'OS']
+  lines.push(`## Configuration by Layer`);
+  const layers = ['MCAL', 'ECUAL', 'Service', 'OS'];
   layers.forEach(layer => {
-    const modules = config.modules.filter(m => m.layer === layer)
+    const modules = config.modules.filter(m => m.layer === layer);
     if (modules.length > 0) {
-      lines.push(`\n### ${layer}`)
+      lines.push(`\n### ${layer}`);
       modules.forEach(m => {
-        const status = m.configStatus || 'unconfigured'
-        const icon = status === 'configured' ? '✓' : status === 'configuring' ? '◐' : '○'
-        lines.push(`- ${icon} ${m.name}: ${status}`)
-      })
+        const status = m.configStatus || 'unconfigured';
+        const icon = status === 'configured' ? '✓' : status === 'configuring' ? '◐' : '○';
+        lines.push(`- ${icon} ${m.name}: ${status}`);
+      });
     }
-  })
-  
+  });
+
   // OS Configuration
   if (config.os) {
-    lines.push(`\n## OS Configuration`)
-    lines.push(`- Version: ${config.os.version}`)
-    lines.push(`- Tasks: ${config.os.tasks?.length || 0}`)
-    lines.push(`- Events: ${config.os.events?.length || 0}`)
-    lines.push(`- Alarms: ${config.os.alarms?.length || 0}`)
+    lines.push(`\n## OS Configuration`);
+    lines.push(`- Version: ${config.os.version}`);
+    lines.push(`- Tasks: ${config.os.tasks?.length || 0}`);
+    lines.push(`- Events: ${config.os.events?.length || 0}`);
+    lines.push(`- Alarms: ${config.os.alarms?.length || 0}`);
   }
-  
-  return lines.join('\n')
+
+  return lines.join('\n');
 }
 
 // Export report as file
 export function exportConfigReport(config: ConfigFile) {
-  const report = generateConfigReport(config)
-  const blob = new Blob([report], { type: 'text/markdown' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `config-report-${config.id}-${new Date().toISOString().split('T')[0]}.md`
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
+  const report = generateConfigReport(config);
+  const blob = new Blob([report], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `config-report-${config.id}-${new Date().toISOString().split('T')[0]}.md`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }

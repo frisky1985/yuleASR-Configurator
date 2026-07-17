@@ -1,8 +1,8 @@
-import { 
-  ChevronDown, 
-  ChevronRight, 
-  FilePlus, 
-  FileMinus, 
+import {
+  ChevronDown,
+  ChevronRight,
+  FilePlus,
+  FileMinus,
   FileEdit,
   GitCompare,
   Copy,
@@ -10,98 +10,98 @@ import {
   Maximize2,
   Minimize2,
   Download,
-} from 'lucide-react'
-import { useState } from 'react'
+} from 'lucide-react';
+import { useState } from 'react';
 
-import { cn } from '@/lib/utils'
-import type { DiffInfo, DiffHunk } from '@/services/gitService'
+import { cn } from '@/lib/utils';
+import type { DiffInfo, DiffHunk } from '@/services/gitService';
 
 interface DiffViewerProps {
-  diffs: DiffInfo[]
-  oldCommit?: { oid: string; message: string }
-  newCommit?: { oid: string; message: string }
-  onClose?: () => void
-  title?: string
+  diffs: DiffInfo[];
+  oldCommit?: { oid: string; message: string };
+  newCommit?: { oid: string; message: string };
+  onClose?: () => void;
+  title?: string;
 }
 
-export function DiffViewer({ 
-  diffs, 
-  oldCommit, 
-  newCommit, 
+export function DiffViewer({
+  diffs,
+  oldCommit,
+  newCommit,
   onClose,
   title = 'Changes',
 }: DiffViewerProps) {
   const [expandedFiles, setExpandedFiles] = useState<Set<string>>(
     new Set(diffs.map(d => d.newPath))
-  )
-  const [copiedFile, setCopiedFile] = useState<string | null>(null)
-  const [viewMode, setViewMode] = useState<'split' | 'unified'>('unified')
-  const [showFullScreen, setShowFullScreen] = useState(false)
+  );
+  const [copiedFile, setCopiedFile] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'split' | 'unified'>('unified');
+  const [showFullScreen, setShowFullScreen] = useState(false);
 
   const toggleFile = (path: string) => {
     setExpandedFiles(prev => {
-      const next = new Set(prev)
+      const next = new Set(prev);
       if (next.has(path)) {
-        next.delete(path)
+        next.delete(path);
       } else {
-        next.add(path)
+        next.add(path);
       }
-      return next
-    })
-  }
+      return next;
+    });
+  };
 
   const expandAll = () => {
-    setExpandedFiles(new Set(diffs.map(d => d.newPath)))
-  }
+    setExpandedFiles(new Set(diffs.map(d => d.newPath)));
+  };
 
   const collapseAll = () => {
-    setExpandedFiles(new Set())
-  }
+    setExpandedFiles(new Set());
+  };
 
   const copyToClipboard = async (content: string, path: string) => {
     try {
-      await navigator.clipboard.writeText(content)
-      setCopiedFile(path)
-      setTimeout(() => setCopiedFile(null), 2000)
+      await navigator.clipboard.writeText(content);
+      setCopiedFile(path);
+      setTimeout(() => setCopiedFile(null), 2000);
     } catch (err) {
-      console.error('Failed to copy:', err)
+      console.error('Failed to copy:', err);
     }
-  }
+  };
 
   const downloadDiff = () => {
-    let content = ''
+    let content = '';
     for (const diff of diffs) {
-      content += `--- a/${diff.oldPath}\n`
-      content += `+++ b/${diff.newPath}\n`
-      content += `@@ ... @@\n`
-      if (diff.oldContent) content += diff.oldContent + '\n'
-      if (diff.newContent) content += diff.newContent + '\n'
-      content += '\n'
+      content += `--- a/${diff.oldPath}\n`;
+      content += `+++ b/${diff.newPath}\n`;
+      content += `@@ ... @@\n`;
+      if (diff.oldContent) content += diff.oldContent + '\n';
+      if (diff.newContent) content += diff.newContent + '\n';
+      content += '\n';
     }
 
-    const blob = new Blob([content], { type: 'text/plain' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `diff-${oldCommit?.oid.substring(0, 7)}-${newCommit?.oid.substring(0, 7)}.patch`
-    a.click()
-    URL.revokeObjectURL(url)
-  }
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `diff-${oldCommit?.oid.substring(0, 7)}-${newCommit?.oid.substring(0, 7)}.patch`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   const getFileIcon = (status: DiffInfo['status']) => {
     switch (status) {
       case 'added':
-        return <FilePlus className="w-4 h-4 text-green-500" />
+        return <FilePlus className="w-4 h-4 text-green-500" />;
       case 'deleted':
-        return <FileMinus className="w-4 h-4 text-red-500" />
+        return <FileMinus className="w-4 h-4 text-red-500" />;
       case 'modified':
-        return <FileEdit className="w-4 h-4 text-yellow-500" />
+        return <FileEdit className="w-4 h-4 text-yellow-500" />;
       case 'renamed':
-        return <GitCompare className="w-4 h-4 text-blue-500" />
+        return <GitCompare className="w-4 h-4 text-blue-500" />;
       default:
-        return <FileEdit className="w-4 h-4 text-app-text-secondary" />
+        return <FileEdit className="w-4 h-4 text-app-text-secondary" />;
     }
-  }
+  };
 
   const getStatusBadge = (status: DiffInfo['status']) => {
     const styles: Record<DiffInfo['status'], string> = {
@@ -109,51 +109,53 @@ export function DiffViewer({
       deleted: 'bg-red-100 text-red-700',
       modified: 'bg-yellow-100 text-yellow-700',
       renamed: 'bg-blue-100 text-blue-700',
-    }
+    };
 
     return (
       <span className={cn('px-1.5 py-0.5 text-xs font-medium rounded', styles[status])}>
         {status}
       </span>
-    )
-  }
+    );
+  };
 
   const calculateDiffStats = (diff: DiffInfo) => {
-    let additions = 0
-    let deletions = 0
+    let additions = 0;
+    let deletions = 0;
 
     for (const hunk of diff.hunks) {
       for (const line of hunk.lines) {
-        if (line.type === 'added') additions++
-        if (line.type === 'removed') deletions++
+        if (line.type === 'added') additions++;
+        if (line.type === 'removed') deletions++;
       }
     }
 
     // Fallback: count lines in content
     if (additions === 0 && deletions === 0) {
-      if (diff.newContent) additions = diff.newContent.split('\n').length
-      if (diff.oldContent) deletions = diff.oldContent.split('\n').length
+      if (diff.newContent) additions = diff.newContent.split('\n').length;
+      if (diff.oldContent) deletions = diff.oldContent.split('\n').length;
     }
 
-    return { additions, deletions }
-  }
+    return { additions, deletions };
+  };
 
   const totalStats = diffs.reduce(
     (acc, diff) => {
-      const stats = calculateDiffStats(diff)
+      const stats = calculateDiffStats(diff);
       return {
         additions: acc.additions + stats.additions,
         deletions: acc.deletions + stats.deletions,
-      }
+      };
     },
     { additions: 0, deletions: 0 }
-  )
+  );
 
   return (
-    <div className={cn(
-      'bg-app-bg-primary border border-app-border-primary rounded-lg overflow-hidden',
-      showFullScreen && 'fixed inset-4 z-50'
-    )}>
+    <div
+      className={cn(
+        'bg-app-bg-primary border border-app-border-primary rounded-lg overflow-hidden',
+        showFullScreen && 'fixed inset-4 z-50'
+      )}
+    >
       {/* Header */}
       <div className="px-4 py-3 border-b border-app-border-primary bg-app-bg-secondary">
         <div className="flex items-center justify-between">
@@ -189,8 +191,8 @@ export function DiffViewer({
                 onClick={() => setViewMode('unified')}
                 className={cn(
                   'px-2 py-1 text-xs font-medium transition-colors',
-                  viewMode === 'unified' 
-                    ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300' 
+                  viewMode === 'unified'
+                    ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
                     : 'text-app-text-secondary hover:text-app-text-primary'
                 )}
               >
@@ -200,8 +202,8 @@ export function DiffViewer({
                 onClick={() => setViewMode('split')}
                 className={cn(
                   'px-2 py-1 text-xs font-medium transition-colors',
-                  viewMode === 'split' 
-                    ? 'bg-primary-100 text-primary-700' 
+                  viewMode === 'split'
+                    ? 'bg-primary-100 text-primary-700'
                     : 'text-app-text-secondary hover:text-app-text-primary'
                 )}
               >
@@ -252,7 +254,9 @@ export function DiffViewer({
       </div>
 
       {/* File List */}
-      <div className={cn('overflow-auto', showFullScreen ? 'h-[calc(100vh-200px)]' : 'max-h-[600px]')}>
+      <div
+        className={cn('overflow-auto', showFullScreen ? 'h-[calc(100vh-200px)]' : 'max-h-[600px]')}
+      >
         {diffs.length === 0 ? (
           <div className="p-8 text-center">
             <GitCompare className="w-12 h-12 text-app-text-tertiary mx-auto mb-3" />
@@ -260,9 +264,9 @@ export function DiffViewer({
           </div>
         ) : (
           <div className="divide-y divide-gray-200">
-            {diffs.map((diff) => {
-              const isExpanded = expandedFiles.has(diff.newPath)
-              const stats = calculateDiffStats(diff)
+            {diffs.map(diff => {
+              const isExpanded = expandedFiles.has(diff.newPath);
+              const stats = calculateDiffStats(diff);
 
               return (
                 <div key={diff.newPath} className="bg-app-bg-primary">
@@ -293,7 +297,9 @@ export function DiffViewer({
                       {/* File Actions */}
                       <div className="flex items-center gap-2 px-4 py-1.5 bg-app-bg-secondary border-b border-app-border-primary">
                         <button
-                          onClick={() => diff.newContent && copyToClipboard(diff.newContent, diff.newPath)}
+                          onClick={() =>
+                            diff.newContent && copyToClipboard(diff.newContent, diff.newPath)
+                          }
                           className="flex items-center gap-1 text-xs text-app-text-secondary hover:text-app-text-primary"
                         >
                           {copiedFile === diff.newPath ? (
@@ -312,14 +318,14 @@ export function DiffViewer({
 
                       {/* Diff View */}
                       {viewMode === 'unified' ? (
-                        <UnifiedDiffView 
-                          diff={diff} 
+                        <UnifiedDiffView
+                          diff={diff}
                           hunks={diff.hunks}
                           oldContent={diff.oldContent}
                           newContent={diff.newContent}
                         />
                       ) : (
-                        <SplitDiffView 
+                        <SplitDiffView
                           diff={diff}
                           hunks={diff.hunks}
                           oldContent={diff.oldContent}
@@ -329,35 +335,37 @@ export function DiffViewer({
                     </div>
                   )}
                 </div>
-              )
+              );
             })}
           </div>
         )}
       </div>
     </div>
-  )
+  );
 }
 
 interface UnifiedDiffViewProps {
-  diff: DiffInfo
-  hunks: DiffHunk[]
-  oldContent?: string
-  newContent?: string
+  diff: DiffInfo;
+  hunks: DiffHunk[];
+  oldContent?: string;
+  newContent?: string;
 }
 
 function UnifiedDiffView({ hunks, oldContent, newContent }: UnifiedDiffViewProps) {
   // If no hunks, generate simple line-by-line diff
   if (hunks.length === 0 && oldContent !== undefined && newContent !== undefined) {
-    const oldLines = oldContent.split('\n')
-    const newLines = newContent.split('\n')
-    
+    const oldLines = oldContent.split('\n');
+    const newLines = newContent.split('\n');
+
     return (
       <div className="overflow-x-auto">
         <table className="w-full text-sm font-mono">
           <tbody>
             {oldLines.map((line, i) => (
               <tr key={`old-${i}`} className="bg-red-50">
-                <td className="px-2 py-0.5 text-app-text-tertiary text-right select-none w-12">{i + 1}</td>
+                <td className="px-2 py-0.5 text-app-text-tertiary text-right select-none w-12">
+                  {i + 1}
+                </td>
                 <td className="px-2 py-0.5 text-app-text-tertiary select-none w-12"></td>
                 <td className="px-4 py-0.5 whitespace-pre text-red-700">-{line}</td>
               </tr>
@@ -372,7 +380,7 @@ function UnifiedDiffView({ hunks, oldContent, newContent }: UnifiedDiffViewProps
           </tbody>
         </table>
       </div>
-    )
+    );
   }
 
   return (
@@ -388,17 +396,21 @@ function UnifiedDiffView({ hunks, oldContent, newContent }: UnifiedDiffViewProps
           </thead>
           <tbody>
             {hunk.lines.map((line: { type: string; content: string }, lineIndex: number) => {
-              const lineBg = 
-                line.type === 'added' ? 'bg-green-50' :
-                line.type === 'removed' ? 'bg-red-50' : 'bg-app-bg-primary'
-              
-              const lineColor =
-                line.type === 'added' ? 'text-green-700' :
-                line.type === 'removed' ? 'text-red-700' : 'text-app-text-primary'
+              const lineBg =
+                line.type === 'added'
+                  ? 'bg-green-50'
+                  : line.type === 'removed'
+                    ? 'bg-red-50'
+                    : 'bg-app-bg-primary';
 
-              const prefix =
-                line.type === 'added' ? '+' :
-                line.type === 'removed' ? '-' : ' '
+              const lineColor =
+                line.type === 'added'
+                  ? 'text-green-700'
+                  : line.type === 'removed'
+                    ? 'text-red-700'
+                    : 'text-app-text-primary';
+
+              const prefix = line.type === 'added' ? '+' : line.type === 'removed' ? '-' : ' ';
 
               return (
                 <tr key={lineIndex} className={lineBg}>
@@ -409,29 +421,30 @@ function UnifiedDiffView({ hunks, oldContent, newContent }: UnifiedDiffViewProps
                     {line.type !== 'removed' ? hunk.newStart + lineIndex : ''}
                   </td>
                   <td className={cn('px-4 py-0.5 whitespace-pre', lineColor)}>
-                    {prefix}{line.content}
+                    {prefix}
+                    {line.content}
                   </td>
                 </tr>
-              )
+              );
             })}
           </tbody>
         </table>
       ))}
     </div>
-  )
+  );
 }
 
 interface SplitDiffViewProps {
-  diff: DiffInfo
-  hunks: DiffHunk[]
-  oldContent?: string
-  newContent?: string
+  diff: DiffInfo;
+  hunks: DiffHunk[];
+  oldContent?: string;
+  newContent?: string;
 }
 
 function SplitDiffView({ oldContent, newContent }: SplitDiffViewProps) {
-  const oldLines = oldContent?.split('\n') ?? []
-  const newLines = newContent?.split('\n') ?? []
-  const maxLines = Math.max(oldLines.length, newLines.length)
+  const oldLines = oldContent?.split('\n') ?? [];
+  const newLines = newContent?.split('\n') ?? [];
+  const maxLines = Math.max(oldLines.length, newLines.length);
 
   return (
     <div className="overflow-x-auto">
@@ -444,31 +457,35 @@ function SplitDiffView({ oldContent, newContent }: SplitDiffViewProps) {
         </thead>
         <tbody>
           {Array.from({ length: maxLines }, (_, i) => {
-            const oldLine = oldLines[i]
-            const newLine = newLines[i]
-            const isChanged = oldLine !== newLine
+            const oldLine = oldLines[i];
+            const newLine = newLines[i];
+            const isChanged = oldLine !== newLine;
 
             return (
               <tr key={i} className={isChanged ? 'bg-yellow-50' : 'bg-app-bg-primary'}>
-                <td className={cn(
-                  'px-4 py-0.5 whitespace-pre border-r border-app-border-primary',
-                  isChanged ? 'text-red-700' : 'text-app-text-primary'
-                )}>
+                <td
+                  className={cn(
+                    'px-4 py-0.5 whitespace-pre border-r border-app-border-primary',
+                    isChanged ? 'text-red-700' : 'text-app-text-primary'
+                  )}
+                >
                   {oldLine ?? ''}
                 </td>
-                <td className={cn(
-                  'px-4 py-0.5 whitespace-pre',
-                  isChanged ? 'text-green-700' : 'text-app-text-primary'
-                )}>
+                <td
+                  className={cn(
+                    'px-4 py-0.5 whitespace-pre',
+                    isChanged ? 'text-green-700' : 'text-app-text-primary'
+                  )}
+                >
                   {newLine ?? ''}
                 </td>
               </tr>
-            )
+            );
           })}
         </tbody>
       </table>
     </div>
-  )
+  );
 }
 
-export default DiffViewer
+export default DiffViewer;

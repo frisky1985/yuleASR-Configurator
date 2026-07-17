@@ -34,15 +34,15 @@ async function fetchRepoStats(repo: string): Promise<RepoStats | null> {
   try {
     const response = await fetch(`https://api.github.com/repos/${repo}`, {
       headers: {
-        'Accept': 'application/vnd.github.v3+json',
+        Accept: 'application/vnd.github.v3+json',
       },
     });
-    
+
     if (!response.ok) {
       console.warn(`Failed to fetch ${repo}: ${response.status}`);
       return null;
     }
-    
+
     const data = await response.json();
     return {
       name: data.name,
@@ -63,9 +63,7 @@ async function fetchRepoStats(repo: string): Promise<RepoStats | null> {
  * 获取所有开源项目统计
  */
 export async function fetchAllRepoStats(): Promise<RepoStats[]> {
-  const stats = await Promise.all(
-    REPOS.map(repo => fetchRepoStats(repo))
-  );
+  const stats = await Promise.all(REPOS.map(repo => fetchRepoStats(repo)));
   return stats.filter((s): s is RepoStats => s !== null);
 }
 
@@ -90,23 +88,23 @@ export function calculateTotals(stats: RepoStats[]) {
 export function generateMockContributions(days: number = 30): ContributionData[] {
   const data: ContributionData[] = [];
   const today = new Date();
-  
+
   for (let i = days - 1; i >= 0; i--) {
     const date = new Date(today);
     date.setDate(date.getDate() - i);
-    
+
     // 模拟周末贡献较少
     const dayOfWeek = date.getDay();
     const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
     const baseCount = isWeekend ? 2 : 8;
     const randomVariation = Math.floor(Math.random() * 10);
-    
+
     data.push({
       date: date.toISOString().split('T')[0],
       count: baseCount + randomVariation,
     });
   }
-  
+
   return data;
 }
 
@@ -138,11 +136,11 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5分钟
  */
 export async function getCachedRepoStats(): Promise<RepoStats[]> {
   const now = Date.now();
-  
+
   if (cachedStats && now - cacheTime < CACHE_DURATION) {
     return cachedStats;
   }
-  
+
   cachedStats = await fetchAllRepoStats();
   cacheTime = now;
   return cachedStats;

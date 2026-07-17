@@ -53,7 +53,7 @@ export function EventsPage() {
   const { addNotification } = useNotifications();
   const notifiedEventsRef = useRef<Set<string>>(new Set());
 
-  const filteredEvents = events.filter((evt) => {
+  const filteredEvents = events.filter(evt => {
     const matchSearch =
       evt.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       evt.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -63,20 +63,25 @@ export function EventsPage() {
   });
 
   const handleRegister = (eventId: string) => {
-    const evt = events.find((e) => e.id === eventId);
+    const evt = events.find(e => e.id === eventId);
     const alreadyRegistered = evt?.attendees.includes(currentUser);
-    setEvents((prev) =>
-      prev.map((e) => {
+    setEvents(prev =>
+      prev.map(e => {
         if (e.id !== eventId) return e;
         const registered = e.attendees.includes(currentUser);
         if (registered) {
-          return { ...e, attendees: e.attendees.filter((a) => a !== currentUser) };
+          return { ...e, attendees: e.attendees.filter(a => a !== currentUser) };
         }
         if (e.attendees.length >= e.maxAttendees) return e;
         return { ...e, attendees: [...e.attendees, currentUser] };
       })
     );
-    if (evt && !alreadyRegistered && evt.attendees.length < evt.maxAttendees && evt.status !== 'ended') {
+    if (
+      evt &&
+      !alreadyRegistered &&
+      evt.attendees.length < evt.maxAttendees &&
+      evt.status !== 'ended'
+    ) {
       addPoints('event', `报名活动：${evt.title}`);
       addNotification({
         type: 'event_start',
@@ -88,10 +93,11 @@ export function EventsPage() {
   };
 
   const handleCreateEvent = () => {
-    if (!newEvent.title.trim() || !newEvent.date || !newEvent.time || !newEvent.description.trim()) return;
+    if (!newEvent.title.trim() || !newEvent.date || !newEvent.time || !newEvent.description.trim())
+      return;
     const tags = newEvent.tags
       .split(/[,，]/)
-      .map((t) => t.trim())
+      .map(t => t.trim())
       .filter(Boolean);
     const evt: CommunityEvent = {
       id: generateId('evt'),
@@ -108,7 +114,7 @@ export function EventsPage() {
       tags: tags.length ? tags : ['活动'],
       status: 'upcoming',
     };
-    setEvents((prev) => [evt, ...prev]);
+    setEvents(prev => [evt, ...prev]);
     setNewEvent({
       title: '',
       type: 'online',
@@ -125,7 +131,7 @@ export function EventsPage() {
   };
 
   useEffect(() => {
-    events.forEach((evt) => {
+    events.forEach(evt => {
       if (evt.status !== 'upcoming' || notifiedEventsRef.current.has(evt.id)) return;
       const eventDate = new Date(evt.date);
       const now = new Date();
@@ -171,7 +177,10 @@ export function EventsPage() {
     <div className="min-h-screen bg-background pt-16">
       <Helmet>
         <title>社区活动 - YuleTech | 线上研讨会与线下Meetup</title>
-        <meta name="description" content="参加 YuleTech 线上技术沙龙、线下研讨会和实战训练营。与行业专家面对面交流，拓展技术视野。" />
+        <meta
+          name="description"
+          content="参加 YuleTech 线上技术沙龙、线下研讨会和实战训练营。与行业专家面对面交流，拓展技术视野。"
+        />
       </Helmet>
       {/* Header */}
       <div className="bg-gradient-to-br from-muted/50 to-background border-b border-border">
@@ -198,14 +207,14 @@ export function EventsPage() {
                 type="text"
                 placeholder="搜索活动..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
               />
             </div>
           </div>
 
           <div className="mt-4 flex flex-wrap gap-2">
-            {typeFilters.map((f) => (
+            {typeFilters.map(f => (
               <button
                 key={f.value}
                 onClick={() => setTypeFilter(f.value)}
@@ -219,7 +228,7 @@ export function EventsPage() {
               </button>
             ))}
             <div className="w-px h-6 bg-border mx-1 self-center" />
-            {statusFilters.map((f) => (
+            {statusFilters.map(f => (
               <button
                 key={f.value}
                 onClick={() => setStatusFilter(f.value)}
@@ -239,7 +248,7 @@ export function EventsPage() {
       {/* Events Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredEvents.map((evt) => {
+          {filteredEvents.map(evt => {
             const isRegistered = evt.attendees.includes(currentUser);
             const isFull = evt.attendees.length >= evt.maxAttendees;
             const isEnded = evt.status === 'ended';
@@ -257,13 +266,17 @@ export function EventsPage() {
                       ) : (
                         <MapPinned className="w-4 h-4 text-green-500" />
                       )}
-                      <span className="text-xs text-muted-foreground">{evt.type === 'online' ? '线上' : '线下'}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {evt.type === 'online' ? '线上' : '线下'}
+                      </span>
                     </div>
                     {getStatusBadge(evt.status)}
                   </div>
 
                   <h3 className="font-semibold text-foreground mb-2 line-clamp-2">{evt.title}</h3>
-                  <p className="text-sm text-muted-foreground line-clamp-3 mb-4">{evt.description}</p>
+                  <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
+                    {evt.description}
+                  </p>
 
                   <div className="space-y-2 text-xs text-muted-foreground">
                     <div className="flex items-center gap-2">
@@ -299,8 +312,11 @@ export function EventsPage() {
                   </div>
 
                   <div className="flex flex-wrap gap-1 mt-3">
-                    {evt.tags.map((tag) => (
-                      <span key={tag} className="px-2 py-0.5 bg-muted rounded-full text-[10px] text-muted-foreground">
+                    {evt.tags.map(tag => (
+                      <span
+                        key={tag}
+                        className="px-2 py-0.5 bg-muted rounded-full text-[10px] text-muted-foreground"
+                      >
                         {tag}
                       </span>
                     ))}
@@ -361,7 +377,10 @@ export function EventsPage() {
           <div className="bg-card border border-border rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
             <div className="flex items-center justify-between p-5 border-b border-border">
               <h2 className="text-lg font-bold">发布活动</h2>
-              <button onClick={() => setShowNewEvent(false)} className="p-1.5 rounded-lg hover:bg-muted transition-colors">
+              <button
+                onClick={() => setShowNewEvent(false)}
+                className="p-1.5 rounded-lg hover:bg-muted transition-colors"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -371,7 +390,7 @@ export function EventsPage() {
                 <input
                   type="text"
                   value={newEvent.title}
-                  onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
+                  onChange={e => setNewEvent({ ...newEvent, title: e.target.value })}
                   placeholder="活动名称"
                   className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
                 />
@@ -381,7 +400,9 @@ export function EventsPage() {
                   <label className="block text-sm font-medium mb-1.5">活动类型</label>
                   <select
                     value={newEvent.type}
-                    onChange={(e) => setNewEvent({ ...newEvent, type: e.target.value as 'online' | 'offline' })}
+                    onChange={e =>
+                      setNewEvent({ ...newEvent, type: e.target.value as 'online' | 'offline' })
+                    }
                     className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
                   >
                     <option value="online">线上</option>
@@ -395,7 +416,9 @@ export function EventsPage() {
                     min={1}
                     max={10000}
                     value={newEvent.maxAttendees}
-                    onChange={(e) => setNewEvent({ ...newEvent, maxAttendees: Number(e.target.value) })}
+                    onChange={e =>
+                      setNewEvent({ ...newEvent, maxAttendees: Number(e.target.value) })
+                    }
                     className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
                   />
                 </div>
@@ -406,7 +429,7 @@ export function EventsPage() {
                   <input
                     type="date"
                     value={newEvent.date}
-                    onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
+                    onChange={e => setNewEvent({ ...newEvent, date: e.target.value })}
                     className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
                   />
                 </div>
@@ -415,7 +438,7 @@ export function EventsPage() {
                   <input
                     type="text"
                     value={newEvent.time}
-                    onChange={(e) => setNewEvent({ ...newEvent, time: e.target.value })}
+                    onChange={e => setNewEvent({ ...newEvent, time: e.target.value })}
                     placeholder="例如：20:00 - 21:30"
                     className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
                   />
@@ -426,8 +449,10 @@ export function EventsPage() {
                 <input
                   type="text"
                   value={newEvent.location}
-                  onChange={(e) => setNewEvent({ ...newEvent, location: e.target.value })}
-                  placeholder={newEvent.type === 'online' ? '腾讯会议 / B站直播 / Zoom' : '详细地址'}
+                  onChange={e => setNewEvent({ ...newEvent, location: e.target.value })}
+                  placeholder={
+                    newEvent.type === 'online' ? '腾讯会议 / B站直播 / Zoom' : '详细地址'
+                  }
                   className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
                 />
               </div>
@@ -435,7 +460,7 @@ export function EventsPage() {
                 <label className="block text-sm font-medium mb-1.5">活动描述</label>
                 <textarea
                   value={newEvent.description}
-                  onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
+                  onChange={e => setNewEvent({ ...newEvent, description: e.target.value })}
                   placeholder="活动详情介绍..."
                   rows={4}
                   className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30 resize-none"
@@ -447,7 +472,7 @@ export function EventsPage() {
                   <input
                     type="text"
                     value={newEvent.speaker}
-                    onChange={(e) => setNewEvent({ ...newEvent, speaker: e.target.value })}
+                    onChange={e => setNewEvent({ ...newEvent, speaker: e.target.value })}
                     placeholder="姓名"
                     className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
                   />
@@ -457,7 +482,7 @@ export function EventsPage() {
                   <input
                     type="text"
                     value={newEvent.speakerRole}
-                    onChange={(e) => setNewEvent({ ...newEvent, speakerRole: e.target.value })}
+                    onChange={e => setNewEvent({ ...newEvent, speakerRole: e.target.value })}
                     placeholder="职位"
                     className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
                   />
@@ -468,7 +493,7 @@ export function EventsPage() {
                 <input
                   type="text"
                   value={newEvent.tags}
-                  onChange={(e) => setNewEvent({ ...newEvent, tags: e.target.value })}
+                  onChange={e => setNewEvent({ ...newEvent, tags: e.target.value })}
                   placeholder="例如：BSW, 技术分享, 培训"
                   className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
                 />
@@ -483,7 +508,12 @@ export function EventsPage() {
               </button>
               <button
                 onClick={handleCreateEvent}
-                disabled={!newEvent.title.trim() || !newEvent.date || !newEvent.time || !newEvent.description.trim()}
+                disabled={
+                  !newEvent.title.trim() ||
+                  !newEvent.date ||
+                  !newEvent.time ||
+                  !newEvent.description.trim()
+                }
                 className="px-5 py-2 bg-[hsl(var(--primary))] text-primary-foreground hover:bg-[hsl(var(--primary-glow))] disabled:opacity-40 disabled:cursor-not-allowed transition-colors rounded-lg text-sm font-medium"
               >
                 发布活动

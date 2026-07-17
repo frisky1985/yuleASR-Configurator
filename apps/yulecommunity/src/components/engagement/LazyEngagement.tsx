@@ -6,8 +6,12 @@
 import { Suspense, lazy, useEffect, useState, useRef } from 'react';
 
 // 动态导入互动组件
-const WechatCommunity = lazy(() => import('./WechatCommunity').then(m => ({ default: m.WechatCommunity })));
-const NewsletterSignup = lazy(() => import('./NewsletterSignup').then(m => ({ default: m.NewsletterSignup })));
+const WechatCommunity = lazy(() =>
+  import('./WechatCommunity').then(m => ({ default: m.WechatCommunity }))
+);
+const NewsletterSignup = lazy(() =>
+  import('./NewsletterSignup').then(m => ({ default: m.NewsletterSignup }))
+);
 
 interface LazyEngagementProps {
   /** 是否启用微信社群组件 */
@@ -77,17 +81,12 @@ export function LazyEngagement({
   return (
     <div ref={containerRef}>
       <Suspense fallback={null}>
-        {enableWechat && (
-          <WechatCommunity 
-            position={wechatPosition} 
-            delay={wechatDelay} 
-          />
-        )}
+        {enableWechat && <WechatCommunity position={wechatPosition} delay={wechatDelay} />}
         {enableNewsletter && (
-          <NewsletterSignup 
-            variant="popup" 
-            delay={newsletterDelay} 
-            enableExitIntent={enableExitIntent} 
+          <NewsletterSignup
+            variant="popup"
+            delay={newsletterDelay}
+            enableExitIntent={enableExitIntent}
           />
         )}
       </Suspense>
@@ -104,19 +103,8 @@ export function ImmediateEngagement({
 }: Omit<LazyEngagementProps, 'wechatDelay' | 'newsletterDelay' | 'enableExitIntent'>) {
   return (
     <Suspense fallback={null}>
-      {enableWechat && (
-        <WechatCommunity 
-          position="bottom-right" 
-          delay={5000}
-        />
-      )}
-      {enableNewsletter && (
-        <NewsletterSignup 
-          variant="popup" 
-          delay={10000}
-          enableExitIntent
-        />
-      )}
+      {enableWechat && <WechatCommunity position="bottom-right" delay={5000} />}
+      {enableNewsletter && <NewsletterSignup variant="popup" delay={10000} enableExitIntent />}
     </Suspense>
   );
 }

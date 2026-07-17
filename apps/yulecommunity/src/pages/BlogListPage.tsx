@@ -62,7 +62,7 @@ export function BlogListPage() {
 
         setArticles(articlesResult as unknown as PaginatedResult<BlogArticle>);
         setTags(tagsResult as BlogTag[]);
-        
+
         // 从 API 数据中提取热门文章（按 viewCount 排序）
         if (articlesResult.data.length > 0) {
           const hotSorted = [...articlesResult.data]
@@ -72,7 +72,7 @@ export function BlogListPage() {
         }
       } catch (err) {
         console.warn('[BlogListPage] API unavailable, falling back to static data:', err);
-        
+
         // Fallback: 使用静态数据
         try {
           const [articlesResult, hotResult, tagsResult] = await Promise.all([
@@ -105,40 +105,52 @@ export function BlogListPage() {
   }, [categoryParam, tagParam, searchQuery, pageParam]);
 
   // 更新 URL 参数
-  const updateParams = useCallback((updates: Record<string, string | undefined>) => {
-    const newParams = new URLSearchParams(searchParams);
+  const updateParams = useCallback(
+    (updates: Record<string, string | undefined>) => {
+      const newParams = new URLSearchParams(searchParams);
 
-    Object.entries(updates).forEach(([key, value]) => {
-      if (value === undefined || value === '') {
-        newParams.delete(key);
-      } else {
-        newParams.set(key, value);
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value === undefined || value === '') {
+          newParams.delete(key);
+        } else {
+          newParams.set(key, value);
+        }
+      });
+
+      // 如果更改了筛选条件，重置到第一页
+      if ('category' in updates || 'tag' in updates || 'search' in updates) {
+        newParams.set('page', '1');
       }
-    });
 
-    // 如果更改了筛选条件，重置到第一页
-    if ('category' in updates || 'tag' in updates || 'search' in updates) {
-      newParams.set('page', '1');
-    }
-
-    setSearchParams(newParams);
-  }, [searchParams, setSearchParams]);
+      setSearchParams(newParams);
+    },
+    [searchParams, setSearchParams]
+  );
 
   // 分类选择
-  const handleCategoryChange = useCallback((category: string) => {
-    updateParams({ category: category === '全部' ? undefined : category });
-  }, [updateParams]);
+  const handleCategoryChange = useCallback(
+    (category: string) => {
+      updateParams({ category: category === '全部' ? undefined : category });
+    },
+    [updateParams]
+  );
 
   // 标签选择
-  const handleTagClick = useCallback((tag: string) => {
-    const newTag = tag === tagParam ? undefined : tag;
-    updateParams({ tag: newTag });
-  }, [tagParam, updateParams]);
+  const handleTagClick = useCallback(
+    (tag: string) => {
+      const newTag = tag === tagParam ? undefined : tag;
+      updateParams({ tag: newTag });
+    },
+    [tagParam, updateParams]
+  );
 
   // 搜索
-  const handleSearch = useCallback((query: string) => {
-    updateParams({ search: query || undefined });
-  }, [updateParams]);
+  const handleSearch = useCallback(
+    (query: string) => {
+      updateParams({ search: query || undefined });
+    },
+    [updateParams]
+  );
 
   // 清除筛选
   const clearFilters = useCallback(() => {
@@ -146,16 +158,22 @@ export function BlogListPage() {
   }, [setSearchParams]);
 
   // 分页
-  const handlePageChange = useCallback((page: number) => {
-    updateParams({ page: String(page) });
-    // 滚动到顶部
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [updateParams]);
+  const handlePageChange = useCallback(
+    (page: number) => {
+      updateParams({ page: String(page) });
+      // 滚动到顶部
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    [updateParams]
+  );
 
   // 打开文章详情
-  const handleArticleClick = useCallback((slug: string) => {
-    navigate(`#/blog/${slug}`);
-  }, [navigate]);
+  const handleArticleClick = useCallback(
+    (slug: string) => {
+      navigate(`#/blog/${slug}`);
+    },
+    [navigate]
+  );
 
   // 是否有活动筛选
   const hasActiveFilters = categoryParam !== '全部' || tagParam || searchQuery;
@@ -217,13 +235,14 @@ export function BlogListPage() {
             <div className="mb-8">
               <div className="flex flex-wrap items-center gap-2">
                 <Filter className="w-4 h-4 text-muted-foreground mr-1" />
-                {categories.map((category) => (
+                {categories.map(category => (
                   <button
                     key={category}
                     onClick={() => handleCategoryChange(category)}
                     className={cn(
                       'px-4 py-2 text-sm font-medium rounded-full transition-all',
-                      categoryParam === category || (category === '全部' && categoryParam === '全部')
+                      categoryParam === category ||
+                        (category === '全部' && categoryParam === '全部')
                         ? 'bg-[hsl(var(--accent))] text-accent-foreground'
                         : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
                     )}
@@ -246,7 +265,10 @@ export function BlogListPage() {
                 {categoryParam !== '全部' && (
                   <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
                     分类: {categoryParam}
-                    <button onClick={() => handleCategoryChange('全部')} className="hover:text-primary/70">
+                    <button
+                      onClick={() => handleCategoryChange('全部')}
+                      className="hover:text-primary/70"
+                    >
                       <X className="w-3 h-3" />
                     </button>
                   </span>
@@ -254,7 +276,10 @@ export function BlogListPage() {
                 {tagParam && (
                   <span className="inline-flex items-center gap-1 px-3 py-1 bg-accent/10 text-accent text-sm rounded-full">
                     标签: {tagParam}
-                    <button onClick={() => handleTagClick(tagParam)} className="hover:text-accent/70">
+                    <button
+                      onClick={() => handleTagClick(tagParam)}
+                      className="hover:text-accent/70"
+                    >
                       <X className="w-3 h-3" />
                     </button>
                   </span>
@@ -283,7 +308,10 @@ export function BlogListPage() {
                   // 加载状态
                   <div className="space-y-6">
                     {[...Array(3)].map((_, i) => (
-                      <div key={i} className="bg-card border border-border rounded-2xl p-6 animate-pulse">
+                      <div
+                        key={i}
+                        className="bg-card border border-border rounded-2xl p-6 animate-pulse"
+                      >
                         <div className="h-48 bg-muted rounded-lg mb-4" />
                         <div className="h-6 bg-muted rounded w-3/4 mb-2" />
                         <div className="h-4 bg-muted rounded w-1/2" />
@@ -302,9 +330,7 @@ export function BlogListPage() {
                     <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                     <h3 className="text-lg font-medium mb-2">暂无文章</h3>
                     <p className="text-muted-foreground">
-                      {searchQuery
-                        ? '没有找到符合条件的文章'
-                        : '该分类下暂无文章'}
+                      {searchQuery ? '没有找到符合条件的文章' : '该分类下暂无文章'}
                     </p>
                     {hasActiveFilters && (
                       <Button variant="outline" className="mt-4" onClick={clearFilters}>
@@ -316,7 +342,7 @@ export function BlogListPage() {
                   // 文章列表
                   <>
                     <div className="space-y-6">
-                      {articles?.data.map((article) => (
+                      {articles?.data.map(article => (
                         <BlogCard
                           key={article.id}
                           article={article}
@@ -337,17 +363,21 @@ export function BlogListPage() {
                         >
                           上一页
                         </Button>
-                        
+
                         <div className="flex items-center gap-1">
                           {[...Array(articles.totalPages)].map((_, i) => {
                             const page = i + 1;
                             const isActive = page === articles.page;
                             const isNearCurrent = Math.abs(page - articles.page) <= 1;
                             const isBoundary = page === 1 || page === articles.totalPages;
-                            
+
                             if (!isNearCurrent && !isBoundary) {
                               if (page === 2 || page === articles.totalPages - 1) {
-                                return <span key={page} className="px-2 text-muted-foreground">…</span>;
+                                return (
+                                  <span key={page} className="px-2 text-muted-foreground">
+                                    …
+                                  </span>
+                                );
                               }
                               return null;
                             }

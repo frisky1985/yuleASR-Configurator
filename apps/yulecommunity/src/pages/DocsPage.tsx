@@ -27,15 +27,78 @@ const docModules = [
     badgeColor: 'bg-blue-500/10 text-blue-500',
     desc: '微控制器驱动层 API 文档',
     items: [
-      { name: 'Mcu', version: 'v1.2.0', apis: 24, coverage: 100, status: '已完成', desc: '微控制器驱动 API，包含时钟、复位和功耗管理接口' },
-      { name: 'Port', version: 'v1.1.0', apis: 18, coverage: 100, status: '已完成', desc: '端口驱动 API，引脚配置和方向控制' },
-      { name: 'Dio', version: 'v1.1.0', apis: 12, coverage: 100, status: '已完成', desc: '数字 IO 驱动 API，读写引脚电平' },
-      { name: 'Can', version: 'v1.3.0', apis: 32, coverage: 100, status: '已完成', desc: 'CAN 控制器驱动 API，支持 CAN FD 协议' },
-      { name: 'Spi', version: 'v1.2.0', apis: 28, coverage: 100, status: '已完成', desc: 'SPI 串行外设接口驱动 API' },
-      { name: 'Gpt', version: 'v1.1.0', apis: 16, coverage: 100, status: '已完成', desc: '通用定时器驱动 API' },
-      { name: 'Pwm', version: 'v1.1.0', apis: 14, coverage: 100, status: '已完成', desc: '脉宽调制驱动 API' },
-      { name: 'Adc', version: 'v1.2.0', apis: 22, coverage: 100, status: '已完成', desc: '模数转换驱动 API' },
-      { name: 'Wdg', version: 'v1.0.0', apis: 10, coverage: 100, status: '已完成', desc: '看门狗驱动 API' },
+      {
+        name: 'Mcu',
+        version: 'v1.2.0',
+        apis: 24,
+        coverage: 100,
+        status: '已完成',
+        desc: '微控制器驱动 API，包含时钟、复位和功耗管理接口',
+      },
+      {
+        name: 'Port',
+        version: 'v1.1.0',
+        apis: 18,
+        coverage: 100,
+        status: '已完成',
+        desc: '端口驱动 API，引脚配置和方向控制',
+      },
+      {
+        name: 'Dio',
+        version: 'v1.1.0',
+        apis: 12,
+        coverage: 100,
+        status: '已完成',
+        desc: '数字 IO 驱动 API，读写引脚电平',
+      },
+      {
+        name: 'Can',
+        version: 'v1.3.0',
+        apis: 32,
+        coverage: 100,
+        status: '已完成',
+        desc: 'CAN 控制器驱动 API，支持 CAN FD 协议',
+      },
+      {
+        name: 'Spi',
+        version: 'v1.2.0',
+        apis: 28,
+        coverage: 100,
+        status: '已完成',
+        desc: 'SPI 串行外设接口驱动 API',
+      },
+      {
+        name: 'Gpt',
+        version: 'v1.1.0',
+        apis: 16,
+        coverage: 100,
+        status: '已完成',
+        desc: '通用定时器驱动 API',
+      },
+      {
+        name: 'Pwm',
+        version: 'v1.1.0',
+        apis: 14,
+        coverage: 100,
+        status: '已完成',
+        desc: '脉宽调制驱动 API',
+      },
+      {
+        name: 'Adc',
+        version: 'v1.2.0',
+        apis: 22,
+        coverage: 100,
+        status: '已完成',
+        desc: '模数转换驱动 API',
+      },
+      {
+        name: 'Wdg',
+        version: 'v1.0.0',
+        apis: 10,
+        coverage: 100,
+        status: '已完成',
+        desc: '看门狗驱动 API',
+      },
     ],
   },
   {
@@ -45,15 +108,78 @@ const docModules = [
     badgeColor: 'bg-cyan-500/10 text-cyan-500',
     desc: 'ECU 抽象层 API 文档',
     items: [
-      { name: 'CanIf', version: 'v1.2.0', apis: 28, coverage: 100, status: '已完成', desc: 'CAN 接口层 API，统一管理 CAN 通信' },
-      { name: 'IoHwAb', version: 'v1.1.0', apis: 20, coverage: 100, status: '已完成', desc: 'IO 硬件抽象层 API' },
-      { name: 'CanTp', version: 'v1.1.0', apis: 18, coverage: 100, status: '已完成', desc: 'CAN 传输协议层 API (ISO 15765-2)' },
-      { name: 'EthIf', version: 'v1.0.0', apis: 24, coverage: 100, status: '已完成', desc: '以太网接口层 API' },
-      { name: 'MemIf', version: 'v1.1.0', apis: 14, coverage: 100, status: '已完成', desc: '存储器接口层 API' },
-      { name: 'Fee', version: 'v1.1.0', apis: 16, coverage: 100, status: '已完成', desc: 'Flash EEPROM 仿真层 API' },
-      { name: 'Ea', version: 'v1.0.0', apis: 14, coverage: 100, status: '已完成', desc: 'EEPROM 抽象层 API' },
-      { name: 'FrIf', version: 'v1.0.0', apis: 22, coverage: 100, status: '已完成', desc: 'FlexRay 接口层 API' },
-      { name: 'LinIf', version: 'v1.0.0', apis: 18, coverage: 100, status: '已完成', desc: 'LIN 接口层 API' },
+      {
+        name: 'CanIf',
+        version: 'v1.2.0',
+        apis: 28,
+        coverage: 100,
+        status: '已完成',
+        desc: 'CAN 接口层 API，统一管理 CAN 通信',
+      },
+      {
+        name: 'IoHwAb',
+        version: 'v1.1.0',
+        apis: 20,
+        coverage: 100,
+        status: '已完成',
+        desc: 'IO 硬件抽象层 API',
+      },
+      {
+        name: 'CanTp',
+        version: 'v1.1.0',
+        apis: 18,
+        coverage: 100,
+        status: '已完成',
+        desc: 'CAN 传输协议层 API (ISO 15765-2)',
+      },
+      {
+        name: 'EthIf',
+        version: 'v1.0.0',
+        apis: 24,
+        coverage: 100,
+        status: '已完成',
+        desc: '以太网接口层 API',
+      },
+      {
+        name: 'MemIf',
+        version: 'v1.1.0',
+        apis: 14,
+        coverage: 100,
+        status: '已完成',
+        desc: '存储器接口层 API',
+      },
+      {
+        name: 'Fee',
+        version: 'v1.1.0',
+        apis: 16,
+        coverage: 100,
+        status: '已完成',
+        desc: 'Flash EEPROM 仿真层 API',
+      },
+      {
+        name: 'Ea',
+        version: 'v1.0.0',
+        apis: 14,
+        coverage: 100,
+        status: '已完成',
+        desc: 'EEPROM 抽象层 API',
+      },
+      {
+        name: 'FrIf',
+        version: 'v1.0.0',
+        apis: 22,
+        coverage: 100,
+        status: '已完成',
+        desc: 'FlexRay 接口层 API',
+      },
+      {
+        name: 'LinIf',
+        version: 'v1.0.0',
+        apis: 18,
+        coverage: 100,
+        status: '已完成',
+        desc: 'LIN 接口层 API',
+      },
     ],
   },
   {
@@ -63,11 +189,46 @@ const docModules = [
     badgeColor: 'bg-teal-500/10 text-teal-500',
     desc: '服务层 API 文档',
     items: [
-      { name: 'Com', version: 'v0.8.0', apis: 36, coverage: 80, status: '开发中', desc: '通信服务层 API，信号路由与打包' },
-      { name: 'PduR', version: 'v0.7.0', apis: 24, coverage: 75, status: '开发中', desc: 'PDU 路由器 API，协议数据单元路由' },
-      { name: 'NvM', version: '-', apis: 0, coverage: 0, status: '规划中', desc: '非易失性存储管理器 API' },
-      { name: 'Dcm', version: '-', apis: 0, coverage: 0, status: '规划中', desc: '诊断通信管理器 API (UDS)' },
-      { name: 'Dem', version: '-', apis: 0, coverage: 0, status: '规划中', desc: '诊断事件管理器 API' },
+      {
+        name: 'Com',
+        version: 'v0.8.0',
+        apis: 36,
+        coverage: 80,
+        status: '开发中',
+        desc: '通信服务层 API，信号路由与打包',
+      },
+      {
+        name: 'PduR',
+        version: 'v0.7.0',
+        apis: 24,
+        coverage: 75,
+        status: '开发中',
+        desc: 'PDU 路由器 API，协议数据单元路由',
+      },
+      {
+        name: 'NvM',
+        version: '-',
+        apis: 0,
+        coverage: 0,
+        status: '规划中',
+        desc: '非易失性存储管理器 API',
+      },
+      {
+        name: 'Dcm',
+        version: '-',
+        apis: 0,
+        coverage: 0,
+        status: '规划中',
+        desc: '诊断通信管理器 API (UDS)',
+      },
+      {
+        name: 'Dem',
+        version: '-',
+        apis: 0,
+        coverage: 0,
+        status: '规划中',
+        desc: '诊断事件管理器 API',
+      },
     ],
   },
   {
@@ -77,16 +238,38 @@ const docModules = [
     badgeColor: 'bg-emerald-500/10 text-emerald-500',
     desc: '运行时环境 API 文档',
     items: [
-      { name: 'Rte', version: 'v0.5.0', apis: 20, coverage: 60, status: '头文件完成', desc: '运行时环境，组件间通信接口' },
+      {
+        name: 'Rte',
+        version: 'v0.5.0',
+        apis: 20,
+        coverage: 60,
+        status: '头文件完成',
+        desc: '运行时环境，组件间通信接口',
+      },
     ],
   },
 ];
 
 const quickLinks = [
-  { title: '快速入门指南', desc: '5 分钟了解 YuleTech BSW 项目结构', icon: BookOpen, color: 'text-blue-500' },
-  { title: 'API 参考手册', desc: '完整的 C 语言 API 接口说明', icon: Code2, color: 'text-cyan-500' },
+  {
+    title: '快速入门指南',
+    desc: '5 分钟了解 YuleTech BSW 项目结构',
+    icon: BookOpen,
+    color: 'text-blue-500',
+  },
+  {
+    title: 'API 参考手册',
+    desc: '完整的 C 语言 API 接口说明',
+    icon: Code2,
+    color: 'text-cyan-500',
+  },
   { title: '配置参数手册', desc: 'ARXML 配置参数详细说明', icon: FileText, color: 'text-teal-500' },
-  { title: '错误码参考', desc: 'DET 错误码和运行时错误说明', icon: AlertCircle, color: 'text-amber-500' },
+  {
+    title: '错误码参考',
+    desc: 'DET 错误码和运行时错误说明',
+    icon: AlertCircle,
+    color: 'text-amber-500',
+  },
 ];
 
 export function DocsPage() {
@@ -94,21 +277,21 @@ export function DocsPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredModules = docModules
-    .filter((m) => activeFilter === '全部' || m.layer === activeFilter)
-    .map((m) => ({
+    .filter(m => activeFilter === '全部' || m.layer === activeFilter)
+    .map(m => ({
       ...m,
       items: m.items.filter(
-        (item) =>
+        item =>
           item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           item.desc.includes(searchQuery)
       ),
     }))
-    .filter((m) => m.items.length > 0);
+    .filter(m => m.items.length > 0);
 
   const totalApis = docModules.reduce((sum, m) => sum + m.items.reduce((s, i) => s + i.apis, 0), 0);
   const totalModules = docModules.reduce((sum, m) => sum + m.items.length, 0);
   const completedModules = docModules.reduce(
-    (sum, m) => sum + m.items.filter((i) => i.status === '已完成').length,
+    (sum, m) => sum + m.items.filter(i => i.status === '已完成').length,
     0
   );
 
@@ -116,7 +299,10 @@ export function DocsPage() {
     <div className="min-h-screen pt-16">
       <Helmet>
         <title>文档中心 - YuleTech | AutoSAR 规范与API文档</title>
-        <meta name="description" content="完整的 AutoSAR BSW 模块 API 文档、配置指南和开发手册。从 MCAL 驱动到 RTE 接口，帮助你快速上手项目开发。" />
+        <meta
+          name="description"
+          content="完整的 AutoSAR BSW 模块 API 文档、配置指南和开发手册。从 MCAL 驱动到 RTE 接口，帮助你快速上手项目开发。"
+        />
       </Helmet>
       {/* Hero */}
       <section className="relative py-20 overflow-hidden bg-gradient-to-b from-[hsl(var(--primary))]/5 to-transparent">
@@ -131,8 +317,8 @@ export function DocsPage() {
               <span className="text-gradient-accent"> 开发文档</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-8">
-              完整的 AutoSAR BSW 模块 API 文档、配置指南和开发手册。
-              从 MCAL 驱动到 RTE 接口，帮助你快速上手项目开发。
+              完整的 AutoSAR BSW 模块 API 文档、配置指南和开发手册。 从 MCAL 驱动到 RTE
+              接口，帮助你快速上手项目开发。
             </p>
             <div className="max-w-xl mx-auto relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
@@ -140,7 +326,7 @@ export function DocsPage() {
                 type="text"
                 placeholder="搜索模块、API、配置参数..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 rounded-xl bg-card border border-border text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/50 shadow-elegant"
               />
             </div>
@@ -178,7 +364,7 @@ export function DocsPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-xl font-bold mb-6">快速入口</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {quickLinks.map((link) => (
+              {quickLinks.map(link => (
                 <div
                   key={link.title}
                   className="group bg-card border border-border rounded-xl p-5 hover:border-[hsl(var(--accent))]/30 transition-all hover:shadow-elegant cursor-pointer"
@@ -206,7 +392,7 @@ export function DocsPage() {
       <section className="py-8 sticky top-16 z-30 bg-background/80 backdrop-blur-xl border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 overflow-x-auto pb-2">
-            {layerFilters.map((filter) => (
+            {layerFilters.map(filter => (
               <button
                 key={filter}
                 onClick={() => setActiveFilter(filter)}
@@ -232,23 +418,27 @@ export function DocsPage() {
               <p>没有找到相关文档</p>
             </div>
           )}
-          {filteredModules.map((mod) => (
+          {filteredModules.map(mod => (
             <div key={mod.layer}>
               <div className="flex items-center gap-3 mb-6">
-                <div className={`w-10 h-10 rounded-lg ${mod.color} flex items-center justify-center border`}>
+                <div
+                  className={`w-10 h-10 rounded-lg ${mod.color} flex items-center justify-center border`}
+                >
                   <mod.icon className="w-5 h-5" />
                 </div>
                 <div>
                   <h2 className="text-xl font-bold">{mod.layer}</h2>
                   <p className="text-sm text-muted-foreground">{mod.desc}</p>
                 </div>
-                <span className={`ml-auto px-3 py-1 rounded-full text-xs font-medium ${mod.badgeColor}`}>
+                <span
+                  className={`ml-auto px-3 py-1 rounded-full text-xs font-medium ${mod.badgeColor}`}
+                >
                   {mod.items.length} 模块
                 </span>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {mod.items.map((item) => (
+                {mod.items.map(item => (
                   <div
                     key={item.name}
                     className="group bg-card border border-border rounded-xl p-5 hover:border-[hsl(var(--accent))]/30 transition-all hover:shadow-elegant"
@@ -289,8 +479,8 @@ export function DocsPage() {
                             item.coverage === 100
                               ? 'bg-emerald-500'
                               : item.coverage >= 60
-                              ? 'bg-amber-500'
-                              : 'bg-muted-foreground/30'
+                                ? 'bg-amber-500'
+                                : 'bg-muted-foreground/30'
                           }`}
                           style={{ width: `${item.coverage}%` }}
                         />
@@ -298,7 +488,9 @@ export function DocsPage() {
                     </div>
 
                     <div className="flex items-center justify-between text-sm">
-                      <span className="font-mono text-xs text-muted-foreground">{item.version}</span>
+                      <span className="font-mono text-xs text-muted-foreground">
+                        {item.version}
+                      </span>
                       <div className="flex items-center gap-2">
                         <button className="flex items-center gap-1 px-3 py-1.5 bg-muted text-foreground rounded-lg text-xs font-medium hover:bg-[hsl(var(--primary))] hover:text-primary-foreground transition-colors border border-border">
                           <FileText className="w-3.5 h-3.5" />

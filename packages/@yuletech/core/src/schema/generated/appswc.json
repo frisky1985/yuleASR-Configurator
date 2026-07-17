@@ -26,7 +26,16 @@
         "type": "object",
         "properties": {
           "PortInterfaceName": { "type": "string" },
-          "PortInterfaceKind": { "type": "string", "enum": ["SenderReceiverInterface", "ClientServerInterface", "ModeSwitchInterface", "ParameterInterface", "NvDataInterface"] },
+          "PortInterfaceKind": {
+            "type": "string",
+            "enum": [
+              "SenderReceiverInterface",
+              "ClientServerInterface",
+              "ModeSwitchInterface",
+              "ParameterInterface",
+              "NvDataInterface"
+            ]
+          },
           "PortInterfaceDescription": { "type": "string" },
           "PortInterfaceIsService": { "type": "boolean" },
           "DataElements": {
@@ -55,7 +64,10 @@
                     "properties": {
                       "ArgName": { "type": "string" },
                       "ArgTypeRef": { "type": "string" },
-                      "ArgDirection": { "type": "string", "enum": ["IN", "OUT", "INOUT"] },
+                      "ArgDirection": {
+                        "type": "string",
+                        "enum": ["IN", "OUT", "INOUT"]
+                      },
                       "ArgDescription": { "type": "string" }
                     }
                   }
@@ -87,7 +99,17 @@
         "properties": {
           "RunnableName": { "type": "string" },
           "RunnableSymbol": { "type": "string" },
-          "RunnableInvocationType": { "type": "string", "enum": ["cyclic", "event", "triggered", "onEntry", "onExit", "onTransition"] },
+          "RunnableInvocationType": {
+            "type": "string",
+            "enum": [
+              "cyclic",
+              "event",
+              "triggered",
+              "onEntry",
+              "onExit",
+              "onTransition"
+            ]
+          },
           "RunnableInterval": { "type": "number", "minimum": 0 },
           "RunnableCanBeConcurrent": { "type": "boolean" },
           "RunnableDescription": { "type": "string" }

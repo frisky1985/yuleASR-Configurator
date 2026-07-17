@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Search,
   SlidersHorizontal,
@@ -14,10 +14,10 @@ import {
   List,
   ChevronLeft,
   ChevronRight,
-} from 'lucide-react'
-import { BSWTemplateCard } from '../components/BSWTemplateCard'
-import { bswTemplateApi } from '../services/bswTemplateApi'
-import type { BSWTemplate, TemplateCategory } from '../types/bswTemplate'
+} from 'lucide-react';
+import { BSWTemplateCard } from '../components/BSWTemplateCard';
+import { bswTemplateApi } from '../services/bswTemplateApi';
+import type { BSWTemplate, TemplateCategory } from '../types/bswTemplate';
 
 const categories: { key: TemplateCategory | 'all'; label: string; icon: React.ReactNode }[] = [
   { key: 'all', label: 'All', icon: <Layers className="w-4 h-4" /> },
@@ -26,29 +26,29 @@ const categories: { key: TemplateCategory | 'all'; label: string; icon: React.Re
   { key: 'service', label: 'Service', icon: <Database className="w-4 h-4" /> },
   { key: 'full', label: 'Full', icon: <Layers className="w-4 h-4" /> },
   { key: 'bsw', label: 'BSW', icon: <Layers className="w-4 h-4" /> },
-]
+];
 
 const sortOptions = [
   { value: 'downloadCount', label: 'Most Downloaded' },
   { value: 'createdAt', label: 'Newest' },
   { value: 'name', label: 'Name' },
   { value: 'viewCount', label: 'Most Viewed' },
-]
+];
 
 export function BSWTemplateMarketPage() {
-  const [templates, setTemplates] = useState<BSWTemplate[]>([])
-  const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState('')
-  const [activeCategory, setActiveCategory] = useState<TemplateCategory | 'all'>('all')
-  const [sortBy, setSortBy] = useState('downloadCount')
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc')
-  const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
-  const [total, setTotal] = useState(0)
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  const [templates, setTemplates] = useState<BSWTemplate[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [activeCategory, setActiveCategory] = useState<TemplateCategory | 'all'>('all');
+  const [sortBy, setSortBy] = useState('downloadCount');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   const fetchTemplates = useCallback(async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const result = await bswTemplateApi.list({
         category: activeCategory === 'all' ? undefined : activeCategory,
@@ -57,45 +57,45 @@ export function BSWTemplateMarketPage() {
         sortOrder,
         page,
         pageSize: 12,
-      })
-      setTemplates(result.data)
-      setTotalPages(result.totalPages)
-      setTotal(result.total)
+      });
+      setTemplates(result.data);
+      setTotalPages(result.totalPages);
+      setTotal(result.total);
     } catch (err) {
-      console.error('Failed to fetch templates:', err)
-      setTemplates([])
+      console.error('Failed to fetch templates:', err);
+      setTemplates([]);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [activeCategory, search, sortBy, sortOrder, page])
+  }, [activeCategory, search, sortBy, sortOrder, page]);
 
   useEffect(() => {
-    fetchTemplates()
-  }, [fetchTemplates])
+    fetchTemplates();
+  }, [fetchTemplates]);
 
   // Debounce search
-  const [searchInput, setSearchInput] = useState('')
+  const [searchInput, setSearchInput] = useState('');
   useEffect(() => {
     const timer = setTimeout(() => {
-      setSearch(searchInput)
-      setPage(1)
-    }, 400)
-    return () => clearTimeout(timer)
-  }, [searchInput])
+      setSearch(searchInput);
+      setPage(1);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
   const handleCategoryChange = (cat: TemplateCategory | 'all') => {
-    setActiveCategory(cat)
-    setPage(1)
-  }
+    setActiveCategory(cat);
+    setPage(1);
+  };
 
   const handleSortChange = (value: string) => {
-    setSortBy(value)
-    setPage(1)
-  }
+    setSortBy(value);
+    setPage(1);
+  };
 
   const toggleSortOrder = () => {
-    setSortOrder(prev => (prev === 'desc' ? 'asc' : 'desc'))
-  }
+    setSortOrder(prev => (prev === 'desc' ? 'asc' : 'desc'));
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -142,7 +142,9 @@ export function BSWTemplateMarketPage() {
               className="px-3 py-2.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-sm text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500/50"
             >
               {sortOptions.map(opt => (
-                <option key={opt.value} value={opt.value}>{opt.label}</option>
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
               ))}
             </select>
             <button
@@ -150,7 +152,9 @@ export function BSWTemplateMarketPage() {
               className="p-2.5 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"
               title={sortOrder === 'desc' ? 'Descending' : 'Ascending'}
             >
-              <ArrowUpDown className={`w-4 h-4 text-slate-500 ${sortOrder === 'asc' ? 'rotate-180' : ''}`} />
+              <ArrowUpDown
+                className={`w-4 h-4 text-slate-500 ${sortOrder === 'asc' ? 'rotate-180' : ''}`}
+              />
             </button>
           </div>
 
@@ -205,17 +209,21 @@ export function BSWTemplateMarketPage() {
       ) : templates.length === 0 ? (
         <div className="text-center py-20">
           <Layers className="w-12 h-12 mx-auto text-slate-300 dark:text-slate-600 mb-4" />
-          <h3 className="text-lg font-medium text-slate-700 dark:text-slate-300 mb-1">No templates found</h3>
+          <h3 className="text-lg font-medium text-slate-700 dark:text-slate-300 mb-1">
+            No templates found
+          </h3>
           <p className="text-sm text-slate-500 dark:text-slate-400">
             Try adjusting your search or filters
           </p>
         </div>
       ) : (
-        <div className={
-          viewMode === 'grid'
-            ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
-            : 'space-y-4'
-        }>
+        <div
+          className={
+            viewMode === 'grid'
+              ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
+              : 'space-y-4'
+          }
+        >
           {templates.map(template => (
             <BSWTemplateCard key={template.id} template={template} />
           ))}
@@ -233,9 +241,9 @@ export function BSWTemplateMarketPage() {
             <ChevronLeft className="w-4 h-4" />
           </button>
           {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
-            const start = Math.max(1, Math.min(page - 3, totalPages - 6))
-            const pageNum = start + i
-            if (pageNum > totalPages) return null
+            const start = Math.max(1, Math.min(page - 3, totalPages - 6));
+            const pageNum = start + i;
+            if (pageNum > totalPages) return null;
             return (
               <button
                 key={pageNum}
@@ -248,7 +256,7 @@ export function BSWTemplateMarketPage() {
               >
                 {pageNum}
               </button>
-            )
+            );
           })}
           <button
             onClick={() => setPage(p => Math.min(totalPages, p + 1))}
@@ -260,5 +268,5 @@ export function BSWTemplateMarketPage() {
         </div>
       )}
     </div>
-  )
+  );
 }

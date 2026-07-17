@@ -30,11 +30,11 @@ const pageVariants = {
 
 export function AnimatedPage({ children, className = '' }: AnimatedPageProps) {
   const shouldReduceMotion = useReducedMotion();
-  
+
   if (shouldReduceMotion) {
     return <div className={className}>{children}</div>;
   }
-  
+
   return (
     <motion.div
       variants={pageVariants}
@@ -76,7 +76,11 @@ interface StaggerContainerProps {
   className?: string;
 }
 
-export function StaggerContainer({ children, staggerDelay = 0.1, className = '' }: StaggerContainerProps) {
+export function StaggerContainer({
+  children,
+  staggerDelay = 0.1,
+  className = '',
+}: StaggerContainerProps) {
   return (
     <motion.div
       initial="hidden"
@@ -95,15 +99,21 @@ export function StaggerContainer({ children, staggerDelay = 0.1, className = '' 
   );
 }
 
-export function StaggerItem({ children, className = '' }: { children: ReactNode; className?: string }) {
+export function StaggerItem({
+  children,
+  className = '',
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
     <motion.div
       variants={{
         hidden: { opacity: 0, y: 20 },
-        visible: { 
-          opacity: 1, 
+        visible: {
+          opacity: 1,
           y: 0,
-          transition: { duration: 0.4, ease: 'easeOut' }
+          transition: { duration: 0.4, ease: 'easeOut' },
         },
       }}
       className={className}

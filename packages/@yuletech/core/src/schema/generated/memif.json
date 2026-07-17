@@ -41,10 +41,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "MemIfGeneral",
-    "MemIfMemHwA"
-  ],
+  "required": ["MemIfGeneral", "MemIfMemHwA"],
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",

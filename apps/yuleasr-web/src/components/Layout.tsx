@@ -1,71 +1,97 @@
-import { Home, Settings, FileJson, GitBranch, Moon, Sun, Keyboard, Globe, ArrowLeftRight, MessageSquare, BookOpen, FileText, GitFork, ExternalLink, Palette, Puzzle, Power } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { Link, useLocation } from 'react-router-dom'
+import {
+  Home,
+  Settings,
+  FileJson,
+  GitBranch,
+  Moon,
+  Sun,
+  Keyboard,
+  Globe,
+  ArrowLeftRight,
+  MessageSquare,
+  BookOpen,
+  FileText,
+  GitFork,
+  ExternalLink,
+  Palette,
+  Puzzle,
+  Power,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link, useLocation } from 'react-router-dom';
 
-import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp'
-import { LicenseBadge } from '@/components/LicenseBadge'
-import { useTheme } from '@/components/ThemeProvider'
-import { useAuthStore } from '@/stores/authStore'
-import { cn } from '@/lib/utils'
+import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp';
+import { LicenseBadge } from '@/components/LicenseBadge';
+import { useTheme } from '@/components/ThemeProvider';
+import { cn } from '@/lib/utils';
+import { useAuthStore } from '@/stores/authStore';
 
 interface LayoutProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export function Layout({ children }: LayoutProps) {
-  const location = useLocation()
-  const { t, i18n } = useTranslation()
-  const { effectiveTheme, toggleTheme } = useTheme()
-  const { user } = useAuthStore()
-  const [showShortcuts, setShowShortcuts] = useState(false)
-  const [showPluginStatus, setShowPluginStatus] = useState(false)
-  const [enabledPlugins, setEnabledPlugins] = useState<{id: string; name: string; type: string}[]>([])
+  const location = useLocation();
+  const { t, i18n } = useTranslation();
+  const { effectiveTheme, toggleTheme } = useTheme();
+  const { user } = useAuthStore();
+  const [showShortcuts, setShowShortcuts] = useState(false);
+  const [showPluginStatus, setShowPluginStatus] = useState(false);
+  const [enabledPlugins, setEnabledPlugins] = useState<
+    { id: string; name: string; type: string }[]
+  >([]);
 
   // Poll plugin status periodically
   useEffect(() => {
-    let cancelled = false
+    let cancelled = false;
     async function poll() {
       try {
-        const res = await fetch('/v1/api/plugins')
+        const res = await fetch('/v1/api/plugins');
         if (!cancelled && res.ok) {
-          const plugins: {id: string; name: string; type: string; enabled: boolean}[] = await res.json()
-          setEnabledPlugins(plugins.filter(p => p.enabled).map(p => ({id: p.id, name: p.name, type: p.type})))
+          const plugins: { id: string; name: string; type: string; enabled: boolean }[] =
+            await res.json();
+          setEnabledPlugins(
+            plugins.filter(p => p.enabled).map(p => ({ id: p.id, name: p.name, type: p.type }))
+          );
         }
       } catch {
         // API not available — silently ignore
       }
     }
-    poll()
-    const interval = setInterval(poll, 30_000)
-    return () => { cancelled = true; clearInterval(interval) }
-  }, [])
+    poll();
+    const interval = setInterval(poll, 30_000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, []);
 
   // Global keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Ctrl/Cmd + D to toggle theme
       if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
-        e.preventDefault()
-        toggleTheme()
+        e.preventDefault();
+        toggleTheme();
       }
       // Ctrl/Cmd + / to show shortcuts help
       if ((e.ctrlKey || e.metaKey) && e.key === '/') {
-        e.preventDefault()
-        setShowShortcuts(true)
+        e.preventDefault();
+        setShowShortcuts(true);
       }
-    }
+    };
 
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [toggleTheme])
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [toggleTheme]);
 
   const toggleLanguage = () => {
-    const currentLang = i18n.language
-    const newLang = currentLang === 'zh' ? 'en' : 'zh'
-    console.log(`[i18n] Switching language from ${currentLang} to ${newLang}`)
-    i18n.changeLanguage(newLang)
-  }
+    const currentLang = i18n.language;
+    const newLang = currentLang === 'zh' ? 'en' : 'zh';
+    console.log(`[i18n] Switching language from ${currentLang} to ${newLang}`);
+    i18n.changeLanguage(newLang);
+  };
 
   // ── Top banner community links ──
   const communityLinks = [
@@ -74,7 +100,7 @@ export function Layout({ children }: LayoutProps) {
     { href: '/community/#/blog', label: '博客', icon: BookOpen },
     { href: '/community/#/docs', label: '文档', icon: FileText },
     { href: '/community/#/opensource', label: '开源', icon: GitFork },
-  ]
+  ];
 
   // ── Main nav items ──
   const navItems = [
@@ -84,7 +110,7 @@ export function Layout({ children }: LayoutProps) {
     { path: '/migrate', label: 'Migrate', icon: ArrowLeftRight },
     { path: '/sync', label: t('nav.gitSync'), icon: GitBranch },
     { path: '/settings', label: t('nav.settings'), icon: Settings },
-  ]
+  ];
 
   return (
     <div className="min-h-screen bg-background transition-colors duration-200">
@@ -94,8 +120,8 @@ export function Layout({ children }: LayoutProps) {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-9">
               <div className="flex items-center gap-1">
-                {communityLinks.map((link) => {
-                  const Icon = link.icon
+                {communityLinks.map(link => {
+                  const Icon = link.icon;
                   return (
                     <a
                       key={link.href}
@@ -105,7 +131,7 @@ export function Layout({ children }: LayoutProps) {
                       <Icon className="w-3 h-3" />
                       {link.label}
                     </a>
-                  )
+                  );
                 })}
 
                 {/* Divider */}
@@ -143,9 +169,9 @@ export function Layout({ children }: LayoutProps) {
 
               {/* Nav items + Utilities */}
               <nav className="flex items-center space-x-1 sm:space-x-2">
-                {navItems.map((item) => {
-                  const Icon = item.icon
-                  const isActive = location.pathname.startsWith(item.path)
+                {navItems.map(item => {
+                  const Icon = item.icon;
+                  const isActive = location.pathname.startsWith(item.path);
                   return (
                     <Link
                       key={item.path}
@@ -160,7 +186,7 @@ export function Layout({ children }: LayoutProps) {
                       <Icon className="w-4 h-4" />
                       <span className="hidden sm:inline">{item.label}</span>
                     </Link>
-                  )
+                  );
                 })}
 
                 {/* Admin link — only for admin users */}
@@ -211,7 +237,7 @@ export function Layout({ children }: LayoutProps) {
                           </div>
                         ) : (
                           <div className="max-h-48 overflow-y-auto">
-                            {enabledPlugins.map((p) => (
+                            {enabledPlugins.map(p => (
                               <Link
                                 key={p.id}
                                 to="/plugins"
@@ -220,7 +246,9 @@ export function Layout({ children }: LayoutProps) {
                               >
                                 <Puzzle className="w-3.5 h-3.5 text-primary-500 shrink-0" />
                                 <span className="truncate flex-1">{p.name}</span>
-                                <span className="text-[10px] text-muted-foreground uppercase">{p.type}</span>
+                                <span className="text-[10px] text-muted-foreground uppercase">
+                                  {p.type}
+                                </span>
                               </Link>
                             ))}
                           </div>
@@ -240,7 +268,9 @@ export function Layout({ children }: LayoutProps) {
                   title={t('language.switch', 'Toggle Language')}
                 >
                   <Globe className="w-4 h-4" />
-                  <span className="text-xs font-medium hidden sm:inline">{i18n.language === 'zh' ? '中' : 'EN'}</span>
+                  <span className="text-xs font-medium hidden sm:inline">
+                    {i18n.language === 'zh' ? '中' : 'EN'}
+                  </span>
                 </button>
 
                 {/* Keyboard Shortcuts */}
@@ -256,7 +286,11 @@ export function Layout({ children }: LayoutProps) {
                 <button
                   onClick={toggleTheme}
                   className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                  title={effectiveTheme === 'dark' ? 'Switch to light mode (Ctrl+D)' : 'Switch to dark mode (Ctrl+D)'}
+                  title={
+                    effectiveTheme === 'dark'
+                      ? 'Switch to light mode (Ctrl+D)'
+                      : 'Switch to dark mode (Ctrl+D)'
+                  }
                 >
                   {effectiveTheme === 'dark' ? (
                     <Sun className="w-4 h-4" />
@@ -271,15 +305,10 @@ export function Layout({ children }: LayoutProps) {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {children}
-      </main>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">{children}</main>
 
       {/* Keyboard Shortcuts Help */}
-      <KeyboardShortcutsHelp
-        isOpen={showShortcuts}
-        onClose={() => setShowShortcuts(false)}
-      />
+      <KeyboardShortcutsHelp isOpen={showShortcuts} onClose={() => setShowShortcuts(false)} />
     </div>
-  )
+  );
 }

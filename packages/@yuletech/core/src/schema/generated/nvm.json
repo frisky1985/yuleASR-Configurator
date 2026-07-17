@@ -2046,11 +2046,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "BleShortID0",
-    "BleShortID1",
-    "BleShortID10"
-  ],
+  "required": ["BleShortID0", "BleShortID1", "BleShortID10"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

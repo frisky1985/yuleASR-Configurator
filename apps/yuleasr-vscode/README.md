@@ -45,13 +45,13 @@ code --install-extension yuleasr-vscode-0.1.0.vsix
 
 ### 常用命令
 
-| 命令 | 说明 |
-|------|------|
-| `yuleASR: Open Config` | 打开配置文件 |
-| `yuleASR: Refresh Explorer` | 刷新配置浏览器 |
-| `yuleASR: Sync Config` | 与 Git 仓库同步 |
-| `yuleASR: Validate Config` | 验证当前配置 |
-| `yuleASR: Generate Code` | 生成 BSW 代码 |
+| 命令                        | 说明            |
+| --------------------------- | --------------- |
+| `yuleASR: Open Config`      | 打开配置文件    |
+| `yuleASR: Refresh Explorer` | 刷新配置浏览器  |
+| `yuleASR: Sync Config`      | 与 Git 仓库同步 |
+| `yuleASR: Validate Config`  | 验证当前配置    |
+| `yuleASR: Generate Code`    | 生成 BSW 代码   |
 
 ---
 

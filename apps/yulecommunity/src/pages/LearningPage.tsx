@@ -194,15 +194,16 @@ export function LearningPage() {
   const [activeCategory, setActiveCategory] = useState('全部');
 
   const filteredCourses =
-    activeCategory === '全部'
-      ? courses
-      : courses.filter((c) => c.category === activeCategory);
+    activeCategory === '全部' ? courses : courses.filter(c => c.category === activeCategory);
 
   return (
     <div className="min-h-screen pt-16">
       <Helmet>
         <title>学习成长 - YuleTech | AutoSAR 教程与认证</title>
-        <meta name="description" content="系统化的 AutoSAR 学习路径，从入门到专家。视频课程、实战项目、专家问答，帮助你快速成长为汽车基础软件专家。" />
+        <meta
+          name="description"
+          content="系统化的 AutoSAR 学习路径，从入门到专家。视频课程、实战项目、专家问答，帮助你快速成长为汽车基础软件专家。"
+        />
       </Helmet>
       {/* Hero */}
       <section className="relative py-20 overflow-hidden bg-gradient-to-b from-[hsl(var(--primary))]/5 to-transparent">
@@ -268,12 +269,14 @@ export function LearningPage() {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {learningPaths.map((path) => (
+            {learningPaths.map(path => (
               <div
                 key={path.title}
                 className="group bg-card border border-border rounded-2xl p-6 hover:border-[hsl(var(--accent))]/30 transition-all hover:shadow-elegant"
               >
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${path.color} flex items-center justify-center mb-4`}>
+                <div
+                  className={`w-12 h-12 rounded-xl bg-gradient-to-br ${path.color} flex items-center justify-center mb-4`}
+                >
                   <path.icon className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="font-semibold text-lg mb-4">{path.title}</h3>
@@ -301,7 +304,7 @@ export function LearningPage() {
       <section className="py-8 sticky top-16 z-30 bg-background/80 backdrop-blur-xl border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 overflow-x-auto pb-2">
-            {categories.map((cat) => (
+            {categories.map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
@@ -321,17 +324,19 @@ export function LearningPage() {
       {/* Courses Grid */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          {filteredCourses.map((cat) => (
+          {filteredCourses.map(cat => (
             <div key={cat.category}>
               <div className="flex items-center gap-3 mb-6">
-                <div className={`w-10 h-10 rounded-lg ${cat.color} flex items-center justify-center`}>
+                <div
+                  className={`w-10 h-10 rounded-lg ${cat.color} flex items-center justify-center`}
+                >
                   <cat.icon className="w-5 h-5" />
                 </div>
                 <h2 className="text-xl font-bold">{cat.category}</h2>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {cat.items.map((item) => (
+                {cat.items.map(item => (
                   <div
                     key={item.title}
                     className="group bg-card border border-border rounded-xl p-5 hover:border-[hsl(var(--accent))]/30 transition-all hover:shadow-elegant flex flex-col"
@@ -352,7 +357,7 @@ export function LearningPage() {
                     <p className="text-sm text-muted-foreground mb-4 flex-1">{item.desc}</p>
 
                     <div className="flex flex-wrap gap-1.5 mb-4">
-                      {item.tags.map((tag) => (
+                      {item.tags.map(tag => (
                         <span
                           key={tag}
                           className="px-2 py-0.5 bg-muted rounded-md text-xs text-muted-foreground"
@@ -390,8 +395,8 @@ export function LearningPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">成为 YuleTech 讲师</h2>
           <p className="text-white/80 mb-8 max-w-2xl mx-auto">
-            如果你是汽车基础软件领域的专家，欢迎加入 YuleTech 讲师团队，
-            与 thousands of 工程师分享你的知识和经验，同时获得收益分成。
+            如果你是汽车基础软件领域的专家，欢迎加入 YuleTech 讲师团队， 与 thousands of
+            工程师分享你的知识和经验，同时获得收益分成。
           </p>
           <button className="px-8 py-3 bg-white text-[hsl(var(--primary))] rounded-xl font-semibold hover:bg-white/90 transition-all shadow-lg">
             申请成为讲师

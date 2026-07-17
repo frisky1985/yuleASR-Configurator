@@ -105,17 +105,20 @@ export function ImageLightbox({
   }, [isControlled, onClose]);
 
   // 导航到上一张/下一张
-  const navigateImage = useCallback((direction: number) => {
-    const newIndex = currentIndex + direction;
-    if (newIndex >= 0 && newIndex < imageList.length) {
-      if (propIndex === undefined) {
-        setInternalIndex(newIndex);
+  const navigateImage = useCallback(
+    (direction: number) => {
+      const newIndex = currentIndex + direction;
+      if (newIndex >= 0 && newIndex < imageList.length) {
+        if (propIndex === undefined) {
+          setInternalIndex(newIndex);
+        }
+        setScale(1);
+        setPosition({ x: 0, y: 0 });
+        onIndexChange?.(newIndex);
       }
-      setScale(1);
-      setPosition({ x: 0, y: 0 });
-      onIndexChange?.(newIndex);
-    }
-  }, [currentIndex, imageList.length, propIndex, onIndexChange]);
+    },
+    [currentIndex, imageList.length, propIndex, onIndexChange]
+  );
 
   // 缩放控制
   const handleZoomIn = useCallback(() => {
@@ -166,7 +169,15 @@ export function ImageLightbox({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, imageList.length, handleClose, navigateImage, handleZoomIn, handleZoomOut, handleReset]);
+  }, [
+    isOpen,
+    imageList.length,
+    handleClose,
+    navigateImage,
+    handleZoomIn,
+    handleZoomOut,
+    handleReset,
+  ]);
 
   // 焦点管理
   useEffect(() => {
@@ -196,86 +207,98 @@ export function ImageLightbox({
   }, [isOpen, currentImage?.src]);
 
   // 双击缩放
-  const handleDoubleClick = useCallback((e: React.MouseEvent) => {
-    if (scale > 1) {
-      setScale(1);
-      setPosition({ x: 0, y: 0 });
-    } else {
-      setScale(2);
-      const rect = imageRef.current?.getBoundingClientRect();
-      if (rect) {
-        const x = (e.clientX - rect.left - rect.width / 2) / 2;
-        const y = (e.clientY - rect.top - rect.height / 2) / 2;
-        setPosition({ x: -x, y: -y });
+  const handleDoubleClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (scale > 1) {
+        setScale(1);
+        setPosition({ x: 0, y: 0 });
+      } else {
+        setScale(2);
+        const rect = imageRef.current?.getBoundingClientRect();
+        if (rect) {
+          const x = (e.clientX - rect.left - rect.width / 2) / 2;
+          const y = (e.clientY - rect.top - rect.height / 2) / 2;
+          setPosition({ x: -x, y: -y });
+        }
       }
-    }
-  }, [scale]);
+    },
+    [scale]
+  );
 
   // 拖拽处理
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (isDragging && scale > 1) {
-      setPosition({
-        x: e.clientX - dragStart.current.x,
-        y: e.clientY - dragStart.current.y,
-      });
-    }
-  }, [isDragging, scale]);
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent) => {
+      if (isDragging && scale > 1) {
+        setPosition({
+          x: e.clientX - dragStart.current.x,
+          y: e.clientY - dragStart.current.y,
+        });
+      }
+    },
+    [isDragging, scale]
+  );
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
   }, []);
 
   // 触摸事件处理
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    if (e.touches.length === 2) {
-      const distance = Math.hypot(
-        e.touches[0].pageX - e.touches[1].pageX,
-        e.touches[0].pageY - e.touches[1].pageY
-      );
-      setLastTouchDistance(distance);
-      gestureState.current.isPinching = true;
-      gestureState.current.startScale = scale;
-    } else if (e.touches.length === 1) {
-      if (scale > 1) {
-        setIsDragging(true);
-        dragStart.current = {
-          x: e.touches[0].clientX - position.x,
-          y: e.touches[0].clientY - position.y,
-        };
-      }
-
-      // 双击检测
-      const now = Date.now();
-      if (now - lastTapTime < 300) {
+  const handleTouchStart = useCallback(
+    (e: React.TouchEvent) => {
+      if (e.touches.length === 2) {
+        const distance = Math.hypot(
+          e.touches[0].pageX - e.touches[1].pageX,
+          e.touches[0].pageY - e.touches[1].pageY
+        );
+        setLastTouchDistance(distance);
+        gestureState.current.isPinching = true;
+        gestureState.current.startScale = scale;
+      } else if (e.touches.length === 1) {
         if (scale > 1) {
-          setScale(1);
-          setPosition({ x: 0, y: 0 });
-        } else {
-          setScale(2);
+          setIsDragging(true);
+          dragStart.current = {
+            x: e.touches[0].clientX - position.x,
+            y: e.touches[0].clientY - position.y,
+          };
         }
-      }
-      setLastTapTime(now);
-    }
-  }, [scale, position, lastTapTime]);
 
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (e.touches.length === 2 && gestureState.current.isPinching) {
-      e.preventDefault();
-      const distance = Math.hypot(
-        e.touches[0].pageX - e.touches[1].pageX,
-        e.touches[0].pageY - e.touches[1].pageY
-      );
-      const delta = distance - lastTouchDistance;
-      const newScale = Math.max(1, Math.min(4, gestureState.current.startScale + delta * 0.01));
-      setScale(newScale);
-      setLastTouchDistance(distance);
-    } else if (e.touches.length === 1 && isDragging && scale > 1) {
-      setPosition({
-        x: e.touches[0].clientX - dragStart.current.x,
-        y: e.touches[0].clientY - dragStart.current.y,
-      });
-    }
-  }, [isDragging, scale, lastTouchDistance]);
+        // 双击检测
+        const now = Date.now();
+        if (now - lastTapTime < 300) {
+          if (scale > 1) {
+            setScale(1);
+            setPosition({ x: 0, y: 0 });
+          } else {
+            setScale(2);
+          }
+        }
+        setLastTapTime(now);
+      }
+    },
+    [scale, position, lastTapTime]
+  );
+
+  const handleTouchMove = useCallback(
+    (e: React.TouchEvent) => {
+      if (e.touches.length === 2 && gestureState.current.isPinching) {
+        e.preventDefault();
+        const distance = Math.hypot(
+          e.touches[0].pageX - e.touches[1].pageX,
+          e.touches[0].pageY - e.touches[1].pageY
+        );
+        const delta = distance - lastTouchDistance;
+        const newScale = Math.max(1, Math.min(4, gestureState.current.startScale + delta * 0.01));
+        setScale(newScale);
+        setLastTouchDistance(distance);
+      } else if (e.touches.length === 1 && isDragging && scale > 1) {
+        setPosition({
+          x: e.touches[0].clientX - dragStart.current.x,
+          y: e.touches[0].clientY - dragStart.current.y,
+        });
+      }
+    },
+    [isDragging, scale, lastTouchDistance]
+  );
 
   const handleTouchEnd = useCallback(() => {
     setIsDragging(false);
@@ -336,7 +359,10 @@ export function ImageLightbox({
         <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
           <button
             type="button"
-            onClick={(e) => { e.stopPropagation(); handleZoomOut(); }}
+            onClick={e => {
+              e.stopPropagation();
+              handleZoomOut();
+            }}
             className="w-10 h-10 flex items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
             aria-label="缩小"
           >
@@ -344,7 +370,10 @@ export function ImageLightbox({
           </button>
           <button
             type="button"
-            onClick={(e) => { e.stopPropagation(); handleZoomIn(); }}
+            onClick={e => {
+              e.stopPropagation();
+              handleZoomIn();
+            }}
             className="w-10 h-10 flex items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
             aria-label="放大"
           >
@@ -352,7 +381,10 @@ export function ImageLightbox({
           </button>
           <button
             type="button"
-            onClick={(e) => { e.stopPropagation(); handleReset(); }}
+            onClick={e => {
+              e.stopPropagation();
+              handleReset();
+            }}
             className="w-10 h-10 flex items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
             aria-label="重置缩放"
           >
@@ -371,7 +403,10 @@ export function ImageLightbox({
         {showNavigation && currentIndex > 0 && (
           <button
             type="button"
-            onClick={(e) => { e.stopPropagation(); navigateImage(-1); }}
+            onClick={e => {
+              e.stopPropagation();
+              navigateImage(-1);
+            }}
             className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
             aria-label="上一张图片"
           >
@@ -386,7 +421,7 @@ export function ImageLightbox({
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
           onDoubleClick={handleDoubleClick}
         >
           {isLoading ? (
@@ -421,7 +456,10 @@ export function ImageLightbox({
         {showNavigation && currentIndex < imageList.length - 1 && (
           <button
             type="button"
-            onClick={(e) => { e.stopPropagation(); navigateImage(1); }}
+            onClick={e => {
+              e.stopPropagation();
+              navigateImage(1);
+            }}
             className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-12 h-12 flex items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
             aria-label="下一张图片"
           >
@@ -430,9 +468,7 @@ export function ImageLightbox({
         )}
 
         {/* 操作说明 */}
-        <span className="sr-only">
-          按 ESC 关闭，方向键切换图片，Ctrl+滚轮缩放
-        </span>
+        <span className="sr-only">按 ESC 关闭，方向键切换图片，Ctrl+滚轮缩放</span>
       </motion.div>
     </AnimatePresence>
   );

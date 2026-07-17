@@ -1,10 +1,12 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { mkdtempSync, writeFileSync, rmSync, existsSync, readFileSync } from 'fs';
-import { join } from 'path';
-import { tmpdir } from 'os';
 import { execSync } from 'child_process';
-import { EcucCodeGenerator } from '../ecuc-generator';
+import { mkdtempSync, writeFileSync, rmSync, existsSync, readFileSync } from 'fs';
+import { tmpdir } from 'os';
+import { join } from 'path';
+
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+
 import type { ModuleConfig, ModuleSchema } from '../../types';
+import { EcucCodeGenerator } from '../ecuc-generator';
 
 describe('EcucCodeGenerator - File output', () => {
   const generator = new EcucCodeGenerator();
@@ -13,7 +15,9 @@ describe('EcucCodeGenerator - File output', () => {
   beforeAll(() => {
     tmpDir = mkdtempSync(join(tmpdir(), 'ecuc-test-'));
     // Write AUTOSAR stubs so gcc can parse the generated headers
-    writeFileSync(join(tmpDir, 'Std_Types.h'), `
+    writeFileSync(
+      join(tmpDir, 'Std_Types.h'),
+      `
 #ifndef STD_TYPES_H
 #define STD_TYPES_H
 typedef unsigned char boolean;
@@ -37,19 +41,26 @@ typedef uint16 Std_ReturnType;
 #define E_NOT_OK ((Std_ReturnType)1u)
 typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8 sw_minor_version; uint8 sw_patch_version; } Std_VersionInfoType;
 #endif
-`);
-    writeFileSync(join(tmpDir, 'Ecuc.h'), `
+`
+    );
+    writeFileSync(
+      join(tmpDir, 'Ecuc.h'),
+      `
 #ifndef ECUC_H
 #define ECUC_H
 #include "Std_Types.h"
 #endif
-`);
-    writeFileSync(join(tmpDir, 'MemMap.h'), `
+`
+    );
+    writeFileSync(
+      join(tmpDir, 'MemMap.h'),
+      `
 #ifndef MEMMAP_H
 #define MEMMAP_H
 /* Empty stubs — all section macros resolve to nothing */
 #endif
-`);
+`
+    );
   });
 
   afterAll(() => {
@@ -62,9 +73,7 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
       version: '4.4.0',
       parameters: { canBaudrate: 500000, canDevErrorDetect: false },
       containers: {
-        CanController: [
-          { id: 'ctrl0', parameters: { canBaudrate: 500000, canControllerId: 0 } },
-        ],
+        CanController: [{ id: 'ctrl0', parameters: { canBaudrate: 500000, canControllerId: 0 } }],
       },
     };
     const schema: ModuleSchema = {
@@ -76,12 +85,14 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         { name: 'canBaudrate', type: 'integer', required: true },
         { name: 'canDevErrorDetect', type: 'boolean', required: false },
       ],
-      containers: [{
-        name: 'CanController',
-        label: 'CAN Controller',
-        multiple: true,
-        parameters: ['canBaudrate', 'canControllerId'],
-      }],
+      containers: [
+        {
+          name: 'CanController',
+          label: 'CAN Controller',
+          multiple: true,
+          parameters: ['canBaudrate', 'canControllerId'],
+        },
+      ],
     };
 
     const result = await generator.generate(config, schema, { outputDir: tmpDir });
@@ -98,24 +109,30 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
 
   it('should produce C code that passes gcc -fsyntax-only', async () => {
     const config: ModuleConfig = {
-      module: 'Can', version: '4.4.0',
+      module: 'Can',
+      version: '4.4.0',
       parameters: { canBaudrate: 500000, canDevErrorDetect: false },
       containers: {
-        CanController: [
-          { id: 'ctrl0', parameters: { canBaudrate: 500000, canControllerId: 0 } },
-        ],
+        CanController: [{ id: 'ctrl0', parameters: { canBaudrate: 500000, canControllerId: 0 } }],
       },
     };
     const schema: ModuleSchema = {
-      name: 'Can', label: 'CAN', layer: 'MCAL', version: '4.4.0',
+      name: 'Can',
+      label: 'CAN',
+      layer: 'MCAL',
+      version: '4.4.0',
       parameters: [
         { name: 'canBaudrate', type: 'integer', required: true },
         { name: 'canDevErrorDetect', type: 'boolean', required: false },
       ],
-      containers: [{
-        name: 'CanController', label: 'CAN Controller', multiple: true,
-        parameters: ['canBaudrate', 'canControllerId'],
-      }],
+      containers: [
+        {
+          name: 'CanController',
+          label: 'CAN Controller',
+          multiple: true,
+          parameters: ['canBaudrate', 'canControllerId'],
+        },
+      ],
     };
 
     const result = await generator.generate(config, schema, { outputDir: tmpDir });
@@ -131,10 +148,10 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
       if (file.language !== 'h') continue;
 
       try {
-        execSync(
-          `gcc -fsyntax-only -x c -I ${tmpDir} ${file.path}`,
-          { stdio: 'pipe', timeout: 15000 }
-        );
+        execSync(`gcc -fsyntax-only -x c -I ${tmpDir} ${file.path}`, {
+          stdio: 'pipe',
+          timeout: 15000,
+        });
         console.log(`✅ ${file.path} passes syntax check`);
       } catch (e: any) {
         const stderr = e.stderr?.toString() || '';
@@ -151,12 +168,16 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
 
   it('should produce syntactically valid C in .c files', async () => {
     const config: ModuleConfig = {
-      module: 'Can', version: '4.4.0',
+      module: 'Can',
+      version: '4.4.0',
       parameters: { canBaudrate: 500000 },
       containers: {},
     };
     const schema: ModuleSchema = {
-      name: 'Can', label: 'CAN', layer: 'MCAL', version: '4.4.0',
+      name: 'Can',
+      label: 'CAN',
+      layer: 'MCAL',
+      version: '4.4.0',
       parameters: [{ name: 'canBaudrate', type: 'integer', required: true }],
       containers: [],
     };
@@ -172,16 +193,18 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
       if (file.language !== 'c') continue;
 
       try {
-        execSync(
-          `gcc -fsyntax-only -I ${tmpDir} -include ${tmpDir}/Std_Types.h ${file.path}`,
-          { stdio: 'pipe', timeout: 15000 }
-        );
+        execSync(`gcc -fsyntax-only -I ${tmpDir} -include ${tmpDir}/Std_Types.h ${file.path}`, {
+          stdio: 'pipe',
+          timeout: 15000,
+        });
         console.log(`✅ ${file.path} passes syntax check`);
       } catch (e: any) {
         const stderr = e.stderr?.toString() || '';
         const syntaxErrors = stderr
           .split('\n')
-          .filter((l: string) => l.includes('error:') && (l.includes('expected') || l.includes('syntax')))
+          .filter(
+            (l: string) => l.includes('error:') && (l.includes('expected') || l.includes('syntax'))
+          )
           .join('\n');
         if (syntaxErrors) {
           console.warn(`⚠️ ${file.path} syntax issues:\n${syntaxErrors}`);
@@ -197,7 +220,9 @@ describe('EcucCodeGenerator - Multi-module E2E syntax check', () => {
 
   beforeAll(() => {
     tmpDir = mkdtempSync(join(tmpdir(), 'ecuc-e2e-'));
-    writeFileSync(join(tmpDir, 'Std_Types.h'), `
+    writeFileSync(
+      join(tmpDir, 'Std_Types.h'),
+      `
 #ifndef STD_TYPES_H
 #define STD_TYPES_H
 typedef unsigned char boolean;
@@ -221,19 +246,26 @@ typedef uint16 Std_ReturnType;
 #define E_NOT_OK ((Std_ReturnType)1u)
 typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8 sw_minor_version; uint8 sw_patch_version; } Std_VersionInfoType;
 #endif
-`);
-    writeFileSync(join(tmpDir, 'Ecuc.h'), `
+`
+    );
+    writeFileSync(
+      join(tmpDir, 'Ecuc.h'),
+      `
 #ifndef ECUC_H
 #define ECUC_H
 #include "Std_Types.h"
 #endif
-`);
-    writeFileSync(join(tmpDir, 'MemMap.h'), `
+`
+    );
+    writeFileSync(
+      join(tmpDir, 'MemMap.h'),
+      `
 #ifndef MEMMAP_H
 #define MEMMAP_H
 /* Empty stubs — all section macros resolve to nothing */
 #endif
-`);
+`
+    );
   });
 
   afterAll(() => {
@@ -243,49 +275,70 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
   const moduleDefs: Array<{ config: ModuleConfig; schema: ModuleSchema }> = [
     {
       config: {
-        module: 'Can', version: '4.4.0',
+        module: 'Can',
+        version: '4.4.0',
         parameters: { canBaudrate: 500000, canDevErrorDetect: false },
         containers: {
           CanController: [{ id: 'c0', parameters: { canBaudrate: 500000, canControllerId: 0 } }],
         },
       },
       schema: {
-        name: 'Can', label: 'CAN Driver', layer: 'MCAL', version: '4.4.0',
+        name: 'Can',
+        label: 'CAN Driver',
+        layer: 'MCAL',
+        version: '4.4.0',
         parameters: [
           { name: 'canBaudrate', type: 'integer', required: true },
           { name: 'canDevErrorDetect', type: 'boolean', required: false },
         ],
-        containers: [{
-          name: 'CanController', label: 'CAN Controller', multiple: true,
-          minInstances: 1, maxInstances: 4,
-          parameters: ['canBaudrate', 'canControllerId'],
-        }],
+        containers: [
+          {
+            name: 'CanController',
+            label: 'CAN Controller',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 4,
+            parameters: ['canBaudrate', 'canControllerId'],
+          },
+        ],
       },
     },
     {
       config: {
-        module: 'Mcu', version: '4.4.0',
+        module: 'Mcu',
+        version: '4.4.0',
         parameters: { mcuClockSetting: 16000000, mcuRamSectors: 4 },
         containers: {
-          McuClockSettingConfig: [{ id: 'clk0', parameters: { clockId: 0, clockFrequency: 16000000 } }],
+          McuClockSettingConfig: [
+            { id: 'clk0', parameters: { clockId: 0, clockFrequency: 16000000 } },
+          ],
         },
       },
       schema: {
-        name: 'Mcu', label: 'MCU Driver', layer: 'MCAL', version: '4.4.0',
+        name: 'Mcu',
+        label: 'MCU Driver',
+        layer: 'MCAL',
+        version: '4.4.0',
         parameters: [
           { name: 'mcuClockSetting', type: 'integer', required: true },
           { name: 'mcuRamSectors', type: 'integer', required: false },
         ],
-        containers: [{
-          name: 'McuClockSettingConfig', label: 'Clock Setting', multiple: true,
-          minInstances: 1, maxInstances: 8,
-          parameters: ['clockId', 'clockFrequency'],
-        }],
+        containers: [
+          {
+            name: 'McuClockSettingConfig',
+            label: 'Clock Setting',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 8,
+            parameters: ['clockId', 'clockFrequency'],
+          },
+        ],
       },
     },
     {
       config: {
-        module: 'Port', version: '4.4.0',
+        module: 'Port',
+        version: '4.4.0',
         parameters: { portDevErrorDetect: true, portPinCount: 8 },
         containers: {
           PortPin: [
@@ -295,47 +348,68 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         },
       },
       schema: {
-        name: 'Port', label: 'PORT Driver', layer: 'MCAL', version: '4.4.0',
+        name: 'Port',
+        label: 'PORT Driver',
+        layer: 'MCAL',
+        version: '4.4.0',
         parameters: [
           { name: 'portDevErrorDetect', type: 'boolean', required: false },
           { name: 'portPinCount', type: 'integer', required: true },
         ],
-        containers: [{
-          name: 'PortPin', label: 'Port Pin', multiple: true,
-          minInstances: 1, maxInstances: 64,
-          parameters: ['pinId', 'pinDirection'],
-        }],
+        containers: [
+          {
+            name: 'PortPin',
+            label: 'Port Pin',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 64,
+            parameters: ['pinId', 'pinDirection'],
+          },
+        ],
       },
     },
     {
       config: {
-        module: 'Adc', version: '4.4.0',
+        module: 'Adc',
+        version: '4.4.0',
         parameters: { adcDevErrorDetect: false, adcVersionInfoApi: true },
         containers: {
           AdcHwUnit: [{ id: 'hwu0', parameters: { clockId: 0, adcResolution: 12 } }],
         },
       },
       schema: {
-        name: 'Adc', label: 'ADC Driver', layer: 'MCAL', version: '4.4.0',
+        name: 'Adc',
+        label: 'ADC Driver',
+        layer: 'MCAL',
+        version: '4.4.0',
         parameters: [
           { name: 'adcDevErrorDetect', type: 'boolean', required: false },
           { name: 'adcVersionInfoApi', type: 'boolean', required: false },
         ],
-        containers: [{
-          name: 'AdcHwUnit', label: 'ADC HW Unit', multiple: true,
-          minInstances: 1, maxInstances: 8,
-          parameters: ['clockId', 'adcResolution'],
-        }],
+        containers: [
+          {
+            name: 'AdcHwUnit',
+            label: 'ADC HW Unit',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 8,
+            parameters: ['clockId', 'adcResolution'],
+          },
+        ],
       },
     },
     {
       config: {
-        module: 'Dio', version: '4.4.0',
+        module: 'Dio',
+        version: '4.4.0',
         parameters: { dioDevErrorDetect: false, dioChannelCount: 16 },
         containers: {},
       },
       schema: {
-        name: 'Dio', label: 'DIO Driver', layer: 'MCAL', version: '4.4.0',
+        name: 'Dio',
+        label: 'DIO Driver',
+        layer: 'MCAL',
+        version: '4.4.0',
         parameters: [
           { name: 'dioDevErrorDetect', type: 'boolean', required: false },
           { name: 'dioChannelCount', type: 'integer', required: true },
@@ -345,32 +419,43 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
     },
     {
       config: {
-        module: 'Gpt', version: '4.4.0',
+        module: 'Gpt',
+        version: '4.4.0',
         parameters: { gptDevErrorDetect: false },
         containers: {
           GptChannel: [{ id: 'ch0', parameters: { channelId: 0, tickFrequency: 1000 } }],
         },
       },
       schema: {
-        name: 'Gpt', label: 'GPT Driver', layer: 'MCAL', version: '4.4.0',
-        parameters: [
-          { name: 'gptDevErrorDetect', type: 'boolean', required: false },
+        name: 'Gpt',
+        label: 'GPT Driver',
+        layer: 'MCAL',
+        version: '4.4.0',
+        parameters: [{ name: 'gptDevErrorDetect', type: 'boolean', required: false }],
+        containers: [
+          {
+            name: 'GptChannel',
+            label: 'GPT Channel',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 32,
+            parameters: ['channelId', 'tickFrequency'],
+          },
         ],
-        containers: [{
-          name: 'GptChannel', label: 'GPT Channel', multiple: true,
-          minInstances: 1, maxInstances: 32,
-          parameters: ['channelId', 'tickFrequency'],
-        }],
       },
     },
     {
       config: {
-        module: 'Spi', version: '4.4.0',
+        module: 'Spi',
+        version: '4.4.0',
         parameters: { spiDevErrorDetect: false, spiChannelCount: 4 },
         containers: {},
       },
       schema: {
-        name: 'Spi', label: 'SPI Driver', layer: 'MCAL', version: '4.4.0',
+        name: 'Spi',
+        label: 'SPI Driver',
+        layer: 'MCAL',
+        version: '4.4.0',
         parameters: [
           { name: 'spiDevErrorDetect', type: 'boolean', required: false },
           { name: 'spiChannelCount', type: 'integer', required: true },
@@ -380,7 +465,8 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
     },
     {
       config: {
-        module: 'EcuM', version: '4.4.0',
+        module: 'EcuM',
+        version: '4.4.0',
         parameters: {
           ecuMDefaultShutdownTarget: 1,
           ecuMWakeupSourceMask: 65535,
@@ -392,7 +478,10 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         containers: {},
       },
       schema: {
-        name: 'EcuM', label: 'ECU Manager', layer: 'SERVICE', version: '4.4.0',
+        name: 'EcuM',
+        label: 'ECU Manager',
+        layer: 'SERVICE',
+        version: '4.4.0',
         parameters: [
           { name: 'ecuMDefaultShutdownTarget', type: 'integer', required: true },
           { name: 'ecuMWakeupSourceMask', type: 'integer', required: true },
@@ -406,7 +495,8 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
     },
     {
       config: {
-        module: 'Det', version: '4.4.0',
+        module: 'Det',
+        version: '4.4.0',
         parameters: {
           detEnabled: true,
           detErrorBufferSize: 32,
@@ -418,7 +508,10 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         containers: {},
       },
       schema: {
-        name: 'Det', label: 'Default Error Tracer', layer: 'SERVICE', version: '4.4.0',
+        name: 'Det',
+        label: 'Default Error Tracer',
+        layer: 'SERVICE',
+        version: '4.4.0',
         parameters: [
           { name: 'detEnabled', type: 'boolean', required: true },
           { name: 'detErrorBufferSize', type: 'integer', required: true },
@@ -432,7 +525,8 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
     },
     {
       config: {
-        module: 'Dem', version: '4.4.0',
+        module: 'Dem',
+        version: '4.4.0',
         parameters: {
           demEnabled: true,
           demMaxNumberOfEvents: 256,
@@ -443,13 +537,32 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         },
         containers: {
           DemEventParameter: [
-            { id: 'event0', parameters: { demEventId: 100, demEventPriority: 1, demEventKind: 0, demEventFailureCycle: 5 } },
-            { id: 'event1', parameters: { demEventId: 200, demEventPriority: 2, demEventKind: 2, demEventFailureCycle: 0 } },
+            {
+              id: 'event0',
+              parameters: {
+                demEventId: 100,
+                demEventPriority: 1,
+                demEventKind: 0,
+                demEventFailureCycle: 5,
+              },
+            },
+            {
+              id: 'event1',
+              parameters: {
+                demEventId: 200,
+                demEventPriority: 2,
+                demEventKind: 2,
+                demEventFailureCycle: 0,
+              },
+            },
           ],
         },
       },
       schema: {
-        name: 'Dem', label: 'Diagnostic Event Manager', layer: 'SERVICE', version: '4.4.0',
+        name: 'Dem',
+        label: 'Diagnostic Event Manager',
+        layer: 'SERVICE',
+        version: '4.4.0',
         parameters: [
           { name: 'demEnabled', type: 'boolean', required: true },
           { name: 'demMaxNumberOfEvents', type: 'integer', required: true },
@@ -458,16 +571,22 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
           { name: 'demStorageEnabled', type: 'boolean', required: false },
           { name: 'demVersion', type: 'string', required: false },
         ],
-        containers: [{
-          name: 'DemEventParameter', label: 'Dem Event Parameter', multiple: true,
-          minInstances: 1, maxInstances: 100,
-          parameters: ['demEventId', 'demEventPriority', 'demEventKind', 'demEventFailureCycle'],
-        }],
+        containers: [
+          {
+            name: 'DemEventParameter',
+            label: 'Dem Event Parameter',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 100,
+            parameters: ['demEventId', 'demEventPriority', 'demEventKind', 'demEventFailureCycle'],
+          },
+        ],
       },
     },
     {
       config: {
-        module: 'Fls', version: '4.4.0',
+        module: 'Fls',
+        version: '4.4.0',
         parameters: {
           flsEnabled: true,
           flsAcErase: true,
@@ -479,13 +598,32 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         },
         containers: {
           FlsSector: [
-            { id: 'sector0', parameters: { flsSectorIndex: 0, flsSectorSize: 8192, flsSectorStartAddress: 0x08000000, flsSectorProtect: false } },
-            { id: 'sector1', parameters: { flsSectorIndex: 1, flsSectorSize: 16384, flsSectorStartAddress: 0x08002000, flsSectorProtect: true } },
+            {
+              id: 'sector0',
+              parameters: {
+                flsSectorIndex: 0,
+                flsSectorSize: 8192,
+                flsSectorStartAddress: 0x08000000,
+                flsSectorProtect: false,
+              },
+            },
+            {
+              id: 'sector1',
+              parameters: {
+                flsSectorIndex: 1,
+                flsSectorSize: 16384,
+                flsSectorStartAddress: 0x08002000,
+                flsSectorProtect: true,
+              },
+            },
           ],
         },
       },
       schema: {
-        name: 'Fls', label: 'Flash Driver', layer: 'MCAL', version: '4.4.0',
+        name: 'Fls',
+        label: 'Flash Driver',
+        layer: 'MCAL',
+        version: '4.4.0',
         parameters: [
           { name: 'flsEnabled', type: 'boolean', required: true },
           { name: 'flsAcErase', type: 'boolean', required: true },
@@ -495,16 +633,27 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
           { name: 'flsDevErrorDetect', type: 'boolean', required: false },
           { name: 'flsVersion', type: 'string', required: false },
         ],
-        containers: [{
-          name: 'FlsSector', label: 'Flash Sector', multiple: true,
-          minInstances: 1, maxInstances: 100,
-          parameters: ['flsSectorIndex', 'flsSectorSize', 'flsSectorStartAddress', 'flsSectorProtect'],
-        }],
+        containers: [
+          {
+            name: 'FlsSector',
+            label: 'Flash Sector',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 100,
+            parameters: [
+              'flsSectorIndex',
+              'flsSectorSize',
+              'flsSectorStartAddress',
+              'flsSectorProtect',
+            ],
+          },
+        ],
       },
     },
     {
       config: {
-        module: 'CanIf', version: '4.4.0',
+        module: 'CanIf',
+        version: '4.4.0',
         parameters: {
           canIfEnabled: true,
           canIfMaxRxPdu: 32,
@@ -514,16 +663,28 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         },
         containers: {
           CanIfRxPdu: [
-            { id: 'rx0', parameters: { canIfRxPduId: 1, canIfRxPduCanId: 0x100, canIfRxPduDlc: 8 } },
-            { id: 'rx1', parameters: { canIfRxPduId: 2, canIfRxPduCanId: 0x200, canIfRxPduDlc: 4 } },
+            {
+              id: 'rx0',
+              parameters: { canIfRxPduId: 1, canIfRxPduCanId: 0x100, canIfRxPduDlc: 8 },
+            },
+            {
+              id: 'rx1',
+              parameters: { canIfRxPduId: 2, canIfRxPduCanId: 0x200, canIfRxPduDlc: 4 },
+            },
           ],
           CanIfTxPdu: [
-            { id: 'tx0', parameters: { canIfTxPduId: 1, canIfTxPduCanId: 0x300, canIfTxPduDlc: 8 } },
+            {
+              id: 'tx0',
+              parameters: { canIfTxPduId: 1, canIfTxPduCanId: 0x300, canIfTxPduDlc: 8 },
+            },
           ],
         },
       },
       schema: {
-        name: 'CanIf', label: 'CAN Interface', layer: 'SERVICE', version: '4.4.0',
+        name: 'CanIf',
+        label: 'CAN Interface',
+        layer: 'SERVICE',
+        version: '4.4.0',
         parameters: [
           { name: 'canIfEnabled', type: 'boolean', required: true },
           { name: 'canIfMaxRxPdu', type: 'integer', required: true },
@@ -539,13 +700,19 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         ],
         containers: [
           {
-            name: 'CanIfRxPdu', label: 'CanIf Rx PDU', multiple: true,
-            minInstances: 1, maxInstances: 50,
+            name: 'CanIfRxPdu',
+            label: 'CanIf Rx PDU',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 50,
             parameters: ['canIfRxPduId', 'canIfRxPduCanId', 'canIfRxPduDlc'],
           },
           {
-            name: 'CanIfTxPdu', label: 'CanIf Tx PDU', multiple: true,
-            minInstances: 0, maxInstances: 50,
+            name: 'CanIfTxPdu',
+            label: 'CanIf Tx PDU',
+            multiple: true,
+            minInstances: 0,
+            maxInstances: 50,
             parameters: ['canIfTxPduId', 'canIfTxPduCanId', 'canIfTxPduDlc'],
           },
         ],
@@ -553,7 +720,8 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
     },
     {
       config: {
-        module: 'Fee', version: '4.4.0',
+        module: 'Fee',
+        version: '4.4.0',
         parameters: {
           feeEnabled: true,
           feeMaxBlocks: 32,
@@ -563,13 +731,32 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         },
         containers: {
           FeeBlockConfiguration: [
-            { id: 'block0', parameters: { feeBlockNumber: 1, feeBlockSize: 64, feeImmediateData: true, feeNumberOfWriteCycles: 10000 } },
-            { id: 'block1', parameters: { feeBlockNumber: 2, feeBlockSize: 128, feeImmediateData: false, feeNumberOfWriteCycles: 5000 } },
+            {
+              id: 'block0',
+              parameters: {
+                feeBlockNumber: 1,
+                feeBlockSize: 64,
+                feeImmediateData: true,
+                feeNumberOfWriteCycles: 10000,
+              },
+            },
+            {
+              id: 'block1',
+              parameters: {
+                feeBlockNumber: 2,
+                feeBlockSize: 128,
+                feeImmediateData: false,
+                feeNumberOfWriteCycles: 5000,
+              },
+            },
           ],
         },
       },
       schema: {
-        name: 'Fee', label: 'Flash EEPROM Emulation', layer: 'MCAL', version: '4.4.0',
+        name: 'Fee',
+        label: 'Flash EEPROM Emulation',
+        layer: 'MCAL',
+        version: '4.4.0',
         parameters: [
           { name: 'feeEnabled', type: 'boolean', required: true },
           { name: 'feeMaxBlocks', type: 'integer', required: true },
@@ -577,16 +764,27 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
           { name: 'feeDevErrorDetect', type: 'boolean', required: false },
           { name: 'feeVersion', type: 'string', required: false },
         ],
-        containers: [{
-          name: 'FeeBlockConfiguration', label: 'Fee Block Configuration', multiple: true,
-          minInstances: 1, maxInstances: 100,
-          parameters: ['feeBlockNumber', 'feeBlockSize', 'feeImmediateData', 'feeNumberOfWriteCycles'],
-        }],
+        containers: [
+          {
+            name: 'FeeBlockConfiguration',
+            label: 'Fee Block Configuration',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 100,
+            parameters: [
+              'feeBlockNumber',
+              'feeBlockSize',
+              'feeImmediateData',
+              'feeNumberOfWriteCycles',
+            ],
+          },
+        ],
       },
     },
     {
       config: {
-        module: 'CanTp', version: '4.4.0',
+        module: 'CanTp',
+        version: '4.4.0',
         parameters: {
           canTpEnabled: true,
           canTpMaxRxBuf: 4096,
@@ -598,12 +796,23 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         },
         containers: {
           CanTpChannel: [
-            { id: 'diag', parameters: { canTpRxId: 0x7E0, canTpTxId: 0x7E8, canTpRxBufSize: 4096, canTpTxBufSize: 4096 } },
+            {
+              id: 'diag',
+              parameters: {
+                canTpRxId: 0x7e0,
+                canTpTxId: 0x7e8,
+                canTpRxBufSize: 4096,
+                canTpTxBufSize: 4096,
+              },
+            },
           ],
         },
       },
       schema: {
-        name: 'CanTp', label: 'CAN Transport Layer', layer: 'SERVICE', version: '4.4.0',
+        name: 'CanTp',
+        label: 'CAN Transport Layer',
+        layer: 'SERVICE',
+        version: '4.4.0',
         parameters: [
           { name: 'canTpEnabled', type: 'boolean', required: true },
           { name: 'canTpMaxRxBuf', type: 'integer', required: true },
@@ -613,16 +822,22 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
           { name: 'canTpDevErrorDetect', type: 'boolean', required: false },
           { name: 'canTpVersion', type: 'string', required: false },
         ],
-        containers: [{
-          name: 'CanTpChannel', label: 'CanTp Channel', multiple: true,
-          minInstances: 1, maxInstances: 50,
-          parameters: ['canTpRxId', 'canTpTxId', 'canTpRxBufSize', 'canTpTxBufSize'],
-        }],
+        containers: [
+          {
+            name: 'CanTpChannel',
+            label: 'CanTp Channel',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 50,
+            parameters: ['canTpRxId', 'canTpTxId', 'canTpRxBufSize', 'canTpTxBufSize'],
+          },
+        ],
       },
     },
     {
       config: {
-        module: 'Com', version: '4.4.0',
+        module: 'Com',
+        version: '4.4.0',
         parameters: {
           comEnabled: true,
           comMaxIPdu: 50,
@@ -633,13 +848,27 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         },
         containers: {
           ComIPdu: [
-            { id: 'ipdu0', parameters: { comIPduId: 1, comIPduDirection: 0, comIPduSignalCount: 8, comIPduCycleTime: 10 } },
-            { id: 'ipdu1', parameters: { comIPduId: 2, comIPduDirection: 1, comIPduSignalCount: 4 } },
+            {
+              id: 'ipdu0',
+              parameters: {
+                comIPduId: 1,
+                comIPduDirection: 0,
+                comIPduSignalCount: 8,
+                comIPduCycleTime: 10,
+              },
+            },
+            {
+              id: 'ipdu1',
+              parameters: { comIPduId: 2, comIPduDirection: 1, comIPduSignalCount: 4 },
+            },
           ],
         },
       },
       schema: {
-        name: 'Com', label: 'COM Module', layer: 'SERVICE', version: '4.4.0',
+        name: 'Com',
+        label: 'COM Module',
+        layer: 'SERVICE',
+        version: '4.4.0',
         parameters: [
           { name: 'comEnabled', type: 'boolean', required: true },
           { name: 'comMaxIPdu', type: 'integer', required: true },
@@ -652,16 +881,22 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
           { name: 'comIPduSignalCount', type: 'integer', required: false },
           { name: 'comIPduCycleTime', type: 'integer', required: false },
         ],
-        containers: [{
-          name: 'ComIPdu', label: 'COM I-PDU', multiple: true,
-          minInstances: 1, maxInstances: 100,
-          parameters: ['comIPduId', 'comIPduDirection', 'comIPduSignalCount', 'comIPduCycleTime'],
-        }],
+        containers: [
+          {
+            name: 'ComIPdu',
+            label: 'COM I-PDU',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 100,
+            parameters: ['comIPduId', 'comIPduDirection', 'comIPduSignalCount', 'comIPduCycleTime'],
+          },
+        ],
       },
     },
     {
       config: {
-        module: 'BswM', version: '4.4.0',
+        module: 'BswM',
+        version: '4.4.0',
         parameters: {
           bswMEnabled: true,
           bswMmaxInitBlock: 10,
@@ -670,13 +905,14 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
           bswMVersion: '4.4.0',
         },
         containers: {
-          BswMMode: [
-            { id: 'mode0', parameters: { bswMMode: 1, bswMInitBlock: 2, bswMAction: 3 } },
-          ],
+          BswMMode: [{ id: 'mode0', parameters: { bswMMode: 1, bswMInitBlock: 2, bswMAction: 3 } }],
         },
       },
       schema: {
-        name: 'BswM', label: 'Basic Software Manager', layer: 'SERVICE', version: '4.4.0',
+        name: 'BswM',
+        label: 'Basic Software Manager',
+        layer: 'SERVICE',
+        version: '4.4.0',
         parameters: [
           { name: 'bswMEnabled', type: 'boolean', required: true },
           { name: 'bswMmaxInitBlock', type: 'integer', required: true },
@@ -687,11 +923,16 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
           { name: 'bswMInitBlock', type: 'integer', required: false },
           { name: 'bswMAction', type: 'integer', required: false },
         ],
-        containers: [{
-          name: 'BswMMode', label: 'BswM Mode', multiple: true,
-          minInstances: 1, maxInstances: 50,
-          parameters: ['bswMMode', 'bswMInitBlock', 'bswMAction'],
-        }],
+        containers: [
+          {
+            name: 'BswMMode',
+            label: 'BswM Mode',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 50,
+            parameters: ['bswMMode', 'bswMInitBlock', 'bswMAction'],
+          },
+        ],
       },
     },
     // === Crc ===
@@ -755,11 +996,16 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
           { name: 'icuMeasurementMode', type: 'integer', required: false },
           { name: 'icuSignalEdge', type: 'integer', required: false },
         ],
-        containers: [{
-          name: 'IcuChannel', label: 'Icu Channel', multiple: true,
-          minInstances: 1, maxInstances: 50,
-          parameters: ['icuChannelId', 'icuMeasurementMode', 'icuSignalEdge'],
-        }],
+        containers: [
+          {
+            name: 'IcuChannel',
+            label: 'Icu Channel',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 50,
+            parameters: ['icuChannelId', 'icuMeasurementMode', 'icuSignalEdge'],
+          },
+        ],
       },
     },
     // === Dcm ===
@@ -776,9 +1022,18 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         },
         containers: {
           DcmDsdSid: [
-            { id: 'sid10', parameters: { dcmSid: 0x10, dcmSidSubfunction: 1, dcmSidAllowed: true } },
-            { id: 'sid19', parameters: { dcmSid: 0x19, dcmSidSubfunction: 2, dcmSidAllowed: true } },
-            { id: 'sid22', parameters: { dcmSid: 0x22, dcmSidSubfunction: 0, dcmSidAllowed: true } },
+            {
+              id: 'sid10',
+              parameters: { dcmSid: 0x10, dcmSidSubfunction: 1, dcmSidAllowed: true },
+            },
+            {
+              id: 'sid19',
+              parameters: { dcmSid: 0x19, dcmSidSubfunction: 2, dcmSidAllowed: true },
+            },
+            {
+              id: 'sid22',
+              parameters: { dcmSid: 0x22, dcmSidSubfunction: 0, dcmSidAllowed: true },
+            },
           ],
         },
       },
@@ -797,11 +1052,16 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
           { name: 'dcmSidSubfunction', type: 'integer', required: false },
           { name: 'dcmSidAllowed', type: 'boolean', required: false },
         ],
-        containers: [{
-          name: 'DcmDsdSid', label: 'Dcm DSD SID', multiple: true,
-          minInstances: 1, maxInstances: 100,
-          parameters: ['dcmSid', 'dcmSidSubfunction', 'dcmSidAllowed'],
-        }],
+        containers: [
+          {
+            name: 'DcmDsdSid',
+            label: 'Dcm DSD SID',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 100,
+            parameters: ['dcmSid', 'dcmSidSubfunction', 'dcmSidAllowed'],
+          },
+        ],
       },
     },
     // === CanNm (CAN Network Management) ===
@@ -848,9 +1108,7 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
           canSmVersion: '4.4.0',
         },
         containers: {
-          CanSmNetwork: [
-            { id: 'net0', parameters: { canSmNetworkIndex: 0, canSmComMChannel: 1 } },
-          ],
+          CanSmNetwork: [{ id: 'net0', parameters: { canSmNetworkIndex: 0, canSmComMChannel: 1 } }],
         },
       },
       schema: {
@@ -867,11 +1125,16 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
           { name: 'canSmNetworkIndex', type: 'integer', required: false },
           { name: 'canSmComMChannel', type: 'integer', required: false },
         ],
-        containers: [{
-          name: 'CanSmNetwork', label: 'CanSm Network', multiple: true,
-          minInstances: 1, maxInstances: 50,
-          parameters: ['canSmNetworkIndex', 'canSmComMChannel'],
-        }],
+        containers: [
+          {
+            name: 'CanSmNetwork',
+            label: 'CanSm Network',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 50,
+            parameters: ['canSmNetworkIndex', 'canSmComMChannel'],
+          },
+        ],
       },
     },
     // === CanTrcv (CAN Transceiver Driver) ===
@@ -887,7 +1150,10 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         },
         containers: {
           CanTrcvChannel: [
-            { id: 'trcv0', parameters: { canTrcvChannelId: 0, canTrcvBaudrate: 500000, canTrcvWakeupMode: 2 } },
+            {
+              id: 'trcv0',
+              parameters: { canTrcvChannelId: 0, canTrcvBaudrate: 500000, canTrcvWakeupMode: 2 },
+            },
           ],
         },
       },
@@ -905,11 +1171,16 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
           { name: 'canTrcvBaudrate', type: 'integer', required: false },
           { name: 'canTrcvWakeupMode', type: 'integer', required: false },
         ],
-        containers: [{
-          name: 'CanTrcvChannel', label: 'CanTrcv Channel', multiple: true,
-          minInstances: 1, maxInstances: 50,
-          parameters: ['canTrcvChannelId', 'canTrcvBaudrate', 'canTrcvWakeupMode'],
-        }],
+        containers: [
+          {
+            name: 'CanTrcvChannel',
+            label: 'CanTrcv Channel',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 50,
+            parameters: ['canTrcvChannelId', 'canTrcvBaudrate', 'canTrcvWakeupMode'],
+          },
+        ],
       },
     },
     // === Comm (Communication Manager) ===
@@ -925,7 +1196,10 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         },
         containers: {
           CommChannel: [
-            { id: 'ch0', parameters: { commChannelId: 0, commChannelProtocol: 0, commChannelBaudrate: 500000 } },
+            {
+              id: 'ch0',
+              parameters: { commChannelId: 0, commChannelProtocol: 0, commChannelBaudrate: 500000 },
+            },
           ],
         },
       },
@@ -943,11 +1217,16 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
           { name: 'commChannelProtocol', type: 'integer', required: false },
           { name: 'commChannelBaudrate', type: 'integer', required: false },
         ],
-        containers: [{
-          name: 'CommChannel', label: 'Comm Channel', multiple: true,
-          minInstances: 1, maxInstances: 50,
-          parameters: ['commChannelId', 'commChannelProtocol', 'commChannelBaudrate'],
-        }],
+        containers: [
+          {
+            name: 'CommChannel',
+            label: 'Comm Channel',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 50,
+            parameters: ['commChannelId', 'commChannelProtocol', 'commChannelBaudrate'],
+          },
+        ],
       },
     },
     // === Os (Operating System) ===
@@ -995,7 +1274,10 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         },
         containers: {
           NvmBlock: [
-            { id: 'block0', parameters: { nvmBlockNumber: 1, nvmBlockSize: 256, nvmBlockRomBased: false } },
+            {
+              id: 'block0',
+              parameters: { nvmBlockNumber: 1, nvmBlockSize: 256, nvmBlockRomBased: false },
+            },
           ],
         },
       },
@@ -1014,11 +1296,16 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
           { name: 'nvmBlockSize', type: 'integer', required: false },
           { name: 'nvmBlockRomBased', type: 'boolean', required: false },
         ],
-        containers: [{
-          name: 'NvmBlock', label: 'Nvm Block', multiple: true,
-          minInstances: 1, maxInstances: 100,
-          parameters: ['nvmBlockNumber', 'nvmBlockSize', 'nvmBlockRomBased'],
-        }],
+        containers: [
+          {
+            name: 'NvmBlock',
+            label: 'Nvm Block',
+            multiple: true,
+            minInstances: 1,
+            maxInstances: 100,
+            parameters: ['nvmBlockNumber', 'nvmBlockSize', 'nvmBlockRomBased'],
+          },
+        ],
       },
     },
     // === PduR (PDU Router) ===
@@ -1400,10 +1687,10 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         const src = `Ecuc_${module}${suffix}`;
         const path = join(tmpDir, src);
         expect(existsSync(path)).toBe(true);
-        execSync(
-          `gcc -fsyntax-only -I ${tmpDir} -include ${tmpDir}/Std_Types.h ${path}`,
-          { stdio: 'pipe', timeout: 15000 }
-        );
+        execSync(`gcc -fsyntax-only -I ${tmpDir} -include ${tmpDir}/Std_Types.h ${path}`, {
+          stdio: 'pipe',
+          timeout: 15000,
+        });
         console.log(`✅ ${src} passes syntax check`);
       }
     }

@@ -1,4 +1,3 @@
-import { useState, useEffect, useCallback } from 'react'
 import {
   Puzzle,
   Settings,
@@ -17,16 +16,17 @@ import {
   User,
   Tag,
   Package,
-} from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { formatDate } from '@/lib/utils'
+} from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+
+import { cn, formatDate } from '@/lib/utils';
 import {
   fetchPlugins,
   fetchPlugin,
   updatePluginConfig,
   togglePlugin,
-} from '@/services/pluginService'
-import type { PluginMeta, PluginType } from '@/types/plugin'
+} from '@/services/pluginService';
+import type { PluginMeta, PluginType } from '@/types/plugin';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -35,27 +35,27 @@ const TYPE_LABELS: Record<PluginType, string> = {
   validator: '校验器',
   'ui-extension': 'UI 扩展',
   'data-export': '数据导出',
-}
+};
 
 const TYPE_COLORS: Record<PluginType, string> = {
   'code-generator': 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
   validator: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
   'ui-extension': 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
   'data-export': 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-}
+};
 
 function PluginTypeBadge({ type }: { type: PluginType }) {
   return (
     <span
       className={cn(
         'inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium',
-        TYPE_COLORS[type],
+        TYPE_COLORS[type]
       )}
     >
       <Package className="w-3 h-3" />
       {TYPE_LABELS[type] ?? type}
     </span>
-  )
+  );
 }
 
 function StatusIndicator({ enabled, error }: { enabled: boolean; error?: string | null }) {
@@ -65,7 +65,7 @@ function StatusIndicator({ enabled, error }: { enabled: boolean; error?: string 
         <AlertCircle className="w-3.5 h-3.5" />
         错误
       </span>
-    )
+    );
   }
   if (enabled) {
     return (
@@ -73,57 +73,62 @@ function StatusIndicator({ enabled, error }: { enabled: boolean; error?: string 
         <CheckCircle2 className="w-3.5 h-3.5" />
         已激活
       </span>
-    )
+    );
   }
   return (
     <span className="flex items-center gap-1 text-xs font-medium text-muted-foreground">
       <Clock className="w-3.5 h-3.5" />
       已停用
     </span>
-  )
+  );
 }
 
 // ── PluginCard ───────────────────────────────────────────────────────────────
 
 interface PluginCardProps {
-  plugin: PluginMeta
-  expanded: boolean
-  saving: boolean
-  onToggle: () => void
-  onExpand: () => void
-  onSaveConfig: (config: Record<string, unknown>) => void
+  plugin: PluginMeta;
+  expanded: boolean;
+  saving: boolean;
+  onToggle: () => void;
+  onExpand: () => void;
+  onSaveConfig: (config: Record<string, unknown>) => void;
 }
 
-function PluginCard({ plugin, expanded, saving, onToggle, onExpand, onSaveConfig }: PluginCardProps) {
-  const [configText, setConfigText] = useState(() =>
-    JSON.stringify(plugin.config ?? {}, null, 2),
-  )
+function PluginCard({
+  plugin,
+  expanded,
+  saving,
+  onToggle,
+  onExpand,
+  onSaveConfig,
+}: PluginCardProps) {
+  const [configText, setConfigText] = useState(() => JSON.stringify(plugin.config ?? {}, null, 2));
 
   // Reset editor text when expanding with fresh data
   useEffect(() => {
     if (expanded) {
-      setConfigText(JSON.stringify(plugin.config ?? {}, null, 2))
+      setConfigText(JSON.stringify(plugin.config ?? {}, null, 2));
     }
-  }, [expanded, plugin.config])
+  }, [expanded, plugin.config]);
 
   const handleSave = () => {
     try {
-      const parsed = JSON.parse(configText)
-      onSaveConfig(parsed)
+      const parsed = JSON.parse(configText);
+      onSaveConfig(parsed);
     } catch {
       // Invalid JSON — highlight handled by className but we just silently fail
-      return
+      return;
     }
-  }
+  };
 
   const isJsonValid = (() => {
     try {
-      JSON.parse(configText)
-      return true
+      JSON.parse(configText);
+      return true;
     } catch {
-      return false
+      return false;
     }
-  })()
+  })();
 
   return (
     <div className="bg-app-bg-primary border border-app-border-primary rounded-lg overflow-hidden transition-shadow hover:shadow-sm">
@@ -138,12 +143,8 @@ function PluginCard({ plugin, expanded, saving, onToggle, onExpand, onSaveConfig
 
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="text-base font-semibold text-foreground truncate">
-                  {plugin.name}
-                </h3>
-                <span className="text-xs text-muted-foreground font-mono">
-                  v{plugin.version}
-                </span>
+                <h3 className="text-base font-semibold text-foreground truncate">{plugin.name}</h3>
+                <span className="text-xs text-muted-foreground font-mono">v{plugin.version}</span>
                 <PluginTypeBadge type={plugin.type} />
                 {plugin.source === 'internal' && (
                   <span className="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
@@ -171,10 +172,7 @@ function PluginCard({ plugin, expanded, saving, onToggle, onExpand, onSaveConfig
 
           {/* Right: toggle + expand */}
           <div className="flex items-center gap-2 shrink-0">
-            <StatusIndicator
-              enabled={plugin.enabled}
-              error={null}
-            />
+            <StatusIndicator enabled={plugin.enabled} error={null} />
 
             {/* Toggle switch */}
             <button
@@ -182,16 +180,14 @@ function PluginCard({ plugin, expanded, saving, onToggle, onExpand, onSaveConfig
               disabled={saving}
               className={cn(
                 'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
-                plugin.enabled
-                  ? 'bg-primary-600'
-                  : 'bg-gray-200 dark:bg-gray-700',
-                saving && 'opacity-50 cursor-not-allowed',
+                plugin.enabled ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700',
+                saving && 'opacity-50 cursor-not-allowed'
               )}
             >
               <span
                 className={cn(
                   'inline-flex items-center justify-center h-4 w-4 rounded-full bg-white shadow-sm transition-transform',
-                  plugin.enabled ? 'translate-x-6' : 'translate-x-1',
+                  plugin.enabled ? 'translate-x-6' : 'translate-x-1'
                 )}
               >
                 {plugin.enabled ? (
@@ -233,7 +229,7 @@ function PluginCard({ plugin, expanded, saving, onToggle, onExpand, onSaveConfig
                 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors',
                 isJsonValid && !saving
                   ? 'bg-primary-600 text-white hover:bg-primary-700'
-                  : 'bg-muted text-muted-foreground cursor-not-allowed',
+                  : 'bg-muted text-muted-foreground cursor-not-allowed'
               )}
             >
               {saving ? (
@@ -246,12 +242,12 @@ function PluginCard({ plugin, expanded, saving, onToggle, onExpand, onSaveConfig
           </div>
           <textarea
             value={configText}
-            onChange={(e) => setConfigText(e.target.value)}
+            onChange={e => setConfigText(e.target.value)}
             className={cn(
               'w-full h-40 px-3 py-2 text-xs font-mono rounded-md border transition-colors resize-y',
               'bg-app-bg-primary border-app-border-primary text-foreground',
               'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
-              !isJsonValid && 'border-red-500 focus:ring-red-500 focus:border-red-500',
+              !isJsonValid && 'border-red-500 focus:ring-red-500 focus:border-red-500'
             )}
             spellCheck={false}
           />
@@ -264,79 +260,75 @@ function PluginCard({ plugin, expanded, saving, onToggle, onExpand, onSaveConfig
         </div>
       )}
     </div>
-  )
+  );
 }
 
 // ── Main Page ────────────────────────────────────────────────────────────────
 
 export function PluginManager() {
-  const [plugins, setPlugins] = useState<PluginMeta[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [expandedId, setExpandedId] = useState<string | null>(null)
-  const [savingId, setSavingId] = useState<string | null>(null)
-  const [searchQuery, setSearchQuery] = useState('')
+  const [plugins, setPlugins] = useState<PluginMeta[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [savingId, setSavingId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const loadPlugins = useCallback(async () => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      const data = await fetchPlugins()
-      setPlugins(data)
+      const data = await fetchPlugins();
+      setPlugins(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '加载插件列表失败')
+      setError(err instanceof Error ? err.message : '加载插件列表失败');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    loadPlugins()
-  }, [loadPlugins])
+    loadPlugins();
+  }, [loadPlugins]);
 
   const handleToggle = async (id: string, currentEnabled: boolean) => {
-    setSavingId(id)
+    setSavingId(id);
     try {
-      const result = await togglePlugin(id, !currentEnabled)
-      setPlugins((prev) =>
-        prev.map((p) => (p.id === id ? { ...p, enabled: result.enabled } : p)),
-      )
+      const result = await togglePlugin(id, !currentEnabled);
+      setPlugins(prev => prev.map(p => (p.id === id ? { ...p, enabled: result.enabled } : p)));
     } catch (err) {
-      console.error('Failed to toggle plugin:', err)
+      console.error('Failed to toggle plugin:', err);
     } finally {
-      setSavingId(null)
+      setSavingId(null);
     }
-  }
+  };
 
   const handleSaveConfig = async (id: string, config: Record<string, unknown>) => {
-    setSavingId(id)
+    setSavingId(id);
     try {
-      await updatePluginConfig(id, config)
+      await updatePluginConfig(id, config);
       // Refresh the plugin data to get the latest config from server
-      const updated = await fetchPlugin(id)
-      setPlugins((prev) =>
-        prev.map((p) => (p.id === id ? updated : p)),
-      )
+      const updated = await fetchPlugin(id);
+      setPlugins(prev => prev.map(p => (p.id === id ? updated : p)));
     } catch (err) {
-      console.error('Failed to save plugin config:', err)
+      console.error('Failed to save plugin config:', err);
     } finally {
-      setSavingId(null)
+      setSavingId(null);
     }
-  }
+  };
 
-  const filteredPlugins = plugins.filter((p) => {
-    if (!searchQuery) return true
-    const q = searchQuery.toLowerCase()
+  const filteredPlugins = plugins.filter(p => {
+    if (!searchQuery) return true;
+    const q = searchQuery.toLowerCase();
     return (
       p.name.toLowerCase().includes(q) ||
       p.description.toLowerCase().includes(q) ||
       p.author.toLowerCase().includes(q) ||
       p.id.toLowerCase().includes(q) ||
       p.type.toLowerCase().includes(q)
-    )
-  })
+    );
+  });
 
-  const enabledCount = plugins.filter((p) => p.enabled).length
+  const enabledCount = plugins.filter(p => p.enabled).length;
 
   // ── Render ────────────────────────────────────────────────────────────
 
@@ -346,7 +338,7 @@ export function PluginManager() {
         <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
         <span className="ml-3 text-muted-foreground">加载插件列表...</span>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -362,7 +354,7 @@ export function PluginManager() {
           重试
         </button>
       </div>
-    )
+    );
   }
 
   return (
@@ -375,8 +367,7 @@ export function PluginManager() {
             插件管理
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            管理已安装的插件 ·{' '}
-            <span className="font-medium text-foreground">{enabledCount}</span>/
+            管理已安装的插件 · <span className="font-medium text-foreground">{enabledCount}</span>/
             {plugins.length} 个已启用
           </p>
         </div>
@@ -398,7 +389,7 @@ export function PluginManager() {
           type="text"
           placeholder="搜索插件名称、描述、作者..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={e => setSearchQuery(e.target.value)}
           className="w-full pl-9 pr-4 py-2 text-sm rounded-lg border border-app-border-primary bg-app-bg-primary text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
         />
       </div>
@@ -407,31 +398,25 @@ export function PluginManager() {
       {filteredPlugins.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
           <Puzzle className="w-12 h-12 mb-3 opacity-40" />
-          <p className="text-sm">
-            {plugins.length === 0
-              ? '暂无已安装的插件'
-              : '没有匹配的插件'}
-          </p>
+          <p className="text-sm">{plugins.length === 0 ? '暂无已安装的插件' : '没有匹配的插件'}</p>
         </div>
       ) : (
         <div className="space-y-3">
-          {filteredPlugins.map((plugin) => (
+          {filteredPlugins.map(plugin => (
             <PluginCard
               key={plugin.id}
               plugin={plugin}
               expanded={expandedId === plugin.id}
               saving={savingId === plugin.id}
               onToggle={() => handleToggle(plugin.id, plugin.enabled)}
-              onExpand={() =>
-                setExpandedId(expandedId === plugin.id ? null : plugin.id)
-              }
-              onSaveConfig={(config) => handleSaveConfig(plugin.id, config)}
+              onExpand={() => setExpandedId(expandedId === plugin.id ? null : plugin.id)}
+              onSaveConfig={config => handleSaveConfig(plugin.id, config)}
             />
           ))}
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export default PluginManager
+export default PluginManager;

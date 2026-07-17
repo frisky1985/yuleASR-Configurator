@@ -14,11 +14,11 @@ interface DownloadItem {
 }
 
 const categoryLabels: Record<DownloadCategory, string> = {
-  '全部': '全部',
-  '工具链': '工具链',
-  '手册': '手册',
-  '笔记': '笔记',
-  '代码': '代码',
+  全部: '全部',
+  工具链: '工具链',
+  手册: '手册',
+  笔记: '笔记',
+  代码: '代码',
 };
 
 const downloadItems: DownloadItem[] = [
@@ -117,7 +117,7 @@ export function DownloadPage() {
   const [activeCategory, setActiveCategory] = useState<DownloadCategory>('全部');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredItems = downloadItems.filter((item) => {
+  const filteredItems = downloadItems.filter(item => {
     const matchCategory = activeCategory === '全部' || item.category === activeCategory;
     const matchSearch =
       searchQuery === '' ||
@@ -134,7 +134,10 @@ export function DownloadPage() {
     <div className="min-h-screen pt-16">
       <Helmet>
         <title>下载中心 - YuleTech | 工具链、手册、示例代码</title>
-        <meta name="description" content="获取 YuleTech AutoSAR BSW 开发所需的工具链、数据手册、应用笔记和示例代码。一站式资源下载平台。" />
+        <meta
+          name="description"
+          content="获取 YuleTech AutoSAR BSW 开发所需的工具链、数据手册、应用笔记和示例代码。一站式资源下载平台。"
+        />
       </Helmet>
       {/* Hero */}
       <section className="relative py-20 overflow-hidden bg-gradient-to-b from-[hsl(var(--primary))]/5 to-transparent">
@@ -157,7 +160,7 @@ export function DownloadPage() {
                 type="text"
                 placeholder="搜索资源名称..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 rounded-xl bg-card border border-border text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/50 shadow-elegant"
               />
             </div>
@@ -169,7 +172,7 @@ export function DownloadPage() {
       <section className="py-8 sticky top-16 z-30 bg-background/80 backdrop-blur-xl border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 overflow-x-auto pb-2">
-            {categories.map((cat) => (
+            {categories.map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
@@ -204,7 +207,7 @@ export function DownloadPage() {
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredItems.map((item) => (
+            {filteredItems.map(item => (
               <div
                 key={item.id}
                 className="group bg-card border border-border rounded-xl p-6 hover:border-[hsl(var(--accent))]/30 transition-all hover:shadow-elegant flex flex-col"

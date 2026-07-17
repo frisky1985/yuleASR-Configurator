@@ -1,34 +1,34 @@
-import { useEffect, lazy, Suspense } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { useEffect, lazy, Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
-import { Layout } from './components/Layout'
-import { ThemeProvider } from './components/ThemeProvider'
-import { BrandProvider } from './contexts/BrandContext'
-import { Dashboard } from './pages/Dashboard'
-import { Editor } from './pages/Editor'
-import { GitSync } from './pages/GitSync'
-import { Login } from './pages/Login'
-import { Migrate } from './pages/Migrate'
-import { Register } from './pages/Register'
-import { Settings } from './pages/Settings'
-import { Templates } from './pages/Templates'
-import { Compare } from './pages/Compare'
-import { ConfigDiff } from './pages/ConfigDiff'
-import { useAuthStore } from './stores/authStore'
-import { LicenseActivation } from './pages/LicenseActivation'
-import { AdminBranding } from './pages/AdminBranding'
+import { Layout } from './components/Layout';
+import { ThemeProvider } from './components/ThemeProvider';
+import { BrandProvider } from './contexts/BrandContext';
+import { AdminBranding } from './pages/AdminBranding';
+import { Compare } from './pages/Compare';
+import { ConfigDiff } from './pages/ConfigDiff';
+import { Dashboard } from './pages/Dashboard';
+import { Editor } from './pages/Editor';
+import { GitSync } from './pages/GitSync';
+import { LicenseActivation } from './pages/LicenseActivation';
+import { Login } from './pages/Login';
+import { Migrate } from './pages/Migrate';
+import { Register } from './pages/Register';
+import { Settings } from './pages/Settings';
+import { Templates } from './pages/Templates';
+import { useAuthStore } from './stores/authStore';
 
-const PluginManager = lazy(() => import('./pages/PluginManager'))
+const PluginManager = lazy(() => import('./pages/PluginManager'));
 
-import './styles/branding.css'
+import './styles/branding.css';
 
 function App() {
-  const loadFromStorage = useAuthStore((s) => s.loadFromStorage)
+  const loadFromStorage = useAuthStore(s => s.loadFromStorage);
 
   // Restore auth state from localStorage on mount
   useEffect(() => {
-    loadFromStorage()
-  }, [loadFromStorage])
+    loadFromStorage();
+  }, [loadFromStorage]);
 
   return (
     <ThemeProvider>
@@ -41,7 +41,20 @@ function App() {
             <Route path="/sync" element={<GitSync />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/settings/license" element={<LicenseActivation />} />
-            <Route path="/plugins" element={<Suspense fallback={<div className="flex items-center justify-center py-20 text-muted-foreground">加载插件管理...</div>}><PluginManager /></Suspense>} />
+            <Route
+              path="/plugins"
+              element={
+                <Suspense
+                  fallback={
+                    <div className="flex items-center justify-center py-20 text-muted-foreground">
+                      加载插件管理...
+                    </div>
+                  }
+                >
+                  <PluginManager />
+                </Suspense>
+              }
+            />
             <Route path="/migrate" element={<Migrate />} />
             <Route path="/editor/:configId" element={<Editor />} />
             <Route path="/editor/:configId/:moduleId" element={<Editor />} />
@@ -58,7 +71,7 @@ function App() {
         </Layout>
       </BrandProvider>
     </ThemeProvider>
-  )
+  );
 }
 
-export default App
+export default App;

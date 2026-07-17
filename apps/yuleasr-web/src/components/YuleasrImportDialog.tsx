@@ -1,97 +1,97 @@
-import { yuleasrAdapter } from '@yuletech/core'
-import type { ModuleConfig } from '@yuletech/core'
-import { Upload, FileCode, AlertCircle, Check, X } from 'lucide-react'
-import { useState, useRef } from 'react'
+import { yuleasrAdapter } from '@yuletech/core';
+import type { ModuleConfig } from '@yuletech/core';
+import { Upload, FileCode, AlertCircle, Check, X } from 'lucide-react';
+import { useState, useRef } from 'react';
 
-import { cn } from '@/lib/utils'
-
+import { cn } from '@/lib/utils';
 
 interface YuleasrImportDialogProps {
-  isOpen: boolean
-  onClose: () => void
-  onImport: (modules: ModuleConfig[]) => void
+  isOpen: boolean;
+  onClose: () => void;
+  onImport: (modules: ModuleConfig[]) => void;
 }
 
 export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImportDialogProps) {
-  const [fileContent, setFileContent] = useState<string | null>(null)
-  const [fileName, setFileName] = useState<string>('')
-  const [fileType, setFileType] = useState<'json' | 'arxml' | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [_isLoading, setIsLoading] = useState(false)
-  const [validationResult, setValidationResult] = useState<{ valid: boolean; errors: string[] } | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [fileContent, setFileContent] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string>('');
+  const [fileType, setFileType] = useState<'json' | 'arxml' | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [_isLoading, setIsLoading] = useState(false);
+  const [validationResult, setValidationResult] = useState<{
+    valid: boolean;
+    errors: string[];
+  } | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-    setError(null)
-    setValidationResult(null)
-    setIsLoading(true)
+    setError(null);
+    setValidationResult(null);
+    setIsLoading(true);
 
     try {
-      const content = await file.text()
-      setFileName(file.name)
-      setFileContent(content)
+      const content = await file.text();
+      setFileName(file.name);
+      setFileContent(content);
 
       // 检测文件类型
-      const isArxml = file.name.toLowerCase().endsWith('.arxml')
-      setFileType(isArxml ? 'arxml' : 'json')
+      const isArxml = file.name.toLowerCase().endsWith('.arxml');
+      setFileType(isArxml ? 'arxml' : 'json');
 
       // 验证配置
-      let result: { valid: boolean; errors: string[] }
+      let result: { valid: boolean; errors: string[] };
       if (isArxml) {
-        result = yuleasrAdapter.validateArxmlConfig(content)
+        result = yuleasrAdapter.validateArxmlConfig(content);
       } else {
-        result = yuleasrAdapter.validateYuleasrConfig(content)
+        result = yuleasrAdapter.validateYuleasrConfig(content);
       }
-      setValidationResult(result)
+      setValidationResult(result);
     } catch (err) {
-      setError(err instanceof Error ? err.message : '读取文件失败')
+      setError(err instanceof Error ? err.message : '读取文件失败');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleImport = () => {
-    if (!fileContent || !fileType) return
+    if (!fileContent || !fileType) return;
 
     try {
-      let modules: ModuleConfig[]
+      let modules: ModuleConfig[];
       if (fileType === 'arxml') {
-        modules = yuleasrAdapter.importFromArxml(fileContent)
+        modules = yuleasrAdapter.importFromArxml(fileContent);
       } else {
-        modules = yuleasrAdapter.importFromYuleasr(fileContent)
+        modules = yuleasrAdapter.importFromYuleasr(fileContent);
       }
-      onImport(modules)
-      handleClose()
+      onImport(modules);
+      handleClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : '导入失败')
+      setError(err instanceof Error ? err.message : '导入失败');
     }
-  }
+  };
 
   const handleClose = () => {
-    setFileContent(null)
-    setFileName('')
-    setFileType(null)
-    setError(null)
-    setValidationResult(null)
+    setFileContent(null);
+    setFileName('');
+    setFileType(null);
+    setError(null);
+    setValidationResult(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = ''
+      fileInputRef.current.value = '';
     }
-    onClose()
-  }
+    onClose();
+  };
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-app-bg-primary rounded-xl shadow-xl w-full max-w-lg mx-4">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-app-border-primary">
-          <h2 className="text-lg font-semibold text-app-text-primary">
-            导入 yuleASR 配置
-          </h2>
+          <h2 className="text-lg font-semibold text-app-text-primary">导入 yuleASR 配置</h2>
           <button
             onClick={handleClose}
             className="text-app-text-tertiary hover:text-app-text-secondary transition-colors"
@@ -118,7 +118,7 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
               onChange={handleFileSelect}
               className="hidden"
             />
-            
+
             {fileContent ? (
               <div className="flex flex-col items-center gap-2">
                 <Check className="w-8 h-8 text-green-500" />
@@ -141,9 +141,7 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
             <div
               className={cn(
                 'p-4 rounded-lg border',
-                validationResult.valid
-                  ? 'bg-green-50 border-green-200'
-                  : 'bg-red-50 border-red-200'
+                validationResult.valid ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'
               )}
             >
               <div className="flex items-center gap-2">
@@ -161,7 +159,7 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
                   {validationResult.valid ? '配置验证通过' : '配置验证失败'}
                 </span>
               </div>
-              
+
               {!validationResult.valid && validationResult.errors.length > 0 && (
                 <ul className="mt-2 text-sm text-red-600 list-disc list-inside">
                   {validationResult.errors.map((err, i) => (
@@ -190,7 +188,8 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
               <div>
                 <p className="font-medium text-blue-900">支持的配置格式</p>
                 <p className="text-sm text-blue-700 mt-1">
-                  <strong>JSON:</strong> yuleASR 项目的 bsw_config.json 配置文件<br/>
+                  <strong>JSON:</strong> yuleASR 项目的 bsw_config.json 配置文件
+                  <br />
                   <strong>ARXML:</strong> AutoSAR 标准配置文件 (ECUC 模块配置)
                 </p>
               </div>
@@ -216,7 +215,7 @@ export function YuleasrImportDialog({ isOpen, onClose, onImport }: YuleasrImport
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default YuleasrImportDialog
+export default YuleasrImportDialog;

@@ -1,7 +1,7 @@
 /**
  * @yuletech/core - AUTOSAR OS Types
  * AUTOSAR OS 核心数据模型定义
- * 
+ *
  * 遵循 AUTOSAR 4.4 OS Specification
  * Covers: Task, ISR, Counter, Alarm, ScheduleTable, Event, Resource, OS Application
  */

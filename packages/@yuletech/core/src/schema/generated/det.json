@@ -70,9 +70,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "DetGeneral"
-  ],
+  "required": ["DetGeneral"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

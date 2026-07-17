@@ -15,16 +15,86 @@ interface AdminUser {
 function generateSampleUsers(): AdminUser[] {
   const now = Date.now();
   const users: AdminUser[] = [
-    { id: 'u-1', username: '社区用户001', points: 2450, level: 4, title: '技术专家', registeredAt: new Date(now - 90 * 86400000).toISOString() },
-    { id: 'u-2', username: '社区用户002', points: 1200, level: 3, title: '高级工程师', registeredAt: new Date(now - 80 * 86400000).toISOString() },
-    { id: 'u-3', username: '社区用户003', points: 800, level: 3, title: '高级工程师', registeredAt: new Date(now - 70 * 86400000).toISOString() },
-    { id: 'u-4', username: '社区用户004', points: 350, level: 2, title: '中级工程师', registeredAt: new Date(now - 60 * 86400000).toISOString() },
-    { id: 'u-5', username: '社区用户005', points: 180, level: 2, title: '中级工程师', registeredAt: new Date(now - 50 * 86400000).toISOString() },
-    { id: 'u-6', username: '社区用户006', points: 85, level: 1, title: '初级工程师', registeredAt: new Date(now - 40 * 86400000).toISOString() },
-    { id: 'u-7', username: '社区用户007', points: 45, level: 1, title: '初级工程师', registeredAt: new Date(now - 30 * 86400000).toISOString() },
-    { id: 'u-8', username: '社区用户008', points: 12, level: 1, title: '初级工程师', registeredAt: new Date(now - 20 * 86400000).toISOString() },
-    { id: 'u-9', username: '社区用户009', points: 600, level: 3, title: '高级工程师', registeredAt: new Date(now - 10 * 86400000).toISOString() },
-    { id: 'u-10', username: '社区用户010', points: 220, level: 2, title: '中级工程师', registeredAt: new Date(now - 5 * 86400000).toISOString() },
+    {
+      id: 'u-1',
+      username: '社区用户001',
+      points: 2450,
+      level: 4,
+      title: '技术专家',
+      registeredAt: new Date(now - 90 * 86400000).toISOString(),
+    },
+    {
+      id: 'u-2',
+      username: '社区用户002',
+      points: 1200,
+      level: 3,
+      title: '高级工程师',
+      registeredAt: new Date(now - 80 * 86400000).toISOString(),
+    },
+    {
+      id: 'u-3',
+      username: '社区用户003',
+      points: 800,
+      level: 3,
+      title: '高级工程师',
+      registeredAt: new Date(now - 70 * 86400000).toISOString(),
+    },
+    {
+      id: 'u-4',
+      username: '社区用户004',
+      points: 350,
+      level: 2,
+      title: '中级工程师',
+      registeredAt: new Date(now - 60 * 86400000).toISOString(),
+    },
+    {
+      id: 'u-5',
+      username: '社区用户005',
+      points: 180,
+      level: 2,
+      title: '中级工程师',
+      registeredAt: new Date(now - 50 * 86400000).toISOString(),
+    },
+    {
+      id: 'u-6',
+      username: '社区用户006',
+      points: 85,
+      level: 1,
+      title: '初级工程师',
+      registeredAt: new Date(now - 40 * 86400000).toISOString(),
+    },
+    {
+      id: 'u-7',
+      username: '社区用户007',
+      points: 45,
+      level: 1,
+      title: '初级工程师',
+      registeredAt: new Date(now - 30 * 86400000).toISOString(),
+    },
+    {
+      id: 'u-8',
+      username: '社区用户008',
+      points: 12,
+      level: 1,
+      title: '初级工程师',
+      registeredAt: new Date(now - 20 * 86400000).toISOString(),
+    },
+    {
+      id: 'u-9',
+      username: '社区用户009',
+      points: 600,
+      level: 3,
+      title: '高级工程师',
+      registeredAt: new Date(now - 10 * 86400000).toISOString(),
+    },
+    {
+      id: 'u-10',
+      username: '社区用户010',
+      points: 220,
+      level: 2,
+      title: '中级工程师',
+      registeredAt: new Date(now - 5 * 86400000).toISOString(),
+    },
   ];
   // Merge current user system points if available
   try {
@@ -65,7 +135,7 @@ export function AdminUsers() {
   const [editValue, setEditValue] = useState('');
 
   const filtered = useMemo(() => {
-    return users.filter((u) => {
+    return users.filter(u => {
       const matchSearch = u.username.toLowerCase().includes(search.toLowerCase());
       const matchLevel = levelFilter === 'all' || String(u.level) === levelFilter;
       return matchSearch && matchLevel;
@@ -73,8 +143,8 @@ export function AdminUsers() {
   }, [users, search, levelFilter]);
 
   const handleAdjustPoints = (id: string, delta: number) => {
-    setUsers((prev) =>
-      prev.map((u) => {
+    setUsers(prev =>
+      prev.map(u => {
         if (u.id !== id) return u;
         const newPoints = Math.max(0, u.points + delta);
         const info = getLevelInfo(newPoints);
@@ -85,8 +155,8 @@ export function AdminUsers() {
 
   const handleResetPoints = (id: string) => {
     if (!window.confirm('确定要重置该用户的积分吗？')) return;
-    setUsers((prev) =>
-      prev.map((u) => {
+    setUsers(prev =>
+      prev.map(u => {
         if (u.id !== id) return u;
         const info = getLevelInfo(0);
         return { ...u, points: 0, level: info.level, title: info.title };
@@ -105,8 +175,8 @@ export function AdminUsers() {
       setEditingId(null);
       return;
     }
-    setUsers((prev) =>
-      prev.map((u) => {
+    setUsers(prev =>
+      prev.map(u => {
         if (u.id !== id) return u;
         const newPoints = Math.max(0, val);
         const info = getLevelInfo(newPoints);
@@ -150,7 +220,7 @@ export function AdminUsers() {
           <input
             type="text"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={e => setSearch(e.target.value)}
             placeholder="搜索用户名..."
             className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
           />
@@ -159,10 +229,10 @@ export function AdminUsers() {
           <Filter className="w-4 h-4 text-muted-foreground" />
           <select
             value={levelFilter}
-            onChange={(e) => setLevelFilter(e.target.value)}
+            onChange={e => setLevelFilter(e.target.value)}
             className="px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
           >
-            {levelFilters.map((f) => (
+            {levelFilters.map(f => (
               <option key={f.value} value={f.value}>
                 {f.label}
               </option>
@@ -186,8 +256,11 @@ export function AdminUsers() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((u) => (
-                <tr key={u.id} className="border-b border-border last:border-b-0 hover:bg-muted/20 transition-colors">
+              {filtered.map(u => (
+                <tr
+                  key={u.id}
+                  className="border-b border-border last:border-b-0 hover:bg-muted/20 transition-colors"
+                >
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
                       <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent))] flex items-center justify-center text-white text-xs font-bold">
@@ -201,9 +274,9 @@ export function AdminUsers() {
                       <input
                         type="number"
                         value={editValue}
-                        onChange={(e) => setEditValue(e.target.value)}
+                        onChange={e => setEditValue(e.target.value)}
                         onBlur={() => finishEdit(u.id)}
-                        onKeyDown={(e) => {
+                        onKeyDown={e => {
                           if (e.key === 'Enter') finishEdit(u.id);
                           if (e.key === 'Escape') setEditingId(null);
                         }}
@@ -221,7 +294,9 @@ export function AdminUsers() {
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${getLevelColor(u.level)}`}>
+                    <span
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${getLevelColor(u.level)}`}
+                    >
                       <Star className="w-3 h-3" />
                       Lv.{u.level}
                     </span>

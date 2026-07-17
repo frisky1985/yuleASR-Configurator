@@ -2,33 +2,35 @@
  * Seed script for BSW Templates — adds sample template data.
  * Run: npx tsx prisma/seed.ts
  */
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 const sampleTemplates = [
   {
     name: 'MCU Base',
-    description: 'Microcontroller driver with clock configuration, core settings and basic MCU initialization',
+    description:
+      'Microcontroller driver with clock configuration, core settings and basic MCU initialization',
     category: 'mcal',
     tags: ['MCAL', 'MCU', 'base'],
     moduleType: 'MCAL',
     modules: [
       { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
-      { id: 'port', name: 'Port', layer: 'MCAL' }
+      { id: 'port', name: 'Port', layer: 'MCAL' },
     ],
     isOfficial: true,
   },
   {
     name: 'CAN Communication',
-    description: 'CAN driver with baudrate configuration, message objects and communication settings',
+    description:
+      'CAN driver with baudrate configuration, message objects and communication settings',
     category: 'ecual',
     tags: ['ECUAL', 'CAN', 'communication'],
     moduleType: 'ECUAL',
     modules: [
       { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
       { id: 'port', name: 'Port', layer: 'MCAL' },
-      { id: 'can', name: 'Can', layer: 'ECUAL' }
+      { id: 'can', name: 'Can', layer: 'ECUAL' },
     ],
     isOfficial: true,
   },
@@ -42,7 +44,7 @@ const sampleTemplates = [
       { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
       { id: 'port', name: 'Port', layer: 'MCAL' },
       { id: 'dio', name: 'Dio', layer: 'MCAL' },
-      { id: 'nvm', name: 'NvM', layer: 'Service' }
+      { id: 'nvm', name: 'NvM', layer: 'Service' },
     ],
     isOfficial: true,
   },
@@ -63,7 +65,7 @@ const sampleTemplates = [
       { id: 'eth', name: 'Eth', layer: 'ECUAL' },
       { id: 'nvm', name: 'NvM', layer: 'Service' },
       { id: 'com', name: 'Com', layer: 'Service' },
-      { id: 'dcm', name: 'Dcm', layer: 'Service' }
+      { id: 'dcm', name: 'Dcm', layer: 'Service' },
     ],
     isOfficial: true,
   },
@@ -76,7 +78,7 @@ const sampleTemplates = [
     modules: [
       { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
       { id: 'port', name: 'Port', layer: 'MCAL' },
-      { id: 'dio', name: 'Dio', layer: 'MCAL' }
+      { id: 'dio', name: 'Dio', layer: 'MCAL' },
     ],
     isOfficial: false,
   },
@@ -89,7 +91,7 @@ const sampleTemplates = [
     modules: [
       { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
       { id: 'port', name: 'Port', layer: 'MCAL' },
-      { id: 'eth', name: 'Eth', layer: 'ECUAL' }
+      { id: 'eth', name: 'Eth', layer: 'ECUAL' },
     ],
     isOfficial: false,
   },
@@ -103,30 +105,30 @@ const sampleTemplates = [
       { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
       { id: 'port', name: 'Port', layer: 'MCAL' },
       { id: 'can', name: 'Can', layer: 'ECUAL' },
-      { id: 'dcm', name: 'Dcm', layer: 'Service' }
+      { id: 'dcm', name: 'Dcm', layer: 'Service' },
     ],
     isOfficial: false,
   },
-]
+];
 
 async function main() {
   // Find or create a system user for official templates
-  let systemUser = await prisma.user.findFirst({ where: { role: 'admin' } })
+  let systemUser = await prisma.user.findFirst({ where: { role: 'admin' } });
   if (!systemUser) {
-    systemUser = await prisma.user.findFirst()
+    systemUser = await prisma.user.findFirst();
   }
   if (!systemUser) {
-    console.error('No user found. Please run auth seed first.')
-    process.exit(1)
+    console.error('No user found. Please run auth seed first.');
+    process.exit(1);
   }
 
-  console.log(`Using user: ${systemUser.username} (id: ${systemUser.id})`)
+  console.log(`Using user: ${systemUser.username} (id: ${systemUser.id})`);
 
   for (const tpl of sampleTemplates) {
-    const existing = await prisma.bSWTemplate.findFirst({ where: { name: tpl.name } })
+    const existing = await prisma.bSWTemplate.findFirst({ where: { name: tpl.name } });
     if (existing) {
-      console.log(`  Skipping existing template: ${tpl.name}`)
-      continue
+      console.log(`  Skipping existing template: ${tpl.name}`);
+      continue;
     }
 
     const template = await prisma.bSWTemplate.create({
@@ -147,7 +149,7 @@ async function main() {
         downloadCount: Math.floor(Math.random() * 100),
         viewCount: Math.floor(Math.random() * 500),
       },
-    })
+    });
 
     await prisma.bSWTemplateVersion.create({
       data: {
@@ -158,19 +160,19 @@ async function main() {
         modules: JSON.stringify(tpl.modules),
         changelog: 'Initial version',
       },
-    })
+    });
 
-    console.log(`  Created template: ${tpl.name}`)
+    console.log(`  Created template: ${tpl.name}`);
   }
 
-  console.log('\n✅ Seed complete!')
+  console.log('\n✅ Seed complete!');
 }
 
 main()
-  .catch((e) => {
-    console.error(e)
-    process.exit(1)
+  .catch(e => {
+    console.error(e);
+    process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect()
-  })
+    await prisma.$disconnect();
+  });

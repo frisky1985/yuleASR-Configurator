@@ -52,19 +52,74 @@ const mcalDetails: Record<string, ModuleDetail> = {
       '符合 AutoSAR Classic Platform 4.4 规范',
     ],
     apis: [
-      { name: 'Mcu_Init', params: 'const Mcu_ConfigType* ConfigPtr', returns: 'void', desc: '初始化 Mcu 模块，配置时钟和复位参数' },
-      { name: 'Mcu_InitRamSection', params: 'Mcu_RamSectionType RamSection', returns: 'Std_ReturnType', desc: '初始化指定的 RAM 段' },
-      { name: 'Mcu_InitClock', params: 'Mcu_ClockType ClockSetting', returns: 'Std_ReturnType', desc: '根据配置激活指定时钟设置' },
-      { name: 'Mcu_DistributePllClock', params: 'void', returns: 'Std_ReturnType', desc: '分发 PLL 时钟到各外设' },
-      { name: 'Mcu_GetPllStatus', params: 'void', returns: 'Mcu_PllStatusType', desc: '获取 PLL 锁定状态' },
-      { name: 'Mcu_SetMode', params: 'Mcu_ModeType McuMode', returns: 'void', desc: '设置微控制器功耗模式' },
-      { name: 'Mcu_GetResetReason', params: 'void', returns: 'Mcu_ResetType', desc: '获取最近一次复位原因' },
-      { name: 'Mcu_GetResetRawValue', params: 'void', returns: 'Mcu_RawResetType', desc: '获取原始复位寄存器值' },
+      {
+        name: 'Mcu_Init',
+        params: 'const Mcu_ConfigType* ConfigPtr',
+        returns: 'void',
+        desc: '初始化 Mcu 模块，配置时钟和复位参数',
+      },
+      {
+        name: 'Mcu_InitRamSection',
+        params: 'Mcu_RamSectionType RamSection',
+        returns: 'Std_ReturnType',
+        desc: '初始化指定的 RAM 段',
+      },
+      {
+        name: 'Mcu_InitClock',
+        params: 'Mcu_ClockType ClockSetting',
+        returns: 'Std_ReturnType',
+        desc: '根据配置激活指定时钟设置',
+      },
+      {
+        name: 'Mcu_DistributePllClock',
+        params: 'void',
+        returns: 'Std_ReturnType',
+        desc: '分发 PLL 时钟到各外设',
+      },
+      {
+        name: 'Mcu_GetPllStatus',
+        params: 'void',
+        returns: 'Mcu_PllStatusType',
+        desc: '获取 PLL 锁定状态',
+      },
+      {
+        name: 'Mcu_SetMode',
+        params: 'Mcu_ModeType McuMode',
+        returns: 'void',
+        desc: '设置微控制器功耗模式',
+      },
+      {
+        name: 'Mcu_GetResetReason',
+        params: 'void',
+        returns: 'Mcu_ResetType',
+        desc: '获取最近一次复位原因',
+      },
+      {
+        name: 'Mcu_GetResetRawValue',
+        params: 'void',
+        returns: 'Mcu_RawResetType',
+        desc: '获取原始复位寄存器值',
+      },
     ],
     configs: [
-      { name: 'McuClockSettingConfig', type: 'Mcu_ClockSettingConfigType', desc: '时钟分频器、倍频器配置', default: '见 Mcu_Cfg.c' },
-      { name: 'McuModeSettingConfi', type: 'Mcu_ModeSettingConfigType', desc: '功耗模式外设状态配置', default: '见 Mcu_Cfg.c' },
-      { name: 'McuRamSectorSettingConfig', type: 'Mcu_RamSectorSettingConfigType', desc: 'RAM 段初始化配置', default: '见 Mcu_Cfg.c' },
+      {
+        name: 'McuClockSettingConfig',
+        type: 'Mcu_ClockSettingConfigType',
+        desc: '时钟分频器、倍频器配置',
+        default: '见 Mcu_Cfg.c',
+      },
+      {
+        name: 'McuModeSettingConfi',
+        type: 'Mcu_ModeSettingConfigType',
+        desc: '功耗模式外设状态配置',
+        default: '见 Mcu_Cfg.c',
+      },
+      {
+        name: 'McuRamSectorSettingConfig',
+        type: 'Mcu_RamSectorSettingConfigType',
+        desc: 'RAM 段初始化配置',
+        default: '见 Mcu_Cfg.c',
+      },
     ],
     dependencies: ['Det (开发时)', 'McalLib'],
     codeExample: `/* Mcu 初始化示例 */
@@ -92,8 +147,16 @@ void SystemInit(void)
 }`,
     codeLanguage: 'c',
     changelog: [
-      { version: 'v1.2.0', date: '2026-04-20', changes: ['新增动态时钟门控支持', '优化 STOP 模式恢复时间'] },
-      { version: 'v1.1.0', date: '2026-03-15', changes: ['增加复位原因诊断接口', '修复 PLL 锁定检测偶发失效'] },
+      {
+        version: 'v1.2.0',
+        date: '2026-04-20',
+        changes: ['新增动态时钟门控支持', '优化 STOP 模式恢复时间'],
+      },
+      {
+        version: 'v1.1.0',
+        date: '2026-03-15',
+        changes: ['增加复位原因诊断接口', '修复 PLL 锁定检测偶发失效'],
+      },
       { version: 'v1.0.0', date: '2026-01-10', changes: ['初始版本发布', '支持基础时钟配置'] },
     ],
   },
@@ -117,15 +180,50 @@ void SystemInit(void)
       '引脚锁定保护机制',
     ],
     apis: [
-      { name: 'Port_Init', params: 'const Port_ConfigType* ConfigPtr', returns: 'void', desc: '初始化 Port 模块，应用所有引脚配置' },
-      { name: 'Port_SetPinDirection', params: 'Port_PinType Pin, Port_PinDirectionType Direction', returns: 'void', desc: '运行时设置引脚方向' },
-      { name: 'Port_RefreshPortDirection', params: 'void', returns: 'void', desc: '刷新引脚方向为配置值' },
-      { name: 'Port_SetPinMode', params: 'Port_PinType Pin, Port_PinModeType Mode', returns: 'void', desc: '设置引脚功能复用模式' },
+      {
+        name: 'Port_Init',
+        params: 'const Port_ConfigType* ConfigPtr',
+        returns: 'void',
+        desc: '初始化 Port 模块，应用所有引脚配置',
+      },
+      {
+        name: 'Port_SetPinDirection',
+        params: 'Port_PinType Pin, Port_PinDirectionType Direction',
+        returns: 'void',
+        desc: '运行时设置引脚方向',
+      },
+      {
+        name: 'Port_RefreshPortDirection',
+        params: 'void',
+        returns: 'void',
+        desc: '刷新引脚方向为配置值',
+      },
+      {
+        name: 'Port_SetPinMode',
+        params: 'Port_PinType Pin, Port_PinModeType Mode',
+        returns: 'void',
+        desc: '设置引脚功能复用模式',
+      },
     ],
     configs: [
-      { name: 'PortPinMode', type: 'Port_PinModeType', desc: '引脚复用功能选择', default: 'PORT_PIN_MODE_DIO' },
-      { name: 'PortPinDirection', type: 'Port_PinDirectionType', desc: '引脚方向', default: 'PORT_PIN_IN' },
-      { name: 'PortPinLevelValue', type: 'Port_PinLevelValueType', desc: '初始电平', default: 'PORT_PIN_LEVEL_LOW' },
+      {
+        name: 'PortPinMode',
+        type: 'Port_PinModeType',
+        desc: '引脚复用功能选择',
+        default: 'PORT_PIN_MODE_DIO',
+      },
+      {
+        name: 'PortPinDirection',
+        type: 'Port_PinDirectionType',
+        desc: '引脚方向',
+        default: 'PORT_PIN_IN',
+      },
+      {
+        name: 'PortPinLevelValue',
+        type: 'Port_PinLevelValueType',
+        desc: '初始电平',
+        default: 'PORT_PIN_LEVEL_LOW',
+      },
     ],
     dependencies: ['Det (开发时)'],
     codeExample: `/* Port 引脚配置示例 */
@@ -144,7 +242,11 @@ void Port_InitExample(void)
 }`,
     codeLanguage: 'c',
     changelog: [
-      { version: 'v1.1.0', date: '2026-03-10', changes: ['新增引脚锁定保护', '支持驱动强度分级配置'] },
+      {
+        version: 'v1.1.0',
+        date: '2026-03-10',
+        changes: ['新增引脚锁定保护', '支持驱动强度分级配置'],
+      },
       { version: 'v1.0.0', date: '2026-01-15', changes: ['初始版本发布'] },
     ],
   },
@@ -167,14 +269,44 @@ void Port_InitExample(void)
       '零开销抽象 (inline 函数)',
     ],
     apis: [
-      { name: 'Dio_ReadChannel', params: 'Dio_ChannelType ChannelId', returns: 'Dio_LevelType', desc: '读取指定通道电平' },
-      { name: 'Dio_WriteChannel', params: 'Dio_ChannelType ChannelId, Dio_LevelType Level', returns: 'void', desc: '写入指定通道电平' },
-      { name: 'Dio_FlipChannel', params: 'Dio_ChannelType ChannelId', returns: 'Dio_LevelType', desc: '翻转指定通道电平' },
-      { name: 'Dio_ReadPort', params: 'Dio_PortType PortId', returns: 'Dio_PortLevelType', desc: '读取整个端口电平' },
-      { name: 'Dio_WritePort', params: 'Dio_PortType PortId, Dio_PortLevelType Level', returns: 'void', desc: '写入整个端口电平' },
+      {
+        name: 'Dio_ReadChannel',
+        params: 'Dio_ChannelType ChannelId',
+        returns: 'Dio_LevelType',
+        desc: '读取指定通道电平',
+      },
+      {
+        name: 'Dio_WriteChannel',
+        params: 'Dio_ChannelType ChannelId, Dio_LevelType Level',
+        returns: 'void',
+        desc: '写入指定通道电平',
+      },
+      {
+        name: 'Dio_FlipChannel',
+        params: 'Dio_ChannelType ChannelId',
+        returns: 'Dio_LevelType',
+        desc: '翻转指定通道电平',
+      },
+      {
+        name: 'Dio_ReadPort',
+        params: 'Dio_PortType PortId',
+        returns: 'Dio_PortLevelType',
+        desc: '读取整个端口电平',
+      },
+      {
+        name: 'Dio_WritePort',
+        params: 'Dio_PortType PortId, Dio_PortLevelType Level',
+        returns: 'void',
+        desc: '写入整个端口电平',
+      },
     ],
     configs: [
-      { name: 'DioChannelId', type: 'Dio_ChannelType', desc: 'DIO 通道标识符', default: '硬件相关' },
+      {
+        name: 'DioChannelId',
+        type: 'Dio_ChannelType',
+        desc: 'DIO 通道标识符',
+        default: '硬件相关',
+      },
     ],
     dependencies: ['Port'],
     codeExample: `/* Dio 读写示例 */
@@ -195,7 +327,11 @@ void Dio_Example(void)
 }`,
     codeLanguage: 'c',
     changelog: [
-      { version: 'v1.1.0', date: '2026-03-12', changes: ['优化 GPIO 访问为单次内存操作', '新增 FlipChannel 接口'] },
+      {
+        version: 'v1.1.0',
+        date: '2026-03-12',
+        changes: ['优化 GPIO 访问为单次内存操作', '新增 FlipChannel 接口'],
+      },
       { version: 'v1.0.0', date: '2026-01-18', changes: ['初始版本发布'] },
     ],
   },
@@ -219,14 +355,44 @@ void Dio_Example(void)
       '错误计数与状态报告',
     ],
     apis: [
-      { name: 'Can_Init', params: 'const Can_ConfigType* Config', returns: 'void', desc: '初始化 CAN 控制器' },
-      { name: 'Can_SetControllerMode', params: 'uint8 Controller, Can_StateTransitionType Transition', returns: 'Can_ReturnType', desc: '设置控制器状态' },
-      { name: 'Can_Write', params: 'Can_HwHandleType Hth, const Can_PduType* PduInfo', returns: 'Can_ReturnType', desc: '发送 CAN 报文' },
-      { name: 'Can_ReadRxPduData', params: 'Can_HwHandleType Hrh, Can_PduType* PduInfo', returns: 'Can_ReturnType', desc: '读取接收到的报文数据' },
+      {
+        name: 'Can_Init',
+        params: 'const Can_ConfigType* Config',
+        returns: 'void',
+        desc: '初始化 CAN 控制器',
+      },
+      {
+        name: 'Can_SetControllerMode',
+        params: 'uint8 Controller, Can_StateTransitionType Transition',
+        returns: 'Can_ReturnType',
+        desc: '设置控制器状态',
+      },
+      {
+        name: 'Can_Write',
+        params: 'Can_HwHandleType Hth, const Can_PduType* PduInfo',
+        returns: 'Can_ReturnType',
+        desc: '发送 CAN 报文',
+      },
+      {
+        name: 'Can_ReadRxPduData',
+        params: 'Can_HwHandleType Hrh, Can_PduType* PduInfo',
+        returns: 'Can_ReturnType',
+        desc: '读取接收到的报文数据',
+      },
     ],
     configs: [
-      { name: 'CanControllerBaudrateConfig', type: 'Can_ControllerBaudrateConfigType', desc: '波特率配置 (仲裁段/数据段)', default: '500K/2M' },
-      { name: 'CanHwObjectConfig', type: 'Can_HwObjectConfigType', desc: '硬件对象 (邮箱) 配置', default: '见 Can_Cfg.c' },
+      {
+        name: 'CanControllerBaudrateConfig',
+        type: 'Can_ControllerBaudrateConfigType',
+        desc: '波特率配置 (仲裁段/数据段)',
+        default: '500K/2M',
+      },
+      {
+        name: 'CanHwObjectConfig',
+        type: 'Can_HwObjectConfigType',
+        desc: '硬件对象 (邮箱) 配置',
+        default: '见 Can_Cfg.c',
+      },
     ],
     dependencies: ['Det (开发时)', 'CanIf'],
     codeExample: `/* CAN 报文发送示例 */
@@ -250,7 +416,11 @@ void Can_SendMessage(void)
     codeLanguage: 'c',
     changelog: [
       { version: 'v1.3.0', date: '2026-04-15', changes: ['新增 CAN FD 支持', '优化邮箱仲裁算法'] },
-      { version: 'v1.2.0', date: '2026-03-20', changes: ['增加总线关闭恢复机制', '修复接收溢出中断丢失'] },
+      {
+        version: 'v1.2.0',
+        date: '2026-03-20',
+        changes: ['增加总线关闭恢复机制', '修复接收溢出中断丢失'],
+      },
       { version: 'v1.0.0', date: '2026-02-01', changes: ['初始版本发布'] },
     ],
   },
@@ -274,16 +444,51 @@ void Can_SendMessage(void)
       '中断和轮询驱动模式',
     ],
     apis: [
-      { name: 'Spi_Init', params: 'const Spi_ConfigType* ConfigPtr', returns: 'void', desc: '初始化 Spi 模块' },
+      {
+        name: 'Spi_Init',
+        params: 'const Spi_ConfigType* ConfigPtr',
+        returns: 'void',
+        desc: '初始化 Spi 模块',
+      },
       { name: 'Spi_DeInit', params: 'void', returns: 'Std_ReturnType', desc: '反初始化 Spi 模块' },
-      { name: 'Spi_WriteIB', params: 'Spi_ChannelType Channel, const Spi_DataBufferType* DataBufferPtr', returns: 'Std_ReturnType', desc: '写入内部缓冲区' },
-      { name: 'Spi_AsyncTransmit', params: 'Spi_SequenceType Sequence', returns: 'Std_ReturnType', desc: '异步发送序列' },
-      { name: 'Spi_SyncTransmit', params: 'Spi_SequenceType Sequence', returns: 'Std_ReturnType', desc: '同步发送序列' },
+      {
+        name: 'Spi_WriteIB',
+        params: 'Spi_ChannelType Channel, const Spi_DataBufferType* DataBufferPtr',
+        returns: 'Std_ReturnType',
+        desc: '写入内部缓冲区',
+      },
+      {
+        name: 'Spi_AsyncTransmit',
+        params: 'Spi_SequenceType Sequence',
+        returns: 'Std_ReturnType',
+        desc: '异步发送序列',
+      },
+      {
+        name: 'Spi_SyncTransmit',
+        params: 'Spi_SequenceType Sequence',
+        returns: 'Std_ReturnType',
+        desc: '同步发送序列',
+      },
     ],
     configs: [
-      { name: 'SpiChannel', type: 'Spi_ChannelConfigType', desc: '通道配置 (位宽、默认值)', default: '8bit' },
-      { name: 'SpiJob', type: 'Spi_JobConfigType', desc: '作业配置 (CS、波特率)', default: '见 Spi_Cfg.c' },
-      { name: 'SpiSequence', type: 'Spi_SequenceConfigType', desc: '序列配置 (作业链表)', default: '见 Spi_Cfg.c' },
+      {
+        name: 'SpiChannel',
+        type: 'Spi_ChannelConfigType',
+        desc: '通道配置 (位宽、默认值)',
+        default: '8bit',
+      },
+      {
+        name: 'SpiJob',
+        type: 'Spi_JobConfigType',
+        desc: '作业配置 (CS、波特率)',
+        default: '见 Spi_Cfg.c',
+      },
+      {
+        name: 'SpiSequence',
+        type: 'Spi_SequenceConfigType',
+        desc: '序列配置 (作业链表)',
+        default: '见 Spi_Cfg.c',
+      },
     ],
     dependencies: ['Det (开发时)'],
     codeExample: `/* SPI 同步传输示例 */
@@ -306,7 +511,11 @@ void Spi_TransferExample(void)
 }`,
     codeLanguage: 'c',
     changelog: [
-      { version: 'v1.2.0', date: '2026-04-01', changes: ['新增 DMA 传输模式', '优化异步传输回调机制'] },
+      {
+        version: 'v1.2.0',
+        date: '2026-04-01',
+        changes: ['新增 DMA 传输模式', '优化异步传输回调机制'],
+      },
       { version: 'v1.0.0', date: '2026-02-10', changes: ['初始版本发布'] },
     ],
   },
@@ -330,14 +539,44 @@ void Spi_TransferExample(void)
       '定时器状态查询',
     ],
     apis: [
-      { name: 'Gpt_Init', params: 'const Gpt_ConfigType* ConfigPtr', returns: 'void', desc: '初始化 Gpt 模块' },
-      { name: 'Gpt_StartTimer', params: 'Gpt_ChannelType Channel, Gpt_ValueType Value', returns: 'void', desc: '启动定时器' },
-      { name: 'Gpt_StopTimer', params: 'Gpt_ChannelType Channel', returns: 'void', desc: '停止定时器' },
-      { name: 'Gpt_GetTimeElapsed', params: 'Gpt_ChannelType Channel', returns: 'Gpt_ValueType', desc: '获取已流逝时间' },
-      { name: 'Gpt_GetTimeRemaining', params: 'Gpt_ChannelType Channel', returns: 'Gpt_ValueType', desc: '获取剩余时间' },
+      {
+        name: 'Gpt_Init',
+        params: 'const Gpt_ConfigType* ConfigPtr',
+        returns: 'void',
+        desc: '初始化 Gpt 模块',
+      },
+      {
+        name: 'Gpt_StartTimer',
+        params: 'Gpt_ChannelType Channel, Gpt_ValueType Value',
+        returns: 'void',
+        desc: '启动定时器',
+      },
+      {
+        name: 'Gpt_StopTimer',
+        params: 'Gpt_ChannelType Channel',
+        returns: 'void',
+        desc: '停止定时器',
+      },
+      {
+        name: 'Gpt_GetTimeElapsed',
+        params: 'Gpt_ChannelType Channel',
+        returns: 'Gpt_ValueType',
+        desc: '获取已流逝时间',
+      },
+      {
+        name: 'Gpt_GetTimeRemaining',
+        params: 'Gpt_ChannelType Channel',
+        returns: 'Gpt_ValueType',
+        desc: '获取剩余时间',
+      },
     ],
     configs: [
-      { name: 'GptChannelConfigSet', type: 'Gpt_ChannelConfigType', desc: '定时器通道配置', default: '见 Gpt_Cfg.c' },
+      {
+        name: 'GptChannelConfigSet',
+        type: 'Gpt_ChannelConfigType',
+        desc: '定时器通道配置',
+        default: '见 Gpt_Cfg.c',
+      },
     ],
     dependencies: ['Det (开发时)'],
     codeExample: `/* GPT 定时器示例 */
@@ -359,7 +598,11 @@ void Gpt_Notification_Channel0(void)
 }`,
     codeLanguage: 'c',
     changelog: [
-      { version: 'v1.1.0', date: '2026-03-18', changes: ['新增时间剩余查询接口', '修复连续模式下中断丢失'] },
+      {
+        version: 'v1.1.0',
+        date: '2026-03-18',
+        changes: ['新增时间剩余查询接口', '修复连续模式下中断丢失'],
+      },
       { version: 'v1.0.0', date: '2026-02-15', changes: ['初始版本发布'] },
     ],
   },
@@ -383,13 +626,38 @@ void Gpt_Notification_Channel0(void)
       '相位偏移支持',
     ],
     apis: [
-      { name: 'Pwm_Init', params: 'const Pwm_ConfigType* ConfigPtr', returns: 'void', desc: '初始化 Pwm 模块' },
-      { name: 'Pwm_SetDutyCycle', params: 'Pwm_ChannelType ChannelNumber, uint16 DutyCycle', returns: 'void', desc: '设置占空比' },
-      { name: 'Pwm_SetPeriodAndDuty', params: 'Pwm_ChannelType ChannelNumber, Pwm_PeriodType Period, uint16 DutyCycle', returns: 'void', desc: '设置周期和占空比' },
-      { name: 'Pwm_SetOutputToIdle', params: 'Pwm_ChannelType ChannelNumber', returns: 'void', desc: '输出置为空闲状态' },
+      {
+        name: 'Pwm_Init',
+        params: 'const Pwm_ConfigType* ConfigPtr',
+        returns: 'void',
+        desc: '初始化 Pwm 模块',
+      },
+      {
+        name: 'Pwm_SetDutyCycle',
+        params: 'Pwm_ChannelType ChannelNumber, uint16 DutyCycle',
+        returns: 'void',
+        desc: '设置占空比',
+      },
+      {
+        name: 'Pwm_SetPeriodAndDuty',
+        params: 'Pwm_ChannelType ChannelNumber, Pwm_PeriodType Period, uint16 DutyCycle',
+        returns: 'void',
+        desc: '设置周期和占空比',
+      },
+      {
+        name: 'Pwm_SetOutputToIdle',
+        params: 'Pwm_ChannelType ChannelNumber',
+        returns: 'void',
+        desc: '输出置为空闲状态',
+      },
     ],
     configs: [
-      { name: 'PwmChannelConfigSet', type: 'Pwm_ChannelConfigType', desc: 'PWM 通道配置', default: '见 Pwm_Cfg.c' },
+      {
+        name: 'PwmChannelConfigSet',
+        type: 'Pwm_ChannelConfigType',
+        desc: 'PWM 通道配置',
+        default: '见 Pwm_Cfg.c',
+      },
     ],
     dependencies: ['Det (开发时)'],
     codeExample: `/* PWM 占空比设置示例 */
@@ -432,14 +700,44 @@ void Pwm_ControlMotor(void)
       'DMA 结果传输',
     ],
     apis: [
-      { name: 'Adc_Init', params: 'const Adc_ConfigType* ConfigPtr', returns: 'void', desc: '初始化 Adc 模块' },
-      { name: 'Adc_StartGroupConversion', params: 'Adc_GroupType Group', returns: 'void', desc: '启动组转换' },
-      { name: 'Adc_StopGroupConversion', params: 'Adc_GroupType Group', returns: 'void', desc: '停止组转换' },
-      { name: 'Adc_ReadGroup', params: 'Adc_GroupType Group, Adc_ValueGroupType* DataBufferPtr', returns: 'Std_ReturnType', desc: '读取组转换结果' },
+      {
+        name: 'Adc_Init',
+        params: 'const Adc_ConfigType* ConfigPtr',
+        returns: 'void',
+        desc: '初始化 Adc 模块',
+      },
+      {
+        name: 'Adc_StartGroupConversion',
+        params: 'Adc_GroupType Group',
+        returns: 'void',
+        desc: '启动组转换',
+      },
+      {
+        name: 'Adc_StopGroupConversion',
+        params: 'Adc_GroupType Group',
+        returns: 'void',
+        desc: '停止组转换',
+      },
+      {
+        name: 'Adc_ReadGroup',
+        params: 'Adc_GroupType Group, Adc_ValueGroupType* DataBufferPtr',
+        returns: 'Std_ReturnType',
+        desc: '读取组转换结果',
+      },
     ],
     configs: [
-      { name: 'AdcChannel', type: 'Adc_ChannelConfigType', desc: 'ADC 通道配置', default: '见 Adc_Cfg.c' },
-      { name: 'AdcGroup', type: 'Adc_GroupConfigType', desc: 'ADC 组配置', default: '见 Adc_Cfg.c' },
+      {
+        name: 'AdcChannel',
+        type: 'Adc_ChannelConfigType',
+        desc: 'ADC 通道配置',
+        default: '见 Adc_Cfg.c',
+      },
+      {
+        name: 'AdcGroup',
+        type: 'Adc_GroupConfigType',
+        desc: 'ADC 组配置',
+        default: '见 Adc_Cfg.c',
+      },
     ],
     dependencies: ['Det (开发时)'],
     codeExample: `/* ADC 采样示例 */
@@ -487,11 +785,26 @@ void Adc_SampleExample(void)
       '复位后状态保持',
     ],
     apis: [
-      { name: 'Wdg_Init', params: 'const Wdg_ConfigType* ConfigPtr', returns: 'void', desc: '初始化 Wdg 模块' },
-      { name: 'Wdg_SetTriggerCondition', params: 'uint16 Timeout', returns: 'void', desc: '设置触发条件/喂狗' },
+      {
+        name: 'Wdg_Init',
+        params: 'const Wdg_ConfigType* ConfigPtr',
+        returns: 'void',
+        desc: '初始化 Wdg 模块',
+      },
+      {
+        name: 'Wdg_SetTriggerCondition',
+        params: 'uint16 Timeout',
+        returns: 'void',
+        desc: '设置触发条件/喂狗',
+      },
     ],
     configs: [
-      { name: 'WdgSettingsConfig', type: 'Wdg_SettingsConfigType', desc: '看门狗超时配置', default: '见 Wdg_Cfg.c' },
+      {
+        name: 'WdgSettingsConfig',
+        type: 'Wdg_SettingsConfigType',
+        desc: '看门狗超时配置',
+        default: '见 Wdg_Cfg.c',
+      },
     ],
     dependencies: ['Det (开发时)'],
     codeExample: `/* 看门狗初始化与喂狗 */
@@ -515,9 +828,7 @@ void MainLoop(void)
     }
 }`,
     codeLanguage: 'c',
-    changelog: [
-      { version: 'v1.0.0', date: '2026-03-01', changes: ['初始版本发布'] },
-    ],
+    changelog: [{ version: 'v1.0.0', date: '2026-03-01', changes: ['初始版本发布'] }],
   },
 };
 
@@ -542,13 +853,38 @@ const ecualDetails: Record<string, ModuleDetail> = {
       '总线关闭通知',
     ],
     apis: [
-      { name: 'CanIf_Init', params: 'const CanIf_ConfigType* ConfigPtr', returns: 'void', desc: '初始化 CanIf 模块' },
-      { name: 'CanIf_Transmit', params: 'PduIdType TxPduId, const PduInfoType* PduInfoPtr', returns: 'Std_ReturnType', desc: '发送 PDU' },
-      { name: 'CanIf_SetControllerMode', params: 'uint8 Controller, CanIf_ControllerModeType ControllerMode', returns: 'Std_ReturnType', desc: '设置控制器模式' },
+      {
+        name: 'CanIf_Init',
+        params: 'const CanIf_ConfigType* ConfigPtr',
+        returns: 'void',
+        desc: '初始化 CanIf 模块',
+      },
+      {
+        name: 'CanIf_Transmit',
+        params: 'PduIdType TxPduId, const PduInfoType* PduInfoPtr',
+        returns: 'Std_ReturnType',
+        desc: '发送 PDU',
+      },
+      {
+        name: 'CanIf_SetControllerMode',
+        params: 'uint8 Controller, CanIf_ControllerModeType ControllerMode',
+        returns: 'Std_ReturnType',
+        desc: '设置控制器模式',
+      },
     ],
     configs: [
-      { name: 'CanIfHthCfg', type: 'CanIf_HthConfigType', desc: '发送硬件句柄配置', default: '见 CanIf_Cfg.c' },
-      { name: 'CanIfRxPduCfg', type: 'CanIf_RxPduConfigType', desc: '接收 PDU 配置', default: '见 CanIf_Cfg.c' },
+      {
+        name: 'CanIfHthCfg',
+        type: 'CanIf_HthConfigType',
+        desc: '发送硬件句柄配置',
+        default: '见 CanIf_Cfg.c',
+      },
+      {
+        name: 'CanIfRxPduCfg',
+        type: 'CanIf_RxPduConfigType',
+        desc: '接收 PDU 配置',
+        default: '见 CanIf_Cfg.c',
+      },
     ],
     dependencies: ['Can', 'PduR', 'Com', 'CanTp'],
     codeExample: `/* CanIf 发送示例 */
@@ -569,7 +905,11 @@ void CanIf_SendPdu(void)
 }`,
     codeLanguage: 'c',
     changelog: [
-      { version: 'v1.2.0', date: '2026-04-18', changes: ['优化 PDU 路由性能', '新增总线关闭恢复通知'] },
+      {
+        version: 'v1.2.0',
+        date: '2026-04-18',
+        changes: ['优化 PDU 路由性能', '新增总线关闭恢复通知'],
+      },
       { version: 'v1.0.0', date: '2026-03-05', changes: ['初始版本发布'] },
     ],
   },
@@ -584,20 +924,34 @@ void CanIf_SendPdu(void)
     shortDesc: 'IO硬件抽象层',
     overview:
       'IoHwAb (IO Hardware Abstraction) 将底层 Dio/Adc/Pwm 等驱动抽象为标准化接口，使 ASW 组件无需关心具体硬件实现。',
-    features: [
-      '数字 IO 抽象',
-      '模拟量采集抽象',
-      'PWM 输出抽象',
-      '信号翻转与滤波',
-      '硬件通道映射',
-    ],
+    features: ['数字 IO 抽象', '模拟量采集抽象', 'PWM 输出抽象', '信号翻转与滤波', '硬件通道映射'],
     apis: [
-      { name: 'IoHwAb_Init', params: 'const IoHwAb_ConfigType* ConfigPtr', returns: 'void', desc: '初始化 IoHwAb' },
-      { name: 'IoHwAb_Dio_WriteChannel', params: 'IoHwAb_ChannelType Channel, IoHwAb_LevelType Level', returns: 'Std_ReturnType', desc: '抽象 DIO 写操作' },
-      { name: 'IoHwAb_Adc_GetPhyValue', params: 'IoHwAb_SignalType Signal, float32* Value', returns: 'Std_ReturnType', desc: '获取物理量值' },
+      {
+        name: 'IoHwAb_Init',
+        params: 'const IoHwAb_ConfigType* ConfigPtr',
+        returns: 'void',
+        desc: '初始化 IoHwAb',
+      },
+      {
+        name: 'IoHwAb_Dio_WriteChannel',
+        params: 'IoHwAb_ChannelType Channel, IoHwAb_LevelType Level',
+        returns: 'Std_ReturnType',
+        desc: '抽象 DIO 写操作',
+      },
+      {
+        name: 'IoHwAb_Adc_GetPhyValue',
+        params: 'IoHwAb_SignalType Signal, float32* Value',
+        returns: 'Std_ReturnType',
+        desc: '获取物理量值',
+      },
     ],
     configs: [
-      { name: 'IoHwAbChannel', type: 'IoHwAb_ChannelConfigType', desc: '通道映射配置', default: '见 IoHwAb_Cfg.c' },
+      {
+        name: 'IoHwAbChannel',
+        type: 'IoHwAb_ChannelConfigType',
+        desc: '通道映射配置',
+        default: '见 IoHwAb_Cfg.c',
+      },
     ],
     dependencies: ['Dio', 'Adc', 'Pwm'],
     codeExample: `/* IoHwAb 使用示例 */
@@ -615,7 +969,11 @@ void Sensor_Read(void)
 }`,
     codeLanguage: 'c',
     changelog: [
-      { version: 'v1.1.0', date: '2026-04-05', changes: ['新增信号滤波配置', '支持多物理单位转换'] },
+      {
+        version: 'v1.1.0',
+        date: '2026-04-05',
+        changes: ['新增信号滤波配置', '支持多物理单位转换'],
+      },
       { version: 'v1.0.0', date: '2026-03-10', changes: ['初始版本发布'] },
     ],
   },
@@ -639,13 +997,33 @@ void Sensor_Read(void)
       '填充字节处理',
     ],
     apis: [
-      { name: 'CanTp_Init', params: 'const CanTp_ConfigType* CfgPtr', returns: 'void', desc: '初始化 CanTp' },
-      { name: 'CanTp_Transmit', params: 'PduIdType TxPduId, const PduInfoType* PduInfoPtr', returns: 'Std_ReturnType', desc: '发送 PDU (自动分段)' },
+      {
+        name: 'CanTp_Init',
+        params: 'const CanTp_ConfigType* CfgPtr',
+        returns: 'void',
+        desc: '初始化 CanTp',
+      },
+      {
+        name: 'CanTp_Transmit',
+        params: 'PduIdType TxPduId, const PduInfoType* PduInfoPtr',
+        returns: 'Std_ReturnType',
+        desc: '发送 PDU (自动分段)',
+      },
       { name: 'CanTp_Shutdown', params: 'void', returns: 'void', desc: '关闭 CanTp' },
     ],
     configs: [
-      { name: 'CanTpRxNSdu', type: 'CanTp_RxNSduType', desc: '接收 N-SDU 配置', default: '见 CanTp_Cfg.c' },
-      { name: 'CanTpTxNSdu', type: 'CanTp_TxNSduType', desc: '发送 N-SDU 配置', default: '见 CanTp_Cfg.c' },
+      {
+        name: 'CanTpRxNSdu',
+        type: 'CanTp_RxNSduType',
+        desc: '接收 N-SDU 配置',
+        default: '见 CanTp_Cfg.c',
+      },
+      {
+        name: 'CanTpTxNSdu',
+        type: 'CanTp_TxNSduType',
+        desc: '发送 N-SDU 配置',
+        default: '见 CanTp_Cfg.c',
+      },
     ],
     dependencies: ['CanIf', 'PduR'],
     codeExample: `/* CanTp 发送多帧示例 */
@@ -680,19 +1058,28 @@ void CanTp_SendLongMessage(void)
     shortDesc: '以太网接口层',
     overview:
       'EthIf (Ethernet Interface) 为上层提供标准以太网报文收发服务，支持 VLAN 标记、交换机管理和链路状态监控。',
-    features: [
-      '以太网帧收发',
-      'VLAN 标记支持',
-      '交换机端口管理',
-      '链路状态监控',
-      '帧校验 (FCS)',
-    ],
+    features: ['以太网帧收发', 'VLAN 标记支持', '交换机端口管理', '链路状态监控', '帧校验 (FCS)'],
     apis: [
-      { name: 'EthIf_Init', params: 'const EthIf_ConfigType* CfgPtr', returns: 'void', desc: '初始化 EthIf' },
-      { name: 'EthIf_Transmit', params: 'uint8 CtrlIdx, Eth_BufIdxType BufIdx, Eth_FrameType FrameType, uint16 LenByte', returns: 'Std_ReturnType', desc: '发送以太网帧' },
+      {
+        name: 'EthIf_Init',
+        params: 'const EthIf_ConfigType* CfgPtr',
+        returns: 'void',
+        desc: '初始化 EthIf',
+      },
+      {
+        name: 'EthIf_Transmit',
+        params: 'uint8 CtrlIdx, Eth_BufIdxType BufIdx, Eth_FrameType FrameType, uint16 LenByte',
+        returns: 'Std_ReturnType',
+        desc: '发送以太网帧',
+      },
     ],
     configs: [
-      { name: 'EthIfCtrlConfig', type: 'EthIf_CtrlConfigType', desc: '控制器配置', default: '见 EthIf_Cfg.c' },
+      {
+        name: 'EthIfCtrlConfig',
+        type: 'EthIf_CtrlConfigType',
+        desc: '控制器配置',
+        default: '见 EthIf_Cfg.c',
+      },
     ],
     dependencies: ['Eth', 'TcpIp'],
     codeExample: `/* EthIf 初始化示例 */
@@ -703,9 +1090,7 @@ void EthIf_InitExample(void)
     EthIf_Init(&EthIf_Config);
 }`,
     codeLanguage: 'c',
-    changelog: [
-      { version: 'v1.0.0', date: '2026-03-20', changes: ['初始版本发布'] },
-    ],
+    changelog: [{ version: 'v1.0.0', date: '2026-03-20', changes: ['初始版本发布'] }],
   },
   MemIf: {
     id: 'memif',
@@ -718,19 +1103,30 @@ void EthIf_InitExample(void)
     shortDesc: '存储器接口层',
     overview:
       'MemIf (Memory Interface) 提供统一的存储器抽象接口，使 NvM 无需关心底层是 Fee 还是 Ea 实现。',
-    features: [
-      'Fee/Ea 统一接口',
-      '块读写抽象',
-      '状态查询',
-      '设备索引管理',
-    ],
+    features: ['Fee/Ea 统一接口', '块读写抽象', '状态查询', '设备索引管理'],
     apis: [
       { name: 'MemIf_Init', params: 'void', returns: 'void', desc: '初始化 MemIf' },
-      { name: 'MemIf_Read', params: 'uint8 DeviceIndex, uint16 BlockNumber, uint16 BlockOffset, uint8* DataBufferPtr, uint16 Length', returns: 'Std_ReturnType', desc: '读取存储块' },
-      { name: 'MemIf_Write', params: 'uint8 DeviceIndex, uint16 BlockNumber, uint8* DataBufferPtr', returns: 'Std_ReturnType', desc: '写入存储块' },
+      {
+        name: 'MemIf_Read',
+        params:
+          'uint8 DeviceIndex, uint16 BlockNumber, uint16 BlockOffset, uint8* DataBufferPtr, uint16 Length',
+        returns: 'Std_ReturnType',
+        desc: '读取存储块',
+      },
+      {
+        name: 'MemIf_Write',
+        params: 'uint8 DeviceIndex, uint16 BlockNumber, uint8* DataBufferPtr',
+        returns: 'Std_ReturnType',
+        desc: '写入存储块',
+      },
     ],
     configs: [
-      { name: 'MemIfDeviceConfig', type: 'MemIf_DeviceConfigType', desc: '设备配置', default: '见 MemIf_Cfg.c' },
+      {
+        name: 'MemIfDeviceConfig',
+        type: 'MemIf_DeviceConfigType',
+        desc: '设备配置',
+        default: '见 MemIf_Cfg.c',
+      },
     ],
     dependencies: ['Fee', 'Ea'],
     codeExample: `/* MemIf 读写示例 */
@@ -772,12 +1168,32 @@ void MemIf_Example(void)
     ],
     apis: [
       { name: 'Fee_Init', params: 'void', returns: 'void', desc: '初始化 Fee' },
-      { name: 'Fee_Read', params: 'uint16 BlockNumber, uint16 BlockOffset, uint8* DataBufferPtr, uint16 Length', returns: 'Std_ReturnType', desc: '读取块数据' },
-      { name: 'Fee_Write', params: 'uint16 BlockNumber, uint8* DataBufferPtr', returns: 'Std_ReturnType', desc: '写入块数据' },
-      { name: 'Fee_JobResult', params: 'void', returns: 'MemIf_JobResultType', desc: '获取异步作业结果' },
+      {
+        name: 'Fee_Read',
+        params: 'uint16 BlockNumber, uint16 BlockOffset, uint8* DataBufferPtr, uint16 Length',
+        returns: 'Std_ReturnType',
+        desc: '读取块数据',
+      },
+      {
+        name: 'Fee_Write',
+        params: 'uint16 BlockNumber, uint8* DataBufferPtr',
+        returns: 'Std_ReturnType',
+        desc: '写入块数据',
+      },
+      {
+        name: 'Fee_JobResult',
+        params: 'void',
+        returns: 'MemIf_JobResultType',
+        desc: '获取异步作业结果',
+      },
     ],
     configs: [
-      { name: 'FeeBlockConfiguration', type: 'Fee_BlockConfigType', desc: '块大小和配置', default: '见 Fee_Cfg.c' },
+      {
+        name: 'FeeBlockConfiguration',
+        type: 'Fee_BlockConfigType',
+        desc: '块大小和配置',
+        default: '见 Fee_Cfg.c',
+      },
     ],
     dependencies: ['Fls', 'MemIf'],
     codeExample: `/* Fee 数据存储示例 */
@@ -798,7 +1214,11 @@ void Fee_StoreData(void)
 }`,
     codeLanguage: 'c',
     changelog: [
-      { version: 'v1.1.0', date: '2026-04-12', changes: ['优化垃圾回收触发策略', '修复偶发性块损坏'] },
+      {
+        version: 'v1.1.0',
+        date: '2026-04-12',
+        changes: ['优化垃圾回收触发策略', '修复偶发性块损坏'],
+      },
       { version: 'v1.0.0', date: '2026-03-25', changes: ['初始版本发布'] },
     ],
   },
@@ -813,19 +1233,29 @@ void Fee_StoreData(void)
     shortDesc: 'EEPROM抽象层',
     overview:
       'Ea (EEPROM Abstraction) 为外部 EEPROM 芯片提供标准访问接口，支持页面读写和错误恢复。',
-    features: [
-      '外部 EEPROM 标准接口',
-      '页面读写操作',
-      '写保护管理',
-      'ECC 错误检测',
-    ],
+    features: ['外部 EEPROM 标准接口', '页面读写操作', '写保护管理', 'ECC 错误检测'],
     apis: [
       { name: 'Ea_Init', params: 'void', returns: 'void', desc: '初始化 Ea' },
-      { name: 'Ea_Read', params: 'uint16 BlockNumber, uint16 BlockOffset, uint8* DataBufferPtr, uint16 Length', returns: 'Std_ReturnType', desc: '读取块数据' },
-      { name: 'Ea_Write', params: 'uint16 BlockNumber, uint8* DataBufferPtr', returns: 'Std_ReturnType', desc: '写入块数据' },
+      {
+        name: 'Ea_Read',
+        params: 'uint16 BlockNumber, uint16 BlockOffset, uint8* DataBufferPtr, uint16 Length',
+        returns: 'Std_ReturnType',
+        desc: '读取块数据',
+      },
+      {
+        name: 'Ea_Write',
+        params: 'uint16 BlockNumber, uint8* DataBufferPtr',
+        returns: 'Std_ReturnType',
+        desc: '写入块数据',
+      },
     ],
     configs: [
-      { name: 'EaBlockConfiguration', type: 'Ea_BlockConfigType', desc: '块配置', default: '见 Ea_Cfg.c' },
+      {
+        name: 'EaBlockConfiguration',
+        type: 'Ea_BlockConfigType',
+        desc: '块配置',
+        default: '见 Ea_Cfg.c',
+      },
     ],
     dependencies: ['Eep', 'MemIf'],
     codeExample: `/* Ea 读写示例 */
@@ -839,9 +1269,7 @@ void Ea_Example(void)
     Ea_Write(0, config);
 }`,
     codeLanguage: 'c',
-    changelog: [
-      { version: 'v1.0.0', date: '2026-03-28', changes: ['初始版本发布'] },
-    ],
+    changelog: [{ version: 'v1.0.0', date: '2026-03-28', changes: ['初始版本发布'] }],
   },
   FrIf: {
     id: 'frif',
@@ -854,15 +1282,20 @@ void Ea_Example(void)
     shortDesc: 'FlexRay接口层',
     overview:
       'FrIf (FlexRay Interface) 为上层提供统一的 FlexRay 通信服务，支持静态和动态段报文收发。',
-    features: [
-      'FlexRay 帧收发',
-      '静态/动态段支持',
-      '全局时间同步',
-      '集群管理',
-    ],
+    features: ['FlexRay 帧收发', '静态/动态段支持', '全局时间同步', '集群管理'],
     apis: [
-      { name: 'FrIf_Init', params: 'const FrIf_ConfigType* ConfigPtr', returns: 'void', desc: '初始化 FrIf' },
-      { name: 'FrIf_Transmit', params: 'PduIdType FrIfTxPduId, const PduInfoType* PduInfoPtr', returns: 'Std_ReturnType', desc: '发送 FlexRay 帧' },
+      {
+        name: 'FrIf_Init',
+        params: 'const FrIf_ConfigType* ConfigPtr',
+        returns: 'void',
+        desc: '初始化 FrIf',
+      },
+      {
+        name: 'FrIf_Transmit',
+        params: 'PduIdType FrIfTxPduId, const PduInfoType* PduInfoPtr',
+        returns: 'Std_ReturnType',
+        desc: '发送 FlexRay 帧',
+      },
     ],
     configs: [
       { name: 'FrIfPdu', type: 'FrIf_PduConfigType', desc: 'PDU 配置', default: '见 FrIf_Cfg.c' },
@@ -882,9 +1315,7 @@ void FrIf_Send(void)
     FrIf_Transmit(FRIF_TX_PDU_0, &pdu);
 }`,
     codeLanguage: 'c',
-    changelog: [
-      { version: 'v1.0.0', date: '2026-04-01', changes: ['初始版本发布'] },
-    ],
+    changelog: [{ version: 'v1.0.0', date: '2026-04-01', changes: ['初始版本发布'] }],
   },
   LinIf: {
     id: 'linif',
@@ -905,11 +1336,26 @@ void FrIf_Send(void)
       '休眠/唤醒管理',
     ],
     apis: [
-      { name: 'LinIf_Init', params: 'const LinIf_ConfigType* Config', returns: 'void', desc: '初始化 LinIf' },
-      { name: 'LinIf_Transmit', params: 'PduIdType LinIfTxSduId, const PduInfoType* PduInfoPtr', returns: 'Std_ReturnType', desc: '发送 LIN 报文' },
+      {
+        name: 'LinIf_Init',
+        params: 'const LinIf_ConfigType* Config',
+        returns: 'void',
+        desc: '初始化 LinIf',
+      },
+      {
+        name: 'LinIf_Transmit',
+        params: 'PduIdType LinIfTxSduId, const PduInfoType* PduInfoPtr',
+        returns: 'Std_ReturnType',
+        desc: '发送 LIN 报文',
+      },
     ],
     configs: [
-      { name: 'LinIfFrame', type: 'LinIf_FrameConfigType', desc: '帧配置', default: '见 LinIf_Cfg.c' },
+      {
+        name: 'LinIfFrame',
+        type: 'LinIf_FrameConfigType',
+        desc: '帧配置',
+        default: '见 LinIf_Cfg.c',
+      },
     ],
     dependencies: ['Lin', 'PduR'],
     codeExample: `/* LinIf 初始化示例 */
@@ -920,9 +1366,7 @@ void LinIf_InitExample(void)
     LinIf_Init(&LinIf_Config);
 }`,
     codeLanguage: 'c',
-    changelog: [
-      { version: 'v1.0.0', date: '2026-04-03', changes: ['初始版本发布'] },
-    ],
+    changelog: [{ version: 'v1.0.0', date: '2026-04-03', changes: ['初始版本发布'] }],
   },
 };
 
@@ -947,9 +1391,24 @@ const serviceDetails: Record<string, ModuleDetail> = {
       '信号滤波',
     ],
     apis: [
-      { name: 'Com_Init', params: 'const Com_ConfigType* config', returns: 'void', desc: '初始化 Com' },
-      { name: 'Com_SendSignal', params: 'Com_SignalIdType SignalId, const void* SignalDataPtr', returns: 'uint8', desc: '发送信号' },
-      { name: 'Com_ReceiveSignal', params: 'Com_SignalIdType SignalId, void* SignalDataPtr', returns: 'uint8', desc: '接收信号' },
+      {
+        name: 'Com_Init',
+        params: 'const Com_ConfigType* config',
+        returns: 'void',
+        desc: '初始化 Com',
+      },
+      {
+        name: 'Com_SendSignal',
+        params: 'Com_SignalIdType SignalId, const void* SignalDataPtr',
+        returns: 'uint8',
+        desc: '发送信号',
+      },
+      {
+        name: 'Com_ReceiveSignal',
+        params: 'Com_SignalIdType SignalId, void* SignalDataPtr',
+        returns: 'uint8',
+        desc: '接收信号',
+      },
     ],
     configs: [
       { name: 'ComSignal', type: 'Com_SignalType', desc: '信号配置', default: '见 Com_Cfg.c' },
@@ -993,12 +1452,32 @@ void Com_SignalExample(void)
       '路由表动态配置',
     ],
     apis: [
-      { name: 'PduR_Init', params: 'const PduR_PBConfigType* ConfigPtr', returns: 'void', desc: '初始化 PduR' },
-      { name: 'PduR_RxIndication', params: 'PduIdType RxPduId, const PduInfoType* PduInfoPtr', returns: 'void', desc: '接收指示' },
-      { name: 'PduR_TxConfirmation', params: 'PduIdType TxPduId, Std_ReturnType result', returns: 'void', desc: '发送确认' },
+      {
+        name: 'PduR_Init',
+        params: 'const PduR_PBConfigType* ConfigPtr',
+        returns: 'void',
+        desc: '初始化 PduR',
+      },
+      {
+        name: 'PduR_RxIndication',
+        params: 'PduIdType RxPduId, const PduInfoType* PduInfoPtr',
+        returns: 'void',
+        desc: '接收指示',
+      },
+      {
+        name: 'PduR_TxConfirmation',
+        params: 'PduIdType TxPduId, Std_ReturnType result',
+        returns: 'void',
+        desc: '发送确认',
+      },
     ],
     configs: [
-      { name: 'PduRRoutingPath', type: 'PduR_RoutingPathType', desc: '路由路径配置', default: '见 PduR_Cfg.c' },
+      {
+        name: 'PduRRoutingPath',
+        type: 'PduR_RoutingPathType',
+        desc: '路由路径配置',
+        default: '见 PduR_Cfg.c',
+      },
     ],
     dependencies: ['CanIf', 'CanTp', 'Com', 'Dcm'],
     codeExample: `/* PduR 路由示例 */
@@ -1008,7 +1487,11 @@ void Com_SignalExample(void)
 /* CAN -> Com 路由已在配置中定义 */`,
     codeLanguage: 'c',
     changelog: [
-      { version: 'v0.7.0', date: '2026-04-22', changes: ['新增 FIFO 缓冲支持', '优化网关路由延迟'] },
+      {
+        version: 'v0.7.0',
+        date: '2026-04-22',
+        changes: ['新增 FIFO 缓冲支持', '优化网关路由延迟'],
+      },
       { version: 'v0.5.0', date: '2026-04-05', changes: ['基础路由功能'] },
     ],
   },
@@ -1024,7 +1507,14 @@ void Com_SignalExample(void)
     overview: 'NvM (NVRAM Manager) 管理非易失性数据的存储和恢复，提供块管理和冗余保护。',
     features: ['块管理', '冗余保护', '显式/隐式写', 'ROM 默认数据'],
     apis: [{ name: 'NvM_Init', params: 'void', returns: 'void', desc: '初始化 NvM' }],
-    configs: [{ name: 'NvMBlockDescriptor', type: 'NvM_BlockDescriptorType', desc: '块描述符', default: '见 NvM_Cfg.c' }],
+    configs: [
+      {
+        name: 'NvMBlockDescriptor',
+        type: 'NvM_BlockDescriptorType',
+        desc: '块描述符',
+        default: '见 NvM_Cfg.c',
+      },
+    ],
     dependencies: ['MemIf', 'Fee', 'Ea'],
     codeExample: '',
     codeLanguage: 'c',
@@ -1041,8 +1531,22 @@ void Com_SignalExample(void)
     shortDesc: '诊断通信管理器(UDS)',
     overview: 'Dcm (Diagnostic Communication Manager) 实现 ISO 14229 (UDS) 诊断协议栈。',
     features: ['UDS 服务实现', '会话管理', '安全访问', 'DID 读写'],
-    apis: [{ name: 'Dcm_Init', params: 'const Dcm_ConfigType* ConfigPtr', returns: 'void', desc: '初始化 Dcm' }],
-    configs: [{ name: 'DcmDsdServiceTable', type: 'Dcm_DsdServiceTableType', desc: '服务表配置', default: '见 Dcm_Cfg.c' }],
+    apis: [
+      {
+        name: 'Dcm_Init',
+        params: 'const Dcm_ConfigType* ConfigPtr',
+        returns: 'void',
+        desc: '初始化 Dcm',
+      },
+    ],
+    configs: [
+      {
+        name: 'DcmDsdServiceTable',
+        type: 'Dcm_DsdServiceTableType',
+        desc: '服务表配置',
+        default: '见 Dcm_Cfg.c',
+      },
+    ],
     dependencies: ['PduR', 'Dem'],
     codeExample: '',
     codeLanguage: 'c',
@@ -1060,7 +1564,14 @@ void Com_SignalExample(void)
     overview: 'Dem (Diagnostic Event Manager) 管理诊断事件的状态、计数器和存储。',
     features: ['事件状态管理', '故障计数器', '扩展数据记录', '冻结帧'],
     apis: [{ name: 'Dem_Init', params: 'void', returns: 'void', desc: '初始化 Dem' }],
-    configs: [{ name: 'DemEventParameter', type: 'Dem_EventParameterType', desc: '事件参数', default: '见 Dem_Cfg.c' }],
+    configs: [
+      {
+        name: 'DemEventParameter',
+        type: 'Dem_EventParameterType',
+        desc: '事件参数',
+        default: '见 Dem_Cfg.c',
+      },
+    ],
     dependencies: ['Dcm', 'NvM'],
     codeExample: '',
     codeLanguage: 'c',
@@ -1088,9 +1599,24 @@ const rteDetails: Record<string, ModuleDetail> = {
       '端口映射',
     ],
     apis: [
-      { name: 'Rte_Read', params: 'Rte_Instance, PortName_ElementName, DataElement', returns: 'Std_ReturnType', desc: '读取端口数据元素' },
-      { name: 'Rte_Write', params: 'Rte_Instance, PortName_ElementName, DataElement', returns: 'Std_ReturnType', desc: '写入端口数据元素' },
-      { name: 'Rte_Call', params: 'Rte_Instance, PortName_OperationName, ...', returns: 'Std_ReturnType', desc: '调用服务器操作' },
+      {
+        name: 'Rte_Read',
+        params: 'Rte_Instance, PortName_ElementName, DataElement',
+        returns: 'Std_ReturnType',
+        desc: '读取端口数据元素',
+      },
+      {
+        name: 'Rte_Write',
+        params: 'Rte_Instance, PortName_ElementName, DataElement',
+        returns: 'Std_ReturnType',
+        desc: '写入端口数据元素',
+      },
+      {
+        name: 'Rte_Call',
+        params: 'Rte_Instance, PortName_OperationName, ...',
+        returns: 'Std_ReturnType',
+        desc: '调用服务器操作',
+      },
     ],
     configs: [],
     dependencies: ['Com', 'PduR', 'Os'],
@@ -1111,7 +1637,11 @@ void Swc1_Runnable(void)
 }`,
     codeLanguage: 'c',
     changelog: [
-      { version: 'v0.5.0', date: '2026-04-15', changes: ['生成基础头文件', '支持 Sender-Receiver 接口'] },
+      {
+        version: 'v0.5.0',
+        date: '2026-04-15',
+        changes: ['生成基础头文件', '支持 Sender-Receiver 接口'],
+      },
     ],
   },
   EngineControl: {

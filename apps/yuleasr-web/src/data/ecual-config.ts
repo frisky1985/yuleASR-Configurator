@@ -3,14 +3,15 @@
  * Based on AUTOSAR ECUAL standard
  */
 
-import type { ConfigModule } from '@/types/config'
+import type { ConfigModule } from '@/types/config';
 
 export const ecualModules: ConfigModule[] = [
   {
     id: 'canif',
     name: 'CanIf',
     displayName: 'CAN Interface',
-    description: 'CAN Interface provides a hardware-independent interface to the upper layers for communication via CAN',
+    description:
+      'CAN Interface provides a hardware-independent interface to the upper layers for communication via CAN',
     vendor: 'Vector',
     version: '4.4.0',
     autosarVersion: '4.4.0',
@@ -120,7 +121,12 @@ export const ecualModules: ConfigModule[] = [
       },
     ],
     dependencies: [
-      { module: 'Can', required: true, description: 'CanIf depends on Can driver', autoEnable: true },
+      {
+        module: 'Can',
+        required: true,
+        description: 'CanIf depends on Can driver',
+        autoEnable: true,
+      },
       { module: 'Port', required: true, description: 'Physical pins needed', autoEnable: true },
     ],
     createdAt: '2025-01-01T00:00:00Z',
@@ -279,7 +285,12 @@ export const ecualModules: ConfigModule[] = [
       },
     ],
     dependencies: [
-      { module: 'Mcu', required: true, description: 'Needs MCU clock configuration', autoEnable: true },
+      {
+        module: 'Mcu',
+        required: true,
+        description: 'Needs MCU clock configuration',
+        autoEnable: true,
+      },
       { module: 'Port', required: true, description: 'Needs pin configuration', autoEnable: true },
     ],
     createdAt: '2025-01-01T00:00:00Z',
@@ -346,7 +357,7 @@ export const ecualModules: ConfigModule[] = [
     configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
-]
+];
 
 export const serviceModules: ConfigModule[] = [
   {
@@ -438,7 +449,12 @@ export const serviceModules: ConfigModule[] = [
       },
     ],
     dependencies: [
-      { module: 'Fee', required: true, description: 'Flash EEPROM Emulation needed', autoEnable: true },
+      {
+        module: 'Fee',
+        required: true,
+        description: 'Flash EEPROM Emulation needed',
+        autoEnable: true,
+      },
       { module: 'Ea', required: false, description: 'EEPROM Abstraction optional' },
     ],
     createdAt: '2025-01-01T00:00:00Z',
@@ -560,7 +576,7 @@ export const serviceModules: ConfigModule[] = [
             type: 'integer',
             value: 0x22,
             min: 0x10,
-            max: 0xFF,
+            max: 0xff,
           },
           {
             id: 'service-name',
@@ -582,4 +598,4 @@ export const serviceModules: ConfigModule[] = [
     configProgress: 100,
     updatedAt: '2025-01-01T00:00:00Z',
   },
-]
+];

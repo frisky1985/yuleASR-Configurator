@@ -17,73 +17,102 @@ import {
   X,
   ArrowLeft,
   CheckCircle2,
-} from 'lucide-react'
-import { useEffect, useState, useMemo, useRef } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+} from 'lucide-react';
+import { useEffect, useState, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useParams, useNavigate } from 'react-router-dom';
 
-import { configComparer, type ComparisonResult, type ConfigDiff } from '@/services/compareEngine'
-import { cn, formatDate } from '@/lib/utils'
-import { useConfigStore } from '@/stores/configStore'
-import type { ConfigFile, ConfigListItem } from '@/types'
+import { cn, formatDate } from '@/lib/utils';
+import { configComparer, type ComparisonResult, type ConfigDiff } from '@/services/compareEngine';
+import { useConfigStore } from '@/stores/configStore';
+import type { ConfigFile, ConfigListItem } from '@/types';
 
 // ── Export helpers ──
 
 function downloadBlob(content: string, filename: string, mimeType: string) {
-  const blob = new Blob([content], { type: mimeType })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = filename
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 function generateHtmlReport(result: ComparisonResult): string {
-  const now = new Date().toISOString().replace('T', ' ').substring(0, 19)
+  const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
 
   // Build hierarchical diff rows
-  const rows: string[] = []
+  const rows: string[] = [];
 
   for (const md of result.moduleDiffs) {
     const moduleStatusLabel =
-      md.status === 'same' ? 'Same' : md.status === 'different' ? 'Different' : md.status === 'only_a' ? 'Only in A' : 'Only in B'
-    const moduleRowClass = md.status === 'same' ? 'same' : md.status === 'different' ? 'different' : 'only-one'
+      md.status === 'same'
+        ? 'Same'
+        : md.status === 'different'
+          ? 'Different'
+          : md.status === 'only_a'
+            ? 'Only in A'
+            : 'Only in B';
+    const moduleRowClass =
+      md.status === 'same' ? 'same' : md.status === 'different' ? 'different' : 'only-one';
 
-    rows.push(`<tr class="${moduleRowClass} module-row"><td class="name"><strong>${md.moduleName}</strong></td><td>—</td><td>—</td><td><span class="badge badge-${moduleRowClass}">${moduleStatusLabel}</span></td><td>Module</td></tr>`)
+    rows.push(
+      `<tr class="${moduleRowClass} module-row"><td class="name"><strong>${md.moduleName}</strong></td><td>—</td><td>—</td><td><span class="badge badge-${moduleRowClass}">${moduleStatusLabel}</span></td><td>Module</td></tr>`
+    );
 
     if (md.status === 'different' && md.enabledA !== undefined && md.enabledB !== undefined) {
-      rows.push(`<tr class="different"><td class="name param-name">  enabled</td><td>${md.enabledA}</td><td>${md.enabledB}</td><td><span class="badge badge-different">Different</span></td><td>Param</td></tr>`)
+      rows.push(
+        `<tr class="different"><td class="name param-name">  enabled</td><td>${md.enabledA}</td><td>${md.enabledB}</td><td><span class="badge badge-different">Different</span></td><td>Param</td></tr>`
+      );
     }
 
-    const moduleContainers = result.containerDiffs.filter(c => c.moduleName === md.moduleName)
+    const moduleContainers = result.containerDiffs.filter(c => c.moduleName === md.moduleName);
     for (const cd of moduleContainers) {
       const containerStatusLabel =
-        cd.status === 'same' ? 'Same' : cd.status === 'different' ? 'Different' : cd.status === 'only_a' ? 'Only in A' : 'Only in B'
-      const containerRowClass = cd.status === 'same' ? 'same' : cd.status === 'different' ? 'different' : 'only-one'
+        cd.status === 'same'
+          ? 'Same'
+          : cd.status === 'different'
+            ? 'Different'
+            : cd.status === 'only_a'
+              ? 'Only in A'
+              : 'Only in B';
+      const containerRowClass =
+        cd.status === 'same' ? 'same' : cd.status === 'different' ? 'different' : 'only-one';
 
-      let valueA = ''
-      let valueB = ''
-      if (cd.instanceCountA !== undefined) valueA = `Instances: ${cd.instanceCountA}`
-      if (cd.instanceCountB !== undefined) valueB = `Instances: ${cd.instanceCountB}`
+      let valueA = '';
+      let valueB = '';
+      if (cd.instanceCountA !== undefined) valueA = `Instances: ${cd.instanceCountA}`;
+      if (cd.instanceCountB !== undefined) valueB = `Instances: ${cd.instanceCountB}`;
 
-      rows.push(`<tr class="${containerRowClass} container-row"><td class="name">  ${cd.containerName}</td><td>${valueA}</td><td>${valueB}</td><td><span class="badge badge-${containerRowClass}">${containerStatusLabel}</span></td><td>Container</td></tr>`)
+      rows.push(
+        `<tr class="${containerRowClass} container-row"><td class="name">  ${cd.containerName}</td><td>${valueA}</td><td>${valueB}</td><td><span class="badge badge-${containerRowClass}">${containerStatusLabel}</span></td><td>Container</td></tr>`
+      );
 
       const containerPath = cd.containerName.includes('.')
         ? cd.containerName
-        : `${md.moduleName}.${cd.containerName}`
+        : `${md.moduleName}.${cd.containerName}`;
       const containerParams = result.paramDiffs.filter(
         p => p.moduleName === md.moduleName && p.containerPath === containerPath
-      )
+      );
       for (const pd of containerParams) {
-        const paramRowClass = pd.status === 'same' ? 'same' : pd.status === 'different' ? 'different' : 'only-one'
+        const paramRowClass =
+          pd.status === 'same' ? 'same' : pd.status === 'different' ? 'different' : 'only-one';
         const paramStatusLabel =
-          pd.status === 'same' ? 'Same' : pd.status === 'different' ? 'Different' : pd.status === 'only_a' ? 'Only in A' : 'Only in B'
-        const valA = pd.valueA !== undefined ? String(pd.valueA) : '—'
-        const valB = pd.valueB !== undefined ? String(pd.valueB) : '—'
-        rows.push(`<tr class="${paramRowClass}"><td class="name param-name">    ${pd.parameterName}</td><td>${valA}</td><td>${valB}</td><td><span class="badge badge-${paramRowClass}">${paramStatusLabel}</span></td><td>${pd.type || 'Param'}</td></tr>`)
+          pd.status === 'same'
+            ? 'Same'
+            : pd.status === 'different'
+              ? 'Different'
+              : pd.status === 'only_a'
+                ? 'Only in A'
+                : 'Only in B';
+        const valA = pd.valueA !== undefined ? String(pd.valueA) : '—';
+        const valB = pd.valueB !== undefined ? String(pd.valueB) : '—';
+        rows.push(
+          `<tr class="${paramRowClass}"><td class="name param-name">    ${pd.parameterName}</td><td>${valA}</td><td>${valB}</td><td><span class="badge badge-${paramRowClass}">${paramStatusLabel}</span></td><td>${pd.type || 'Param'}</td></tr>`
+        );
       }
     }
   }
@@ -166,8 +195,8 @@ ${rows.join('\n')}
 </table>
 </div>
 </body>
-</html>`
-  return html
+</html>`;
+  return html;
 }
 
 // ── Color / Style helpers ──
@@ -175,183 +204,213 @@ ${rows.join('\n')}
 function getStatusStyle(status: string) {
   switch (status) {
     case 'same':
-      return { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-300', dot: 'bg-green-400' }
+      return {
+        bg: 'bg-green-50',
+        text: 'text-green-700',
+        border: 'border-green-300',
+        dot: 'bg-green-400',
+      };
     case 'different':
-      return { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-300', dot: 'bg-yellow-500' }
+      return {
+        bg: 'bg-yellow-50',
+        text: 'text-yellow-700',
+        border: 'border-yellow-300',
+        dot: 'bg-yellow-500',
+      };
     case 'only_a':
-      return { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-300', dot: 'bg-red-500' }
+      return { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-300', dot: 'bg-red-500' };
     case 'only_b':
-      return { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-300', dot: 'bg-green-500' }
+      return {
+        bg: 'bg-green-50',
+        text: 'text-green-700',
+        border: 'border-green-300',
+        dot: 'bg-green-500',
+      };
     default:
-      return { bg: 'bg-app-bg-secondary', text: 'text-app-text-secondary', border: 'border-app-border-primary', dot: 'bg-app-bg-tertiary' }
+      return {
+        bg: 'bg-app-bg-secondary',
+        text: 'text-app-text-secondary',
+        border: 'border-app-border-primary',
+        dot: 'bg-app-bg-tertiary',
+      };
   }
 }
 
 function getStatusIcon(status: string) {
   switch (status) {
-    case 'same': return null
-    case 'different': return <AlertTriangle className="w-3.5 h-3.5 text-yellow-500" />
-    case 'only_a': return <Minus className="w-3.5 h-3.5 text-red-500" />
-    case 'only_b': return <Plus className="w-3.5 h-3.5 text-green-500" />
-    default: return null
+    case 'same':
+      return null;
+    case 'different':
+      return <AlertTriangle className="w-3.5 h-3.5 text-yellow-500" />;
+    case 'only_a':
+      return <Minus className="w-3.5 h-3.5 text-red-500" />;
+    case 'only_b':
+      return <Plus className="w-3.5 h-3.5 text-green-500" />;
+    default:
+      return null;
   }
 }
 
 function getStatusLabel(status: string): { label: string; short: string } {
   switch (status) {
-    case 'same': return { label: 'Unchanged', short: '=' }
-    case 'different': return { label: 'Modified', short: '≠' }
-    case 'only_a': return { label: 'Removed', short: '−' }
-    case 'only_b': return { label: 'Added', short: '+' }
-    default: return { label: status, short: '?' }
+    case 'same':
+      return { label: 'Unchanged', short: '=' };
+    case 'different':
+      return { label: 'Modified', short: '≠' };
+    case 'only_a':
+      return { label: 'Removed', short: '−' };
+    case 'only_b':
+      return { label: 'Added', short: '+' };
+    default:
+      return { label: status, short: '?' };
   }
 }
 
 function formatValue(val: unknown): string {
-  if (val === undefined || val === null) return '—'
-  if (typeof val === 'boolean') return val ? 'true' : 'false'
-  if (Array.isArray(val)) return `[${val.join(', ')}]`
-  return String(val)
+  if (val === undefined || val === null) return '—';
+  if (typeof val === 'boolean') return val ? 'true' : 'false';
+  if (Array.isArray(val)) return `[${val.join(', ')}]`;
+  return String(val);
 }
 
 // ── Component ──
 
 export function ConfigDiff() {
-  const { t } = useTranslation()
-  const navigate = useNavigate()
-  const { configAId, configBId } = useParams<{ configAId?: string; configBId?: string }>()
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { configAId, configBId } = useParams<{ configAId?: string; configBId?: string }>();
 
-  const { configList, loadConfigList } = useConfigStore()
+  const { configList, loadConfigList } = useConfigStore();
 
-  const [leftConfigId, setLeftConfigId] = useState<string>(configAId || '')
-  const [rightConfigId, setRightConfigId] = useState<string>(configBId || '')
-  const [result, setResult] = useState<ComparisonResult | null>(null)
-  const [isComparing, setIsComparing] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [filter, setFilter] = useState<'all' | 'diff_only'>('all')
-  const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set())
-  const [showExportMenu, setShowExportMenu] = useState(false)
-  const [loadedConfigA, setLoadedConfigA] = useState<ConfigFile | null>(null)
-  const [loadedConfigB, setLoadedConfigB] = useState<ConfigFile | null>(null)
+  const [leftConfigId, setLeftConfigId] = useState<string>(configAId || '');
+  const [rightConfigId, setRightConfigId] = useState<string>(configBId || '');
+  const [result, setResult] = useState<ComparisonResult | null>(null);
+  const [isComparing, setIsComparing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<'all' | 'diff_only'>('all');
+  const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
+  const [showExportMenu, setShowExportMenu] = useState(false);
+  const [loadedConfigA, setLoadedConfigA] = useState<ConfigFile | null>(null);
+  const [loadedConfigB, setLoadedConfigB] = useState<ConfigFile | null>(null);
 
-  const exportMenuRef = useRef<HTMLDivElement>(null)
+  const exportMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    loadConfigList()
-  }, [loadConfigList])
+    loadConfigList();
+  }, [loadConfigList]);
 
   // Sync from URL params
   useEffect(() => {
-    if (configAId) setLeftConfigId(configAId)
-    if (configBId) setRightConfigId(configBId)
-  }, [configAId, configBId])
+    if (configAId) setLeftConfigId(configAId);
+    if (configBId) setRightConfigId(configBId);
+  }, [configAId, configBId]);
 
   // Auto-compare when both IDs are set from URL
   useEffect(() => {
     if (configAId && configBId && leftConfigId && rightConfigId) {
-      handleCompare()
+      handleCompare();
     }
     // Only run on mount / URL change
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [configAId, configBId])
+  }, [configAId, configBId]);
 
   // Close export menu on click outside
   useEffect(() => {
-    if (!showExportMenu) return
+    if (!showExportMenu) return;
     const handleClick = (e: MouseEvent) => {
       if (exportMenuRef.current && !exportMenuRef.current.contains(e.target as Node)) {
-        setShowExportMenu(false)
+        setShowExportMenu(false);
       }
-    }
-    document.addEventListener('mousedown', handleClick)
-    return () => document.removeEventListener('mousedown', handleClick)
-  }, [showExportMenu])
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showExportMenu]);
 
   // Load config from localStorage
   const loadConfigFromStorage = (configId: string): ConfigFile | null => {
     try {
-      const raw = localStorage.getItem(`yuleasr_config_${configId}`)
-      return raw ? JSON.parse(raw) as ConfigFile : null
+      const raw = localStorage.getItem(`yuleasr_config_${configId}`);
+      return raw ? (JSON.parse(raw) as ConfigFile) : null;
     } catch {
-      return null
+      return null;
     }
-  }
+  };
 
   const handleCompare = async () => {
     if (!leftConfigId || !rightConfigId) {
-      setError(t('compare.selectBoth') || 'Please select both configurations')
-      return
+      setError(t('compare.selectBoth') || 'Please select both configurations');
+      return;
     }
     if (leftConfigId === rightConfigId) {
-      setError(t('compare.sameConfig') || 'Cannot compare a configuration with itself')
-      return
+      setError(t('compare.sameConfig') || 'Cannot compare a configuration with itself');
+      return;
     }
 
-    setIsComparing(true)
-    setError(null)
-    setResult(null)
+    setIsComparing(true);
+    setError(null);
+    setResult(null);
 
     try {
-      const configA = loadConfigFromStorage(leftConfigId)
-      const configB = loadConfigFromStorage(rightConfigId)
+      const configA = loadConfigFromStorage(leftConfigId);
+      const configB = loadConfigFromStorage(rightConfigId);
 
       if (!configA || !configB) {
-        throw new Error('Could not load configurations from storage')
+        throw new Error('Could not load configurations from storage');
       }
 
-      setLoadedConfigA(configA)
-      setLoadedConfigB(configB)
+      setLoadedConfigA(configA);
+      setLoadedConfigB(configB);
 
-      const comparison = configComparer.compare(configA, configB)
-      setResult(comparison)
+      const comparison = configComparer.compare(configA, configB);
+      setResult(comparison);
 
       // Auto-expand all modules
-      const paths = new Set<string>()
+      const paths = new Set<string>();
       for (const md of comparison.moduleDiffs) {
-        paths.add(md.moduleName)
+        paths.add(md.moduleName);
       }
-      setExpandedPaths(paths)
+      setExpandedPaths(paths);
     } catch (err) {
-      setError((err as Error).message || 'Comparison failed')
+      setError((err as Error).message || 'Comparison failed');
     } finally {
-      setIsComparing(false)
+      setIsComparing(false);
     }
-  }
+  };
 
   const diffTree = useMemo(() => {
-    if (!result) return []
-    return configComparer.buildDiffTree(result, filter)
-  }, [result, filter])
+    if (!result) return [];
+    return configComparer.buildDiffTree(result, filter);
+  }, [result, filter]);
 
   const toggleExpand = (path: string) => {
     setExpandedPaths(prev => {
-      const next = new Set(prev)
+      const next = new Set(prev);
       if (next.has(path)) {
-        next.delete(path)
+        next.delete(path);
       } else {
-        next.add(path)
+        next.add(path);
       }
-      return next
-    })
-  }
+      return next;
+    });
+  };
 
   const renderTreeNode = (node: ConfigDiff, depth: number = 0): React.ReactNode => {
-    const hasChildren = node.children && node.children.length > 0
-    const isExpanded = expandedPaths.has(node.path)
-    const style = getStatusStyle(node.status)
-    const sl = getStatusLabel(node.status)
+    const hasChildren = node.children && node.children.length > 0;
+    const isExpanded = expandedPaths.has(node.path);
+    const style = getStatusStyle(node.status);
+    const sl = getStatusLabel(node.status);
 
     return (
       <div key={node.path}>
         <button
           onClick={() => {
-            if (hasChildren) toggleExpand(node.path)
+            if (hasChildren) toggleExpand(node.path);
           }}
           className={cn(
             'w-full flex items-center gap-2 px-2 py-2 text-left hover:bg-accent/50 transition-colors border-l-3',
             style.border,
             style.bg,
-            'border-l',
+            'border-l'
           )}
           style={{ paddingLeft: `${12 + depth * 20}px` }}
         >
@@ -370,34 +429,36 @@ export function ConfigDiff() {
           <span className={cn('w-2.5 h-2.5 rounded-full shrink-0', style.dot)} />
 
           {/* Name */}
-          <span className={cn(
-            'text-sm truncate',
-            node.status !== 'same' && 'font-semibold',
-            style.text,
-          )}>
+          <span
+            className={cn(
+              'text-sm truncate',
+              node.status !== 'same' && 'font-semibold',
+              style.text
+            )}
+          >
             {node.name}
           </span>
 
           {/* Status badge */}
-          <span className={cn(
-            'ml-auto px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase shrink-0',
-            node.status === 'same' && 'bg-green-100 text-green-700',
-            node.status === 'different' && 'bg-yellow-100 text-yellow-700',
-            node.status === 'only_a' && 'bg-red-100 text-red-700',
-            node.status === 'only_b' && 'bg-green-100 text-green-700',
-          )}>
+          <span
+            className={cn(
+              'ml-auto px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase shrink-0',
+              node.status === 'same' && 'bg-green-100 text-green-700',
+              node.status === 'different' && 'bg-yellow-100 text-yellow-700',
+              node.status === 'only_a' && 'bg-red-100 text-red-700',
+              node.status === 'only_b' && 'bg-green-100 text-green-700'
+            )}
+          >
             {sl.short}
           </span>
         </button>
 
         {hasChildren && isExpanded && (
-          <div>
-            {node.children!.map(child => renderTreeNode(child, depth + 1))}
-          </div>
+          <div>{node.children!.map(child => renderTreeNode(child, depth + 1))}</div>
         )}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className="space-y-4">
@@ -435,15 +496,17 @@ export function ConfigDiff() {
             </label>
             <select
               value={leftConfigId}
-              onChange={(e) => {
-                setLeftConfigId(e.target.value)
-                setResult(null)
+              onChange={e => {
+                setLeftConfigId(e.target.value);
+                setResult(null);
               }}
               className="w-full px-3 py-2 bg-app-bg-primary border border-app-border-primary rounded-lg text-sm text-app-text-primary focus:outline-none focus:ring-2 focus:ring-primary-500"
             >
               <option value="">{t('diff.selectConfig') || 'Select configuration...'}</option>
               {configList.map(c => (
-                <option key={c.id} value={c.id}>{c.name}</option>
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
               ))}
             </select>
           </div>
@@ -463,15 +526,17 @@ export function ConfigDiff() {
             </label>
             <select
               value={rightConfigId}
-              onChange={(e) => {
-                setRightConfigId(e.target.value)
-                setResult(null)
+              onChange={e => {
+                setRightConfigId(e.target.value);
+                setResult(null);
               }}
               className="w-full px-3 py-2 bg-app-bg-primary border border-app-border-primary rounded-lg text-sm text-app-text-primary focus:outline-none focus:ring-2 focus:ring-primary-500"
             >
               <option value="">{t('diff.selectConfig') || 'Select configuration...'}</option>
               {configList.map(c => (
-                <option key={c.id} value={c.id}>{c.name}</option>
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
               ))}
             </select>
           </div>
@@ -484,7 +549,7 @@ export function ConfigDiff() {
               className={cn(
                 'px-5 py-2 rounded-lg text-sm font-medium transition-colors inline-flex items-center gap-2',
                 'bg-primary-600 text-white hover:bg-primary-700',
-                'disabled:opacity-50 disabled:cursor-not-allowed',
+                'disabled:opacity-50 disabled:cursor-not-allowed'
               )}
             >
               {isComparing ? (
@@ -529,11 +594,24 @@ export function ConfigDiff() {
               </span>
               <span className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
-                <span className="font-semibold text-yellow-700">{result.summary.modulesDifferent + result.summary.containersDifferent + result.summary.paramsDifferent}</span>
+                <span className="font-semibold text-yellow-700">
+                  {result.summary.modulesDifferent +
+                    result.summary.containersDifferent +
+                    result.summary.paramsDifferent}
+                </span>
                 <span className="text-app-text-secondary">{t('diff.modified') || 'modified'}</span>
               </span>
               <span className="text-app-text-secondary text-xs border-l border-app-border-primary pl-4 ml-1">
-                {result.summary.modulesSame + result.summary.modulesDifferent + result.summary.modulesOnlyA + result.summary.modulesOnlyB} modules · {result.summary.paramsDifferent + result.summary.paramsOnlyA + result.summary.paramsOnlyB + result.summary.paramsSame} parameters
+                {result.summary.modulesSame +
+                  result.summary.modulesDifferent +
+                  result.summary.modulesOnlyA +
+                  result.summary.modulesOnlyB}{' '}
+                modules ·{' '}
+                {result.summary.paramsDifferent +
+                  result.summary.paramsOnlyA +
+                  result.summary.paramsOnlyB +
+                  result.summary.paramsSame}{' '}
+                parameters
               </span>
             </div>
 
@@ -546,15 +624,17 @@ export function ConfigDiff() {
                 >
                   <FileJson className="w-3.5 h-3.5" />
                   {t('diff.exportReport') || 'Export Report'}
-                  <ChevronDown className={cn('w-3 h-3 transition-transform', showExportMenu && 'rotate-180')} />
+                  <ChevronDown
+                    className={cn('w-3 h-3 transition-transform', showExportMenu && 'rotate-180')}
+                  />
                 </button>
                 {showExportMenu && (
                   <div className="absolute right-0 top-full mt-1 bg-app-bg-primary border border-app-border-primary rounded-lg shadow-lg z-50 min-w-[160px] py-1">
                     <button
                       onClick={() => {
-                        setShowExportMenu(false)
-                        const html = generateHtmlReport(result)
-                        downloadBlob(html, `diff-report-${Date.now()}.html`, 'text/html')
+                        setShowExportMenu(false);
+                        const html = generateHtmlReport(result);
+                        downloadBlob(html, `diff-report-${Date.now()}.html`, 'text/html');
                       }}
                       className="w-full text-left px-3 py-2 text-xs hover:bg-app-bg-secondary transition-colors flex items-center gap-2"
                     >
@@ -563,9 +643,9 @@ export function ConfigDiff() {
                     </button>
                     <button
                       onClick={() => {
-                        setShowExportMenu(false)
-                        const json = JSON.stringify(result, null, 2)
-                        downloadBlob(json, `diff-report-${Date.now()}.json`, 'application/json')
+                        setShowExportMenu(false);
+                        const json = JSON.stringify(result, null, 2);
+                        downloadBlob(json, `diff-report-${Date.now()}.json`, 'application/json');
                       }}
                       className="w-full text-left px-3 py-2 text-xs hover:bg-app-bg-secondary transition-colors flex items-center gap-2"
                     >
@@ -579,7 +659,7 @@ export function ConfigDiff() {
               {/* Filter */}
               <select
                 value={filter}
-                onChange={(e) => setFilter(e.target.value as typeof filter)}
+                onChange={e => setFilter(e.target.value as typeof filter)}
                 className="px-2.5 py-1.5 bg-app-bg-primary border border-app-border-primary rounded-lg text-xs text-app-text-primary"
               >
                 <option value="all">{t('diff.allItems') || 'All items'}</option>
@@ -636,7 +716,8 @@ export function ConfigDiff() {
             {t('diff.noSelectionTitle') || 'Select Configurations to Compare'}
           </h3>
           <p className="text-app-text-secondary max-w-md mx-auto">
-            {t('diff.noSelectionDesc') || 'Choose a baseline configuration on the left and a comparison configuration on the right, then click Compare.'}
+            {t('diff.noSelectionDesc') ||
+              'Choose a baseline configuration on the left and a comparison configuration on the right, then click Compare.'}
           </p>
         </div>
       )}
@@ -648,16 +729,31 @@ export function ConfigDiff() {
             { config: loadedConfigA, label: 'Baseline', color: 'blue' },
             { config: loadedConfigB, label: 'Comparison', color: 'green' },
           ].map(({ config, label, color }) => (
-            <div key={label} className="bg-app-bg-primary border border-app-border-primary rounded-xl p-4 shadow-sm">
+            <div
+              key={label}
+              className="bg-app-bg-primary border border-app-border-primary rounded-xl p-4 shadow-sm"
+            >
               <div className="flex items-center gap-2 mb-2">
-                <span className={cn('w-2 h-2 rounded-full', color === 'blue' ? 'bg-blue-500' : 'bg-green-500')} />
-                <span className="text-xs font-semibold text-app-text-secondary uppercase tracking-wider">{label}</span>
+                <span
+                  className={cn(
+                    'w-2 h-2 rounded-full',
+                    color === 'blue' ? 'bg-blue-500' : 'bg-green-500'
+                  )}
+                />
+                <span className="text-xs font-semibold text-app-text-secondary uppercase tracking-wider">
+                  {label}
+                </span>
               </div>
               <h3 className="font-semibold text-app-text-primary">{config.name}</h3>
               <div className="mt-2 text-xs text-app-text-secondary space-y-0.5">
                 <div>ID: {config.id}</div>
-                <div>Target: {config.targetPlatform || '—'} / {config.targetChip || '—'}</div>
-                <div>Modules: {config.modules.length} ({config.modules.filter(m => m.enabled).length} enabled)</div>
+                <div>
+                  Target: {config.targetPlatform || '—'} / {config.targetChip || '—'}
+                </div>
+                <div>
+                  Modules: {config.modules.length} ({config.modules.filter(m => m.enabled).length}{' '}
+                  enabled)
+                </div>
                 <div>Updated: {formatDate(config.updatedAt)}</div>
               </div>
             </div>
@@ -665,5 +761,5 @@ export function ConfigDiff() {
         </div>
       )}
     </div>
-  )
+  );
 }

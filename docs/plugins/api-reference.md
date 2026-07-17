@@ -8,13 +8,15 @@
 
 ## English
 
-This reference covers every type and interface exported by `@yuletech/plugin-sdk`.
+This reference covers every type and interface exported by
+`@yuletech/plugin-sdk`.
 
 ---
 
 ### YulePlugin
 
-The entry point of every plugin. Your module must export this as its default export.
+The entry point of every plugin. Your module must export this as its default
+export.
 
 ```typescript
 interface YulePlugin {
@@ -29,16 +31,16 @@ interface YulePlugin {
 }
 ```
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | ✅ | Unique identifier (e.g. `"yuletech-generator-can"`). Must not conflict with other plugins. |
-| `name` | `string` | ✅ | Human-readable name (e.g. `"CAN Code Generator"`) |
-| `version` | `string` | ✅ | SemVer version string |
-| `type` | `PluginType` | ✅ | One of `'code-generator'`, `'validator'`, `'data-export'`, `'ui-extension'` |
-| `description` | `string` | ✅ | Short description of what the plugin does |
-| `author` | `string` | ✅ | Author name or organisation |
-| `activate` | `(ctx: PluginContext) => Promise<void>` | ✅ | Called when the plugin is loaded. Register generators/validators/exporters here. |
-| `deactivate` | `() => Promise<void>` | ❌ | Called when the plugin is disabled/removed. Clean up resources. |
+| Field         | Type                                    | Required | Description                                                                                |
+| ------------- | --------------------------------------- | -------- | ------------------------------------------------------------------------------------------ |
+| `id`          | `string`                                | ✅       | Unique identifier (e.g. `"yuletech-generator-can"`). Must not conflict with other plugins. |
+| `name`        | `string`                                | ✅       | Human-readable name (e.g. `"CAN Code Generator"`)                                          |
+| `version`     | `string`                                | ✅       | SemVer version string                                                                      |
+| `type`        | `PluginType`                            | ✅       | One of `'code-generator'`, `'validator'`, `'data-export'`, `'ui-extension'`                |
+| `description` | `string`                                | ✅       | Short description of what the plugin does                                                  |
+| `author`      | `string`                                | ✅       | Author name or organisation                                                                |
+| `activate`    | `(ctx: PluginContext) => Promise<void>` | ✅       | Called when the plugin is loaded. Register generators/validators/exporters here.           |
+| `deactivate`  | `() => Promise<void>`                   | ❌       | Called when the plugin is disabled/removed. Clean up resources.                            |
 
 ---
 
@@ -56,13 +58,13 @@ interface PluginContext {
 }
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `config` | `Record<string, unknown>` | User-supplied configuration set via `PUT /v1/api/plugins/:id/config`. Read-only during activation. |
-| `logger` | `PluginLogger` | Scoped logger that prefixes messages with `[plugin:<id>]` |
-| `registerCodeGenerator` | `(gen: CodeGeneratorPlugin) => void` | Register a code generator. The name is auto-prefixed with `<pluginId>:` to avoid collisions. |
-| `registerValidator` | `(val: ValidatorPlugin) => void` | Register a validator. The name is auto-prefixed with `<pluginId>:` to avoid collisions. |
-| `registerDataExporter` | `(exp: DataExporterPlugin) => void` | Register a data exporter. The name is auto-prefixed with `<pluginId>:` to avoid collisions. |
+| Field                   | Type                                 | Description                                                                                        |
+| ----------------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| `config`                | `Record<string, unknown>`            | User-supplied configuration set via `PUT /v1/api/plugins/:id/config`. Read-only during activation. |
+| `logger`                | `PluginLogger`                       | Scoped logger that prefixes messages with `[plugin:<id>]`                                          |
+| `registerCodeGenerator` | `(gen: CodeGeneratorPlugin) => void` | Register a code generator. The name is auto-prefixed with `<pluginId>:` to avoid collisions.       |
+| `registerValidator`     | `(val: ValidatorPlugin) => void`     | Register a validator. The name is auto-prefixed with `<pluginId>:` to avoid collisions.            |
+| `registerDataExporter`  | `(exp: DataExporterPlugin) => void`  | Register a data exporter. The name is auto-prefixed with `<pluginId>:` to avoid collisions.        |
 
 ---
 
@@ -84,7 +86,11 @@ interface PluginLogger {
 ### PluginType
 
 ```typescript
-type PluginType = 'code-generator' | 'validator' | 'data-export' | 'ui-extension';
+type PluginType =
+  | 'code-generator'
+  | 'validator'
+  | 'data-export'
+  | 'ui-extension';
 ```
 
 ---
@@ -100,26 +106,27 @@ interface CodeGeneratorPlugin {
   supportedModules: string[];
   generate(
     config: Record<string, unknown>,
-    options: Record<string, unknown>,
+    options: Record<string, unknown>
   ): Promise<{ files: { path: string; content: string }[] }>;
 }
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `name` | `string` | Generator name (auto-prefixed with `<pluginId>:` at registration) |
-| `description` | `string` | Human-readable description |
-| `supportedModules` | `string[]` | Module names this generator handles (e.g. `["Can", "CanTrcv"]`). Use `["*"]` for all. |
-| `generate` | `(config, options) => Promise<result>` | Called when code generation is triggered for a supported module. The `config` is the module configuration; `options` is an arbitrary bag (output dir, compiler, etc.). |
+| Field              | Type                                   | Description                                                                                                                                                            |
+| ------------------ | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`             | `string`                               | Generator name (auto-prefixed with `<pluginId>:` at registration)                                                                                                      |
+| `description`      | `string`                               | Human-readable description                                                                                                                                             |
+| `supportedModules` | `string[]`                             | Module names this generator handles (e.g. `["Can", "CanTrcv"]`). Use `["*"]` for all.                                                                                  |
+| `generate`         | `(config, options) => Promise<result>` | Called when code generation is triggered for a supported module. The `config` is the module configuration; `options` is an arbitrary bag (output dir, compiler, etc.). |
 
 **The `generate` result:**
 
 ```typescript
 {
   files: {
-    path: string;    // Relative file path (e.g. "Can_Cfg.h")
+    path: string; // Relative file path (e.g. "Can_Cfg.h")
     content: string; // File content as string
-  }[];
+  }
+  [];
 }
 ```
 
@@ -138,12 +145,12 @@ interface ValidatorPlugin {
 }
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `name` | `string` | Validator name (auto-prefixed) |
-| `description` | `string` | Human-readable description |
-| `targetModules` | `string[]` | Modules this validator applies to. Empty array or `["*"]` = all modules. |
-| `validate` | `(config) => Promise<ValidationResult[]>` | Called when validation runs. Return a list of issues. |
+| Field           | Type                                      | Description                                                              |
+| --------------- | ----------------------------------------- | ------------------------------------------------------------------------ |
+| `name`          | `string`                                  | Validator name (auto-prefixed)                                           |
+| `description`   | `string`                                  | Human-readable description                                               |
+| `targetModules` | `string[]`                                | Modules this validator applies to. Empty array or `["*"]` = all modules. |
+| `validate`      | `(config) => Promise<ValidationResult[]>` | Called when validation runs. Return a list of issues.                    |
 
 ---
 
@@ -160,20 +167,20 @@ interface ValidationResult {
 }
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `module` | `string` | Module or parameter name this result refers to |
-| `severity` | `'error' \| 'warning' \| 'info'` | How severe the issue is |
-| `message` | `string` | Human-readable description |
-| `param` | `string` (optional) | Optional parameter or field name the result refers to |
+| Field      | Type                             | Description                                           |
+| ---------- | -------------------------------- | ----------------------------------------------------- |
+| `module`   | `string`                         | Module or parameter name this result refers to        |
+| `severity` | `'error' \| 'warning' \| 'info'` | How severe the issue is                               |
+| `message`  | `string`                         | Human-readable description                            |
+| `param`    | `string` (optional)              | Optional parameter or field name the result refers to |
 
 **Severity guidance:**
 
-| Severity | When to use |
-|----------|-------------|
-| `error` | Configuration is invalid and **will not work** (e.g. missing required parameter, out-of-range value) |
+| Severity  | When to use                                                                                                       |
+| --------- | ----------------------------------------------------------------------------------------------------------------- |
+| `error`   | Configuration is invalid and **will not work** (e.g. missing required parameter, out-of-range value)              |
 | `warning` | Configuration is technically valid but **may cause issues** (e.g. borderline clock frequency, deprecated setting) |
-| `info` | Configuration is fine, but you want to **inform** the user (e.g. suggestion to use a better value) |
+| `info`    | Configuration is fine, but you want to **inform** the user (e.g. suggestion to use a better value)                |
 
 ---
 
@@ -188,23 +195,23 @@ interface DataExporterPlugin {
   outputExtension: string;
   export(
     config: Record<string, unknown>,
-    options: Record<string, unknown>,
+    options: Record<string, unknown>
   ): Promise<{ content: string; extension: string }>;
 }
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `name` | `string` | Exporter name (auto-prefixed) |
-| `description` | `string` | Human-readable description |
-| `outputExtension` | `string` | File extension for the exported output (e.g. `"json"`, `"xml"`) |
-| `export` | `(config, options) => Promise<result>` | Called to perform the export. `config` is the full project configuration. Returns the output content and extension. |
+| Field             | Type                                   | Description                                                                                                         |
+| ----------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `name`            | `string`                               | Exporter name (auto-prefixed)                                                                                       |
+| `description`     | `string`                               | Human-readable description                                                                                          |
+| `outputExtension` | `string`                               | File extension for the exported output (e.g. `"json"`, `"xml"`)                                                     |
+| `export`          | `(config, options) => Promise<result>` | Called to perform the export. `config` is the full project configuration. Returns the output content and extension. |
 
 **The `export` result:**
 
 ```typescript
 {
-  content: string;   // The exported content as a string
+  content: string; // The exported content as a string
   extension: string; // File extension (e.g. "json")
 }
 ```
@@ -247,18 +254,18 @@ import { pluginManager } from '@yuletech/core';
 
 **PluginManager methods:**
 
-| Method | Description |
-|--------|-------------|
-| `activate(plugin, userConfig?, source?, filePath?)` | Load and activate a plugin |
-| `deactivate(id)` | Unload and deactivate a plugin |
-| `enable(id)` | Mark a plugin as enabled |
-| `disable(id)` | Mark a plugin as disabled, unregister its capabilities |
-| `toggle(id, enabled)` | Enable or disable a plugin |
-| `loadExternalPlugins()` | Scan external plugin directory and load found plugins |
-| `updateConfig(id, config)` | Merge new config into a plugin's configuration |
-| `listPlugins()` | Get all plugin metadata |
-| `getPluginMeta(id)` | Get one plugin's metadata |
-| `setExternalPluginDir(dir)` | Set the path for external plugin discovery |
+| Method                                              | Description                                            |
+| --------------------------------------------------- | ------------------------------------------------------ |
+| `activate(plugin, userConfig?, source?, filePath?)` | Load and activate a plugin                             |
+| `deactivate(id)`                                    | Unload and deactivate a plugin                         |
+| `enable(id)`                                        | Mark a plugin as enabled                               |
+| `disable(id)`                                       | Mark a plugin as disabled, unregister its capabilities |
+| `toggle(id, enabled)`                               | Enable or disable a plugin                             |
+| `loadExternalPlugins()`                             | Scan external plugin directory and load found plugins  |
+| `updateConfig(id, config)`                          | Merge new config into a plugin's configuration         |
+| `listPlugins()`                                     | Get all plugin metadata                                |
+| `getPluginMeta(id)`                                 | Get one plugin's metadata                              |
+| `setExternalPluginDir(dir)`                         | Set the path for external plugin discovery             |
 
 ---
 
@@ -274,14 +281,14 @@ import { pluginManager } from '@yuletech/core';
 
 ```typescript
 interface YulePlugin {
-  id: string;                    // 唯一标识符（如 "yuletech-generator-can"）
-  name: string;                  // 可读名称
-  version: string;               // SemVer 版本
-  type: PluginType;              // 插件类型
-  description: string;           // 简短描述
-  author: string;                // 作者
-  activate(ctx: PluginContext): Promise<void>;   // 激活时调用
-  deactivate?(): Promise<void>;                  // 停用时调用（可选）
+  id: string; // 唯一标识符（如 "yuletech-generator-can"）
+  name: string; // 可读名称
+  version: string; // SemVer 版本
+  type: PluginType; // 插件类型
+  description: string; // 简短描述
+  author: string; // 作者
+  activate(ctx: PluginContext): Promise<void>; // 激活时调用
+  deactivate?(): Promise<void>; // 停用时调用（可选）
 }
 ```
 
@@ -289,11 +296,11 @@ interface YulePlugin {
 
 在 `activate()` 中提供，是插件与系统交互的主要方式。
 
-| 方法 | 说明 |
-|------|------|
+| 方法                         | 说明           |
+| ---------------------------- | -------------- |
 | `registerCodeGenerator(gen)` | 注册代码生成器 |
-| `registerValidator(val)` | 注册验证器 |
-| `registerDataExporter(exp)` | 注册数据导出器 |
+| `registerValidator(val)`     | 注册验证器     |
+| `registerDataExporter(exp)`  | 注册数据导出器 |
 
 ### ValidationResult
 
@@ -301,10 +308,10 @@ interface YulePlugin {
 
 ```typescript
 interface ValidationResult {
-  module: string;               // 相关模块/参数名称
-  severity: 'error' | 'warning' | 'info';  // 严重级别
-  message: string;              // 可读描述
-  param?: string;               // 相关参数名称（可选）
+  module: string; // 相关模块/参数名称
+  severity: 'error' | 'warning' | 'info'; // 严重级别
+  message: string; // 可读描述
+  param?: string; // 相关参数名称（可选）
 }
 ```
 
@@ -316,7 +323,7 @@ interface ValidationResult {
 interface DataExporterPlugin {
   name: string;
   description: string;
-  outputExtension: string;      // 输出文件扩展名（如 "json"）
+  outputExtension: string; // 输出文件扩展名（如 "json"）
   export(config, options): Promise<{ content: string; extension: string }>;
 }
 ```

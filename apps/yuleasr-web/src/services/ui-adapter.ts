@@ -10,8 +10,9 @@
  *   - Schema: Auto-derived from the UI shape types
  */
 
-import type { ConfigModule, ConfigContainer, ConfigParameter } from '@/types/config';
 import type { ModuleConfig, ModuleSchema, ContainerSchema, ContainerConfig } from '@yuletech/core';
+
+import type { ConfigModule, ConfigContainer, ConfigParameter } from '@/types/config';
 
 /** Return the short PascalCase module name (e.g. 'ADC Driver' → 'Adc', 'Can' → 'Can') */
 export function getModuleShortName(module: ConfigModule): string {
@@ -64,7 +65,7 @@ export function buildModuleSchema(module: ConfigModule, shortName: string): Modu
   }));
 
   // Deduplicate by name (last wins)
-  const paramMap = new Map<string, typeof paramDefs[0]>();
+  const paramMap = new Map<string, (typeof paramDefs)[0]>();
   for (const pd of paramDefs) paramMap.set(pd.name, pd);
   const uniqueParamDefs = [...paramMap.values()];
 
@@ -118,9 +119,11 @@ export function buildModuleConfig(module: ConfigModule, shortName: string): Modu
       const instances: ContainerConfig[] = c.subContainers.map(sc => ({
         id: sc.id,
         parameters: parametersToObject(sc.parameters),
-        ...(sc.subContainers?.length ? {
-          children: collectNestedContainers(sc),
-        } : {}),
+        ...(sc.subContainers?.length
+          ? {
+              children: collectNestedContainers(sc),
+            }
+          : {}),
       }));
       containers[containerTypeName] = instances;
     }

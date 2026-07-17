@@ -48,11 +48,14 @@ export function BlogSidebar({
     }
   }, [searchQuery, onSearch]);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
-  }, [handleSearch]);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleSearch();
+      }
+    },
+    [handleSearch]
+  );
 
   return (
     <aside className={cn('space-y-6', className)}>
@@ -72,16 +75,11 @@ export function BlogSidebar({
             type="text"
             placeholder="搜索文章..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={e => setSearchQuery(e.target.value)}
             onKeyDown={handleKeyDown}
             className="flex-1"
           />
-          <Button
-            size="icon"
-            variant="secondary"
-            onClick={handleSearch}
-            aria-label="搜索"
-          >
+          <Button size="icon" variant="secondary" onClick={handleSearch} aria-label="搜索">
             <Search className="w-4 h-4" />
           </Button>
         </div>
@@ -106,12 +104,14 @@ export function BlogSidebar({
                 onClick={() => onArticleClick?.(article.slug)}
                 className="group flex gap-3 cursor-pointer"
               >
-                <span className={cn(
-                  'flex-shrink-0 w-6 h-6 flex items-center justify-center text-xs font-bold rounded',
-                  index < 3
-                    ? 'bg-[hsl(var(--accent))]/10 text-[hsl(var(--accent))]'
-                    : 'bg-muted text-muted-foreground'
-                )}>
+                <span
+                  className={cn(
+                    'flex-shrink-0 w-6 h-6 flex items-center justify-center text-xs font-bold rounded',
+                    index < 3
+                      ? 'bg-[hsl(var(--accent))]/10 text-[hsl(var(--accent))]'
+                      : 'bg-muted text-muted-foreground'
+                  )}
+                >
                   {index + 1}
                 </span>
                 <div className="flex-1 min-w-0">
@@ -142,7 +142,7 @@ export function BlogSidebar({
             热门标签
           </h3>
           <div className="flex flex-wrap gap-2">
-            {tags.map((tag) => (
+            {tags.map(tag => (
               <button
                 key={tag.name}
                 onClick={() => onTagClick?.(tag.name)}
@@ -230,9 +230,7 @@ export function BlogDetailSidebar({
               <p className="text-xs text-muted-foreground">{author.role}</p>
             </div>
           </div>
-          {author.bio && (
-            <p className="text-sm text-muted-foreground">{author.bio}</p>
-          )}
+          {author.bio && <p className="text-sm text-muted-foreground">{author.bio}</p>}
         </motion.div>
       )}
 
@@ -246,7 +244,7 @@ export function BlogDetailSidebar({
         >
           <h3 className="text-sm font-semibold mb-4">目录</h3>
           <nav className="space-y-1">
-            {toc.map((item) => (
+            {toc.map(item => (
               <button
                 key={item.id}
                 onClick={() => onTocClick?.(item.id)}
@@ -277,7 +275,7 @@ export function BlogDetailSidebar({
         >
           <h3 className="text-sm font-semibold mb-4">相关文章</h3>
           <div className="space-y-3">
-            {relatedArticles.map((article) => (
+            {relatedArticles.map(article => (
               <div
                 key={article.id}
                 onClick={() => onArticleClick?.(article.slug)}

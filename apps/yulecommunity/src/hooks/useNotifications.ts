@@ -15,29 +15,36 @@ export interface Notification {
 }
 
 export function useNotifications() {
-  const [notifications, setNotifications] = useLocalStorage<Notification[]>('yuletech-notifications', []);
+  const [notifications, setNotifications] = useLocalStorage<Notification[]>(
+    'yuletech-notifications',
+    []
+  );
 
-  const addNotification = useCallback((notification: Omit<Notification, 'id' | 'read' | 'createdAt'>) => {
-    const newNotification: Notification = {
-      ...notification,
-      id: generateId('notif'),
-      read: false,
-      createdAt: new Date().toISOString(),
-    };
-    setNotifications((prev) => [newNotification, ...prev].slice(0, 100));
-  }, [setNotifications]);
+  const addNotification = useCallback(
+    (notification: Omit<Notification, 'id' | 'read' | 'createdAt'>) => {
+      const newNotification: Notification = {
+        ...notification,
+        id: generateId('notif'),
+        read: false,
+        createdAt: new Date().toISOString(),
+      };
+      setNotifications(prev => [newNotification, ...prev].slice(0, 100));
+    },
+    [setNotifications]
+  );
 
-  const markAsRead = useCallback((id: string) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-    );
-  }, [setNotifications]);
+  const markAsRead = useCallback(
+    (id: string) => {
+      setNotifications(prev => prev.map(n => (n.id === id ? { ...n, read: true } : n)));
+    },
+    [setNotifications]
+  );
 
   const markAllAsRead = useCallback(() => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
   }, [setNotifications]);
 
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const unreadCount = notifications.filter(n => !n.read).length;
 
   return {
     notifications,

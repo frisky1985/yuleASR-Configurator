@@ -8,7 +8,7 @@ import { useLocalStorage } from './useLocalStorage';
 import { useAuth } from './useAuth';
 import { userApi, type PointsInfo } from '@/services/userApi';
 
-export type PointsAction = 
+export type PointsAction =
   | 'article.read'
   | 'article.like'
   | 'article.bookmark'
@@ -142,43 +142,46 @@ export function usePoints() {
   /**
    * 增加积分
    */
-  const addPoints = useCallback(async (
-    action: PointsAction,
-    description?: string,
-    reference?: { type: string; id: string; title: string }
-  ) => {
-    // 更新本地
-    const pointsChange = getPointsForAction(action);
-    const historyItem = {
-      id: `pts_${Date.now()}`,
-      action,
-      description: description || getDefaultDescription(action),
-      points: pointsChange,
-      timestamp: new Date().toISOString(),
-    };
+  const addPoints = useCallback(
+    async (
+      action: PointsAction,
+      description?: string,
+      reference?: { type: string; id: string; title: string }
+    ) => {
+      // 更新本地
+      const pointsChange = getPointsForAction(action);
+      const historyItem = {
+        id: `pts_${Date.now()}`,
+        action,
+        description: description || getDefaultDescription(action),
+        points: pointsChange,
+        timestamp: new Date().toISOString(),
+      };
 
-    setLocalState(prev => ({
-      points: prev.points + pointsChange,
-      history: [historyItem, ...prev.history].slice(0, 100),
-      lastSyncAt: prev.lastSyncAt,
-    }));
+      setLocalState(prev => ({
+        points: prev.points + pointsChange,
+        history: [historyItem, ...prev.history].slice(0, 100),
+        lastSyncAt: prev.lastSyncAt,
+      }));
 
-    // 如果已登录，同步到云端
-    if (isAuthenticated) {
-      try {
-        const result = await userApi.earnPoints(action, reference);
-        if (result.success) {
-          // 刷新云端积分信息
-          const pointsResponse = await userApi.getPoints();
-          if (pointsResponse.success) {
-            setCloudInfo(pointsResponse.data);
+      // 如果已登录，同步到云端
+      if (isAuthenticated) {
+        try {
+          const result = await userApi.earnPoints(action, reference);
+          if (result.success) {
+            // 刷新云端积分信息
+            const pointsResponse = await userApi.getPoints();
+            if (pointsResponse.success) {
+              setCloudInfo(pointsResponse.data);
+            }
           }
+        } catch (err) {
+          console.error('同步积分到云端失败:', err);
         }
-      } catch (err) {
-        console.error('同步积分到云端失败:', err);
       }
-    }
-  }, [isAuthenticated, setLocalState]);
+    },
+    [isAuthenticated, setLocalState]
+  );
 
   /**
    * 手动刷新积分
@@ -203,12 +206,15 @@ export function usePoints() {
   /**
    * 设置积分（管理员调整用）
    */
-  const setPoints = useCallback((newPoints: number) => {
-    setLocalState(prev => ({
-      ...prev,
-      points: Math.max(0, newPoints),
-    }));
-  }, [setLocalState]);
+  const setPoints = useCallback(
+    (newPoints: number) => {
+      setLocalState(prev => ({
+        ...prev,
+        points: Math.max(0, newPoints),
+      }));
+    },
+    [setLocalState]
+  );
 
   return {
     points,

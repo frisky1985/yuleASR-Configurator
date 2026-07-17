@@ -38,12 +38,12 @@ export function AdminSettings() {
   const [clearConfirmText, setClearConfirmText] = useState('');
 
   const handlePointChange = (action: PointsAction, value: number) => {
-    setPointRules((prev) => ({ ...prev, [action]: Math.max(0, value) }));
+    setPointRules(prev => ({ ...prev, [action]: Math.max(0, value) }));
     setSaved(false);
   };
 
   const handleThresholdChange = (index: number, field: 'min' | 'title', value: string | number) => {
-    setLevelThresholds((prev) => {
+    setLevelThresholds(prev => {
       const next = [...prev];
       if (field === 'min') {
         next[index] = { ...next[index], min: Math.max(0, Number(value)) };
@@ -131,7 +131,7 @@ export function AdminSettings() {
         <div className="bg-card border border-border rounded-xl p-5">
           <h3 className="font-semibold mb-4">积分规则</h3>
           <div className="space-y-5">
-            {(Object.keys(actionLabels) as PointsAction[]).map((action) => (
+            {(Object.keys(actionLabels) as PointsAction[]).map(action => (
               <div key={action}>
                 <div className="flex items-center justify-between mb-1">
                   <label className="text-sm font-medium">{actionLabels[action]}</label>
@@ -142,7 +142,7 @@ export function AdminSettings() {
                       max={100}
                       step={1}
                       value={pointRules[action]}
-                      onChange={(e) => handlePointChange(action, Number(e.target.value))}
+                      onChange={e => handlePointChange(action, Number(e.target.value))}
                       className="w-24"
                     />
                     <input
@@ -150,7 +150,7 @@ export function AdminSettings() {
                       min={0}
                       max={1000}
                       value={pointRules[action]}
-                      onChange={(e) => handlePointChange(action, Number(e.target.value))}
+                      onChange={e => handlePointChange(action, Number(e.target.value))}
                       className="w-16 px-2 py-1 bg-background border border-border rounded text-sm text-center focus:outline-none focus:ring-1 focus:ring-[hsl(var(--accent))]/30"
                     />
                   </div>
@@ -174,7 +174,7 @@ export function AdminSettings() {
                   <input
                     type="text"
                     value={threshold.title}
-                    onChange={(e) => handleThresholdChange(index, 'title', e.target.value)}
+                    onChange={e => handleThresholdChange(index, 'title', e.target.value)}
                     className="w-full px-2 py-1 bg-background border border-border rounded text-sm focus:outline-none focus:ring-1 focus:ring-[hsl(var(--accent))]/30"
                   />
                 </div>
@@ -184,7 +184,7 @@ export function AdminSettings() {
                     type="number"
                     min={0}
                     value={threshold.min}
-                    onChange={(e) => handleThresholdChange(index, 'min', e.target.value)}
+                    onChange={e => handleThresholdChange(index, 'min', e.target.value)}
                     className="w-20 px-2 py-1 bg-background border border-border rounded text-sm text-center focus:outline-none focus:ring-1 focus:ring-[hsl(var(--accent))]/30"
                   />
                   <span>积分</span>
@@ -234,9 +234,7 @@ export function AdminSettings() {
           <Save className="w-4 h-4" />
           保存设置
         </button>
-        {saved && (
-          <span className="text-sm text-green-500">设置已保存</span>
-        )}
+        {saved && <span className="text-sm text-green-500">设置已保存</span>}
       </div>
 
       {/* Clear confirmation modal */}
@@ -249,7 +247,9 @@ export function AdminSettings() {
               </div>
               <div>
                 <h3 className="font-bold">清除所有数据</h3>
-                <p className="text-sm text-muted-foreground">此操作将删除所有社区数据，不可撤销。</p>
+                <p className="text-sm text-muted-foreground">
+                  此操作将删除所有社区数据，不可撤销。
+                </p>
               </div>
             </div>
             <div className="mb-4">
@@ -259,14 +259,17 @@ export function AdminSettings() {
               <input
                 type="text"
                 value={clearConfirmText}
-                onChange={(e) => setClearConfirmText(e.target.value)}
+                onChange={e => setClearConfirmText(e.target.value)}
                 placeholder="yuletech"
                 className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-destructive/30"
               />
             </div>
             <div className="flex justify-end gap-3">
               <button
-                onClick={() => { setShowClearConfirm(false); setClearConfirmText(''); }}
+                onClick={() => {
+                  setShowClearConfirm(false);
+                  setClearConfirmText('');
+                }}
                 className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
                 取消

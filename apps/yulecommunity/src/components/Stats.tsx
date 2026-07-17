@@ -52,7 +52,8 @@ function AnimatedNumber({ value, suffix }: { value: number; suffix: string }) {
 
   return (
     <span ref={ref}>
-      {count.toLocaleString()}{suffix}
+      {count.toLocaleString()}
+      {suffix}
     </span>
   );
 }
@@ -62,9 +63,11 @@ export function Stats() {
     <section className="py-20 bg-gradient-to-b from-transparent via-[hsl(var(--primary))]/5 to-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((stat) => (
+          {stats.map(stat => (
             <div key={stat.label} className="text-center">
-              <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-muted mb-4`}>
+              <div
+                className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-muted mb-4`}
+              >
                 <stat.icon className={`w-6 h-6 ${stat.color}`} />
               </div>
               <div className="text-3xl sm:text-4xl font-bold mb-2">

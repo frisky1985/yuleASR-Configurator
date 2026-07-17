@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { EcucCodeGenerator } from '../ecuc-generator';
+
 import type { ModuleConfig, ModuleSchema } from '../../types';
+import { EcucCodeGenerator } from '../ecuc-generator';
 
 describe('EcucCodeGenerator', () => {
   const generator = new EcucCodeGenerator();
@@ -147,9 +148,7 @@ describe('EcucCodeGenerator - Container generation', () => {
     label: 'CAN Driver',
     layer: 'MCAL',
     version: '1.0.0',
-    parameters: [
-      { name: 'canDevErrorDetect', type: 'boolean', required: false },
-    ],
+    parameters: [{ name: 'canDevErrorDetect', type: 'boolean', required: false }],
     containers: [
       {
         name: 'CanController',
@@ -201,9 +200,7 @@ describe('EcucCodeGenerator - Container generation', () => {
       version: '1.0.0',
       parameters: { canDevErrorDetect: false },
       containers: {
-        CanController: [
-          { id: 'ctrl0', parameters: { canBaudrate: 500000, canControllerId: 0 } },
-        ],
+        CanController: [{ id: 'ctrl0', parameters: { canBaudrate: 500000, canControllerId: 0 } }],
       },
     };
     const result = await generator.generate(config, schemaWithContainers, {
@@ -221,9 +218,7 @@ describe('EcucCodeGenerator - Container generation', () => {
       version: '1.0.0',
       parameters: { canDevErrorDetect: false },
       containers: {
-        CanController: [
-          { id: 'ctrl0', parameters: { canBaudrate: 500000, canControllerId: 0 } },
-        ],
+        CanController: [{ id: 'ctrl0', parameters: { canBaudrate: 500000, canControllerId: 0 } }],
       },
     };
     const result = await generator.generate(config, schemaWithContainers, {
@@ -240,9 +235,7 @@ describe('EcucCodeGenerator - Container generation', () => {
       version: '1.0.0',
       parameters: { canDevErrorDetect: false },
       containers: {
-        CanController: [
-          { id: 'ctrl0', parameters: { canBaudrate: 500000, canControllerId: 0 } },
-        ],
+        CanController: [{ id: 'ctrl0', parameters: { canBaudrate: 500000, canControllerId: 0 } }],
       },
     };
     const result = await generator.generate(config, schemaWithContainers, {
@@ -262,21 +255,31 @@ describe('EcucCodeGenerator - Edge cases', () => {
     label: 'CAN Driver',
     layer: 'MCAL',
     version: '1.0.0',
-    parameters: [
-      { name: 'canBaudrate', type: 'integer', required: true },
-    ],
+    parameters: [{ name: 'canBaudrate', type: 'integer', required: true }],
     containers: [],
   };
 
   it('should handle empty module name without crashing', async () => {
     const config: ModuleConfig = { module: '', version: '1.0', parameters: {}, containers: {} };
-    const schema: ModuleSchema = { name: '', label: '', layer: 'MCAL', version: '1.0', parameters: [], containers: [] };
+    const schema: ModuleSchema = {
+      name: '',
+      label: '',
+      layer: 'MCAL',
+      version: '1.0',
+      parameters: [],
+      containers: [],
+    };
     const result = await generator.generate(config, schema, { outputDir: './out' });
     expect(result.files.length).toBe(4);
   });
 
   it('should handle negative numeric parameters', async () => {
-    const config: ModuleConfig = { module: 'Can', version: '1.0', parameters: { canBaudrate: -1 }, containers: {} };
+    const config: ModuleConfig = {
+      module: 'Can',
+      version: '1.0',
+      parameters: { canBaudrate: -1 },
+      containers: {},
+    };
     const result = await generator.generate(config, baseSchema, { outputDir: './out' });
     expect(result.success).toBe(true);
     const header = result.files[0].content;
@@ -284,15 +287,28 @@ describe('EcucCodeGenerator - Edge cases', () => {
   });
 
   it('should handle zero numeric parameters', async () => {
-    const config: ModuleConfig = { module: 'Can', version: '1.0', parameters: { canBaudrate: 0 }, containers: {} };
+    const config: ModuleConfig = {
+      module: 'Can',
+      version: '1.0',
+      parameters: { canBaudrate: 0 },
+      containers: {},
+    };
     const result = await generator.generate(config, baseSchema, { outputDir: './out' });
     expect(result.success).toBe(true);
   });
 
   it('should handle boolean false in generated macros', async () => {
-    const config: ModuleConfig = { module: 'Can', version: '1.0', parameters: { canBaudrate: 500000 }, containers: {} };
+    const config: ModuleConfig = {
+      module: 'Can',
+      version: '1.0',
+      parameters: { canBaudrate: 500000 },
+      containers: {},
+    };
     const schema: ModuleSchema = {
-      name: 'Can', label: 'CAN', layer: 'MCAL', version: '1.0',
+      name: 'Can',
+      label: 'CAN',
+      layer: 'MCAL',
+      version: '1.0',
       parameters: [
         { name: 'canBaudrate', type: 'integer', required: true },
         { name: 'canDevErrorDetect', type: 'boolean', required: false },
@@ -306,14 +322,24 @@ describe('EcucCodeGenerator - Edge cases', () => {
   });
 
   it('should handle null parameters gracefully', async () => {
-    const config: ModuleConfig = { module: 'Can', version: '1.0', parameters: { canBaudrate: null }, containers: {} };
+    const config: ModuleConfig = {
+      module: 'Can',
+      version: '1.0',
+      parameters: { canBaudrate: null },
+      containers: {},
+    };
     const result = await generator.generate(config, baseSchema, { outputDir: './out' });
     // null should be treated as missing — required param check triggers error
     expect(result.success).toBe(false);
   });
 
   it('should handle missing version', async () => {
-    const config: ModuleConfig = { module: 'Can', version: '', parameters: { canBaudrate: 500000 }, containers: {} };
+    const config: ModuleConfig = {
+      module: 'Can',
+      version: '',
+      parameters: { canBaudrate: 500000 },
+      containers: {},
+    };
     const result = await generator.generate(config, baseSchema, { outputDir: './out' });
     expect(result.success).toBe(true);
     const header = result.files[0].content;
@@ -322,8 +348,20 @@ describe('EcucCodeGenerator - Edge cases', () => {
 
   it('should handle long module names', async () => {
     const longName = 'A'.repeat(100);
-    const config: ModuleConfig = { module: longName, version: '1.0', parameters: {}, containers: {} };
-    const schema: ModuleSchema = { name: longName, label: longName, layer: 'MCAL', version: '1.0', parameters: [], containers: [] };
+    const config: ModuleConfig = {
+      module: longName,
+      version: '1.0',
+      parameters: {},
+      containers: {},
+    };
+    const schema: ModuleSchema = {
+      name: longName,
+      label: longName,
+      layer: 'MCAL',
+      version: '1.0',
+      parameters: [],
+      containers: [],
+    };
     const result = await generator.generate(config, schema, { outputDir: './out' });
     expect(result.success).toBe(true);
     const header = result.files[0].content;

@@ -130,23 +130,83 @@ function lex(input: string): Token[] {
 
     // Multi-character operators
     const twoChar = input.slice(i, i + 2);
-    if (twoChar === '==') { tokens.push({ type: 'EQ', value: '==', pos: start }); i += 2; continue; }
-    if (twoChar === '!=') { tokens.push({ type: 'NEQ', value: '!=', pos: start }); i += 2; continue; }
-    if (twoChar === '<=') { tokens.push({ type: 'LTE', value: '<=', pos: start }); i += 2; continue; }
-    if (twoChar === '>=') { tokens.push({ type: 'GTE', value: '>=', pos: start }); i += 2; continue; }
-    if (twoChar === '&&') { tokens.push({ type: 'AND', value: '&&', pos: start }); i += 2; continue; }
-    if (twoChar === '||') { tokens.push({ type: 'OR', value: '||', pos: start }); i += 2; continue; }
+    if (twoChar === '==') {
+      tokens.push({ type: 'EQ', value: '==', pos: start });
+      i += 2;
+      continue;
+    }
+    if (twoChar === '!=') {
+      tokens.push({ type: 'NEQ', value: '!=', pos: start });
+      i += 2;
+      continue;
+    }
+    if (twoChar === '<=') {
+      tokens.push({ type: 'LTE', value: '<=', pos: start });
+      i += 2;
+      continue;
+    }
+    if (twoChar === '>=') {
+      tokens.push({ type: 'GTE', value: '>=', pos: start });
+      i += 2;
+      continue;
+    }
+    if (twoChar === '&&') {
+      tokens.push({ type: 'AND', value: '&&', pos: start });
+      i += 2;
+      continue;
+    }
+    if (twoChar === '||') {
+      tokens.push({ type: 'OR', value: '||', pos: start });
+      i += 2;
+      continue;
+    }
 
     // Single-character operators
-    if (input[i] === '!') { tokens.push({ type: 'NOT', value: '!', pos: start }); i++; continue; }
-    if (input[i] === '<') { tokens.push({ type: 'LT', value: '<', pos: start }); i++; continue; }
-    if (input[i] === '>') { tokens.push({ type: 'GT', value: '>', pos: start }); i++; continue; }
-    if (input[i] === '-') { tokens.push({ type: 'MINUS', value: '-', pos: start }); i++; continue; }
-    if (input[i] === '.') { tokens.push({ type: 'DOT', value: '.', pos: start }); i++; continue; }
-    if (input[i] === '[') { tokens.push({ type: 'LBRACKET', value: '[', pos: start }); i++; continue; }
-    if (input[i] === ']') { tokens.push({ type: 'RBRACKET', value: ']', pos: start }); i++; continue; }
-    if (input[i] === '(') { tokens.push({ type: 'LPAREN', value: '(', pos: start }); i++; continue; }
-    if (input[i] === ')') { tokens.push({ type: 'RPAREN', value: ')', pos: start }); i++; continue; }
+    if (input[i] === '!') {
+      tokens.push({ type: 'NOT', value: '!', pos: start });
+      i++;
+      continue;
+    }
+    if (input[i] === '<') {
+      tokens.push({ type: 'LT', value: '<', pos: start });
+      i++;
+      continue;
+    }
+    if (input[i] === '>') {
+      tokens.push({ type: 'GT', value: '>', pos: start });
+      i++;
+      continue;
+    }
+    if (input[i] === '-') {
+      tokens.push({ type: 'MINUS', value: '-', pos: start });
+      i++;
+      continue;
+    }
+    if (input[i] === '.') {
+      tokens.push({ type: 'DOT', value: '.', pos: start });
+      i++;
+      continue;
+    }
+    if (input[i] === '[') {
+      tokens.push({ type: 'LBRACKET', value: '[', pos: start });
+      i++;
+      continue;
+    }
+    if (input[i] === ']') {
+      tokens.push({ type: 'RBRACKET', value: ']', pos: start });
+      i++;
+      continue;
+    }
+    if (input[i] === '(') {
+      tokens.push({ type: 'LPAREN', value: '(', pos: start });
+      i++;
+      continue;
+    }
+    if (input[i] === ')') {
+      tokens.push({ type: 'RPAREN', value: ')', pos: start });
+      i++;
+      continue;
+    }
 
     throw new SyntaxError(`Unexpected character '${input[i]}' at position ${start}`);
   }
@@ -173,9 +233,7 @@ class Parser {
   expect(type: TokenType): Token {
     const token = this.current();
     if (token.type !== type) {
-      throw new SyntaxError(
-        `Expected ${type} but got '${token.value}' at position ${token.pos}`
-      );
+      throw new SyntaxError(`Expected ${type} but got '${token.value}' at position ${token.pos}`);
     }
     return this.advance();
   }
@@ -222,13 +280,18 @@ class Parser {
 
   /** compare → unary ( '==' | '!=' | '<' | '>' | '<=' | '>=' ) unary */
   private parseCompare(): ConditionExpr {
-    let left = this.parseUnary();
+    const left = this.parseUnary();
 
     const cmpOps: TokenType[] = ['EQ', 'NEQ', 'LT', 'GT', 'LTE', 'GTE'];
     if (cmpOps.includes(this.current().type)) {
       const opToken = this.advance();
       const opMap: Record<string, CompareOpExpr['operator']> = {
-        '==': '==', '!=': '!=', '<': '<', '>': '>', '<=': '<=', '>=': '>=',
+        '==': '==',
+        '!=': '!=',
+        '<': '<',
+        '>': '>',
+        '<=': '<=',
+        '>=': '>=',
       };
       const right = this.parseUnary();
       const node: CompareOpExpr = {
@@ -297,9 +360,7 @@ class Parser {
       return node;
     }
 
-    throw new SyntaxError(
-      `Unexpected token '${token.value}' at position ${token.pos}`
-    );
+    throw new SyntaxError(`Unexpected token '${token.value}' at position ${token.pos}`);
   }
 
   /** path → IDENT ( '.' IDENT ( '[' NUMBER ']' )? )* */

@@ -18,7 +18,13 @@ import {
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useUserSystem } from '../hooks/useUserSystem';
 import { useNotifications } from '../hooks/useNotifications';
-import { initialForumPosts, generateId, migrateForumPosts, type ForumPost, type ForumReply } from '../data/communityData';
+import {
+  initialForumPosts,
+  generateId,
+  migrateForumPosts,
+  type ForumPost,
+  type ForumReply,
+} from '../data/communityData';
 import { CodeBlock } from '../components/CodeBlock';
 import { ConfigCard } from '../components/ConfigCard';
 import apiClient from '../services/apiClient';
@@ -32,7 +38,10 @@ function renderRichContent(content: string) {
   while ((match = regex.exec(content)) !== null) {
     if (match.index > lastIndex) {
       parts.push(
-        <div key={`text-${lastIndex}`} className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
+        <div
+          key={`text-${lastIndex}`}
+          className="text-sm text-foreground whitespace-pre-wrap leading-relaxed"
+        >
           {content.slice(lastIndex, match.index)}
         </div>
       );
@@ -45,7 +54,10 @@ function renderRichContent(content: string) {
 
   if (lastIndex < content.length) {
     parts.push(
-      <div key={`text-${lastIndex}`} className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
+      <div
+        key={`text-${lastIndex}`}
+        className="text-sm text-foreground whitespace-pre-wrap leading-relaxed"
+      >
         {content.slice(lastIndex)}
       </div>
     );
@@ -61,7 +73,21 @@ const sortOptions = [
   { label: '最多浏览', value: 'views' },
 ];
 
-const fallbackTags = ['全部', 'MCAL', 'ECUAL', 'Service', 'OS', '工具链', '经验分享', 'CAN', 'Pwm', 'i.MX8M', 'Docker', '配置', '量产'];
+const fallbackTags = [
+  '全部',
+  'MCAL',
+  'ECUAL',
+  'Service',
+  'OS',
+  '工具链',
+  '经验分享',
+  'CAN',
+  'Pwm',
+  'i.MX8M',
+  'Docker',
+  '配置',
+  '量产',
+];
 
 export function ForumPage() {
   const [posts, setPosts] = useLocalStorage<ForumPost[]>('yuletech-forum-posts', initialForumPosts);
@@ -81,7 +107,7 @@ export function ForumPage() {
   const { addPoints } = useUserSystem();
   const { addNotification } = useNotifications();
 
-  const activePost = posts.find((p) => p.id === activePostId);
+  const activePost = posts.find(p => p.id === activePostId);
 
   // Load from API on mount, fallback to static data
   useEffect(() => {
@@ -125,18 +151,20 @@ export function ForumPage() {
       }
     };
     loadFromApi();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Migrate old data on mount
   useEffect(() => {
-    setPosts((prev) => migrateForumPosts(prev));
+    setPosts(prev => migrateForumPosts(prev));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const filteredPosts = posts
-    .filter((post) => {
+    .filter(post => {
       const matchSearch =
         post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         post.content.toLowerCase().includes(searchQuery.toLowerCase());
@@ -147,7 +175,8 @@ export function ForumPage() {
       // Pinned posts always on top
       if (a.isPinned && !b.isPinned) return -1;
       if (!a.isPinned && b.isPinned) return 1;
-      if (sortBy === 'newest') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      if (sortBy === 'newest')
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       if (sortBy === 'replies') return b.replies.length - a.replies.length;
       if (sortBy === 'likes') return b.likes - a.likes;
       if (sortBy === 'views') return b.views - a.likes;
@@ -155,32 +184,36 @@ export function ForumPage() {
     });
 
   const handleLikePost = (postId: string) => {
-    setPosts((prev) =>
-      prev.map((post) => {
+    setPosts(prev =>
+      prev.map(post => {
         if (post.id !== postId) return post;
         const alreadyLiked = post.likedBy.includes(currentUser);
         return {
           ...post,
           likes: alreadyLiked ? post.likes - 1 : post.likes + 1,
-          likedBy: alreadyLiked ? post.likedBy.filter((u) => u !== currentUser) : [...post.likedBy, currentUser],
+          likedBy: alreadyLiked
+            ? post.likedBy.filter(u => u !== currentUser)
+            : [...post.likedBy, currentUser],
         };
       })
     );
   };
 
   const handleLikeReply = (postId: string, replyId: string) => {
-    setPosts((prev) =>
-      prev.map((post) => {
+    setPosts(prev =>
+      prev.map(post => {
         if (post.id !== postId) return post;
         return {
           ...post,
-          replies: post.replies.map((reply) => {
+          replies: post.replies.map(reply => {
             if (reply.id !== replyId) return reply;
             const alreadyLiked = reply.likedBy.includes(currentUser);
             return {
               ...reply,
               likes: alreadyLiked ? reply.likes - 1 : reply.likes + 1,
-              likedBy: alreadyLiked ? reply.likedBy.filter((u) => u !== currentUser) : [...reply.likedBy, currentUser],
+              likedBy: alreadyLiked
+                ? reply.likedBy.filter(u => u !== currentUser)
+                : [...reply.likedBy, currentUser],
             };
           }),
         };
@@ -190,7 +223,7 @@ export function ForumPage() {
 
   const handleAddReply = (postId: string) => {
     if (!replyContent.trim()) return;
-    const post = posts.find((p) => p.id === postId);
+    const post = posts.find(p => p.id === postId);
     const newReply: ForumReply = {
       id: generateId('fr'),
       content: replyContent.trim(),
@@ -201,8 +234,8 @@ export function ForumPage() {
       likedBy: [],
       createdAt: new Date().toISOString(),
     };
-    setPosts((prev) =>
-      prev.map((p) => (p.id === postId ? { ...p, replies: [...p.replies, newReply] } : p))
+    setPosts(prev =>
+      prev.map(p => (p.id === postId ? { ...p, replies: [...p.replies, newReply] } : p))
     );
     setReplyContent('');
     addPoints('reply');
@@ -220,7 +253,7 @@ export function ForumPage() {
     if (!newPostTitle.trim() || !newPostContent.trim()) return;
     const tags = newPostTags
       .split(/[,，]/)
-      .map((t) => t.trim())
+      .map(t => t.trim())
       .filter(Boolean);
     const newPost: ForumPost = {
       id: generateId('fp'),
@@ -237,7 +270,7 @@ export function ForumPage() {
       createdAt: new Date().toISOString(),
       hot: false,
     };
-    setPosts((prev) => [newPost, ...prev]);
+    setPosts(prev => [newPost, ...prev]);
     setNewPostTitle('');
     setNewPostContent('');
     setNewPostTags('');
@@ -263,7 +296,10 @@ export function ForumPage() {
     <div className="min-h-screen bg-background pt-16">
       <Helmet>
         <title>技术论坛 - YuleTech | AutoSAR 讨论区</title>
-        <meta name="description" content="讨论 AutoSAR BSW 开发中的技术问题，分享量产经验。发帖讨论、分享经验、求助答疑，与社区工程师共同成长。" />
+        <meta
+          name="description"
+          content="讨论 AutoSAR BSW 开发中的技术问题，分享量产经验。发帖讨论、分享经验、求助答疑，与社区工程师共同成长。"
+        />
       </Helmet>
       {/* Header */}
       <div className="bg-gradient-to-br from-muted/50 to-background border-b border-border">
@@ -271,7 +307,9 @@ export function ForumPage() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
               <h1 className="text-3xl font-bold tracking-tight mb-2">技术论坛</h1>
-              <p className="text-muted-foreground">讨论 AutoSAR BSW 开发中的技术问题，分享量产经验</p>
+              <p className="text-muted-foreground">
+                讨论 AutoSAR BSW 开发中的技术问题，分享量产经验
+              </p>
             </div>
             <button
               onClick={() => setShowNewPost(true)}
@@ -290,7 +328,7 @@ export function ForumPage() {
                 type="text"
                 placeholder="搜索帖子标题或内容..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
               />
             </div>
@@ -298,10 +336,10 @@ export function ForumPage() {
               <Filter className="w-4 h-4 text-muted-foreground" />
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={e => setSortBy(e.target.value)}
                 className="px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
               >
-                {sortOptions.map((opt) => (
+                {sortOptions.map(opt => (
                   <option key={opt.value} value={opt.value}>
                     {opt.label}
                   </option>
@@ -312,7 +350,7 @@ export function ForumPage() {
 
           {/* Tags */}
           <div className="mt-4 flex flex-wrap gap-2">
-            {allTags.map((tag) => (
+            {allTags.map(tag => (
               <button
                 key={tag}
                 onClick={() => setSelectedTag(tag)}
@@ -342,69 +380,82 @@ export function ForumPage() {
               <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-30" />
               <p>没有找到相关帖子</p>
               <button
-                onClick={() => { setSearchQuery(''); setSelectedTag('全部'); }}
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedTag('全部');
+                }}
                 className="mt-2 text-[hsl(var(--accent))] hover:underline text-sm"
               >
                 清除筛选条件
               </button>
             </div>
           ) : (
-            filteredPosts.map((post) => (
-            <div
-              key={post.id}
-              onClick={() => {
-                setActivePostId(post.id);
-                setPosts((prev) =>
-                  prev.map((p) => (p.id === post.id ? { ...p, views: p.views + 1 } : p))
-                );
-              }}
-              className="bg-card border border-border rounded-xl p-5 cursor-pointer hover:border-[hsl(var(--accent))]/30 hover:shadow-elegant transition-all group"
-            >
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent))] flex items-center justify-center text-white text-sm font-bold">
-                  {post.avatar}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-semibold text-foreground group-hover:text-[hsl(var(--accent))] transition-colors line-clamp-1">
-                      {post.title}
-                    </h3>
-                    {post.isPinned && <Pin className="w-4 h-4 text-[hsl(var(--accent))] flex-shrink-0" />}
-                    {post.hot && <Flame className="w-4 h-4 text-orange-500 flex-shrink-0" />}
+            filteredPosts.map(post => (
+              <div
+                key={post.id}
+                onClick={() => {
+                  setActivePostId(post.id);
+                  setPosts(prev =>
+                    prev.map(p => (p.id === post.id ? { ...p, views: p.views + 1 } : p))
+                  );
+                }}
+                className="bg-card border border-border rounded-xl p-5 cursor-pointer hover:border-[hsl(var(--accent))]/30 hover:shadow-elegant transition-all group"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent))] flex items-center justify-center text-white text-sm font-bold">
+                    {post.avatar}
                   </div>
-                  <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{post.content}</p>
-                  <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                    <span className="font-medium text-foreground">{post.author}</span>
-                    <span className="px-1.5 py-0.5 bg-muted rounded text-[10px]">{post.role}</span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
-                      {formatTime(post.createdAt)}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Eye className="w-3 h-3" />
-                      {post.views}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <MessageSquare className="w-3 h-3" />
-                      {post.replies.length}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <ThumbsUp className="w-3 h-3" />
-                      {post.likes}
-                    </span>
-                    <div className="flex gap-1 ml-auto">
-                      {post.tags.map((tag) => (
-                        <span key={tag} className="px-2 py-0.5 bg-[hsl(var(--accent))]/10 text-[hsl(var(--accent))] rounded-full text-[10px]">
-                          {tag}
-                        </span>
-                      ))}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-semibold text-foreground group-hover:text-[hsl(var(--accent))] transition-colors line-clamp-1">
+                        {post.title}
+                      </h3>
+                      {post.isPinned && (
+                        <Pin className="w-4 h-4 text-[hsl(var(--accent))] flex-shrink-0" />
+                      )}
+                      {post.hot && <Flame className="w-4 h-4 text-orange-500 flex-shrink-0" />}
+                    </div>
+                    <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                      {post.content}
+                    </p>
+                    <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                      <span className="font-medium text-foreground">{post.author}</span>
+                      <span className="px-1.5 py-0.5 bg-muted rounded text-[10px]">
+                        {post.role}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Clock className="w-3 h-3" />
+                        {formatTime(post.createdAt)}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Eye className="w-3 h-3" />
+                        {post.views}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <MessageSquare className="w-3 h-3" />
+                        {post.replies.length}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <ThumbsUp className="w-3 h-3" />
+                        {post.likes}
+                      </span>
+                      <div className="flex gap-1 ml-auto">
+                        {post.tags.map(tag => (
+                          <span
+                            key={tag}
+                            className="px-2 py-0.5 bg-[hsl(var(--accent))]/10 text-[hsl(var(--accent))] rounded-full text-[10px]"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
+                  <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-[hsl(var(--accent))] transition-colors flex-shrink-0 mt-1" />
                 </div>
-                <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-[hsl(var(--accent))] transition-colors flex-shrink-0 mt-1" />
               </div>
-            </div>
-          )))}
+            ))
+          )}
         </div>
       </div>
 
@@ -433,8 +484,12 @@ export function ForumPage() {
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-semibold">{activePost.author}</span>
-                    <span className="px-1.5 py-0.5 bg-muted rounded text-[10px] text-muted-foreground">{activePost.role}</span>
-                    <span className="text-xs text-muted-foreground ml-auto">{formatTime(activePost.createdAt)}</span>
+                    <span className="px-1.5 py-0.5 bg-muted rounded text-[10px] text-muted-foreground">
+                      {activePost.role}
+                    </span>
+                    <span className="text-xs text-muted-foreground ml-auto">
+                      {formatTime(activePost.createdAt)}
+                    </span>
                   </div>
                   {activePost.configId && (
                     <div className="mb-4">
@@ -443,8 +498,11 @@ export function ForumPage() {
                   )}
                   <div>{renderRichContent(activePost.content)}</div>
                   <div className="flex items-center gap-2 mt-3">
-                    {activePost.tags.map((tag) => (
-                      <span key={tag} className="px-2 py-0.5 bg-[hsl(var(--accent))]/10 text-[hsl(var(--accent))] rounded-full text-[10px]">
+                    {activePost.tags.map(tag => (
+                      <span
+                        key={tag}
+                        className="px-2 py-0.5 bg-[hsl(var(--accent))]/10 text-[hsl(var(--accent))] rounded-full text-[10px]"
+                      >
                         {tag}
                       </span>
                     ))}
@@ -478,7 +536,7 @@ export function ForumPage() {
                 <div className="border-t border-border pt-4">
                   <h4 className="text-sm font-semibold mb-4">{activePost.replies.length} 条回复</h4>
                   <div className="space-y-4">
-                    {activePost.replies.map((reply) => (
+                    {activePost.replies.map(reply => (
                       <div key={reply.id} className="flex gap-3 pl-4 border-l-2 border-border">
                         <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center text-xs font-bold text-muted-foreground">
                           {reply.avatar}
@@ -486,10 +544,16 @@ export function ForumPage() {
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-sm font-medium">{reply.author}</span>
-                            <span className="px-1.5 py-0.5 bg-muted rounded text-[10px] text-muted-foreground">{reply.role}</span>
-                            <span className="text-xs text-muted-foreground ml-auto">{formatTime(reply.createdAt)}</span>
+                            <span className="px-1.5 py-0.5 bg-muted rounded text-[10px] text-muted-foreground">
+                              {reply.role}
+                            </span>
+                            <span className="text-xs text-muted-foreground ml-auto">
+                              {formatTime(reply.createdAt)}
+                            </span>
                           </div>
-                          <div className="text-sm text-foreground">{renderRichContent(reply.content)}</div>
+                          <div className="text-sm text-foreground">
+                            {renderRichContent(reply.content)}
+                          </div>
                           <button
                             onClick={() => handleLikeReply(activePost.id, reply.id)}
                             className={`flex items-center gap-1 mt-2 text-xs transition-colors ${
@@ -517,7 +581,7 @@ export function ForumPage() {
                   <div className="flex-1 flex gap-2">
                     <textarea
                       value={replyContent}
-                      onChange={(e) => setReplyContent(e.target.value)}
+                      onChange={e => setReplyContent(e.target.value)}
                       placeholder="写下你的回复..."
                       rows={3}
                       className="flex-1 px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30 resize-none"
@@ -556,7 +620,7 @@ export function ForumPage() {
                 <input
                   type="text"
                   value={newPostTitle}
-                  onChange={(e) => setNewPostTitle(e.target.value)}
+                  onChange={e => setNewPostTitle(e.target.value)}
                   placeholder="请简要描述你的问题或话题"
                   className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
                 />
@@ -565,7 +629,7 @@ export function ForumPage() {
                 <label className="block text-sm font-medium mb-1.5">内容</label>
                 <textarea
                   value={newPostContent}
-                  onChange={(e) => setNewPostContent(e.target.value)}
+                  onChange={e => setNewPostContent(e.target.value)}
                   placeholder="详细描述你的问题、经验或想法..."
                   rows={8}
                   className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30 resize-none"
@@ -576,7 +640,7 @@ export function ForumPage() {
                 <input
                   type="text"
                   value={newPostTags}
-                  onChange={(e) => setNewPostTags(e.target.value)}
+                  onChange={e => setNewPostTags(e.target.value)}
                   placeholder="例如：MCAL, CAN, 配置"
                   className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
                 />

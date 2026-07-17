@@ -7,7 +7,7 @@ export default tseslint.config(
   // Base configuration
   js.configs.recommended,
   ...tseslint.configs.recommended,
-  
+
   // Import plugin
   {
     plugins: {
@@ -17,14 +17,7 @@ export default tseslint.config(
       'import/order': [
         'error',
         {
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            'parent',
-            'sibling',
-            'index',
-          ],
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
           'newlines-between': 'always',
           alphabetize: {
             order: 'asc',
@@ -35,7 +28,7 @@ export default tseslint.config(
       'import/no-duplicates': 'error',
     },
   },
-  
+
   // General rules
   {
     rules: {
@@ -51,7 +44,7 @@ export default tseslint.config(
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-non-null-assertion': 'warn',
-      
+
       // General
       'no-console': 'warn',
       'no-debugger': 'error',
@@ -59,7 +52,7 @@ export default tseslint.config(
       'no-var': 'error',
     },
   },
-  
+
   // Ignore patterns
   {
     ignores: [
@@ -71,9 +64,12 @@ export default tseslint.config(
       '**/.idea/**',
       '**/coverage/**',
       '**/*.d.ts',
+      'apps/yuleasr-vscode/media/**',
+      'apps/yuleasr-web/dist-vscode/**',
+      'apps/yuleasr-vscode/media/**',
     ],
   },
-  
+
   // Prettier integration (must be last)
   prettierConfig
 );

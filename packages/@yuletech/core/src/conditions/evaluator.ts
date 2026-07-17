@@ -4,15 +4,10 @@
  * and produces a boolean result for visibleWhen / enabledWhen.
  */
 
-import type {
-  ConditionExpr,
-  BinaryOpExpr,
-  UnaryOpExpr,
-  CompareOpExpr,
-  PathExpr,
-} from './types';
-import { parseCondition } from './parser';
 import type { ModuleConfig } from '../types';
+
+import { parseCondition } from './parser';
+import type { ConditionExpr, BinaryOpExpr, UnaryOpExpr, CompareOpExpr, PathExpr } from './types';
 
 /**
  * Evaluates parsed condition expression ASTs against module configurations.
@@ -41,7 +36,7 @@ export class ConditionEvaluator {
     if (++this.evalDepth > ConditionEvaluator.MAX_DEPTH) {
       this.evalDepth = 0;
       throw new Error(
-        `MAX_DEPTH (${ConditionEvaluator.MAX_DEPTH}) exceeded in condition evaluation. Possible malformed expression.`,
+        `MAX_DEPTH (${ConditionEvaluator.MAX_DEPTH}) exceeded in condition evaluation. Possible malformed expression.`
       );
     }
     switch (node.type) {
@@ -70,7 +65,7 @@ export class ConditionEvaluator {
     // Basic two-segment path: module.param
     if (segments.length === 2 && index === undefined) {
       const [moduleName, paramName] = segments;
-      const config = configs.find((c) => c.module === moduleName);
+      const config = configs.find(c => c.module === moduleName);
       if (!config) return undefined;
       // Return raw value (null, undefined, number, string, boolean, etc.)
       if (paramName in config.parameters) return config.parameters[paramName];
@@ -80,7 +75,7 @@ export class ConditionEvaluator {
     // Container path with 3 segments and an index: module.container[index].param
     if (segments.length === 3 && index !== undefined) {
       const [moduleName, containerName, paramName] = segments;
-      const config = configs.find((c) => c.module === moduleName);
+      const config = configs.find(c => c.module === moduleName);
       if (!config) return undefined;
       const container = config.containers?.[containerName];
       if (!container) return undefined;
@@ -93,7 +88,7 @@ export class ConditionEvaluator {
     // Fallback – try simple segments[0] path even for longer paths
     // (graceful degradation: resolve what we can)
     const [moduleName, ...rest] = segments;
-    const config = configs.find((c) => c.module === moduleName);
+    const config = configs.find(c => c.module === moduleName);
     if (!config || rest.length === 0) return undefined;
     const paramName = rest.join('.');
     if (paramName in config.parameters) return config.parameters[paramName];
@@ -102,10 +97,7 @@ export class ConditionEvaluator {
 
   // ─── comparison ────────────────────────────────────────────────────
 
-  private evaluateCompare(
-    node: CompareOpExpr,
-    configs: ModuleConfig[],
-  ): boolean {
+  private evaluateCompare(node: CompareOpExpr, configs: ModuleConfig[]): boolean {
     const left = this.evaluateNode(node.left, configs);
     const right = this.evaluateNode(node.right, configs);
 
@@ -137,10 +129,7 @@ export class ConditionEvaluator {
 
   // ─── binary logical operators ──────────────────────────────────────
 
-  private evaluateBinary(
-    node: BinaryOpExpr,
-    configs: ModuleConfig[],
-  ): boolean {
+  private evaluateBinary(node: BinaryOpExpr, configs: ModuleConfig[]): boolean {
     const left = Boolean(this.evaluateNode(node.left, configs));
 
     if (node.operator === '||') {
@@ -187,10 +176,7 @@ export class ConditionEvaluator {
  * @returns          Boolean result (fails closed on unresolved paths)
  * @throws           {SyntaxError} if the expression cannot be parsed
  */
-export function evaluateCondition(
-  expression: string,
-  configs: ModuleConfig[],
-): boolean {
+export function evaluateCondition(expression: string, configs: ModuleConfig[]): boolean {
   const expr = parseCondition(expression);
   const evaluator = new ConditionEvaluator();
   return evaluator.evaluate(expr, configs);

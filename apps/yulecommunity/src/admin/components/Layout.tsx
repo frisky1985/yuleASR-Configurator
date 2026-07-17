@@ -21,19 +21,16 @@ const pageTitles: Record<string, string> = {
 export const Layout: React.FC = () => {
   const { sidebarCollapsed } = useAdminStore();
   const location = useLocation();
-  
+
   const title = pageTitles[location.pathname] || '管理后台';
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <Sidebar />
       <Header title={title} />
-      
+
       <main
-        className={cn(
-          'pt-16 transition-all duration-300',
-          sidebarCollapsed ? 'pl-16' : 'pl-64'
-        )}
+        className={cn('pt-16 transition-all duration-300', sidebarCollapsed ? 'pl-16' : 'pl-64')}
       >
         <div className="p-4 sm:p-6 lg:p-8">
           <Outlet />

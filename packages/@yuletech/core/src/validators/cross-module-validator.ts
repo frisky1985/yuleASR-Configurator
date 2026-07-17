@@ -6,12 +6,7 @@
  * 例如: Can.baudrate 必须在 CanTrcv.supported_baudrates 范围内。
  */
 
-import type {
-  ModuleSchema,
-  ModuleConfig,
-  ValidationError,
-  CrossModuleReference,
-} from '../types';
+import type { ModuleSchema, ModuleConfig, ValidationError, CrossModuleReference } from '../types';
 
 /**
  * 跨模块验证器
@@ -126,13 +121,7 @@ export class CrossModuleValidator {
       targetSchema = this.schemas.get(ref.module);
     }
 
-    const msg = this.evaluateRelation(
-      actualValue,
-      targetValue,
-      ref.relation,
-      targetSchema,
-      ref
-    );
+    const msg = this.evaluateRelation(actualValue, targetValue, ref.relation, targetSchema, ref);
 
     if (!msg) return null;
 
@@ -258,9 +247,7 @@ export class CrossModuleValidator {
               const tgt = configMap.get(changedModule);
               if (!tgt) continue;
 
-              const r = this.checkReference(
-                otherParam.name, actualValue, ref, tgt, otherSchema
-              );
+              const r = this.checkReference(otherParam.name, actualValue, ref, tgt, otherSchema);
               if (r) errors.push(r);
             }
           }

@@ -1,15 +1,15 @@
 import { useState, useMemo, useEffect } from 'react';
-import { 
-  FileText, 
-  Download, 
-  Copy, 
+import {
+  FileText,
+  Download,
+  Copy,
   Check,
   Code,
   Shield,
   Zap,
   ExternalLink,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
 } from 'lucide-react';
 
 // README 模板定义
@@ -46,29 +46,66 @@ const TEMPLATES: ReadmeTemplate[] = [
     name: '标准模板',
     description: '适合大多数开源项目的通用 README',
     icon: <FileText className="w-5 h-5" />,
-    sections: ['title', 'badges', 'description', 'features', 'demo', 'installation', 'usage', 'tech-stack', 'contributing', 'license']
+    sections: [
+      'title',
+      'badges',
+      'description',
+      'features',
+      'demo',
+      'installation',
+      'usage',
+      'tech-stack',
+      'contributing',
+      'license',
+    ],
   },
   {
     id: 'autosar',
     name: 'AutoSAR 模块',
     description: '专为 AutoSAR BSW 模块设计的 README',
     icon: <Code className="w-5 h-5" />,
-    sections: ['title', 'badges', 'overview', 'architecture', 'features', 'dependencies', 'configuration', 'api-reference', 'integration', 'testing', 'license']
+    sections: [
+      'title',
+      'badges',
+      'overview',
+      'architecture',
+      'features',
+      'dependencies',
+      'configuration',
+      'api-reference',
+      'integration',
+      'testing',
+      'license',
+    ],
   },
   {
     id: 'minimal',
     name: '简洁模板',
     description: '精简主义，只包含必要信息',
     icon: <Zap className="w-5 h-5" />,
-    sections: ['title', 'description', 'installation', 'usage']
+    sections: ['title', 'description', 'installation', 'usage'],
   },
   {
     id: 'enterprise',
     name: '企业模板',
     description: '包含完整文档和规范说明',
     icon: <Shield className="w-5 h-5" />,
-    sections: ['title', 'badges', 'description', 'features', 'requirements', 'installation', 'configuration', 'usage', 'security', 'contributing', 'code-of-conduct', 'license', 'acknowledgments']
-  }
+    sections: [
+      'title',
+      'badges',
+      'description',
+      'features',
+      'requirements',
+      'installation',
+      'configuration',
+      'usage',
+      'security',
+      'contributing',
+      'code-of-conduct',
+      'license',
+      'acknowledgments',
+    ],
+  },
 ];
 
 const LICENSES = [
@@ -77,12 +114,23 @@ const LICENSES = [
   { id: 'gpl-3.0', name: 'GNU GPL v3.0', badge: 'GPL-3.0' },
   { id: 'bsd-3', name: 'BSD 3-Clause', badge: 'BSD-3-Clause' },
   { id: 'mpl-2.0', name: 'Mozilla Public License 2.0', badge: 'MPL-2.0' },
-  { id: 'proprietary', name: '专有许可', badge: 'Proprietary' }
+  { id: 'proprietary', name: '专有许可', badge: 'Proprietary' },
 ];
 
 const TECH_STACK_OPTIONS = [
-  'C', 'C++', 'Python', 'JavaScript', 'TypeScript', 'Rust', 'Go',
-  'AutoSAR', 'CMake', 'Docker', 'Linux', 'QEMU', 'Make'
+  'C',
+  'C++',
+  'Python',
+  'JavaScript',
+  'TypeScript',
+  'Rust',
+  'Go',
+  'AutoSAR',
+  'CMake',
+  'Docker',
+  'Linux',
+  'QEMU',
+  'Make',
 ];
 
 export function ReadmeGenerator() {
@@ -100,15 +148,17 @@ export function ReadmeGenerator() {
       'CAN-FD 高速通信支持',
       '多路滤波器配置',
       '中断驱动传输',
-      'MISRA C:2012 规范代码'
+      'MISRA C:2012 规范代码',
     ],
     techStack: ['C', 'AutoSAR', 'CMake'],
-    installation: 'git clone https://github.com/frisky1985/yuletech-can.git\ncd yuletech-can\nmkdir build && cd build\ncmake ..\nmake',
-    usage: '#include "Can.h"\n\n/* 初始化 CAN 模块 */\nCan_Init(&CanConfig);\n\n/* 发送消息 */\nCan_PduType pdu = {\n  .id = 0x123,\n  .length = 8,\n  .data = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08}\n};\nCan_Write(CAN_CONTROLLER_0, &pdu);',
+    installation:
+      'git clone https://github.com/frisky1985/yuletech-can.git\ncd yuletech-can\nmkdir build && cd build\ncmake ..\nmake',
+    usage:
+      '#include "Can.h"\n\n/* 初始化 CAN 模块 */\nCan_Init(&CanConfig);\n\n/* 发送消息 */\nCan_PduType pdu = {\n  .id = 0x123,\n  .length = 8,\n  .data = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08}\n};\nCan_Write(CAN_CONTROLLER_0, &pdu);',
     contributing: true,
     badges: true,
     toc: true,
-    screenshots: false
+    screenshots: false,
   });
 
   const [copied, setCopied] = useState(false);
@@ -117,7 +167,22 @@ export function ReadmeGenerator() {
   // 生成 README 内容
   const generateReadme = (): string => {
     const lines: string[] = [];
-    const { projectName, description, version, author, license, repoUrl, demoUrl, features, techStack, installation, usage, contributing, badges, toc } = config;
+    const {
+      projectName,
+      description,
+      version,
+      author,
+      license,
+      repoUrl,
+      demoUrl,
+      features,
+      techStack,
+      installation,
+      usage,
+      contributing,
+      badges,
+      toc,
+    } = config;
 
     // 标题
     lines.push(`# ${projectName}`);
@@ -127,7 +192,9 @@ export function ReadmeGenerator() {
     if (badges) {
       if (repoUrl.includes('github.com')) {
         lines.push(`![Version](https://img.shields.io/badge/version-${version}-blue.svg)`);
-        lines.push(`![License](https://img.shields.io/badge/license-${LICENSES.find(l => l.id === license)?.badge}-green.svg)`);
+        lines.push(
+          `![License](https://img.shields.io/badge/license-${LICENSES.find(l => l.id === license)?.badge}-green.svg)`
+        );
         lines.push(`![Build](https://img.shields.io/badge/build-passing-success.svg)`);
         lines.push(`![MISRA](https://img.shields.io/badge/MISRA-C:2012-blueviolet.svg)`);
         lines.push('');
@@ -257,15 +324,16 @@ export function ReadmeGenerator() {
 
   // 切换展开状态
   const toggleSection = (section: string) => {
-    setExpandedSections(prev => 
-      prev.includes(section) 
-        ? prev.filter(s => s !== section)
-        : [...prev, section]
+    setExpandedSections(prev =>
+      prev.includes(section) ? prev.filter(s => s !== section) : [...prev, section]
     );
   };
 
   // 更新配置
-  const updateConfig = (key: keyof GeneratorConfig, value: string | number | boolean | string[]) => {
+  const updateConfig = (
+    key: keyof GeneratorConfig,
+    value: string | number | boolean | string[]
+  ) => {
     setConfig(prev => ({ ...prev, [key]: value }));
   };
 
@@ -283,9 +351,9 @@ export function ReadmeGenerator() {
 
   // 删除功能
   const removeFeature = (index: number) => {
-    setConfig(prev => ({ 
-      ...prev, 
-      features: prev.features.filter((_, i) => i !== index) 
+    setConfig(prev => ({
+      ...prev,
+      features: prev.features.filter((_, i) => i !== index),
     }));
   };
 
@@ -334,15 +402,17 @@ export function ReadmeGenerator() {
                   key={template.id}
                   onClick={() => setSelectedTemplate(template)}
                   className={`w-full flex items-start gap-3 p-3 rounded-lg text-left transition-colors ${
-                    selectedTemplate.id === template.id 
-                      ? 'bg-primary/10 border border-primary/30' 
+                    selectedTemplate.id === template.id
+                      ? 'bg-primary/10 border border-primary/30'
                       : 'hover:bg-muted/50 border border-transparent'
                   }`}
                 >
                   <span className="text-muted-foreground">{template.icon}</span>
                   <div>
                     <div className="text-sm font-medium">{template.name}</div>
-                    <div className="text-xs text-muted-foreground mt-0.5">{template.description}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">
+                      {template.description}
+                    </div>
                   </div>
                 </button>
               ))}
@@ -356,7 +426,11 @@ export function ReadmeGenerator() {
               className="w-full flex items-center justify-between text-sm font-medium mb-3"
             >
               基本信息
-              {expandedSections.includes('basic') ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+              {expandedSections.includes('basic') ? (
+                <ChevronDown className="w-4 h-4" />
+              ) : (
+                <ChevronRight className="w-4 h-4" />
+              )}
             </button>
             {expandedSections.includes('basic') && (
               <div className="space-y-3">
@@ -365,7 +439,7 @@ export function ReadmeGenerator() {
                   <input
                     type="text"
                     value={config.projectName}
-                    onChange={(e) => updateConfig('projectName', e.target.value)}
+                    onChange={e => updateConfig('projectName', e.target.value)}
                     className="w-full px-2 py-1.5 text-sm rounded bg-background border border-border"
                   />
                 </div>
@@ -374,7 +448,7 @@ export function ReadmeGenerator() {
                   <input
                     type="text"
                     value={config.version}
-                    onChange={(e) => updateConfig('version', e.target.value)}
+                    onChange={e => updateConfig('version', e.target.value)}
                     className="w-full px-2 py-1.5 text-sm rounded bg-background border border-border"
                   />
                 </div>
@@ -383,7 +457,7 @@ export function ReadmeGenerator() {
                   <input
                     type="text"
                     value={config.author}
-                    onChange={(e) => updateConfig('author', e.target.value)}
+                    onChange={e => updateConfig('author', e.target.value)}
                     className="w-full px-2 py-1.5 text-sm rounded bg-background border border-border"
                   />
                 </div>
@@ -391,11 +465,13 @@ export function ReadmeGenerator() {
                   <label className="text-xs text-muted-foreground block mb-1">许可证</label>
                   <select
                     value={config.license}
-                    onChange={(e) => updateConfig('license', e.target.value)}
+                    onChange={e => updateConfig('license', e.target.value)}
                     className="w-full px-2 py-1.5 text-sm rounded bg-background border border-border"
                   >
                     {LICENSES.map(l => (
-                      <option key={l.id} value={l.id}>{l.name}</option>
+                      <option key={l.id} value={l.id}>
+                        {l.name}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -410,7 +486,11 @@ export function ReadmeGenerator() {
               className="w-full flex items-center justify-between text-sm font-medium mb-3"
             >
               链接
-              {expandedSections.includes('links') ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+              {expandedSections.includes('links') ? (
+                <ChevronDown className="w-4 h-4" />
+              ) : (
+                <ChevronRight className="w-4 h-4" />
+              )}
             </button>
             {expandedSections.includes('links') && (
               <div className="space-y-3">
@@ -419,17 +499,19 @@ export function ReadmeGenerator() {
                   <input
                     type="text"
                     value={config.repoUrl}
-                    onChange={(e) => updateConfig('repoUrl', e.target.value)}
+                    onChange={e => updateConfig('repoUrl', e.target.value)}
                     placeholder="https://github.com/..."
                     className="w-full px-2 py-1.5 text-sm rounded bg-background border border-border"
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-muted-foreground block mb-1">演示地址 (可选)</label>
+                  <label className="text-xs text-muted-foreground block mb-1">
+                    演示地址 (可选)
+                  </label>
                   <input
                     type="text"
                     value={config.demoUrl}
-                    onChange={(e) => updateConfig('demoUrl', e.target.value)}
+                    onChange={e => updateConfig('demoUrl', e.target.value)}
                     placeholder="https://..."
                     className="w-full px-2 py-1.5 text-sm rounded bg-background border border-border"
                   />
@@ -445,7 +527,11 @@ export function ReadmeGenerator() {
               className="w-full flex items-center justify-between text-sm font-medium mb-3"
             >
               功能特性
-              {expandedSections.includes('features') ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+              {expandedSections.includes('features') ? (
+                <ChevronDown className="w-4 h-4" />
+              ) : (
+                <ChevronRight className="w-4 h-4" />
+              )}
             </button>
             {expandedSections.includes('features') && (
               <div className="space-y-2">
@@ -454,7 +540,7 @@ export function ReadmeGenerator() {
                     <input
                       type="text"
                       value={feature}
-                      onChange={(e) => updateFeature(index, e.target.value)}
+                      onChange={e => updateFeature(index, e.target.value)}
                       className="flex-1 px-2 py-1.5 text-sm rounded bg-background border border-border"
                     />
                     <button
@@ -482,7 +568,11 @@ export function ReadmeGenerator() {
               className="w-full flex items-center justify-between text-sm font-medium mb-3"
             >
               技术栈
-              {expandedSections.includes('tech') ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+              {expandedSections.includes('tech') ? (
+                <ChevronDown className="w-4 h-4" />
+              ) : (
+                <ChevronRight className="w-4 h-4" />
+              )}
             </button>
             {expandedSections.includes('tech') && (
               <div className="flex flex-wrap gap-2">
@@ -515,13 +605,13 @@ export function ReadmeGenerator() {
               {[
                 { key: 'badges', label: '显示 Badge' },
                 { key: 'toc', label: '目录 (TOC)' },
-                { key: 'contributing', label: '贡献指南' }
+                { key: 'contributing', label: '贡献指南' },
               ].map(({ key, label }) => (
                 <label key={key} className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={config[key as keyof GeneratorConfig] as boolean}
-                    onChange={(e) => updateConfig(key as keyof GeneratorConfig, e.target.checked)}
+                    onChange={e => updateConfig(key as keyof GeneratorConfig, e.target.checked)}
                     className="rounded border-border"
                   />
                   <span className="text-sm">{label}</span>
@@ -551,14 +641,14 @@ export function ReadmeGenerator() {
             <div className="text-sm font-medium mb-3">项目描述</div>
             <textarea
               value={config.description}
-              onChange={(e) => updateConfig('description', e.target.value)}
+              onChange={e => updateConfig('description', e.target.value)}
               rows={2}
               className="w-full px-3 py-2 text-sm rounded-lg bg-background border border-border resize-none"
             />
             <div className="text-sm font-medium mt-4 mb-3">安装命令</div>
             <textarea
               value={config.installation}
-              onChange={(e) => updateConfig('installation', e.target.value)}
+              onChange={e => updateConfig('installation', e.target.value)}
               rows={3}
               className="w-full px-3 py-2 text-sm rounded-lg bg-background border border-border font-mono resize-none"
             />

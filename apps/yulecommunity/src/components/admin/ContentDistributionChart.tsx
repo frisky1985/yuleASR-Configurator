@@ -1,12 +1,5 @@
 import { useMemo } from 'react';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import {
   initialForumPosts,
@@ -62,9 +55,7 @@ export function ContentDistributionChart() {
           labelStyle={{ color: 'hsl(var(--foreground))' }}
           formatter={(value: unknown) => [`${value} 个`, '数量']}
         />
-        <Legend
-          wrapperStyle={{ color: 'hsl(var(--foreground))' }}
-        />
+        <Legend wrapperStyle={{ color: 'hsl(var(--foreground))' }} />
       </PieChart>
     </ResponsiveContainer>
   );

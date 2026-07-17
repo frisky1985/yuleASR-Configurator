@@ -181,15 +181,16 @@ export function ToolchainPage() {
   const [activeCategory, setActiveCategory] = useState('全部');
 
   const filteredTools =
-    activeCategory === '全部'
-      ? tools
-      : tools.filter((t) => t.category === activeCategory);
+    activeCategory === '全部' ? tools : tools.filter(t => t.category === activeCategory);
 
   return (
     <div className="min-h-screen pt-16">
       <Helmet>
         <title>开发工具链 - YuleTech | AutoSAR 配置与编译工具</title>
-        <meta name="description" content="从可视化配置到编译构建，从调试诊断到测试验证，YuleTech 提供完整的 AutoSAR BSW 开发工具链。" />
+        <meta
+          name="description"
+          content="从可视化配置到编译构建，从调试诊断到测试验证，YuleTech 提供完整的 AutoSAR BSW 开发工具链。"
+        />
       </Helmet>
       {/* Hero */}
       <section className="relative py-20 overflow-hidden bg-gradient-to-b from-[hsl(var(--primary))]/5 to-transparent">
@@ -204,9 +205,8 @@ export function ToolchainPage() {
               <span className="text-gradient-accent"> 开发工具</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-8">
-              从可视化配置到编译构建，从调试诊断到测试验证，
-              YuleTech 提供完整的 AutoSAR BSW 开发工具链，
-              帮助工程师高效完成从配置到产品的全流程开发。
+              从可视化配置到编译构建，从调试诊断到测试验证， YuleTech 提供完整的 AutoSAR BSW
+              开发工具链， 帮助工程师高效完成从配置到产品的全流程开发。
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button className="group flex items-center gap-2 px-6 py-3 bg-[hsl(var(--primary))] text-primary-foreground rounded-xl font-semibold hover:bg-[hsl(var(--primary-glow))] transition-all">
@@ -227,7 +227,7 @@ export function ToolchainPage() {
       <section className="py-12 border-y border-border bg-card/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {highlights.map((h) => (
+            {highlights.map(h => (
               <div key={h.title} className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-[hsl(var(--primary))]/10 flex items-center justify-center flex-shrink-0">
                   <h.icon className="w-6 h-6 text-[hsl(var(--primary))]" />
@@ -246,7 +246,7 @@ export function ToolchainPage() {
       <section className="py-8 sticky top-16 z-30 bg-background/80 backdrop-blur-xl border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 overflow-x-auto pb-2">
-            {categories.map((cat) => (
+            {categories.map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
@@ -266,17 +266,19 @@ export function ToolchainPage() {
       {/* Tools Grid */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          {filteredTools.map((cat) => (
+          {filteredTools.map(cat => (
             <div key={cat.category}>
               <div className="flex items-center gap-3 mb-6">
-                <div className={`w-10 h-10 rounded-lg ${cat.color} flex items-center justify-center border`}>
+                <div
+                  className={`w-10 h-10 rounded-lg ${cat.color} flex items-center justify-center border`}
+                >
                   <cat.icon className="w-5 h-5" />
                 </div>
                 <h2 className="text-xl font-bold">{cat.category}</h2>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {cat.items.map((tool) => (
+                {cat.items.map(tool => (
                   <div
                     key={tool.name}
                     className="group bg-card border border-border rounded-xl p-6 hover:border-[hsl(var(--accent))]/30 transition-all hover:shadow-elegant"
@@ -293,9 +295,7 @@ export function ToolchainPage() {
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-muted-foreground mb-4 min-h-[2.5rem]">
-                      {tool.desc}
-                    </p>
+                    <p className="text-sm text-muted-foreground mb-4 min-h-[2.5rem]">{tool.desc}</p>
                     <div className="space-y-2 mb-4">
                       <div className="flex items-center justify-between text-xs">
                         <span className="text-muted-foreground">版本</span>
@@ -307,7 +307,9 @@ export function ToolchainPage() {
                       </div>
                       <div className="flex items-center justify-between text-xs">
                         <span className="text-muted-foreground">许可</span>
-                        <span className={tool.free ? 'text-emerald-500' : 'text-[hsl(var(--accent))]'}>
+                        <span
+                          className={tool.free ? 'text-emerald-500' : 'text-[hsl(var(--accent))]'}
+                        >
                           {tool.free ? '永久免费' : '企业版'}
                         </span>
                       </div>

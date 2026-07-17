@@ -11,176 +11,180 @@ import {
   X,
   Clock,
   User,
-} from 'lucide-react'
-import { useEffect, useState, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
+} from 'lucide-react';
+import { useEffect, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { BranchManager } from '@/components/BranchManager'
-import { DiffViewer } from '@/components/DiffViewer'
-import { VersionHistory } from '@/components/VersionHistory'
-import { cn, formatDate } from '@/lib/utils'
-import { GitService, type CommitInfo, type BranchInfo, type DiffInfo } from '@/services/gitService'
+import { BranchManager } from '@/components/BranchManager';
+import { DiffViewer } from '@/components/DiffViewer';
+import { VersionHistory } from '@/components/VersionHistory';
+import { cn, formatDate } from '@/lib/utils';
+import { GitService, type CommitInfo, type BranchInfo, type DiffInfo } from '@/services/gitService';
 
 export function GitSync() {
-  const navigate = useNavigate()
-  const [gitService] = useState(() => new GitService())
+  const navigate = useNavigate();
+  const [gitService] = useState(() => new GitService());
 
   // Data state
-  const [branches, setBranches] = useState<BranchInfo[]>([])
-  const [commits, setCommits] = useState<CommitInfo[]>([])
-  const [currentBranch, setCurrentBranch] = useState<string>('main')
-  const [selectedCommit, setSelectedCommit] = useState<CommitInfo | null>(null)
-  const [diffs, setDiffs] = useState<DiffInfo[]>([])
-  const [showDiffViewer, setShowDiffViewer] = useState(false)
+  const [branches, setBranches] = useState<BranchInfo[]>([]);
+  const [commits, setCommits] = useState<CommitInfo[]>([]);
+  const [currentBranch, setCurrentBranch] = useState<string>('main');
+  const [selectedCommit, setSelectedCommit] = useState<CommitInfo | null>(null);
+  const [diffs, setDiffs] = useState<DiffInfo[]>([]);
+  const [showDiffViewer, setShowDiffViewer] = useState(false);
 
   // UI state
-  const [isLoading, setIsLoading] = useState(false)
-  const [isPulling, setIsPulling] = useState(false)
-  const [isPushing, setIsPushing] = useState(false)
-  const [syncStatus, setSyncStatus] = useState<'idle' | 'success' | 'error'>('idle')
-  const [syncMessage, setSyncMessage] = useState<string>('')
-  const [activeTab, setActiveTab] = useState<'history' | 'branches' | 'diff'>('history')
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPulling, setIsPulling] = useState(false);
+  const [isPushing, setIsPushing] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [syncMessage, setSyncMessage] = useState<string>('');
+  const [activeTab, setActiveTab] = useState<'history' | 'branches' | 'diff'>('history');
 
   // Load initial data
   const loadData = useCallback(async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const [branchList, commitList] = await Promise.all([
         gitService.getBranches(),
         gitService.getCommits(),
-      ])
-      setBranches(branchList)
-      setCommits(commitList)
-      const current = branchList.find(b => b.current)
+      ]);
+      setBranches(branchList);
+      setCommits(commitList);
+      const current = branchList.find(b => b.current);
       if (current) {
-        setCurrentBranch(current.name)
+        setCurrentBranch(current.name);
       }
     } catch (err) {
-      console.error('Failed to load git data:', err)
-      setSyncStatus('error')
-      setSyncMessage('Failed to load git data')
+      console.error('Failed to load git data:', err);
+      setSyncStatus('error');
+      setSyncMessage('Failed to load git data');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }, [gitService])
+  }, [gitService]);
 
   useEffect(() => {
-    loadData()
-  }, [loadData])
+    loadData();
+  }, [loadData]);
 
   // Branch operations
   const handleCreateBranch = async (name: string, checkout: boolean) => {
-    await gitService.createBranch(name)
+    await gitService.createBranch(name);
     if (checkout) {
-      await gitService.checkoutBranch(name)
-      setCurrentBranch(name)
+      await gitService.checkoutBranch(name);
+      setCurrentBranch(name);
     }
-    await loadData()
-  }
+    await loadData();
+  };
 
   const handleDeleteBranch = async (name: string) => {
-    await gitService.deleteBranch(name)
-    await loadData()
-  }
+    await gitService.deleteBranch(name);
+    await loadData();
+  };
 
   const handleSwitchBranch = async (name: string) => {
-    await gitService.checkoutBranch(name)
-    setCurrentBranch(name)
-    await loadData()
-  }
+    await gitService.checkoutBranch(name);
+    setCurrentBranch(name);
+    await loadData();
+  };
 
   // Commit operations
   const handleSelectCommit = async (commit: CommitInfo) => {
-    setSelectedCommit(commit)
-    setActiveTab('diff')
+    setSelectedCommit(commit);
+    setActiveTab('diff');
 
     // Get diff for this commit
     try {
-      const parentOid = commit.parent[0] || 'HEAD~1'
-      const diffList = await gitService.getDiff(parentOid, commit.oid)
-      setDiffs(diffList)
-      setShowDiffViewer(true)
+      const parentOid = commit.parent[0] || 'HEAD~1';
+      const diffList = await gitService.getDiff(parentOid, commit.oid);
+      setDiffs(diffList);
+      setShowDiffViewer(true);
     } catch (err) {
-      console.error('Failed to get diff:', err)
-      setDiffs([])
+      console.error('Failed to get diff:', err);
+      setDiffs([]);
     }
-  }
+  };
 
   const handleSelectBranch = async (branchName: string) => {
-    await handleSwitchBranch(branchName)
-  }
+    await handleSwitchBranch(branchName);
+  };
 
   const handleRollback = async (commit: CommitInfo) => {
-    if (!confirm(`Are you sure you want to rollback to commit "${commit.message.substring(0, 50)}..."?`)) {
-      return
+    if (
+      !confirm(
+        `Are you sure you want to rollback to commit "${commit.message.substring(0, 50)}..."?`
+      )
+    ) {
+      return;
     }
     // TODO: Implement rollback
-    console.log('Rollback to:', commit.oid)
-  }
+    console.log('Rollback to:', commit.oid);
+  };
 
   const handleCompare = async (commit1: CommitInfo, commit2: CommitInfo) => {
     try {
-      const diffList = await gitService.getDiff(commit1.oid, commit2.oid)
-      setDiffs(diffList)
-      setShowDiffViewer(true)
-      setActiveTab('diff')
+      const diffList = await gitService.getDiff(commit1.oid, commit2.oid);
+      setDiffs(diffList);
+      setShowDiffViewer(true);
+      setActiveTab('diff');
     } catch (err) {
-      console.error('Failed to compare commits:', err)
+      console.error('Failed to compare commits:', err);
     }
-  }
+  };
 
   // Sync operations
   const handlePull = async () => {
-    setIsPulling(true)
-    setSyncStatus('idle')
-    setSyncMessage('')
+    setIsPulling(true);
+    setSyncStatus('idle');
+    setSyncMessage('');
 
     try {
       // Simulate pull operation
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      await loadData()
-      setSyncStatus('success')
-      setSyncMessage('Successfully pulled latest changes')
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      await loadData();
+      setSyncStatus('success');
+      setSyncMessage('Successfully pulled latest changes');
     } catch (err) {
-      setSyncStatus('error')
-      setSyncMessage(err instanceof Error ? err.message : 'Pull failed')
+      setSyncStatus('error');
+      setSyncMessage(err instanceof Error ? err.message : 'Pull failed');
     } finally {
-      setIsPulling(false)
-      setTimeout(() => setSyncStatus('idle'), 3000)
+      setIsPulling(false);
+      setTimeout(() => setSyncStatus('idle'), 3000);
     }
-  }
+  };
 
   const handlePush = async () => {
-    setIsPushing(true)
-    setSyncStatus('idle')
-    setSyncMessage('')
+    setIsPushing(true);
+    setSyncStatus('idle');
+    setSyncMessage('');
 
     try {
       // Simulate push operation
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      setSyncStatus('success')
-      setSyncMessage('Successfully pushed changes')
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setSyncStatus('success');
+      setSyncMessage('Successfully pushed changes');
     } catch (err) {
-      setSyncStatus('error')
-      setSyncMessage(err instanceof Error ? err.message : 'Push failed')
+      setSyncStatus('error');
+      setSyncMessage(err instanceof Error ? err.message : 'Push failed');
     } finally {
-      setIsPushing(false)
-      setTimeout(() => setSyncStatus('idle'), 3000)
+      setIsPushing(false);
+      setTimeout(() => setSyncStatus('idle'), 3000);
     }
-  }
+  };
 
   const handleViewCurrentDiff = async () => {
     // Show diff between HEAD and working directory (uncommitted changes)
     try {
-      const diffList = await gitService.getDiff('HEAD', 'WORKDIR')
-      setDiffs(diffList)
-      setShowDiffViewer(true)
-      setActiveTab('diff')
+      const diffList = await gitService.getDiff('HEAD', 'WORKDIR');
+      setDiffs(diffList);
+      setShowDiffViewer(true);
+      setActiveTab('diff');
     } catch (err) {
-      console.error('Failed to get current diff:', err)
-      setDiffs([])
+      console.error('Failed to get current diff:', err);
+      setDiffs([]);
     }
-  }
+  };
 
   return (
     <div className="space-y-4">
@@ -210,20 +214,19 @@ export function GitSync() {
         <div className="flex items-center gap-2">
           {/* Status Indicator */}
           {syncStatus !== 'idle' && (
-            <div className={cn(
-              'flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm',
-              syncStatus === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
-            )}>
+            <div
+              className={cn(
+                'flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm',
+                syncStatus === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+              )}
+            >
               {syncStatus === 'success' ? (
                 <CheckCircle className="w-4 h-4" />
               ) : (
                 <AlertCircle className="w-4 h-4" />
               )}
               <span>{syncMessage}</span>
-              <button
-                onClick={() => setSyncStatus('idle')}
-                className="ml-1 hover:opacity-70"
-              >
+              <button onClick={() => setSyncStatus('idle')} className="ml-1 hover:opacity-70">
                 <X className="w-3 h-3" />
               </button>
             </div>
@@ -378,15 +381,25 @@ export function GitSync() {
                 <div className="bg-app-bg-primary rounded-lg border border-app-border-primary p-8 text-center">
                   <GitCompare className="w-12 h-12 text-app-text-tertiary mx-auto mb-3" />
                   <h3 className="text-app-text-primary font-medium">No commit selected</h3>
-                  <p className="text-app-text-secondary mt-1">Select a commit from the history to view its changes</p>
+                  <p className="text-app-text-secondary mt-1">
+                    Select a commit from the history to view its changes
+                  </p>
                 </div>
               )}
 
               {showDiffViewer && (
                 <DiffViewer
                   diffs={diffs}
-                  oldCommit={selectedCommit?.parent[0] ? { oid: selectedCommit.parent[0], message: 'Parent' } : undefined}
-                  newCommit={selectedCommit ? { oid: selectedCommit.oid, message: selectedCommit.message } : undefined}
+                  oldCommit={
+                    selectedCommit?.parent[0]
+                      ? { oid: selectedCommit.parent[0], message: 'Parent' }
+                      : undefined
+                  }
+                  newCommit={
+                    selectedCommit
+                      ? { oid: selectedCommit.oid, message: selectedCommit.message }
+                      : undefined
+                  }
                   title={selectedCommit ? 'Commit Changes' : 'Current Changes'}
                 />
               )}
@@ -395,7 +408,7 @@ export function GitSync() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default GitSync
+export default GitSync;

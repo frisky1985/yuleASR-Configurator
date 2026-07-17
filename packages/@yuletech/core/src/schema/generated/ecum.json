@@ -332,11 +332,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "Adc_Init",
-    "BswM_InitMemory",
-    "BswM_PreInit"
-  ],
+  "required": ["Adc_Init", "BswM_InitMemory", "BswM_PreInit"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

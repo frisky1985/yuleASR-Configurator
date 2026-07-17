@@ -1,10 +1,4 @@
-import {
-  Code2,
-  Wrench,
-  BookOpen,
-  Cpu,
-  ChevronRight,
-} from 'lucide-react';
+import { Code2, Wrench, BookOpen, Cpu, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import {
   ImageMarquee,
@@ -29,7 +23,8 @@ const features = [
   {
     icon: Code2,
     title: '开源代码平台',
-    description: '提供完整的 AutoSAR BSW 开源实现，包括 MCAL、ECUAL、Service 和 RTE 层，支持多种芯片平台。',
+    description:
+      '提供完整的 AutoSAR BSW 开源实现，包括 MCAL、ECUAL、Service 和 RTE 层，支持多种芯片平台。',
     image: `${baseUrl}images/feature-code.png`,
     stats: '32 个模块',
     color: 'from-blue-500/20 to-cyan-500/20',
@@ -97,7 +92,7 @@ export function Features() {
     <section id="opensource" className="py-24 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div 
+        <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -157,9 +152,7 @@ export function Features() {
                 </p>
 
                 {/* Scrolling Image Preview */}
-                <div className="mb-4 -mx-6 px-6">
-                  {feature.marquee}
-                </div>
+                <div className="mb-4 -mx-6 px-6">{feature.marquee}</div>
 
                 <a
                   href={`#${feature.link}`}

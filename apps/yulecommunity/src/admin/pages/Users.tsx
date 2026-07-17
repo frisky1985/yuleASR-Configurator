@@ -14,13 +14,69 @@ interface User {
 }
 
 const mockUsers: User[] = [
-  { id: '1', username: 'zhangsan', email: 'zhangsan@example.com', role: 'user', status: 'active', createdAt: '2025-01-20', lastLogin: '2025-01-28' },
-  { id: '2', username: 'lisi', email: 'lisi@example.com', role: 'vip', status: 'active', createdAt: '2025-01-18', lastLogin: '2025-01-27' },
-  { id: '3', username: 'wangwu', email: 'wangwu@example.com', role: 'user', status: 'inactive', createdAt: '2025-01-15', lastLogin: '2025-01-20' },
-  { id: '4', username: 'zhaoliu', email: 'zhaoliu@example.com', role: 'admin', status: 'active', createdAt: '2025-01-10', lastLogin: '2025-01-28' },
-  { id: '5', username: 'qianqi', email: 'qianqi@example.com', role: 'user', status: 'active', createdAt: '2025-01-08', lastLogin: '2025-01-26' },
-  { id: '6', username: 'sunba', email: 'sunba@example.com', role: 'user', status: 'active', createdAt: '2025-01-05', lastLogin: '2025-01-25' },
-  { id: '7', username: 'zhoujiu', email: 'zhoujiu@example.com', role: 'vip', status: 'active', createdAt: '2025-01-01', lastLogin: '2025-01-28' },
+  {
+    id: '1',
+    username: 'zhangsan',
+    email: 'zhangsan@example.com',
+    role: 'user',
+    status: 'active',
+    createdAt: '2025-01-20',
+    lastLogin: '2025-01-28',
+  },
+  {
+    id: '2',
+    username: 'lisi',
+    email: 'lisi@example.com',
+    role: 'vip',
+    status: 'active',
+    createdAt: '2025-01-18',
+    lastLogin: '2025-01-27',
+  },
+  {
+    id: '3',
+    username: 'wangwu',
+    email: 'wangwu@example.com',
+    role: 'user',
+    status: 'inactive',
+    createdAt: '2025-01-15',
+    lastLogin: '2025-01-20',
+  },
+  {
+    id: '4',
+    username: 'zhaoliu',
+    email: 'zhaoliu@example.com',
+    role: 'admin',
+    status: 'active',
+    createdAt: '2025-01-10',
+    lastLogin: '2025-01-28',
+  },
+  {
+    id: '5',
+    username: 'qianqi',
+    email: 'qianqi@example.com',
+    role: 'user',
+    status: 'active',
+    createdAt: '2025-01-08',
+    lastLogin: '2025-01-26',
+  },
+  {
+    id: '6',
+    username: 'sunba',
+    email: 'sunba@example.com',
+    role: 'user',
+    status: 'active',
+    createdAt: '2025-01-05',
+    lastLogin: '2025-01-25',
+  },
+  {
+    id: '7',
+    username: 'zhoujiu',
+    email: 'zhoujiu@example.com',
+    role: 'vip',
+    status: 'active',
+    createdAt: '2025-01-01',
+    lastLogin: '2025-01-28',
+  },
 ];
 
 export const Users: React.FC = () => {
@@ -30,7 +86,7 @@ export const Users: React.FC = () => {
   const [roleFilter, setRoleFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
-  const filteredUsers = mockUsers.filter((user) => {
+  const filteredUsers = mockUsers.filter(user => {
     const matchesSearch =
       user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase());
@@ -51,8 +107,8 @@ export const Users: React.FC = () => {
             record.role === 'admin'
               ? 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400'
               : record.role === 'vip'
-              ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400'
-              : 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400'
+                ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400'
+                : 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400'
           }`}
         >
           {record.role === 'admin' ? '管理员' : record.role === 'vip' ? 'VIP' : '普通用户'}
@@ -119,7 +175,7 @@ export const Users: React.FC = () => {
             type="text"
             placeholder="搜索用户名或邮箱..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
             className="h-10 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 pl-9 pr-4 text-sm text-slate-700 dark:text-slate-200 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
         </div>
@@ -128,7 +184,7 @@ export const Users: React.FC = () => {
           <Filter className="h-4 w-4 text-slate-400" />
           <select
             value={roleFilter}
-            onChange={(e) => setRoleFilter(e.target.value)}
+            onChange={e => setRoleFilter(e.target.value)}
             className="h-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-sm text-slate-700 dark:text-slate-200 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           >
             <option value="all">所有角色</option>
@@ -139,7 +195,7 @@ export const Users: React.FC = () => {
 
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={e => setStatusFilter(e.target.value)}
             className="h-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-sm text-slate-700 dark:text-slate-200 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           >
             <option value="all">所有状态</option>
@@ -168,9 +224,9 @@ export const Users: React.FC = () => {
         rowSelection={{
           selectedRowKeys: selectedKeys,
           onChange: setSelectedKeys,
-          rowKey: (record) => record.id,
+          rowKey: record => record.id,
         }}
-        onRowClick={(record) => navigate(`/admin/users/${record.id}`)}
+        onRowClick={record => navigate(`/admin/users/${record.id}`)}
         pagination={{
           current: 1,
           pageSize: 10,

@@ -26,7 +26,9 @@ interface ElectronAPI {
   onExportCode(callback: () => void): void;
   onRunVerify(callback: () => void): void;
   gccCheck(): Promise<GCCCheckResult>;
-  gccVerify(files: Array<{ filename: string; content: string; language: string }>): Promise<GCCResult[]>;
+  gccVerify(
+    files: Array<{ filename: string; content: string; language: string }>
+  ): Promise<GCCResult[]>;
   saveFiles(files: Array<{ filename: string; content: string }>): Promise<SaveResult>;
   platform: string;
   isElectron: boolean;

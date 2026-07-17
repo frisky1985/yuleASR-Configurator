@@ -1,13 +1,14 @@
-import { X, Check, Crown, Zap } from 'lucide-react'
-import { FEATURES, useLicenseStore } from '@/stores/licenseStore'
+import { X, Check, Crown, Zap } from 'lucide-react';
+
+import { FEATURES, useLicenseStore } from '@/stores/licenseStore';
 
 interface UpgradeDialogProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-const MONTHLY_PRICE = '¥299/月'
-const YEARLY_PRICE = '¥2,999/年'
+const MONTHLY_PRICE = '¥299/月';
+const YEARLY_PRICE = '¥2,999/年';
 
 const planComparison = [
   { feature: '最大模块数', free: '5 个', pro: '无限' },
@@ -16,22 +17,22 @@ const planComparison = [
   { feature: '代码生成 (codeGen)', free: '✓', pro: '✓' },
   { feature: 'VS Code 扩展', free: '✗', pro: '✓' },
   { feature: '模板市场上传', free: '✗', pro: '✓' },
-]
+];
 
 export function UpgradeDialog({ isOpen, onClose }: UpgradeDialogProps) {
-  const tier = useLicenseStore((s) => s.tier)
-  const alreadyPro = tier === 'pro'
+  const tier = useLicenseStore(s => s.tier);
+  const alreadyPro = tier === 'pro';
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   const handleSubscribeMonthly = () => {
     // In production, this would redirect to the checkout URL
-    window.location.href = '/settings/license'
-  }
+    window.location.href = '/settings/license';
+  };
 
   const handleSubscribeYearly = () => {
-    window.location.href = '/settings/license'
-  }
+    window.location.href = '/settings/license';
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -55,8 +56,7 @@ export function UpgradeDialog({ isOpen, onClose }: UpgradeDialogProps) {
           <p className="text-app-text-secondary mt-2 max-w-md mx-auto">
             {alreadyPro
               ? '感谢您的支持！您已拥有所有 Pro 功能。'
-              : '解锁无限模块、高级导出和更多专业功能。'
-            }
+              : '解锁无限模块、高级导出和更多专业功能。'}
           </p>
         </div>
 
@@ -107,8 +107,12 @@ export function UpgradeDialog({ isOpen, onClose }: UpgradeDialogProps) {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="bg-app-bg-secondary border-b border-app-border-primary">
-                      <th className="text-left px-4 py-3 font-medium text-app-text-primary">功能</th>
-                      <th className="text-center px-4 py-3 font-medium text-app-text-secondary">Free</th>
+                      <th className="text-left px-4 py-3 font-medium text-app-text-primary">
+                        功能
+                      </th>
+                      <th className="text-center px-4 py-3 font-medium text-app-text-secondary">
+                        Free
+                      </th>
                       <th className="text-center px-4 py-3 font-medium text-amber-600">Pro</th>
                     </tr>
                   </thead>
@@ -116,7 +120,9 @@ export function UpgradeDialog({ isOpen, onClose }: UpgradeDialogProps) {
                     {planComparison.map((row, i) => (
                       <tr key={i} className="hover:bg-app-bg-secondary/50">
                         <td className="px-4 py-3 text-app-text-primary">{row.feature}</td>
-                        <td className="px-4 py-3 text-center text-app-text-secondary">{row.free}</td>
+                        <td className="px-4 py-3 text-center text-app-text-secondary">
+                          {row.free}
+                        </td>
                         <td className="px-4 py-3 text-center">
                           {row.pro === '✓' ? (
                             <Check className="w-4 h-4 text-green-500 mx-auto" />
@@ -147,5 +153,5 @@ export function UpgradeDialog({ isOpen, onClose }: UpgradeDialogProps) {
         )}
       </div>
     </div>
-  )
+  );
 }

@@ -70,10 +70,34 @@ const mockStats: UserStats = {
 };
 
 const mockBuilds = [
-  { id: '1', name: 'STM32-GCC-Build', platform: 'STM32', status: 'success', createdAt: '2025-01-28 15:30' },
-  { id: '2', name: 'ESP32-IDF-Release', platform: 'ESP32', status: 'running', createdAt: '2025-01-28 15:15' },
-  { id: '3', name: 'Arduino-Sensor-Lib', platform: 'Arduino', status: 'failed', createdAt: '2025-01-28 14:45' },
-  { id: '4', name: 'Raspberry-Pi-Driver', platform: 'RaspberryPi', status: 'success', createdAt: '2025-01-28 14:00' },
+  {
+    id: '1',
+    name: 'STM32-GCC-Build',
+    platform: 'STM32',
+    status: 'success',
+    createdAt: '2025-01-28 15:30',
+  },
+  {
+    id: '2',
+    name: 'ESP32-IDF-Release',
+    platform: 'ESP32',
+    status: 'running',
+    createdAt: '2025-01-28 15:15',
+  },
+  {
+    id: '3',
+    name: 'Arduino-Sensor-Lib',
+    platform: 'Arduino',
+    status: 'failed',
+    createdAt: '2025-01-28 14:45',
+  },
+  {
+    id: '4',
+    name: 'Raspberry-Pi-Driver',
+    platform: 'RaspberryPi',
+    status: 'success',
+    createdAt: '2025-01-28 14:00',
+  },
 ];
 
 const mockBookmarks = [
@@ -99,7 +123,7 @@ const ROLE_COLORS: Record<string, string> = {
 export const UserDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  
+
   const [user, setUser] = useState<UserDetail>(mockUser);
   const [stats, setStats] = useState<UserStats>(mockStats);
   const [isEditing, setIsEditing] = useState(false);
@@ -134,7 +158,7 @@ export const UserDetail: React.FC = () => {
 
   const handleStatusChange = async (newStatus: 'active' | 'inactive') => {
     if (!window.confirm(`确定要${newStatus === 'active' ? '启用' : '禁用'}该用户吗？`)) return;
-    
+
     setIsLoading(true);
     await new Promise(resolve => setTimeout(resolve, 300));
     setUser({ ...user, status: newStatus });
@@ -143,7 +167,7 @@ export const UserDetail: React.FC = () => {
 
   const handleDelete = async () => {
     if (!window.confirm('确定要删除该用户吗？此操作不可恢复！')) return;
-    
+
     setIsLoading(true);
     await new Promise(resolve => setTimeout(resolve, 300));
     navigate('/admin/users');
@@ -181,9 +205,7 @@ export const UserDetail: React.FC = () => {
             <ArrowLeft className="h-5 w-5" />
             返回
           </button>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-            用户详情
-          </h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">用户详情</h1>
         </div>
         <div className="flex items-center gap-2">
           {isEditing ? (
@@ -230,22 +252,24 @@ export const UserDetail: React.FC = () => {
           {/* Info */}
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-                {user.username}
-              </h2>
-              <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${ROLE_COLORS[user.role]}`}>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white">{user.username}</h2>
+              <span
+                className={`px-2 py-0.5 rounded-full text-xs font-medium ${ROLE_COLORS[user.role]}`}
+              >
                 {ROLE_LABELS[user.role]}
               </span>
-              <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                user.status === 'active' 
-                  ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
-                  : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400'
-              }`}>
+              <span
+                className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                  user.status === 'active'
+                    ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                    : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400'
+                }`}
+              >
                 {user.status === 'active' ? '正常' : '禁用'}
               </span>
             </div>
             <p className="text-slate-500 dark:text-slate-400 mb-4">{user.email}</p>
-            
+
             {/* Stats */}
             <div className="flex items-center gap-6 text-sm">
               <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400">
@@ -295,7 +319,7 @@ export const UserDetail: React.FC = () => {
       {/* Tabs */}
       <div className="border-b border-slate-200 dark:border-slate-800">
         <nav className="flex gap-6">
-          {tabs.map((tab) => {
+          {tabs.map(tab => {
             const Icon = tab.icon;
             return (
               <button
@@ -328,7 +352,7 @@ export const UserDetail: React.FC = () => {
                   <input
                     type="text"
                     value={editedUser.username}
-                    onChange={(e) => setEditedUser({ ...editedUser, username: e.target.value })}
+                    onChange={e => setEditedUser({ ...editedUser, username: e.target.value })}
                     className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm"
                   />
                 </div>
@@ -339,7 +363,7 @@ export const UserDetail: React.FC = () => {
                   <input
                     type="email"
                     value={editedUser.email}
-                    onChange={(e) => setEditedUser({ ...editedUser, email: e.target.value })}
+                    onChange={e => setEditedUser({ ...editedUser, email: e.target.value })}
                     className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm"
                   />
                 </div>
@@ -349,7 +373,7 @@ export const UserDetail: React.FC = () => {
                   </label>
                   <select
                     value={editedUser.role}
-                    onChange={(e) => setEditedUser({ ...editedUser, role: e.target.value as any })}
+                    onChange={e => setEditedUser({ ...editedUser, role: e.target.value as any })}
                     className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm"
                   >
                     <option value="user">普通用户</option>
@@ -365,7 +389,7 @@ export const UserDetail: React.FC = () => {
                   <input
                     type="text"
                     value={editedUser.company || ''}
-                    onChange={(e) => setEditedUser({ ...editedUser, company: e.target.value })}
+                    onChange={e => setEditedUser({ ...editedUser, company: e.target.value })}
                     className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm"
                   />
                 </div>
@@ -376,7 +400,7 @@ export const UserDetail: React.FC = () => {
                   <input
                     type="text"
                     value={editedUser.location || ''}
-                    onChange={(e) => setEditedUser({ ...editedUser, location: e.target.value })}
+                    onChange={e => setEditedUser({ ...editedUser, location: e.target.value })}
                     className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm"
                   />
                 </div>
@@ -387,7 +411,7 @@ export const UserDetail: React.FC = () => {
                   <input
                     type="text"
                     value={editedUser.website || ''}
-                    onChange={(e) => setEditedUser({ ...editedUser, website: e.target.value })}
+                    onChange={e => setEditedUser({ ...editedUser, website: e.target.value })}
                     className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm"
                   />
                 </div>
@@ -397,7 +421,7 @@ export const UserDetail: React.FC = () => {
                   </label>
                   <textarea
                     value={editedUser.bio || ''}
-                    onChange={(e) => setEditedUser({ ...editedUser, bio: e.target.value })}
+                    onChange={e => setEditedUser({ ...editedUser, bio: e.target.value })}
                     rows={3}
                     className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm"
                   />
@@ -409,7 +433,12 @@ export const UserDetail: React.FC = () => {
                   <input
                     type="text"
                     value={editedUser.skills.join(', ')}
-                    onChange={(e) => setEditedUser({ ...editedUser, skills: e.target.value.split(',').map(s => s.trim()) })}
+                    onChange={e =>
+                      setEditedUser({
+                        ...editedUser,
+                        skills: e.target.value.split(',').map(s => s.trim()),
+                      })
+                    }
                     className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm"
                     placeholder="C, AutoSAR, STM32"
                   />
@@ -453,10 +482,17 @@ export const UserDetail: React.FC = () => {
                   </label>
                   <p className="text-slate-900 dark:text-white">
                     {user.website ? (
-                      <a href={user.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                      <a
+                        href={user.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline"
+                      >
                         {user.website}
                       </a>
-                    ) : '-'}
+                    ) : (
+                      '-'
+                    )}
                   </p>
                 </div>
                 <div className="col-span-2">
@@ -491,15 +527,21 @@ export const UserDetail: React.FC = () => {
             <div className="grid grid-cols-4 gap-4 mb-6">
               <div className="bg-slate-50 dark:bg-slate-800 rounded-lg p-4">
                 <p className="text-sm text-slate-500 dark:text-slate-400">总构建</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">{stats.totalBuilds}</p>
+                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                  {stats.totalBuilds}
+                </p>
               </div>
               <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
                 <p className="text-sm text-green-600 dark:text-green-400">成功</p>
-                <p className="text-2xl font-bold text-green-700 dark:text-green-400">{stats.successfulBuilds}</p>
+                <p className="text-2xl font-bold text-green-700 dark:text-green-400">
+                  {stats.successfulBuilds}
+                </p>
               </div>
               <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4">
                 <p className="text-sm text-red-600 dark:text-red-400">失败</p>
-                <p className="text-2xl font-bold text-red-700 dark:text-red-400">{stats.failedBuilds}</p>
+                <p className="text-2xl font-bold text-red-700 dark:text-red-400">
+                  {stats.failedBuilds}
+                </p>
               </div>
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
                 <p className="text-sm text-blue-600 dark:text-blue-400">成功率</p>
@@ -511,29 +553,47 @@ export const UserDetail: React.FC = () => {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-800">
-                  <th className="text-left py-3 text-sm font-medium text-slate-500 dark:text-slate-400">构建名称</th>
-                  <th className="text-left py-3 text-sm font-medium text-slate-500 dark:text-slate-400">平台</th>
-                  <th className="text-left py-3 text-sm font-medium text-slate-500 dark:text-slate-400">状态</th>
-                  <th className="text-left py-3 text-sm font-medium text-slate-500 dark:text-slate-400">时间</th>
+                  <th className="text-left py-3 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    构建名称
+                  </th>
+                  <th className="text-left py-3 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    平台
+                  </th>
+                  <th className="text-left py-3 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    状态
+                  </th>
+                  <th className="text-left py-3 text-sm font-medium text-slate-500 dark:text-slate-400">
+                    时间
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {mockBuilds.map((build) => (
+                {mockBuilds.map(build => (
                   <tr key={build.id} className="border-b border-slate-100 dark:border-slate-800/50">
                     <td className="py-3 text-sm text-slate-900 dark:text-white">{build.name}</td>
-                    <td className="py-3 text-sm text-slate-500 dark:text-slate-400">{build.platform}</td>
+                    <td className="py-3 text-sm text-slate-500 dark:text-slate-400">
+                      {build.platform}
+                    </td>
                     <td className="py-3">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                        build.status === 'success'
-                          ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                      <span
+                        className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                          build.status === 'success'
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
+                            : build.status === 'running'
+                              ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
+                              : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+                        }`}
+                      >
+                        {build.status === 'success'
+                          ? '成功'
                           : build.status === 'running'
-                          ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400'
-                          : 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
-                      }`}>
-                        {build.status === 'success' ? '成功' : build.status === 'running' ? '运行中' : '失败'}
+                            ? '运行中'
+                            : '失败'}
                       </span>
                     </td>
-                    <td className="py-3 text-sm text-slate-500 dark:text-slate-400">{build.createdAt}</td>
+                    <td className="py-3 text-sm text-slate-500 dark:text-slate-400">
+                      {build.createdAt}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -547,13 +607,15 @@ export const UserDetail: React.FC = () => {
               共收藏 {stats.totalBookmarks} 篇文章
             </p>
             <div className="space-y-3">
-              {mockBookmarks.map((bookmark) => (
+              {mockBookmarks.map(bookmark => (
                 <div
                   key={bookmark.id}
                   className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800 rounded-lg"
                 >
                   <div>
-                    <h4 className="text-sm font-medium text-slate-900 dark:text-white">{bookmark.title}</h4>
+                    <h4 className="text-sm font-medium text-slate-900 dark:text-white">
+                      {bookmark.title}
+                    </h4>
                     <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                       {bookmark.category} · 收藏于 {bookmark.bookmarkedAt}
                     </p>
@@ -576,7 +638,9 @@ export const UserDetail: React.FC = () => {
               <div className="flex-1">
                 <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">当前等级</p>
                 <div className="flex items-center gap-3">
-                  <span className="text-3xl font-bold text-slate-900 dark:text-white">Lv.{stats.level}</span>
+                  <span className="text-3xl font-bold text-slate-900 dark:text-white">
+                    Lv.{stats.level}
+                  </span>
                   <span className="px-3 py-1 bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-400 rounded-full text-sm font-medium">
                     {stats.levelTitle}
                   </span>
@@ -584,7 +648,9 @@ export const UserDetail: React.FC = () => {
               </div>
               <div className="flex-1">
                 <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">总积分</p>
-                <p className="text-3xl font-bold text-slate-900 dark:text-white">{stats.totalPoints.toLocaleString()}</p>
+                <p className="text-3xl font-bold text-slate-900 dark:text-white">
+                  {stats.totalPoints.toLocaleString()}
+                </p>
               </div>
             </div>
             <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-6 text-white">

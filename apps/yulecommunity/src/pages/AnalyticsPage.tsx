@@ -54,15 +54,18 @@ function StatCard({
           <p className="text-sm text-muted-foreground mb-1">{title}</p>
           <p className="text-2xl font-bold">{value}</p>
           {trend && (
-            <div className={`flex items-center gap-1 text-sm mt-2 ${
-              trend.isPositive ? 'text-green-500' : 'text-red-500'
-            }`}>
+            <div
+              className={`flex items-center gap-1 text-sm mt-2 ${
+                trend.isPositive ? 'text-green-500' : 'text-red-500'
+              }`}
+            >
               {trend.isPositive ? (
                 <TrendingUp className="w-4 h-4" />
               ) : (
                 <TrendingDown className="w-4 h-4" />
               )}
-              {trend.isPositive ? '+' : ''}{trend.value}%
+              {trend.isPositive ? '+' : ''}
+              {trend.value}%
             </div>
           )}
         </div>
@@ -78,9 +81,11 @@ function ContributorRow({ contributor, rank }: { contributor: Contributor; rank:
   return (
     <tr className="border-b border-border hover:bg-muted/50">
       <td className="py-3 px-4">
-        <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-          rank <= 3 ? 'bg-primary text-primary-foreground' : 'bg-muted'
-        }`}>
+        <span
+          className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
+            rank <= 3 ? 'bg-primary text-primary-foreground' : 'bg-muted'
+          }`}
+        >
           {rank}
         </span>
       </td>
@@ -93,8 +98,12 @@ function ContributorRow({ contributor, rank }: { contributor: Contributor; rank:
         </div>
       </td>
       <td className="py-3 px-4 text-right">{contributor.commits}</td>
-      <td className="py-3 px-4 text-right text-green-500">+{contributor.additions.toLocaleString()}</td>
-      <td className="py-3 px-4 text-right text-red-500">-{contributor.deletions.toLocaleString()}</td>
+      <td className="py-3 px-4 text-right text-green-500">
+        +{contributor.additions.toLocaleString()}
+      </td>
+      <td className="py-3 px-4 text-right text-red-500">
+        -{contributor.deletions.toLocaleString()}
+      </td>
       <td className="py-3 px-4 text-right">{contributor.modules}</td>
       <td className="py-3 px-4 text-sm text-muted-foreground">{contributor.lastActive}</td>
     </tr>
@@ -114,15 +123,24 @@ function ModuleUsageRow({ module }: { module: ModuleUsage }) {
         </div>
       </td>
       <td className="py-3 px-4 text-right">
-        <span className={`inline-flex items-center gap-1 text-sm ${
-          module.trend === 'up' ? 'text-green-500' :
-          module.trend === 'down' ? 'text-red-500' :
-          'text-muted-foreground'
-        }`}>
-          {module.trend === 'up' ? <TrendingUp className="w-4 h-4" /> :
-           module.trend === 'down' ? <TrendingDown className="w-4 h-4" /> :
-           <Minus className="w-4 h-4" />}
-          {module.trendValue > 0 ? '+' : ''}{module.trendValue}%
+        <span
+          className={`inline-flex items-center gap-1 text-sm ${
+            module.trend === 'up'
+              ? 'text-green-500'
+              : module.trend === 'down'
+                ? 'text-red-500'
+                : 'text-muted-foreground'
+          }`}
+        >
+          {module.trend === 'up' ? (
+            <TrendingUp className="w-4 h-4" />
+          ) : module.trend === 'down' ? (
+            <TrendingDown className="w-4 h-4" />
+          ) : (
+            <Minus className="w-4 h-4" />
+          )}
+          {module.trendValue > 0 ? '+' : ''}
+          {module.trendValue}%
         </span>
       </td>
       <td className="py-3 px-4 text-sm text-muted-foreground">{module.lastDownload}</td>
@@ -161,7 +179,9 @@ function TeamMetricCard({ team }: { team: TeamMetric }) {
 
 export function AnalyticsPage() {
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d' | '1y'>('30d');
-  const [activeTab, setActiveTab] = useState<'overview' | 'contributors' | 'modules' | 'teams'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'contributors' | 'modules' | 'teams'>(
+    'overview'
+  );
 
   const summary = getDashboardSummary();
 
@@ -176,15 +196,13 @@ export function AnalyticsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
-                分析仪表板
-              </h1>
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">分析仪表板</h1>
               <p className="text-muted-foreground mt-2">数据驱动决策，洞察团队效能</p>
             </div>
             <div className="flex items-center gap-3">
               <select
                 value={timeRange}
-                onChange={(e) => setTimeRange(e.target.value as any)}
+                onChange={e => setTimeRange(e.target.value as any)}
                 className="px-4 py-2 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="7d">迗去 7 天</option>
@@ -249,11 +267,7 @@ export function AnalyticsPage() {
                 trend={{ value: summary.trend.downloads, isPositive: true }}
                 icon={Download}
               />
-              <StatCard
-                title="活跃贡献者"
-                value={summary.activeContributors}
-                icon={Users}
-              />
+              <StatCard title="活跃贡献者" value={summary.activeContributors} icon={Users} />
               <StatCard
                 title="代码提交"
                 value={summary.codeCommits}
@@ -275,15 +289,15 @@ export function AnalyticsPage() {
                 <AreaChart data={mockActivityData}>
                   <defs>
                     <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis
                     dataKey="date"
                     tick={{ fontSize: 12 }}
-                    tickFormatter={(date) => new Date(date).getDate().toString()}
+                    tickFormatter={date => new Date(date).getDate().toString()}
                   />
                   <YAxis tick={{ fontSize: 12 }} />
                   <Tooltip
@@ -313,7 +327,7 @@ export function AnalyticsPage() {
                   <XAxis
                     dataKey="date"
                     tick={{ fontSize: 12 }}
-                    tickFormatter={(date) => new Date(date).getDate().toString()}
+                    tickFormatter={date => new Date(date).getDate().toString()}
                   />
                   <YAxis tick={{ fontSize: 12 }} />
                   <Tooltip
@@ -346,11 +360,7 @@ export function AnalyticsPage() {
               </thead>
               <tbody>
                 {mockContributors.map((contributor, index) => (
-                  <ContributorRow
-                    key={contributor.id}
-                    contributor={contributor}
-                    rank={index + 1}
-                  />
+                  <ContributorRow key={contributor.id} contributor={contributor} rank={index + 1} />
                 ))}
               </tbody>
             </table>

@@ -28,16 +28,16 @@ export const Settings: React.FC = () => {
   const handleSave = async () => {
     setSaving(true);
     // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
     setSaving(false);
     alert('设置已保存');
   };
 
-  const SettingSection: React.FC<{ title: string; icon: React.ReactNode; children: React.ReactNode }> = ({
-    title,
-    icon,
-    children,
-  }) => (
+  const SettingSection: React.FC<{
+    title: string;
+    icon: React.ReactNode;
+    children: React.ReactNode;
+  }> = ({ title, icon, children }) => (
     <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
       <div className="flex items-center gap-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 px-6 py-4">
         {icon}
@@ -61,7 +61,7 @@ export const Settings: React.FC = () => {
       <input
         type={type}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={e => onChange(e.target.value)}
         className="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm text-slate-700 dark:text-slate-200 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
       />
       {description && (
@@ -78,7 +78,9 @@ export const Settings: React.FC = () => {
   }> = ({ label, checked, onChange, description }) => (
     <div className="flex items-start gap-3">
       <div className="flex-1">
-        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">{label}</label>
+        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+          {label}
+        </label>
         {description && (
           <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{description}</p>
         )}
@@ -122,12 +124,12 @@ export const Settings: React.FC = () => {
           <InputField
             label="站点名称"
             value={settings.siteName}
-            onChange={(value) => setSettings({ ...settings, siteName: value })}
+            onChange={value => setSettings({ ...settings, siteName: value })}
           />
           <InputField
             label="站点描述"
             value={settings.siteDescription}
-            onChange={(value) => setSettings({ ...settings, siteDescription: value })}
+            onChange={value => setSettings({ ...settings, siteDescription: value })}
           />
         </SettingSection>
 
@@ -135,13 +137,13 @@ export const Settings: React.FC = () => {
           <ToggleField
             label="允许用户注册"
             checked={settings.allowRegistration}
-            onChange={(checked) => setSettings({ ...settings, allowRegistration: checked })}
+            onChange={checked => setSettings({ ...settings, allowRegistration: checked })}
             description="关闭后新用户将无法注册账号"
           />
           <ToggleField
             label="需要邮箱验证"
             checked={settings.requireEmailVerification}
-            onChange={(checked) => setSettings({ ...settings, requireEmailVerification: checked })}
+            onChange={checked => setSettings({ ...settings, requireEmailVerification: checked })}
             description="新注册用户需要通过邮箱验证才能使用完整功能"
           />
         </SettingSection>
@@ -151,14 +153,14 @@ export const Settings: React.FC = () => {
             label="最大上传大小 (MB)"
             type="number"
             value={settings.maxUploadSize}
-            onChange={(value) => setSettings({ ...settings, maxUploadSize: Number(value) })}
+            onChange={value => setSettings({ ...settings, maxUploadSize: Number(value) })}
             description="单个文件的最大上传限制"
           />
           <InputField
             label="构建保留天数"
             type="number"
             value={settings.buildRetentionDays}
-            onChange={(value) => setSettings({ ...settings, buildRetentionDays: Number(value) })}
+            onChange={value => setSettings({ ...settings, buildRetentionDays: Number(value) })}
             description="超过此天数的构建产物将被自动清理"
           />
         </SettingSection>
@@ -167,13 +169,13 @@ export const Settings: React.FC = () => {
           <ToggleField
             label="邮件通知"
             checked={settings.emailNotifications}
-            onChange={(checked) => setSettings({ ...settings, emailNotifications: checked })}
+            onChange={checked => setSettings({ ...settings, emailNotifications: checked })}
             description="向用户发送重要的系统通知邮件"
           />
           <ToggleField
             label="维护模式"
             checked={settings.maintenanceMode}
-            onChange={(checked) => setSettings({ ...settings, maintenanceMode: checked })}
+            onChange={checked => setSettings({ ...settings, maintenanceMode: checked })}
             description="开启后只有管理员可以访问系统"
           />
         </SettingSection>

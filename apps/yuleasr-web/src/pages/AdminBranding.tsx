@@ -3,16 +3,17 @@
  * Only accessible by admin users.
  */
 
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { api, ApiError } from '@/services/api'
-import { useAuthStore } from '@/stores/authStore'
-import { useBrand, type BrandSettings } from '@/contexts/BrandContext'
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { useBrand, type BrandSettings } from '@/contexts/BrandContext';
+import { api, ApiError } from '@/services/api';
+import { useAuthStore } from '@/stores/authStore';
 
 export function AdminBranding() {
-  const navigate = useNavigate()
-  const { user, isAuthenticated } = useAuthStore()
-  const { brand: loadedBrand, loading: brandLoading } = useBrand()
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuthStore();
+  const { brand: loadedBrand, loading: brandLoading } = useBrand();
 
   // ── State ──────────────────────────────────────────────────────────────
 
@@ -31,22 +32,22 @@ export function AdminBranding() {
     emailTemplateHeader: '',
     emailTemplateFooter: '',
     allowedDomains: '',
-  })
+  });
 
-  const [logoPreview, setLogoPreview] = useState<string | null>(null)
-  const [saving, setSaving] = useState(false)
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
-  const [previewMode, setPreviewMode] = useState(false)
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [previewMode, setPreviewMode] = useState(false);
 
   // ── Load existing settings ─────────────────────────────────────────────
 
   useEffect(() => {
     // Redirect non-admin users
     if (!isAuthenticated) {
-      navigate('/login')
-      return
+      navigate('/login');
+      return;
     }
-  }, [isAuthenticated, navigate])
+  }, [isAuthenticated, navigate]);
 
   useEffect(() => {
     if (loadedBrand) {
@@ -65,49 +66,49 @@ export function AdminBranding() {
         emailTemplateHeader: loadedBrand.emailTemplateHeader || '',
         emailTemplateFooter: loadedBrand.emailTemplateFooter || '',
         allowedDomains: loadedBrand.allowedDomains?.join('\n') || '',
-      })
-      setLogoPreview(loadedBrand.logoUrl)
+      });
+      setLogoPreview(loadedBrand.logoUrl);
     }
-  }, [loadedBrand])
+  }, [loadedBrand]);
 
   // ── Handlers ───────────────────────────────────────────────────────────
 
   const updateField = (field: string, value: string) => {
-    setForm((prev) => ({ ...prev, [field]: value }))
+    setForm(prev => ({ ...prev, [field]: value }));
     // Real-time CSS preview
-    applyLivePreview({ ...form, [field]: value })
-  }
+    applyLivePreview({ ...form, [field]: value });
+  };
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const file = e.target.files?.[0];
+    if (!file) return;
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      setMessage({ type: 'error', text: '请上传图片文件' })
-      return
+      setMessage({ type: 'error', text: '请上传图片文件' });
+      return;
     }
 
     // Validate size (max 2MB)
     if (file.size > 2 * 1024 * 1024) {
-      setMessage({ type: 'error', text: '图片大小不能超过 2MB' })
-      return
+      setMessage({ type: 'error', text: '图片大小不能超过 2MB' });
+      return;
     }
 
-    const reader = new FileReader()
-    reader.onload = (event) => {
-      const base64 = event.target?.result as string
-      setLogoPreview(base64)
-      setForm((prev) => ({ ...prev, logoUrl: base64 }))
-      applyLivePreview({ ...form, logoUrl: base64 })
-    }
-    reader.readAsDataURL(file)
-  }
+    const reader = new FileReader();
+    reader.onload = event => {
+      const base64 = event.target?.result as string;
+      setLogoPreview(base64);
+      setForm(prev => ({ ...prev, logoUrl: base64 }));
+      applyLivePreview({ ...form, logoUrl: base64 });
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setSaving(true)
-    setMessage(null)
+    e.preventDefault();
+    setSaving(true);
+    setMessage(null);
 
     try {
       const payload = {
@@ -125,26 +126,29 @@ export function AdminBranding() {
         emailTemplateHeader: form.emailTemplateHeader || null,
         emailTemplateFooter: form.emailTemplateFooter || null,
         allowedDomains: form.allowedDomains
-          ? form.allowedDomains.split('\n').map((d) => d.trim()).filter(Boolean)
+          ? form.allowedDomains
+              .split('\n')
+              .map(d => d.trim())
+              .filter(Boolean)
           : [],
-      }
+      };
 
-      await api.put('/api/branding', payload)
-      setMessage({ type: 'success', text: '品牌设置已保存！' })
+      await api.put('/api/branding', payload);
+      setMessage({ type: 'success', text: '品牌设置已保存！' });
     } catch (err) {
-      const msg = err instanceof ApiError ? err.message : '保存失败，请重试'
-      setMessage({ type: 'error', text: msg })
+      const msg = err instanceof ApiError ? err.message : '保存失败，请重试';
+      setMessage({ type: 'error', text: msg });
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
-  }
+  };
 
   if (brandLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-muted-foreground">加载品牌设置...</div>
       </div>
-    )
+    );
   }
 
   return (
@@ -152,9 +156,7 @@ export function AdminBranding() {
       {/* ── Header ──────────────────────────────────────────────────── */}
       <div>
         <h1 className="text-2xl font-bold text-foreground">OEM 品牌定制</h1>
-        <p className="text-muted-foreground mt-1">
-          配置白标品牌设置，将 yuleASR 贴牌为您内部工具
-        </p>
+        <p className="text-muted-foreground mt-1">配置白标品牌设置，将 yuleASR 贴牌为您内部工具</p>
       </div>
 
       {/* ── Message ────────────────────────────────────────────────── */}
@@ -179,7 +181,7 @@ export function AdminBranding() {
             <input
               type="text"
               value={form.name}
-              onChange={(e) => updateField('name', e.target.value)}
+              onChange={e => updateField('name', e.target.value)}
               required
               className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)]"
               placeholder="例如：Awesome OEM Tools"
@@ -193,7 +195,7 @@ export function AdminBranding() {
               <input
                 type="text"
                 value={form.companyName}
-                onChange={(e) => updateField('companyName', e.target.value)}
+                onChange={e => updateField('companyName', e.target.value)}
                 className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)]"
                 placeholder="公司名称"
               />
@@ -203,7 +205,7 @@ export function AdminBranding() {
               <input
                 type="email"
                 value={form.supportEmail}
-                onChange={(e) => updateField('supportEmail', e.target.value)}
+                onChange={e => updateField('supportEmail', e.target.value)}
                 className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)]"
                 placeholder="support@company.com"
               />
@@ -219,13 +221,13 @@ export function AdminBranding() {
                 <input
                   type="color"
                   value={form.primaryColor}
-                  onChange={(e) => updateField('primaryColor', e.target.value)}
+                  onChange={e => updateField('primaryColor', e.target.value)}
                   className="w-10 h-10 rounded cursor-pointer border border-border"
                 />
                 <input
                   type="text"
                   value={form.primaryColor}
-                  onChange={(e) => updateField('primaryColor', e.target.value)}
+                  onChange={e => updateField('primaryColor', e.target.value)}
                   className="w-24 px-2 py-1 text-xs border border-border rounded bg-background text-foreground font-mono"
                 />
               </div>
@@ -234,13 +236,13 @@ export function AdminBranding() {
                 <input
                   type="color"
                   value={form.secondaryColor}
-                  onChange={(e) => updateField('secondaryColor', e.target.value)}
+                  onChange={e => updateField('secondaryColor', e.target.value)}
                   className="w-10 h-10 rounded cursor-pointer border border-border"
                 />
                 <input
                   type="text"
                   value={form.secondaryColor}
-                  onChange={(e) => updateField('secondaryColor', e.target.value)}
+                  onChange={e => updateField('secondaryColor', e.target.value)}
                   className="w-24 px-2 py-1 text-xs border border-border rounded bg-background text-foreground font-mono"
                 />
               </div>
@@ -249,13 +251,13 @@ export function AdminBranding() {
                 <input
                   type="color"
                   value={form.accentColor}
-                  onChange={(e) => updateField('accentColor', e.target.value)}
+                  onChange={e => updateField('accentColor', e.target.value)}
                   className="w-10 h-10 rounded cursor-pointer border border-border"
                 />
                 <input
                   type="text"
                   value={form.accentColor}
-                  onChange={(e) => updateField('accentColor', e.target.value)}
+                  onChange={e => updateField('accentColor', e.target.value)}
                   className="w-24 px-2 py-1 text-xs border border-border rounded bg-background text-foreground font-mono"
                 />
               </div>
@@ -265,7 +267,9 @@ export function AdminBranding() {
           {/* Logo / Favicon */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">Logo (上传图片或输入 URL)</label>
+              <label className="block text-sm font-medium text-foreground mb-1">
+                Logo (上传图片或输入 URL)
+              </label>
               <input
                 type="file"
                 accept="image/*"
@@ -275,9 +279,9 @@ export function AdminBranding() {
               <input
                 type="text"
                 value={form.logoUrl}
-                onChange={(e) => {
-                  setForm((prev) => ({ ...prev, logoUrl: e.target.value }))
-                  setLogoPreview(e.target.value || null)
+                onChange={e => {
+                  setForm(prev => ({ ...prev, logoUrl: e.target.value }));
+                  setLogoPreview(e.target.value || null);
                 }}
                 className="w-full mt-2 px-3 py-2 text-xs border border-border rounded-lg bg-background text-foreground"
                 placeholder="或粘贴 Logo URL"
@@ -288,7 +292,7 @@ export function AdminBranding() {
               <input
                 type="text"
                 value={form.faviconUrl}
-                onChange={(e) => updateField('faviconUrl', e.target.value)}
+                onChange={e => updateField('faviconUrl', e.target.value)}
                 className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)]"
                 placeholder="https://example.com/favicon.ico"
               />
@@ -302,7 +306,7 @@ export function AdminBranding() {
               <input
                 type="text"
                 value={form.termsUrl}
-                onChange={(e) => updateField('termsUrl', e.target.value)}
+                onChange={e => updateField('termsUrl', e.target.value)}
                 className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)]"
                 placeholder="https://example.com/terms"
               />
@@ -312,7 +316,7 @@ export function AdminBranding() {
               <input
                 type="text"
                 value={form.privacyUrl}
-                onChange={(e) => updateField('privacyUrl', e.target.value)}
+                onChange={e => updateField('privacyUrl', e.target.value)}
                 className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)]"
                 placeholder="https://example.com/privacy"
               />
@@ -325,7 +329,7 @@ export function AdminBranding() {
             <input
               type="text"
               value={form.customDomain}
-              onChange={(e) => updateField('customDomain', e.target.value)}
+              onChange={e => updateField('customDomain', e.target.value)}
               className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)]"
               placeholder="brand.yourcompany.com"
             />
@@ -338,7 +342,7 @@ export function AdminBranding() {
             </label>
             <textarea
               value={form.allowedDomains}
-              onChange={(e) => updateField('allowedDomains', e.target.value)}
+              onChange={e => updateField('allowedDomains', e.target.value)}
               rows={4}
               className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)] font-mono text-sm"
               placeholder="company.com&#10;subsidiary.com"
@@ -348,20 +352,24 @@ export function AdminBranding() {
           {/* Email Templates */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">邮件模板 Header</label>
+              <label className="block text-sm font-medium text-foreground mb-1">
+                邮件模板 Header
+              </label>
               <textarea
                 value={form.emailTemplateHeader}
-                onChange={(e) => updateField('emailTemplateHeader', e.target.value)}
+                onChange={e => updateField('emailTemplateHeader', e.target.value)}
                 rows={3}
                 className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm"
                 placeholder="邮件头部 HTML（可选）"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1">邮件模板 Footer</label>
+              <label className="block text-sm font-medium text-foreground mb-1">
+                邮件模板 Footer
+              </label>
               <textarea
                 value={form.emailTemplateFooter}
-                onChange={(e) => updateField('emailTemplateFooter', e.target.value)}
+                onChange={e => updateField('emailTemplateFooter', e.target.value)}
                 rows={3}
                 className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm"
                 placeholder="邮件底部 HTML（可选）"
@@ -418,7 +426,9 @@ export function AdminBranding() {
                   )}
                 </div>
                 <div>
-                  <div className="font-semibold text-foreground text-sm">{form.companyName || form.name || 'yuleASR'}</div>
+                  <div className="font-semibold text-foreground text-sm">
+                    {form.companyName || form.name || 'yuleASR'}
+                  </div>
                   <div className="text-xs text-muted-foreground">BSW Configurator</div>
                 </div>
               </div>
@@ -428,17 +438,26 @@ export function AdminBranding() {
                 <div className="flex items-center gap-2">
                   <div className="w-5 h-5 rounded" style={{ backgroundColor: form.primaryColor }} />
                   <span className="text-xs text-muted-foreground">主色</span>
-                  <span className="text-xs font-mono text-foreground ml-auto">{form.primaryColor}</span>
+                  <span className="text-xs font-mono text-foreground ml-auto">
+                    {form.primaryColor}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded" style={{ backgroundColor: form.secondaryColor }} />
+                  <div
+                    className="w-5 h-5 rounded"
+                    style={{ backgroundColor: form.secondaryColor }}
+                  />
                   <span className="text-xs text-muted-foreground">次要色</span>
-                  <span className="text-xs font-mono text-foreground ml-auto">{form.secondaryColor}</span>
+                  <span className="text-xs font-mono text-foreground ml-auto">
+                    {form.secondaryColor}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-5 h-5 rounded" style={{ backgroundColor: form.accentColor }} />
                   <span className="text-xs text-muted-foreground">强调色</span>
-                  <span className="text-xs font-mono text-foreground ml-auto">{form.accentColor}</span>
+                  <span className="text-xs font-mono text-foreground ml-auto">
+                    {form.accentColor}
+                  </span>
                 </div>
               </div>
 
@@ -464,28 +483,26 @@ export function AdminBranding() {
 
               {/* Support */}
               {form.supportEmail && (
-                <div className="text-xs text-muted-foreground">
-                  支持邮箱：{form.supportEmail}
-                </div>
+                <div className="text-xs text-muted-foreground">支持邮箱：{form.supportEmail}</div>
               )}
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 /**
  * Live preview helper — applies CSS vars directly to root for real-time preview
  */
 function applyLivePreview(form: typeof defaultForm) {
-  const root = document.documentElement
-  root.style.setProperty('--brand-primary', form.primaryColor || '#2563EB')
-  root.style.setProperty('--brand-secondary', form.secondaryColor || '#6366F1')
-  root.style.setProperty('--brand-accent', form.accentColor || '#06B6D4')
-  root.style.setProperty('--brand-logo-url', form.logoUrl ? `url(${form.logoUrl})` : 'none')
-  root.style.setProperty('--brand-company-name', `"${form.companyName || form.name}"`)
+  const root = document.documentElement;
+  root.style.setProperty('--brand-primary', form.primaryColor || '#2563EB');
+  root.style.setProperty('--brand-secondary', form.secondaryColor || '#6366F1');
+  root.style.setProperty('--brand-accent', form.accentColor || '#06B6D4');
+  root.style.setProperty('--brand-logo-url', form.logoUrl ? `url(${form.logoUrl})` : 'none');
+  root.style.setProperty('--brand-company-name', `"${form.companyName || form.name}"`);
 }
 
 const defaultForm = {
@@ -503,4 +520,4 @@ const defaultForm = {
   emailTemplateHeader: '',
   emailTemplateFooter: '',
   allowedDomains: '',
-}
+};

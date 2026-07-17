@@ -47,7 +47,8 @@ export function extractSchemaFromHeader(
   }
 
   // 也尝试简单的 #define NAME value 格式
-  const simpleDefineRegex = /#define\s+([A-Z][A-Z0-9_]+)\s+(\d+|0x[0-9A-Fa-f]+|true|false|"[^"]*")/g;
+  const simpleDefineRegex =
+    /#define\s+([A-Z][A-Z0-9_]+)\s+(\d+|0x[0-9A-Fa-f]+|true|false|"[^"]*")/g;
   while ((match = simpleDefineRegex.exec(headerContent)) !== null) {
     const paramName = match[1];
     const valueStr = match[2];
@@ -75,12 +76,12 @@ export function extractSchemaFromHeader(
  */
 function inferTypeFromString(typeStr: string, valueStr: string): ModuleParameter['type'] {
   const typeLower = typeStr.toLowerCase();
-  
+
   if (typeLower.includes('bool')) return 'boolean';
   if (typeLower.includes('float') || typeLower.includes('double')) return 'float';
   if (typeLower.includes('uint') || typeLower.includes('int')) return 'integer';
   if (typeLower.includes('char') || typeLower.includes('string')) return 'string';
-  
+
   // 根据值推断
   return inferTypeFromValue(valueStr);
 }
@@ -120,14 +121,14 @@ function parseValue(valueStr: string): unknown {
  */
 function inferMaxFromType(typeStr: string): number {
   const typeLower = typeStr.toLowerCase();
-  
+
   if (typeLower.includes('uint8')) return 255;
   if (typeLower.includes('uint16')) return 65535;
   if (typeLower.includes('uint32')) return 4294967295;
   if (typeLower.includes('int8')) return 127;
   if (typeLower.includes('int16')) return 32767;
   if (typeLower.includes('int32')) return 2147483647;
-  
+
   return Number.MAX_SAFE_INTEGER;
 }
 
@@ -161,7 +162,11 @@ export class SchemaExtractor {
   /**
    * 从头文件内容提取并注册
    */
-  extractAndRegister(moduleName: string, headerContent: string, layer: ModuleLayer = 'MCAL'): ModuleSchema {
+  extractAndRegister(
+    moduleName: string,
+    headerContent: string,
+    layer: ModuleLayer = 'MCAL'
+  ): ModuleSchema {
     const extracted = extractSchemaFromHeader(moduleName, headerContent);
     const schema: ModuleSchema = {
       name: extracted.name || moduleName,

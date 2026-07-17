@@ -1,6 +1,6 @@
 /**
  * @yuletech/core - SWC Registry
- * 
+ *
  * Registers SWC modules (AppSwc, CompSwc) in the module registry
  * and provides utility functions for SWC configuration management.
  */

@@ -276,10 +276,7 @@ export class ConfigProject {
       modules[name] = {
         name: module.name,
         parameters: Object.fromEntries(
-          Array.from(module.parameters.entries()).map(([key, param]) => [
-            key,
-            param.value,
-          ])
+          Array.from(module.parameters.entries()).map(([key, param]) => [key, param.value])
         ),
         enabled: module.enabled,
       };
@@ -446,7 +443,11 @@ export function createModuleConfigModel(
     const value = (config.parameters[param.name] as ParameterValue) ?? param.default;
     parameters.set(
       param.name,
-      createParameterValueModel(param.name, value as ParameterValue, param.default as ParameterValue)
+      createParameterValueModel(
+        param.name,
+        value as ParameterValue,
+        param.default as ParameterValue
+      )
     );
   }
 
@@ -474,10 +475,7 @@ export function cloneConfigModel(config: ConfigModel): ConfigModel {
         {
           ...module,
           parameters: new Map(
-            Array.from(module.parameters.entries()).map(([pkey, param]) => [
-              pkey,
-              { ...param },
-            ])
+            Array.from(module.parameters.entries()).map(([pkey, param]) => [pkey, { ...param }])
           ),
         },
       ])

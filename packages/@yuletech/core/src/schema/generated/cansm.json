@@ -151,11 +151,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CanSMConfiguration",
-    "LHBDCANFD_1e9b6ab9",
-    "CanSMGeneral"
-  ],
+  "required": ["CanSMConfiguration", "LHBDCANFD_1e9b6ab9", "CanSMGeneral"],
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",

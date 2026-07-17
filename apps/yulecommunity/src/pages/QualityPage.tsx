@@ -1,13 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import {
-  ShieldCheck,
-  AlertTriangle,
-  Award,
-  Search,
-  ChevronRight,
-} from 'lucide-react';
+import { ShieldCheck, AlertTriangle, Award, Search, ChevronRight } from 'lucide-react';
 import {
   moduleQualityData,
   qualityBadges,
@@ -72,19 +66,22 @@ function ModuleQualityCard({
       <div className="p-6">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-4">
-            <div className={`w-16 h-16 rounded-xl flex items-center justify-center text-2xl font-bold ${getScoreBg(module.overallScore)} text-white`}>
+            <div
+              className={`w-16 h-16 rounded-xl flex items-center justify-center text-2xl font-bold ${getScoreBg(module.overallScore)} text-white`}
+            >
               {module.overallScore}
             </div>
             <div>
               <h3 className="text-lg font-bold">{module.moduleName}</h3>
-              <p className="text-sm text-muted-foreground">版本 {module.version} · 分析于 {module.lastAnalyzed}</p>
+              <p className="text-sm text-muted-foreground">
+                版本 {module.version} · 分析于 {module.lastAnalyzed}
+              </p>
             </div>
           </div>
-          <button
-            onClick={onToggle}
-            className="p-2 hover:bg-muted rounded-lg transition-colors"
-          >
-            <ChevronRight className={`w-5 h-5 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
+          <button onClick={onToggle} className="p-2 hover:bg-muted rounded-lg transition-colors">
+            <ChevronRight
+              className={`w-5 h-5 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+            />
           </button>
         </div>
 
@@ -158,9 +155,7 @@ export function QualityPage() {
     let modules = moduleQualityData;
 
     if (search) {
-      modules = modules.filter(m =>
-        m.moduleName.toLowerCase().includes(search.toLowerCase())
-      );
+      modules = modules.filter(m => m.moduleName.toLowerCase().includes(search.toLowerCase()));
     }
 
     if (filter === 'excellent') {
@@ -289,7 +284,7 @@ export function QualityPage() {
                 type="text"
                 placeholder="搜索模块..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={e => setSearch(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
@@ -299,7 +294,7 @@ export function QualityPage() {
                 { id: 'excellent', label: '优秀' },
                 { id: 'good', label: '良好' },
                 { id: 'needs-improvement', label: '待改进' },
-              ].map((f) => (
+              ].map(f => (
                 <button
                   key={f.id}
                   onClick={() => setFilter(f.id as any)}
@@ -317,14 +312,14 @@ export function QualityPage() {
 
           {/* Module Cards */}
           <div className="space-y-4">
-            {filteredModules.map((module) => (
+            {filteredModules.map(module => (
               <ModuleQualityCard
                 key={module.moduleId}
                 module={module}
                 isExpanded={expandedId === module.moduleId}
-                onToggle={() => setExpandedId(
-                  expandedId === module.moduleId ? null : module.moduleId
-                )}
+                onToggle={() =>
+                  setExpandedId(expandedId === module.moduleId ? null : module.moduleId)
+                }
               />
             ))}
           </div>

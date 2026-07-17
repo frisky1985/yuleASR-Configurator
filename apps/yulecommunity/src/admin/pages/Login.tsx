@@ -20,10 +20,10 @@ export const Login: React.FC = () => {
 
     try {
       const response = await apiClient.login({ email, password });
-      
+
       // Set API token for subsequent requests
       setApiToken(response.token);
-      
+
       // Map API response to admin store (id comes as number, convert to string)
       setUser({
         id: String(response.user.id),
@@ -36,7 +36,7 @@ export const Login: React.FC = () => {
       navigate('/admin/dashboard');
     } catch (err) {
       console.warn('[Login] API login failed, using fallback mock:', err);
-      
+
       // Fallback: mock authentication if API is unavailable
       if (email === 'admin@example.com' && password === 'admin123') {
         setUser({
@@ -82,13 +82,11 @@ export const Login: React.FC = () => {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                邮箱地址
-              </label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">邮箱地址</label>
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 placeholder="admin@example.com"
                 className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-4 py-2.5 text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 required
@@ -96,14 +94,12 @@ export const Login: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                密码
-              </label>
+              <label className="block text-sm font-medium text-slate-300 mb-1.5">密码</label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className="w-full rounded-lg border border-slate-600 bg-slate-700/50 px-4 py-2.5 pr-10 text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   required
@@ -120,7 +116,10 @@ export const Login: React.FC = () => {
 
             <div className="flex items-center justify-between text-sm">
               <label className="flex items-center gap-2 text-slate-400">
-                <input type="checkbox" className="rounded border-slate-600 bg-slate-700 text-blue-500" />
+                <input
+                  type="checkbox"
+                  className="rounded border-slate-600 bg-slate-700 text-blue-500"
+                />
                 记住我
               </label>
               <a href="#" className="text-blue-400 hover:text-blue-300">

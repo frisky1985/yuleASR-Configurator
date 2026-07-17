@@ -65,19 +65,19 @@ open http://localhost:3000/docs
 
 ## 环境变量说明
 
-| 变量名 | 说明 | 默认值 |
-|--------|------|--------|
-| `DATABASE_URL` | PostgreSQL 连接字符串 | `postgres://yuleasr:***@postgres:5432/yuleasr` |
-| `DB_PASSWORD` | PostgreSQL 密码 | `changeme` |
-| `JWT_SECRET` | JWT 签名密钥（生产环境请修改） | `change-this-in-production` |
-| `FRONTEND_URL` | 前端页面 URL（用于支付跳转） | `http://localhost:5173` |
-| `API_PORT` | API 服务宿主机端口映射 | `3000` |
-| `PAYMENT_MODE` | 支付模式：`mock` / `live` | `mock` |
-| `LEMONSQUEEZY_API_KEY` | LemonSqueezy API 密钥 | — |
-| `LEMONSQUEEZY_STORE_ID` | LemonSqueezy 商店 ID | — |
-| `LEMONSQUEEZY_WEBHOOK_SECRET` | LemonSqueezy Webhook 签名密钥 | — |
-| `LEMON_VARIANT_ID_MONTHLY` | 月付方案 Variant ID | — |
-| `LEMON_VARIANT_ID_YEARLY` | 年付方案 Variant ID | — |
+| 变量名                        | 说明                           | 默认值                                         |
+| ----------------------------- | ------------------------------ | ---------------------------------------------- |
+| `DATABASE_URL`                | PostgreSQL 连接字符串          | `postgres://yuleasr:***@postgres:5432/yuleasr` |
+| `DB_PASSWORD`                 | PostgreSQL 密码                | `changeme`                                     |
+| `JWT_SECRET`                  | JWT 签名密钥（生产环境请修改） | `change-this-in-production`                    |
+| `FRONTEND_URL`                | 前端页面 URL（用于支付跳转）   | `http://localhost:5173`                        |
+| `API_PORT`                    | API 服务宿主机端口映射         | `3000`                                         |
+| `PAYMENT_MODE`                | 支付模式：`mock` / `live`      | `mock`                                         |
+| `LEMONSQUEEZY_API_KEY`        | LemonSqueezy API 密钥          | —                                              |
+| `LEMONSQUEEZY_STORE_ID`       | LemonSqueezy 商店 ID           | —                                              |
+| `LEMONSQUEEZY_WEBHOOK_SECRET` | LemonSqueezy Webhook 签名密钥  | —                                              |
+| `LEMON_VARIANT_ID_MONTHLY`    | 月付方案 Variant ID            | —                                              |
+| `LEMON_VARIANT_ID_YEARLY`     | 年付方案 Variant ID            | —                                              |
 
 ## 支付配置
 
@@ -90,7 +90,8 @@ open http://localhost:3000/docs
 
 ### 生产模式（LemonSqueezy）
 
-国内用户推荐使用 [LemonSqueezy](https://lemonsqueezy.com)，支持支付宝和微信支付，无需 ICP 备案。
+国内用户推荐使用
+[LemonSqueezy](https://lemonsqueezy.com)，支持支付宝和微信支付，无需 ICP 备案。
 
 配置步骤：
 

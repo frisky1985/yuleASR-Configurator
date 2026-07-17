@@ -102,8 +102,10 @@ export class YuleasrRteGenerator {
       // 调用外部 Python 脚本
       const args = [
         this.generatorScript,
-        '--config', options.configPath,
-        '--output', options.outputDir,
+        '--config',
+        options.configPath,
+        '--output',
+        options.outputDir,
       ];
 
       if (options.swcName) {
@@ -136,7 +138,7 @@ export class YuleasrRteGenerator {
    * 运行 Python 脚本
    */
   private runPython(args: string[]): Promise<{ stdout: string; stderr: string; exitCode: number }> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const child = spawn(this.pythonPath, args, {
         stdio: ['pipe', 'pipe', 'pipe'],
       });
@@ -144,15 +146,15 @@ export class YuleasrRteGenerator {
       let stdout = '';
       let stderr = '';
 
-      child.stdout?.on('data', (data) => {
+      child.stdout?.on('data', data => {
         stdout += data.toString();
       });
 
-      child.stderr?.on('data', (data) => {
+      child.stderr?.on('data', data => {
         stderr += data.toString();
       });
 
-      child.on('close', (exitCode) => {
+      child.on('close', exitCode => {
         resolve({
           stdout,
           stderr,
@@ -160,7 +162,7 @@ export class YuleasrRteGenerator {
         });
       });
 
-      child.on('error', (error) => {
+      child.on('error', error => {
         resolve({
           stdout,
           stderr: error.message,
@@ -255,20 +257,26 @@ ${this.generateComponentImplementations(config)}
    * 生成组件声明
    */
   private generateComponentDeclarations(config: Record<string, unknown>): string {
-    const components = config.softwareComponents as Array<{ name: string }> || [];
-    return components.map((swc) => `
+    const components = (config.softwareComponents as Array<{ name: string }>) || [];
+    return components
+      .map(
+        swc => `
 /* Software Component: ${swc.name} */
 Std_ReturnType Rte_${swc.name}_Init(void);
 Std_ReturnType Rte_${swc.name}_DeInit(void);
-`).join('\n');
+`
+      )
+      .join('\n');
   }
 
   /**
    * 生成组件实现
    */
   private generateComponentImplementations(config: Record<string, unknown>): string {
-    const components = config.softwareComponents as Array<{ name: string }> || [];
-    return components.map((swc) => `
+    const components = (config.softwareComponents as Array<{ name: string }>) || [];
+    return components
+      .map(
+        swc => `
 /* Software Component: ${swc.name} Implementation */
 Std_ReturnType Rte_${swc.name}_Init(void) {
     /* TODO: Implement initialization */
@@ -279,7 +287,9 @@ Std_ReturnType Rte_${swc.name}_DeInit(void) {
     /* TODO: Implement deinitialization */
     return RTE_E_OK;
 }
-`).join('\n');
+`
+      )
+      .join('\n');
   }
 
   /**
@@ -290,11 +300,7 @@ Std_ReturnType Rte_${swc.name}_DeInit(void) {
       const files: string[] = [];
       const entries = await readFile(dir, 'utf-8');
       // 简单返回预期的文件列表
-      return [
-        join(dir, 'Rte.h'),
-        join(dir, 'Rte.c'),
-        join(dir, 'Rte_Type.h'),
-      ];
+      return [join(dir, 'Rte.h'), join(dir, 'Rte.c'), join(dir, 'Rte_Type.h')];
     } catch {
       return [];
     }

@@ -90,7 +90,5 @@ export function findRepoByModuleName(
     `bsw-${moduleName.toLowerCase()}`,
   ];
 
-  return repos.find((repo) =>
-    candidates.includes(repo.name.toLowerCase())
-  );
+  return repos.find(repo => candidates.includes(repo.name.toLowerCase()));
 }

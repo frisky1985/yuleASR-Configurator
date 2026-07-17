@@ -37,12 +37,13 @@ export function ModuleCompareBar({ modules, onRemove, onClear, maxItems }: Modul
             <div className="flex items-center gap-2">
               <Scale className="w-5 h-5 text-primary" />
               <span className="font-medium">
-                已选择 {modules.length}/{maxItems} 个模块</span>
+                已选择 {modules.length}/{maxItems} 个模块
+              </span>
             </div>
-            
+
             <div className="flex items-center gap-2">
               <AnimatePresence mode="popLayout">
-                {modules.map((module) => (
+                {modules.map(module => (
                   <motion.div
                     key={module.id}
                     layout

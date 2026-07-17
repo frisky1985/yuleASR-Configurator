@@ -1,14 +1,12 @@
 /**
  * @yuletech/core - RTE Code Generator
  * AutoSAR RTE (Runtime Environment) 代码生成器
- * 
+ *
  * 生成 RTE 配置相关的 C 代码和头文件
  * 支持 RTE 接口、数据映射、事件等配置
  */
 
 import type { ModuleConfig, ModuleSchema } from '../types';
-
-import type { CodeGenerator, GeneratorOptions, GenerationResult, GeneratedFile } from './index';
 
 import {
   generateAutosarFileHeader,
@@ -19,6 +17,8 @@ import {
   getModuleId,
   toHex,
 } from './autosar-format';
+
+import type { CodeGenerator, GeneratorOptions, GenerationResult, GeneratedFile } from './index';
 
 /**
  * RTE 接口定义
@@ -99,7 +99,7 @@ export class RteCodeGenerator implements CodeGenerator {
       files.push({
         path: `${options.outputDir}/Rte.h`,
         content: headerFile,
-        language: 'h'
+        language: 'h',
       });
 
       // 生成 RTE 源文件
@@ -107,7 +107,7 @@ export class RteCodeGenerator implements CodeGenerator {
       files.push({
         path: `${options.outputDir}/Rte.c`,
         content: sourceFile,
-        language: 'c'
+        language: 'c',
       });
 
       // 生成 RTE 类型定义头文件
@@ -115,7 +115,7 @@ export class RteCodeGenerator implements CodeGenerator {
       files.push({
         path: `${options.outputDir}/Rte_Type.h`,
         content: typesFile,
-        language: 'h'
+        language: 'h',
       });
 
       // 生成 RTE 回调头文件
@@ -123,7 +123,7 @@ export class RteCodeGenerator implements CodeGenerator {
       files.push({
         path: `${options.outputDir}/Rte_Callbacks.h`,
         content: callbackFile,
-        language: 'h'
+        language: 'h',
       });
 
       // 生成 RTE 配置头文件
@@ -131,7 +131,7 @@ export class RteCodeGenerator implements CodeGenerator {
       files.push({
         path: `${options.outputDir}/Rte_Cfg.h`,
         content: configFile,
-        language: 'h'
+        language: 'h',
       });
 
       // 生成 RTE Lcfg 文件
@@ -139,20 +139,20 @@ export class RteCodeGenerator implements CodeGenerator {
       files.push({
         path: `${options.outputDir}/Rte_Lcfg.c`,
         content: lcfgFile,
-        language: 'c'
+        language: 'c',
       });
 
       return {
         success: errors.length === 0,
         files,
         errors: errors.length > 0 ? errors : undefined,
-        warnings: warnings.length > 0 ? warnings : undefined
+        warnings: warnings.length > 0 ? warnings : undefined,
       };
     } catch (error) {
       return {
         success: false,
         files,
-        errors: [error instanceof Error ? error.message : '未知错误']
+        errors: [error instanceof Error ? error.message : '未知错误'],
       };
     }
   }
@@ -177,7 +177,7 @@ export class RteCodeGenerator implements CodeGenerator {
           dataType: iface.dataType || 'uint8',
           direction: iface.direction || 'IN',
           isQueued: iface.isQueued || false,
-          queueLength: iface.queueLength || 1
+          queueLength: iface.queueLength || 1,
         });
       }
     }
@@ -191,7 +191,7 @@ export class RteCodeGenerator implements CodeGenerator {
           priority: task.priority || 1,
           periodMs: task.periodMs || 100,
           activationType: task.activationType || 'cyclic',
-          runnableList: task.runnableList || []
+          runnableList: task.runnableList || [],
         });
       }
     }
@@ -205,7 +205,7 @@ export class RteCodeGenerator implements CodeGenerator {
           interfaceName: conn.interfaceName || '',
           componentName: conn.componentName || '',
           targetComponent: conn.targetComponent,
-          targetPort: conn.targetPort
+          targetPort: conn.targetPort,
         });
       }
     }
@@ -225,7 +225,7 @@ export class RteCodeGenerator implements CodeGenerator {
         events.push({
           name: event.name || '',
           type: event.type || '',
-          taskRef: event.taskRef || ''
+          taskRef: event.taskRef || '',
         });
       }
     }
@@ -332,7 +332,7 @@ typedef struct {
     content += this.generateRteTaskDeclarations(rteConfig);
 
     content += `\n/*==================[function declarations]=================================*/\n`;
-    
+
     // Rte_Init with full Doxygen
     content += generateAutosarFunctionHeader(
       'Initialize the RTE module',
@@ -357,7 +357,11 @@ typedef struct {
     content += generateAutosarFunctionHeader(
       'Get RTE module version information',
       [
-        { name: 'versionInfo', direction: 'out', description: 'Pointer to version information structure to be filled' }
+        {
+          name: 'versionInfo',
+          direction: 'out',
+          description: 'Pointer to version information structure to be filled',
+        },
       ],
       'void',
       ['versionInfo pointer shall not be NULL_PTR']
@@ -602,7 +606,7 @@ void Rte_StartTiming(void) {
 `;
       content += `typedef ${iface.dataType} Rte_${iface.name}_Type;
 `;
-      
+
       if (iface.isQueued) {
         content += `
 typedef struct {
@@ -808,8 +812,8 @@ extern void Rte_${conn.portName}_Callback(void);
         content += `        .portName = "${conn.portName}",\n`;
         content += `        .interfaceName = "${conn.interfaceName}",\n`;
         content += `        .componentName = "${conn.componentName}",\n`;
-        content += `        .targetComponent = "${conn.targetComponent || "NULL"}",\n`;
-        content += `        .targetPort = "${conn.targetPort || "NULL"}"\n`;
+        content += `        .targetComponent = "${conn.targetComponent || 'NULL'}",\n`;
+        content += `        .targetPort = "${conn.targetPort || 'NULL'}"\n`;
         content += `    },\n`;
       }
       content += `};\n\n`;
@@ -829,7 +833,7 @@ extern void Rte_${conn.portName}_Callback(void);
     for (const iface of rteConfig.interfaces) {
       content += `/* Interface: ${iface.name} (${iface.type}) */\n`;
       content += `extern Rte_${iface.name}_Type Rte_${iface.name};\n`;
-      
+
       if (iface.isQueued) {
         content += `extern Rte_${iface.name}_QueueType Rte_${iface.name}_Queue;\n`;
       }
@@ -927,7 +931,7 @@ extern void Rte_${conn.portName}_Callback(void);
       content += `/* Interface data for ${iface.name} */\n`;
       content += `static Rte_${iface.name}_Type Rte_${iface.name}_Data;\n`;
       content += `Rte_${iface.name}_Type Rte_${iface.name};\n`;
-      
+
       if (iface.isQueued) {
         content += `Rte_${iface.name}_QueueType Rte_${iface.name}_Queue;\n`;
       }
@@ -947,7 +951,7 @@ extern void Rte_${conn.portName}_Callback(void);
     for (const iface of rteConfig.interfaces) {
       if (iface.type === 'SenderReceiver') {
         content += `/* Read/Write API for ${iface.name} */\n`;
-        
+
         // Read API
         content += `Std_ReturnType Rte_Read_${iface.name}(Rte_${iface.name}_Type* data) {\n`;
         content += `    if (!Rte_Initialized || !Rte_Started) {\n`;
@@ -1004,15 +1008,15 @@ extern void Rte_${conn.portName}_Callback(void);
    */
   private mapDataType(dataType: string): string {
     const typeMap: Record<string, string> = {
-      'uint8': 'uint8',
-      'uint16': 'uint16',
-      'uint32': 'uint32',
-      'sint8': 'sint8',
-      'sint16': 'sint16',
-      'sint32': 'sint32',
-      'float32': 'float32',
-      'float64': 'float64',
-      'boolean': 'boolean'
+      uint8: 'uint8',
+      uint16: 'uint16',
+      uint32: 'uint32',
+      sint8: 'sint8',
+      sint16: 'sint16',
+      sint32: 'sint32',
+      float32: 'float32',
+      float64: 'float64',
+      boolean: 'boolean',
     };
     return typeMap[dataType] || 'uint32';
   }
@@ -1022,10 +1026,10 @@ extern void Rte_${conn.portName}_Callback(void);
    */
   private mapInterfaceType(type: string): string {
     const typeMap: Record<string, string> = {
-      'SenderReceiver': '0x01',
-      'ClientServer': '0x02',
-      'ModeSwitch': '0x03',
-      'Parameter': '0x04'
+      SenderReceiver: '0x01',
+      ClientServer: '0x02',
+      ModeSwitch: '0x03',
+      Parameter: '0x04',
     };
     return typeMap[type] || '0x00';
   }

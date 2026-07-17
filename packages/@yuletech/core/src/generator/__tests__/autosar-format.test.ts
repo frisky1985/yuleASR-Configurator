@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import {
   toGuardName,
   toDefineName,
@@ -160,7 +161,7 @@ describe('autosar-format', () => {
     });
 
     it('should return fallback for unknown modules', () => {
-      expect(getModuleId('Unknown')).toBe(0xFFFF);
+      expect(getModuleId('Unknown')).toBe(0xffff);
     });
   });
 

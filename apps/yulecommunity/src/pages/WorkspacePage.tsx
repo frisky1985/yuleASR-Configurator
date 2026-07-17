@@ -50,7 +50,7 @@ function FileTree({
 
   return (
     <div className="space-y-1">
-      {files.map((file) => (
+      {files.map(file => (
         <div key={file.id}>
           <button
             onClick={() => {
@@ -61,9 +61,7 @@ function FileTree({
               }
             }}
             className={`w-full flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors ${
-              selectedFile === file.id
-                ? 'bg-primary/10 text-primary'
-                : 'hover:bg-muted'
+              selectedFile === file.id ? 'bg-primary/10 text-primary' : 'hover:bg-muted'
             }`}
             style={{ paddingLeft: `${12 + level * 16}px` }}
           >
@@ -111,7 +109,7 @@ function CommentThread({ comment, depth = 0 }: { comment: Comment; depth?: numbe
           <button className="text-xs text-primary mt-2 hover:underline">回复</button>
         </div>
       </div>
-      {comment.replies.map((reply) => (
+      {comment.replies.map(reply => (
         <CommentThread key={reply.id} comment={reply} depth={depth + 1} />
       ))}
     </div>
@@ -124,13 +122,11 @@ function ActivityItem({ activity }: { activity: Project['activity'][0] }) {
       <div className="text-lg">{getActivityIcon(activity.type)}</div>
       <div className="flex-1">
         <p className="text-sm">
-          <span className="font-medium">{activity.userName}</span>
-          {' '}
+          <span className="font-medium">{activity.userName}</span>{' '}
           {activity.type === 'edit' && '编辑了'}
           {activity.type === 'comment' && '评论了'}
           {activity.type === 'create' && '创建了'}
-          {activity.type === 'share' && '分享了'}
-          {' '}
+          {activity.type === 'share' && '分享了'}{' '}
           <span className="font-medium">{activity.target}</span>
         </p>
         {activity.details && (
@@ -166,7 +162,7 @@ export function WorkspacePage() {
               <FolderGit2 className="w-5 h-5 text-primary" />
               <select
                 value={selectedProject.id}
-                onChange={(e) => {
+                onChange={e => {
                   const project = mockProjects.find(p => p.id === e.target.value);
                   if (project) {
                     setSelectedProject(project);
@@ -176,7 +172,9 @@ export function WorkspacePage() {
                 className="bg-transparent font-medium focus:outline-none"
               >
                 {mockProjects.map(p => (
-                  <option key={p.id} value={p.id}>{p.name}</option>
+                  <option key={p.id} value={p.id}>
+                    {p.name}
+                  </option>
                 ))}
               </select>
             </div>
@@ -221,9 +219,7 @@ export function WorkspacePage() {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`flex-1 flex items-center justify-center gap-1.5 py-2 text-sm rounded-lg transition-colors ${
-                  activeTab === tab.id
-                    ? 'bg-primary/10 text-primary'
-                    : 'hover:bg-muted'
+                  activeTab === tab.id ? 'bg-primary/10 text-primary' : 'hover:bg-muted'
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -251,9 +247,7 @@ export function WorkspacePage() {
                   <CommentThread key={comment.id} comment={comment} />
                 ))}
                 {projectComments.length === 0 && (
-                  <p className="text-center text-muted-foreground text-sm py-8">
-                    暂无评论
-                  </p>
+                  <p className="text-center text-muted-foreground text-sm py-8">暂无评论</p>
                 )}
               </div>
             )}
@@ -294,13 +288,17 @@ export function WorkspacePage() {
                 {selectedFile.type === 'md' ? (
                   <div className="h-full p-6 overflow-auto">
                     <div className="prose prose-sm max-w-none dark:prose-invert">
-                      <pre className="whitespace-pre-wrap font-mono text-sm">{selectedFile.content}</pre>
+                      <pre className="whitespace-pre-wrap font-mono text-sm">
+                        {selectedFile.content}
+                      </pre>
                     </div>
                   </div>
                 ) : (
                   <Editor
                     height="100%"
-                    defaultLanguage={selectedFile.type === 'c' ? 'c' : selectedFile.type === 'h' ? 'c' : 'text'}
+                    defaultLanguage={
+                      selectedFile.type === 'c' ? 'c' : selectedFile.type === 'h' ? 'c' : 'text'
+                    }
                     value={selectedFile.content || ''}
                     options={{
                       readOnly: true,

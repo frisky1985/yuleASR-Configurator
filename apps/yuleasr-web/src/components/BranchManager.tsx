@@ -1,28 +1,28 @@
-import { 
-  GitBranch, 
-  Plus, 
-  Trash2, 
+import {
+  GitBranch,
+  Plus,
+  Trash2,
   ArrowRightLeft,
   Check,
   X,
   AlertCircle,
   RefreshCw,
   GitMerge,
-} from 'lucide-react'
-import { useState, useCallback } from 'react'
+} from 'lucide-react';
+import { useState, useCallback } from 'react';
 
-import { cn } from '@/lib/utils'
-import type { BranchInfo } from '@/services/gitService'
+import { cn } from '@/lib/utils';
+import type { BranchInfo } from '@/services/gitService';
 
 interface BranchManagerProps {
-  branches: BranchInfo[]
-  currentBranch: string
-  onCreateBranch: (name: string, checkout: boolean) => Promise<void>
-  onDeleteBranch: (name: string) => Promise<void>
-  onSwitchBranch: (name: string) => Promise<void>
-  onMergeBranch?: (source: string, target: string) => Promise<void>
-  onRefresh: () => void
-  isLoading?: boolean
+  branches: BranchInfo[];
+  currentBranch: string;
+  onCreateBranch: (name: string, checkout: boolean) => Promise<void>;
+  onDeleteBranch: (name: string) => Promise<void>;
+  onSwitchBranch: (name: string) => Promise<void>;
+  onMergeBranch?: (source: string, target: string) => Promise<void>;
+  onRefresh: () => void;
+  isLoading?: boolean;
 }
 
 export function BranchManager({
@@ -35,87 +35,87 @@ export function BranchManager({
   onRefresh,
   isLoading,
 }: BranchManagerProps) {
-  const [showCreateForm, setShowCreateForm] = useState(false)
-  const [newBranchName, setNewBranchName] = useState('')
-  const [checkoutAfterCreate, setCheckoutAfterCreate] = useState(true)
-  const [isCreating, setIsCreating] = useState(false)
-  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
-  const [isDeleting, setIsDeleting] = useState<string | null>(null)
-  const [isSwitching, setIsSwitching] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [mergeSource, setMergeSource] = useState<string | null>(null)
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [newBranchName, setNewBranchName] = useState('');
+  const [checkoutAfterCreate, setCheckoutAfterCreate] = useState(true);
+  const [isCreating, setIsCreating] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [isSwitching, setIsSwitching] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [mergeSource, setMergeSource] = useState<string | null>(null);
 
   const handleCreateBranch = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!newBranchName.trim()) return
+    e.preventDefault();
+    if (!newBranchName.trim()) return;
 
-    setIsCreating(true)
-    setError(null)
+    setIsCreating(true);
+    setError(null);
 
     try {
-      await onCreateBranch(newBranchName.trim(), checkoutAfterCreate)
-      setNewBranchName('')
-      setShowCreateForm(false)
+      await onCreateBranch(newBranchName.trim(), checkoutAfterCreate);
+      setNewBranchName('');
+      setShowCreateForm(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create branch')
+      setError(err instanceof Error ? err.message : 'Failed to create branch');
     } finally {
-      setIsCreating(false)
+      setIsCreating(false);
     }
-  }
+  };
 
   const handleDeleteBranch = async (name: string) => {
     if (deleteConfirm !== name) {
-      setDeleteConfirm(name)
-      return
+      setDeleteConfirm(name);
+      return;
     }
 
-    setIsDeleting(name)
-    setError(null)
+    setIsDeleting(name);
+    setError(null);
 
     try {
-      await onDeleteBranch(name)
-      setDeleteConfirm(null)
+      await onDeleteBranch(name);
+      setDeleteConfirm(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete branch')
+      setError(err instanceof Error ? err.message : 'Failed to delete branch');
     } finally {
-      setIsDeleting(null)
+      setIsDeleting(null);
     }
-  }
+  };
 
   const handleSwitchBranch = async (name: string) => {
-    if (name === currentBranch) return
+    if (name === currentBranch) return;
 
-    setIsSwitching(name)
-    setError(null)
+    setIsSwitching(name);
+    setError(null);
 
     try {
-      await onSwitchBranch(name)
+      await onSwitchBranch(name);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to switch branch')
+      setError(err instanceof Error ? err.message : 'Failed to switch branch');
     } finally {
-      setIsSwitching(null)
+      setIsSwitching(null);
     }
-  }
+  };
 
   const handleMerge = async (target: string) => {
-    if (!mergeSource || !onMergeBranch) return
+    if (!mergeSource || !onMergeBranch) return;
 
-    setIsSwitching(target)
-    setError(null)
+    setIsSwitching(target);
+    setError(null);
 
     try {
-      await onMergeBranch(mergeSource, target)
-      setMergeSource(null)
+      await onMergeBranch(mergeSource, target);
+      setMergeSource(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to merge branch')
+      setError(err instanceof Error ? err.message : 'Failed to merge branch');
     } finally {
-      setIsSwitching(null)
+      setIsSwitching(null);
     }
-  }
+  };
 
   const cancelDelete = useCallback(() => {
-    setDeleteConfirm(null)
-  }, [])
+    setDeleteConfirm(null);
+  }, []);
 
   return (
     <div className="bg-app-bg-primary rounded-lg border border-app-border-primary overflow-hidden">
@@ -166,7 +166,7 @@ export function BranchManager({
                 type="text"
                 placeholder="Branch name"
                 value={newBranchName}
-                onChange={(e) => setNewBranchName(e.target.value)}
+                onChange={e => setNewBranchName(e.target.value)}
                 className="w-full px-3 py-1.5 text-xs border border-app-border-primary rounded bg-app-bg-primary text-app-text-primary focus:outline-none focus:ring-1 focus:ring-primary-500"
                 autoFocus
               />
@@ -175,7 +175,7 @@ export function BranchManager({
               <input
                 type="checkbox"
                 checked={checkoutAfterCreate}
-                onChange={(e) => setCheckoutAfterCreate(e.target.checked)}
+                onChange={e => setCheckoutAfterCreate(e.target.checked)}
                 className="rounded text-primary-600 focus:ring-primary-500"
               />
               Checkout after create
@@ -191,9 +191,9 @@ export function BranchManager({
               <button
                 type="button"
                 onClick={() => {
-                  setShowCreateForm(false)
-                  setNewBranchName('')
-                  setError(null)
+                  setShowCreateForm(false);
+                  setNewBranchName('');
+                  setError(null);
                 }}
                 className="px-3 py-1.5 text-xs font-medium text-app-text-secondary hover:text-app-text-primary border border-app-border-primary rounded"
               >
@@ -228,11 +228,11 @@ export function BranchManager({
           </div>
         ) : (
           <ul className="divide-y divide-app-border-primary">
-            {branches.map((branch) => {
-              const isCurrent = branch.name === currentBranch
-              const isConfirmingDelete = deleteConfirm === branch.name
-              const isDeletingThis = isDeleting === branch.name
-              const isSwitchingThis = isSwitching === branch.name
+            {branches.map(branch => {
+              const isCurrent = branch.name === currentBranch;
+              const isConfirmingDelete = deleteConfirm === branch.name;
+              const isDeletingThis = isDeleting === branch.name;
+              const isSwitchingThis = isSwitching === branch.name;
 
               return (
                 <li
@@ -245,15 +245,19 @@ export function BranchManager({
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 min-w-0">
-                      <GitBranch className={cn(
-                        'w-4 h-4 flex-shrink-0',
-                        isCurrent ? 'text-primary-600' : 'text-app-text-tertiary'
-                      )} />
+                      <GitBranch
+                        className={cn(
+                          'w-4 h-4 flex-shrink-0',
+                          isCurrent ? 'text-primary-600' : 'text-app-text-tertiary'
+                        )}
+                      />
                       <div className="min-w-0">
-                        <p className={cn(
-                          'text-sm font-medium truncate',
-                          isCurrent ? 'text-primary-900' : 'text-app-text-primary'
-                        )}>
+                        <p
+                          className={cn(
+                            'text-sm font-medium truncate',
+                            isCurrent ? 'text-primary-900' : 'text-app-text-primary'
+                          )}
+                        >
                           {branch.name}
                         </p>
                         <p className="text-xs text-app-text-secondary">
@@ -347,7 +351,7 @@ export function BranchManager({
                     </p>
                   )}
                 </li>
-              )
+              );
             })}
           </ul>
         )}
@@ -358,7 +362,7 @@ export function BranchManager({
         {branches.length} branch{branches.length !== 1 ? 'es' : ''}
       </div>
     </div>
-  )
+  );
 }
 
-export default BranchManager
+export default BranchManager;

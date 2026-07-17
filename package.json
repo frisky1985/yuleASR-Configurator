@@ -9,6 +9,7 @@
     "dev": "pnpm -r --parallel dev",
     "test": "pnpm -r test",
     "lint": "eslint .",
+    "lint:ci": "eslint apps/yuleasr-desktop packages/@yuletech/plugin-sdk && echo '✅ lint:ci passed'",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",

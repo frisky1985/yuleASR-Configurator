@@ -1,22 +1,16 @@
 /**
  * @yuletech/core - Ecuc Code Generator
  * AutoSAR Ecuc 配置 C 代码生成器
- * 
+ *
  * 生成 Ecuc_<Module>.c 和 Ecuc_<Module>.h 文件
  * 遵循 AutoSAR Ecuc 规范标准 4.4
- * 
+ *
  * @file    ecuc-generator.ts
  * @brief   AUTOSAR ECUC Configuration Code Generator
  */
 
-import type { 
-  ModuleConfig, 
-  ModuleSchema, 
-  ContainerConfig,
-  ContainerSchema 
-} from '../types';
-
-import type { CodeGenerator, GeneratorOptions, GenerationResult, GeneratedFile, CompilerType } from './index';
+import { pluginRegistry } from '../plugins/plugin-registry';
+import type { ModuleConfig, ModuleSchema, ContainerConfig, ContainerSchema } from '../types';
 
 import {
   formatCValue,
@@ -36,13 +30,19 @@ import {
   CompilerAbstraction,
 } from './autosar-format';
 
-import { pluginRegistry } from '../plugins/plugin-registry';
+import type {
+  CodeGenerator,
+  GeneratorOptions,
+  GenerationResult,
+  GeneratedFile,
+  CompilerType,
+} from './index';
 
 /** Logger for plugin delegation events */
 function logPluginDelegation(
   moduleName: string,
   pluginGeneratorName: string,
-  warning: string[],
+  warning: string[]
 ): void {
   const msg = `[ecuc-generator] Delegating generation of "${moduleName}" to plugin generator "${pluginGeneratorName}"`;
   console.info(msg);
@@ -58,7 +58,8 @@ export class EcucCodeGenerator implements CodeGenerator {
   name = 'EcucCodeGenerator';
   version = '1.0.0';
   supportedModules: string[] = ['*']; // 支持所有模块
-  private compilerAbstraction: CompilerAbstraction = new (getCompilerAbstraction(undefined).constructor as new () => CompilerAbstraction)();
+  private compilerAbstraction: CompilerAbstraction = new (getCompilerAbstraction(undefined)
+    .constructor as new () => CompilerAbstraction)();
 
   supports(moduleName: string): boolean {
     return this.supportedModules.includes('*') || this.supportedModules.includes(moduleName);
@@ -71,7 +72,7 @@ export class EcucCodeGenerator implements CodeGenerator {
   ): Promise<GenerationResult> {
     // 设置编译器抽象层
     this.compilerAbstraction = getCompilerAbstraction(options.compiler);
-    
+
     const files: GeneratedFile[] = [];
     const errors: string[] = [];
     const warnings: string[] = [];
@@ -85,11 +86,11 @@ export class EcucCodeGenerator implements CodeGenerator {
         logPluginDelegation(config.module, pluginGen.name, warnings);
         const pluginResult = await pluginGen.generate(
           config as unknown as Record<string, unknown>,
-          options as unknown as Record<string, unknown>,
+          options as unknown as Record<string, unknown>
         );
         return {
           success: true,
-          files: pluginResult.files.map((f) => ({
+          files: pluginResult.files.map(f => ({
             path: f.path,
             content: f.content,
             language: f.path.endsWith('.h') ? 'h' : 'c',
@@ -113,7 +114,7 @@ export class EcucCodeGenerator implements CodeGenerator {
       files.push({
         path: `${options.outputDir}/${headerName}`,
         content: headerFile,
-        language: 'h'
+        language: 'h',
       });
 
       // 生成源文件
@@ -121,7 +122,7 @@ export class EcucCodeGenerator implements CodeGenerator {
       files.push({
         path: `${options.outputDir}/Ecuc_${config.module}.c`,
         content: sourceFile,
-        language: 'c'
+        language: 'c',
       });
 
       // 生成 PBcfg 文件 (Post-Build 配置)
@@ -129,7 +130,7 @@ export class EcucCodeGenerator implements CodeGenerator {
       files.push({
         path: `${options.outputDir}/Ecuc_${config.module}_PBcfg.c`,
         content: pbcfgFile,
-        language: 'c'
+        language: 'c',
       });
 
       // 生成 Lcfg 文件 (Link-Time 配置)
@@ -137,20 +138,20 @@ export class EcucCodeGenerator implements CodeGenerator {
       files.push({
         path: `${options.outputDir}/Ecuc_${config.module}_Lcfg.c`,
         content: lcfgFile,
-        language: 'c'
+        language: 'c',
       });
 
       return {
         success: errors.length === 0,
         files,
         errors: errors.length > 0 ? errors : undefined,
-        warnings: warnings.length > 0 ? warnings : undefined
+        warnings: warnings.length > 0 ? warnings : undefined,
       };
     } catch (error) {
       return {
         success: false,
         files,
-        errors: [error instanceof Error ? error.message : '未知错误']
+        errors: [error instanceof Error ? error.message : '未知错误'],
       };
     }
   }
@@ -159,10 +160,13 @@ export class EcucCodeGenerator implements CodeGenerator {
    * 验证配置
    * @brief Validates module configuration against schema definition
    */
-  private validateConfig(config: ModuleConfig, schema: ModuleSchema): { 
-    valid: boolean; 
-    errors: string[]; 
-    warnings: string[] 
+  private validateConfig(
+    config: ModuleConfig,
+    schema: ModuleSchema
+  ): {
+    valid: boolean;
+    errors: string[];
+    warnings: string[];
   } {
     const errors: string[] = [];
     const warnings: string[] = [];
@@ -247,9 +251,9 @@ export class EcucCodeGenerator implements CodeGenerator {
       version.major,
       version.minor,
       version.patch,
-      4,   // AUTOSAR 4.x
-      4,   // 4.4
-      0    // Revision 0
+      4, // AUTOSAR 4.x
+      4, // 4.4
+      0 // Revision 0
     );
 
     // 机构 / 供应商信息
@@ -472,14 +476,15 @@ export class EcucCodeGenerator implements CodeGenerator {
     schema: ModuleSchema,
     options: GeneratorOptions
   ): string {
-    let content = '/*==================[parameter macros]======================================*/\n';
-    
+    let content =
+      '/*==================[parameter macros]======================================*/\n';
+
     for (const param of schema.parameters) {
       const value = config.parameters[param.name];
       if (value === undefined || value === null) continue;
 
       const macroName = `${config.module.toUpperCase()}_${param.name.toUpperCase()}`;
-      
+
       if (options.generateComments && param.description) {
         content += `/** @brief ${param.description} */\n`;
       }
@@ -507,17 +512,18 @@ export class EcucCodeGenerator implements CodeGenerator {
    * @brief Generates AUTOSAR 4.4 compliant type definitions
    */
   private generateTypeDefinitions(config: ModuleConfig, schema: ModuleSchema): string {
-    let content = '/*==================[type definitions]======================================*/\n';
+    let content =
+      '/*==================[type definitions]======================================*/\n';
     const moduleName = config.module;
 
     // 生成容器类型定义
     if (schema.containers) {
       for (const container of schema.containers) {
         const typeName = `${moduleName}_${container.name}Type`;
-        
+
         content += `/** @brief ${container.label || container.name} container type */\n`;
         content += `typedef struct {\n`;
-        
+
         // 容器内的参数
         if (container.parameters) {
           for (const paramName of container.parameters) {
@@ -576,14 +582,15 @@ export class EcucCodeGenerator implements CodeGenerator {
    * @brief Generates AUTOSAR 4.4 compliant external declarations with Init/MainFunction/GetVersionInfo
    */
   private generateExternDeclarations(
-    config: ModuleConfig, 
+    config: ModuleConfig,
     schema: ModuleSchema,
     options: GeneratorOptions
   ): string {
     const moduleName = config.module;
     const moduleId = getModuleId(moduleName);
     const vendorId = 0x1234;
-    let content = '/*==================[external data declarations]============================*/\n';
+    let content =
+      '/*==================[external data declarations]============================*/\n';
 
     // 收集数据声明部分
     let dataDecl = '';
@@ -610,12 +617,16 @@ export class EcucCodeGenerator implements CodeGenerator {
 
     // AUTOSAR 标准函数声明（带 Doxygen 文档）
     content += '\n/*==================[function declarations]=================================*/\n';
-    
+
     // Module_Init
     content += generateAutosarFunctionHeader(
       `Initialize the ${moduleName} module`,
       [
-        { name: 'ConfigPtr', direction: 'in', description: `Pointer to the ${moduleName} configuration set` }
+        {
+          name: 'ConfigPtr',
+          direction: 'in',
+          description: `Pointer to the ${moduleName} configuration set`,
+        },
       ],
       `Std_ReturnType: E_OK if initialization succeeded, E_NOT_OK otherwise`,
       ['The module shall be uninitialized'],
@@ -647,11 +658,17 @@ export class EcucCodeGenerator implements CodeGenerator {
     content += generateAutosarFunctionHeader(
       `Get the ${moduleName} module version information`,
       [
-        { name: 'versioninfo', direction: 'out', description: `Pointer to the version information structure to be filled` }
+        {
+          name: 'versioninfo',
+          direction: 'out',
+          description: `Pointer to the version information structure to be filled`,
+        },
       ],
       `void`,
       [`versioninfo shall not be NULL_PTR`],
-      [`The version structure contains the ${moduleName} module's vendor, module, and software version IDs`]
+      [
+        `The version structure contains the ${moduleName} module's vendor, module, and software version IDs`,
+      ]
     );
     content += `void ${moduleName}_GetVersionInfo(Std_VersionInfoType* versioninfo);\n\n`;
 
@@ -686,8 +703,9 @@ export class EcucCodeGenerator implements CodeGenerator {
     const moduleName = config.module;
     const version = parseVersion(config.version);
 
-    let content = '/*==================[module information]====================================*/\n';
-    
+    let content =
+      '/*==================[module information]====================================*/\n';
+
     // Doxygen 文档
     content += `/**\n`;
     content += ` * @brief ${moduleName} module version information\n`;
@@ -698,7 +716,7 @@ export class EcucCodeGenerator implements CodeGenerator {
     content += ` * SW Version:  ${version.major}.${version.minor}.${version.patch}\n`;
     content += ` * AR Version:  4.4.0\n`;
     content += ` */\n`;
-    
+
     content += `static const Std_VersionInfoType ${moduleName}_VersionInfo = {\n`;
     content += `    .vendorID = ${moduleName.toUpperCase()}_VENDOR_ID,\n`;
     content += `    .moduleID = ${moduleName.toUpperCase()}_MODULE_ID,\n`;
@@ -735,7 +753,13 @@ export class EcucCodeGenerator implements CodeGenerator {
         const instances = config.containers[container.name] || [];
         if (instances.length === 0) continue;
 
-        dataBlock += this.generateContainerInstances(container, instances, schema, moduleName, options);
+        dataBlock += this.generateContainerInstances(
+          container,
+          instances,
+          schema,
+          moduleName,
+          options
+        );
       }
     }
 
@@ -795,7 +819,7 @@ export class EcucCodeGenerator implements CodeGenerator {
     // 生成每个实例
     for (let i = 0; i < instances.length; i++) {
       const instance = instances[i];
-      
+
       if (options.generateComments) {
         content += `/** @brief ${container.name} instance ${i}${instance.name ? ` - ${instance.name}` : ''} */\n`;
       }
@@ -838,7 +862,8 @@ export class EcucCodeGenerator implements CodeGenerator {
     schema: ModuleSchema,
     _options: GeneratorOptions
   ): string {
-    let content = '/*==================[constants]=============================================*/\n';
+    let content =
+      '/*==================[constants]=============================================*/\n';
 
     // 生成字符串常量
     for (const param of schema.parameters) {
@@ -868,18 +893,18 @@ export class EcucCodeGenerator implements CodeGenerator {
 
     // 确定哪些参数可以在 Post-Build 时修改
     const pbParams = schema.parameters.filter(p => !p.readonly);
-    
+
     if (pbParams.length > 0) {
       content += `/* Post-Build configurable parameters */\n`;
       content += `${moduleName}_ConfigSetType ${moduleName}_PostBuildConfig = {\n`;
-      
+
       for (const param of pbParams) {
         const value = config.parameters[param.name];
         if (value !== undefined) {
           content += `    .${param.name} = ${formatCValue(value, param.type)},\n`;
         }
       }
-      
+
       content += `};\n\n`;
     }
 
@@ -899,7 +924,7 @@ export class EcucCodeGenerator implements CodeGenerator {
     let content = '';
 
     content += `/* Link-Time configurable data structures */\n`;
-    content += `${moduleName}_ConfigSetType ${moduleName}_Lcfg = {0};`
+    content += `${moduleName}_ConfigSetType ${moduleName}_Lcfg = {0};`;
 
     return content;
   }

@@ -2,12 +2,12 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { Search, X, FileText, ChevronRight } from 'lucide-react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus, prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { 
-  searchCode, 
-  getTypeIcon, 
+import {
+  searchCode,
+  getTypeIcon,
   getTypeName,
   codeSearchData,
-  type SearchResult 
+  type SearchResult,
 } from '../data/codeSearch';
 import { useTheme } from '../contexts/ThemeContext';
 
@@ -41,7 +41,7 @@ export function CodeSearch() {
         e.preventDefault();
         setIsOpen(true);
       }
-      
+
       // ESC 关闭
       if (e.key === 'Escape' && isOpen) {
         setIsOpen(false);
@@ -73,26 +73,29 @@ export function CodeSearch() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (results.length === 0) return;
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (results.length === 0) return;
 
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        setSelectedIndex(prev => (prev + 1) % results.length);
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        setSelectedIndex(prev => (prev - 1 + results.length) % results.length);
-        break;
-      case 'Enter':
-        e.preventDefault();
-        if (results[selectedIndex]) {
-          setSelectedResult(results[selectedIndex]);
-        }
-        break;
-    }
-  }, [results, selectedIndex]);
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault();
+          setSelectedIndex(prev => (prev + 1) % results.length);
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          setSelectedIndex(prev => (prev - 1 + results.length) % results.length);
+          break;
+        case 'Enter':
+          e.preventDefault();
+          if (results[selectedIndex]) {
+            setSelectedResult(results[selectedIndex]);
+          }
+          break;
+      }
+    },
+    [results, selectedIndex]
+  );
 
   const handleResultClick = (result: SearchResult) => {
     setSelectedResult(result);
@@ -104,14 +107,16 @@ export function CodeSearch() {
 
   const highlightMatch = (text: string, query: string) => {
     if (!query.trim()) return text;
-    
+
     const parts = text.split(new RegExp(`(${query})`, 'gi'));
-    return parts.map((part, i) => 
+    return parts.map((part, i) =>
       part.toLowerCase() === query.toLowerCase() ? (
         <mark key={i} className="bg-primary/30 text-primary font-semibold rounded px-0.5">
           {part}
         </mark>
-      ) : part
+      ) : (
+        part
+      )
     );
   };
 
@@ -133,7 +138,7 @@ export function CodeSearch() {
       {/* 搜索面板 */}
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] bg-black/50 backdrop-blur-sm">
-          <div 
+          <div
             ref={containerRef}
             className="w-full max-w-2xl mx-4 bg-card border border-border rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200"
           >
@@ -144,7 +149,7 @@ export function CodeSearch() {
                 ref={inputRef}
                 type="text"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={e => setQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="搜索函数、变量、模块..."
                 className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base"
@@ -178,9 +183,7 @@ export function CodeSearch() {
                       onClick={() => handleResultClick(result)}
                       onMouseEnter={() => setSelectedIndex(index)}
                       className={`w-full px-4 py-3 flex items-start gap-3 text-left transition-colors ${
-                        index === selectedIndex 
-                          ? 'bg-primary/10' 
-                          : 'hover:bg-muted/50'
+                        index === selectedIndex ? 'bg-primary/10' : 'hover:bg-muted/50'
                       }`}
                     >
                       <span className="text-lg shrink-0" title={getTypeName(result.type)}>
@@ -202,9 +205,11 @@ export function CodeSearch() {
                           {result.filePath}:{result.lineNumber}
                         </p>
                       </div>
-                      <ChevronRight className={`w-4 h-4 shrink-0 transition-opacity ${
-                        index === selectedIndex ? 'opacity-100' : 'opacity-0'
-                      }`} />
+                      <ChevronRight
+                        className={`w-4 h-4 shrink-0 transition-opacity ${
+                          index === selectedIndex ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      />
                     </button>
                   ))}
                 </div>
@@ -216,10 +221,9 @@ export function CodeSearch() {
                 </div>
               ) : (
                 <div className="py-8 px-4">
-                  <div className="text-xs text-muted-foreground mb-3">推荐搜索
-                  </div>
+                  <div className="text-xs text-muted-foreground mb-3">推荐搜索</div>
                   <div className="flex flex-wrap gap-2">
-                    {['Can_Init', 'Com_SendSignal', 'PduR', 'Dio', 'NvM', 'RTE'].map((term) => (
+                    {['Can_Init', 'Com_SendSignal', 'PduR', 'Dio', 'NvM', 'RTE'].map(term => (
                       <button
                         key={term}
                         onClick={() => setQuery(term)}
@@ -267,13 +271,8 @@ export function CodeSearch() {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-xs px-2 py-1 rounded bg-muted">
-                  {selectedResult.module}
-                </span>
-                <button
-                  onClick={closePreview}
-                  className="p-2 rounded-lg hover:bg-muted"
-                >
+                <span className="text-xs px-2 py-1 rounded bg-muted">{selectedResult.module}</span>
+                <button onClick={closePreview} className="p-2 rounded-lg hover:bg-muted">
                   <X className="w-5 h-5" />
                 </button>
               </div>

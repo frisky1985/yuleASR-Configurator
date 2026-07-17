@@ -3,20 +3,20 @@
  * Full-page view for comparing configurations
  */
 
-import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-import { ConfigCompareDialog } from '@/components/ConfigCompareDialog'
+import { ConfigCompareDialog } from '@/components/ConfigCompareDialog';
 
 export function Compare() {
-  const { configAId, configBId } = useParams<{ configAId?: string; configBId?: string }>()
-  const [isOpen, setIsOpen] = useState(true)
+  const { configAId, configBId } = useParams<{ configAId?: string; configBId?: string }>();
+  const [isOpen, setIsOpen] = useState(true);
 
   const handleClose = () => {
-    setIsOpen(false)
+    setIsOpen(false);
     // Navigate back
-    window.history.back()
-  }
+    window.history.back();
+  };
 
   return (
     <div className="h-full">
@@ -32,5 +32,5 @@ export function Compare() {
         </div>
       )}
     </div>
-  )
+  );
 }

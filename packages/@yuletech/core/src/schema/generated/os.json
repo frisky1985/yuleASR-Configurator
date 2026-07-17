@@ -164,7 +164,12 @@
             "description": "是否共享栈"
           }
         },
-        "required": ["OsTaskName", "OsTaskPriority", "OsTaskSchedule", "OsTaskStackSize"],
+        "required": [
+          "OsTaskName",
+          "OsTaskPriority",
+          "OsTaskSchedule",
+          "OsTaskStackSize"
+        ],
         "additionalProperties": true
       }
     },
@@ -273,7 +278,11 @@
             "description": "硬件引用 (如 GPT 通道名)"
           }
         },
-        "required": ["OsCounterName", "OsCounterTicksPerBase", "OsCounterMaxAllowedValue"],
+        "required": [
+          "OsCounterName",
+          "OsCounterTicksPerBase",
+          "OsCounterMaxAllowedValue"
+        ],
         "additionalProperties": true
       }
     },
@@ -342,7 +351,12 @@
             "description": "应用模式掩码位"
           }
         },
-        "required": ["OsAlarmName", "OsAlarmCounterRef", "OsAlarmActionType", "OsAlarmStartValue"],
+        "required": [
+          "OsAlarmName",
+          "OsAlarmCounterRef",
+          "OsAlarmActionType",
+          "OsAlarmStartValue"
+        ],
         "additionalProperties": true
       }
     },

@@ -1,4 +1,4 @@
-import { useLicenseStore, type FeatureName } from '@/stores/licenseStore'
+import { useLicenseStore, type FeatureName } from '@/stores/licenseStore';
 
 /**
  * useFeatureGate
@@ -10,8 +10,8 @@ import { useLicenseStore, type FeatureName } from '@/stores/licenseStore'
  */
 
 export function useFeatureGate(featureName: FeatureName): boolean | number {
-  const features = useLicenseStore((s) => s.features)
-  return features[featureName] ?? false
+  const features = useLicenseStore(s => s.features);
+  return features[featureName] ?? false;
 }
 
 /**
@@ -19,7 +19,7 @@ export function useFeatureGate(featureName: FeatureName): boolean | number {
  * Returns the numeric limit for a feature (maxModules, maxProjects).
  */
 export function useFeatureLimit(limitName: 'maxModules' | 'maxProjects'): number {
-  const val = useFeatureGate(limitName)
-  if (typeof val === 'number') return val
-  return val ? 9999 : 0
+  const val = useFeatureGate(limitName);
+  if (typeof val === 'number') return val;
+  return val ? 9999 : 0;
 }

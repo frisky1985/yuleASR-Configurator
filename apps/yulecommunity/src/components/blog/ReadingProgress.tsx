@@ -167,9 +167,7 @@ export function ReadingProgress({
       )}
 
       {/* 屏幕阅读器文本 */}
-      <span className="sr-only">
-        已阅读 {Math.round(progress)}%
-      </span>
+      <span className="sr-only">已阅读 {Math.round(progress)}%</span>
     </div>
   );
 }

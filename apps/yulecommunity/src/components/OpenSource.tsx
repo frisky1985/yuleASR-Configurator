@@ -33,13 +33,25 @@ const modules = [
 
 function CpuIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      {...props}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <rect x="4" y="4" width="16" height="16" rx="2" />
       <rect x="9" y="9" width="6" height="6" />
-      <path d="M15 2v2" /><path d="M15 20v2" />
-      <path d="M2 15h2" /><path d="M2 9h2" />
-      <path d="M20 15h2" /><path d="M20 9h2" />
-      <path d="M9 2v2" /><path d="M9 20v2" />
+      <path d="M15 2v2" />
+      <path d="M15 20v2" />
+      <path d="M2 15h2" />
+      <path d="M2 9h2" />
+      <path d="M20 15h2" />
+      <path d="M20 9h2" />
+      <path d="M9 2v2" />
+      <path d="M9 20v2" />
     </svg>
   );
 }
@@ -64,14 +76,16 @@ export function OpenSource() {
 
         {/* Module Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {modules.map((mod) => (
+          {modules.map(mod => (
             <div
               key={mod.category}
               className="bg-card border border-border rounded-2xl p-6 hover:border-[hsl(var(--accent))]/30 transition-colors"
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-lg ${mod.color} flex items-center justify-center`}>
+                  <div
+                    className={`w-10 h-10 rounded-lg ${mod.color} flex items-center justify-center`}
+                  >
                     <mod.icon className="w-5 h-5" />
                   </div>
                   <div>
@@ -90,7 +104,7 @@ export function OpenSource() {
               </div>
 
               <div className="flex flex-wrap gap-2">
-                {mod.items.map((item) => (
+                {mod.items.map(item => (
                   <span
                     key={item}
                     className="px-3 py-1.5 bg-muted rounded-lg text-xs font-mono font-medium text-muted-foreground hover:bg-[hsl(var(--accent))]/10 hover:text-[hsl(var(--accent))] transition-colors cursor-pointer"

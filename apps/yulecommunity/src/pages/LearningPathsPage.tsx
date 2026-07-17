@@ -13,7 +13,12 @@ import {
   TrendingUp,
   GraduationCap,
 } from 'lucide-react';
-import { learningPaths, getPathProgress, badges, getTotalLearningHours } from '../data/learningPaths';
+import {
+  learningPaths,
+  getPathProgress,
+  badges,
+  getTotalLearningHours,
+} from '../data/learningPaths';
 
 const levelLabels: Record<string, { label: string; color: string }> = {
   beginner: { label: '入门', color: 'bg-green-500/10 text-green-500' },
@@ -36,19 +41,15 @@ export function LearningPathsPage() {
     const completedPaths = learningPaths.filter(
       path => getPathProgress(path.id) >= path.steps.length
     ).length;
-    const inProgressPaths = learningPaths.filter(
-      path => {
-        const progress = getPathProgress(path.id);
-        return progress > 0 && progress < path.steps.length;
-      }
-    ).length;
+    const inProgressPaths = learningPaths.filter(path => {
+      const progress = getPathProgress(path.id);
+      return progress > 0 && progress < path.steps.length;
+    }).length;
 
     return { totalHours, completedPaths, inProgressPaths };
   }, []);
 
-  const selectedPathData = selectedPath
-    ? learningPaths.find(p => p.id === selectedPath)
-    : null;
+  const selectedPathData = selectedPath ? learningPaths.find(p => p.id === selectedPath) : null;
 
   return (
     <div className="min-h-screen pt-16">
@@ -135,11 +136,15 @@ export function LearningPathsPage() {
                   }`}
                 >
                   {/* Header */}
-                  <div className={`h-24 bg-gradient-to-r ${path.color} p-6 flex items-center justify-between`}>
+                  <div
+                    className={`h-24 bg-gradient-to-r ${path.color} p-6 flex items-center justify-between`}
+                  >
                     <div>
                       <span className="text-4xl">{path.badge}</span>
                     </div>
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${levelLabels[path.level].color}`}>
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${levelLabels[path.level].color}`}
+                    >
                       {levelLabels[path.level].label}
                     </span>
                   </div>
@@ -149,9 +154,7 @@ export function LearningPathsPage() {
                     <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
                       {path.title}
                     </h3>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      {path.description}
-                    </p>
+                    <p className="text-sm text-muted-foreground mb-4">{path.description}</p>
 
                     {/* Meta */}
                     <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
@@ -201,10 +204,7 @@ export function LearningPathsPage() {
       {selectedPathData && (
         <section className="py-16 bg-muted/30 border-t border-border">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
               <div className="flex items-center gap-4 mb-8">
                 <button
                   onClick={() => setSelectedPath(null)}
@@ -231,11 +231,11 @@ export function LearningPathsPage() {
                         isLocked ? 'opacity-60' : ''
                       }`}
                     >
-                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                        isLocked
-                          ? 'bg-muted'
-                          : 'bg-primary/10'
-                      }`}>
+                      <div
+                        className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                          isLocked ? 'bg-muted' : 'bg-primary/10'
+                        }`}
+                      >
                         {isLocked ? (
                           <Lock className="w-5 h-5 text-muted-foreground" />
                         ) : (
@@ -251,9 +251,13 @@ export function LearningPathsPage() {
                               {step.duration} 分钟
                             </span>
                             <span className="capitalize px-2 py-0.5 bg-muted rounded text-xs">
-                              {step.type === 'video' ? '视频' :
-                               step.type === 'article' ? '文档' :
-                               step.type === 'quiz' ? '测试' : '实践'}
+                              {step.type === 'video'
+                                ? '视频'
+                                : step.type === 'article'
+                                  ? '文档'
+                                  : step.type === 'quiz'
+                                    ? '测试'
+                                    : '实践'}
                             </span>
                           </div>
                         </div>

@@ -141,7 +141,7 @@ export function CodeSandbox() {
 
       // 模拟输出（实际应调用编译/执行服务）
       const mockOutput = simulateExecution(code);
-      
+
       const executionTime = performance.now() - startTime;
 
       setOutput({
@@ -175,10 +175,7 @@ export function CodeSandbox() {
       if (formatMatch) {
         let format = formatMatch[1];
         // 处理转义字符
-        format = format
-          .replace(/\\n/g, '\n')
-          .replace(/\\t/g, '\t')
-          .replace(/\\\\/g, '\\');
+        format = format.replace(/\\n/g, '\n').replace(/\\t/g, '\t').replace(/\\\\/g, '\\');
         output += format;
       }
     });
@@ -251,7 +248,7 @@ export function CodeSandbox() {
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium text-muted-foreground">模板:</span>
           <div className="flex items-center gap-1">
-            {EXAMPLE_TEMPLATES.map((template) => (
+            {EXAMPLE_TEMPLATES.map(template => (
               <button
                 key={template.name}
                 onClick={() => loadTemplate(template.code)}
@@ -297,7 +294,7 @@ export function CodeSandbox() {
             height="100%"
             defaultLanguage="c"
             value={code}
-            onChange={(value) => setCode(value || '')}
+            onChange={value => setCode(value || '')}
             onMount={handleEditorDidMount}
             options={{
               minimap: { enabled: false },
@@ -353,15 +350,19 @@ export function CodeSandbox() {
             ) : output ? (
               <div className="space-y-2">
                 {output.exitCode === 0 ? (
-                  <div className="text-green-500 text-xs">✓ 执行成功 (exit code: {output.exitCode})</div>
+                  <div className="text-green-500 text-xs">
+                    ✓ 执行成功 (exit code: {output.exitCode})
+                  </div>
                 ) : (
-                  <div className="text-red-500 text-xs">✗ 执行失败 (exit code: {output.exitCode})</div>
+                  <div className="text-red-500 text-xs">
+                    ✗ 执行失败 (exit code: {output.exitCode})
+                  </div>
                 )}
-                
+
                 {output.stdout && (
                   <pre className="text-foreground whitespace-pre-wrap">{output.stdout}</pre>
                 )}
-                
+
                 {output.stderr && (
                   <pre className="text-red-400 whitespace-pre-wrap">{output.stderr}</pre>
                 )}
@@ -381,7 +382,9 @@ export function CodeSandbox() {
       {/* Footer */}
       <div className="p-3 border-t border-border bg-muted/30 text-xs text-muted-foreground flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <span>Ln {code.split('\n').length}, Col {code.split('\n').pop()?.length || 0}</span>
+          <span>
+            Ln {code.split('\n').length}, Col {code.split('\n').pop()?.length || 0}
+          </span>
           <span>UTF-8</span>
           <span>C</span>
         </div>

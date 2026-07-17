@@ -364,11 +364,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "AL_Disable_NM",
-    "AL_Disable_Rx",
-    "AL_Disable_Rx_DM"
-  ],
+  "required": ["AL_Disable_NM", "AL_Disable_Rx", "AL_Disable_Rx_DM"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

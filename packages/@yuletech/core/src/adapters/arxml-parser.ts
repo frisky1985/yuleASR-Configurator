@@ -16,13 +16,13 @@ export interface ArxmlParseResult {
 export function parseArxml(content: string): ArxmlParseResult {
   const result: ArxmlParseResult = {
     modules: [],
-    errors: []
+    errors: [],
   };
 
   try {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(content, 'text/xml');
-    
+
     // Check for parsing errors
     const parseError = xmlDoc.querySelector('parsererror');
     if (parseError) {
@@ -32,11 +32,11 @@ export function parseArxml(content: string): ArxmlParseResult {
 
     // Extract ECUC modules
     const ecucModules = xmlDoc.querySelectorAll('ECUC-MODULE-CONFIGURATION-VALUES');
-    
-    ecucModules.forEach((moduleNode) => {
+
+    ecucModules.forEach(moduleNode => {
       const moduleName = moduleNode.querySelector('SHORT-NAME')?.textContent || '';
       const moduleDefRef = moduleNode.querySelector('DEFINITION-REF')?.textContent || '';
-      
+
       if (!moduleName) {
         result.errors.push('Found module without name');
         return;
@@ -45,14 +45,17 @@ export function parseArxml(content: string): ArxmlParseResult {
       // Extract parameters
       const parameters: Record<string, unknown> = {};
       const containers = moduleNode.querySelectorAll('ECUC-CONTAINER-VALUES');
-      
-      containers.forEach((container) => {
-        const paramValues = container.querySelectorAll('ECUC-NUMERICAL-PARAM-VALUE, ECUC-TEXTUAL-PARAM-VALUE, ECUC-BOOLEAN-PARAM-VALUE');
-        
-        paramValues.forEach((param) => {
-          const paramName = param.querySelector('DEFINITION-REF')?.textContent?.split('/').pop() || '';
+
+      containers.forEach(container => {
+        const paramValues = container.querySelectorAll(
+          'ECUC-NUMERICAL-PARAM-VALUE, ECUC-TEXTUAL-PARAM-VALUE, ECUC-BOOLEAN-PARAM-VALUE'
+        );
+
+        paramValues.forEach(param => {
+          const paramName =
+            param.querySelector('DEFINITION-REF')?.textContent?.split('/').pop() || '';
           const value = param.querySelector('VALUE')?.textContent;
-          
+
           if (paramName && value !== undefined) {
             // Try to parse as number or boolean
             if (value === 'true') {
@@ -81,7 +84,6 @@ export function parseArxml(content: string): ArxmlParseResult {
     if (result.modules.length === 0) {
       result.errors.push('No valid ECUC modules found in ARXML');
     }
-
   } catch (error) {
     result.errors.push(`Parse error: ${(error as Error).message}`);
   }
@@ -98,7 +100,7 @@ export function validateArxml(content: string): { valid: boolean; errors: string
   try {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(content, 'text/xml');
-    
+
     const parseError = xmlDoc.querySelector('parsererror');
     if (parseError) {
       errors.push('Invalid XML format');
@@ -118,7 +120,6 @@ export function validateArxml(content: string): { valid: boolean; errors: string
     }
 
     return { valid: errors.length === 0, errors };
-
   } catch (error) {
     errors.push(`Validation error: ${(error as Error).message}`);
     return { valid: false, errors };
@@ -139,7 +140,7 @@ function extractVersion(defRef: string): string | null {
  */
 export function convertArxmlToYuleasr(content: string): Record<string, unknown> {
   const result = parseArxml(content);
-  
+
   if (result.errors.length > 0) {
     throw new Error(`ARXML parse failed: ${result.errors.join(', ')}`);
   }
@@ -150,7 +151,7 @@ export function convertArxmlToYuleasr(content: string): Record<string, unknown> 
     modules: {} as Record<string, unknown>,
   };
 
-  result.modules.forEach((module) => {
+  result.modules.forEach(module => {
     (bswConfig.modules as Record<string, unknown>)[module.module] = {
       version: module.version,
       parameters: module.parameters,

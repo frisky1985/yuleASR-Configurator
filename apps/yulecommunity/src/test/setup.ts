@@ -35,7 +35,9 @@ class IntersectionObserverMock {
   disconnect() {}
   observe() {}
   unobserve() {}
-  takeRecords() { return []; }
+  takeRecords() {
+    return [];
+  }
 }
 Object.defineProperty(window, 'IntersectionObserver', {
   value: IntersectionObserverMock,
@@ -64,5 +66,6 @@ Object.defineProperty(navigator, 'clipboard', {
 // Mock ThemeContext
 vi.mock('@/contexts/ThemeContext', () => ({
   useTheme: () => ({ theme: 'light' }),
-  ThemeProvider: ({ children }: { children: React.ReactNode }) => React.createElement(React.Fragment, null, children),
+  ThemeProvider: ({ children }: { children: React.ReactNode }) =>
+    React.createElement(React.Fragment, null, children),
 }));

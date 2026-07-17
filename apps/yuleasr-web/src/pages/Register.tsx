@@ -1,57 +1,57 @@
-import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { Link, useNavigate } from 'react-router-dom'
-import { UserPlus, Loader2, Eye, EyeOff, AlertCircle } from 'lucide-react'
+import { UserPlus, Loader2, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { useAuthStore } from '@/stores/authStore'
-import { ApiError } from '@/services/api'
+import { ApiError } from '@/services/api';
+import { useAuthStore } from '@/stores/authStore';
 
 export function Register() {
-  const { t } = useTranslation()
-  const navigate = useNavigate()
-  const register = useAuthStore((s) => s.register)
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const register = useAuthStore(s => s.register);
 
-  const [email, setEmail] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirm, setShowConfirm] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError(null)
+    e.preventDefault();
+    setError(null);
 
     // Client-side validation
     if (password !== confirmPassword) {
-      setError(t('auth.passwordsDoNotMatch'))
-      return
+      setError(t('auth.passwordsDoNotMatch'));
+      return;
     }
 
     if (password.length < 6) {
-      setError(t('auth.passwordTooShort'))
-      return
+      setError(t('auth.passwordTooShort'));
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     try {
-      await register(email, username, password)
-      navigate('/dashboard', { replace: true })
+      await register(email, username, password);
+      navigate('/dashboard', { replace: true });
     } catch (err) {
       if (err instanceof ApiError) {
         // Try to extract a meaningful message from the API error body
-        const body = err.body as Record<string, unknown> | undefined
-        setError(err.message || (body?.message as string) || t('auth.registrationFailed'))
+        const body = err.body as Record<string, unknown> | undefined;
+        setError(err.message || (body?.message as string) || t('auth.registrationFailed'));
       } else {
-        setError(t('auth.genericError'))
+        setError(t('auth.genericError'));
       }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center">
@@ -62,12 +62,8 @@ export function Register() {
             <div className="mx-auto w-12 h-12 bg-primary-600 rounded-xl flex items-center justify-center mb-4">
               <UserPlus className="w-6 h-6 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-foreground">
-              {t('auth.registerTitle')}
-            </h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              {t('auth.registerSubtitle')}
-            </p>
+            <h1 className="text-2xl font-bold text-foreground">{t('auth.registerTitle')}</h1>
+            <p className="text-sm text-muted-foreground mt-1">{t('auth.registerSubtitle')}</p>
           </div>
 
           {/* Error */}
@@ -94,7 +90,7 @@ export function Register() {
                 required
                 autoComplete="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 className="w-full px-3 py-2.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
               />
@@ -114,7 +110,7 @@ export function Register() {
                 required
                 autoComplete="username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={e => setUsername(e.target.value)}
                 placeholder="johndoe"
                 className="w-full px-3 py-2.5 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
               />
@@ -135,7 +131,7 @@ export function Register() {
                   required
                   autoComplete="new-password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className="w-full px-3 py-2.5 pr-10 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
                 />
@@ -145,11 +141,7 @@ export function Register() {
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   tabIndex={-1}
                 >
-                  {showPassword ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
@@ -169,7 +161,7 @@ export function Register() {
                   required
                   autoComplete="new-password"
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={e => setConfirmPassword(e.target.value)}
                   placeholder="••••••••"
                   className="w-full px-3 py-2.5 pr-10 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors"
                 />
@@ -179,11 +171,7 @@ export function Register() {
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   tabIndex={-1}
                 >
-                  {showConfirm ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
+                  {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
             </div>
@@ -216,5 +204,5 @@ export function Register() {
         </div>
       </div>
     </div>
-  )
+  );
 }

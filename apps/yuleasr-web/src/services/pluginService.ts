@@ -8,23 +8,24 @@
  *   POST   /v1/api/plugins/:id/toggle   → { ok: boolean, enabled: boolean }
  */
 
-import { api } from './api'
-import type { PluginMeta, ToggleResponse } from '@/types/plugin'
+import { api } from './api';
 
-const BASE = '/v1/api/plugins'
+import type { PluginMeta, ToggleResponse } from '@/types/plugin';
+
+const BASE = '/v1/api/plugins';
 
 /**
  * Fetch all installed plugins.
  */
 export async function fetchPlugins(): Promise<PluginMeta[]> {
-  return api.get<PluginMeta[]>(BASE)
+  return api.get<PluginMeta[]>(BASE);
 }
 
 /**
  * Fetch a single plugin by its id.
  */
 export async function fetchPlugin(id: string): Promise<PluginMeta> {
-  return api.get<PluginMeta>(`${BASE}/${encodeURIComponent(id)}`)
+  return api.get<PluginMeta>(`${BASE}/${encodeURIComponent(id)}`);
 }
 
 /**
@@ -32,17 +33,14 @@ export async function fetchPlugin(id: string): Promise<PluginMeta> {
  */
 export async function updatePluginConfig(
   id: string,
-  config: Record<string, unknown>,
+  config: Record<string, unknown>
 ): Promise<{ ok: boolean }> {
-  return api.put<{ ok: boolean }>(`${BASE}/${encodeURIComponent(id)}/config`, { config })
+  return api.put<{ ok: boolean }>(`${BASE}/${encodeURIComponent(id)}/config`, { config });
 }
 
 /**
  * Enable or disable a plugin.
  */
-export async function togglePlugin(
-  id: string,
-  enabled: boolean,
-): Promise<ToggleResponse> {
-  return api.post<ToggleResponse>(`${BASE}/${encodeURIComponent(id)}/toggle`, { enabled })
+export async function togglePlugin(id: string, enabled: boolean): Promise<ToggleResponse> {
+  return api.post<ToggleResponse>(`${BASE}/${encodeURIComponent(id)}/toggle`, { enabled });
 }

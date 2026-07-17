@@ -3,10 +3,10 @@
  * File I/O, gcc verification, temp directory management
  */
 
-import { mkdtempSync, writeFileSync, rmSync, existsSync, mkdirSync } from 'fs';
-import { join } from 'path';
-import { tmpdir } from 'os';
 import { execSync } from 'child_process';
+import { mkdtempSync, writeFileSync, rmSync, existsSync, mkdirSync } from 'fs';
+import { tmpdir } from 'os';
+import { join } from 'path';
 
 /**
  * Check if gcc (or clang) is available on this system
@@ -98,7 +98,7 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
     }
   } finally {
     // Clean up temp dir
-    try { rmSync(tmpDir, { recursive: true, force: true }); } catch {}
+    try { rmSync(tmpDir, { recursive: true, force: true }); } catch { /* ignore cleanup errors */ }
   }
 
   return results;

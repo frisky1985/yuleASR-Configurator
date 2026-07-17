@@ -41,7 +41,7 @@ export function WechatCommunity({
   // 延迟显示悬浮按钮
   useEffect(() => {
     if (dismissed) return;
-    
+
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, delay);
@@ -62,11 +62,14 @@ export function WechatCommunity({
   }, []);
 
   // 关闭悬浮按钮
-  const handleDismiss = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsVisible(false);
-    setDismissed(true);
-  }, [setDismissed]);
+  const handleDismiss = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setIsVisible(false);
+      setDismissed(true);
+    },
+    [setDismissed]
+  );
 
   // 复制关键词
   const handleCopyKeyword = useCallback(async () => {
@@ -80,9 +83,7 @@ export function WechatCommunity({
   }, []);
 
   // 位置样式
-  const positionClass = position === 'bottom-right' 
-    ? 'right-4 sm:right-6' 
-    : 'left-4 sm:left-6';
+  const positionClass = position === 'bottom-right' ? 'right-4 sm:right-6' : 'left-4 sm:left-6';
 
   if (!isVisible) return null;
 
@@ -93,10 +94,10 @@ export function WechatCommunity({
         {isVisible && (
           <motion.div
             initial={{ opacity: 0, scale: 0, y: 20 }}
-            animate={{ 
-              opacity: 1, 
-              scale: isMinimized ? 0.8 : 1, 
-              y: 0 
+            animate={{
+              opacity: 1,
+              scale: isMinimized ? 0.8 : 1,
+              y: 0,
             }}
             exit={{ opacity: 0, scale: 0, y: 20 }}
             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
@@ -133,11 +134,9 @@ export function WechatCommunity({
             >
               <MessageCircle className={`w-5 h-5 ${isMinimized ? '' : 'fill-current'}`} />
               {!isMinimized && (
-                <span className="text-sm font-medium whitespace-nowrap">
-                  加入社群
-                </span>
+                <span className="text-sm font-medium whitespace-nowrap">加入社群</span>
               )}
-              
+
               {/* 微强动画 */}
               {!isMinimized && clicks === 0 && (
                 <span className="absolute -top-1 -right-1 flex h-3 w-3">
@@ -162,7 +161,7 @@ export function WechatCommunity({
               className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
               onClick={handleClose}
             />
-            
+
             {/* 弹窗内容 */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -184,7 +183,7 @@ export function WechatCommunity({
                 <MessageCircle className="w-5 h-5 text-[#07C160] fill-[#07C160]" />
                 加入 YuleTech 微信社群
               </h3>
-              
+
               <div className="flex flex-col items-center gap-6">
                 {/* 社群信息 */}
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
@@ -203,7 +202,9 @@ export function WechatCommunity({
                     <div className="text-center p-4">
                       <MessageCircle className="w-12 h-12 mx-auto text-[#07C160] mb-2" />
                       <p className="text-xs text-muted-foreground">
-                        扫描二维码<br/>或复制关键词添加
+                        扫描二维码
+                        <br />
+                        或复制关键词添加
                       </p>
                     </div>
                   ) : (
@@ -250,7 +251,8 @@ export function WechatCommunity({
                   </div>
 
                   <p className="text-xs text-muted-foreground text-center">
-                    添加小助手微信 <span className="font-medium text-foreground">YuleTech2024</span>，<br/>
+                    添加小助手微信 <span className="font-medium text-foreground">YuleTech2024</span>
+                    ，<br />
                     发送关键词"进群"获取社群邀请链接
                   </p>
                 </div>

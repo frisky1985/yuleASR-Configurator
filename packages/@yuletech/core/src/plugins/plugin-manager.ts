@@ -19,6 +19,7 @@ import type {
   ValidatorPlugin,
   DataExporterPlugin,
 } from '@yuletech/plugin-sdk';
+
 import { pluginRegistry, type RegisteredPlugin } from './plugin-registry';
 
 // ------------------------------------------------------------------
@@ -59,20 +60,14 @@ class PluginManagerImpl {
    * Override the context factory (useful for dependency injection / testing).
    */
   setContextFactory(
-    factory: (
-      pluginId: string,
-      userConfig: Record<string, unknown>,
-    ) => PluginContext,
+    factory: (pluginId: string, userConfig: Record<string, unknown>) => PluginContext
   ): void {
     this.contextFactory = factory;
   }
 
   // ── Context creation ──────────────────────────────────────────
 
-  private buildContext(
-    pluginId: string,
-    userConfig: Record<string, unknown>,
-  ): PluginContext {
+  private buildContext(pluginId: string, userConfig: Record<string, unknown>): PluginContext {
     if (this.contextFactory) {
       return this.contextFactory(pluginId, userConfig);
     }
@@ -121,7 +116,7 @@ class PluginManagerImpl {
     plugin: YulePlugin,
     userConfig?: Record<string, unknown>,
     source: PluginMeta['source'] = 'internal',
-    filePath?: string,
+    filePath?: string
   ): Promise<PluginMeta> {
     const config = userConfig ?? {};
     const context = this.buildContext(plugin.id, config);
@@ -247,29 +242,23 @@ class PluginManagerImpl {
       }
 
       const entries = fs.readdirSync(dir);
-      const files = entries.filter(
-        (f: string) => f.endsWith('.js') || f.endsWith('.mjs'),
-      );
+      const files = entries.filter((f: string) => f.endsWith('.js') || f.endsWith('.mjs'));
 
       for (const file of files) {
         const fullPath = path.resolve(dir, file);
         try {
           const pluginModule = await import(fullPath);
           const plugin: YulePlugin | undefined =
-            pluginModule.default ??
-            pluginModule.plugin ??
-            pluginModule.createPlugin?.();
+            pluginModule.default ?? pluginModule.plugin ?? pluginModule.createPlugin?.();
 
           if (!plugin || typeof plugin.activate !== 'function') {
-            console.warn(
-              `[plugin-manager] Skipping ${file}: no valid YulePlugin export`,
-            );
+            console.warn(`[plugin-manager] Skipping ${file}: no valid YulePlugin export`);
             continue;
           }
 
           if (pluginRegistry.has(plugin.id)) {
             console.warn(
-              `[plugin-manager] Skipping ${file}: plugin "${plugin.id}" already registered`,
+              `[plugin-manager] Skipping ${file}: plugin "${plugin.id}" already registered`
             );
             continue;
           }
@@ -278,10 +267,7 @@ class PluginManagerImpl {
           metas.push(meta);
           console.info(`[plugin-manager] Loaded external plugin: ${plugin.id}`);
         } catch (err) {
-          console.error(
-            `[plugin-manager] Failed to load plugin from ${file}:`,
-            err,
-          );
+          console.error(`[plugin-manager] Failed to load plugin from ${file}:`, err);
         }
       }
     } catch (err) {

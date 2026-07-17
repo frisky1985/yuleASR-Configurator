@@ -1,8 +1,8 @@
-import { 
-  GitCommit, 
-  GitBranch, 
-  Clock, 
-  User, 
+import {
+  GitCommit,
+  GitBranch,
+  Clock,
+  User,
   RotateCcw,
   Eye,
   ChevronDown,
@@ -10,23 +10,23 @@ import {
   RefreshCw,
   Search,
   GitCompare,
-} from 'lucide-react'
-import { useState, useCallback } from 'react'
+} from 'lucide-react';
+import { useState, useCallback } from 'react';
 
-import { cn, formatDate } from '@/lib/utils'
-import type { CommitInfo, BranchInfo } from '@/services/gitService'
+import { cn, formatDate } from '@/lib/utils';
+import type { CommitInfo, BranchInfo } from '@/services/gitService';
 
 interface VersionHistoryProps {
-  commits: CommitInfo[]
-  branches: BranchInfo[]
-  currentBranch: string
-  selectedCommit?: string
-  onSelectCommit: (commit: CommitInfo) => void
-  onSelectBranch: (branch: string) => void
-  onRollback: (commit: CommitInfo) => void
-  onCompare: (commit1: CommitInfo, commit2: CommitInfo) => void
-  onRefresh: () => void
-  isLoading?: boolean
+  commits: CommitInfo[];
+  branches: BranchInfo[];
+  currentBranch: string;
+  selectedCommit?: string;
+  onSelectCommit: (commit: CommitInfo) => void;
+  onSelectBranch: (branch: string) => void;
+  onRollback: (commit: CommitInfo) => void;
+  onCompare: (commit1: CommitInfo, commit2: CommitInfo) => void;
+  onRefresh: () => void;
+  isLoading?: boolean;
 }
 
 export function VersionHistory({
@@ -41,72 +41,73 @@ export function VersionHistory({
   onRefresh,
   isLoading,
 }: VersionHistoryProps) {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [showBranchSelector, setShowBranchSelector] = useState(false)
-  const [expandedCommits, setExpandedCommits] = useState<Set<string>>(new Set())
-  const [compareMode, setCompareMode] = useState(false)
-  const [compareCommits, setCompareCommits] = useState<CommitInfo[]>([])
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showBranchSelector, setShowBranchSelector] = useState(false);
+  const [expandedCommits, setExpandedCommits] = useState<Set<string>>(new Set());
+  const [compareMode, setCompareMode] = useState(false);
+  const [compareCommits, setCompareCommits] = useState<CommitInfo[]>([]);
 
   const toggleExpanded = (oid: string) => {
     setExpandedCommits(prev => {
-      const next = new Set(prev)
+      const next = new Set(prev);
       if (next.has(oid)) {
-        next.delete(oid)
+        next.delete(oid);
       } else {
-        next.add(oid)
+        next.add(oid);
       }
-      return next
-    })
-  }
+      return next;
+    });
+  };
 
   const handleCompareToggle = (commit: CommitInfo) => {
     setCompareCommits(prev => {
-      const exists = prev.find(c => c.oid === commit.oid)
+      const exists = prev.find(c => c.oid === commit.oid);
       if (exists) {
-        return prev.filter(c => c.oid !== commit.oid)
+        return prev.filter(c => c.oid !== commit.oid);
       }
       if (prev.length >= 2) {
-        return [prev[1], commit]
+        return [prev[1], commit];
       }
-      return [...prev, commit]
-    })
-  }
+      return [...prev, commit];
+    });
+  };
 
   const handleCompare = () => {
     if (compareCommits.length === 2) {
-      onCompare(compareCommits[0], compareCommits[1])
-      setCompareMode(false)
-      setCompareCommits([])
+      onCompare(compareCommits[0], compareCommits[1]);
+      setCompareMode(false);
+      setCompareCommits([]);
     }
-  }
+  };
 
-  const filteredCommits = commits.filter(commit =>
-    commit.message.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    commit.author.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    commit.oid.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const filteredCommits = commits.filter(
+    commit =>
+      commit.message.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      commit.author.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      commit.oid.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const groupedCommits = useCallback(() => {
-    const groups: Record<string, CommitInfo[]> = {}
-    
+    const groups: Record<string, CommitInfo[]> = {};
+
     for (const commit of filteredCommits) {
-      const date = new Date(commit.author.timestamp)
+      const date = new Date(commit.author.timestamp);
       const key = date.toLocaleDateString('zh-CN', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
-      })
-      
-      if (!groups[key]) {
-        groups[key] = []
-      }
-      groups[key].push(commit)
-    }
-    
-    return groups
-  }, [filteredCommits])
+      });
 
-  const commitsByDate = groupedCommits()
+      if (!groups[key]) {
+        groups[key] = [];
+      }
+      groups[key].push(commit);
+    }
+
+    return groups;
+  }, [filteredCommits]);
+
+  const commitsByDate = groupedCommits();
 
   return (
     <div className="bg-app-bg-primary rounded-lg border border-app-border-primary overflow-hidden">
@@ -122,8 +123,8 @@ export function VersionHistory({
               onClick={() => setCompareMode(!compareMode)}
               className={cn(
                 'text-xs px-2 py-1 rounded transition-colors',
-                compareMode 
-                  ? 'bg-primary-100 text-primary-700' 
+                compareMode
+                  ? 'bg-primary-100 text-primary-700'
                   : 'text-app-text-secondary hover:text-app-text-primary'
               )}
             >
@@ -161,12 +162,13 @@ export function VersionHistory({
                 <button
                   key={branch.name}
                   onClick={() => {
-                    onSelectBranch(branch.name)
-                    setShowBranchSelector(false)
+                    onSelectBranch(branch.name);
+                    setShowBranchSelector(false);
                   }}
                   className={cn(
                     'w-full flex items-center gap-2 px-3 py-2 text-xs text-left hover:bg-app-bg-secondary',
-                    branch.current && 'bg-primary-50 dark:bg-slate-700 text-primary-700 dark:text-primary-300'
+                    branch.current &&
+                      'bg-primary-50 dark:bg-slate-700 text-primary-700 dark:text-primary-300'
                   )}
                 >
                   <GitBranch className="w-3.5 h-3.5" />
@@ -187,7 +189,7 @@ export function VersionHistory({
             type="text"
             placeholder="Search commits..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={e => setSearchQuery(e.target.value)}
             className="w-full pl-8 pr-3 py-1.5 text-xs border border-app-border-primary rounded bg-app-bg-primary text-app-text-primary focus:outline-none focus:ring-1 focus:ring-primary-500"
           />
         </div>
@@ -208,8 +210,8 @@ export function VersionHistory({
               </button>
               <button
                 onClick={() => {
-                  setCompareMode(false)
-                  setCompareCommits([])
+                  setCompareMode(false);
+                  setCompareCommits([]);
                 }}
                 className="px-2 py-1 text-blue-600 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded"
               >
@@ -241,10 +243,10 @@ export function VersionHistory({
                 <div className="px-4 py-2 bg-app-bg-secondary text-xs font-medium text-app-text-secondary sticky top-0">
                   {date}
                 </div>
-                {dateCommits.map((commit) => {
-                  const isSelected = selectedCommit === commit.oid
-                  const isExpanded = expandedCommits.has(commit.oid)
-                  const isCompareSelected = compareCommits.find(c => c.oid === commit.oid)
+                {dateCommits.map(commit => {
+                  const isSelected = selectedCommit === commit.oid;
+                  const isExpanded = expandedCommits.has(commit.oid);
+                  const isCompareSelected = compareCommits.find(c => c.oid === commit.oid);
 
                   return (
                     <div
@@ -258,7 +260,7 @@ export function VersionHistory({
                     >
                       {/* Timeline Line */}
                       <div className="absolute left-6 top-0 bottom-0 w-px bg-app-bg-tertiary" />
-                      
+
                       {/* Commit Dot */}
                       <div className="absolute left-4 top-4 w-4 h-4 rounded-full bg-app-bg-primary border-2 border-app-border-primary-500 z-10" />
 
@@ -364,7 +366,7 @@ export function VersionHistory({
                         </div>
                       )}
                     </div>
-                  )
+                  );
                 })}
               </div>
             ))}
@@ -377,7 +379,7 @@ export function VersionHistory({
         {filteredCommits.length} commit{filteredCommits.length !== 1 ? 's' : ''} on {currentBranch}
       </div>
     </div>
-  )
+  );
 }
 
-export default VersionHistory
+export default VersionHistory;

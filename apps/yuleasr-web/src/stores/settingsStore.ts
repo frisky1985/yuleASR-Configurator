@@ -1,66 +1,66 @@
-import { create } from 'zustand'
-import { devtools, persist } from 'zustand/middleware'
+import { create } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
 
 // Validation rule type
 interface ValidationRule {
-  id: string
-  name: string
-  enabled: boolean
-  severity: 'error' | 'warning' | 'info'
-  description?: string
+  id: string;
+  name: string;
+  enabled: boolean;
+  severity: 'error' | 'warning' | 'info';
+  description?: string;
 }
 
-export type EditorTheme = 'light' | 'dark' | 'system'
-export type UILanguage = 'zh-CN' | 'en-US'
-export type ExportFormat = 'json' | 'arxml'
-export type FileNamingRule = 'timestamp' | 'config-name' | 'custom'
+export type EditorTheme = 'light' | 'dark' | 'system';
+export type UILanguage = 'zh-CN' | 'en-US';
+export type ExportFormat = 'json' | 'arxml';
+export type FileNamingRule = 'timestamp' | 'config-name' | 'custom';
 
 export interface EditorSettings {
-  defaultExpandParams: boolean
-  autoSaveInterval: number // seconds, 0 means disabled
-  theme: EditorTheme
+  defaultExpandParams: boolean;
+  autoSaveInterval: number; // seconds, 0 means disabled
+  theme: EditorTheme;
 }
 
 export interface ValidationSettings {
-  enabled: boolean
-  rules: ValidationRule[]
+  enabled: boolean;
+  rules: ValidationRule[];
   customThresholds: {
-    maxParameterCount: number
-    maxNestingDepth: number
-    requireDescription: boolean
-  }
+    maxParameterCount: number;
+    maxNestingDepth: number;
+    requireDescription: boolean;
+  };
 }
 
 export interface ImportExportSettings {
-  defaultFormat: ExportFormat
-  fileNamingRule: FileNamingRule
-  customFilePattern: string
-  includeMetadata: boolean
+  defaultFormat: ExportFormat;
+  fileNamingRule: FileNamingRule;
+  customFilePattern: string;
+  includeMetadata: boolean;
 }
 
 export interface UISettings {
-  language: UILanguage
-  sidebarCollapsed: boolean
-  showTooltips: boolean
-  confirmBeforeDelete: boolean
+  language: UILanguage;
+  sidebarCollapsed: boolean;
+  showTooltips: boolean;
+  confirmBeforeDelete: boolean;
 }
 
 export interface SettingsState {
-  editor: EditorSettings
-  validation: ValidationSettings
-  importExport: ImportExportSettings
-  ui: UISettings
-  version: string
-  lastCheckedAt: string | null
-  
+  editor: EditorSettings;
+  validation: ValidationSettings;
+  importExport: ImportExportSettings;
+  ui: UISettings;
+  version: string;
+  lastCheckedAt: string | null;
+
   // Actions
-  updateEditorSettings: (settings: Partial<EditorSettings>) => void
-  updateValidationSettings: (settings: Partial<ValidationSettings>) => void
-  updateImportExportSettings: (settings: Partial<ImportExportSettings>) => void
-  updateUISettings: (settings: Partial<UISettings>) => void
-  setVersion: (version: string) => void
-  setLastCheckedAt: (date: string) => void
-  resetAllSettings: () => void
+  updateEditorSettings: (settings: Partial<EditorSettings>) => void;
+  updateValidationSettings: (settings: Partial<ValidationSettings>) => void;
+  updateImportExportSettings: (settings: Partial<ImportExportSettings>) => void;
+  updateUISettings: (settings: Partial<UISettings>) => void;
+  setVersion: (version: string) => void;
+  setLastCheckedAt: (date: string) => void;
+  resetAllSettings: () => void;
 }
 
 const defaultSettings = {
@@ -90,46 +90,46 @@ const defaultSettings = {
     showTooltips: true,
     confirmBeforeDelete: true,
   },
-}
+};
 
 export const useSettingsStore = create<SettingsState>()(
   devtools(
     persist(
-      (set) => ({
+      set => ({
         ...defaultSettings,
         version: '1.0.0',
         lastCheckedAt: null,
 
-        updateEditorSettings: (settings) => {
-          set((state) => ({
+        updateEditorSettings: settings => {
+          set(state => ({
             editor: { ...state.editor, ...settings },
-          }))
+          }));
         },
 
-        updateValidationSettings: (settings) => {
-          set((state) => ({
+        updateValidationSettings: settings => {
+          set(state => ({
             validation: { ...state.validation, ...settings },
-          }))
+          }));
         },
 
-        updateImportExportSettings: (settings) => {
-          set((state) => ({
+        updateImportExportSettings: settings => {
+          set(state => ({
             importExport: { ...state.importExport, ...settings },
-          }))
+          }));
         },
 
-        updateUISettings: (settings) => {
-          set((state) => ({
+        updateUISettings: settings => {
+          set(state => ({
             ui: { ...state.ui, ...settings },
-          }))
+          }));
         },
 
-        setVersion: (version) => {
-          set({ version })
+        setVersion: version => {
+          set({ version });
         },
 
-        setLastCheckedAt: (date) => {
-          set({ lastCheckedAt: date })
+        setLastCheckedAt: date => {
+          set({ lastCheckedAt: date });
         },
 
         resetAllSettings: () => {
@@ -137,12 +137,12 @@ export const useSettingsStore = create<SettingsState>()(
             ...defaultSettings,
             version: '1.0.0',
             lastCheckedAt: null,
-          })
+          });
         },
       }),
       {
         name: 'yuleasr-settings',
-        partialize: (state) => ({
+        partialize: state => ({
           editor: state.editor,
           validation: state.validation,
           importExport: state.importExport,
@@ -154,4 +154,4 @@ export const useSettingsStore = create<SettingsState>()(
     ),
     { name: 'settings-store' }
   )
-)
+);

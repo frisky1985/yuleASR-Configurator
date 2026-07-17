@@ -21,7 +21,20 @@ import { CodeBlock } from '../components/CodeBlock';
 
 const categories = ['全部', 'MCAL', 'ECUAL', 'Service', '工具链', '功能安全', '架构设计'];
 
-const hotTags = ['AutoSAR', 'CAN', 'i.MX8M', 'UDS', 'MCAL', 'RTE', '功能安全', '诊断', '配置工具', 'Docker', 'MISRA', '多核'];
+const hotTags = [
+  'AutoSAR',
+  'CAN',
+  'i.MX8M',
+  'UDS',
+  'MCAL',
+  'RTE',
+  '功能安全',
+  '诊断',
+  '配置工具',
+  'Docker',
+  'MISRA',
+  '多核',
+];
 
 interface BlogComment {
   id: string;
@@ -67,7 +80,8 @@ export const articlesData = [
     tags: ['MCAL', 'CAN', 'i.MX8M'],
     category: 'MCAL',
     hot: true,
-    content: '本平台集成了 FlexCAN 模块，支持经典 CAN 和 CAN FD 两种模式。本文将详细介绍从寄存器配置到 AutoSAR Can 模块接口的完整实现。',
+    content:
+      '本平台集成了 FlexCAN 模块，支持经典 CAN 和 CAN FD 两种模式。本文将详细介绍从寄存器配置到 AutoSAR Can 模块接口的完整实现。',
   },
   {
     id: 'blog-3',
@@ -84,7 +98,8 @@ export const articlesData = [
     tags: ['ECUAL', 'CanIf', '配置'],
     category: 'ECUAL',
     hot: true,
-    content: 'CanIf（CAN Interface）是 ECUAL 层的关键模块，负责为上层的 PduR 和 Com 提供与硬件无关的 CAN 通信接口。',
+    content:
+      'CanIf（CAN Interface）是 ECUAL 层的关键模块，负责为上层的 PduR 和 Com 提供与硬件无关的 CAN 通信接口。',
   },
   {
     id: 'blog-4',
@@ -101,7 +116,8 @@ export const articlesData = [
     tags: ['Service', 'Com', '通信'],
     category: 'Service',
     hot: false,
-    content: 'Com 模块是 AutoSAR 通信栈的核心，负责将应用层的信号数据打包成 PDU，以及将接收到的 PDU 解包成信号数据。',
+    content:
+      'Com 模块是 AutoSAR 通信栈的核心，负责将应用层的信号数据打包成 PDU，以及将接收到的 PDU 解包成信号数据。',
   },
   {
     id: 'blog-5',
@@ -118,7 +134,8 @@ export const articlesData = [
     tags: ['工具链', 'YuleConfig', '插件'],
     category: '工具链',
     hot: false,
-    content: 'YuleConfig 是 YuleTech 开源的 AutoSAR BSW 配置工具链，采用插件化架构，支持自定义模块配置界面和代码生成器开发。',
+    content:
+      'YuleConfig 是 YuleTech 开源的 AutoSAR BSW 配置工具链，采用插件化架构，支持自定义模块配置界面和代码生成器开发。',
   },
   {
     id: 'blog-6',
@@ -135,7 +152,8 @@ export const articlesData = [
     tags: ['功能安全', 'ISO 26262', 'E2E'],
     category: '功能安全',
     hot: true,
-    content: 'ISO 26262 是汽车功能安全的国际标准，AutoSAR BSW 作为基础软件，需要在架构设计和代码实现中充分考虑功能安全要求。',
+    content:
+      'ISO 26262 是汽车功能安全的国际标准，AutoSAR BSW 作为基础软件，需要在架构设计和代码实现中充分考虑功能安全要求。',
   },
   {
     id: 'blog-7',
@@ -152,7 +170,8 @@ export const articlesData = [
     tags: ['工具链', 'CI/CD', 'Docker'],
     category: '工具链',
     hot: false,
-    content: '持续集成是现代软件开发的标准实践，对于 AutoSAR BSW 这种对质量要求极高的嵌入式软件尤为重要。',
+    content:
+      '持续集成是现代软件开发的标准实践，对于 AutoSAR BSW 这种对质量要求极高的嵌入式软件尤为重要。',
   },
   {
     id: 'blog-8',
@@ -186,7 +205,8 @@ export const articlesData = [
     tags: ['架构设计', 'RTE', '代码生成'],
     category: '架构设计',
     hot: true,
-    content: 'RTE（Runtime Environment）是 AutoSAR 软件组件之间的通信接口层，其代码通常由 RTE 生成器根据 ARXML 配置自动生成。',
+    content:
+      'RTE（Runtime Environment）是 AutoSAR 软件组件之间的通信接口层，其代码通常由 RTE 生成器根据 ARXML 配置自动生成。',
   },
   {
     id: 'blog-10',
@@ -203,7 +223,8 @@ export const articlesData = [
     tags: ['工具链', 'MISRA', '代码质量'],
     category: '工具链',
     hot: false,
-    content: 'MISRA C:2012 是汽车嵌入式软件开发中最广泛使用的编码规范，遵循 MISRA 规则可以显著提高代码的安全性和可维护性。',
+    content:
+      'MISRA C:2012 是汽车嵌入式软件开发中最广泛使用的编码规范，遵循 MISRA 规则可以显著提高代码的安全性和可维护性。',
   },
 ];
 
@@ -216,7 +237,10 @@ function renderRichContent(content: string) {
   while ((match = regex.exec(content)) !== null) {
     if (match.index > lastIndex) {
       parts.push(
-        <div key={`text-${lastIndex}`} className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
+        <div
+          key={`text-${lastIndex}`}
+          className="text-sm text-foreground whitespace-pre-wrap leading-relaxed"
+        >
           {content.slice(lastIndex, match.index)}
         </div>
       );
@@ -229,7 +253,10 @@ function renderRichContent(content: string) {
 
   if (lastIndex < content.length) {
     parts.push(
-      <div key={`text-${lastIndex}`} className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
+      <div
+        key={`text-${lastIndex}`}
+        className="text-sm text-foreground whitespace-pre-wrap leading-relaxed"
+      >
         {content.slice(lastIndex)}
       </div>
     );
@@ -250,14 +277,20 @@ export function BlogPage() {
   const [activeCategory, setActiveCategory] = useState('全部');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeArticleId, setActiveArticleId] = useState<string | null>(null);
-  const [allComments, setAllComments] = useLocalStorage<BlogComment[]>('yuletech-blog-comments', []);
+  const [allComments, setAllComments] = useLocalStorage<BlogComment[]>(
+    'yuletech-blog-comments',
+    []
+  );
   const [likedArticles, setLikedArticles] = useLocalStorage<string[]>('yuletech-blog-liked', []);
-  const [articleLikes, setArticleLikes] = useLocalStorage<Record<string, number>>('yuletech-blog-likes', {});
+  const [articleLikes, setArticleLikes] = useLocalStorage<Record<string, number>>(
+    'yuletech-blog-likes',
+    {}
+  );
   const [commentContent, setCommentContent] = useState('');
   const currentUser = '我';
 
-  const activeArticle = articlesData.find((a) => a.id === activeArticleId);
-  const articleComments = allComments.filter((c) => c.articleId === activeArticleId);
+  const activeArticle = articlesData.find(a => a.id === activeArticleId);
+  const articleComments = allComments.filter(c => c.articleId === activeArticleId);
 
   const getLikes = (articleId: string, baseLikes: number) => {
     return baseLikes + (articleLikes[articleId] || 0);
@@ -267,11 +300,11 @@ export function BlogPage() {
 
   const handleLikeArticle = (articleId: string) => {
     if (isLiked(articleId)) {
-      setLikedArticles((prev) => prev.filter((id) => id !== articleId));
-      setArticleLikes((prev) => ({ ...prev, [articleId]: (prev[articleId] || 0) - 1 }));
+      setLikedArticles(prev => prev.filter(id => id !== articleId));
+      setArticleLikes(prev => ({ ...prev, [articleId]: (prev[articleId] || 0) - 1 }));
     } else {
-      setLikedArticles((prev) => [...prev, articleId]);
-      setArticleLikes((prev) => ({ ...prev, [articleId]: (prev[articleId] || 0) + 1 }));
+      setLikedArticles(prev => [...prev, articleId]);
+      setArticleLikes(prev => ({ ...prev, [articleId]: (prev[articleId] || 0) + 1 }));
     }
   };
 
@@ -287,31 +320,33 @@ export function BlogPage() {
       likedBy: [],
       createdAt: new Date().toISOString(),
     };
-    setAllComments((prev) => [...prev, newComment]);
+    setAllComments(prev => [...prev, newComment]);
     setCommentContent('');
   };
 
   const handleLikeComment = (commentId: string) => {
-    setAllComments((prev) =>
-      prev.map((c) => {
+    setAllComments(prev =>
+      prev.map(c => {
         if (c.id !== commentId) return c;
         const alreadyLiked = c.likedBy.includes(currentUser);
         return {
           ...c,
           likes: alreadyLiked ? c.likes - 1 : c.likes + 1,
-          likedBy: alreadyLiked ? c.likedBy.filter((u) => u !== currentUser) : [...c.likedBy, currentUser],
+          likedBy: alreadyLiked
+            ? c.likedBy.filter(u => u !== currentUser)
+            : [...c.likedBy, currentUser],
         };
       })
     );
   };
 
-  const filteredArticles = articlesData.filter((a) => {
+  const filteredArticles = articlesData.filter(a => {
     const matchCategory = activeCategory === '全部' || a.category === activeCategory;
     const matchSearch =
       searchQuery === '' ||
       a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       a.desc.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      a.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
+      a.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchCategory && matchSearch;
   });
 
@@ -333,7 +368,10 @@ export function BlogPage() {
     <div className="min-h-screen pt-16">
       <Helmet>
         <title>技术博客 - YuleTech | AutoSAR BSW 技术文章</title>
-        <meta name="description" content="由 YuleTech 技术团队和社区专家撰写的深度技术文章，涵盖 AutoSAR BSW 各层级的开发实践、架构设计与性能优化经验。" />
+        <meta
+          name="description"
+          content="由 YuleTech 技术团队和社区专家撰写的深度技术文章，涵盖 AutoSAR BSW 各层级的开发实践、架构设计与性能优化经验。"
+        />
       </Helmet>
       {/* Hero */}
       <section className="relative py-20 overflow-hidden bg-gradient-to-b from-[hsl(var(--primary))]/5 to-transparent">
@@ -357,7 +395,7 @@ export function BlogPage() {
                 type="text"
                 placeholder="搜索文章、标签、作者..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 rounded-xl bg-card border border-border text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/50 shadow-elegant"
               />
             </div>
@@ -401,8 +439,11 @@ export function BlogPage() {
               <div className="flex flex-col lg:flex-row gap-6">
                 <div className="flex-1">
                   <div className="flex flex-wrap gap-2 mb-3">
-                    {articlesData[0].tags.map((tag) => (
-                      <span key={tag} className="px-2 py-0.5 bg-muted rounded-md text-xs text-muted-foreground">
+                    {articlesData[0].tags.map(tag => (
+                      <span
+                        key={tag}
+                        className="px-2 py-0.5 bg-muted rounded-md text-xs text-muted-foreground"
+                      >
                         {tag}
                       </span>
                     ))}
@@ -420,7 +461,9 @@ export function BlogPage() {
                         {articlesData[0].avatar}
                       </div>
                       <div>
-                        <span className="font-medium text-foreground">{articlesData[0].author}</span>
+                        <span className="font-medium text-foreground">
+                          {articlesData[0].author}
+                        </span>
                         <span className="text-xs ml-1">{articlesData[0].role}</span>
                       </div>
                     </div>
@@ -436,7 +479,8 @@ export function BlogPage() {
                         isLiked(articlesData[0].id) ? 'text-[hsl(var(--accent))]' : ''
                       }`}
                     >
-                      <ThumbsUp className="w-3.5 h-3.5" /> {getLikes(articlesData[0].id, articlesData[0].likes)}
+                      <ThumbsUp className="w-3.5 h-3.5" />{' '}
+                      {getLikes(articlesData[0].id, articlesData[0].likes)}
                     </button>
                     <span className="flex items-center gap-1">
                       <MessageSquare className="w-3.5 h-3.5" /> {articlesData[0].comments}
@@ -462,7 +506,7 @@ export function BlogPage() {
       <section className="py-8 sticky top-16 z-30 bg-background/80 backdrop-blur-xl border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 overflow-x-auto pb-2">
-            {categories.map((cat) => (
+            {categories.map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
@@ -487,9 +531,15 @@ export function BlogPage() {
             <div className="flex-1 space-y-4">
               <div className="flex items-center justify-between mb-2">
                 <h2 className="text-xl font-bold">
-                  {searchQuery ? `搜索结果："${searchQuery}"` : activeCategory === '全部' ? '最新文章' : `${activeCategory} 文章`}
+                  {searchQuery
+                    ? `搜索结果："${searchQuery}"`
+                    : activeCategory === '全部'
+                      ? '最新文章'
+                      : `${activeCategory} 文章`}
                 </h2>
-                <span className="text-sm text-muted-foreground">共 {filteredArticles.length} 篇</span>
+                <span className="text-sm text-muted-foreground">
+                  共 {filteredArticles.length} 篇
+                </span>
               </div>
               {filteredArticles.length === 0 && (
                 <div className="text-center py-16 text-muted-foreground">
@@ -497,15 +547,18 @@ export function BlogPage() {
                   <p>没有找到相关文章</p>
                 </div>
               )}
-              {filteredArticles.map((article) => (
+              {filteredArticles.map(article => (
                 <div
                   key={article.id}
                   className="group bg-card border border-border rounded-xl p-5 hover:border-[hsl(var(--accent))]/30 transition-all hover:shadow-elegant"
                 >
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <div className="flex flex-wrap gap-2">
-                      {article.tags.map((tag) => (
-                        <span key={tag} className="px-2 py-0.5 bg-muted rounded-md text-xs text-muted-foreground">
+                      {article.tags.map(tag => (
+                        <span
+                          key={tag}
+                          className="px-2 py-0.5 bg-muted rounded-md text-xs text-muted-foreground"
+                        >
                           {tag}
                         </span>
                       ))}
@@ -545,7 +598,9 @@ export function BlogPage() {
                       <ThumbsUp className="w-3.5 h-3.5" /> {getLikes(article.id, article.likes)}
                     </button>
                     <span className="flex items-center gap-1">
-                      <MessageSquare className="w-3.5 h-3.5" /> {article.comments + articleComments.filter((c) => c.articleId === article.id).length}
+                      <MessageSquare className="w-3.5 h-3.5" />{' '}
+                      {article.comments +
+                        articleComments.filter(c => c.articleId === article.id).length}
                     </span>
                     <span className="ml-auto">{article.date}</span>
                   </div>
@@ -559,7 +614,7 @@ export function BlogPage() {
               <div className="bg-card border border-border rounded-xl p-5">
                 <h3 className="font-semibold mb-4">热门标签</h3>
                 <div className="flex flex-wrap gap-2">
-                  {hotTags.map((tag) => (
+                  {hotTags.map(tag => (
                     <button
                       key={tag}
                       onClick={() => setSearchQuery(tag)}
@@ -610,7 +665,7 @@ export function BlogPage() {
                     { name: '张明', role: '嵌入式工程师', articles: 12 },
                     { name: '陈工', role: '功能安全工程师', articles: 9 },
                     { name: '刘洋', role: 'DevOps工程师', articles: 7 },
-                  ].map((author) => (
+                  ].map(author => (
                     <div key={author.name} className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent))] flex items-center justify-center text-white text-xs font-bold">
                         {author.name.slice(0, 2)}
@@ -632,7 +687,9 @@ export function BlogPage() {
               <div className="bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent))] rounded-xl p-5 text-white text-center">
                 <FileText className="w-8 h-8 mx-auto mb-3 opacity-90" />
                 <h3 className="font-semibold mb-2">成为技术作者</h3>
-                <p className="text-sm text-white/80 mb-4">分享你的 AutoSAR 开发经验，与社区共同成长</p>
+                <p className="text-sm text-white/80 mb-4">
+                  分享你的 AutoSAR 开发经验，与社区共同成长
+                </p>
                 <button className="w-full py-2.5 bg-white text-[hsl(var(--primary))] rounded-lg text-sm font-semibold hover:bg-white/90 transition-colors">
                   开始写作
                 </button>
@@ -679,14 +736,18 @@ export function BlogPage() {
                     isLiked(activeArticle.id) ? 'text-[hsl(var(--accent))]' : ''
                   }`}
                 >
-                  <ThumbsUp className="w-3.5 h-3.5" /> {getLikes(activeArticle.id, activeArticle.likes)}
+                  <ThumbsUp className="w-3.5 h-3.5" />{' '}
+                  {getLikes(activeArticle.id, activeArticle.likes)}
                 </button>
               </div>
 
               {/* Tags */}
               <div className="flex flex-wrap gap-2">
-                {activeArticle.tags.map((tag) => (
-                  <span key={tag} className="px-2 py-0.5 bg-muted rounded-md text-xs text-muted-foreground">
+                {activeArticle.tags.map(tag => (
+                  <span
+                    key={tag}
+                    className="px-2 py-0.5 bg-muted rounded-md text-xs text-muted-foreground"
+                  >
                     {tag}
                   </span>
                 ))}
@@ -701,10 +762,12 @@ export function BlogPage() {
                   评论 ({articleComments.length + activeArticle.comments})
                 </h4>
                 {articleComments.length === 0 && (
-                  <p className="text-sm text-muted-foreground text-center py-4">暂无评论，来抢沙发吧！</p>
+                  <p className="text-sm text-muted-foreground text-center py-4">
+                    暂无评论，来抢沙发吧！
+                  </p>
                 )}
                 <div className="space-y-4">
-                  {articleComments.map((comment) => (
+                  {articleComments.map(comment => (
                     <div key={comment.id} className="flex gap-3 pl-4 border-l-2 border-border">
                       <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center text-xs font-bold text-muted-foreground">
                         {comment.avatar}
@@ -712,9 +775,13 @@ export function BlogPage() {
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
                           <span className="text-sm font-medium">{comment.author}</span>
-                          <span className="text-xs text-muted-foreground ml-auto">{formatTime(comment.createdAt)}</span>
+                          <span className="text-xs text-muted-foreground ml-auto">
+                            {formatTime(comment.createdAt)}
+                          </span>
                         </div>
-                        <div className="text-sm text-foreground">{renderRichContent(comment.content)}</div>
+                        <div className="text-sm text-foreground">
+                          {renderRichContent(comment.content)}
+                        </div>
                         <button
                           onClick={() => handleLikeComment(comment.id)}
                           className={`flex items-center gap-1 mt-2 text-xs transition-colors ${
@@ -739,7 +806,7 @@ export function BlogPage() {
                   <div className="flex-1 flex gap-2">
                     <textarea
                       value={commentContent}
-                      onChange={(e) => setCommentContent(e.target.value)}
+                      onChange={e => setCommentContent(e.target.value)}
                       placeholder="写下你的评论..."
                       rows={3}
                       className="flex-1 px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30 resize-none"

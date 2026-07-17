@@ -61,8 +61,13 @@ export function ModuleDetailPage() {
   return (
     <div className="min-h-screen pt-16">
       <Helmet>
-        <title>{mod.name} - {mod.layer} 模块详情 | YuleTech</title>
-        <meta name="description" content={`${mod.shortDesc}。基于 AutoSAR Classic Platform 4.x 标准实现。`} />
+        <title>
+          {mod.name} - {mod.layer} 模块详情 | YuleTech
+        </title>
+        <meta
+          name="description"
+          content={`${mod.shortDesc}。基于 AutoSAR Classic Platform 4.x 标准实现。`}
+        />
       </Helmet>
 
       {/* Header */}
@@ -77,7 +82,9 @@ export function ModuleDetailPage() {
           </button>
 
           <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-            <div className={`w-14 h-14 rounded-xl ${layerColor} flex items-center justify-center border shrink-0`}>
+            <div
+              className={`w-14 h-14 rounded-xl ${layerColor} flex items-center justify-center border shrink-0`}
+            >
               <LayerIcon className="w-7 h-7" />
             </div>
             <div className="flex-1 min-w-0">
@@ -107,7 +114,9 @@ export function ModuleDetailPage() {
                   <GitFork className="w-4 h-4" /> {mod.forks}
                 </span>
                 {mod.version !== '-' && (
-                  <span className="font-mono text-xs px-2 py-0.5 rounded-md bg-muted text-muted-foreground">{mod.version}</span>
+                  <span className="font-mono text-xs px-2 py-0.5 rounded-md bg-muted text-muted-foreground">
+                    {mod.version}
+                  </span>
                 )}
                 <span className="flex items-center gap-1.5 text-muted-foreground">
                   <Zap className="w-4 h-4" /> {mod.layer}
@@ -169,10 +178,19 @@ export function ModuleDetailPage() {
                       </thead>
                       <tbody>
                         {mod.apis.map((api, i) => (
-                          <tr key={i} className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors">
-                            <td className="px-4 py-3 font-mono font-medium whitespace-nowrap">{api.name}</td>
-                            <td className="px-4 py-3 font-mono text-xs text-muted-foreground whitespace-nowrap">{api.params}</td>
-                            <td className="px-4 py-3 font-mono text-xs text-muted-foreground whitespace-nowrap">{api.returns}</td>
+                          <tr
+                            key={i}
+                            className="border-b border-border last:border-0 hover:bg-muted/30 transition-colors"
+                          >
+                            <td className="px-4 py-3 font-mono font-medium whitespace-nowrap">
+                              {api.name}
+                            </td>
+                            <td className="px-4 py-3 font-mono text-xs text-muted-foreground whitespace-nowrap">
+                              {api.params}
+                            </td>
+                            <td className="px-4 py-3 font-mono text-xs text-muted-foreground whitespace-nowrap">
+                              {api.returns}
+                            </td>
                             <td className="px-4 py-3 text-muted-foreground">{api.desc}</td>
                           </tr>
                         ))}
@@ -192,7 +210,9 @@ export function ModuleDetailPage() {
                 </h2>
                 <div className="bg-muted/50 border border-border rounded-xl overflow-hidden">
                   <div className="flex items-center justify-between px-4 py-2 bg-muted border-b border-border">
-                    <span className="text-xs font-medium text-muted-foreground uppercase">{mod.codeLanguage}</span>
+                    <span className="text-xs font-medium text-muted-foreground uppercase">
+                      {mod.codeLanguage}
+                    </span>
                   </div>
                   <pre className="p-4 overflow-x-auto text-sm leading-relaxed">
                     <code className="font-mono text-foreground">{mod.codeExample}</code>
@@ -217,7 +237,9 @@ export function ModuleDetailPage() {
                       </div>
                       <ul className="space-y-1">
                         {cl.changes.map((c, j) => (
-                          <li key={j} className="text-sm text-muted-foreground">• {c}</li>
+                          <li key={j} className="text-sm text-muted-foreground">
+                            • {c}
+                          </li>
                         ))}
                       </ul>
                     </div>
@@ -242,7 +264,9 @@ export function ModuleDetailPage() {
                       <div className="font-mono font-medium text-foreground">{cfg.name}</div>
                       <div className="text-xs text-muted-foreground mt-0.5">{cfg.desc}</div>
                       {cfg.default && (
-                        <div className="text-xs text-[hsl(var(--accent))] mt-0.5">默认: {cfg.default}</div>
+                        <div className="text-xs text-[hsl(var(--accent))] mt-0.5">
+                          默认: {cfg.default}
+                        </div>
                       )}
                     </div>
                   ))}
@@ -258,8 +282,11 @@ export function ModuleDetailPage() {
                   依赖模块
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {mod.dependencies.map((dep) => (
-                    <span key={dep} className="text-xs px-2.5 py-1 rounded-md bg-muted text-muted-foreground font-mono">
+                  {mod.dependencies.map(dep => (
+                    <span
+                      key={dep}
+                      className="text-xs px-2.5 py-1 rounded-md bg-muted text-muted-foreground font-mono"
+                    >
                       {dep}
                     </span>
                   ))}

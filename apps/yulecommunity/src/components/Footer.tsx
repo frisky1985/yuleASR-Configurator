@@ -46,13 +46,22 @@ export function Footer() {
               国内领先的汽车基础软件开源社区，为工程师提供 AutoSAR BSW 开源代码和开发工具链。
             </p>
             <div className="flex items-center gap-3">
-              <a href="#" className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors">
+              <a
+                href="#"
+                className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors"
+              >
                 <GitBranch className="w-4 h-4" />
               </a>
-              <a href="#" className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors">
+              <a
+                href="#"
+                className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors"
+              >
                 <MessageCircle className="w-4 h-4" />
               </a>
-              <a href="#" className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors">
+              <a
+                href="#"
+                className="w-9 h-9 rounded-lg bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors"
+              >
                 <Mail className="w-4 h-4" />
               </a>
             </div>
@@ -63,7 +72,7 @@ export function Footer() {
             <div key={category}>
               <h4 className="font-semibold text-sm mb-4">{category}</h4>
               <ul className="space-y-2">
-                {links.map((link) => (
+                {links.map(link => (
                   <li key={link.label}>
                     <a
                       href={link.href}
@@ -84,9 +93,7 @@ export function Footer() {
             <MapPin className="w-4 h-4" />
             上海予乐电子科技有限公司
           </div>
-          <p className="text-sm text-muted-foreground">
-            © 2026 YuleTech. 保留所有权利。
-          </p>
+          <p className="text-sm text-muted-foreground">© 2026 YuleTech. 保留所有权利。</p>
         </div>
       </div>
     </footer>

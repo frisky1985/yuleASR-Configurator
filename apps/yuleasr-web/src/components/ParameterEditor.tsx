@@ -1,16 +1,26 @@
-import { RotateCcw, Plus, X, Link, AlertCircle, Check, ChevronDown, Info, Search } from 'lucide-react'
-import { useState, useCallback, useMemo, useRef, useEffect } from 'react'
+import {
+  RotateCcw,
+  Plus,
+  X,
+  Link,
+  AlertCircle,
+  Check,
+  ChevronDown,
+  Info,
+  Search,
+} from 'lucide-react';
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 
-import { cn } from '@/lib/utils'
-import type { ConfigParameter, ValidationIssue } from '@/types'
+import { cn } from '@/lib/utils';
+import type { ConfigParameter, ValidationIssue } from '@/types';
 
 interface ParameterEditorProps {
-  parameter: ConfigParameter
-  error?: ValidationIssue
-  warning?: ValidationIssue
-  onChange: (value: unknown) => void
-  onValidate?: (value: unknown) => ValidationIssue | null
-  compact?: boolean
+  parameter: ConfigParameter;
+  error?: ValidationIssue;
+  warning?: ValidationIssue;
+  onChange: (value: unknown) => void;
+  onValidate?: (value: unknown) => ValidationIssue | null;
+  compact?: boolean;
 }
 
 export function ParameterEditor({
@@ -21,184 +31,175 @@ export function ParameterEditor({
   onValidate,
   compact = false,
 }: ParameterEditorProps) {
-  const {
-    type,
-    name,
-    description,
-    min,
-    max,
-    options,
-    defaultValue,
-    itemType,
-    referenceTarget,
-  } = parameter
+  const { type, name, description, min, max, options, defaultValue, itemType, referenceTarget } =
+    parameter;
 
-  const [value, setValue] = useState<unknown>(parameter.value ?? defaultValue)
-  const [isDirty, setIsDirty] = useState(false)
-  const [localError, setLocalError] = useState<string | null>(null)
-  const [isValidating, setIsValidating] = useState(false)
-  const [enumSearch, setEnumSearch] = useState('')
+  const [value, setValue] = useState<unknown>(parameter.value ?? defaultValue);
+  const [isDirty, setIsDirty] = useState(false);
+  const [localError, setLocalError] = useState<string | null>(null);
+  const [isValidating, setIsValidating] = useState(false);
+  const [enumSearch, setEnumSearch] = useState('');
 
   // Determine if current value matches default
   const isDefault = useMemo(() => {
-    if (defaultValue === undefined) return false
-    return value === defaultValue
-  }, [value, defaultValue])
+    if (defaultValue === undefined) return false;
+    return value === defaultValue;
+  }, [value, defaultValue]);
 
   // Filtered enum options for search
   const filteredEnumOptions = useMemo(() => {
-    if (!options) return []
-    if (!enumSearch) return options
-    return options.filter((option) => {
-      const label = typeof option === 'string' ? option : option.label
-      return label.toLowerCase().includes(enumSearch.toLowerCase())
-    })
-  }, [options, enumSearch])
+    if (!options) return [];
+    if (!enumSearch) return options;
+    return options.filter(option => {
+      const label = typeof option === 'string' ? option : option.label;
+      return label.toLowerCase().includes(enumSearch.toLowerCase());
+    });
+  }, [options, enumSearch]);
 
   // Check if we should show a range slider for numeric types
   const showRangeSlider = useMemo(() => {
-    if (type !== 'integer' && type !== 'float') return false
-    if (min === undefined || max === undefined) return false
-    const range = max - min
-    return range > 0 && range <= 1000
-  }, [type, min, max])
+    if (type !== 'integer' && type !== 'float') return false;
+    if (min === undefined || max === undefined) return false;
+    const range = max - min;
+    return range > 0 && range <= 1000;
+  }, [type, min, max]);
 
-  const searchInputRef = useRef<HTMLInputElement>(null)
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (type === 'enum' && options && options.length > 5 && searchInputRef.current) {
-      searchInputRef.current.focus()
+      searchInputRef.current.focus();
     }
-  }, [type, options])
+  }, [type, options]);
 
   // Validate value
   const validateValue = useCallback(
     (val: unknown): string | null => {
       // Required check
       if (val === undefined || val === null || val === '') {
-        return 'This field is required'
+        return 'This field is required';
       }
 
       // Type-specific validation
       switch (type) {
         case 'integer':
           if (!Number.isInteger(val)) {
-            return 'Must be an integer'
+            return 'Must be an integer';
           }
           if (min !== undefined && (val as number) < min) {
-            return `Minimum value is ${min}`
+            return `Minimum value is ${min}`;
           }
           if (max !== undefined && (val as number) > max) {
-            return `Maximum value is ${max}`
+            return `Maximum value is ${max}`;
           }
-          break
+          break;
 
         case 'float':
           if (typeof val !== 'number' || isNaN(val)) {
-            return 'Must be a valid number'
+            return 'Must be a valid number';
           }
           if (min !== undefined && val < min) {
-            return `Minimum value is ${min}`
+            return `Minimum value is ${min}`;
           }
           if (max !== undefined && val > max) {
-            return `Maximum value is ${max}`
+            return `Maximum value is ${max}`;
           }
-          break
+          break;
 
         case 'string':
           if (typeof val !== 'string') {
-            return 'Must be a string'
+            return 'Must be a string';
           }
-          break
+          break;
 
         case 'array':
           if (!Array.isArray(val)) {
-            return 'Must be an array'
+            return 'Must be an array';
           }
-          break
+          break;
 
         case 'reference':
           if (typeof val !== 'string' || !val) {
-            return 'Reference target is required'
+            return 'Reference target is required';
           }
-          break
+          break;
       }
 
       // Custom validation
       if (onValidate) {
-        const customError = onValidate(val)
+        const customError = onValidate(val);
         if (customError) {
-          return customError.message
+          return customError.message;
         }
       }
 
-      return null
+      return null;
     },
     [type, min, max, onValidate]
-  )
+  );
 
   // Handle value change with validation
   const handleChange = useCallback(
     (newValue: unknown) => {
-      setValue(newValue)
-      setIsDirty(true)
-      setIsValidating(true)
+      setValue(newValue);
+      setIsDirty(true);
+      setIsValidating(true);
 
       // Debounced validation
-      const validationError = validateValue(newValue)
-      setLocalError(validationError)
-      setIsValidating(false)
+      const validationError = validateValue(newValue);
+      setLocalError(validationError);
+      setIsValidating(false);
 
       // Only propagate if valid or empty
       if (!validationError || newValue === '') {
-        onChange(newValue)
+        onChange(newValue);
       }
     },
     [onChange, validateValue]
-  )
+  );
 
   // Reset to default value
   const handleReset = useCallback(() => {
-    setValue(defaultValue)
-    setIsDirty(false)
-    setLocalError(null)
-    onChange(defaultValue)
-  }, [defaultValue, onChange])
+    setValue(defaultValue);
+    setIsDirty(false);
+    setLocalError(null);
+    onChange(defaultValue);
+  }, [defaultValue, onChange]);
 
   // Array value handlers
   const handleArrayAdd = useCallback(() => {
-    const currentArray = Array.isArray(value) ? value : []
-    let newItem: unknown
+    const currentArray = Array.isArray(value) ? value : [];
+    let newItem: unknown;
 
     switch (itemType) {
       case 'integer':
       case 'float':
-        newItem = 0
-        break
+        newItem = 0;
+        break;
       default:
-        newItem = ''
+        newItem = '';
     }
 
-    handleChange([...currentArray, newItem])
-  }, [value, itemType, handleChange])
+    handleChange([...currentArray, newItem]);
+  }, [value, itemType, handleChange]);
 
   const handleArrayRemove = useCallback(
     (index: number) => {
-      const currentArray = Array.isArray(value) ? value : []
-      handleChange(currentArray.filter((_, i) => i !== index))
+      const currentArray = Array.isArray(value) ? value : [];
+      handleChange(currentArray.filter((_, i) => i !== index));
     },
     [value, handleChange]
-  )
+  );
 
   const handleArrayItemChange = useCallback(
     (index: number, itemValue: unknown) => {
-      const currentArray = Array.isArray(value) ? value : []
-      const newArray = [...currentArray]
-      newArray[index] = itemValue
-      handleChange(newArray)
+      const currentArray = Array.isArray(value) ? value : [];
+      const newArray = [...currentArray];
+      newArray[index] = itemValue;
+      handleChange(newArray);
     },
     [value, handleChange]
-  )
+  );
 
   // Base input class
   const baseInputClass = cn(
@@ -209,7 +210,7 @@ export function ParameterEditor({
         ? 'border-yellow-300 focus:border-yellow-500 focus:ring-yellow-500'
         : 'border-primary focus:border-primary-500',
     isValidating && 'opacity-70'
-  )
+  );
 
   // Type badge colors
   const typeBadgeColors: Record<string, string> = {
@@ -220,7 +221,7 @@ export function ParameterEditor({
     enum: 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300',
     array: 'bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300',
     reference: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-300',
-  }
+  };
 
   // Render input based on type
   const renderInput = () => {
@@ -242,11 +243,9 @@ export function ParameterEditor({
                 )}
               />
             </button>
-            <span className="text-sm text-primary">
-              {value ? 'Enabled' : 'Disabled'}
-            </span>
+            <span className="text-sm text-primary">{value ? 'Enabled' : 'Disabled'}</span>
           </div>
-        )
+        );
 
       case 'integer':
       case 'float':
@@ -260,12 +259,10 @@ export function ParameterEditor({
                   min={min}
                   max={max}
                   step={type === 'float' ? 0.01 : 1}
-                  onChange={(e) => {
+                  onChange={e => {
                     const val =
-                      type === 'integer'
-                        ? parseInt(e.target.value)
-                        : parseFloat(e.target.value)
-                    handleChange(isNaN(val) ? '' : val)
+                      type === 'integer' ? parseInt(e.target.value) : parseFloat(e.target.value);
+                    handleChange(isNaN(val) ? '' : val);
                   }}
                   className="flex-1 h-2 bg-app-bg-tertiary rounded-lg appearance-none cursor-pointer accent-primary-600"
                 />
@@ -276,12 +273,10 @@ export function ParameterEditor({
                 min={min}
                 max={max}
                 step={type === 'float' ? 0.01 : 1}
-                onChange={(e) => {
+                onChange={e => {
                   const val =
-                    type === 'integer'
-                      ? parseInt(e.target.value)
-                      : parseFloat(e.target.value)
-                  handleChange(isNaN(val) ? '' : val)
+                    type === 'integer' ? parseInt(e.target.value) : parseFloat(e.target.value);
+                  handleChange(isNaN(val) ? '' : val);
                 }}
                 className={cn(baseInputClass, showRangeSlider ? 'w-24 shrink-0' : 'w-full')}
                 placeholder={`Enter ${type} value...`}
@@ -293,10 +288,10 @@ export function ParameterEditor({
               </span>
             )}
           </div>
-        )
+        );
 
       case 'enum': {
-        const hasManyOptions = options && options.length > 5
+        const hasManyOptions = options && options.length > 5;
 
         if (hasManyOptions) {
           return (
@@ -307,13 +302,10 @@ export function ParameterEditor({
                   ref={searchInputRef}
                   type="text"
                   value={enumSearch}
-                  onChange={(e) => setEnumSearch(e.target.value)}
+                  onChange={e => setEnumSearch(e.target.value)}
                   placeholder="Search options..."
                   autoFocus
-                  className={cn(
-                    baseInputClass,
-                    'pl-8 py-1.5 text-xs'
-                  )}
+                  className={cn(baseInputClass, 'pl-8 py-1.5 text-xs')}
                 />
               </div>
               <div className="max-h-48 overflow-y-auto border border-app-border-primary rounded-md divide-y divide-app-border-primary">
@@ -323,44 +315,42 @@ export function ParameterEditor({
                   </div>
                 ) : (
                   filteredEnumOptions.map((option, index) => {
-                    const optValue = typeof option === 'string' ? option : String(option.value)
-                    const optLabel = typeof option === 'string' ? option : option.label
-                    const isSelected = String(value ?? '') === optValue
+                    const optValue = typeof option === 'string' ? option : String(option.value);
+                    const optLabel = typeof option === 'string' ? option : option.label;
+                    const isSelected = String(value ?? '') === optValue;
                     return (
                       <button
                         key={index}
                         onClick={() => {
-                          handleChange(optValue)
-                          setEnumSearch('')
+                          handleChange(optValue);
+                          setEnumSearch('');
                         }}
                         className={cn(
                           'w-full text-left px-3 py-2 text-xs transition-colors hover:bg-primary-50',
-                          isSelected
-                            ? 'bg-primary-50 text-primary-700 font-medium'
-                            : 'text-primary'
+                          isSelected ? 'bg-primary-50 text-primary-700 font-medium' : 'text-primary'
                         )}
                       >
                         {optLabel}
                       </button>
-                    )
+                    );
                   })
                 )}
               </div>
             </div>
-          )
+          );
         }
 
         return (
           <div className="relative">
             <select
               value={String(value ?? '')}
-              onChange={(e) => handleChange(e.target.value)}
+              onChange={e => handleChange(e.target.value)}
               className={cn(baseInputClass, 'appearance-none cursor-pointer')}
             >
               <option value="">Select an option...</option>
               {options?.map((option, index) => (
-                <option 
-                  key={index} 
+                <option
+                  key={index}
                   value={typeof option === 'string' ? option : String(option.value)}
                 >
                   {typeof option === 'string' ? option : option.label}
@@ -369,11 +359,11 @@ export function ParameterEditor({
             </select>
             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-app-text-tertiary pointer-events-none" />
           </div>
-        )
+        );
       }
 
       case 'array':
-        const arrayValue = Array.isArray(value) ? value : []
+        const arrayValue = Array.isArray(value) ? value : [];
         return (
           <div className="space-y-2">
             {arrayValue.map((item, index) => (
@@ -383,14 +373,14 @@ export function ParameterEditor({
                   type={itemType === 'integer' || itemType === 'float' ? 'number' : 'text'}
                   value={typeof item === 'number' ? item : String(item ?? '')}
                   step={itemType === 'float' ? 0.01 : 1}
-                  onChange={(e) => {
+                  onChange={e => {
                     const val =
                       itemType === 'integer'
                         ? parseInt(e.target.value)
                         : itemType === 'float'
                           ? parseFloat(e.target.value)
-                          : e.target.value
-                    handleArrayItemChange(index, isNaN(val as number) ? '' : val)
+                          : e.target.value;
+                    handleArrayItemChange(index, isNaN(val as number) ? '' : val);
                   }}
                   className={cn(baseInputClass, 'flex-1')}
                 />
@@ -411,7 +401,7 @@ export function ParameterEditor({
               Add item
             </button>
           </div>
-        )
+        );
 
       case 'reference':
         return (
@@ -422,16 +412,14 @@ export function ParameterEditor({
             <input
               type="text"
               value={String(value ?? '')}
-              onChange={(e) => handleChange(e.target.value)}
+              onChange={e => handleChange(e.target.value)}
               className={cn(baseInputClass, 'pl-10')}
               placeholder={
-                referenceTarget
-                  ? `Reference to ${referenceTarget}...`
-                  : 'Enter reference...'
+                referenceTarget ? `Reference to ${referenceTarget}...` : 'Enter reference...'
               }
             />
           </div>
-        )
+        );
 
       case 'string':
       default:
@@ -439,16 +427,16 @@ export function ParameterEditor({
           <input
             type="text"
             value={String(value ?? '')}
-            onChange={(e) => handleChange(e.target.value)}
+            onChange={e => handleChange(e.target.value)}
             className={baseInputClass}
             placeholder="Enter value..."
           />
-        )
+        );
     }
-  }
+  };
 
-  const displayError = error?.message || localError
-  const displayWarning = warning?.message
+  const displayError = error?.message || localError;
+  const displayWarning = warning?.message;
 
   if (compact) {
     return (
@@ -456,10 +444,12 @@ export function ParameterEditor({
         <div className="flex items-center gap-2">
           {renderInput()}
           {type && (
-            <span className={cn(
-              'text-[10px] uppercase font-semibold px-1 py-0.5 rounded shrink-0',
-              typeBadgeColors[type] || 'bg-app-bg-tertiary text-app-text-secondary'
-            )}>
+            <span
+              className={cn(
+                'text-[10px] uppercase font-semibold px-1 py-0.5 rounded shrink-0',
+                typeBadgeColors[type] || 'bg-app-bg-tertiary text-app-text-secondary'
+              )}
+            >
               {type}
             </span>
           )}
@@ -480,7 +470,7 @@ export function ParameterEditor({
           </p>
         )}
       </div>
-    )
+    );
   }
 
   return (
@@ -499,10 +489,12 @@ export function ParameterEditor({
             />
           )}
           <label className="text-sm font-medium text-primary">{name}</label>
-          <span className={cn(
-            'text-xs uppercase font-semibold px-1.5 py-0.5 rounded',
-            typeBadgeColors[type] || 'bg-app-bg-tertiary text-app-text-secondary'
-          )}>
+          <span
+            className={cn(
+              'text-xs uppercase font-semibold px-1.5 py-0.5 rounded',
+              typeBadgeColors[type] || 'bg-app-bg-tertiary text-app-text-secondary'
+            )}
+          >
             {type}
           </span>
           {/* Description tooltip */}
@@ -565,5 +557,5 @@ export function ParameterEditor({
         </p>
       )}
     </div>
-  )
+  );
 }

@@ -4,7 +4,10 @@ import { useNotifications } from '../hooks/useNotifications';
 import { useNavigate } from 'react-router-dom';
 import type { NotificationType } from '../hooks/useNotifications';
 
-const typeConfig: Record<NotificationType, { icon: typeof MessageSquare; color: string; bg: string; label: string }> = {
+const typeConfig: Record<
+  NotificationType,
+  { icon: typeof MessageSquare; color: string; bg: string; label: string }
+> = {
   reply: { icon: MessageSquare, color: 'text-blue-500', bg: 'bg-blue-500/10', label: '回复' },
   answer: { icon: HelpCircle, color: 'text-amber-500', bg: 'bg-amber-500/10', label: '回答' },
   event_start: { icon: Calendar, color: 'text-green-500', bg: 'bg-green-500/10', label: '活动' },
@@ -27,7 +30,7 @@ export function NotificationCenter() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleClick = (notif: typeof notifications[0]) => {
+  const handleClick = (notif: (typeof notifications)[0]) => {
     if (!notif.read) markAsRead(notif.id);
     if (notif.link) {
       navigate(notif.link);
@@ -71,7 +74,7 @@ export function NotificationCenter() {
                 <p>暂无通知</p>
               </div>
             )}
-            {notifications.map((notif) => {
+            {notifications.map(notif => {
               const config = typeConfig[notif.type];
               const Icon = config.icon;
               return (
@@ -80,16 +83,22 @@ export function NotificationCenter() {
                   onClick={() => handleClick(notif)}
                   className={`w-full text-left px-4 py-3 hover:bg-muted transition-colors border-b border-border last:border-b-0 flex gap-3 ${!notif.read ? 'bg-muted/30' : ''}`}
                 >
-                  <div className={`w-8 h-8 rounded-full ${config.bg} flex items-center justify-center flex-shrink-0`}>
+                  <div
+                    className={`w-8 h-8 rounded-full ${config.bg} flex items-center justify-center flex-shrink-0`}
+                  >
                     <Icon className={`w-4 h-4 ${config.color}`} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-medium text-muted-foreground">{config.label}</span>
+                      <span className="text-xs font-medium text-muted-foreground">
+                        {config.label}
+                      </span>
                       {!notif.read && <span className="w-1.5 h-1.5 bg-red-500 rounded-full" />}
                     </div>
                     <div className="text-sm font-medium line-clamp-1">{notif.title}</div>
-                    <div className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{notif.message}</div>
+                    <div className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
+                      {notif.message}
+                    </div>
                   </div>
                 </button>
               );

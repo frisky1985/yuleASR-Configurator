@@ -46,10 +46,21 @@ export function MockCodeEditor() {
         <span className="text-[8px] text-gray-400 ml-1">CanIf.c</span>
       </div>
       <div className="space-y-1">
-        <div className="text-[7px] font-mono"><span className="text-purple-400">void</span> <span className="text-blue-400">CanIf_Init</span>() {'{'}</div>
-        <div className="text-[7px] font-mono pl-2"><span className="text-gray-500">/* Init CAN interface */</span></div>
-        <div className="text-[7px] font-mono pl-2"><span className="text-purple-400">for</span> (<span className="text-purple-400">uint8</span> i = <span className="text-amber-400">0</span>; ...)</div>
-        <div className="text-[7px] font-mono pl-4">ctrl[i].state = <span className="text-emerald-400">BUS_OFF</span>;</div>
+        <div className="text-[7px] font-mono">
+          <span className="text-purple-400">void</span>{' '}
+          <span className="text-blue-400">CanIf_Init</span>() {'{'}
+        </div>
+        <div className="text-[7px] font-mono pl-2">
+          <span className="text-gray-500">/* Init CAN interface */</span>
+        </div>
+        <div className="text-[7px] font-mono pl-2">
+          <span className="text-purple-400">for</span> (
+          <span className="text-purple-400">uint8</span> i ={' '}
+          <span className="text-amber-400">0</span>; ...)
+        </div>
+        <div className="text-[7px] font-mono pl-4">
+          ctrl[i].state = <span className="text-emerald-400">BUS_OFF</span>;
+        </div>
         <div className="text-[7px] font-mono">{'}'}</div>
       </div>
     </div>
@@ -154,7 +165,11 @@ export function MockDebugger() {
       <div className="text-[8px] font-semibold mb-1.5">Trace Debugger</div>
       <div className="flex items-end gap-0.5 h-10 mb-1">
         {[40, 65, 30, 80, 55, 90, 45, 70, 35, 85, 50, 75].map((h, i) => (
-          <div key={i} className="flex-1 rounded-t-sm bg-[hsl(var(--accent))]/40" style={{ height: `${h}%` }} />
+          <div
+            key={i}
+            className="flex-1 rounded-t-sm bg-[hsl(var(--accent))]/40"
+            style={{ height: `${h}%` }}
+          />
         ))}
       </div>
       <div className="text-[7px] text-muted-foreground flex justify-between">
@@ -197,14 +212,17 @@ export function MockCourseList() {
           { name: 'AutoSAR 规范解读', progress: 100 },
           { name: 'MCAL 配置实战', progress: 75 },
           { name: '通信栈调试技巧', progress: 30 },
-        ].map((c) => (
+        ].map(c => (
           <div key={c.name}>
             <div className="flex justify-between text-[7px] mb-0.5">
               <span className="text-muted-foreground">{c.name}</span>
               <span className="text-[hsl(var(--accent))]">{c.progress}%</span>
             </div>
             <div className="h-1 rounded-full bg-muted">
-              <div className="h-full rounded-full bg-[hsl(var(--accent))]" style={{ width: `${c.progress}%` }} />
+              <div
+                className="h-full rounded-full bg-[hsl(var(--accent))]"
+                style={{ width: `${c.progress}%` }}
+              />
             </div>
           </div>
         ))}
@@ -223,7 +241,9 @@ export function MockDocPage() {
         <div className="h-1.5 rounded bg-muted w-4/6" />
       </div>
       <div className="mt-2 p-1.5 rounded bg-muted/50 border border-border/50">
-        <div className="text-[7px] font-mono text-[hsl(var(--accent))]">PduR_RoutingPaths {'{'}</div>
+        <div className="text-[7px] font-mono text-[hsl(var(--accent))]">
+          PduR_RoutingPaths {'{'}
+        </div>
         <div className="text-[7px] font-mono text-muted-foreground pl-2">CanIf --&gt; Com</div>
         <div className="text-[7px] font-mono text-muted-foreground pl-2">Com --&gt; CanIf</div>
         <div className="text-[7px] font-mono text-muted-foreground">{'}'}</div>
@@ -249,7 +269,11 @@ export function MockBoardPhoto() {
         </div>
         {/* Pins */}
         {[...Array(8)].map((_, i) => (
-          <div key={i} className="absolute w-1 h-2 bg-amber-500/40 rounded-sm" style={{ top: 4 + i * 3, left: 2 }} />
+          <div
+            key={i}
+            className="absolute w-1 h-2 bg-amber-500/40 rounded-sm"
+            style={{ top: 4 + i * 3, left: 2 }}
+          />
         ))}
       </div>
       <div className="absolute bottom-1.5 left-1.5 text-[7px] px-1.5 py-0.5 rounded bg-black/50 text-white/80">
@@ -265,7 +289,10 @@ export function MockPinout() {
       <div className="text-[8px] font-semibold mb-1.5">Pinout (GPIO1)</div>
       <div className="grid grid-cols-8 gap-1">
         {[...Array(32)].map((_, i) => (
-          <div key={i} className="aspect-square rounded-sm bg-muted border border-border flex items-center justify-center">
+          <div
+            key={i}
+            className="aspect-square rounded-sm bg-muted border border-border flex items-center justify-center"
+          >
             <span className="text-[5px] text-muted-foreground">{i}</span>
           </div>
         ))}
@@ -291,7 +318,7 @@ export function MockSpecTable() {
           { label: '内存', value: '2GB LPDDR4' },
           { label: '存储', value: '16GB eMMC' },
           { label: '接口', value: 'CAN-FD x2, ETH' },
-        ].map((row) => (
+        ].map(row => (
           <div key={row.label} className="flex justify-between text-[7px]">
             <span className="text-muted-foreground">{row.label}</span>
             <span className="font-medium">{row.value}</span>

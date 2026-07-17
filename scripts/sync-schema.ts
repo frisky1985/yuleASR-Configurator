@@ -387,32 +387,32 @@ async function main(): Promise<void> {
   // 获取项目根目录
   const rootDir = process.cwd();
   const targetDir = path.join(rootDir, 'packages/@yuletech/core/src/schema/generated');
-  
+
   console.log('🔄 开始从 yuleASR 导入 Schema...');
-  
+
   // 确保目录存在
   await fs.mkdir(targetDir, { recursive: true });
-  
+
   // 合并所有模块
   const allModules = [...MCAL_MODULES, ...ECUAL_MODULES, ...SERVICE_MODULES];
-  
+
   // 生成每个模块的 Schema
   for (const module of allModules) {
     const schema = moduleToJsonSchema(module);
     const outputPath = path.join(targetDir, `${module.name.toLowerCase()}.json`);
-    
+
     await fs.writeFile(outputPath, JSON.stringify(schema, null, 2));
     console.log(`  ✅ ${module.name} (${module.layer})`);
   }
-  
+
   // 生成模块索引
   const indexContent = allModules
     .map(m => `export { default as ${m.name} } from './${m.name.toLowerCase()}.json';`)
     .join('\n');
-  
+
   await fs.writeFile(path.join(targetDir, 'index.ts'), indexContent);
   console.log(`  ✅ 索引文件`);
-  
+
   console.log(`\n✅ 完成！共导入 ${allModules.length} 个模块定义`);
   console.log(`📁 输出目录: ${targetDir}`);
 }

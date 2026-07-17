@@ -19,8 +19,7 @@ export function CTA() {
         </h2>
 
         <p className="text-white/80 text-lg max-w-2xl mx-auto mb-10">
-          免费获取 AutoSAR BSW 开源代码、开发工具链和学习资源，
-          与行业专家和企业客户建立连接
+          免费获取 AutoSAR BSW 开源代码、开发工具链和学习资源， 与行业专家和企业客户建立连接
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -33,9 +32,7 @@ export function CTA() {
           </button>
         </div>
 
-        <p className="text-white/60 text-sm mt-6">
-          已有 2,800+ 工程师加入 · 永久免费基础版
-        </p>
+        <p className="text-white/60 text-sm mt-6">已有 2,800+ 工程师加入 · 永久免费基础版</p>
       </div>
     </section>
   );

@@ -103,11 +103,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CryIfChannel",
-    "CryIfGeneral",
-    "CryIfKey"
-  ],
+  "required": ["CryIfChannel", "CryIfGeneral", "CryIfKey"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

@@ -1,6 +1,6 @@
 /**
  * @yuletech/core - AUTOSAR 4.4 Compliance Tests
- * 
+ *
  * Tests that verify the generated C code meets AUTOSAR 4.4 standards:
  * - Doxygen file and function headers
  * - DEV_ERROR_DETECT compile switch
@@ -10,8 +10,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { EcucCodeGenerator } from '../ecuc-generator';
-import { RteCodeGenerator } from '../rte-generator';
+
 import type { ModuleConfig, ModuleSchema } from '../../types';
 import {
   generateAutosarFileHeader,
@@ -24,6 +23,8 @@ import {
   toGuardName,
   parseVersion,
 } from '../autosar-format';
+import { EcucCodeGenerator } from '../ecuc-generator';
+import { RteCodeGenerator } from '../rte-generator';
 
 /* ========================================================================= *
  * PART 1: Unit tests for AUTOSAR format helper functions                    *
@@ -35,12 +36,24 @@ describe('AUTOSAR 4.4 Compliance - Format Helpers', () => {
   // -----------------------------------------------------------------------
   describe('generateAutosarFileHeader (a) Doxygen file header', () => {
     it('should contain @file tag', () => {
-      const header = generateAutosarFileHeader('Can_Cfg.h', 'Can', 80, 0x1234, 'CAN Driver Configuration');
+      const header = generateAutosarFileHeader(
+        'Can_Cfg.h',
+        'Can',
+        80,
+        0x1234,
+        'CAN Driver Configuration'
+      );
       expect(header).toContain('@file    Can_Cfg.h');
     });
 
     it('should contain @brief tag with module description', () => {
-      const header = generateAutosarFileHeader('Can_Cfg.h', 'Can', 80, 0x1234, 'CAN Driver Configuration');
+      const header = generateAutosarFileHeader(
+        'Can_Cfg.h',
+        'Can',
+        80,
+        0x1234,
+        'CAN Driver Configuration'
+      );
       expect(header).toContain('@brief   AUTOSAR Can - CAN Driver Configuration');
     });
 
@@ -115,13 +128,10 @@ describe('AUTOSAR 4.4 Compliance - Format Helpers', () => {
     });
 
     it('should contain @param tags with direction for parameters', () => {
-      const fnHeader = generateAutosarFunctionHeader(
-        'Initialize module',
-        [
-          { name: 'ConfigPtr', direction: 'in', description: 'Pointer to configuration' },
-          { name: 'versioninfo', direction: 'out', description: 'Version info pointer' },
-        ]
-      );
+      const fnHeader = generateAutosarFunctionHeader('Initialize module', [
+        { name: 'ConfigPtr', direction: 'in', description: 'Pointer to configuration' },
+        { name: 'versioninfo', direction: 'out', description: 'Version info pointer' },
+      ]);
       expect(fnHeader).toContain('@param [in] ConfigPtr');
       expect(fnHeader).toContain('@param [out] versioninfo');
     });
@@ -136,12 +146,9 @@ describe('AUTOSAR 4.4 Compliance - Format Helpers', () => {
     });
 
     it('should contain @pre tags for preconditions', () => {
-      const fnHeader = generateAutosarFunctionHeader(
-        'Initialize module',
-        [],
-        undefined,
-        ['Module shall be uninitialized']
-      );
+      const fnHeader = generateAutosarFunctionHeader('Initialize module', [], undefined, [
+        'Module shall be uninitialized',
+      ]);
       expect(fnHeader).toContain('@pre  Module shall be uninitialized');
     });
 
@@ -295,7 +302,7 @@ describe('AUTOSAR 4.4 Compliance - Format Helpers', () => {
       expect(DetErrorCode.DET_E_UNINIT).toBe(0x05);
       expect(DetErrorCode.DET_E_INIT_FAILED).toBe(0x06);
       expect(DetErrorCode.DET_E_TIMEOUT).toBe(0x07);
-      expect(DetErrorCode.DET_E_PARAM_VALUE).toBe(0x0A);
+      expect(DetErrorCode.DET_E_PARAM_VALUE).toBe(0x0a);
     });
   });
 });
@@ -311,20 +318,71 @@ describe('AUTOSAR 4.4 Compliance - Generated Code Integration', () => {
   // Test with multiple modules
   const moduleConfigs: Array<{ config: ModuleConfig; schema: ModuleSchema }> = [
     {
-      config: { module: 'Can', version: '4.4.0', parameters: { canBaudrate: 500000, canDevErrorDetect: false }, containers: {} },
-      schema: { name: 'Can', label: 'CAN Driver', layer: 'MCAL', version: '4.4.0', parameters: [{ name: 'canBaudrate', type: 'integer', required: true }, { name: 'canDevErrorDetect', type: 'boolean' }], containers: [] },
+      config: {
+        module: 'Can',
+        version: '4.4.0',
+        parameters: { canBaudrate: 500000, canDevErrorDetect: false },
+        containers: {},
+      },
+      schema: {
+        name: 'Can',
+        label: 'CAN Driver',
+        layer: 'MCAL',
+        version: '4.4.0',
+        parameters: [
+          { name: 'canBaudrate', type: 'integer', required: true },
+          { name: 'canDevErrorDetect', type: 'boolean' },
+        ],
+        containers: [],
+      },
     },
     {
-      config: { module: 'Mcu', version: '4.4.0', parameters: { mcuClockSpeed: 16000000 }, containers: {} },
-      schema: { name: 'Mcu', label: 'MCU Driver', layer: 'MCAL', version: '4.4.0', parameters: [{ name: 'mcuClockSpeed', type: 'integer', required: true }], containers: [] },
+      config: {
+        module: 'Mcu',
+        version: '4.4.0',
+        parameters: { mcuClockSpeed: 16000000 },
+        containers: {},
+      },
+      schema: {
+        name: 'Mcu',
+        label: 'MCU Driver',
+        layer: 'MCAL',
+        version: '4.4.0',
+        parameters: [{ name: 'mcuClockSpeed', type: 'integer', required: true }],
+        containers: [],
+      },
     },
     {
-      config: { module: 'Dcm', version: '4.4.0', parameters: { dcmMaxSessions: 3 }, containers: {} },
-      schema: { name: 'Dcm', label: 'Diagnostic Communication Manager', layer: 'Service', version: '4.4.0', parameters: [{ name: 'dcmMaxSessions', type: 'integer', required: true }], containers: [] },
+      config: {
+        module: 'Dcm',
+        version: '4.4.0',
+        parameters: { dcmMaxSessions: 3 },
+        containers: {},
+      },
+      schema: {
+        name: 'Dcm',
+        label: 'Diagnostic Communication Manager',
+        layer: 'Service',
+        version: '4.4.0',
+        parameters: [{ name: 'dcmMaxSessions', type: 'integer', required: true }],
+        containers: [],
+      },
     },
     {
-      config: { module: 'EcuM', version: '4.4.0', parameters: { ecuMShutdownTarget: 0 }, containers: {} },
-      schema: { name: 'EcuM', label: 'ECU Manager', layer: 'Service', version: '4.4.0', parameters: [{ name: 'ecuMShutdownTarget', type: 'integer', required: true }], containers: [] },
+      config: {
+        module: 'EcuM',
+        version: '4.4.0',
+        parameters: { ecuMShutdownTarget: 0 },
+        containers: {},
+      },
+      schema: {
+        name: 'EcuM',
+        label: 'ECU Manager',
+        layer: 'Service',
+        version: '4.4.0',
+        parameters: [{ name: 'ecuMShutdownTarget', type: 'integer', required: true }],
+        containers: [],
+      },
     },
   ];
 
@@ -334,34 +392,45 @@ describe('AUTOSAR 4.4 Compliance - Generated Code Integration', () => {
   describe('(a) Generated file headers have AUTOSAR Doxygen', () => {
     for (const { config, schema } of moduleConfigs) {
       it(`should have Doxygen file header in ${schema.name}_Cfg.h`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: './out', generateComments: true });
+        const result = await ecucGen.generate(config, schema, {
+          outputDir: './out',
+          generateComments: true,
+        });
         const header = result.files.find(f => f.path.endsWith('.h'));
         expect(header).toBeDefined();
         const content = header!.content;
-        expect(content).toMatch(/\/\*\*/);            // Doxygen start
-        expect(content).toMatch(/@file\s+/);           // @file tag
-        expect(content).toMatch(/@brief\s+/);           // @brief tag
-        expect(content).toMatch(/@details\s+/);         // @details tag
-        expect(content).toMatch(/@module\s+/);          // @module tag
-        expect(content).toMatch(/@moduleId\s+\d+/);     // @moduleId with number
-        expect(content).toMatch(/@vendorId\s+/);        // @vendorId
-        expect(content).toMatch(/@copyright\s+/);        // @copyright
-        expect(content).toMatch(/@arVersion\s+/);       // @arVersion
-        expect(content).toMatch(/@swVersion\s+/);       // @swVersion
-        expect(content).toMatch(/@date\s+/);            // @date timestamp
+        expect(content).toMatch(/\/\*\*/); // Doxygen start
+        expect(content).toMatch(/@file\s+/); // @file tag
+        expect(content).toMatch(/@brief\s+/); // @brief tag
+        expect(content).toMatch(/@details\s+/); // @details tag
+        expect(content).toMatch(/@module\s+/); // @module tag
+        expect(content).toMatch(/@moduleId\s+\d+/); // @moduleId with number
+        expect(content).toMatch(/@vendorId\s+/); // @vendorId
+        expect(content).toMatch(/@copyright\s+/); // @copyright
+        expect(content).toMatch(/@arVersion\s+/); // @arVersion
+        expect(content).toMatch(/@swVersion\s+/); // @swVersion
+        expect(content).toMatch(/@date\s+/); // @date timestamp
       });
 
       it(`should have Doxygen file header in Ecuc_${schema.name}.c`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: './out', generateComments: true });
-        const source = result.files.find(f => f.path.endsWith('.c') && !f.path.includes('PBcfg') && !f.path.includes('Lcfg'));
+        const result = await ecucGen.generate(config, schema, {
+          outputDir: './out',
+          generateComments: true,
+        });
+        const source = result.files.find(
+          f => f.path.endsWith('.c') && !f.path.includes('PBcfg') && !f.path.includes('Lcfg')
+        );
         expect(source).toBeDefined();
         const content = source!.content;
-        expect(content).toMatch(/\/\*\*/);            // Doxygen start
-        expect(content).toMatch(/@file\s+/);           // @file tag
+        expect(content).toMatch(/\/\*\*/); // Doxygen start
+        expect(content).toMatch(/@file\s+/); // @file tag
       });
 
       it(`should have Doxygen file header in Ecuc_${schema.name}_PBcfg.c`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: './out', generateComments: true });
+        const result = await ecucGen.generate(config, schema, {
+          outputDir: './out',
+          generateComments: true,
+        });
         const pbcfg = result.files.find(f => f.path.includes('PBcfg'));
         expect(pbcfg).toBeDefined();
         expect(pbcfg!.content).toMatch(/\/\*\*/);
@@ -369,7 +438,10 @@ describe('AUTOSAR 4.4 Compliance - Generated Code Integration', () => {
       });
 
       it(`should have Doxygen file header in Ecuc_${schema.name}_Lcfg.c`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: './out', generateComments: true });
+        const result = await ecucGen.generate(config, schema, {
+          outputDir: './out',
+          generateComments: true,
+        });
         const lcfg = result.files.find(f => f.path.includes('Lcfg'));
         expect(lcfg).toBeDefined();
         expect(lcfg!.content).toMatch(/\/\*\*/);
@@ -378,9 +450,24 @@ describe('AUTOSAR 4.4 Compliance - Generated Code Integration', () => {
     }
 
     it('RTE header should have Doxygen file header', async () => {
-      const config: ModuleConfig = { module: 'Rte', version: '4.4.0', parameters: {}, containers: {} };
-      const schema: ModuleSchema = { name: 'Rte', label: 'RTE', layer: 'RTE', version: '4.4.0', parameters: [], containers: [] };
-      const result = await rteGen.generate(config, schema, { outputDir: './out', generateComments: true });
+      const config: ModuleConfig = {
+        module: 'Rte',
+        version: '4.4.0',
+        parameters: {},
+        containers: {},
+      };
+      const schema: ModuleSchema = {
+        name: 'Rte',
+        label: 'RTE',
+        layer: 'RTE',
+        version: '4.4.0',
+        parameters: [],
+        containers: [],
+      };
+      const result = await rteGen.generate(config, schema, {
+        outputDir: './out',
+        generateComments: true,
+      });
       const header = result.files.find(f => f.path.endsWith('Rte.h'));
       expect(header).toBeDefined();
       const content = header!.content;
@@ -520,9 +607,24 @@ describe('AUTOSAR 4.4 Compliance - Generated Code Integration', () => {
   // -----------------------------------------------------------------------
   describe('RTE AUTOSAR patterns', () => {
     it('RTE header should declare Rte_Init / Rte_DeInit / Rte_GetVersionInfo', async () => {
-      const config: ModuleConfig = { module: 'Rte', version: '4.4.0', parameters: {}, containers: {} };
-      const schema: ModuleSchema = { name: 'Rte', label: 'RTE', layer: 'RTE', version: '4.4.0', parameters: [], containers: [] };
-      const result = await rteGen.generate(config, schema, { outputDir: './out', generateComments: true });
+      const config: ModuleConfig = {
+        module: 'Rte',
+        version: '4.4.0',
+        parameters: {},
+        containers: {},
+      };
+      const schema: ModuleSchema = {
+        name: 'Rte',
+        label: 'RTE',
+        layer: 'RTE',
+        version: '4.4.0',
+        parameters: [],
+        containers: [],
+      };
+      const result = await rteGen.generate(config, schema, {
+        outputDir: './out',
+        generateComments: true,
+      });
       const header = result.files.find(f => f.path.endsWith('Rte.h'))!.content;
       expect(header).toContain('Std_ReturnType Rte_Init');
       expect(header).toContain('Std_ReturnType Rte_DeInit');
@@ -531,9 +633,24 @@ describe('AUTOSAR 4.4 Compliance - Generated Code Integration', () => {
     });
 
     it('RTE header should have Doxygen on Rte_Init', async () => {
-      const config: ModuleConfig = { module: 'Rte', version: '4.4.0', parameters: {}, containers: {} };
-      const schema: ModuleSchema = { name: 'Rte', label: 'RTE', layer: 'RTE', version: '4.4.0', parameters: [], containers: [] };
-      const result = await rteGen.generate(config, schema, { outputDir: './out', generateComments: true });
+      const config: ModuleConfig = {
+        module: 'Rte',
+        version: '4.4.0',
+        parameters: {},
+        containers: {},
+      };
+      const schema: ModuleSchema = {
+        name: 'Rte',
+        label: 'RTE',
+        layer: 'RTE',
+        version: '4.4.0',
+        parameters: [],
+        containers: [],
+      };
+      const result = await rteGen.generate(config, schema, {
+        outputDir: './out',
+        generateComments: true,
+      });
       const header = result.files.find(f => f.path.endsWith('Rte.h'))!.content;
       // The Doxygen block for Rte_Init is before the function declaration
       expect(header).toContain('@brief Initialize the RTE module');

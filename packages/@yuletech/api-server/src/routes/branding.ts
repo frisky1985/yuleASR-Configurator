@@ -1,9 +1,10 @@
-import type { FastifyInstance } from 'fastify'
-import { z } from 'zod'
-import { db } from '../db/index.js'
-import { brandSettings } from '../db/schema.js'
-import { eq } from 'drizzle-orm'
-import { prisma } from '../lib/prisma.js'
+import { eq } from 'drizzle-orm';
+import type { FastifyInstance } from 'fastify';
+import { z } from 'zod';
+
+import { db } from '../db/index.js';
+import { brandSettings } from '../db/schema.js';
+import { prisma } from '../lib/prisma.js';
 
 // ── Validation Schema ───────────────────────────────────────────────────
 
@@ -11,9 +12,21 @@ const brandSettingsSchema = z.object({
   name: z.string().min(1).max(255),
   logoUrl: z.string().optional().nullable(),
   faviconUrl: z.string().optional().nullable(),
-  primaryColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Must be a hex color (#RRGGBB)').optional().nullable(),
-  secondaryColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Must be a hex color (#RRGGBB)').optional().nullable(),
-  accentColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Must be a hex color (#RRGGBB)').optional().nullable(),
+  primaryColor: z
+    .string()
+    .regex(/^#[0-9A-Fa-f]{6}$/, 'Must be a hex color (#RRGGBB)')
+    .optional()
+    .nullable(),
+  secondaryColor: z
+    .string()
+    .regex(/^#[0-9A-Fa-f]{6}$/, 'Must be a hex color (#RRGGBB)')
+    .optional()
+    .nullable(),
+  accentColor: z
+    .string()
+    .regex(/^#[0-9A-Fa-f]{6}$/, 'Must be a hex color (#RRGGBB)')
+    .optional()
+    .nullable(),
   companyName: z.string().max(255).optional().nullable(),
   supportEmail: z.string().email().optional().nullable().or(z.literal('')),
   termsUrl: z.string().url().optional().nullable().or(z.literal('')),
@@ -22,19 +35,22 @@ const brandSettingsSchema = z.object({
   emailTemplateHeader: z.string().optional().nullable(),
   emailTemplateFooter: z.string().optional().nullable(),
   allowedDomains: z.array(z.string()).optional(),
-})
+});
 
 // ── Helper: get first brand settings row (upsert pattern) ───────────────
 
 async function getOrCreateBrandSettings() {
-  const [existing] = await db.select().from(brandSettings).limit(1)
-  if (existing) return existing
+  const [existing] = await db.select().from(brandSettings).limit(1);
+  if (existing) return existing;
 
   // Create default row
-  const [created] = await db.insert(brandSettings).values({
-    name: 'yuleASR',
-  }).returning()
-  return created
+  const [created] = await db
+    .insert(brandSettings)
+    .values({
+      name: 'yuleASR',
+    })
+    .returning();
+  return created;
 }
 
 // ── Routes ──────────────────────────────────────────────────────────────
@@ -45,7 +61,7 @@ export async function brandingRoutes(app: FastifyInstance) {
    * Returns current brand settings (no auth required)
    */
   app.get('/', async () => {
-    const settings = await getOrCreateBrandSettings()
+    const settings = await getOrCreateBrandSettings();
     return {
       id: settings.id,
       name: settings.name,
@@ -63,8 +79,8 @@ export async function brandingRoutes(app: FastifyInstance) {
       emailTemplateFooter: settings.emailTemplateFooter,
       allowedDomains: settings.allowedDomains,
       updatedAt: settings.updatedAt,
-    }
-  })
+    };
+  });
 
   /**
    * PUT /api/branding — Admin only
@@ -72,41 +88,45 @@ export async function brandingRoutes(app: FastifyInstance) {
    */
   app.put('/', { onRequest: [(app as any).authenticate] }, async (request, reply) => {
     // Check admin role — need to fetch user from Prisma (where roles live)
-    const userData = (request as any).user as { id: number }
-    const user = await prisma.user.findUnique({ where: { id: userData.id } })
+    const userData = (request as any).user as { id: number };
+    const user = await prisma.user.findUnique({ where: { id: userData.id } });
     if (!user || user.role !== 'admin') {
-      return reply.status(403).send({ message: 'Forbidden: admin access required' })
+      return reply.status(403).send({ message: 'Forbidden: admin access required' });
     }
 
-    const parsed = brandSettingsSchema.safeParse(request.body)
+    const parsed = brandSettingsSchema.safeParse(request.body);
     if (!parsed.success) {
-      return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() })
+      return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
     }
 
-    const data = parsed.data
-    const [existing] = await db.select({ id: brandSettings.id }).from(brandSettings).limit(1)
+    const data = parsed.data;
+    const [existing] = await db.select({ id: brandSettings.id }).from(brandSettings).limit(1);
 
     if (!existing) {
-      const [created] = await db.insert(brandSettings).values({
-        name: data.name,
-        logoUrl: data.logoUrl ?? null,
-        faviconUrl: data.faviconUrl ?? null,
-        primaryColor: data.primaryColor ?? null,
-        secondaryColor: data.secondaryColor ?? null,
-        accentColor: data.accentColor ?? null,
-        companyName: data.companyName ?? null,
-        supportEmail: data.supportEmail ?? null,
-        termsUrl: data.termsUrl ?? null,
-        privacyUrl: data.privacyUrl ?? null,
-        customDomain: data.customDomain ?? null,
-        emailTemplateHeader: data.emailTemplateHeader ?? null,
-        emailTemplateFooter: data.emailTemplateFooter ?? null,
-        allowedDomains: data.allowedDomains ?? [],
-      }).returning()
-      return reply.send(created)
+      const [created] = await db
+        .insert(brandSettings)
+        .values({
+          name: data.name,
+          logoUrl: data.logoUrl ?? null,
+          faviconUrl: data.faviconUrl ?? null,
+          primaryColor: data.primaryColor ?? null,
+          secondaryColor: data.secondaryColor ?? null,
+          accentColor: data.accentColor ?? null,
+          companyName: data.companyName ?? null,
+          supportEmail: data.supportEmail ?? null,
+          termsUrl: data.termsUrl ?? null,
+          privacyUrl: data.privacyUrl ?? null,
+          customDomain: data.customDomain ?? null,
+          emailTemplateHeader: data.emailTemplateHeader ?? null,
+          emailTemplateFooter: data.emailTemplateFooter ?? null,
+          allowedDomains: data.allowedDomains ?? [],
+        })
+        .returning();
+      return reply.send(created);
     }
 
-    const [updated] = await db.update(brandSettings)
+    const [updated] = await db
+      .update(brandSettings)
       .set({
         name: data.name,
         logoUrl: data.logoUrl ?? null,
@@ -125,17 +145,17 @@ export async function brandingRoutes(app: FastifyInstance) {
         updatedAt: new Date(),
       })
       .where(eq(brandSettings.id, existing.id))
-      .returning()
+      .returning();
 
-    return reply.send(updated)
-  })
+    return reply.send(updated);
+  });
 
   /**
    * GET /api/branding/preview — Public
    * Returns brand settings as CSS custom properties for live preview
    */
   app.get('/preview', async () => {
-    const settings = await getOrCreateBrandSettings()
+    const settings = await getOrCreateBrandSettings();
     return {
       cssVariables: {
         '--brand-primary': settings.primaryColor || '#2563EB',
@@ -152,6 +172,6 @@ export async function brandingRoutes(app: FastifyInstance) {
         termsUrl: settings.termsUrl,
         privacyUrl: settings.privacyUrl,
       },
-    }
-  })
+    };
+  });
 }

@@ -8,23 +8,23 @@ export const mockConfigs = {
     name: 'Default Configuration',
     description: 'Default yuleASR configuration for testing',
     moduleCount: 35,
-    lastModified: '2025-05-10T14:30:00Z'
+    lastModified: '2025-05-10T14:30:00Z',
   },
   production: {
     id: 'config-2',
     name: 'Production Config',
     description: 'Production ready configuration',
     moduleCount: 35,
-    lastModified: '2025-05-09T10:15:00Z'
+    lastModified: '2025-05-09T10:15:00Z',
   },
   development: {
     id: 'config-3',
     name: 'Development Config',
     description: 'Development configuration with debug enabled',
     moduleCount: 20,
-    lastModified: '2025-05-08T16:45:00Z'
-  }
-}
+    lastModified: '2025-05-08T16:45:00Z',
+  },
+};
 
 export const mockConfigDetail = {
   id: 'config-1',
@@ -47,10 +47,10 @@ export const mockConfigDetail = {
           default: 16000000,
           min: 1000000,
           max: 180000000,
-          description: 'MCU clock frequency in Hz'
-        }
+          description: 'MCU clock frequency in Hz',
+        },
       ],
-      containers: []
+      containers: [],
     },
     {
       id: 'port',
@@ -59,7 +59,7 @@ export const mockConfigDetail = {
       version: '4.4.0',
       enabled: true,
       parameters: [],
-      containers: []
+      containers: [],
     },
     {
       id: 'dio',
@@ -68,7 +68,7 @@ export const mockConfigDetail = {
       version: '4.4.0',
       enabled: false,
       parameters: [],
-      containers: []
+      containers: [],
     },
     {
       id: 'can',
@@ -84,7 +84,7 @@ export const mockConfigDetail = {
           default: 0,
           min: 0,
           max: 255,
-          description: 'CAN Controller ID'
+          description: 'CAN Controller ID',
         },
         {
           name: 'CanBaudrate',
@@ -92,7 +92,7 @@ export const mockConfigDetail = {
           value: '500K',
           default: '500K',
           options: ['125K', '250K', '500K', '1M'],
-          description: 'CAN bus baudrate'
+          description: 'CAN bus baudrate',
         },
         {
           name: 'CanTxPdus',
@@ -100,10 +100,10 @@ export const mockConfigDetail = {
           value: ['Pdu1', 'Pdu2'],
           default: [],
           itemType: 'string',
-          description: 'List of TX PDUs'
-        }
+          description: 'List of TX PDUs',
+        },
       ],
-      containers: []
+      containers: [],
     },
     {
       id: 'eth',
@@ -112,10 +112,10 @@ export const mockConfigDetail = {
       version: '4.4.0',
       enabled: false,
       parameters: [],
-      containers: []
-    }
-  ]
-}
+      containers: [],
+    },
+  ],
+};
 
 export const testConfigNames = {
   valid: 'Test Configuration',
@@ -123,20 +123,20 @@ export const testConfigNames = {
   long: 'This is a very long configuration name that tests the UI limits and rendering',
   empty: '',
   onlySpaces: '   ',
-  veryShort: 'A'
-}
+  veryShort: 'A',
+};
 
 export const testParamValues = {
   validInteger: 8000000,
   invalidIntegerBelowMin: 500000,
   invalidIntegerAboveMax: 200000000,
   validEnum: '250K',
-  validArray: ['Pdu1', 'Pdu2', 'Pdu3']
-}
+  validArray: ['Pdu1', 'Pdu2', 'Pdu3'],
+};
 
-export const layerNames = ['MCAL', 'ECUAL', 'Service', 'RTE', 'ASW']
+export const layerNames = ['MCAL', 'ECUAL', 'Service', 'RTE', 'ASW'];
 
 export const moduleNames = {
   mcal: ['Mcu', 'Port', 'Dio'],
-  ecual: ['Can', 'Eth']
-}
+  ecual: ['Can', 'Eth'],
+};

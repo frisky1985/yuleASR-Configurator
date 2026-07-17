@@ -3,28 +3,28 @@
  * Import configurations from other AUTOSAR tools
  */
 
-import { 
-  Upload, 
-  FileJson, 
-  AlertCircle, 
-  CheckCircle, 
+import {
+  Upload,
+  FileJson,
+  AlertCircle,
+  CheckCircle,
   Loader2,
   ChevronRight,
   Database,
   FileCode,
-  Settings
-} from 'lucide-react'
-import { useState, useCallback } from 'react'
+  Settings,
+} from 'lucide-react';
+import { useState, useCallback } from 'react';
 
-import { cn } from '@/lib/utils'
-import { useConfigStore } from '@/stores/configStore'
+import { cn } from '@/lib/utils';
+import { useConfigStore } from '@/stores/configStore';
 
 interface MigrationSource {
-  id: string
-  name: string
-  description: string
-  icon: React.ReactNode
-  supportedFormats: string[]
+  id: string;
+  name: string;
+  description: string;
+  icon: React.ReactNode;
+  supportedFormats: string[];
 }
 
 const migrationSources: MigrationSource[] = [
@@ -56,56 +56,62 @@ const migrationSources: MigrationSource[] = [
     icon: <FileJson className="w-8 h-8 text-amber-600" />,
     supportedFormats: ['.arxml'],
   },
-]
+];
 
 interface MigrationResult {
-  success: boolean
-  message: string
-  modulesImported?: number
-  warnings?: string[]
+  success: boolean;
+  message: string;
+  modulesImported?: number;
+  warnings?: string[];
 }
 
 export function MigrationTool() {
-  const [selectedSource, setSelectedSource] = useState<string | null>(null)
-  const [isDragging, setIsDragging] = useState(false)
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [result, setResult] = useState<MigrationResult | null>(null)
-  const { createConfig } = useConfigStore()
+  const [selectedSource, setSelectedSource] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [result, setResult] = useState<MigrationResult | null>(null);
+  const { createConfig } = useConfigStore();
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(true)
-  }, [])
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
 
   const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(false)
-  }, [])
+    e.preventDefault();
+    setIsDragging(false);
+  }, []);
 
-  const handleDrop = useCallback(async (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(false)
+  const handleDrop = useCallback(
+    async (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragging(false);
 
-    if (!selectedSource) return
+      if (!selectedSource) return;
 
-    const files = Array.from(e.dataTransfer.files)
-    await processFiles(files)
-  }, [selectedSource])
+      const files = Array.from(e.dataTransfer.files);
+      await processFiles(files);
+    },
+    [selectedSource]
+  );
 
-  const handleFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || !selectedSource) return
+  const handleFileSelect = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (!e.target.files || !selectedSource) return;
 
-    const files = Array.from(e.target.files)
-    await processFiles(files)
-  }, [selectedSource])
+      const files = Array.from(e.target.files);
+      await processFiles(files);
+    },
+    [selectedSource]
+  );
 
   const processFiles = async (files: File[]) => {
-    setIsProcessing(true)
-    setResult(null)
+    setIsProcessing(true);
+    setResult(null);
 
     try {
       // Simulate processing
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
       // Mock migration result
       const mockResult: MigrationResult = {
@@ -116,45 +122,43 @@ export function MigrationTool() {
           'Some parameter values may need manual review',
           'OS task priorities have been adjusted to fit yuleASR model',
         ],
-      }
+      };
 
-      setResult(mockResult)
+      setResult(mockResult);
 
       // Create a new config with imported modules
       if (mockResult.success) {
         await createConfig(
           `Migrated-${selectedSource}-${new Date().toISOString().slice(0, 10)}`,
-          `Migrated from ${migrationSources.find((s) => s.id === selectedSource)?.name}`
-        )
+          `Migrated from ${migrationSources.find(s => s.id === selectedSource)?.name}`
+        );
       }
     } catch (error) {
       setResult({
         success: false,
         message: error instanceof Error ? error.message : 'Migration failed',
-      })
+      });
     } finally {
-      setIsProcessing(false)
+      setIsProcessing(false);
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
         <h2 className="text-2xl font-bold text-foreground">Configuration Migration</h2>
-        <p className="text-muted-foreground mt-1">
-          Import configurations from other AUTOSAR tools
-        </p>
+        <p className="text-muted-foreground mt-1">Import configurations from other AUTOSAR tools</p>
       </div>
 
       {/* Source Selection */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {migrationSources.map((source) => (
+        {migrationSources.map(source => (
           <button
             key={source.id}
             onClick={() => {
-              setSelectedSource(source.id)
-              setResult(null)
+              setSelectedSource(source.id);
+              setResult(null);
             }}
             className={cn(
               'flex items-start gap-4 p-4 rounded-lg border-2 text-left transition-all',
@@ -168,7 +172,7 @@ export function MigrationTool() {
               <h3 className="font-semibold text-foreground">{source.name}</h3>
               <p className="text-sm text-muted-foreground mt-1">{source.description}</p>
               <div className="flex items-center gap-2 mt-2">
-                {source.supportedFormats.map((format) => (
+                {source.supportedFormats.map(format => (
                   <span
                     key={format}
                     className="px-2 py-0.5 bg-muted rounded text-xs text-muted-foreground"
@@ -196,9 +200,7 @@ export function MigrationTool() {
           onDrop={handleDrop}
           className={cn(
             'border-2 border-dashed rounded-lg p-8 text-center transition-colors',
-            isDragging
-              ? 'border-primary bg-primary/5'
-              : 'border-border hover:border-primary/50',
+            isDragging ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50',
             isProcessing && 'opacity-50 pointer-events-none'
           )}
         >
@@ -207,17 +209,13 @@ export function MigrationTool() {
               <Loader2 className="w-10 h-10 text-primary animate-spin" />
               <div>
                 <p className="font-medium text-foreground">Processing migration...</p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  This may take a few moments
-                </p>
+                <p className="text-sm text-muted-foreground mt-1">This may take a few moments</p>
               </div>
             </div>
           ) : (
             <>
               <Upload className="w-10 h-10 text-muted-foreground mx-auto mb-4" />
-              <p className="font-medium text-foreground">
-                Drop your configuration files here
-              </p>
+              <p className="font-medium text-foreground">Drop your configuration files here</p>
               <p className="text-sm text-muted-foreground mt-1">
                 or{' '}
                 <label className="text-primary hover:underline cursor-pointer">
@@ -226,7 +224,7 @@ export function MigrationTool() {
                     type="file"
                     multiple
                     accept={migrationSources
-                      .find((s) => s.id === selectedSource)
+                      .find(s => s.id === selectedSource)
                       ?.supportedFormats.join(',')}
                     onChange={handleFileSelect}
                     className="hidden"
@@ -236,9 +234,7 @@ export function MigrationTool() {
               </p>
               <p className="text-xs text-muted-foreground mt-4">
                 Supported formats:{' '}
-                {migrationSources
-                  .find((s) => s.id === selectedSource)
-                  ?.supportedFormats.join(', ')}
+                {migrationSources.find(s => s.id === selectedSource)?.supportedFormats.join(', ')}
               </p>
             </>
           )}
@@ -316,5 +312,5 @@ export function MigrationTool() {
         </ul>
       </div>
     </div>
-  )
+  );
 }

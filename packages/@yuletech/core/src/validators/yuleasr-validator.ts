@@ -4,6 +4,7 @@
  */
 
 import type { ModuleConfig, ValidationError, ModuleSchema } from '../types';
+
 import { CrossModuleValidator } from './cross-module-validator';
 
 // 本地验证规则类型，避免与 types/module.ts 中的 ValidationRule 冲突
@@ -144,7 +145,7 @@ export class YuleasrValidator {
 
     // 检查模块间依赖
     const moduleNames = new Set(configs.map(c => c.module));
-    
+
     // AUTOSAR BSW 标准依赖关系定义
     interface DependencyParamCheck {
       type: 'container_not_empty' | 'value_gt' | 'value_equals';
@@ -160,33 +161,68 @@ export class YuleasrValidator {
     }
 
     const dependencyRules: Record<string, DependencyEntry[]> = {
-      CanIf:    [{module: 'Can', severity: 'error', message: 'CanIf requires Can driver'},
-                 {module: 'Can', severity: 'warning', message: 'CanIf requires at least one CAN controller configured', paramCheck: {type: 'container_not_empty', container: 'CanController'}}],
-      CanNm:    [{module: 'CanIf', severity: 'error', message: 'CanNm requires CanIf'}, {module: 'Nm', severity: 'error', message: 'CanNm requires Nm'}],
-      CanSM:    [{module: 'CanIf', severity: 'error', message: 'CanSM requires CanIf'}, {module: 'ComM', severity: 'warning', message: 'CanSM should have ComM'}],
-      CanTp:    [{module: 'CanIf', severity: 'error', message: 'CanTp requires CanIf'}, {module: 'PduR', severity: 'error', message: 'CanTp requires PduR'}],
-      CanTrcv:  [{module: 'Can', severity: 'warning', message: 'CanTrcv should have Can'}],
-      Com:      [{module: 'PduR', severity: 'error', message: 'Com requires PduR'}],
-      ComM:     [{module: 'Com', severity: 'error', message: 'ComM requires Com'}, {module: 'Nm', severity: 'warning', message: 'ComM should have Nm'}],
-      Dcm:      [{module: 'Com', severity: 'error', message: 'Dcm requires Com'}, {module: 'PduR', severity: 'error', message: 'Dcm requires PduR'}, {module: 'Dem', severity: 'warning', message: 'Dcm should have Dem'}],
-      Dem:      [{module: 'Dcm', severity: 'error', message: 'Dem requires Dcm'}, {module: 'NvM', severity: 'warning', message: 'Dem should have NvM'}],
-      Det:      [],
-      Dio:      [{module: 'Port', severity: 'error', message: 'Dio requires Port'}, {module: 'Mcu', severity: 'warning', message: 'Dio should have Mcu'}],
-      EcuM:     [{module: 'Mcu', severity: 'error', message: 'EcuM requires Mcu'}],
-      Fee:      [{module: 'Fls', severity: 'error', message: 'Fee requires Fls'}, {module: 'MemIf', severity: 'error', message: 'Fee requires MemIf'}],
-      Fls:      [{module: 'Mcu', severity: 'warning', message: 'Fls should have Mcu'}],
-      Gpt:      [{module: 'Mcu', severity: 'warning', message: 'Gpt should have Mcu'}],
-      Icu:      [{module: 'Mcu', severity: 'warning', message: 'Icu should have Mcu'}],
-      Mcl:      [{module: 'Mcu', severity: 'warning', message: 'Mcl should have Mcu'}],
-      MemIf:    [{module: 'Fee', severity: 'error', message: 'MemIf requires Fee or Ea'}],
-      Nm:       [{module: 'ComM', severity: 'error', message: 'Nm requires ComM'}],
-      NvM:      [{module: 'MemIf', severity: 'error', message: 'NvM requires MemIf'}],
-      Os:       [{module: 'EcuM', severity: 'warning', message: 'Os should have EcuM'}],
-      PduR:     [{module: 'CanIf', severity: 'error', message: 'PduR requires CanIf'}],
-      Rte:      [{module: 'Os', severity: 'error', message: 'Rte requires Os'}, {module: 'Com', severity: 'warning', message: 'Rte should have Com'}],
-      Spi:      [{module: 'Mcu', severity: 'warning', message: 'Spi should have Mcu'}],
-      Adc:      [{module: 'Mcu', severity: 'warning', message: 'Adc should have Mcu'}],
-      Port:     [{module: 'Mcu', severity: 'warning', message: 'Port should have Mcu'}],
+      CanIf: [
+        { module: 'Can', severity: 'error', message: 'CanIf requires Can driver' },
+        {
+          module: 'Can',
+          severity: 'warning',
+          message: 'CanIf requires at least one CAN controller configured',
+          paramCheck: { type: 'container_not_empty', container: 'CanController' },
+        },
+      ],
+      CanNm: [
+        { module: 'CanIf', severity: 'error', message: 'CanNm requires CanIf' },
+        { module: 'Nm', severity: 'error', message: 'CanNm requires Nm' },
+      ],
+      CanSM: [
+        { module: 'CanIf', severity: 'error', message: 'CanSM requires CanIf' },
+        { module: 'ComM', severity: 'warning', message: 'CanSM should have ComM' },
+      ],
+      CanTp: [
+        { module: 'CanIf', severity: 'error', message: 'CanTp requires CanIf' },
+        { module: 'PduR', severity: 'error', message: 'CanTp requires PduR' },
+      ],
+      CanTrcv: [{ module: 'Can', severity: 'warning', message: 'CanTrcv should have Can' }],
+      Com: [{ module: 'PduR', severity: 'error', message: 'Com requires PduR' }],
+      ComM: [
+        { module: 'Com', severity: 'error', message: 'ComM requires Com' },
+        { module: 'Nm', severity: 'warning', message: 'ComM should have Nm' },
+      ],
+      Dcm: [
+        { module: 'Com', severity: 'error', message: 'Dcm requires Com' },
+        { module: 'PduR', severity: 'error', message: 'Dcm requires PduR' },
+        { module: 'Dem', severity: 'warning', message: 'Dcm should have Dem' },
+      ],
+      Dem: [
+        { module: 'Dcm', severity: 'error', message: 'Dem requires Dcm' },
+        { module: 'NvM', severity: 'warning', message: 'Dem should have NvM' },
+      ],
+      Det: [],
+      Dio: [
+        { module: 'Port', severity: 'error', message: 'Dio requires Port' },
+        { module: 'Mcu', severity: 'warning', message: 'Dio should have Mcu' },
+      ],
+      EcuM: [{ module: 'Mcu', severity: 'error', message: 'EcuM requires Mcu' }],
+      Fee: [
+        { module: 'Fls', severity: 'error', message: 'Fee requires Fls' },
+        { module: 'MemIf', severity: 'error', message: 'Fee requires MemIf' },
+      ],
+      Fls: [{ module: 'Mcu', severity: 'warning', message: 'Fls should have Mcu' }],
+      Gpt: [{ module: 'Mcu', severity: 'warning', message: 'Gpt should have Mcu' }],
+      Icu: [{ module: 'Mcu', severity: 'warning', message: 'Icu should have Mcu' }],
+      Mcl: [{ module: 'Mcu', severity: 'warning', message: 'Mcl should have Mcu' }],
+      MemIf: [{ module: 'Fee', severity: 'error', message: 'MemIf requires Fee or Ea' }],
+      Nm: [{ module: 'ComM', severity: 'error', message: 'Nm requires ComM' }],
+      NvM: [{ module: 'MemIf', severity: 'error', message: 'NvM requires MemIf' }],
+      Os: [{ module: 'EcuM', severity: 'warning', message: 'Os should have EcuM' }],
+      PduR: [{ module: 'CanIf', severity: 'error', message: 'PduR requires CanIf' }],
+      Rte: [
+        { module: 'Os', severity: 'error', message: 'Rte requires Os' },
+        { module: 'Com', severity: 'warning', message: 'Rte should have Com' },
+      ],
+      Spi: [{ module: 'Mcu', severity: 'warning', message: 'Spi should have Mcu' }],
+      Adc: [{ module: 'Mcu', severity: 'warning', message: 'Adc should have Mcu' }],
+      Port: [{ module: 'Mcu', severity: 'warning', message: 'Port should have Mcu' }],
     };
 
     const configMap = new Map(configs.map(c => [c.module, c]));
@@ -219,7 +255,7 @@ export class YuleasrValidator {
             }
             case 'value_gt': {
               const val = depConfig.parameters[pc.param || ''];
-              paramFailed = typeof val !== 'number' || val <= (pc.expected as number || 0);
+              paramFailed = typeof val !== 'number' || val <= ((pc.expected as number) || 0);
               break;
             }
             case 'value_equals': {
@@ -275,7 +311,7 @@ yuleasrValidator.registerModuleRules({
     {
       type: 'custom',
       message: 'Mcu must be enabled for all configurations',
-      condition: (config) => config.parameters.clock_frequency !== undefined,
+      condition: config => config.parameters.clock_frequency !== undefined,
     },
   ],
   parameterRules: {
@@ -283,9 +319,7 @@ yuleasrValidator.registerModuleRules({
       { type: 'required', message: 'Clock frequency is required' },
       { type: 'range', message: 'Clock frequency must be positive' },
     ],
-    core_count: [
-      { type: 'required', message: 'Core count is required' },
-    ],
+    core_count: [{ type: 'required', message: 'Core count is required' }],
   },
 });
 
@@ -293,21 +327,50 @@ yuleasrValidator.registerModuleRules({
   module: 'Can',
   rules: [],
   parameterRules: {
-    baudrate: [
-      { type: 'required', message: 'Baudrate is required' },
-    ],
-    controller_count: [
-      { type: 'required', message: 'Controller count is required' },
-    ],
+    baudrate: [{ type: 'required', message: 'Baudrate is required' }],
+    controller_count: [{ type: 'required', message: 'Controller count is required' }],
   },
 });
 
 // Auto-generated module rules for all 37 BSW modules
 const allModuleNames = [
-  'Adc','Arti','Ble','BswM','Can','CanIf','CanNm','CanSM','CanTp','CanTrcv',
-  'Com','ComM','Crc','CryIf','Crypto','Csm','Dcm','Dem','Det','Dio',
-  'EcuM','Fee','Fls','Gpt','Icu','IoHwAb','Mcl','Mcu','MemIf','Nm',
-  'NvM','Os','PduR','Port','Rte','Sbc','Spi',
+  'Adc',
+  'Arti',
+  'Ble',
+  'BswM',
+  'Can',
+  'CanIf',
+  'CanNm',
+  'CanSM',
+  'CanTp',
+  'CanTrcv',
+  'Com',
+  'ComM',
+  'Crc',
+  'CryIf',
+  'Crypto',
+  'Csm',
+  'Dcm',
+  'Dem',
+  'Det',
+  'Dio',
+  'EcuM',
+  'Fee',
+  'Fls',
+  'Gpt',
+  'Icu',
+  'IoHwAb',
+  'Mcl',
+  'Mcu',
+  'MemIf',
+  'Nm',
+  'NvM',
+  'Os',
+  'PduR',
+  'Port',
+  'Rte',
+  'Sbc',
+  'Spi',
 ];
 
 for (const modName of allModuleNames) {
@@ -316,7 +379,9 @@ for (const modName of allModuleNames) {
     module: modName,
     rules: [],
     parameterRules: {
-      [`${modName}DevErrorDetect`]: [{ type: 'required', message: `${modName}DevErrorDetect is required` }],
+      [`${modName}DevErrorDetect`]: [
+        { type: 'required', message: `${modName}DevErrorDetect is required` },
+      ],
     },
   });
 }

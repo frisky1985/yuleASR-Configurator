@@ -1,7 +1,7 @@
-import { 
-  Cpu, 
-  Wifi, 
-  ChevronRight, 
+import {
+  Cpu,
+  Wifi,
+  ChevronRight,
   ChevronLeft,
   Check,
   AlertCircle,
@@ -22,79 +22,82 @@ import {
   Timer,
   Network,
   Usb,
-  Monitor
-} from 'lucide-react'
-import { useState, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
+  Monitor,
+} from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 interface ModuleConfigWizardProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
   onComplete: (config: {
-    module: string
-    version: string
-    parameters: Record<string, unknown>
-    configStatus: 'configured'
-    configMethod: 'wizard'
-    configProgress: number
-    configuredAt: string
-  }) => void
+    module: string;
+    version: string;
+    parameters: Record<string, unknown>;
+    configStatus: 'configured';
+    configMethod: 'wizard';
+    configProgress: number;
+    configuredAt: string;
+  }) => void;
 }
 
 interface ModuleTemplate {
-  id: string
-  name: string
-  layer: 'MCAL' | 'ECUAL' | 'Service' | 'RTE'
-  description: string
-  icon: React.ReactNode
-  parameters: ParameterConfig[]
+  id: string;
+  name: string;
+  layer: 'MCAL' | 'ECUAL' | 'Service' | 'RTE';
+  description: string;
+  icon: React.ReactNode;
+  parameters: ParameterConfig[];
 }
 
 interface ParameterConfig {
-  name: string
-  type: 'number' | 'string' | 'boolean' | 'select'
-  label: string
-  description: string
-  defaultValue: unknown
-  options?: { value: string | number; label: string }[]
-  min?: number
-  max?: number
+  name: string;
+  type: 'number' | 'string' | 'boolean' | 'select';
+  label: string;
+  description: string;
+  defaultValue: unknown;
+  options?: { value: string | number; label: string }[];
+  min?: number;
+  max?: number;
 }
 
-const LAYER_COLORS: Record<string, { bg: string; text: string; border: string; hover: string; badge: string }> = {
+const LAYER_COLORS: Record<
+  string,
+  { bg: string; text: string; border: string; hover: string; badge: string }
+> = {
   MCAL: {
     bg: 'bg-blue-50',
     text: 'text-blue-700',
     border: 'border-blue-200',
     hover: 'hover:border-blue-300 hover:bg-blue-50',
-    badge: 'bg-blue-100 text-blue-700 border-blue-200'
+    badge: 'bg-blue-100 text-blue-700 border-blue-200',
   },
   ECUAL: {
     bg: 'bg-green-50',
     text: 'text-green-700',
     border: 'border-green-200',
     hover: 'hover:border-green-300 hover:bg-green-50',
-    badge: 'bg-green-100 text-green-700 border-green-200'
+    badge: 'bg-green-100 text-green-700 border-green-200',
   },
   Service: {
     bg: 'bg-purple-50',
     text: 'text-purple-700',
     border: 'border-purple-200',
     hover: 'hover:border-purple-300 hover:bg-purple-50',
-    badge: 'bg-purple-100 text-purple-700 border-purple-200'
+    badge: 'bg-purple-100 text-purple-700 border-purple-200',
   },
   RTE: {
     bg: 'bg-orange-50',
     text: 'text-orange-700',
     border: 'border-orange-200',
     hover: 'hover:border-orange-300 hover:bg-orange-50',
-    badge: 'bg-orange-100 text-orange-700 border-orange-200'
-  }
-}
+    badge: 'bg-orange-100 text-orange-700 border-orange-200',
+  },
+};
 
-const LAYER_ORDER = ['MCAL', 'ECUAL', 'Service', 'RTE']
+const LAYER_ORDER = ['MCAL', 'ECUAL', 'Service', 'RTE'];
 
 const MODULE_TEMPLATES: ModuleTemplate[] = [
   // ==================== MCAL Layer ====================
@@ -112,7 +115,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Main system clock frequency',
         defaultValue: 160000000,
         min: 1000000,
-        max: 600000000
+        max: 600000000,
       },
       {
         name: 'core_count',
@@ -121,7 +124,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of CPU cores',
         defaultValue: 4,
         min: 1,
-        max: 8
+        max: 8,
       },
       {
         name: 'mcu_mode',
@@ -133,8 +136,8 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
           { value: 'RUN', label: 'Run Mode' },
           { value: 'SLEEP', label: 'Sleep Mode' },
           { value: 'STOP', label: 'Stop Mode' },
-          { value: 'STANDBY', label: 'Standby Mode' }
-        ]
+          { value: 'STANDBY', label: 'Standby Mode' },
+        ],
       },
       {
         name: 'sysclk_source',
@@ -145,10 +148,10 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         options: [
           { value: 'HSI', label: 'High Speed Internal' },
           { value: 'HSE', label: 'High Speed External' },
-          { value: 'PLL', label: 'Phase Locked Loop' }
-        ]
-      }
-    ]
+          { value: 'PLL', label: 'Phase Locked Loop' },
+        ],
+      },
+    ],
   },
   {
     id: 'Port',
@@ -164,30 +167,30 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of configurable port pins',
         defaultValue: 144,
         min: 1,
-        max: 256
+        max: 256,
       },
       {
         name: 'version_info_api',
         type: 'boolean',
         label: 'Version Info API',
         description: 'Enable version info API',
-        defaultValue: true
+        defaultValue: true,
       },
       {
         name: 'set_pin_mode_api',
         type: 'boolean',
         label: 'Set Pin Mode API',
         description: 'Enable runtime pin mode change',
-        defaultValue: true
+        defaultValue: true,
       },
       {
         name: 'dev_error_detect',
         type: 'boolean',
         label: 'Development Error Detection',
         description: 'Enable development error detection',
-        defaultValue: true
-      }
-    ]
+        defaultValue: true,
+      },
+    ],
   },
   {
     id: 'Dio',
@@ -203,23 +206,23 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of DIO channels',
         defaultValue: 144,
         min: 1,
-        max: 256
+        max: 256,
       },
       {
         name: 'flip_channel_api',
         type: 'boolean',
         label: 'Flip Channel API',
         description: 'Enable flip channel API',
-        defaultValue: true
+        defaultValue: true,
       },
       {
         name: 'masked_write_port_api',
         type: 'boolean',
         label: 'Masked Write Port API',
         description: 'Enable masked write port operations',
-        defaultValue: false
-      }
-    ]
+        defaultValue: false,
+      },
+    ],
   },
   {
     id: 'Gpt',
@@ -235,7 +238,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of GPT channels',
         defaultValue: 14,
         min: 1,
-        max: 32
+        max: 32,
       },
       {
         name: 'tick_frequency',
@@ -244,30 +247,30 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'GPT tick frequency',
         defaultValue: 1000000,
         min: 1,
-        max: 100000000
+        max: 100000000,
       },
       {
         name: 'wakeup_functionality',
         type: 'boolean',
         label: 'Wakeup Functionality',
         description: 'Enable wakeup functionality',
-        defaultValue: false
+        defaultValue: false,
       },
       {
         name: 'predef_timer_1us',
         type: 'boolean',
         label: '1us Predefined Timer',
         description: 'Enable 1 microsecond predefined timer',
-        defaultValue: true
+        defaultValue: true,
       },
       {
         name: 'predef_timer_100us',
         type: 'boolean',
         label: '100us Predefined Timer',
         description: 'Enable 100 microsecond predefined timer',
-        defaultValue: false
-      }
-    ]
+        defaultValue: false,
+      },
+    ],
   },
   {
     id: 'Pwm',
@@ -283,7 +286,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of PWM channels',
         defaultValue: 16,
         min: 1,
-        max: 32
+        max: 32,
       },
       {
         name: 'default_frequency',
@@ -292,23 +295,23 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Default PWM frequency',
         defaultValue: 1000,
         min: 1,
-        max: 100000
+        max: 100000,
       },
       {
         name: 'notifications',
         type: 'boolean',
         label: 'Enable Notifications',
         description: 'Enable PWM notifications',
-        defaultValue: true
+        defaultValue: true,
       },
       {
         name: 'set_duty_cycle_api',
         type: 'boolean',
         label: 'Set Duty Cycle API',
         description: 'Enable duty cycle adjustment API',
-        defaultValue: true
-      }
-    ]
+        defaultValue: true,
+      },
+    ],
   },
   {
     id: 'Adc',
@@ -324,7 +327,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of ADC channels',
         defaultValue: 16,
         min: 1,
-        max: 64
+        max: 64,
       },
       {
         name: 'resolution',
@@ -336,8 +339,8 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
           { value: 8, label: '8-bit' },
           { value: 10, label: '10-bit' },
           { value: 12, label: '12-bit' },
-          { value: 16, label: '16-bit' }
-        ]
+          { value: 16, label: '16-bit' },
+        ],
       },
       {
         name: 'conversion_mode',
@@ -347,8 +350,8 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         defaultValue: 'CONTINUOUS',
         options: [
           { value: 'SINGLE', label: 'Single Conversion' },
-          { value: 'CONTINUOUS', label: 'Continuous Conversion' }
-        ]
+          { value: 'CONTINUOUS', label: 'Continuous Conversion' },
+        ],
       },
       {
         name: 'sample_time',
@@ -357,9 +360,9 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'ADC sampling time in microseconds',
         defaultValue: 3,
         min: 1,
-        max: 100
-      }
-    ]
+        max: 100,
+      },
+    ],
   },
   {
     id: 'Can',
@@ -375,7 +378,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of CAN controllers',
         defaultValue: 3,
         min: 1,
-        max: 8
+        max: 8,
       },
       {
         name: 'baudrate',
@@ -387,8 +390,8 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
           { value: 125000, label: '125 kbps' },
           { value: 250000, label: '250 kbps' },
           { value: 500000, label: '500 kbps' },
-          { value: 1000000, label: '1 Mbps' }
-        ]
+          { value: 1000000, label: '1 Mbps' },
+        ],
       },
       {
         name: 'rx_fifo_count',
@@ -397,7 +400,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of receive FIFOs per controller',
         defaultValue: 2,
         min: 1,
-        max: 8
+        max: 8,
       },
       {
         name: 'tx_buffer_count',
@@ -406,16 +409,16 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of transmit buffers per controller',
         defaultValue: 32,
         min: 1,
-        max: 64
+        max: 64,
       },
       {
         name: 'wakeup_support',
         type: 'boolean',
         label: 'Wakeup Support',
         description: 'Enable CAN wakeup functionality',
-        defaultValue: true
-      }
-    ]
+        defaultValue: true,
+      },
+    ],
   },
   {
     id: 'Spi',
@@ -431,7 +434,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of SPI channels',
         defaultValue: 4,
         min: 1,
-        max: 8
+        max: 8,
       },
       {
         name: 'max_buffer_size',
@@ -440,7 +443,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Maximum SPI buffer size',
         defaultValue: 256,
         min: 1,
-        max: 4096
+        max: 4096,
       },
       {
         name: 'clock_polarity',
@@ -450,8 +453,8 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         defaultValue: 'LOW',
         options: [
           { value: 'LOW', label: 'CPOL = 0 (Low when idle)' },
-          { value: 'HIGH', label: 'CPOL = 1 (High when idle)' }
-        ]
+          { value: 'HIGH', label: 'CPOL = 1 (High when idle)' },
+        ],
       },
       {
         name: 'clock_phase',
@@ -461,8 +464,8 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         defaultValue: '1EDGE',
         options: [
           { value: '1EDGE', label: 'CPHA = 0 (First edge)' },
-          { value: '2EDGE', label: 'CPHA = 1 (Second edge)' }
-        ]
+          { value: '2EDGE', label: 'CPHA = 1 (Second edge)' },
+        ],
       },
       {
         name: 'baudrate_prescaler',
@@ -478,10 +481,10 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
           { value: 'DIV_32', label: 'Divide by 32' },
           { value: 'DIV_64', label: 'Divide by 64' },
           { value: 'DIV_128', label: 'Divide by 128' },
-          { value: 'DIV_256', label: 'Divide by 256' }
-        ]
-      }
-    ]
+          { value: 'DIV_256', label: 'Divide by 256' },
+        ],
+      },
+    ],
   },
   {
     id: 'I2c',
@@ -497,7 +500,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of I2C channels',
         defaultValue: 3,
         min: 1,
-        max: 8
+        max: 8,
       },
       {
         name: 'clock_speed',
@@ -508,8 +511,8 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         options: [
           { value: 'STANDARD', label: 'Standard Mode (100 kHz)' },
           { value: 'FAST', label: 'Fast Mode (400 kHz)' },
-          { value: 'FAST_PLUS', label: 'Fast Mode Plus (1 MHz)' }
-        ]
+          { value: 'FAST_PLUS', label: 'Fast Mode Plus (1 MHz)' },
+        ],
       },
       {
         name: 'own_address',
@@ -518,7 +521,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'I2C device own address',
         defaultValue: 0x50,
         min: 0x08,
-        max: 0x77
+        max: 0x77,
       },
       {
         name: 'addressing_mode',
@@ -528,10 +531,10 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         defaultValue: '7BIT',
         options: [
           { value: '7BIT', label: '7-bit Addressing' },
-          { value: '10BIT', label: '10-bit Addressing' }
-        ]
-      }
-    ]
+          { value: '10BIT', label: '10-bit Addressing' },
+        ],
+      },
+    ],
   },
   {
     id: 'Wdg',
@@ -547,14 +550,14 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Watchdog timeout period in milliseconds',
         defaultValue: 1000,
         min: 1,
-        max: 60000
+        max: 60000,
       },
       {
         name: 'window_mode',
         type: 'boolean',
         label: 'Window Mode',
         description: 'Enable watchdog window mode',
-        defaultValue: false
+        defaultValue: false,
       },
       {
         name: 'window_start',
@@ -563,16 +566,16 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Watchdog window start percentage',
         defaultValue: 25,
         min: 0,
-        max: 100
+        max: 100,
       },
       {
         name: 'debug_mode',
         type: 'boolean',
         label: 'Debug Mode',
         description: 'Enable watchdog in debug mode',
-        defaultValue: false
-      }
-    ]
+        defaultValue: false,
+      },
+    ],
   },
   {
     id: 'Icu',
@@ -588,7 +591,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of ICU channels',
         defaultValue: 8,
         min: 1,
-        max: 32
+        max: 32,
       },
       {
         name: 'max_duty_cycle',
@@ -597,7 +600,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Maximum measurable duty cycle in permille',
         defaultValue: 10000,
         min: 1,
-        max: 10000
+        max: 10000,
       },
       {
         name: 'timestamp_resolution',
@@ -608,10 +611,10 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         options: [
           { value: '8BIT', label: '8-bit' },
           { value: '16BIT', label: '16-bit' },
-          { value: '32BIT', label: '32-bit' }
-        ]
-      }
-    ]
+          { value: '32BIT', label: '32-bit' },
+        ],
+      },
+    ],
   },
   {
     id: 'Ocu',
@@ -627,7 +630,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of OCU channels',
         defaultValue: 8,
         min: 1,
-        max: 32
+        max: 32,
       },
       {
         name: 'pin_action',
@@ -639,10 +642,10 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
           { value: 'NONE', label: 'No Action' },
           { value: 'SET', label: 'Set High' },
           { value: 'CLEAR', label: 'Clear Low' },
-          { value: 'TOGGLE', label: 'Toggle' }
-        ]
-      }
-    ]
+          { value: 'TOGGLE', label: 'Toggle' },
+        ],
+      },
+    ],
   },
   // ==================== ECUAL Layer ====================
   {
@@ -657,21 +660,21 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         type: 'boolean',
         label: 'Development Error Detection',
         description: 'Enable development error detection',
-        defaultValue: true
+        defaultValue: true,
       },
       {
         name: 'version_info_api',
         type: 'boolean',
         label: 'Version Info API',
         description: 'Enable version info API',
-        defaultValue: true
+        defaultValue: true,
       },
       {
         name: 'ul_cdd_support',
         type: 'boolean',
         label: 'CDD Support',
         description: 'Enable Complex Driver support',
-        defaultValue: false
+        defaultValue: false,
       },
       {
         name: 'hth_count',
@@ -680,7 +683,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of Hardware Transmit Handles',
         defaultValue: 32,
         min: 1,
-        max: 64
+        max: 64,
       },
       {
         name: 'hrh_count',
@@ -689,9 +692,9 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of Hardware Receive Handles',
         defaultValue: 32,
         min: 1,
-        max: 64
-      }
-    ]
+        max: 64,
+      },
+    ],
   },
   {
     id: 'CanTrcv',
@@ -707,7 +710,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of transceiver channels',
         defaultValue: 4,
         min: 1,
-        max: 8
+        max: 8,
       },
       {
         name: 'wakeup_mode',
@@ -717,17 +720,17 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         defaultValue: 'INTERRUPT',
         options: [
           { value: 'POLLING', label: 'Polling' },
-          { value: 'INTERRUPT', label: 'Interrupt' }
-        ]
+          { value: 'INTERRUPT', label: 'Interrupt' },
+        ],
       },
       {
         name: 'standby_mode',
         type: 'boolean',
         label: 'Standby Mode Support',
         description: 'Enable standby mode support',
-        defaultValue: true
-      }
-    ]
+        defaultValue: true,
+      },
+    ],
   },
   {
     id: 'Eth',
@@ -743,14 +746,14 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of Ethernet controllers',
         defaultValue: 1,
         min: 1,
-        max: 2
+        max: 2,
       },
       {
         name: 'mac_address',
         type: 'string',
         label: 'MAC Address',
         description: 'Default MAC address',
-        defaultValue: 'AA:BB:CC:DD:EE:FF'
+        defaultValue: 'AA:BB:CC:DD:EE:FF',
       },
       {
         name: 'link_speed',
@@ -761,8 +764,8 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         options: [
           { value: '10', label: '10 Mbps' },
           { value: '100', label: '100 Mbps' },
-          { value: '1000', label: '1 Gbps' }
-        ]
+          { value: '1000', label: '1 Gbps' },
+        ],
       },
       {
         name: 'duplex_mode',
@@ -772,8 +775,8 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         defaultValue: 'FULL',
         options: [
           { value: 'HALF', label: 'Half Duplex' },
-          { value: 'FULL', label: 'Full Duplex' }
-        ]
+          { value: 'FULL', label: 'Full Duplex' },
+        ],
       },
       {
         name: 'rx_buffer_count',
@@ -782,7 +785,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of receive buffers',
         defaultValue: 8,
         min: 1,
-        max: 64
+        max: 64,
       },
       {
         name: 'tx_buffer_count',
@@ -791,9 +794,9 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of transmit buffers',
         defaultValue: 8,
         min: 1,
-        max: 64
-      }
-    ]
+        max: 64,
+      },
+    ],
   },
   {
     id: 'Fr',
@@ -809,7 +812,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of FlexRay controllers',
         defaultValue: 2,
         min: 1,
-        max: 4
+        max: 4,
       },
       {
         name: 'cluster_count',
@@ -818,7 +821,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of FlexRay clusters',
         defaultValue: 1,
         min: 1,
-        max: 4
+        max: 4,
       },
       {
         name: 'g_cycle_count',
@@ -827,7 +830,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of cycles in the schedule',
         defaultValue: 64,
         min: 1,
-        max: 64
+        max: 64,
       },
       {
         name: 'gd_macrotick',
@@ -836,16 +839,16 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Duration of a macrotick in microseconds',
         defaultValue: 1,
         min: 1,
-        max: 100
+        max: 100,
       },
       {
         name: 'version_info_api',
         type: 'boolean',
         label: 'Version Info API',
         description: 'Enable version info API',
-        defaultValue: true
-      }
-    ]
+        defaultValue: true,
+      },
+    ],
   },
   {
     id: 'Lin',
@@ -861,7 +864,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of LIN channels',
         defaultValue: 2,
         min: 1,
-        max: 8
+        max: 8,
       },
       {
         name: 'baudrate',
@@ -871,24 +874,24 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         defaultValue: '19200',
         options: [
           { value: '9600', label: '9600 bps' },
-          { value: '19200', label: '19200 bps' }
-        ]
+          { value: '19200', label: '19200 bps' },
+        ],
       },
       {
         name: 'wakeup_support',
         type: 'boolean',
         label: 'Wakeup Support',
         description: 'Enable LIN wakeup support',
-        defaultValue: true
+        defaultValue: true,
       },
       {
         name: 'master_node',
         type: 'boolean',
         label: 'Master Node',
         description: 'Configure as master node',
-        defaultValue: true
-      }
-    ]
+        defaultValue: true,
+      },
+    ],
   },
   // ==================== Service Layer ====================
   {
@@ -907,8 +910,8 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         options: [
           { value: '1', label: 'Class 1 - Basic' },
           { value: '2', label: 'Class 2 - Extended' },
-          { value: '3', label: 'Class 3 - Full' }
-        ]
+          { value: '3', label: 'Class 3 - Full' },
+        ],
       },
       {
         name: 'block_count',
@@ -917,30 +920,30 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of NVM blocks',
         defaultValue: 32,
         min: 1,
-        max: 256
+        max: 256,
       },
       {
         name: 'job_end_notification',
         type: 'boolean',
         label: 'Job End Notification',
         description: 'Enable job end notification',
-        defaultValue: true
+        defaultValue: true,
       },
       {
         name: 'multi_block_callback',
         type: 'boolean',
         label: 'Multi Block Callback',
         description: 'Enable multi block callback',
-        defaultValue: false
+        defaultValue: false,
       },
       {
         name: 'write_block_once',
         type: 'boolean',
         label: 'Write Block Once',
         description: 'Enable write block once feature',
-        defaultValue: false
-      }
-    ]
+        defaultValue: false,
+      },
+    ],
   },
   {
     id: 'Com',
@@ -956,7 +959,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of COM signals',
         defaultValue: 256,
         min: 1,
-        max: 2048
+        max: 2048,
       },
       {
         name: 'ipdu_count',
@@ -965,14 +968,14 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of Interaction PDUs',
         defaultValue: 64,
         min: 1,
-        max: 512
+        max: 512,
       },
       {
         name: 'enable_signal_gates',
         type: 'boolean',
         label: 'Enable Signal Gates',
         description: 'Enable signal gateway functionality',
-        defaultValue: false
+        defaultValue: false,
       },
       {
         name: 'deferred_event_cache',
@@ -981,9 +984,9 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Size of deferred event cache',
         defaultValue: 32,
         min: 1,
-        max: 256
-      }
-    ]
+        max: 256,
+      },
+    ],
   },
   {
     id: 'Fee',
@@ -999,7 +1002,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Size of virtual page',
         defaultValue: 8,
         min: 1,
-        max: 64
+        max: 64,
       },
       {
         name: 'block_count',
@@ -1008,16 +1011,16 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of FEE blocks',
         defaultValue: 64,
         min: 1,
-        max: 512
+        max: 512,
       },
       {
         name: 'garbage_collection',
         type: 'boolean',
         label: 'Garbage Collection',
         description: 'Enable garbage collection',
-        defaultValue: true
-      }
-    ]
+        defaultValue: true,
+      },
+    ],
   },
   {
     id: 'Ea',
@@ -1034,8 +1037,8 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         defaultValue: 'INTERNAL',
         options: [
           { value: 'INTERNAL', label: 'Internal EEPROM' },
-          { value: 'EXTERNAL', label: 'External EEPROM' }
-        ]
+          { value: 'EXTERNAL', label: 'External EEPROM' },
+        ],
       },
       {
         name: 'page_size',
@@ -1044,7 +1047,7 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'EEPROM page size',
         defaultValue: 32,
         min: 1,
-        max: 256
+        max: 256,
       },
       {
         name: 'sector_count',
@@ -1053,9 +1056,9 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of sectors',
         defaultValue: 16,
         min: 1,
-        max: 64
-      }
-    ]
+        max: 64,
+      },
+    ],
   },
   {
     id: 'MemIf',
@@ -1069,23 +1072,23 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         type: 'boolean',
         label: 'FEE Used',
         description: 'Use Flash EEPROM Emulation',
-        defaultValue: true
+        defaultValue: true,
       },
       {
         name: 'ea_used',
         type: 'boolean',
         label: 'EA Used',
         description: 'Use EEPROM Abstraction',
-        defaultValue: false
+        defaultValue: false,
       },
       {
         name: 'version_info_api',
         type: 'boolean',
         label: 'Version Info API',
         description: 'Enable version info API',
-        defaultValue: true
-      }
-    ]
+        defaultValue: true,
+      },
+    ],
   },
   {
     id: 'Crc',
@@ -1099,30 +1102,30 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         type: 'boolean',
         label: '8-bit CRC',
         description: 'Enable 8-bit CRC calculation',
-        defaultValue: true
+        defaultValue: true,
       },
       {
         name: '16bit_mode',
         type: 'boolean',
         label: '16-bit CRC',
         description: 'Enable 16-bit CRC calculation',
-        defaultValue: true
+        defaultValue: true,
       },
       {
         name: '32bit_mode',
         type: 'boolean',
         label: '32-bit CRC',
         description: 'Enable 32-bit CRC calculation',
-        defaultValue: true
+        defaultValue: true,
       },
       {
         name: '64bit_mode',
         type: 'boolean',
         label: '64-bit CRC',
         description: 'Enable 64-bit CRC calculation',
-        defaultValue: false
-      }
-    ]
+        defaultValue: false,
+      },
+    ],
   },
   {
     id: 'Det',
@@ -1136,14 +1139,14 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         type: 'boolean',
         label: 'Forward to DLT',
         description: 'Forward errors to DLT module',
-        defaultValue: true
+        defaultValue: true,
       },
       {
         name: 'breakpoint_on_error',
         type: 'boolean',
         label: 'Breakpoint on Error',
         description: 'Trigger breakpoint on error',
-        defaultValue: false
+        defaultValue: false,
       },
       {
         name: 'max_error_count',
@@ -1152,9 +1155,9 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Maximum number of errors to track',
         defaultValue: 100,
         min: 10,
-        max: 1000
-      }
-    ]
+        max: 1000,
+      },
+    ],
   },
   {
     id: 'Dem',
@@ -1170,133 +1173,134 @@ const MODULE_TEMPLATES: ModuleTemplate[] = [
         description: 'Number of diagnostic events',
         defaultValue: 128,
         min: 1,
-        max: 512
+        max: 512,
       },
       {
         name: 'debounce_counter_based',
         type: 'boolean',
         label: 'Counter-based Debounce',
         description: 'Enable counter-based debouncing',
-        defaultValue: true
+        defaultValue: true,
       },
       {
         name: 'debounce_time_based',
         type: 'boolean',
         label: 'Time-based Debounce',
         description: 'Enable time-based debouncing',
-        defaultValue: true
-      }
-    ]
-  }
-]
+        defaultValue: true,
+      },
+    ],
+  },
+];
 
 export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfigWizardProps) {
-  const { t } = useTranslation()
-  const [step, setStep] = useState<1 | 2 | 3>(1)
-  const [selectedModule, setSelectedModule] = useState<ModuleTemplate | null>(null)
-  const [parameters, setParameters] = useState<Record<string, unknown>>({})
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  
+  const { t } = useTranslation();
+  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [selectedModule, setSelectedModule] = useState<ModuleTemplate | null>(null);
+  const [parameters, setParameters] = useState<Record<string, unknown>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
   // Category filter states
-  const [selectedLayer, setSelectedLayer] = useState<string>('all')
-  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedLayer, setSelectedLayer] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Filter and group modules
   const groupedModules = useMemo(() => {
-    let modules = MODULE_TEMPLATES
+    let modules = MODULE_TEMPLATES;
 
     // Filter by layer
     if (selectedLayer !== 'all') {
-      modules = modules.filter(m => m.layer === selectedLayer)
+      modules = modules.filter(m => m.layer === selectedLayer);
     }
 
     // Filter by search query
     if (searchQuery) {
-      const query = searchQuery.toLowerCase()
-      modules = modules.filter(m => 
-        m.name.toLowerCase().includes(query) ||
-        m.description.toLowerCase().includes(query) ||
-        m.layer.toLowerCase().includes(query)
-      )
+      const query = searchQuery.toLowerCase();
+      modules = modules.filter(
+        m =>
+          m.name.toLowerCase().includes(query) ||
+          m.description.toLowerCase().includes(query) ||
+          m.layer.toLowerCase().includes(query)
+      );
     }
 
     // Group by layer
-    const grouped: Record<string, ModuleTemplate[]> = {}
+    const grouped: Record<string, ModuleTemplate[]> = {};
     LAYER_ORDER.forEach(layer => {
-      const layerModules = modules.filter(m => m.layer === layer)
+      const layerModules = modules.filter(m => m.layer === layer);
       if (layerModules.length > 0) {
-        grouped[layer] = layerModules
+        grouped[layer] = layerModules;
       }
-    })
+    });
 
-    return grouped
-  }, [selectedLayer, searchQuery])
+    return grouped;
+  }, [selectedLayer, searchQuery]);
 
   // Get layer module count
   const layerCounts = useMemo(() => {
-    const counts: Record<string, number> = {}
+    const counts: Record<string, number> = {};
     LAYER_ORDER.forEach(layer => {
-      counts[layer] = MODULE_TEMPLATES.filter(m => m.layer === layer).length
-    })
-    return counts
-  }, [])
+      counts[layer] = MODULE_TEMPLATES.filter(m => m.layer === layer).length;
+    });
+    return counts;
+  }, []);
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   const handleSelectModule = (module: ModuleTemplate) => {
-    setSelectedModule(module)
+    setSelectedModule(module);
     // Initialize parameters with defaults
-    const defaults: Record<string, unknown> = {}
+    const defaults: Record<string, unknown> = {};
     module.parameters.forEach(param => {
-      defaults[param.name] = param.defaultValue
-    })
-    setParameters(defaults)
-    setStep(2)
-  }
+      defaults[param.name] = param.defaultValue;
+    });
+    setParameters(defaults);
+    setStep(2);
+  };
 
   const handleParameterChange = (name: string, value: unknown) => {
-    setParameters(prev => ({ ...prev, [name]: value }))
+    setParameters(prev => ({ ...prev, [name]: value }));
     // Clear error for this field
     if (errors[name]) {
       setErrors(prev => {
-        const newErrors = { ...prev }
-        delete newErrors[name]
-        return newErrors
-      })
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
     }
-  }
+  };
 
   const validateParameters = (): boolean => {
-    const newErrors: Record<string, string> = {}
-    
-    if (!selectedModule) return false
-    
+    const newErrors: Record<string, string> = {};
+
+    if (!selectedModule) return false;
+
     selectedModule.parameters.forEach(param => {
-      const value = parameters[param.name]
-      
+      const value = parameters[param.name];
+
       if (param.type === 'number') {
-        const numValue = Number(value)
+        const numValue = Number(value);
         if (isNaN(numValue)) {
-          newErrors[param.name] = 'Must be a valid number'
+          newErrors[param.name] = 'Must be a valid number';
         } else if (param.min !== undefined && numValue < param.min) {
-          newErrors[param.name] = `Minimum value is ${param.min}`
+          newErrors[param.name] = `Minimum value is ${param.min}`;
         } else if (param.max !== undefined && numValue > param.max) {
-          newErrors[param.name] = `Maximum value is ${param.max}`
+          newErrors[param.name] = `Maximum value is ${param.max}`;
         }
       }
-    })
-    
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    });
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleNext = () => {
     if (step === 2) {
       if (validateParameters()) {
-        setStep(3)
+        setStep(3);
       }
     }
-  }
+  };
 
   const handleComplete = () => {
     if (selectedModule) {
@@ -1308,31 +1312,31 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
         configStatus: 'configured',
         configMethod: 'wizard',
         configProgress: 100,
-        configuredAt: new Date().toISOString()
-      })
+        configuredAt: new Date().toISOString(),
+      });
     }
     // Reset and close
-    resetAndClose()
-  }
+    resetAndClose();
+  };
 
   const resetAndClose = () => {
-    setStep(1)
-    setSelectedModule(null)
-    setParameters({})
-    setErrors({})
-    setSelectedLayer('all')
-    setSearchQuery('')
-    onClose()
-  }
+    setStep(1);
+    setSelectedModule(null);
+    setParameters({});
+    setErrors({});
+    setSelectedLayer('all');
+    setSearchQuery('');
+    onClose();
+  };
 
   const handleBack = () => {
     if (step === 2) {
-      setStep(1)
-      setSelectedModule(null)
+      setStep(1);
+      setSelectedModule(null);
     } else if (step === 3) {
-      setStep(2)
+      setStep(2);
     }
-  }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -1346,9 +1350,12 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
             <p className="text-sm text-app-text-secondary">
               {t('wizard.step', 'Step {{step}} of 3: {{title}}', {
                 step,
-                title: step === 1 ? t('wizard.selectModule', 'Select Module') : 
-                       step === 2 ? t('wizard.configureParams', 'Configure Parameters') : 
-                       t('wizard.review', 'Review')
+                title:
+                  step === 1
+                    ? t('wizard.selectModule', 'Select Module')
+                    : step === 2
+                      ? t('wizard.configureParams', 'Configure Parameters')
+                      : t('wizard.review', 'Review'),
               })}
             </p>
           </div>
@@ -1364,16 +1371,16 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
         {/* Progress */}
         <div className="px-6 py-3 bg-app-bg-secondary border-b border-app-border-primary">
           <div className="flex items-center gap-2">
-            {[1, 2, 3].map((s) => (
+            {[1, 2, 3].map(s => (
               <div key={s} className="flex items-center gap-2">
                 <div
                   className={cn(
-                    "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors",
+                    'w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors',
                     step === s
-                      ? "bg-primary-600 text-white"
+                      ? 'bg-primary-600 text-white'
                       : step > s
-                      ? "bg-green-500 text-white"
-                      : "bg-app-bg-tertiary text-app-text-secondary"
+                        ? 'bg-green-500 text-white'
+                        : 'bg-app-bg-tertiary text-app-text-secondary'
                   )}
                 >
                   {step > s ? <Check className="w-4 h-4" /> : s}
@@ -1381,8 +1388,8 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                 {s < 3 && (
                   <div
                     className={cn(
-                      "w-12 h-0.5 transition-colors",
-                      step > s ? "bg-green-500" : "bg-app-bg-tertiary"
+                      'w-12 h-0.5 transition-colors',
+                      step > s ? 'bg-green-500' : 'bg-app-bg-tertiary'
                     )}
                   />
                 )}
@@ -1403,7 +1410,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                   <input
                     type="text"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={e => setSearchQuery(e.target.value)}
                     placeholder={t('wizard.searchModule', 'Search modules...')}
                     className="w-full pl-9 pr-4 py-2 border border-app-border-primary rounded-lg bg-app-bg-primary text-app-text-primary focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                   />
@@ -1422,10 +1429,10 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                   <button
                     onClick={() => setSelectedLayer('all')}
                     className={cn(
-                      "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
+                      'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors',
                       selectedLayer === 'all'
-                        ? "bg-gray-900 text-white"
-                        : "bg-app-bg-tertiary text-app-text-secondary hover:bg-app-bg-tertiary"
+                        ? 'bg-gray-900 text-white'
+                        : 'bg-app-bg-tertiary text-app-text-secondary hover:bg-app-bg-tertiary'
                     )}
                   >
                     <Layers className="w-3.5 h-3.5" />
@@ -1437,10 +1444,15 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                       key={layer}
                       onClick={() => setSelectedLayer(layer)}
                       className={cn(
-                        "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border",
+                        'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border',
                         selectedLayer === layer
                           ? cn(LAYER_COLORS[layer].badge, 'border-transparent')
-                          : cn(LAYER_COLORS[layer].bg, LAYER_COLORS[layer].text, 'hover:opacity-80', LAYER_COLORS[layer].border)
+                          : cn(
+                              LAYER_COLORS[layer].bg,
+                              LAYER_COLORS[layer].text,
+                              'hover:opacity-80',
+                              LAYER_COLORS[layer].border
+                            )
                       )}
                     >
                       <span>{layer}</span>
@@ -1456,7 +1468,10 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                   <Search className="w-12 h-12 mx-auto mb-3 opacity-30" />
                   <p>{t('wizard.noModules', 'No modules found')}</p>
                   <button
-                    onClick={() => { setSearchQuery(''); setSelectedLayer('all'); }}
+                    onClick={() => {
+                      setSearchQuery('');
+                      setSelectedLayer('all');
+                    }}
                     className="mt-2 text-primary-600 hover:text-primary-700 text-sm"
                   >
                     {t('wizard.clearFilters', 'Clear filters')}
@@ -1465,57 +1480,69 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
               ) : (
                 <div className="space-y-6">
                   {LAYER_ORDER.map(layer => {
-                    const modules = groupedModules[layer]
-                    if (!modules || modules.length === 0) return null
+                    const modules = groupedModules[layer];
+                    if (!modules || modules.length === 0) return null;
 
                     return (
                       <div key={layer} className="space-y-3">
                         {/* Layer Header */}
-                        <div className={cn(
-                          "flex items-center gap-2 px-3 py-2 rounded-lg",
-                          LAYER_COLORS[layer].bg
-                        )}>
-                          <span className={cn("text-sm font-semibold", LAYER_COLORS[layer].text)}>
+                        <div
+                          className={cn(
+                            'flex items-center gap-2 px-3 py-2 rounded-lg',
+                            LAYER_COLORS[layer].bg
+                          )}
+                        >
+                          <span className={cn('text-sm font-semibold', LAYER_COLORS[layer].text)}>
                             {layer} Layer
                           </span>
-                          <span className={cn("text-xs", LAYER_COLORS[layer].text, "opacity-70")}>
+                          <span className={cn('text-xs', LAYER_COLORS[layer].text, 'opacity-70')}>
                             ({modules.length})
                           </span>
                         </div>
 
                         {/* Module Cards */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                          {modules.map((module) => (
+                          {modules.map(module => (
                             <button
                               key={module.id}
                               onClick={() => handleSelectModule(module)}
                               className={cn(
-                                "p-4 border rounded-lg transition-all text-left group",
+                                'p-4 border rounded-lg transition-all text-left group',
                                 LAYER_COLORS[layer].hover,
-                                "border-app-border-primary hover:shadow-md"
+                                'border-app-border-primary hover:shadow-md'
                               )}
                             >
                               <div className="flex items-start gap-3">
-                                <div className={cn(
-                                  "p-2 rounded-lg transition-colors",
-                                  LAYER_COLORS[layer].bg,
-                                  LAYER_COLORS[layer].text
-                                )}>
+                                <div
+                                  className={cn(
+                                    'p-2 rounded-lg transition-colors',
+                                    LAYER_COLORS[layer].bg,
+                                    LAYER_COLORS[layer].text
+                                  )}
+                                >
                                   {module.icon}
                                 </div>
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center gap-2">
-                                    <span className="font-semibold text-app-text-primary">{module.name}</span>
-                                    <span className={cn(
-                                      "px-1.5 py-0.5 text-xs rounded border",
-                                      LAYER_COLORS[layer].badge
-                                    )}>
+                                    <span className="font-semibold text-app-text-primary">
+                                      {module.name}
+                                    </span>
+                                    <span
+                                      className={cn(
+                                        'px-1.5 py-0.5 text-xs rounded border',
+                                        LAYER_COLORS[layer].badge
+                                      )}
+                                    >
                                       {module.layer}
                                     </span>
                                   </div>
-                                  <p className="text-sm text-app-text-secondary mt-1 line-clamp-2">{module.description}</p>
+                                  <p className="text-sm text-app-text-secondary mt-1 line-clamp-2">
+                                    {module.description}
+                                  </p>
                                   <div className="flex items-center gap-3 mt-2 text-xs text-app-text-tertiary">
-                                    <span>{module.parameters.length} {t('wizard.params', 'params')}</span>
+                                    <span>
+                                      {module.parameters.length} {t('wizard.params', 'params')}
+                                    </span>
                                   </div>
                                 </div>
                                 <ChevronRight className="w-5 h-5 text-app-text-tertiary group-hover:text-app-text-secondary flex-shrink-0" />
@@ -1524,7 +1551,7 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                           ))}
                         </div>
                       </div>
-                    )
+                    );
                   })}
                 </div>
               )}
@@ -1533,21 +1560,25 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
 
           {step === 2 && selectedModule && (
             <div className="space-y-6">
-              <div className={cn(
-                "flex items-center gap-3 p-4 rounded-lg border",
-                LAYER_COLORS[selectedModule.layer].bg,
-                LAYER_COLORS[selectedModule.layer].border
-              )}>
+              <div
+                className={cn(
+                  'flex items-center gap-3 p-4 rounded-lg border',
+                  LAYER_COLORS[selectedModule.layer].bg,
+                  LAYER_COLORS[selectedModule.layer].border
+                )}
+              >
                 <div className="p-2 bg-app-bg-primary rounded-lg shadow-sm">
                   {selectedModule.icon}
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
                     <h4 className="font-semibold text-app-text-primary">{selectedModule.name}</h4>
-                    <span className={cn(
-                      "px-1.5 py-0.5 text-xs rounded border",
-                      LAYER_COLORS[selectedModule.layer].badge
-                    )}>
+                    <span
+                      className={cn(
+                        'px-1.5 py-0.5 text-xs rounded border',
+                        LAYER_COLORS[selectedModule.layer].badge
+                      )}
+                    >
                       {selectedModule.layer}
                     </span>
                   </div>
@@ -1556,23 +1587,23 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
               </div>
 
               <div className="space-y-4">
-                {selectedModule.parameters.map((param) => (
+                {selectedModule.parameters.map(param => (
                   <div key={param.name}>
                     <label className="block text-sm font-medium text-app-text-primary mb-1">
                       {param.label}
                     </label>
                     <p className="text-xs text-app-text-secondary mb-2">{param.description}</p>
-                    
+
                     {param.type === 'select' ? (
                       <select
                         value={String(parameters[param.name])}
-                        onChange={(e) => handleParameterChange(param.name, e.target.value)}
+                        onChange={e => handleParameterChange(param.name, e.target.value)}
                         className={cn(
-                          "w-full px-3 py-2 border rounded-lg bg-app-bg-primary text-app-text-primary focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
-                          errors[param.name] ? "border-red-300" : "border-app-border-primary"
+                          'w-full px-3 py-2 border rounded-lg bg-app-bg-primary text-app-text-primary focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+                          errors[param.name] ? 'border-red-300' : 'border-app-border-primary'
                         )}
                       >
-                        {param.options?.map((opt) => (
+                        {param.options?.map(opt => (
                           <option key={String(opt.value)} value={String(opt.value)}>
                             {opt.label}
                           </option>
@@ -1583,30 +1614,31 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                         <input
                           type="checkbox"
                           checked={Boolean(parameters[param.name])}
-                          onChange={(e) => handleParameterChange(param.name, e.target.checked)}
+                          onChange={e => handleParameterChange(param.name, e.target.checked)}
                           className="w-4 h-4 text-primary-600 border-app-border-primary rounded focus:ring-primary-500"
                         />
-                        <span className="text-sm text-app-text-primary">{t('wizard.enabled', 'Enabled')}</span>
+                        <span className="text-sm text-app-text-primary">
+                          {t('wizard.enabled', 'Enabled')}
+                        </span>
                       </label>
                     ) : (
                       <input
                         type={param.type === 'number' ? 'number' : 'text'}
                         value={String(parameters[param.name] ?? '')}
-                        onChange={(e) => {
-                          const value = param.type === 'number' 
-                            ? Number(e.target.value) 
-                            : e.target.value
-                          handleParameterChange(param.name, value)
+                        onChange={e => {
+                          const value =
+                            param.type === 'number' ? Number(e.target.value) : e.target.value;
+                          handleParameterChange(param.name, value);
                         }}
                         min={param.min}
                         max={param.max}
                         className={cn(
-                          "w-full px-3 py-2 border rounded-lg bg-app-bg-primary text-app-text-primary focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
-                          errors[param.name] ? "border-red-300" : "border-app-border-primary"
+                          'w-full px-3 py-2 border rounded-lg bg-app-bg-primary text-app-text-primary focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+                          errors[param.name] ? 'border-red-300' : 'border-app-border-primary'
                         )}
                       />
                     )}
-                    
+
                     {errors[param.name] && (
                       <p className="mt-1 text-sm text-red-600 flex items-center gap-1">
                         <AlertCircle className="w-4 h-4" />
@@ -1624,7 +1656,9 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
               <div className="p-4 bg-green-50 rounded-lg border border-green-200">
                 <div className="flex items-center gap-2 text-green-700">
                   <Check className="w-5 h-5" />
-                  <span className="font-medium">{t('wizard.configComplete', 'Configuration Complete')}</span>
+                  <span className="font-medium">
+                    {t('wizard.configComplete', 'Configuration Complete')}
+                  </span>
                 </div>
                 <p className="text-sm text-green-600 mt-1">
                   {t('wizard.reviewDesc', 'Review your configuration before saving.')}
@@ -1632,18 +1666,22 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
               </div>
 
               <div className="space-y-4">
-                <div className={cn(
-                  "flex items-center justify-between p-3 rounded-lg border",
-                  LAYER_COLORS[selectedModule.layer].bg,
-                  LAYER_COLORS[selectedModule.layer].border
-                )}>
+                <div
+                  className={cn(
+                    'flex items-center justify-between p-3 rounded-lg border',
+                    LAYER_COLORS[selectedModule.layer].bg,
+                    LAYER_COLORS[selectedModule.layer].border
+                  )}
+                >
                   <span className="text-app-text-secondary">{t('wizard.module', 'Module')}</span>
                   <div className="flex items-center gap-2">
                     <span className="font-medium">{selectedModule.name}</span>
-                    <span className={cn(
-                      "px-1.5 py-0.5 text-xs rounded border",
-                      LAYER_COLORS[selectedModule.layer].badge
-                    )}>
+                    <span
+                      className={cn(
+                        'px-1.5 py-0.5 text-xs rounded border',
+                        LAYER_COLORS[selectedModule.layer].badge
+                      )}
+                    >
                       {selectedModule.layer}
                     </span>
                   </div>
@@ -1654,9 +1692,11 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                 </div>
 
                 <div className="border-t border-app-border-primary pt-4">
-                  <h4 className="font-medium text-app-text-primary mb-3">{t('wizard.parameters', 'Parameters')}</h4>
+                  <h4 className="font-medium text-app-text-primary mb-3">
+                    {t('wizard.parameters', 'Parameters')}
+                  </h4>
                   <div className="space-y-2">
-                    {selectedModule.parameters.map((param) => (
+                    {selectedModule.parameters.map(param => (
                       <div
                         key={param.name}
                         className="flex items-center justify-between p-2 bg-app-bg-secondary rounded"
@@ -1664,7 +1704,9 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
                         <span className="text-sm text-app-text-secondary">{param.label}</span>
                         <span className="font-medium">
                           {param.options
-                            ? param.options.find(o => String(o.value) === String(parameters[param.name]))?.label
+                            ? param.options.find(
+                                o => String(o.value) === String(parameters[param.name])
+                              )?.label
                             : String(parameters[param.name])}
                         </span>
                       </div>
@@ -1682,16 +1724,16 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
             onClick={handleBack}
             disabled={step === 1}
             className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors",
+              'flex items-center gap-2 px-4 py-2 rounded-lg transition-colors',
               step === 1
-                ? "text-app-text-tertiary cursor-not-allowed"
-                : "text-app-text-primary hover:bg-app-bg-tertiary"
+                ? 'text-app-text-tertiary cursor-not-allowed'
+                : 'text-app-text-primary hover:bg-app-bg-tertiary'
             )}
           >
             <ChevronLeft className="w-4 h-4" />
             {t('wizard.back', 'Back')}
           </button>
-          
+
           {step === 3 ? (
             <button
               onClick={handleComplete}
@@ -1705,10 +1747,10 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
               onClick={handleNext}
               disabled={!selectedModule}
               className={cn(
-                "flex items-center gap-2 px-6 py-2 rounded-lg transition-colors",
+                'flex items-center gap-2 px-6 py-2 rounded-lg transition-colors',
                 !selectedModule
-                  ? "bg-app-bg-tertiary text-app-text-tertiary cursor-not-allowed"
-                  : "bg-primary-600 text-white hover:bg-primary-700"
+                  ? 'bg-app-bg-tertiary text-app-text-tertiary cursor-not-allowed'
+                  : 'bg-primary-600 text-white hover:bg-primary-700'
               )}
             >
               {t('wizard.next', 'Next')}
@@ -1718,5 +1760,5 @@ export function ModuleConfigWizard({ isOpen, onClose, onComplete }: ModuleConfig
         </div>
       </div>
     </div>
-  )
+  );
 }

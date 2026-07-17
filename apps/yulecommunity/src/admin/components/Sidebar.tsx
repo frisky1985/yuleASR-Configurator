@@ -43,9 +43,7 @@ export const Sidebar: React.FC = () => {
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-purple-600">
             <Shield className="h-5 w-5 text-white" />
           </div>
-          {!sidebarCollapsed && (
-            <span className="text-lg font-bold text-white">Admin</span>
-          )}
+          {!sidebarCollapsed && <span className="text-lg font-bold text-white">Admin</span>}
         </div>
         {!sidebarCollapsed && (
           <button
@@ -67,11 +65,12 @@ export const Sidebar: React.FC = () => {
 
       {/* Navigation */}
       <nav className="flex-1 space-y-1 px-2 py-4">
-        {menuItems.map((item) => {
+        {menuItems.map(item => {
           const Icon = item.icon;
-          const isActive = location.pathname === item.path || 
-                          (item.path !== '/admin/dashboard' && location.pathname.startsWith(item.path));
-          
+          const isActive =
+            location.pathname === item.path ||
+            (item.path !== '/admin/dashboard' && location.pathname.startsWith(item.path));
+
           return (
             <NavLink
               key={item.path}
@@ -94,10 +93,7 @@ export const Sidebar: React.FC = () => {
 
       {/* User Info */}
       <div className="border-t border-slate-800 p-4">
-        <div className={cn(
-          'flex items-center gap-3',
-          sidebarCollapsed && 'justify-center'
-        )}>
+        <div className={cn('flex items-center gap-3', sidebarCollapsed && 'justify-center')}>
           <div className="h-8 w-8 rounded-full bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center text-white font-bold text-sm">
             {user?.username?.[0]?.toUpperCase() || 'A'}
           </div>
@@ -106,9 +102,7 @@ export const Sidebar: React.FC = () => {
               <p className="text-sm font-medium text-white truncate">
                 {user?.username || 'Admin User'}
               </p>
-              <p className="text-xs text-slate-400 truncate">
-                {user?.role || 'admin'}
-              </p>
+              <p className="text-xs text-slate-400 truncate">{user?.role || 'admin'}</p>
             </div>
           )}
         </div>

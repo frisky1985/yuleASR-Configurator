@@ -6,12 +6,12 @@
 /**
  * 参数基础类型
  */
-export type ParameterBaseType = 
-  | 'boolean' 
-  | 'integer' 
-  | 'float' 
-  | 'string' 
-  | 'enum' 
+export type ParameterBaseType =
+  | 'boolean'
+  | 'integer'
+  | 'float'
+  | 'string'
+  | 'enum'
   | 'reference'
   | 'array'
   | 'object';
@@ -19,12 +19,12 @@ export type ParameterBaseType =
 /**
  * 参数值类型
  */
-export type ParameterValue = 
-  | boolean 
-  | number 
-  | string 
-  | null 
-  | ParameterValue[] 
+export type ParameterValue =
+  | boolean
+  | number
+  | string
+  | null
+  | ParameterValue[]
   | { [key: string]: ParameterValue };
 
 /**
@@ -97,14 +97,14 @@ export interface ParameterConstraints {
  */
 export interface ParameterUIConfig {
   /** 控件类型 */
-  widget?: 
-    | 'input' 
-    | 'textarea' 
-    | 'number' 
-    | 'switch' 
-    | 'select' 
-    | 'radio' 
-    | 'checkbox' 
+  widget?:
+    | 'input'
+    | 'textarea'
+    | 'number'
+    | 'switch'
+    | 'select'
+    | 'radio'
+    | 'checkbox'
     | 'slider'
     | 'color'
     | 'date'
@@ -211,7 +211,10 @@ export class ParameterTypeFactory {
   /**
    * 创建布尔参数
    */
-  static createBoolean(name: string, options: Partial<ParameterDefinition> = {}): ParameterDefinition {
+  static createBoolean(
+    name: string,
+    options: Partial<ParameterDefinition> = {}
+  ): ParameterDefinition {
     return {
       name,
       type: 'boolean',
@@ -224,7 +227,10 @@ export class ParameterTypeFactory {
   /**
    * 创建整数参数
    */
-  static createInteger(name: string, options: Partial<ParameterDefinition> & Partial<ParameterConstraints> = {}): ParameterDefinition {
+  static createInteger(
+    name: string,
+    options: Partial<ParameterDefinition> & Partial<ParameterConstraints> = {}
+  ): ParameterDefinition {
     const { min, max, step, ...rest } = options;
     return {
       name,
@@ -239,7 +245,10 @@ export class ParameterTypeFactory {
   /**
    * 创建浮点数参数
    */
-  static createFloat(name: string, options: Partial<ParameterDefinition> & Partial<ParameterConstraints> = {}): ParameterDefinition {
+  static createFloat(
+    name: string,
+    options: Partial<ParameterDefinition> & Partial<ParameterConstraints> = {}
+  ): ParameterDefinition {
     const { min, max, precision, step, ...rest } = options;
     return {
       name,
@@ -254,7 +263,10 @@ export class ParameterTypeFactory {
   /**
    * 创建字符串参数
    */
-  static createString(name: string, options: Partial<ParameterDefinition> & Partial<ParameterConstraints> = {}): ParameterDefinition {
+  static createString(
+    name: string,
+    options: Partial<ParameterDefinition> & Partial<ParameterConstraints> = {}
+  ): ParameterDefinition {
     const { minLength, maxLength, pattern, ...rest } = options;
     return {
       name,
@@ -269,7 +281,11 @@ export class ParameterTypeFactory {
   /**
    * 创建枚举参数
    */
-  static createEnum(name: string, options: EnumOption[], config: Partial<ParameterDefinition> = {}): ParameterDefinition {
+  static createEnum(
+    name: string,
+    options: EnumOption[],
+    config: Partial<ParameterDefinition> = {}
+  ): ParameterDefinition {
     return {
       name,
       type: 'enum',
@@ -283,7 +299,11 @@ export class ParameterTypeFactory {
   /**
    * 创建引用参数
    */
-  static createReference(name: string, target: ReferenceTarget, options: Partial<ParameterDefinition> = {}): ParameterDefinition {
+  static createReference(
+    name: string,
+    target: ReferenceTarget,
+    options: Partial<ParameterDefinition> = {}
+  ): ParameterDefinition {
     return {
       name,
       type: 'reference',
@@ -296,7 +316,11 @@ export class ParameterTypeFactory {
   /**
    * 创建数组参数
    */
-  static createArray(name: string, itemType: ParameterDefinition, options: Partial<ParameterDefinition> = {}): ParameterDefinition {
+  static createArray(
+    name: string,
+    itemType: ParameterDefinition,
+    options: Partial<ParameterDefinition> = {}
+  ): ParameterDefinition {
     return {
       name,
       type: 'array',
@@ -310,7 +334,11 @@ export class ParameterTypeFactory {
   /**
    * 创建对象参数
    */
-  static createObject(name: string, properties: Record<string, ParameterDefinition>, options: Partial<ParameterDefinition> = {}): ParameterDefinition {
+  static createObject(
+    name: string,
+    properties: Record<string, ParameterDefinition>,
+    options: Partial<ParameterDefinition> = {}
+  ): ParameterDefinition {
     return {
       name,
       type: 'object',
@@ -333,7 +361,10 @@ export function validateParameterValue(
 
   // 必填验证
   if (definition.required && (value === undefined || value === null || value === '')) {
-    errors.push(definition.validation?.find(v => v.type === 'required')?.message || `参数 ${definition.name} 为必填项`);
+    errors.push(
+      definition.validation?.find(v => v.type === 'required')?.message ||
+        `参数 ${definition.name} 为必填项`
+    );
   }
 
   if (value === undefined || value === null) {

@@ -302,11 +302,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CAN_RX",
-    "CommonPublishedInformation",
-    "DioConfig"
-  ],
+  "required": ["CAN_RX", "CommonPublishedInformation", "DioConfig"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

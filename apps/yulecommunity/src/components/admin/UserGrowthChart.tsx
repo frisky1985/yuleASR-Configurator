@@ -21,7 +21,10 @@ function getDateKey(date: Date): string {
 }
 
 export function UserGrowthChart() {
-  const [state] = useLocalStorage<UserSystemState>('yuletech-user-system', { points: 0, history: [] });
+  const [state] = useLocalStorage<UserSystemState>('yuletech-user-system', {
+    points: 0,
+    history: [],
+  });
 
   const data = useMemo(() => {
     const today = new Date();
@@ -91,9 +94,7 @@ export function UserGrowthChart() {
           labelStyle={{ color: 'hsl(var(--foreground))' }}
           formatter={(value: unknown) => [`${value} 人`, '数量']}
         />
-        <Legend
-          wrapperStyle={{ color: 'hsl(var(--foreground))' }}
-        />
+        <Legend wrapperStyle={{ color: 'hsl(var(--foreground))' }} />
         <Line
           type="monotone"
           dataKey="total"

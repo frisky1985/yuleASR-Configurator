@@ -14,28 +14,28 @@ import {
   ChevronRight,
   X,
   Check,
-  LayoutTemplate
-} from 'lucide-react'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+  LayoutTemplate,
+} from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { useConfigStore } from '@/stores/configStore'
+import { useConfigStore } from '@/stores/configStore';
 
 // Template type definitions
 interface TemplateModule {
-  id: string
-  name: string
-  layer: 'MCAL' | 'ECUAL' | 'Service'
+  id: string;
+  name: string;
+  layer: 'MCAL' | 'ECUAL' | 'Service';
 }
 
 interface TemplateConfig {
-  id: string
-  name: string
-  description: string
-  category: 'mcal' | 'ecual' | 'service' | 'full'
-  icon: React.ReactNode
-  modules: TemplateModule[]
-  recommended?: boolean
+  id: string;
+  name: string;
+  description: string;
+  category: 'mcal' | 'ecual' | 'service' | 'full';
+  icon: React.ReactNode;
+  modules: TemplateModule[];
+  recommended?: boolean;
 }
 
 // Template data
@@ -44,13 +44,14 @@ const templates: TemplateConfig[] = [
   {
     id: 'mcal-mcu',
     name: 'MCU Base',
-    description: 'Microcontroller driver with clock configuration, core settings and basic MCU initialization',
+    description:
+      'Microcontroller driver with clock configuration, core settings and basic MCU initialization',
     category: 'mcal',
     icon: <Cpu className="w-5 h-5" />,
     modules: [
       { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
-      { id: 'port', name: 'Port', layer: 'MCAL' }
-    ]
+      { id: 'port', name: 'Port', layer: 'MCAL' },
+    ],
   },
   {
     id: 'mcal-port-dio',
@@ -61,8 +62,8 @@ const templates: TemplateConfig[] = [
     modules: [
       { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
       { id: 'port', name: 'Port', layer: 'MCAL' },
-      { id: 'dio', name: 'Dio', layer: 'MCAL' }
-    ]
+      { id: 'dio', name: 'Dio', layer: 'MCAL' },
+    ],
   },
   {
     id: 'mcal-pwm',
@@ -74,8 +75,8 @@ const templates: TemplateConfig[] = [
       { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
       { id: 'port', name: 'Port', layer: 'MCAL' },
       { id: 'gpt', name: 'Gpt', layer: 'MCAL' },
-      { id: 'pwm', name: 'Pwm', layer: 'MCAL' }
-    ]
+      { id: 'pwm', name: 'Pwm', layer: 'MCAL' },
+    ],
   },
   {
     id: 'mcal-adc',
@@ -86,22 +87,23 @@ const templates: TemplateConfig[] = [
     modules: [
       { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
       { id: 'port', name: 'Port', layer: 'MCAL' },
-      { id: 'adc', name: 'Adc', layer: 'MCAL' }
-    ]
+      { id: 'adc', name: 'Adc', layer: 'MCAL' },
+    ],
   },
   // ECUAL Communication Templates
   {
     id: 'ecual-can',
     name: 'CAN Communication',
-    description: 'CAN driver with baudrate configuration, message objects and communication settings',
+    description:
+      'CAN driver with baudrate configuration, message objects and communication settings',
     category: 'ecual',
     icon: <Wifi className="w-5 h-5" />,
     modules: [
       { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
       { id: 'port', name: 'Port', layer: 'MCAL' },
-      { id: 'can', name: 'Can', layer: 'ECUAL' }
+      { id: 'can', name: 'Can', layer: 'ECUAL' },
     ],
-    recommended: true
+    recommended: true,
   },
   {
     id: 'ecual-eth',
@@ -112,8 +114,8 @@ const templates: TemplateConfig[] = [
     modules: [
       { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
       { id: 'port', name: 'Port', layer: 'MCAL' },
-      { id: 'eth', name: 'Eth', layer: 'ECUAL' }
-    ]
+      { id: 'eth', name: 'Eth', layer: 'ECUAL' },
+    ],
   },
   // Service Templates
   {
@@ -126,8 +128,8 @@ const templates: TemplateConfig[] = [
       { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
       { id: 'port', name: 'Port', layer: 'MCAL' },
       { id: 'dio', name: 'Dio', layer: 'MCAL' },
-      { id: 'nvm', name: 'NvM', layer: 'Service' }
-    ]
+      { id: 'nvm', name: 'NvM', layer: 'Service' },
+    ],
   },
   {
     id: 'service-com',
@@ -139,8 +141,8 @@ const templates: TemplateConfig[] = [
       { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
       { id: 'port', name: 'Port', layer: 'MCAL' },
       { id: 'can', name: 'Can', layer: 'ECUAL' },
-      { id: 'com', name: 'Com', layer: 'Service' }
-    ]
+      { id: 'com', name: 'Com', layer: 'Service' },
+    ],
   },
   {
     id: 'service-dcm',
@@ -152,8 +154,8 @@ const templates: TemplateConfig[] = [
       { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
       { id: 'port', name: 'Port', layer: 'MCAL' },
       { id: 'can', name: 'Can', layer: 'ECUAL' },
-      { id: 'dcm', name: 'Dcm', layer: 'Service' }
-    ]
+      { id: 'dcm', name: 'Dcm', layer: 'Service' },
+    ],
   },
   // Full Project Templates
   {
@@ -162,9 +164,7 @@ const templates: TemplateConfig[] = [
     description: 'Start from scratch with minimal MCU configuration only',
     category: 'full',
     icon: <FolderOpen className="w-5 h-5" />,
-    modules: [
-      { id: 'mcu', name: 'Mcu', layer: 'MCAL' }
-    ]
+    modules: [{ id: 'mcu', name: 'Mcu', layer: 'MCAL' }],
   },
   {
     id: 'full-minimal',
@@ -176,8 +176,8 @@ const templates: TemplateConfig[] = [
       { id: 'mcu', name: 'Mcu', layer: 'MCAL' },
       { id: 'port', name: 'Port', layer: 'MCAL' },
       { id: 'dio', name: 'Dio', layer: 'MCAL' },
-      { id: 'can', name: 'Can', layer: 'ECUAL' }
-    ]
+      { id: 'can', name: 'Can', layer: 'ECUAL' },
+    ],
   },
   {
     id: 'full-complete',
@@ -196,67 +196,106 @@ const templates: TemplateConfig[] = [
       { id: 'eth', name: 'Eth', layer: 'ECUAL' },
       { id: 'nvm', name: 'NvM', layer: 'Service' },
       { id: 'com', name: 'Com', layer: 'Service' },
-      { id: 'dcm', name: 'Dcm', layer: 'Service' }
+      { id: 'dcm', name: 'Dcm', layer: 'Service' },
     ],
-    recommended: true
-  }
-]
+    recommended: true,
+  },
+];
 
 const categoryLabels = {
-  mcal: { name: 'MCAL Base Templates', description: 'Microcontroller drivers for hardware abstraction', color: 'blue' },
-  ecual: { name: 'ECUAL Communication', description: 'Communication drivers and protocols', color: 'green' },
-  service: { name: 'Service Layer', description: 'AUTOSAR service modules and stacks', color: 'purple' },
-  full: { name: 'Full Project Templates', description: 'Complete project configurations', color: 'amber' }
-}
+  mcal: {
+    name: 'MCAL Base Templates',
+    description: 'Microcontroller drivers for hardware abstraction',
+    color: 'blue',
+  },
+  ecual: {
+    name: 'ECUAL Communication',
+    description: 'Communication drivers and protocols',
+    color: 'green',
+  },
+  service: {
+    name: 'Service Layer',
+    description: 'AUTOSAR service modules and stacks',
+    color: 'purple',
+  },
+  full: {
+    name: 'Full Project Templates',
+    description: 'Complete project configurations',
+    color: 'amber',
+  },
+};
 
-const categoryColors: Record<string, { bg: string; text: string; border: string; badge: string }> = {
-  mcal: { bg: 'bg-blue-50', text: 'text-blue-600', border: 'border-blue-200', badge: 'bg-blue-100 text-blue-700' },
-  ecual: { bg: 'bg-green-50', text: 'text-green-600', border: 'border-green-200', badge: 'bg-green-100 text-green-700' },
-  service: { bg: 'bg-purple-50', text: 'text-purple-600', border: 'border-purple-200', badge: 'bg-purple-100 text-purple-700' },
-  full: { bg: 'bg-amber-50', text: 'text-amber-600', border: 'border-amber-200', badge: 'bg-amber-100 text-amber-700' }
-}
+const categoryColors: Record<string, { bg: string; text: string; border: string; badge: string }> =
+  {
+    mcal: {
+      bg: 'bg-blue-50',
+      text: 'text-blue-600',
+      border: 'border-blue-200',
+      badge: 'bg-blue-100 text-blue-700',
+    },
+    ecual: {
+      bg: 'bg-green-50',
+      text: 'text-green-600',
+      border: 'border-green-200',
+      badge: 'bg-green-100 text-green-700',
+    },
+    service: {
+      bg: 'bg-purple-50',
+      text: 'text-purple-600',
+      border: 'border-purple-200',
+      badge: 'bg-purple-100 text-purple-700',
+    },
+    full: {
+      bg: 'bg-amber-50',
+      text: 'text-amber-600',
+      border: 'border-amber-200',
+      badge: 'bg-amber-100 text-amber-700',
+    },
+  };
 
 export function Templates() {
-  const navigate = useNavigate()
-  const { createConfig, loadConfigList, isLoading } = useConfigStore()
-  const [selectedTemplate, setSelectedTemplate] = useState<TemplateConfig | null>(null)
-  const [showPreview, setShowPreview] = useState(false)
-  const [creating, setCreating] = useState(false)
+  const navigate = useNavigate();
+  const { createConfig, loadConfigList, isLoading } = useConfigStore();
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateConfig | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
+  const [creating, setCreating] = useState(false);
 
   const handleCreateFromTemplate = async (template: TemplateConfig) => {
-    setCreating(true)
+    setCreating(true);
     try {
       // Create config with template name
-      const configName = `${template.name} - ${new Date().toLocaleDateString()}`
-      const configDesc = `Created from template: ${template.description}`
-      
-      await createConfig(configName, configDesc)
-      
+      const configName = `${template.name} - ${new Date().toLocaleDateString()}`;
+      const configDesc = `Created from template: ${template.description}`;
+
+      await createConfig(configName, configDesc);
+
       // Get the latest config list to find the new config ID
-      await loadConfigList()
-      
+      await loadConfigList();
+
       // Navigate to editor - the new config should be the first one
       // In a real app, createConfig would return the new config ID
-      navigate('/dashboard')
+      navigate('/dashboard');
     } finally {
-      setCreating(false)
+      setCreating(false);
     }
-  }
+  };
 
   const handlePreview = (template: TemplateConfig) => {
-    setSelectedTemplate(template)
-    setShowPreview(true)
-  }
+    setSelectedTemplate(template);
+    setShowPreview(true);
+  };
 
   const TemplateCard = ({ template }: { template: TemplateConfig }) => {
-    const colors = categoryColors[template.category]
-    
+    const colors = categoryColors[template.category];
+
     return (
       <div className="group bg-app-bg-primary border border-app-border-primary rounded-lg hover:border-primary-300 hover:shadow-md transition-all overflow-hidden">
         <div className={`h-2 ${colors.bg.replace('50', '200')}`} />
         <div className="p-5">
           <div className="flex items-start justify-between mb-3">
-            <div className={`w-10 h-10 ${colors.bg} rounded-lg flex items-center justify-center ${colors.text}`}>
+            <div
+              className={`w-10 h-10 ${colors.bg} rounded-lg flex items-center justify-center ${colors.text}`}
+            >
               {template.icon}
             </div>
             {template.recommended && (
@@ -265,10 +304,12 @@ export function Templates() {
               </span>
             )}
           </div>
-          
+
           <h3 className="font-semibold text-app-text-primary mb-1">{template.name}</h3>
-          <p className="text-sm text-app-text-secondary mb-4 line-clamp-2">{template.description}</p>
-          
+          <p className="text-sm text-app-text-secondary mb-4 line-clamp-2">
+            {template.description}
+          </p>
+
           <div className="flex items-center gap-4 text-xs text-app-text-tertiary mb-4">
             <span className="flex items-center gap-1">
               <Layers className="w-3.5 h-3.5" />
@@ -278,7 +319,7 @@ export function Templates() {
               {template.category.toUpperCase()}
             </span>
           </div>
-          
+
           <div className="flex gap-2">
             <button
               onClick={() => handlePreview(template)}
@@ -298,8 +339,8 @@ export function Templates() {
           </div>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className="space-y-8">
@@ -331,15 +372,17 @@ export function Templates() {
       </div>
 
       {/* Categories */}
-      {(Object.keys(categoryLabels) as Array<keyof typeof categoryLabels>).map((category) => {
-        const categoryTemplates = templates.filter(t => t.category === category)
-        const colors = categoryColors[category]
-        const label = categoryLabels[category]
-        
+      {(Object.keys(categoryLabels) as Array<keyof typeof categoryLabels>).map(category => {
+        const categoryTemplates = templates.filter(t => t.category === category);
+        const colors = categoryColors[category];
+        const label = categoryLabels[category];
+
         return (
           <section key={category} className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className={`w-8 h-8 ${colors.bg} rounded-lg flex items-center justify-center ${colors.text}`}>
+              <div
+                className={`w-8 h-8 ${colors.bg} rounded-lg flex items-center justify-center ${colors.text}`}
+              >
                 {category === 'mcal' && <Cpu className="w-4 h-4" />}
                 {category === 'ecual' && <Wifi className="w-4 h-4" />}
                 {category === 'service' && <Database className="w-4 h-4" />}
@@ -350,14 +393,14 @@ export function Templates() {
                 <p className="text-sm text-app-text-secondary">{label.description}</p>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {categoryTemplates.map(template => (
                 <TemplateCard key={template.id} template={template} />
               ))}
             </div>
           </section>
-        )
+        );
       })}
 
       {/* Preview Modal */}
@@ -367,11 +410,15 @@ export function Templates() {
             {/* Modal Header */}
             <div className="px-6 py-4 border-b border-app-border-primary flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 ${categoryColors[selectedTemplate.category].bg} rounded-lg flex items-center justify-center ${categoryColors[selectedTemplate.category].text}`}>
+                <div
+                  className={`w-10 h-10 ${categoryColors[selectedTemplate.category].bg} rounded-lg flex items-center justify-center ${categoryColors[selectedTemplate.category].text}`}
+                >
                   {selectedTemplate.icon}
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-app-text-primary">{selectedTemplate.name}</h3>
+                  <h3 className="text-lg font-semibold text-app-text-primary">
+                    {selectedTemplate.name}
+                  </h3>
                   <p className="text-sm text-app-text-secondary">Template Preview</p>
                 </div>
               </div>
@@ -382,24 +429,28 @@ export function Templates() {
                 <X className="w-5 h-5" />
               </button>
             </div>
-            
+
             {/* Modal Body */}
             <div className="p-6 overflow-y-auto flex-1">
               <div className="space-y-6">
                 {/* Description */}
                 <div>
                   <h4 className="text-sm font-medium text-app-text-primary mb-2">Description</h4>
-                  <p className="text-app-text-secondary bg-app-bg-secondary p-3 rounded-lg">{selectedTemplate.description}</p>
+                  <p className="text-app-text-secondary bg-app-bg-secondary p-3 rounded-lg">
+                    {selectedTemplate.description}
+                  </p>
                 </div>
-                
+
                 {/* Category */}
                 <div>
                   <h4 className="text-sm font-medium text-app-text-primary mb-2">Category</h4>
-                  <span className={`inline-flex px-3 py-1 rounded-full text-sm font-medium ${categoryColors[selectedTemplate.category].badge}`}>
+                  <span
+                    className={`inline-flex px-3 py-1 rounded-full text-sm font-medium ${categoryColors[selectedTemplate.category].badge}`}
+                  >
                     {categoryLabels[selectedTemplate.category].name}
                   </span>
                 </div>
-                
+
                 {/* Modules List */}
                 <div>
                   <h4 className="text-sm font-medium text-app-text-primary mb-3">
@@ -413,14 +464,16 @@ export function Templates() {
                         </div>
                         <div className="flex-1">
                           <div className="font-medium text-app-text-primary">{module.name}</div>
-                          <div className="text-xs text-app-text-secondary">{module.layer} Layer</div>
+                          <div className="text-xs text-app-text-secondary">
+                            {module.layer} Layer
+                          </div>
                         </div>
                         <Check className="w-4 h-4 text-green-500" />
                       </div>
                     ))}
                   </div>
                 </div>
-                
+
                 {/* Dependencies Note */}
                 <div className="bg-blue-50 border border-blue-100 rounded-lg p-4">
                   <div className="flex items-start gap-3">
@@ -430,15 +483,15 @@ export function Templates() {
                     <div>
                       <h4 className="text-sm font-medium text-blue-900">Auto Configuration</h4>
                       <p className="text-sm text-blue-700 mt-1">
-                        When you use this template, all module dependencies will be automatically configured 
-                        with default values. You can customize them in the Editor.
+                        When you use this template, all module dependencies will be automatically
+                        configured with default values. You can customize them in the Editor.
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            
+
             {/* Modal Footer */}
             <div className="px-6 py-4 border-t border-app-border-primary bg-app-bg-secondary flex justify-end gap-3">
               <button
@@ -449,8 +502,8 @@ export function Templates() {
               </button>
               <button
                 onClick={() => {
-                  setShowPreview(false)
-                  handleCreateFromTemplate(selectedTemplate)
+                  setShowPreview(false);
+                  handleCreateFromTemplate(selectedTemplate);
                 }}
                 disabled={creating || isLoading}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white hover:bg-primary-700 disabled:bg-app-bg-tertiary disabled:cursor-not-allowed rounded-lg transition-colors"
@@ -473,5 +526,5 @@ export function Templates() {
         </div>
       )}
     </div>
-  )
+  );
 }

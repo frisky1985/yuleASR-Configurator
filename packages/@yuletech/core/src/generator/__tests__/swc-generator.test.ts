@@ -1,6 +1,6 @@
 /**
  * @yuletech/core - SWC Generator Tests
- * 
+ *
  * Tests for the SWC (Application Software Component) code generator.
  * Validates:
  *  - SWC header generation (<SwcName>.h)
@@ -12,11 +12,15 @@
 
 import { describe, it, expect } from 'vitest';
 
-import type { ModuleConfig } from '../../types/module';
-import { SwcCodeGenerator } from '../swc-generator';
 import { appSwcSchema, compSwcSchema } from '../../swc/schemas';
-import { createApplicationSwcConfig, createCompositionSwcConfig, validateSwcComponent } from '../../swc/swc-registry';
+import {
+  createApplicationSwcConfig,
+  createCompositionSwcConfig,
+  validateSwcComponent,
+} from '../../swc/swc-registry';
+import type { ModuleConfig } from '../../types/module';
 import type { SwcComponentEntry } from '../../types/swc';
+import { SwcCodeGenerator } from '../swc-generator';
 
 // ============================================================================
 // Test Fixtures

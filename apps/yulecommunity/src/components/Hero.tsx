@@ -5,11 +5,7 @@ export function Hero() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
-        <img
-          src="./images/hero-bg.png"
-          alt=""
-          className="w-full h-full object-cover opacity-30"
-        />
+        <img src="./images/hero-bg.png" alt="" className="w-full h-full object-cover opacity-30" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
       </div>
 
@@ -28,9 +24,8 @@ export function Hero() {
         </h1>
 
         <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-          YuleTech 开源社区致力于构建汽车基础软件生态，
-          为工程师提供 AutoSAR BSW 开源代码、开发工具链和学习成长平台，
-          与企业客户共同创造价值。
+          YuleTech 开源社区致力于构建汽车基础软件生态， 为工程师提供 AutoSAR BSW
+          开源代码、开发工具链和学习成长平台， 与企业客户共同创造价值。
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">

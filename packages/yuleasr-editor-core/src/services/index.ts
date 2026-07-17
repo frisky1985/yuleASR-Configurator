@@ -10,13 +10,13 @@ import type { ConfigModel, ConfigProject, ConfigChangeEvent } from '../models';
 
 // 导出 Git 服务
 export { GitService, GitError } from './gitService';
-export type { 
-  GitServiceConfig, 
-  CommitInfo, 
-  BranchInfo, 
-  DiffInfo, 
-  DiffHunk, 
-  FileStatus 
+export type {
+  GitServiceConfig,
+  CommitInfo,
+  BranchInfo,
+  DiffInfo,
+  DiffHunk,
+  FileStatus,
 } from './gitService';
 
 /**
@@ -149,7 +149,13 @@ export class ValidationService {
    * 验证自定义规则
    */
   private validateCustomRule(rule: ValidationRule, config: ConfigModel): ValidationResult {
-    const errors: Array<{ severity: 'error'; code: string; message: string; path: string; parameter?: string }> = [];
+    const errors: Array<{
+      severity: 'error';
+      code: string;
+      message: string;
+      path: string;
+      parameter?: string;
+    }> = [];
 
     if (rule.validate) {
       const value = this.engine.getValue(rule.path);
@@ -210,12 +216,20 @@ export class ValidationService {
     module.warnings = [];
 
     // 验证模块的所有参数
-    const errors: Array<{ severity: 'error'; code: string; message: string; path: string; parameter?: string }> = [];
+    const errors: Array<{
+      severity: 'error';
+      code: string;
+      message: string;
+      path: string;
+      parameter?: string;
+    }> = [];
 
     for (const [paramName, param] of module.parameters) {
       // 检查必填字段
-      if (module.schema.parameters.find(p => p.name === paramName)?.required && 
-          (param.value === undefined || param.value === null || param.value === '')) {
+      if (
+        module.schema.parameters.find(p => p.name === paramName)?.required &&
+        (param.value === undefined || param.value === null || param.value === '')
+      ) {
         const error = {
           severity: 'error' as const,
           code: 'REQUIRED',
@@ -297,11 +311,20 @@ export class ValidationService {
       };
     }
 
-    const errors: Array<{ severity: 'error'; code: string; message: string; path: string; parameter?: string }> = [];
+    const errors: Array<{
+      severity: 'error';
+      code: string;
+      message: string;
+      path: string;
+      parameter?: string;
+    }> = [];
 
     // 检查必填
     const schemaParam = module.schema.parameters.find(p => p.name === paramName);
-    if (schemaParam?.required && (param.value === undefined || param.value === null || param.value === '')) {
+    if (
+      schemaParam?.required &&
+      (param.value === undefined || param.value === null || param.value === '')
+    ) {
       errors.push({
         severity: 'error',
         code: 'REQUIRED',
@@ -621,19 +644,19 @@ export class PersistenceService {
    * 保存到 IndexedDB
    */
   private async saveToIndexedDB(key: string, value: string): Promise<boolean> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const request = indexedDB.open('yuleasr-editor', 1);
 
       request.onerror = () => resolve(false);
 
-      request.onupgradeneeded = (event) => {
+      request.onupgradeneeded = event => {
         const db = (event.target as IDBOpenDBRequest).result;
         if (!db.objectStoreNames.contains('configs')) {
           db.createObjectStore('configs', { keyPath: 'key' });
         }
       };
 
-      request.onsuccess = (event) => {
+      request.onsuccess = event => {
         const db = (event.target as IDBOpenDBRequest).result;
         const transaction = db.transaction(['configs'], 'readwrite');
         const store = transaction.objectStore('configs');
@@ -649,19 +672,19 @@ export class PersistenceService {
    * 从 IndexedDB 加载
    */
   private async loadFromIndexedDB(key: string): Promise<string | null> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const request = indexedDB.open('yuleasr-editor', 1);
 
       request.onerror = () => resolve(null);
 
-      request.onupgradeneeded = (event) => {
+      request.onupgradeneeded = event => {
         const db = (event.target as IDBOpenDBRequest).result;
         if (!db.objectStoreNames.contains('configs')) {
           db.createObjectStore('configs', { keyPath: 'key' });
         }
       };
 
-      request.onsuccess = (event) => {
+      request.onsuccess = event => {
         const db = (event.target as IDBOpenDBRequest).result;
         const transaction = db.transaction(['configs'], 'readonly');
         const store = transaction.objectStore('configs');
@@ -680,12 +703,12 @@ export class PersistenceService {
    * 从 IndexedDB 删除
    */
   private async deleteFromIndexedDB(key: string): Promise<boolean> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const request = indexedDB.open('yuleasr-editor', 1);
 
       request.onerror = () => resolve(false);
 
-      request.onsuccess = (event) => {
+      request.onsuccess = event => {
         const db = (event.target as IDBOpenDBRequest).result;
         const transaction = db.transaction(['configs'], 'readwrite');
         const store = transaction.objectStore('configs');
@@ -701,7 +724,7 @@ export class PersistenceService {
    * 从 IndexedDB 列出
    */
   private async listFromIndexedDB(): Promise<string[]> {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const configs: string[] = [];
       const prefix = this.config.prefix ?? 'yuleasr:';
 
@@ -709,14 +732,14 @@ export class PersistenceService {
 
       request.onerror = () => resolve([]);
 
-      request.onupgradeneeded = (event) => {
+      request.onupgradeneeded = event => {
         const db = (event.target as IDBOpenDBRequest).result;
         if (!db.objectStoreNames.contains('configs')) {
           db.createObjectStore('configs', { keyPath: 'key' });
         }
       };
 
-      request.onsuccess = (event) => {
+      request.onsuccess = event => {
         const db = (event.target as IDBOpenDBRequest).result;
         const transaction = db.transaction(['configs'], 'readonly');
         const store = transaction.objectStore('configs');
@@ -859,7 +882,12 @@ export class ServiceContainer {
    */
   async dispose(): Promise<void> {
     for (const [_name, service] of this.services) {
-      if (service && typeof service === 'object' && 'dispose' in service && typeof service.dispose === 'function') {
+      if (
+        service &&
+        typeof service === 'object' &&
+        'dispose' in service &&
+        typeof service.dispose === 'function'
+      ) {
         await (service as { dispose(): Promise<void> }).dispose();
       }
     }

@@ -5,12 +5,10 @@
  * (min, max, default, options).
  */
 
-import type {
-  PropagationRule,
-  PropagationResult,
-} from './propagator-types';
-import { DependencyGraph } from './depends';
 import type { ModuleSchema } from '../types';
+
+import { DependencyGraph } from './depends';
+import type { PropagationRule, PropagationResult } from './propagator-types';
 
 /**
  * Evaluates a simple arithmetic/ternary expression with {source} substitution.
@@ -25,10 +23,7 @@ import type { ModuleSchema } from '../types';
  * Numbers can be integer or float. {source} is replaced with the
  * source parameter value before evaluation.
  */
-export function evaluateExpression(
-  expression: string,
-  sourceValue: unknown,
-): unknown {
+export function evaluateExpression(expression: string, sourceValue: unknown): unknown {
   // Pure passthrough: '{source}' returns the raw value
   if (expression.trim() === '{source}') {
     return sourceValue;
@@ -36,7 +31,11 @@ export function evaluateExpression(
 
   // Replace {source} with the actual value
   const sourceNum = Number(sourceValue);
-  if (sourceValue === null || sourceValue === undefined || (typeof sourceValue !== 'number' && typeof sourceValue !== 'string')) {
+  if (
+    sourceValue === null ||
+    sourceValue === undefined ||
+    (typeof sourceValue !== 'number' && typeof sourceValue !== 'string')
+  ) {
     // If source is not a usable numeric value and expression isn't pure passthrough
     if (expression.includes('{source}')) {
       if (Number.isNaN(sourceNum) && typeof sourceValue === 'string') {
@@ -121,23 +120,79 @@ function tokenize(input: string): Token[] {
       continue;
     }
 
-    if (ch === '+') { tokens.push({ type: 'PLUS', value: '+' }); i++; continue; }
-    if (ch === '-') { tokens.push({ type: 'MINUS', value: '-' }); i++; continue; }
-    if (ch === '*') { tokens.push({ type: 'STAR', value: '*' }); i++; continue; }
-    if (ch === '/') { tokens.push({ type: 'SLASH', value: '/' }); i++; continue; }
-    if (ch === '(') { tokens.push({ type: 'LPAREN', value: '(' }); i++; continue; }
-    if (ch === ')') { tokens.push({ type: 'RPAREN', value: ')' }); i++; continue; }
-    if (ch === '?') { tokens.push({ type: 'QUESTION', value: '?' }); i++; continue; }
-    if (ch === ':') { tokens.push({ type: 'COLON', value: ':' }); i++; continue; }
+    if (ch === '+') {
+      tokens.push({ type: 'PLUS', value: '+' });
+      i++;
+      continue;
+    }
+    if (ch === '-') {
+      tokens.push({ type: 'MINUS', value: '-' });
+      i++;
+      continue;
+    }
+    if (ch === '*') {
+      tokens.push({ type: 'STAR', value: '*' });
+      i++;
+      continue;
+    }
+    if (ch === '/') {
+      tokens.push({ type: 'SLASH', value: '/' });
+      i++;
+      continue;
+    }
+    if (ch === '(') {
+      tokens.push({ type: 'LPAREN', value: '(' });
+      i++;
+      continue;
+    }
+    if (ch === ')') {
+      tokens.push({ type: 'RPAREN', value: ')' });
+      i++;
+      continue;
+    }
+    if (ch === '?') {
+      tokens.push({ type: 'QUESTION', value: '?' });
+      i++;
+      continue;
+    }
+    if (ch === ':') {
+      tokens.push({ type: 'COLON', value: ':' });
+      i++;
+      continue;
+    }
 
     // Multi-char comparison operators
     const two = input.slice(i, i + 2);
-    if (two === '>=') { tokens.push({ type: 'GTE', value: '>=' }); i += 2; continue; }
-    if (two === '<=') { tokens.push({ type: 'LTE', value: '<=' }); i += 2; continue; }
-    if (two === '==') { tokens.push({ type: 'EQ', value: '==' }); i += 2; continue; }
-    if (two === '!=') { tokens.push({ type: 'NEQ', value: '!=' }); i += 2; continue; }
-    if (ch === '>') { tokens.push({ type: 'GT', value: '>' }); i++; continue; }
-    if (ch === '<') { tokens.push({ type: 'LT', value: '<' }); i++; continue; }
+    if (two === '>=') {
+      tokens.push({ type: 'GTE', value: '>=' });
+      i += 2;
+      continue;
+    }
+    if (two === '<=') {
+      tokens.push({ type: 'LTE', value: '<=' });
+      i += 2;
+      continue;
+    }
+    if (two === '==') {
+      tokens.push({ type: 'EQ', value: '==' });
+      i += 2;
+      continue;
+    }
+    if (two === '!=') {
+      tokens.push({ type: 'NEQ', value: '!=' });
+      i += 2;
+      continue;
+    }
+    if (ch === '>') {
+      tokens.push({ type: 'GT', value: '>' });
+      i++;
+      continue;
+    }
+    if (ch === '<') {
+      tokens.push({ type: 'LT', value: '<' });
+      i++;
+      continue;
+    }
 
     // Skip unknown characters (shouldn't happen with {source} replaced + valid expressions)
     i++;
@@ -156,9 +211,7 @@ function evaluateMathExpr(input: string): unknown {
   const expect = (type: TokenType): Token => {
     const t = current();
     if (t.type !== type) {
-      throw new Error(
-        `Expected ${type} but got '${t.value}' at token ${pos}`,
-      );
+      throw new Error(`Expected ${type} but got '${t.value}' at token ${pos}`);
     }
     return advance();
   };
@@ -189,13 +242,20 @@ function evaluateMathExpr(input: string): unknown {
       const right = parseAdditive();
 
       switch (op) {
-        case '>':  return left > right ? 1 : 0;
-        case '<':  return left < right ? 1 : 0;
-        case '>=': return left >= right ? 1 : 0;
-        case '<=': return left <= right ? 1 : 0;
-        case '==': return left === right ? 1 : 0;
-        case '!=': return left !== right ? 1 : 0;
-        default:   return 0;
+        case '>':
+          return left > right ? 1 : 0;
+        case '<':
+          return left < right ? 1 : 0;
+        case '>=':
+          return left >= right ? 1 : 0;
+        case '<=':
+          return left <= right ? 1 : 0;
+        case '==':
+          return left === right ? 1 : 0;
+        case '!=':
+          return left !== right ? 1 : 0;
+        default:
+          return 0;
       }
     }
 
@@ -264,7 +324,7 @@ function evaluateMathExpr(input: string): unknown {
         .replace(/NaN/g, 'NaN') // keep NaN
         .replace(/[^0-9+\-*/.()?:<>!= ]/g, '');
       if (!sanitized.trim()) return input;
-      // eslint-disable-next-line no-new-func
+
       return new Function(`"use strict"; return (${sanitized})`)();
     } catch {
       return input;
@@ -293,8 +353,8 @@ export class ConstraintPropagator {
     if (cycles.length > 0) {
       console.warn(
         `[ConstraintPropagator] Circular dependencies detected in propagation rules:\n${cycles
-          .map((c) => `  cycle: ${c.join(' → ')}`)
-          .join('\n')}`,
+          .map(c => `  cycle: ${c.join(' → ')}`)
+          .join('\n')}`
       );
     }
   }
@@ -337,7 +397,7 @@ export class ConstraintPropagator {
    */
   propagate(
     changedParams: Array<{ module: string; param: string; value: unknown }>,
-    schemas: Map<string, ModuleSchema>,
+    schemas: Map<string, ModuleSchema>
   ): PropagationResult[] {
     const results: PropagationResult[] = [];
 
@@ -350,16 +410,11 @@ export class ConstraintPropagator {
             const schema = schemas.get(target.module);
             if (!schema) continue;
 
-            const paramDef = schema.parameters.find(
-              (p) => p.name === target.param,
-            );
+            const paramDef = schema.parameters.find(p => p.name === target.param);
             if (!paramDef) continue;
 
             const oldValue = paramDef[target.field];
-            const newValue = evaluateExpression(
-              target.expression,
-              changed.value,
-            );
+            const newValue = evaluateExpression(target.expression, changed.value);
 
             // Only record changes if the value actually differs
             if (oldValue !== newValue) {

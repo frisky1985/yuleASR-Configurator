@@ -1,10 +1,10 @@
 /**
  * @yuletech/core - AUTOSAR OS Code Generator
- * 
+ *
  * AUTOSAR OS 配置代码生成器
  * 生成 Os_Cfg.h、Os.c、Os_Types.h 等 OS 配置文件
  * 遵循 AUTOSAR 4.4 OS Specification
- * 
+ *
  * 支持生成:
  *   - Task 配置 (BCC1/BCC2/ECC1/ECC2)
  *   - ISR 配置 (Category 1/2)
@@ -14,18 +14,15 @@
  *   - Event 配置
  *   - Resource 配置
  *   - OS Application 配置
- * 
+ *
  * @file    os-generator.ts
  */
 
 import type { ModuleConfig, ModuleSchema } from '../types';
+
+import { formatCValue, toHex, parseVersion, generateAutosarFileHeader } from './autosar-format';
+
 import type { CodeGenerator, GeneratorOptions, GenerationResult, GeneratedFile } from './index';
-import {
-  formatCValue,
-  toHex,
-  parseVersion,
-  generateAutosarFileHeader,
-} from './autosar-format';
 
 /**
  * AUTOSAR OS 代码生成器
@@ -62,46 +59,71 @@ export class OsCodeGenerator implements CodeGenerator {
       const cores = this.extractPhysicalCoreConfigs(config);
 
       // Generate Os_Types.h
-      const typesHeader = this.generateOsTypesHeader(config, tasks, isrs, events, resources, options);
+      const typesHeader = this.generateOsTypesHeader(
+        config,
+        tasks,
+        isrs,
+        events,
+        resources,
+        options
+      );
       files.push({
         path: `${options.outputDir}/Os_Types.h`,
         content: typesHeader,
-        language: 'h'
+        language: 'h',
       });
 
       // Generate Os_Cfg.h
       const cfgHeader = this.generateOsCfgHeader(
-        config, tasks, isrs, counters, alarms,
-        scheduleTables, events, resources, applications, cores, options
+        config,
+        tasks,
+        isrs,
+        counters,
+        alarms,
+        scheduleTables,
+        events,
+        resources,
+        applications,
+        cores,
+        options
       );
       files.push({
         path: `${options.outputDir}/Os_Cfg.h`,
         content: cfgHeader,
-        language: 'h'
+        language: 'h',
       });
 
       // Generate Os.c
       const sourceFile = this.generateOsSource(
-        config, tasks, isrs, counters, alarms,
-        scheduleTables, events, resources, applications, cores, options
+        config,
+        tasks,
+        isrs,
+        counters,
+        alarms,
+        scheduleTables,
+        events,
+        resources,
+        applications,
+        cores,
+        options
       );
       files.push({
         path: `${options.outputDir}/Os.c`,
         content: sourceFile,
-        language: 'c'
+        language: 'c',
       });
 
       return {
         success: errors.length === 0,
         files,
         errors: errors.length > 0 ? errors : undefined,
-        warnings: warnings.length > 0 ? warnings : undefined
+        warnings: warnings.length > 0 ? warnings : undefined,
       };
     } catch (error) {
       return {
         success: false,
         files,
-        errors: [error instanceof Error ? error.message : 'OS code generation failed']
+        errors: [error instanceof Error ? error.message : 'OS code generation failed'],
       };
     }
   }
@@ -185,7 +207,9 @@ export class OsCodeGenerator implements CodeGenerator {
     return alarms;
   }
 
-  private extractScheduleTableConfigs(config: ModuleConfig): Record<string, Record<string, unknown>> {
+  private extractScheduleTableConfigs(
+    config: ModuleConfig
+  ): Record<string, Record<string, unknown>> {
     const sts: Record<string, Record<string, unknown>> = {};
     const raw = config.parameters['OsScheduleTable'] as Array<Record<string, unknown>>;
     if (raw && Array.isArray(raw)) {
@@ -261,7 +285,9 @@ export class OsCodeGenerator implements CodeGenerator {
     return apps;
   }
 
-  private extractPhysicalCoreConfigs(config: ModuleConfig): Record<string, Record<string, unknown>> {
+  private extractPhysicalCoreConfigs(
+    config: ModuleConfig
+  ): Record<string, Record<string, unknown>> {
     const cores: Record<string, Record<string, unknown>> = {};
     const raw = config.parameters['OsPhysicalCore'] as Array<Record<string, unknown>>;
     if (raw && Array.isArray(raw)) {

@@ -48,7 +48,10 @@ interface PopupNewsletterProps extends BaseNewsletterProps {
   enableExitIntent?: boolean;
 }
 
-type NewsletterSignupProps = InlineNewsletterProps | ArticleEndNewsletterProps | PopupNewsletterProps;
+type NewsletterSignupProps =
+  | InlineNewsletterProps
+  | ArticleEndNewsletterProps
+  | PopupNewsletterProps;
 
 /**
  * 验证邮箱格式
@@ -67,39 +70,42 @@ function InlineSignup({ className }: { className?: string }) {
   const [isSubscribed, setIsSubscribed] = useLocalStorage(SUBSCRIBED_KEY, false);
   const [savedEmail, setSavedEmail] = useLocalStorage(EMAIL_KEY, '');
 
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateEmail(email)) {
-      setStatus('error');
-      setErrorMessage('请输入有效的邮箱地址');
-      return;
-    }
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
 
-    setStatus('loading');
+      if (!validateEmail(email)) {
+        setStatus('error');
+        setErrorMessage('请输入有效的邮箱地址');
+        return;
+      }
 
-    // 模拟 API 调用
-    await new Promise(resolve => setTimeout(resolve, 1500));
+      setStatus('loading');
 
-    // 保存订阅状态
-    setIsSubscribed(true);
-    setSavedEmail(email);
-    setStatus('success');
-  }, [email, setIsSubscribed, setSavedEmail]);
+      // 模拟 API 调用
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // 保存订阅状态
+      setIsSubscribed(true);
+      setSavedEmail(email);
+      setStatus('success');
+    },
+    [email, setIsSubscribed, setSavedEmail]
+  );
 
   if (isSubscribed) {
     return (
-      <div className={cn(
-        "flex items-center gap-3 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800",
-        className
-      )}>
+      <div
+        className={cn(
+          'flex items-center gap-3 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800',
+          className
+        )}
+      >
         <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-800 flex items-center justify-center">
           <Check className="w-5 h-5 text-green-600 dark:text-green-400" />
         </div>
         <div>
-          <p className="font-medium text-green-900 dark:text-green-100">
-            订阅成功！
-          </p>
+          <p className="font-medium text-green-900 dark:text-green-100">订阅成功！</p>
           <p className="text-sm text-green-700 dark:text-green-300">
             我们已将 {savedEmail} 添加到订阅列表
           </p>
@@ -109,10 +115,12 @@ function InlineSignup({ className }: { className?: string }) {
   }
 
   return (
-    <div className={cn(
-      "p-6 bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl border border-primary/20",
-      className
-    )}>
+    <div
+      className={cn(
+        'p-6 bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl border border-primary/20',
+        className
+      )}
+    >
       <div className="flex items-start gap-4 mb-4">
         <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
           <Mail className="w-6 h-6 text-primary" />
@@ -131,13 +139,13 @@ function InlineSignup({ className }: { className?: string }) {
             type="email"
             placeholder="输入您的邮箱地址"
             value={email}
-            onChange={(e) => {
+            onChange={e => {
               setEmail(e.target.value);
               if (status === 'error') setStatus('idle');
             }}
             className={cn(
-              "h-11",
-              status === 'error' && "border-red-500 focus-visible:ring-red-500"
+              'h-11',
+              status === 'error' && 'border-red-500 focus-visible:ring-red-500'
             )}
             disabled={status === 'loading'}
             aria-invalid={status === 'error'}
@@ -149,11 +157,7 @@ function InlineSignup({ className }: { className?: string }) {
             </p>
           )}
         </div>
-        <Button 
-          type="submit" 
-          className="h-11 px-6"
-          disabled={status === 'loading' || !email}
-        >
+        <Button type="submit" className="h-11 px-6" disabled={status === 'loading' || !email}>
           {status === 'loading' ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -178,27 +182,33 @@ function InlineSignup({ className }: { className?: string }) {
 /**
  * 文章结尾版订阅组件
  */
-function ArticleEndSignup({ articleTitle, className }: { articleTitle?: string; className?: string }) {
+function ArticleEndSignup({
+  articleTitle,
+  className,
+}: {
+  articleTitle?: string;
+  className?: string;
+}) {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
   const [isSubscribed, setIsSubscribed] = useLocalStorage(SUBSCRIBED_KEY, false);
 
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateEmail(email)) return;
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!validateEmail(email)) return;
 
-    setStatus('loading');
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setIsSubscribed(true);
-    setStatus('success');
-  }, [email, setIsSubscribed]);
+      setStatus('loading');
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setIsSubscribed(true);
+      setStatus('success');
+    },
+    [email, setIsSubscribed]
+  );
 
   if (isSubscribed) {
     return (
-      <div className={cn(
-        "flex items-center gap-3 p-4 bg-muted rounded-lg",
-        className
-      )}>
+      <div className={cn('flex items-center gap-3 p-4 bg-muted rounded-lg', className)}>
         <Check className="w-5 h-5 text-green-500" />
         <span className="text-sm">感谢订阅！您将在第一时间收到最新文章。</span>
       </div>
@@ -206,20 +216,16 @@ function ArticleEndSignup({ articleTitle, className }: { articleTitle?: string; 
   }
 
   return (
-    <div className={cn(
-      "p-6 bg-card border rounded-xl",
-      className
-    )}>
+    <div className={cn('p-6 bg-card border rounded-xl', className)}>
       <div className="flex items-center gap-2 mb-3">
         <Bell className="w-5 h-5 text-primary" />
         <h4 className="font-semibold">喜欢这篇文章？</h4>
       </div>
-      
+
       <p className="text-sm text-muted-foreground mb-4">
-        {articleTitle 
+        {articleTitle
           ? `订阅我们的周报，获取更多像「${articleTitle}」这样的优质内容。`
-          : '订阅我们的周报，获取更多 AutoSAR 技术干货。'
-        }
+          : '订阅我们的周报，获取更多 AutoSAR 技术干货。'}
       </p>
 
       <form onSubmit={handleSubmit} className="flex gap-2">
@@ -227,20 +233,12 @@ function ArticleEndSignup({ articleTitle, className }: { articleTitle?: string; 
           type="email"
           placeholder="输入邮箱"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
           className="h-10"
           disabled={status === 'loading'}
         />
-        <Button 
-          type="submit" 
-          size="sm"
-          disabled={status === 'loading' || !email}
-        >
-          {status === 'loading' ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            '订阅'
-          )}
+        <Button type="submit" size="sm" disabled={status === 'loading' || !email}>
+          {status === 'loading' ? <Loader2 className="w-4 h-4 animate-spin" /> : '订阅'}
         </Button>
       </form>
     </div>
@@ -250,7 +248,13 @@ function ArticleEndSignup({ articleTitle, className }: { articleTitle?: string; 
 /**
  * 弹窗版订阅组件
  */
-function PopupSignup({ delay = 10000, enableExitIntent = true }: { delay?: number; enableExitIntent?: boolean }) {
+function PopupSignup({
+  delay = 10000,
+  enableExitIntent = true,
+}: {
+  delay?: number;
+  enableExitIntent?: boolean;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
@@ -290,18 +294,21 @@ function PopupSignup({ delay = 10000, enableExitIntent = true }: { delay?: numbe
     setIsOpen(false);
   }, []);
 
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateEmail(email)) return;
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!validateEmail(email)) return;
 
-    setStatus('loading');
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setIsSubscribed(true);
-    setStatus('success');
-    
-    // 2秒后关闭弹窗
-    setTimeout(() => setIsOpen(false), 2000);
-  }, [email, setIsSubscribed]);
+      setStatus('loading');
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setIsSubscribed(true);
+      setStatus('success');
+
+      // 2秒后关闭弹窗
+      setTimeout(() => setIsOpen(false), 2000);
+    },
+    [email, setIsSubscribed]
+  );
 
   // 已订阅不显示弹窗
   if (isSubscribed) return null;
@@ -318,7 +325,7 @@ function PopupSignup({ delay = 10000, enableExitIntent = true }: { delay?: numbe
             className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
             onClick={handleClose}
           />
-          
+
           {/* 弹窗内容 */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -375,12 +382,12 @@ function PopupSignup({ delay = 10000, enableExitIntent = true }: { delay?: numbe
                         type="email"
                         placeholder="输入您的邮箱地址"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={e => setEmail(e.target.value)}
                         className="h-12 text-base"
                         disabled={status === 'loading'}
                       />
-                      <Button 
-                        type="submit" 
+                      <Button
+                        type="submit"
                         className="w-full h-12"
                         disabled={status === 'loading' || !email}
                       >

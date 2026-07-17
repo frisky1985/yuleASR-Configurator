@@ -10,11 +10,7 @@
 //   - Reading user config (context.config)
 // ==================================================================
 
-import type {
-  YulePlugin,
-  PluginContext,
-  CodeGeneratorPlugin,
-} from '@yuletech/plugin-sdk';
+import type { YulePlugin, PluginContext, CodeGeneratorPlugin } from '@yuletech/plugin-sdk';
 
 /**
  * Creates a formatted copyright header block.
@@ -23,7 +19,7 @@ function buildCopyrightHeader(
   company: string,
   author: string,
   license: string,
-  year: number,
+  year: number
 ): string {
   return `\
 /*
@@ -59,8 +55,7 @@ const customHeaderGenerator: YulePlugin = {
   name: 'Custom Header Generator',
   version: '1.0.0',
   type: 'code-generator',
-  description:
-    'Prepends a configurable copyright header to generated C source and header files',
+  description: 'Prepends a configurable copyright header to generated C source and header files',
   author: 'YuleTech Examples',
 
   async activate(context: PluginContext): Promise<void> {
@@ -80,7 +75,7 @@ const customHeaderGenerator: YulePlugin = {
 
       async generate(
         config: Record<string, unknown>,
-        options: Record<string, unknown>,
+        options: Record<string, unknown>
       ): Promise<{ files: { path: string; content: string }[] }> {
         const year = new Date().getFullYear();
         const header = buildCopyrightHeader(company, author, license, year);
@@ -111,7 +106,7 @@ const customHeaderGenerator: YulePlugin = {
         }
 
         context.logger.info(
-          `Generated header for module "${moduleName}" (${fileContent.length} bytes)`,
+          `Generated header for module "${moduleName}" (${fileContent.length} bytes)`
         );
 
         return {

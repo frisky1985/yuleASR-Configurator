@@ -16,7 +16,8 @@
 
 ## 简介
 
-yuleASR Configurator 是一个完整的 AutoSAR BSW（基础软件）模块配置解决方案，提供：
+yuleASR Configurator 是一个完整的 AutoSAR
+BSW（基础软件）模块配置解决方案，提供：
 
 - **Web 可视化编辑器** - 基于 React 的现代 Web 界面
 - **VS Code 扩展** - 集成开发环境的原生体验
@@ -78,20 +79,20 @@ yuletech-monorepo/
 
 ## 支持的 BSW 模块
 
-| 模块 | 标识 | 描述 |
-|------|------|------|
-| CAN | CAN | 控制器局域网通信 |
-| CAN IF | CANIF | CAN 接口层 |
-| ADC | ADC | 模数转换器 |
-| MCU | MCU | 微控制器驱动 |
-| PORT | PORT | 端口配置 |
-| DEM | DEM | 诊断事件管理 |
-| DCM | DCM | 诊断通信管理 |
-| NVM | NVM | 非易失性存储器 |
-| PDUR | PDUR | PDU 路由 |
-| COM | COM | 通信服务 |
-| IOHWAB | IOHWAB | IO 硬件抽象层 |
-| SPI | SPI | SPI 驱动 |
+| 模块   | 标识   | 描述             |
+| ------ | ------ | ---------------- |
+| CAN    | CAN    | 控制器局域网通信 |
+| CAN IF | CANIF  | CAN 接口层       |
+| ADC    | ADC    | 模数转换器       |
+| MCU    | MCU    | 微控制器驱动     |
+| PORT   | PORT   | 端口配置         |
+| DEM    | DEM    | 诊断事件管理     |
+| DCM    | DCM    | 诊断通信管理     |
+| NVM    | NVM    | 非易失性存储器   |
+| PDUR   | PDUR   | PDU 路由         |
+| COM    | COM    | 通信服务         |
+| IOHWAB | IOHWAB | IO 硬件抽象层    |
+| SPI    | SPI    | SPI 驱动         |
 
 ## 功能特性
 

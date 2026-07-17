@@ -8,13 +8,15 @@
 
 ## English
 
-This guide walks you through writing your first yuleASR plugin in about 10 minutes.
-We'll create a simple code generator that adds a copyright header to generated C files.
+This guide walks you through writing your first yuleASR plugin in about 10
+minutes. We'll create a simple code generator that adds a copyright header to
+generated C files.
 
 ### Prerequisites
 
 - Node.js 18+ and npm
-- A yuleASR Configurator monorepo checkout (or just the `@yuletech/plugin-sdk` package)
+- A yuleASR Configurator monorepo checkout (or just the `@yuletech/plugin-sdk`
+  package)
 - TypeScript knowledge
 
 ### 1. Project Structure
@@ -75,7 +77,7 @@ const plugin: YulePlugin = {
 
       async generate(
         config: Record<string, unknown>,
-        options: Record<string, unknown>,
+        options: Record<string, unknown>
       ) {
         // Read user config (set via PUT /v1/api/plugins/:id/config)
         const company = (context.config.company as string) || 'YuleTech';
@@ -143,9 +145,9 @@ async function test() {
   // Activate with user config
   const meta = await pluginManager.activate(
     myPlugin,
-    { company: 'MyCorp' },  // user config
+    { company: 'MyCorp' }, // user config
     'external',
-    './dist/index.js',
+    './dist/index.js'
   );
   console.log('Plugin activated:', meta);
 
@@ -161,8 +163,10 @@ test().catch(console.error);
 
 ### 6. Next Steps
 
-- Learn about [Validator Plugins](#writing-a-validator-plugin) to validate module configs
-- Learn about [Data Exporter Plugins](#writing-a-data-exporter-plugin) to export configurations
+- Learn about [Validator Plugins](#writing-a-validator-plugin) to validate
+  module configs
+- Learn about [Data Exporter Plugins](#writing-a-data-exporter-plugin) to export
+  configurations
 - Read the [API Reference](api-reference.md) for complete type documentation
 - Check the [Best Practices](best-practices.md) guide
 
@@ -238,7 +242,7 @@ const plugin: YulePlugin = {
 
       async generate(
         config: Record<string, unknown>,
-        options: Record<string, unknown>,
+        options: Record<string, unknown>
       ) {
         const company = (context.config.company as string) || 'YuleTech';
         const year = new Date().getFullYear();
@@ -256,7 +260,9 @@ const plugin: YulePlugin = {
         const content = `${header}\n/* Configuration for ${String(config.module || 'unknown')} */\n`;
 
         return {
-          files: [{ path: `${String(config.module || 'default')}_Cfg.h`, content }],
+          files: [
+            { path: `${String(config.module || 'default')}_Cfg.h`, content },
+          ],
         };
       },
     });
@@ -293,7 +299,7 @@ async function test() {
     myPlugin,
     { company: 'MyCorp' },
     'external',
-    './dist/index.js',
+    './dist/index.js'
   );
   console.log('插件已激活:', meta);
   await pluginManager.deactivate('my-copyright-generator');

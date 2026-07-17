@@ -1,12 +1,12 @@
 /**
  * @yuletech/core - SWC (Application Software Component) Code Generator
- * 
+ *
  * AUTOSAR SWC code generation.
  * Generates:
  *  - Rte_<SwcName>_Type.h — RTE type definitions for the SWC
  *  - <SwcName>.c / <SwcName>.h — SWC implementation skeleton
  *  - Rte_<SwcName>_Connector.c — RTE connector / wiring configuration
- * 
+ *
  * Follows AUTOSAR 4.4 RTE and SWC specification patterns.
  */
 
@@ -20,8 +20,6 @@ import type {
   DelegationSwConnector,
 } from '../types/swc';
 
-import type { CodeGenerator, GeneratorOptions, GenerationResult, GeneratedFile } from './index';
-
 import {
   generateAutosarFileHeader,
   generateAutosarFunctionHeader,
@@ -29,6 +27,8 @@ import {
   getModuleId,
   toHex,
 } from './autosar-format';
+
+import type { CodeGenerator, GeneratorOptions, GenerationResult, GeneratedFile } from './index';
 
 /**
  * SWC generator configuration parsed from ModuleConfig
@@ -130,7 +130,7 @@ export class SwcCodeGenerator implements CodeGenerator {
     const ports: PortPrototype[] = this.parseContainerArray<PortPrototype>(
       config,
       'Ports',
-      (item) => ({
+      item => ({
         name: (item.parameters['PortName'] as string) || '',
         direction: (item.parameters['PortDirection'] as 'IN' | 'OUT' | 'INOUT') || 'IN',
         interfaceRef: (item.parameters['PortInterfaceRef'] as string) || '',
@@ -142,9 +142,11 @@ export class SwcCodeGenerator implements CodeGenerator {
     const interfaces: PortInterfaceBase[] = this.parseContainerArray<PortInterfaceBase>(
       config,
       'PortInterfaces',
-      (item) => ({
+      item => ({
         name: (item.parameters['PortInterfaceName'] as string) || '',
-        kind: (item.parameters['PortInterfaceKind'] as PortInterfaceBase['kind']) || 'SenderReceiverInterface',
+        kind:
+          (item.parameters['PortInterfaceKind'] as PortInterfaceBase['kind']) ||
+          'SenderReceiverInterface',
         description: (item.parameters['PortInterfaceDescription'] as string) || '',
       })
     );
@@ -153,10 +155,12 @@ export class SwcCodeGenerator implements CodeGenerator {
     const runnables: RunnableEntity[] = this.parseContainerArray<RunnableEntity>(
       config,
       'Runnables',
-      (item) => ({
+      item => ({
         name: (item.parameters['RunnableName'] as string) || '',
         symbol: (item.parameters['RunnableSymbol'] as string) || undefined,
-        invocationType: (item.parameters['RunnableInvocationType'] as RunnableEntity['invocationType']) || 'cyclic',
+        invocationType:
+          (item.parameters['RunnableInvocationType'] as RunnableEntity['invocationType']) ||
+          'cyclic',
         minimumStartInterval: (item.parameters['RunnableInterval'] as number) || undefined,
         canBeInvokedConcurrently: (item.parameters['RunnableCanBeConcurrent'] as boolean) || false,
         description: (item.parameters['RunnableDescription'] as string) || '',
@@ -167,7 +171,7 @@ export class SwcCodeGenerator implements CodeGenerator {
     const irvs: InterRunnableVariable[] = this.parseContainerArray<InterRunnableVariable>(
       config,
       'InterRunnableVariables',
-      (item) => ({
+      item => ({
         name: (item.parameters['IrvName'] as string) || '',
         typeRef: (item.parameters['IrvTypeRef'] as string) || 'uint8',
         initValue: item.parameters['IrvInitValue'],
@@ -176,20 +180,19 @@ export class SwcCodeGenerator implements CodeGenerator {
     );
 
     // Parse data type mappings
-    const dataTypeMappings = this.parseContainerArray<{ applicationType: string; implementationType: string }>(
-      config,
-      'DataTypeMappings',
-      (item) => ({
-        applicationType: (item.parameters['MappingApplicationType'] as string) || '',
-        implementationType: (item.parameters['MappingImplementationType'] as string) || '',
-      })
-    );
+    const dataTypeMappings = this.parseContainerArray<{
+      applicationType: string;
+      implementationType: string;
+    }>(config, 'DataTypeMappings', item => ({
+      applicationType: (item.parameters['MappingApplicationType'] as string) || '',
+      implementationType: (item.parameters['MappingImplementationType'] as string) || '',
+    }));
 
     // Parse sub-components (for composition)
     const subComponents = this.parseContainerArray<{ name: string; typeRef: string }>(
       config,
       'SubComponents',
-      (item) => ({
+      item => ({
         name: (item.parameters['SubComponentName'] as string) || '',
         typeRef: (item.parameters['SubComponentTypeRef'] as string) || '',
       })
@@ -199,7 +202,7 @@ export class SwcCodeGenerator implements CodeGenerator {
     const assemblyConnectors: AssemblySwConnector[] = this.parseContainerArray<AssemblySwConnector>(
       config,
       'AssemblyConnectors',
-      (item) => ({
+      item => ({
         name: (item.parameters['ConnectorName'] as string) || '',
         sourceComponent: (item.parameters['ConnectorSourceComponent'] as string) || '',
         sourcePort: (item.parameters['ConnectorSourcePort'] as string) || '',
@@ -209,16 +212,13 @@ export class SwcCodeGenerator implements CodeGenerator {
     );
 
     // Parse delegation connectors (for composition)
-    const delegationConnectors: DelegationSwConnector[] = this.parseContainerArray<DelegationSwConnector>(
-      config,
-      'DelegationConnectors',
-      (item) => ({
+    const delegationConnectors: DelegationSwConnector[] =
+      this.parseContainerArray<DelegationSwConnector>(config, 'DelegationConnectors', item => ({
         name: (item.parameters['DelegateName'] as string) || '',
         outerPort: (item.parameters['DelegateOuterPort'] as string) || '',
         innerComponent: (item.parameters['DelegateInnerComponent'] as string) || '',
         innerPort: (item.parameters['DelegateInnerPort'] as string) || '',
-      })
-    );
+      }));
 
     return {
       componentName,
@@ -243,7 +243,7 @@ export class SwcCodeGenerator implements CodeGenerator {
     mapper: (item: { parameters: Record<string, unknown> }) => T
   ): T[] {
     const rawItems = config.containers?.[containerName] || [];
-    return rawItems.map((item) => mapper({ parameters: item.parameters }));
+    return rawItems.map(item => mapper({ parameters: item.parameters }));
   }
 
   /**
@@ -662,7 +662,9 @@ Std_ReturnType Rte_Read_${componentName}_${port.name}(${dataType}* data) {
     }
 
     // RTE Write APIs
-    const writePorts = genConfig.ports.filter(p => p.direction === 'OUT' || p.direction === 'INOUT');
+    const writePorts = genConfig.ports.filter(
+      p => p.direction === 'OUT' || p.direction === 'INOUT'
+    );
     if (writePorts.length > 0) {
       content += `/*==================[RTE Write implementations]===============================*/\n`;
       for (const port of writePorts) {

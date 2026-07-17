@@ -50,7 +50,7 @@ export function DataTable<T extends Record<string, any>>({
   const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!rowSelection) return;
     if (e.target.checked) {
-      const allKeys = data.map((record) => rowSelection.rowKey(record));
+      const allKeys = data.map(record => rowSelection.rowKey(record));
       rowSelection.onChange(allKeys);
     } else {
       rowSelection.onChange([]);
@@ -60,7 +60,7 @@ export function DataTable<T extends Record<string, any>>({
   const handleSelectRow = (key: string) => {
     if (!rowSelection) return;
     const newSelectedKeys = rowSelection.selectedRowKeys.includes(key)
-      ? rowSelection.selectedRowKeys.filter((k) => k !== key)
+      ? rowSelection.selectedRowKeys.filter(k => k !== key)
       : [...rowSelection.selectedRowKeys, key];
     rowSelection.onChange(newSelectedKeys);
   };
@@ -97,7 +97,7 @@ export function DataTable<T extends Record<string, any>>({
                   />
                 </th>
               )}
-              {columns.map((col) => (
+              {columns.map(col => (
                 <th
                   key={col.key}
                   className={cn(
@@ -132,11 +132,12 @@ export function DataTable<T extends Record<string, any>>({
                     className={cn(
                       'border-b border-slate-100 dark:border-slate-800/50 transition-colors',
                       onRowClick && 'cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50',
-                      rowSelection?.selectedRowKeys.includes(rowKey) && 'bg-blue-50 dark:bg-blue-900/10'
+                      rowSelection?.selectedRowKeys.includes(rowKey) &&
+                        'bg-blue-50 dark:bg-blue-900/10'
                     )}
                   >
                     {rowSelection && (
-                      <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                      <td className="px-4 py-3" onClick={e => e.stopPropagation()}>
                         <input
                           type="checkbox"
                           className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
@@ -145,7 +146,7 @@ export function DataTable<T extends Record<string, any>>({
                         />
                       </td>
                     )}
-                    {columns.map((col) => (
+                    {columns.map(col => (
                       <td
                         key={col.key}
                         className={cn(
@@ -173,10 +174,10 @@ export function DataTable<T extends Record<string, any>>({
             {pagination.showSizeChanger && (
               <select
                 value={pagination.pageSize}
-                onChange={(e) => pagination.onChange(1, Number(e.target.value))}
+                onChange={e => pagination.onChange(1, Number(e.target.value))}
                 className="rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-1 text-sm"
               >
-                {(pagination.pageSizeOptions || [10, 20, 50, 100]).map((size) => (
+                {(pagination.pageSizeOptions || [10, 20, 50, 100]).map(size => (
                   <option key={size} value={size}>
                     {size} 条/页
                   </option>
@@ -200,11 +201,11 @@ export function DataTable<T extends Record<string, any>>({
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
-            
+
             <span className="px-2 text-sm text-slate-600 dark:text-slate-400">
               {pagination.current} / {totalPages}
             </span>
-            
+
             <button
               onClick={() => pagination.onChange(pagination.current + 1, pagination.pageSize)}
               disabled={pagination.current >= totalPages}

@@ -266,11 +266,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CanTrcvConfigSet",
-    "CanTrcvChannel",
-    "CanTrcvPartialNetwork"
-  ],
+  "required": ["CanTrcvConfigSet", "CanTrcvChannel", "CanTrcvPartialNetwork"],
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",

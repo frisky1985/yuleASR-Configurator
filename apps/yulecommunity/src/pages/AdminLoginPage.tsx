@@ -49,9 +49,7 @@ export function AdminLoginPage() {
 
         <div className="bg-card border border-border rounded-2xl p-8 shadow-elegant">
           <h1 className="text-2xl font-bold text-center mb-2">管理后台登录</h1>
-          <p className="text-sm text-muted-foreground text-center mb-6">
-            YuleTech 社区管理系统
-          </p>
+          <p className="text-sm text-muted-foreground text-center mb-6">YuleTech 社区管理系统</p>
 
           {error && (
             <div className="mb-4 p-3 rounded-lg bg-destructive/10 text-destructive text-sm text-center">
@@ -67,7 +65,7 @@ export function AdminLoginPage() {
                 <input
                   type="text"
                   value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={e => setUsername(e.target.value)}
                   placeholder="admin"
                   className="w-full pl-10 pr-4 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
                 />
@@ -81,7 +79,7 @@ export function AdminLoginPage() {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className="w-full pl-10 pr-10 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
                 />

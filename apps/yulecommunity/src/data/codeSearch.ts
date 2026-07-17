@@ -40,7 +40,7 @@ export const codeSearchData: SearchResult[] = [
   CAN->MCR &= ~CAN_MCR_HALT;
 }`,
     lineNumber: 45,
-    filePath: 'Mcal/Can/src/Can.c'
+    filePath: 'Mcal/Can/src/Can.c',
   },
   {
     id: '2',
@@ -67,7 +67,7 @@ export const codeSearchData: SearchResult[] = [
   return E_OK;
 }`,
     lineNumber: 128,
-    filePath: 'Mcal/Can/src/Can.c'
+    filePath: 'Mcal/Can/src/Can.c',
   },
   {
     id: '3',
@@ -90,7 +90,7 @@ export const codeSearchData: SearchResult[] = [
   while ((RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_PLL);
 }`,
     lineNumber: 72,
-    filePath: 'Mcal/Mcu/src/Mcu.c'
+    filePath: 'Mcal/Mcu/src/Mcu.c',
   },
   {
     id: '4',
@@ -100,7 +100,7 @@ export const codeSearchData: SearchResult[] = [
     description: 'CAN 模式寄存器停止位',
     code: `#define CAN_MCR_HALT    (0x1u << 28)  /* Halt mode */`,
     lineNumber: 32,
-    filePath: 'Mcal/Can/include/Can_Reg.h'
+    filePath: 'Mcal/Can/include/Can_Reg.h',
   },
   {
     id: '5',
@@ -115,7 +115,7 @@ export const codeSearchData: SearchResult[] = [
   uint8 swPduHandle;       /* PDU 句柄 */
 } Can_PduType;`,
     lineNumber: 45,
-    filePath: 'Mcal/Can/include/Can_Types.h'
+    filePath: 'Mcal/Can/include/Can_Types.h',
   },
   // ECUAL 层
   {
@@ -137,7 +137,7 @@ export const codeSearchData: SearchResult[] = [
   return Can_Write(hth, &canPdu);
 }`,
     lineNumber: 89,
-    filePath: 'Ecual/CanIf/src/CanIf.c'
+    filePath: 'Ecual/CanIf/src/CanIf.c',
   },
   {
     id: '7',
@@ -157,7 +157,7 @@ export const codeSearchData: SearchResult[] = [
   return E_OK;
 }`,
     lineNumber: 156,
-    filePath: 'Ecual/PduR/src/PduR_Com.c'
+    filePath: 'Ecual/PduR/src/PduR_Com.c',
   },
   // Service 层
   {
@@ -166,7 +166,8 @@ export const codeSearchData: SearchResult[] = [
     name: 'Com_SendSignal',
     module: 'Com',
     description: '发送 Com 信号',
-    signature: 'Std_ReturnType Com_SendSignal(Com_SignalIdType SignalId, const void* SignalDataPtr)',
+    signature:
+      'Std_ReturnType Com_SendSignal(Com_SignalIdType SignalId, const void* SignalDataPtr)',
     code: `Std_ReturnType Com_SendSignal(Com_SignalIdType SignalId, const void* SignalDataPtr) {
   const ComSignal_type* sig = &ComSignals[SignalId];
   uint8* pduData = &ComPduData[sig->ComPduId];
@@ -183,7 +184,7 @@ export const codeSearchData: SearchResult[] = [
   return E_OK;
 }`,
     lineNumber: 78,
-    filePath: 'Service/Com/src/Com.c'
+    filePath: 'Service/Com/src/Com.c',
   },
   {
     id: '9',
@@ -206,7 +207,7 @@ export const codeSearchData: SearchResult[] = [
   return E_OK;
 }`,
     lineNumber: 112,
-    filePath: 'Service/Com/src/Com.c'
+    filePath: 'Service/Com/src/Com.c',
   },
   {
     id: '10',
@@ -232,7 +233,7 @@ export const codeSearchData: SearchResult[] = [
   return E_NOT_OK;
 }`,
     lineNumber: 95,
-    filePath: 'Service/NvM/src/NvM.c'
+    filePath: 'Service/NvM/src/NvM.c',
   },
   {
     id: '11',
@@ -240,7 +241,8 @@ export const codeSearchData: SearchResult[] = [
     name: 'Dem_SetEventStatus',
     module: 'Dem',
     description: '设置故障事件状态',
-    signature: 'Std_ReturnType Dem_SetEventStatus(Dem_EventIdType EventId, Dem_EventStatusType EventStatus)',
+    signature:
+      'Std_ReturnType Dem_SetEventStatus(Dem_EventIdType EventId, Dem_EventStatusType EventStatus)',
     code: `Std_ReturnType Dem_SetEventStatus(Dem_EventIdType EventId, Dem_EventStatusType EventStatus) {
   Dem_EventParameter_type* event = &Dem_Events[EventId];
   
@@ -256,7 +258,7 @@ export const codeSearchData: SearchResult[] = [
   return E_OK;
 }`,
     lineNumber: 134,
-    filePath: 'Service/Dem/src/Dem.c'
+    filePath: 'Service/Dem/src/Dem.c',
   },
   // RTE 层
   {
@@ -275,7 +277,7 @@ export const codeSearchData: SearchResult[] = [
   return RTE_E_OK;
 }`,
     lineNumber: 45,
-    filePath: 'Rte/src/Rte.c'
+    filePath: 'Rte/src/Rte.c',
   },
   {
     id: '13',
@@ -288,7 +290,7 @@ export const codeSearchData: SearchResult[] = [
 #define RTE_E_UNCONNECTED   2
 #define RTE_E_NEVER_RECEIVED    3`,
     lineNumber: 28,
-    filePath: 'Rte/include/Rte_Types.h'
+    filePath: 'Rte/include/Rte_Types.h',
   },
   {
     id: '14',
@@ -300,7 +302,7 @@ export const codeSearchData: SearchResult[] = [
 static uint16 Rte_EngineSpeed = 0;
 static uint8 Rte_GearPosition = 0;`,
     lineNumber: 15,
-    filePath: 'Rte/src/Rte.c'
+    filePath: 'Rte/src/Rte.c',
   },
   // Dio 模块
   {
@@ -317,7 +319,7 @@ static uint8 Rte_GearPosition = 0;`,
   return (Dio_PortRegs[port]->IDR >> pin) & 0x01;
 }`,
     lineNumber: 52,
-    filePath: 'Mcal/Dio/src/Dio.c'
+    filePath: 'Mcal/Dio/src/Dio.c',
   },
   {
     id: '16',
@@ -337,7 +339,7 @@ static uint8 Rte_GearPosition = 0;`,
   }
 }`,
     lineNumber: 68,
-    filePath: 'Mcal/Dio/src/Dio.c'
+    filePath: 'Mcal/Dio/src/Dio.c',
   },
   // Port 模块
   {
@@ -363,7 +365,7 @@ static uint8 Rte_GearPosition = 0;`,
   }
 }`,
     lineNumber: 42,
-    filePath: 'Mcal/Port/src/Port.c'
+    filePath: 'Mcal/Port/src/Port.c',
   },
   // SPI 模块
   {
@@ -387,7 +389,7 @@ static uint8 Rte_GearPosition = 0;`,
   SPI1->CR1 |= SPI_CR1_BR_0 | SPI_CR1_BR_1 | SPI_CR1_BR_2;
 }`,
     lineNumber: 38,
-    filePath: 'Mcal/Spi/src/Spi.c'
+    filePath: 'Mcal/Spi/src/Spi.c',
   },
   // GPT 模块
   {
@@ -411,7 +413,7 @@ static uint8 Rte_GearPosition = 0;`,
   tim->CR1 |= TIM_CR1_CEN;
 }`,
     lineNumber: 87,
-    filePath: 'Mcal/Gpt/src/Gpt.c'
+    filePath: 'Mcal/Gpt/src/Gpt.c',
   },
   // ADC 模块
   {
@@ -420,7 +422,8 @@ static uint8 Rte_GearPosition = 0;`,
     name: 'Adc_ReadGroup',
     module: 'Adc',
     description: '读取 ADC 组',
-    signature: 'Std_ReturnType Adc_ReadGroup(Adc_GroupType Group, Adc_ValueGroupType* DataBufferPtr)',
+    signature:
+      'Std_ReturnType Adc_ReadGroup(Adc_GroupType Group, Adc_ValueGroupType* DataBufferPtr)',
     code: `Std_ReturnType Adc_ReadGroup(Adc_GroupType Group, Adc_ValueGroupType* DataBufferPtr) {
   Adc_GroupConfigType* group = &Adc_Groups[Group];
   
@@ -437,8 +440,8 @@ static uint8 Rte_GearPosition = 0;`,
   return E_OK;
 }`,
     lineNumber: 112,
-    filePath: 'Mcal/Adc/src/Adc.c'
-  }
+    filePath: 'Mcal/Adc/src/Adc.c',
+  },
 ];
 
 /**
@@ -446,39 +449,39 @@ static uint8 Rte_GearPosition = 0;`,
  */
 export function searchCode(query: string): SearchResult[] {
   if (!query.trim()) return [];
-  
+
   const lowerQuery = query.toLowerCase();
   const results: Array<SearchResult & { score: number }> = [];
-  
+
   for (const item of codeSearchData) {
     // 匹配名称
     if (item.name.toLowerCase().includes(lowerQuery)) {
       results.push({ ...item, score: 100 });
       continue;
     }
-    
+
     // 匹配模块
     if (item.module.toLowerCase().includes(lowerQuery)) {
       results.push({ ...item, score: 80 });
       continue;
     }
-    
+
     // 匹配描述
     if (item.description.toLowerCase().includes(lowerQuery)) {
       results.push({ ...item, score: 60 });
       continue;
     }
-    
+
     // 匹配代码内容
     if (item.code.toLowerCase().includes(lowerQuery)) {
       results.push({ ...item, score: 40 });
       continue;
     }
   }
-  
+
   // 按分数排序
   results.sort((a, b) => b.score - a.score);
-  
+
   // 返回不包含score的结果
   return results.map(({ score, ...item }) => item).slice(0, 10);
 }

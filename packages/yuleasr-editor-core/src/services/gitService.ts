@@ -3,65 +3,65 @@
  * 基于 isomorphic-git 实现
  */
 
-import FS from '@isomorphic-git/lightning-fs'
-import * as git from 'isomorphic-git'
+import FS from '@isomorphic-git/lightning-fs';
+import * as git from 'isomorphic-git';
 
 export interface GitServiceConfig {
   /** 仓库目录 */
-  dir: string
+  dir: string;
   /** 默认分支 */
-  defaultBranch?: string
+  defaultBranch?: string;
   /** 作者名称 */
   author?: {
-    name: string
-    email: string
-  }
+    name: string;
+    email: string;
+  };
   /** CORS 代理 */
-  corsProxy?: string
+  corsProxy?: string;
 }
 
 export interface CommitInfo {
-  oid: string
-  message: string
+  oid: string;
+  message: string;
   author: {
-    name: string
-    email: string
-    timestamp: number
-  }
-  parent: string[]
+    name: string;
+    email: string;
+    timestamp: number;
+  };
+  parent: string[];
 }
 
 export interface BranchInfo {
-  name: string
-  current: boolean
-  commit: string
+  name: string;
+  current: boolean;
+  commit: string;
 }
 
 export interface DiffInfo {
-  oldPath: string
-  newPath: string
-  status: 'added' | 'deleted' | 'modified' | 'renamed'
-  oldContent?: string
-  newContent?: string
-  hunks: DiffHunk[]
+  oldPath: string;
+  newPath: string;
+  status: 'added' | 'deleted' | 'modified' | 'renamed';
+  oldContent?: string;
+  newContent?: string;
+  hunks: DiffHunk[];
 }
 
 export interface DiffHunk {
-  oldStart: number
-  oldLines: number
-  newStart: number
-  newLines: number
+  oldStart: number;
+  oldLines: number;
+  newStart: number;
+  newLines: number;
   lines: Array<{
-    type: 'added' | 'removed' | 'context'
-    content: string
-    lineNumber?: number
-  }>
+    type: 'added' | 'removed' | 'context';
+    content: string;
+    lineNumber?: number;
+  }>;
 }
 
 export interface FileStatus {
-  path: string
-  status: 'unmodified' | 'modified' | 'added' | 'deleted' | 'renamed'
-  staged: boolean
+  path: string;
+  status: 'unmodified' | 'modified' | 'added' | 'deleted' | 'renamed';
+  staged: boolean;
 }
 
 /**
@@ -69,18 +69,18 @@ export interface FileStatus {
  * 封装 isomorphic-git 提供版本控制功能
  */
 export class GitService {
-  private fs: FS
-  private config: Required<GitServiceConfig>
-  private isInitialized = false
+  private fs: FS;
+  private config: Required<GitServiceConfig>;
+  private isInitialized = false;
 
   constructor(config: GitServiceConfig) {
-    this.fs = new FS(config.dir)
+    this.fs = new FS(config.dir);
     this.config = {
       defaultBranch: 'main',
       author: { name: 'yuleASR User', email: 'user@yuleasr.local' },
       corsProxy: 'https://cors.isomorphic-git.org',
       ...config,
-    }
+    };
   }
 
   /**
@@ -92,10 +92,10 @@ export class GitService {
         fs: this.fs,
         dir: this.config.dir,
         defaultBranch: this.config.defaultBranch,
-      })
-      this.isInitialized = true
+      });
+      this.isInitialized = true;
     } catch (error) {
-      throw new GitError('Failed to initialize git repository', error)
+      throw new GitError('Failed to initialize git repository', error);
     }
   }
 
@@ -104,10 +104,10 @@ export class GitService {
    */
   async isRepo(): Promise<boolean> {
     try {
-      await git.resolveRef({ fs: this.fs, dir: this.config.dir, ref: 'HEAD' })
-      return true
+      await git.resolveRef({ fs: this.fs, dir: this.config.dir, ref: 'HEAD' });
+      return true;
     } catch {
-      return false
+      return false;
     }
   }
 
@@ -124,10 +124,10 @@ export class GitService {
         ref: ref || this.config.defaultBranch,
         singleBranch: true,
         corsProxy: this.config.corsProxy,
-      })
-      this.isInitialized = true
+      });
+      this.isInitialized = true;
     } catch (error) {
-      throw new GitError('Failed to clone repository', error)
+      throw new GitError('Failed to clone repository', error);
     }
   }
 
@@ -141,9 +141,9 @@ export class GitService {
         dir: this.config.dir,
         ref,
         depth: limit,
-      })
+      });
 
-      return log.map((commit) => ({
+      return log.map(commit => ({
         oid: commit.oid,
         message: commit.commit.message,
         author: {
@@ -152,9 +152,9 @@ export class GitService {
           timestamp: commit.commit.author.timestamp * 1000,
         },
         parent: commit.commit.parent,
-      }))
+      }));
     } catch (error) {
-      throw new GitError('Failed to get commit history', error)
+      throw new GitError('Failed to get commit history', error);
     }
   }
 
@@ -167,7 +167,7 @@ export class GitService {
         fs: this.fs,
         dir: this.config.dir,
         oid,
-      })
+      });
 
       return {
         oid: commit.oid,
@@ -178,9 +178,9 @@ export class GitService {
           timestamp: commit.commit.author.timestamp * 1000,
         },
         parent: commit.commit.parent,
-      }
+      };
     } catch {
-      return null
+      return null;
     }
   }
 
@@ -192,32 +192,32 @@ export class GitService {
       const branches = await git.listBranches({
         fs: this.fs,
         dir: this.config.dir,
-      })
+      });
 
       const currentBranch = await git.currentBranch({
         fs: this.fs,
         dir: this.config.dir,
-      })
+      });
 
-      const branchInfo: BranchInfo[] = []
+      const branchInfo: BranchInfo[] = [];
 
       for (const name of branches) {
         const commit = await git.resolveRef({
           fs: this.fs,
           dir: this.config.dir,
           ref: name,
-        })
+        });
 
         branchInfo.push({
           name,
           current: name === currentBranch,
           commit,
-        })
+        });
       }
 
-      return branchInfo
+      return branchInfo;
     } catch (error) {
-      throw new GitError('Failed to list branches', error)
+      throw new GitError('Failed to list branches', error);
     }
   }
 
@@ -231,9 +231,9 @@ export class GitService {
         dir: this.config.dir,
         ref: name,
         checkout,
-      })
+      });
     } catch (error) {
-      throw new GitError(`Failed to create branch: ${name}`, error)
+      throw new GitError(`Failed to create branch: ${name}`, error);
     }
   }
 
@@ -246,9 +246,9 @@ export class GitService {
         fs: this.fs,
         dir: this.config.dir,
         ref: name,
-      })
+      });
     } catch (error) {
-      throw new GitError(`Failed to checkout branch: ${name}`, error)
+      throw new GitError(`Failed to checkout branch: ${name}`, error);
     }
   }
 
@@ -261,9 +261,9 @@ export class GitService {
         fs: this.fs,
         dir: this.config.dir,
         ref: name,
-      })
+      });
     } catch (error) {
-      throw new GitError(`Failed to delete branch: ${name}`, error)
+      throw new GitError(`Failed to delete branch: ${name}`, error);
     }
   }
 
@@ -275,27 +275,27 @@ export class GitService {
       const matrix = await git.statusMatrix({
         fs: this.fs,
         dir: this.config.dir,
-      })
+      });
 
       return matrix.map(([path, head, workdir, stage]) => {
-        let status: FileStatus['status'] = 'unmodified'
-        
+        let status: FileStatus['status'] = 'unmodified';
+
         if (head === 0 && workdir === 1) {
-          status = 'added'
+          status = 'added';
         } else if (head === 1 && workdir === 0) {
-          status = 'deleted'
+          status = 'deleted';
         } else if (head === 1 && workdir === 2) {
-          status = 'modified'
+          status = 'modified';
         }
 
         return {
           path,
           status,
           staged: stage !== head,
-        }
-      })
+        };
+      });
     } catch (error) {
-      throw new GitError('Failed to get file status', error)
+      throw new GitError('Failed to get file status', error);
     }
   }
 
@@ -304,16 +304,16 @@ export class GitService {
    */
   async add(filepath: string | string[]): Promise<void> {
     try {
-      const files = Array.isArray(filepath) ? filepath : [filepath]
+      const files = Array.isArray(filepath) ? filepath : [filepath];
       for (const file of files) {
         await git.add({
           fs: this.fs,
           dir: this.config.dir,
           filepath: file,
-        })
+        });
       }
     } catch (error) {
-      throw new GitError('Failed to stage files', error)
+      throw new GitError('Failed to stage files', error);
     }
   }
 
@@ -322,16 +322,16 @@ export class GitService {
    */
   async remove(filepath: string | string[]): Promise<void> {
     try {
-      const files = Array.isArray(filepath) ? filepath : [filepath]
+      const files = Array.isArray(filepath) ? filepath : [filepath];
       for (const file of files) {
         await git.remove({
           fs: this.fs,
           dir: this.config.dir,
           filepath: file,
-        })
+        });
       }
     } catch (error) {
-      throw new GitError('Failed to unstage files', error)
+      throw new GitError('Failed to unstage files', error);
     }
   }
 
@@ -345,10 +345,10 @@ export class GitService {
         dir: this.config.dir,
         message,
         author: author || this.config.author,
-      })
-      return oid
+      });
+      return oid;
     } catch (error) {
-      throw new GitError('Failed to create commit', error)
+      throw new GitError('Failed to create commit', error);
     }
   }
 
@@ -361,34 +361,34 @@ export class GitService {
         fs: this.fs,
         dir: this.config.dir,
         oid: oldCommit,
-      })
-      
+      });
+
       const newTree = await git.readTree({
         fs: this.fs,
         dir: this.config.dir,
         oid: newCommit,
-      })
+      });
 
       // 简化版：返回文件列表差异
-      const oldFiles = new Map(oldTree.tree.map(e => [e.path, e.oid]))
-      const newFiles = new Map(newTree.tree.map(e => [e.path, e.oid]))
-      
-      const diffs: DiffInfo[] = []
+      const oldFiles = new Map(oldTree.tree.map(e => [e.path, e.oid]));
+      const newFiles = new Map(newTree.tree.map(e => [e.path, e.oid]));
+
+      const diffs: DiffInfo[] = [];
 
       // 检查新增和修改的文件
       for (const [path, oid] of newFiles) {
         if (!oldFiles.has(path)) {
-          const content = await this.readFileContent(newCommit, path)
+          const content = await this.readFileContent(newCommit, path);
           diffs.push({
             oldPath: path,
             newPath: path,
             status: 'added',
             newContent: content,
             hunks: [],
-          })
+          });
         } else if (oldFiles.get(path) !== oid) {
-          const oldContent = await this.readFileContent(oldCommit, path)
-          const newContent = await this.readFileContent(newCommit, path)
+          const oldContent = await this.readFileContent(oldCommit, path);
+          const newContent = await this.readFileContent(newCommit, path);
           diffs.push({
             oldPath: path,
             newPath: path,
@@ -396,27 +396,27 @@ export class GitService {
             oldContent,
             newContent,
             hunks: this.computeDiffHunks(oldContent, newContent),
-          })
+          });
         }
       }
 
       // 检查删除的文件
       for (const [path, oid] of oldFiles) {
         if (!newFiles.has(path)) {
-          const content = await this.readFileContent(oldCommit, path)
+          const content = await this.readFileContent(oldCommit, path);
           diffs.push({
             oldPath: path,
             newPath: path,
             status: 'deleted',
             oldContent: content,
             hunks: [],
-          })
+          });
         }
       }
 
-      return diffs
+      return diffs;
     } catch (error) {
-      throw new GitError('Failed to get diff', error)
+      throw new GitError('Failed to get diff', error);
     }
   }
 
@@ -425,14 +425,14 @@ export class GitService {
    */
   async getWorkingDiff(): Promise<DiffInfo[]> {
     try {
-      const status = await this.getStatus()
-      const diffs: DiffInfo[] = []
+      const status = await this.getStatus();
+      const diffs: DiffInfo[] = [];
 
       for (const file of status) {
         if (file.status === 'modified') {
-          const content = await this.readWorkingFile(file.path)
-          const headContent = await this.readHeadFile(file.path)
-          
+          const content = await this.readWorkingFile(file.path);
+          const headContent = await this.readHeadFile(file.path);
+
           diffs.push({
             oldPath: file.path,
             newPath: file.path,
@@ -440,31 +440,31 @@ export class GitService {
             oldContent: headContent,
             newContent: content,
             hunks: this.computeDiffHunks(headContent, content),
-          })
+          });
         } else if (file.status === 'added') {
-          const content = await this.readWorkingFile(file.path)
+          const content = await this.readWorkingFile(file.path);
           diffs.push({
             oldPath: file.path,
             newPath: file.path,
             status: 'added',
             newContent: content,
             hunks: [],
-          })
+          });
         } else if (file.status === 'deleted') {
-          const content = await this.readHeadFile(file.path)
+          const content = await this.readHeadFile(file.path);
           diffs.push({
             oldPath: file.path,
             newPath: file.path,
             status: 'deleted',
             oldContent: content,
             hunks: [],
-          })
+          });
         }
       }
 
-      return diffs
+      return diffs;
     } catch (error) {
-      throw new GitError('Failed to get working diff', error)
+      throw new GitError('Failed to get working diff', error);
     }
   }
 
@@ -480,7 +480,7 @@ export class GitService {
           dir: this.config.dir,
           ref: oid,
           force: true,
-        })
+        });
       } else {
         // 软重置 - 强制 checkout 到目标提交，然后创建回滚提交
         await git.checkout({
@@ -488,7 +488,7 @@ export class GitService {
           dir: this.config.dir,
           ref: oid,
           force: true,
-        })
+        });
 
         // 创建回滚提交
         await git.commit({
@@ -496,10 +496,10 @@ export class GitService {
           dir: this.config.dir,
           message: `Rollback to ${oid.substring(0, 7)}`,
           author: this.config.author,
-        })
+        });
       }
     } catch (error) {
-      throw new GitError('Failed to rollback', error)
+      throw new GitError('Failed to rollback', error);
     }
   }
 
@@ -513,14 +513,14 @@ export class GitService {
         dir: this.config.dir,
         oid,
         filepath,
-      })
+      });
 
-      const content = new TextDecoder().decode(blob)
-      const fullPath = `${this.config.dir}/${filepath}`
-      
-      await this.fs.promises.writeFile(fullPath, content, 'utf8')
+      const content = new TextDecoder().decode(blob);
+      const fullPath = `${this.config.dir}/${filepath}`;
+
+      await this.fs.promises.writeFile(fullPath, content, 'utf8');
     } catch (error) {
-      throw new GitError(`Failed to checkout file: ${filepath}`, error)
+      throw new GitError(`Failed to checkout file: ${filepath}`, error);
     }
   }
 
@@ -536,9 +536,9 @@ export class GitService {
         remote,
         ref: ref || (await git.currentBranch({ fs: this.fs, dir: this.config.dir })) || undefined,
         corsProxy: this.config.corsProxy,
-      })
+      });
     } catch (error) {
-      throw new GitError('Failed to push', error)
+      throw new GitError('Failed to push', error);
     }
   }
 
@@ -555,9 +555,9 @@ export class GitService {
         ref: ref || (await git.currentBranch({ fs: this.fs, dir: this.config.dir })) || undefined,
         corsProxy: this.config.corsProxy,
         author: this.config.author,
-      })
+      });
     } catch (error) {
-      throw new GitError('Failed to pull', error)
+      throw new GitError('Failed to pull', error);
     }
   }
 
@@ -571,10 +571,10 @@ export class GitService {
         dir: this.config.dir,
         oid: commitOid,
         filepath,
-      })
-      return new TextDecoder().decode(blob)
+      });
+      return new TextDecoder().decode(blob);
     } catch {
-      return ''
+      return '';
     }
   }
 
@@ -583,10 +583,10 @@ export class GitService {
    */
   private async readWorkingFile(filepath: string): Promise<string> {
     try {
-      const fullPath = `${this.config.dir}/${filepath}`
-      return await this.fs.promises.readFile(fullPath, 'utf8') as string
+      const fullPath = `${this.config.dir}/${filepath}`;
+      return (await this.fs.promises.readFile(fullPath, 'utf8')) as string;
     } catch {
-      return ''
+      return '';
     }
   }
 
@@ -599,10 +599,10 @@ export class GitService {
         fs: this.fs,
         dir: this.config.dir,
         ref: 'HEAD',
-      })
-      return this.readFileContent(head, filepath)
+      });
+      return this.readFileContent(head, filepath);
     } catch {
-      return ''
+      return '';
     }
   }
 
@@ -610,22 +610,22 @@ export class GitService {
    * 计算差异块
    */
   private computeDiffHunks(oldContent: string, newContent: string): DiffHunk[] {
-    const oldLines = oldContent.split('\n')
-    const newLines = newContent.split('\n')
-    
-    const hunks: DiffHunk[] = []
-    let currentHunk: DiffHunk | null = null
-    
-    let oldLine = 1
-    let newLine = 1
-    
+    const oldLines = oldContent.split('\n');
+    const newLines = newContent.split('\n');
+
+    const hunks: DiffHunk[] = [];
+    let currentHunk: DiffHunk | null = null;
+
+    let oldLine = 1;
+    let newLine = 1;
+
     // 简化的行差异算法
-    const maxLen = Math.max(oldLines.length, newLines.length)
-    
+    const maxLen = Math.max(oldLines.length, newLines.length);
+
     for (let i = 0; i < maxLen; i++) {
-      const oldStr = oldLines[i] ?? ''
-      const newStr = newLines[i] ?? ''
-      
+      const oldStr = oldLines[i] ?? '';
+      const newStr = newLines[i] ?? '';
+
       if (oldStr !== newStr) {
         if (!currentHunk) {
           currentHunk = {
@@ -634,26 +634,26 @@ export class GitService {
             newStart: newLine,
             newLines: 0,
             lines: [],
-          }
-          hunks.push(currentHunk)
+          };
+          hunks.push(currentHunk);
         }
-        
+
         if (oldStr) {
           currentHunk.lines.push({
             type: 'removed',
             content: oldStr,
             lineNumber: oldLine,
-          })
-          currentHunk.oldLines++
+          });
+          currentHunk.oldLines++;
         }
-        
+
         if (newStr) {
           currentHunk.lines.push({
             type: 'added',
             content: newStr,
             lineNumber: newLine,
-          })
-          currentHunk.newLines++
+          });
+          currentHunk.newLines++;
         }
       } else if (currentHunk) {
         // 添加上下文行
@@ -661,19 +661,19 @@ export class GitService {
           type: 'context',
           content: oldStr,
           lineNumber: oldLine,
-        })
-        
+        });
+
         // 每 3 行上下文结束一个 hunk
         if (currentHunk.lines.length > 6) {
-          currentHunk = null
+          currentHunk = null;
         }
       }
-      
-      if (oldStr) oldLine++
-      if (newStr) newLine++
+
+      if (oldStr) oldLine++;
+      if (newStr) newLine++;
     }
-    
-    return hunks
+
+    return hunks;
   }
 }
 
@@ -681,10 +681,13 @@ export class GitService {
  * Git 错误类
  */
 export class GitError extends Error {
-  constructor(message: string, public cause?: unknown) {
-    super(message)
-    this.name = 'GitError'
+  constructor(
+    message: string,
+    public cause?: unknown
+  ) {
+    super(message);
+    this.name = 'GitError';
   }
 }
 
-export default GitService
+export default GitService;

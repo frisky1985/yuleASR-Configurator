@@ -44,12 +44,7 @@ export interface CopyButtonProps {
 /**
  * 复制按钮组件
  */
-export function CopyButton({
-  text,
-  onCopy,
-  size = 'sm',
-  className,
-}: CopyButtonProps) {
+export function CopyButton({ text, onCopy, size = 'sm', className }: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(async () => {
@@ -134,9 +129,7 @@ export function CopyButton({
           </motion.div>
         )}
       </AnimatePresence>
-      <span className="sr-only">
-        {copied ? '复制成功' : '复制代码'}
-      </span>
+      <span className="sr-only">{copied ? '复制成功' : '复制代码'}</span>
     </motion.button>
   );
 }
@@ -167,10 +160,7 @@ export function CodeBlock({
 
   return (
     <div
-      className={cn(
-        'my-4 rounded-lg overflow-hidden border border-border',
-        className
-      )}
+      className={cn('my-4 rounded-lg overflow-hidden border border-border', className)}
       data-testid="code-block"
     >
       {/* 标题栏 */}

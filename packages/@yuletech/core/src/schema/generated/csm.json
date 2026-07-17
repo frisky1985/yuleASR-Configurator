@@ -453,11 +453,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CsmGeneral",
-    "CsmJobTypeLayout",
-    "CsmBswApiCompatibility"
-  ],
+  "required": ["CsmGeneral", "CsmJobTypeLayout", "CsmBswApiCompatibility"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

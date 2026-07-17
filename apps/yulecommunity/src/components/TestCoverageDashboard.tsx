@@ -43,21 +43,137 @@ interface CoverageData {
 
 // 模拟测试数据
 const mockTestCases: TestCase[] = [
-  { id: 'TC001', name: 'Can_Init_ValidConfig', category: 'unit', status: 'passed', duration: 12, module: 'Can', coverage: 95 },
-  { id: 'TC002', name: 'Can_Write_InvalidId', category: 'unit', status: 'passed', duration: 8, module: 'Can', coverage: 88 },
-  { id: 'TC003', name: 'PduR_Routing_MultiFrame', category: 'integration', status: 'passed', duration: 45, module: 'PduR', coverage: 92 },
-  { id: 'TC004', name: 'Com_SendSignal_Timeout', category: 'unit', status: 'failed', duration: 120, module: 'Com', coverage: 76, error: 'Timeout not triggered' },
-  { id: 'TC005', name: 'Dem_ReportError_E2E', category: 'hil', status: 'running', duration: 0, module: 'Dem' },
-  { id: 'TC006', name: 'Nvm_WriteBlock_CrcCheck', category: 'unit', status: 'passed', duration: 25, module: 'Nvm', coverage: 98 },
-  { id: 'TC007', name: 'CanTp_FlowControl_Overflow', category: 'integration', status: 'passed', duration: 67, module: 'CanTp', coverage: 85 },
-  { id: 'TC008', name: 'Dcm_DiagnosticSessionControl', category: 'hil', status: 'pending', duration: 0, module: 'Dcm' },
-  { id: 'TC009', name: 'BswM_ModeSwitch_Perf', category: 'performance', status: 'passed', duration: 234, module: 'BswM' },
-  { id: 'TC010', name: 'Ea_Init_InvalidBlock', category: 'unit', status: 'skipped', duration: 0, module: 'Ea' },
-  { id: 'TC011', name: 'Fee_GarbageCollection', category: 'integration', status: 'passed', duration: 890, module: 'Fee', coverage: 91 },
-  { id: 'TC012', name: 'CanIf_PduModeControl', category: 'unit', status: 'passed', duration: 15, module: 'CanIf', coverage: 94 },
-  { id: 'TC013', name: 'EcuM_ShutdownSequence', category: 'hil', status: 'failed', duration: 560, module: 'EcuM', error: 'Watchdog not triggered' },
-  { id: 'TC014', name: 'WdgM_AliveSupervision', category: 'unit', status: 'passed', duration: 32, module: 'WdgM', coverage: 97 },
-  { id: 'TC015', name: 'Xcp_DaqList_Config', category: 'integration', status: 'running', duration: 0, module: 'Xcp' },
+  {
+    id: 'TC001',
+    name: 'Can_Init_ValidConfig',
+    category: 'unit',
+    status: 'passed',
+    duration: 12,
+    module: 'Can',
+    coverage: 95,
+  },
+  {
+    id: 'TC002',
+    name: 'Can_Write_InvalidId',
+    category: 'unit',
+    status: 'passed',
+    duration: 8,
+    module: 'Can',
+    coverage: 88,
+  },
+  {
+    id: 'TC003',
+    name: 'PduR_Routing_MultiFrame',
+    category: 'integration',
+    status: 'passed',
+    duration: 45,
+    module: 'PduR',
+    coverage: 92,
+  },
+  {
+    id: 'TC004',
+    name: 'Com_SendSignal_Timeout',
+    category: 'unit',
+    status: 'failed',
+    duration: 120,
+    module: 'Com',
+    coverage: 76,
+    error: 'Timeout not triggered',
+  },
+  {
+    id: 'TC005',
+    name: 'Dem_ReportError_E2E',
+    category: 'hil',
+    status: 'running',
+    duration: 0,
+    module: 'Dem',
+  },
+  {
+    id: 'TC006',
+    name: 'Nvm_WriteBlock_CrcCheck',
+    category: 'unit',
+    status: 'passed',
+    duration: 25,
+    module: 'Nvm',
+    coverage: 98,
+  },
+  {
+    id: 'TC007',
+    name: 'CanTp_FlowControl_Overflow',
+    category: 'integration',
+    status: 'passed',
+    duration: 67,
+    module: 'CanTp',
+    coverage: 85,
+  },
+  {
+    id: 'TC008',
+    name: 'Dcm_DiagnosticSessionControl',
+    category: 'hil',
+    status: 'pending',
+    duration: 0,
+    module: 'Dcm',
+  },
+  {
+    id: 'TC009',
+    name: 'BswM_ModeSwitch_Perf',
+    category: 'performance',
+    status: 'passed',
+    duration: 234,
+    module: 'BswM',
+  },
+  {
+    id: 'TC010',
+    name: 'Ea_Init_InvalidBlock',
+    category: 'unit',
+    status: 'skipped',
+    duration: 0,
+    module: 'Ea',
+  },
+  {
+    id: 'TC011',
+    name: 'Fee_GarbageCollection',
+    category: 'integration',
+    status: 'passed',
+    duration: 890,
+    module: 'Fee',
+    coverage: 91,
+  },
+  {
+    id: 'TC012',
+    name: 'CanIf_PduModeControl',
+    category: 'unit',
+    status: 'passed',
+    duration: 15,
+    module: 'CanIf',
+    coverage: 94,
+  },
+  {
+    id: 'TC013',
+    name: 'EcuM_ShutdownSequence',
+    category: 'hil',
+    status: 'failed',
+    duration: 560,
+    module: 'EcuM',
+    error: 'Watchdog not triggered',
+  },
+  {
+    id: 'TC014',
+    name: 'WdgM_AliveSupervision',
+    category: 'unit',
+    status: 'passed',
+    duration: 32,
+    module: 'WdgM',
+    coverage: 97,
+  },
+  {
+    id: 'TC015',
+    name: 'Xcp_DaqList_Config',
+    category: 'integration',
+    status: 'running',
+    duration: 0,
+    module: 'Xcp',
+  },
 ];
 
 // 覆盖率数据
@@ -85,7 +201,10 @@ const categoryLabels: Record<string, { label: string; color: string; bg: string 
   performance: { label: '性能测试', color: 'text-green-600', bg: 'bg-green-100' },
 };
 
-const statusConfig: Record<string, { icon: React.ElementType; color: string; bg: string; label: string }> = {
+const statusConfig: Record<
+  string,
+  { icon: React.ElementType; color: string; bg: string; label: string }
+> = {
   passed: { icon: CheckCircle2, color: 'text-green-600', bg: 'bg-green-100', label: '通过' },
   failed: { icon: XCircle, color: 'text-red-600', bg: 'bg-red-100', label: '失败' },
   running: { icon: Activity, color: 'text-blue-600', bg: 'bg-blue-100', label: '运行中' },
@@ -106,8 +225,9 @@ export function TestCoverageDashboard() {
     const running = mockTestCases.filter(t => t.status === 'running').length;
     const pending = mockTestCases.filter(t => t.status === 'pending').length;
     const skipped = mockTestCases.filter(t => t.status === 'skipped').length;
-    const avgCoverage = mockCoverageData.reduce((sum, c) => sum + c.lines, 0) / mockCoverageData.length;
-    
+    const avgCoverage =
+      mockCoverageData.reduce((sum, c) => sum + c.lines, 0) / mockCoverageData.length;
+
     return { total, passed, failed, running, pending, skipped, avgCoverage };
   }, []);
 
@@ -141,25 +261,29 @@ export function TestCoverageDashboard() {
           </div>
           <div className="text-2xl font-bold">{stats.total}</div>
         </div>
-        
+
         <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
           <div className="flex items-center gap-2 text-green-600 text-sm mb-1">
             <CheckCircle2 className="w-4 h-4" />
             通过
           </div>
           <div className="text-2xl font-bold text-green-600">{stats.passed}</div>
-          <div className="text-xs text-muted-foreground">{((stats.passed / stats.total) * 100).toFixed(1)}%</div>
+          <div className="text-xs text-muted-foreground">
+            {((stats.passed / stats.total) * 100).toFixed(1)}%
+          </div>
         </div>
-        
+
         <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
           <div className="flex items-center gap-2 text-red-600 text-sm mb-1">
             <XCircle className="w-4 h-4" />
             失败
           </div>
           <div className="text-2xl font-bold text-red-600">{stats.failed}</div>
-          <div className="text-xs text-muted-foreground">{((stats.failed / stats.total) * 100).toFixed(1)}%</div>
+          <div className="text-xs text-muted-foreground">
+            {((stats.failed / stats.total) * 100).toFixed(1)}%
+          </div>
         </div>
-        
+
         <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
           <div className="flex items-center gap-2 text-blue-600 text-sm mb-1">
             <Activity className="w-4 h-4" />
@@ -167,7 +291,7 @@ export function TestCoverageDashboard() {
           </div>
           <div className="text-2xl font-bold text-blue-600">{stats.running}</div>
         </div>
-        
+
         <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
           <div className="flex items-center gap-2 text-yellow-600 text-sm mb-1">
             <Clock className="w-4 h-4" />
@@ -175,7 +299,7 @@ export function TestCoverageDashboard() {
           </div>
           <div className="text-2xl font-bold text-yellow-600">{stats.pending}</div>
         </div>
-        
+
         <div className="bg-card rounded-lg p-4 shadow-sm border border-border">
           <div className="flex items-center gap-2 text-purple-600 text-sm mb-1">
             <Shield className="w-4 h-4" />
@@ -251,7 +375,9 @@ export function TestCoverageDashboard() {
                     const percentage = (count / mockTestCases.length) * 100;
                     return (
                       <div key={key} className="flex items-center gap-3">
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${config.bg} ${config.color}`}>
+                        <span
+                          className={`px-2 py-1 rounded text-xs font-medium ${config.bg} ${config.color}`}
+                        >
                           {config.label}
                         </span>
                         <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
@@ -260,7 +386,9 @@ export function TestCoverageDashboard() {
                             style={{ width: `${percentage}%` }}
                           />
                         </div>
-                        <span className="text-sm text-muted-foreground w-12 text-right">{count}</span>
+                        <span className="text-sm text-muted-foreground w-12 text-right">
+                          {count}
+                        </span>
                       </div>
                     );
                   })}
@@ -278,7 +406,10 @@ export function TestCoverageDashboard() {
                 {mockTestCases
                   .filter(t => t.status === 'failed')
                   .map(test => (
-                    <div key={test.id} className="flex items-center gap-3 bg-card rounded p-3 border border-border">
+                    <div
+                      key={test.id}
+                      className="flex items-center gap-3 bg-card rounded p-3 border border-border"
+                    >
                       <XCircle className="w-5 h-5 text-red-500" />
                       <div className="flex-1">
                         <div className="font-medium">{test.name}</div>
@@ -302,22 +433,26 @@ export function TestCoverageDashboard() {
               <Filter className="w-4 h-4 text-muted-foreground" />
               <select
                 value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
+                onChange={e => setSelectedCategory(e.target.value)}
                 className="px-3 py-1.5 rounded border border-border bg-white text-sm"
               >
                 <option value="all">所有类别</option>
                 {Object.entries(categoryLabels).map(([key, config]) => (
-                  <option key={key} value={key}>{config.label}</option>
+                  <option key={key} value={key}>
+                    {config.label}
+                  </option>
                 ))}
               </select>
               <select
                 value={selectedModule}
-                onChange={(e) => setSelectedModule(e.target.value)}
+                onChange={e => setSelectedModule(e.target.value)}
                 className="px-3 py-1.5 rounded border border-border bg-white text-sm"
               >
                 <option value="all">所有模块</option>
                 {modules.map(m => (
-                  <option key={m} value={m}>{m}</option>
+                  <option key={m} value={m}>
+                    {m}
+                  </option>
                 ))}
               </select>
               <button className="flex items-center gap-2 px-3 py-1.5 bg-primary text-white rounded text-sm hover:bg-primary/90">
@@ -336,7 +471,7 @@ export function TestCoverageDashboard() {
                 const config = statusConfig[test.status];
                 const StatusIcon = config.icon;
                 const categoryConfig = categoryLabels[test.category];
-                
+
                 return (
                   <div
                     key={test.id}
@@ -346,7 +481,9 @@ export function TestCoverageDashboard() {
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <span className="font-medium">{test.name}</span>
-                        <span className={`px-2 py-0.5 rounded text-xs ${categoryConfig.bg} ${categoryConfig.color}`}>
+                        <span
+                          className={`px-2 py-0.5 rounded text-xs ${categoryConfig.bg} ${categoryConfig.color}`}
+                        >
                           {categoryConfig.label}
                         </span>
                       </div>
@@ -411,8 +548,11 @@ export function TestCoverageDashboard() {
                 <div className="col-span-2"></div>
               </div>
               <div className="divide-y divide-border">
-                {mockCoverageData.map((data) => (
-                  <div key={data.module} className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-muted/30">
+                {mockCoverageData.map(data => (
+                  <div
+                    key={data.module}
+                    className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-muted/30"
+                  >
                     <div className="col-span-2 font-medium">{data.module}</div>
                     {[
                       { value: data.lines, key: 'lines' },

@@ -1,103 +1,119 @@
-import { useState, useEffect } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
-  HelpCircle, CheckCircle2, MessageSquare, Eye,
-  ThumbsUp, Plus, Search, Filter, Loader2, User, Clock, ChevronRight
-} from 'lucide-react'
-import qaApi, { type Question, type PaginatedQuestions } from '../services/qaApi'
+  HelpCircle,
+  CheckCircle2,
+  MessageSquare,
+  Eye,
+  ThumbsUp,
+  Plus,
+  Search,
+  Filter,
+  Loader2,
+  User,
+  Clock,
+  ChevronRight,
+} from 'lucide-react';
+import qaApi, { type Question, type PaginatedQuestions } from '../services/qaApi';
 
 const sortOptions = [
   { label: '最新提问', value: 'newest' },
   { label: '最多浏览', value: 'views' },
   { label: '最多点赞', value: 'likes' },
   { label: '最多回答', value: 'answers' },
-]
+];
 
 const statusFilters = [
   { label: '全部', value: '' },
   { label: '未解决', value: 'open' },
   { label: '已解决', value: 'resolved' },
   { label: '已关闭', value: 'closed' },
-]
+];
 
-const POPULAR_TAGS = ['MCAL', 'ECUAL', 'Service', 'CAN', 'DIO', 'ADC', 'SPI', 'OS', 'RTE']
+const POPULAR_TAGS = ['MCAL', 'ECUAL', 'Service', 'CAN', 'DIO', 'ADC', 'SPI', 'OS', 'RTE'];
 
 export function QAHome() {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const [questions, setQuestions] = useState<Question[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [total, setTotal] = useState(0)
-  const [totalPages, setTotalPages] = useState(0)
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
 
-  const search = searchParams.get('search') || ''
-  const tag = searchParams.get('tag') || ''
-  const status = searchParams.get('status') || ''
-  const sort = searchParams.get('sort') || 'newest'
-  const page = parseInt(searchParams.get('page') || '1', 10)
+  const search = searchParams.get('search') || '';
+  const tag = searchParams.get('tag') || '';
+  const status = searchParams.get('status') || '';
+  const sort = searchParams.get('sort') || 'newest';
+  const page = parseInt(searchParams.get('page') || '1', 10);
 
-  const [searchInput, setSearchInput] = useState(search)
+  const [searchInput, setSearchInput] = useState(search);
 
   const loadQuestions = async () => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
       const result: PaginatedQuestions = await qaApi.getQuestions({
-        page, pageSize: 20, search: search || undefined,
-        tag: tag || undefined, status: status || undefined,
+        page,
+        pageSize: 20,
+        search: search || undefined,
+        tag: tag || undefined,
+        status: status || undefined,
         sort: sort || undefined,
-      })
-      setQuestions(result.data)
-      setTotal(result.total)
-      setTotalPages(result.totalPages)
+      });
+      setQuestions(result.data);
+      setTotal(result.total);
+      setTotalPages(result.totalPages);
     } catch (err) {
-      console.error('[QAHome] Failed to load questions:', err)
-      setError('无法加载问题列表')
-      setQuestions([])
+      console.error('[QAHome] Failed to load questions:', err);
+      setError('无法加载问题列表');
+      setQuestions([]);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    loadQuestions()
-  }, [page, search, tag, status, sort])
+    loadQuestions();
+  }, [page, search, tag, status, sort]);
 
   const updateParams = (updates: Record<string, string>) => {
-    const newParams = new URLSearchParams(searchParams)
+    const newParams = new URLSearchParams(searchParams);
     Object.entries(updates).forEach(([k, v]) => {
-      if (v) newParams.set(k, v)
-      else newParams.delete(k)
-    })
-    if (updates.page === undefined && !updates.page) newParams.set('page', '1')
-    setSearchParams(newParams)
-  }
+      if (v) newParams.set(k, v);
+      else newParams.delete(k);
+    });
+    if (updates.page === undefined && !updates.page) newParams.set('page', '1');
+    setSearchParams(newParams);
+  };
 
   const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    updateParams({ search: searchInput, page: '1' })
-  }
+    e.preventDefault();
+    updateParams({ search: searchInput, page: '1' });
+  };
 
   const formatTime = (iso: string) => {
-    const d = new Date(iso)
-    const now = new Date()
-    const diff = now.getTime() - d.getTime()
-    const minutes = Math.floor(diff / 60000)
-    const hours = Math.floor(diff / 3600000)
-    const days = Math.floor(diff / 86400000)
-    if (minutes < 1) return '刚刚'
-    if (minutes < 60) return `${minutes}分钟前`
-    if (hours < 24) return `${hours}小时前`
-    if (days < 30) return `${days}天前`
-    return d.toLocaleDateString('zh-CN')
-  }
+    const d = new Date(iso);
+    const now = new Date();
+    const diff = now.getTime() - d.getTime();
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+    if (minutes < 1) return '刚刚';
+    if (minutes < 60) return `${minutes}分钟前`;
+    if (hours < 24) return `${hours}小时前`;
+    if (days < 30) return `${days}天前`;
+    return d.toLocaleDateString('zh-CN');
+  };
 
   return (
     <div className="min-h-screen bg-background pt-16">
       <Helmet>
         <title>技术问答 - YuleTech | AutoSAR 问答社区</title>
-        <meta name="description" content="AutoSAR 技术问答社区，解决 MCAL、ECUAL、Service 层开发中的具体技术难题。" />
+        <meta
+          name="description"
+          content="AutoSAR 技术问答社区，解决 MCAL、ECUAL、Service 层开发中的具体技术难题。"
+        />
       </Helmet>
 
       {/* Header */}
@@ -125,7 +141,7 @@ export function QAHome() {
                 type="text"
                 placeholder="搜索问题..."
                 value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
+                onChange={e => setSearchInput(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
               />
             </form>
@@ -133,11 +149,13 @@ export function QAHome() {
               <Filter className="w-4 h-4 text-muted-foreground" />
               <select
                 value={sort}
-                onChange={(e) => updateParams({ sort: e.target.value, page: '1' })}
+                onChange={e => updateParams({ sort: e.target.value, page: '1' })}
                 className="px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
               >
-                {sortOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                {sortOptions.map(opt => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
                 ))}
               </select>
             </div>
@@ -145,7 +163,7 @@ export function QAHome() {
 
           {/* Status Filters */}
           <div className="mt-4 flex gap-2 flex-wrap">
-            {statusFilters.map((f) => (
+            {statusFilters.map(f => (
               <button
                 key={f.value}
                 onClick={() => updateParams({ status: f.value, page: '1' })}
@@ -165,7 +183,7 @@ export function QAHome() {
       {/* Tags Cloud */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex gap-2 flex-wrap">
-          {POPULAR_TAGS.map((t) => (
+          {POPULAR_TAGS.map(t => (
             <button
               key={t}
               onClick={() => updateParams({ tag: tag === t ? '' : t, page: '1' })}
@@ -209,7 +227,7 @@ export function QAHome() {
 
         {!loading && !error && (
           <div className="space-y-3">
-            {questions.map((q) => (
+            {questions.map(q => (
               <Link
                 key={q.id}
                 to={`/qa/${q.id}`}
@@ -250,7 +268,7 @@ export function QAHome() {
                         {q.answerCount} 回答
                       </span>
                       <div className="flex gap-1 ml-auto">
-                        {q.tags.map((tag) => (
+                        {q.tags.map(tag => (
                           <span key={tag} className="px-2 py-0.5 bg-muted rounded-full text-[10px]">
                             {tag}
                           </span>
@@ -289,7 +307,7 @@ export function QAHome() {
         )}
       </div>
     </div>
-  )
+  );
 }
 
-export default QAHome
+export default QAHome;

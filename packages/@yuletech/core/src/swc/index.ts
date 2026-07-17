@@ -1,6 +1,6 @@
 /**
  * @yuletech/core - SWC
- * 
+ *
  * AUTOSAR SWC layer module index.
  * Exports SWC type definitions, schema registrations, and utilities.
  */

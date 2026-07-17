@@ -9,8 +9,8 @@
  */
 
 import { describe, it, expect } from 'vitest';
+
 import type { ModuleConfig, ModuleSchema } from '../../types';
-import { EcucCodeGenerator } from '../ecuc-generator';
 import {
   getCompilerAbstraction,
   CompilerAbstraction,
@@ -19,6 +19,7 @@ import {
   TaskingCompilerAbstraction,
   GhsCompilerAbstraction,
 } from '../autosar-format';
+import { EcucCodeGenerator } from '../ecuc-generator';
 
 // =========================================================================
 // Test data
@@ -111,10 +112,26 @@ describe('Interrupt function syntax', () => {
 
   it('should produce valid IRQ function declarations for all compilers', () => {
     const cases: Array<{ name: string; abst: CompilerAbstraction; expected: string }> = [
-      { name: 'GCC', abst: new GccCompilerAbstraction(), expected: '__attribute__((interrupt())) void Can_IRQHandler(void)' },
-      { name: 'IAR', abst: new IarCompilerAbstraction(), expected: '__interrupt void Can_IRQHandler(void)' },
-      { name: 'Tasking', abst: new TaskingCompilerAbstraction(), expected: 'ISR(0) void Can_IRQHandler(void)' },
-      { name: 'GHS', abst: new GhsCompilerAbstraction(), expected: '__interrupt void Can_IRQHandler(void)' },
+      {
+        name: 'GCC',
+        abst: new GccCompilerAbstraction(),
+        expected: '__attribute__((interrupt())) void Can_IRQHandler(void)',
+      },
+      {
+        name: 'IAR',
+        abst: new IarCompilerAbstraction(),
+        expected: '__interrupt void Can_IRQHandler(void)',
+      },
+      {
+        name: 'Tasking',
+        abst: new TaskingCompilerAbstraction(),
+        expected: 'ISR(0) void Can_IRQHandler(void)',
+      },
+      {
+        name: 'GHS',
+        abst: new GhsCompilerAbstraction(),
+        expected: '__interrupt void Can_IRQHandler(void)',
+      },
     ];
 
     for (const { name, abst, expected } of cases) {
@@ -242,10 +259,10 @@ describe('MemMap.h section wrapping per compiler', () => {
     const result = new GccCompilerAbstraction().wrapMemMapSection('Can', 'CONST_UNSPECIFIED', body);
     expect(result).toBe(
       '#define CAN_START_SEC_CONST_UNSPECIFIED\n' +
-      '#include "MemMap.h"\n' +
-      'const Can_ConfigSetType Can_ConfigSet = { .moduleId = 80 };\n' +
-      '#define CAN_STOP_SEC_CONST_UNSPECIFIED\n' +
-      '#include "MemMap.h"\n'
+        '#include "MemMap.h"\n' +
+        'const Can_ConfigSetType Can_ConfigSet = { .moduleId = 80 };\n' +
+        '#define CAN_STOP_SEC_CONST_UNSPECIFIED\n' +
+        '#include "MemMap.h"\n'
     );
   });
 
@@ -257,7 +274,11 @@ describe('MemMap.h section wrapping per compiler', () => {
   });
 
   it('Tasking: uses #pragma section farrom markers', () => {
-    const result = new TaskingCompilerAbstraction().wrapMemMapSection('Can', 'CONST_UNSPECIFIED', body);
+    const result = new TaskingCompilerAbstraction().wrapMemMapSection(
+      'Can',
+      'CONST_UNSPECIFIED',
+      body
+    );
     expect(result).toContain('#pragma section farrom "CAN_CONST_UNSPECIFIED"');
     expect(result).toContain('#pragma section farrom restore');
     expect(result).toContain(body);
@@ -288,7 +309,10 @@ describe('EcucCodeGenerator - Compiler option integration', () => {
   });
 
   it('should produce GCC-compatible output with compiler: "gcc"', async () => {
-    const result = await generator.generate(baseConfig, baseSchema, { outputDir: './out', compiler: 'gcc' });
+    const result = await generator.generate(baseConfig, baseSchema, {
+      outputDir: './out',
+      compiler: 'gcc',
+    });
     expect(result.success).toBe(true);
     const sourceContent = result.files[1].content;
     expect(sourceContent).toContain('#include "MemMap.h"');
@@ -296,7 +320,10 @@ describe('EcucCodeGenerator - Compiler option integration', () => {
   });
 
   it('should produce IAR-compatible MemMap section markers with compiler: "iar"', async () => {
-    const result = await generator.generate(baseConfig, baseSchema, { outputDir: './out', compiler: 'iar' });
+    const result = await generator.generate(baseConfig, baseSchema, {
+      outputDir: './out',
+      compiler: 'iar',
+    });
     expect(result.success).toBe(true);
     const sourceContent = result.files[1].content;
     expect(sourceContent).toContain('#pragma section = "CONST_UNSPECIFIED"');
@@ -306,7 +333,10 @@ describe('EcucCodeGenerator - Compiler option integration', () => {
   });
 
   it('should produce Tasking-compatible MemMap section markers with compiler: "tasking"', async () => {
-    const result = await generator.generate(baseConfig, baseSchema, { outputDir: './out', compiler: 'tasking' });
+    const result = await generator.generate(baseConfig, baseSchema, {
+      outputDir: './out',
+      compiler: 'tasking',
+    });
     expect(result.success).toBe(true);
     const sourceContent = result.files[1].content;
     expect(sourceContent).toContain('#pragma section farrom "CAN_CONST_UNSPECIFIED"');
@@ -314,7 +344,10 @@ describe('EcucCodeGenerator - Compiler option integration', () => {
   });
 
   it('should produce GHS-compatible MemMap section markers with compiler: "ghs"', async () => {
-    const result = await generator.generate(baseConfig, baseSchema, { outputDir: './out', compiler: 'ghs' });
+    const result = await generator.generate(baseConfig, baseSchema, {
+      outputDir: './out',
+      compiler: 'ghs',
+    });
     expect(result.success).toBe(true);
     const sourceContent = result.files[1].content;
     expect(sourceContent).toContain('#pragma ghs section text="CAN_CONST_UNSPECIFIED"');
@@ -323,7 +356,10 @@ describe('EcucCodeGenerator - Compiler option integration', () => {
 
   it('should not break existing GCC output when compiler is specified', async () => {
     // Verify GCC output matches the original pattern
-    const resultGcc = await generator.generate(baseConfig, baseSchema, { outputDir: './out', compiler: 'gcc' });
+    const resultGcc = await generator.generate(baseConfig, baseSchema, {
+      outputDir: './out',
+      compiler: 'gcc',
+    });
     const resultDefault = await generator.generate(baseConfig, baseSchema, { outputDir: './out' });
     expect(resultGcc.files.length).toBe(4);
     expect(resultDefault.files.length).toBe(4);
@@ -334,7 +370,10 @@ describe('EcucCodeGenerator - Compiler option integration', () => {
 
   it('should still output all files with any compiler option', async () => {
     for (const compiler of ['gcc', 'iar', 'tasking', 'ghs'] as const) {
-      const result = await generator.generate(baseConfig, baseSchema, { outputDir: './out', compiler });
+      const result = await generator.generate(baseConfig, baseSchema, {
+        outputDir: './out',
+        compiler,
+      });
       expect(result.success).toBe(true);
       expect(result.files.length).toBe(4);
       expect(result.files[0].language).toBe('h');
@@ -350,8 +389,12 @@ describe('EcucCodeGenerator - Compiler option integration', () => {
 describe('Section start/stop pragmas', () => {
   it('GCC: uses MemMap.h #define pattern', () => {
     const gcc = new GccCompilerAbstraction();
-    expect(gcc.sectionStartPragma('Can', 'CODE')).toContain('#define CAN_START_SEC_CODE\n#include "MemMap.h"');
-    expect(gcc.sectionStopPragma('Can', 'CODE')).toContain('#define CAN_STOP_SEC_CODE\n#include "MemMap.h"');
+    expect(gcc.sectionStartPragma('Can', 'CODE')).toContain(
+      '#define CAN_START_SEC_CODE\n#include "MemMap.h"'
+    );
+    expect(gcc.sectionStopPragma('Can', 'CODE')).toContain(
+      '#define CAN_STOP_SEC_CODE\n#include "MemMap.h"'
+    );
   });
 
   it('IAR: uses diagnostic #pragma', () => {
@@ -378,14 +421,24 @@ describe('Section start/stop pragmas', () => {
 // =========================================================================
 
 describe('Register qualifier comparison', () => {
-  const cases: Array<{ name: string; abst: CompilerAbstraction; input: 'in' | 'out' | 'inout'; expected: string }> = [
+  const cases: Array<{
+    name: string;
+    abst: CompilerAbstraction;
+    input: 'in' | 'out' | 'inout';
+    expected: string;
+  }> = [
     { name: 'GCC', abst: new GccCompilerAbstraction(), input: 'in', expected: 'const volatile' },
     { name: 'GCC', abst: new GccCompilerAbstraction(), input: 'out', expected: 'volatile' },
     { name: 'GCC', abst: new GccCompilerAbstraction(), input: 'inout', expected: 'volatile' },
     { name: 'IAR', abst: new IarCompilerAbstraction(), input: 'in', expected: '__I' },
     { name: 'IAR', abst: new IarCompilerAbstraction(), input: 'out', expected: '__O' },
     { name: 'IAR', abst: new IarCompilerAbstraction(), input: 'inout', expected: '__IO' },
-    { name: 'Tasking', abst: new TaskingCompilerAbstraction(), input: 'in', expected: '__far const' },
+    {
+      name: 'Tasking',
+      abst: new TaskingCompilerAbstraction(),
+      input: 'in',
+      expected: '__far const',
+    },
     { name: 'Tasking', abst: new TaskingCompilerAbstraction(), input: 'out', expected: '__far' },
     { name: 'Tasking', abst: new TaskingCompilerAbstraction(), input: 'inout', expected: '__far' },
     { name: 'GHS', abst: new GhsCompilerAbstraction(), input: 'in', expected: 'const volatile' },

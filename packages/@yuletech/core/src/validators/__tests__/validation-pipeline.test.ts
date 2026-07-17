@@ -34,10 +34,7 @@ describe('ValidationPipeline', () => {
         makeConfig('Mcu', { clock_frequency: 160_000_000, core_count: 2 }),
         makeConfig('Can', { baudrate: 500_000, controller_count: 2 }),
       ];
-      const schemas: ModuleSchema[] = [
-        makeSchema('Mcu'),
-        makeSchema('Can'),
-      ];
+      const schemas: ModuleSchema[] = [makeSchema('Mcu'), makeSchema('Can')];
 
       const result = pipeline.validate(configs, schemas);
 
@@ -53,12 +50,8 @@ describe('ValidationPipeline', () => {
   describe('有跨模块错误', () => {
     it('should capture cross-module dependency errors', () => {
       // CanTp requires CanIf and PduR — neither is present
-      const configs: ModuleConfig[] = [
-        makeConfig('CanTp'),
-      ];
-      const schemas: ModuleSchema[] = [
-        makeSchema('CanTp'),
-      ];
+      const configs: ModuleConfig[] = [makeConfig('CanTp')];
+      const schemas: ModuleSchema[] = [makeSchema('CanTp')];
 
       const result = pipeline.validate(configs, schemas);
 
@@ -70,8 +63,8 @@ describe('ValidationPipeline', () => {
       expect(result.crossModuleErrors).toHaveLength(0);
       // Combined
       expect(result.isValid).toBe(false);
-      expect(result.allErrors.filter((e) => e.severity === 'error').length).toBeGreaterThanOrEqual(1);
-      const msgs = result.allErrors.map((e) => e.message).join(' ');
+      expect(result.allErrors.filter(e => e.severity === 'error').length).toBeGreaterThanOrEqual(1);
+      const msgs = result.allErrors.map(e => e.message).join(' ');
       expect(msgs).toMatch(/CanTp/);
     });
 
@@ -122,19 +115,15 @@ describe('ValidationPipeline', () => {
 
       expect(result.isValid).toBe(false);
       expect(result.crossModuleErrors.length).toBeGreaterThan(0);
-      const crossMsg = result.crossModuleErrors.map((e) => e.message).join(' ');
+      const crossMsg = result.crossModuleErrors.map(e => e.message).join(' ');
       expect(crossMsg).toMatch(/500000|最大|min|max/i);
     });
   });
 
   describe('有条件错误', () => {
     it('should capture condition expression evaluation errors', () => {
-      const configs: ModuleConfig[] = [
-        makeConfig('Can', { baudrate: 500_000 }),
-      ];
-      const schemas: ModuleSchema[] = [
-        makeSchema('Can'),
-      ];
+      const configs: ModuleConfig[] = [makeConfig('Can', { baudrate: 500_000 })];
+      const schemas: ModuleSchema[] = [makeSchema('Can')];
 
       // Malformed condition expression that will cause a parse error
       const conditions: Record<string, string> = {
@@ -155,10 +144,7 @@ describe('ValidationPipeline', () => {
         makeConfig('Can', { baudrate: 500_000 }),
         makeConfig('CanIf'),
       ];
-      const schemas: ModuleSchema[] = [
-        makeSchema('Can'),
-        makeSchema('CanIf'),
-      ];
+      const schemas: ModuleSchema[] = [makeSchema('Can'), makeSchema('CanIf')];
 
       // Valid condition
       const conditions: Record<string, string> = {
@@ -174,17 +160,13 @@ describe('ValidationPipeline', () => {
 
   describe('去重', () => {
     it('should deduplicate identical errors', () => {
-      const configs: ModuleConfig[] = [
-        makeConfig('CanTp'),
-      ];
-      const schemas: ModuleSchema[] = [
-        makeSchema('CanTp'),
-      ];
+      const configs: ModuleConfig[] = [makeConfig('CanTp')];
+      const schemas: ModuleSchema[] = [makeSchema('CanTp')];
 
       const result = pipeline.validate(configs, schemas);
 
       // allErrors should be deduplicated
-      const allKeys = result.allErrors.map((e) => `${e.path}|${e.message}`);
+      const allKeys = result.allErrors.map(e => `${e.path}|${e.message}`);
       const uniqueKeys = new Set(allKeys);
       expect(allKeys.length).toBe(uniqueKeys.size);
     });
@@ -195,9 +177,7 @@ describe('ValidationPipeline', () => {
       const configs: ModuleConfig[] = [
         makeConfig('Mcu', { clock_frequency: 160_000_000, core_count: 1 }),
       ];
-      const schemas: ModuleSchema[] = [
-        makeSchema('Mcu'),
-      ];
+      const schemas: ModuleSchema[] = [makeSchema('Mcu')];
 
       const result = validateAll(configs, schemas);
       expect(result.isValid).toBe(true);
@@ -205,12 +185,8 @@ describe('ValidationPipeline', () => {
     });
 
     it('should accept optional conditions parameter', () => {
-      const configs: ModuleConfig[] = [
-        makeConfig('Can', { baudrate: 500_000 }),
-      ];
-      const schemas: ModuleSchema[] = [
-        makeSchema('Can'),
-      ];
+      const configs: ModuleConfig[] = [makeConfig('Can', { baudrate: 500_000 })];
+      const schemas: ModuleSchema[] = [makeSchema('Can')];
 
       const result = validateAll(configs, schemas, { enabledWhen: 'Can.baudrate > 0' });
       expect(result.isValid).toBe(true);

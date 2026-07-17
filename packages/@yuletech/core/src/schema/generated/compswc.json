@@ -33,7 +33,16 @@
         "type": "object",
         "properties": {
           "PortInterfaceName": { "type": "string" },
-          "PortInterfaceKind": { "type": "string", "enum": ["SenderReceiverInterface", "ClientServerInterface", "ModeSwitchInterface", "ParameterInterface", "NvDataInterface"] },
+          "PortInterfaceKind": {
+            "type": "string",
+            "enum": [
+              "SenderReceiverInterface",
+              "ClientServerInterface",
+              "ModeSwitchInterface",
+              "ParameterInterface",
+              "NvDataInterface"
+            ]
+          },
           "PortInterfaceDescription": { "type": "string" }
         }
       }

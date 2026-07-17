@@ -96,7 +96,7 @@ export class DependencyGraph {
       if (++depth > DependencyGraph.MAX_DEPTH) {
         depth = 0;
         throw new Error(
-          `MAX_DEPTH (${DependencyGraph.MAX_DEPTH}) exceeded during cycle detection. Possible circular dependency near: ${key}`,
+          `MAX_DEPTH (${DependencyGraph.MAX_DEPTH}) exceeded during cycle detection. Possible circular dependency near: ${key}`
         );
       }
       if (recursionStack.has(key)) {

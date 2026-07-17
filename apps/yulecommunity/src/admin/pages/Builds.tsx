@@ -16,12 +16,67 @@ interface Build {
 }
 
 const mockBuilds: Build[] = [
-  { id: '1', name: 'STM32-GCC-Build', platform: 'STM32', version: 'v2.1.0', status: 'success', duration: '2m 34s', createdAt: '2025-01-28 15:30', author: 'zhangsan' },
-  { id: '2', name: 'ESP32-IDF-Release', platform: 'ESP32', version: 'v1.5.0', status: 'running', progress: 65, duration: '4m 12s', createdAt: '2025-01-28 15:15', author: 'lisi' },
-  { id: '3', name: 'Arduino-Sensor-Lib', platform: 'Arduino', version: 'v0.8.2', status: 'failed', duration: '1m 45s', createdAt: '2025-01-28 14:45', author: 'wangwu' },
-  { id: '4', name: 'Raspberry-Pi-Driver', platform: 'RaspberryPi', version: 'v3.0.1', status: 'success', duration: '8m 22s', createdAt: '2025-01-28 14:00', author: 'zhaoliu' },
-  { id: '5', name: 'PIC18F-Bootloader', platform: 'PIC', version: 'v1.0.0', status: 'pending', duration: '-', createdAt: '2025-01-28 13:30', author: 'qianqi' },
-  { id: '6', name: 'AVR-Toolchain', platform: 'AVR', version: 'v2.0.0', status: 'cancelled', duration: '0m 30s', createdAt: '2025-01-28 13:00', author: 'sunba' },
+  {
+    id: '1',
+    name: 'STM32-GCC-Build',
+    platform: 'STM32',
+    version: 'v2.1.0',
+    status: 'success',
+    duration: '2m 34s',
+    createdAt: '2025-01-28 15:30',
+    author: 'zhangsan',
+  },
+  {
+    id: '2',
+    name: 'ESP32-IDF-Release',
+    platform: 'ESP32',
+    version: 'v1.5.0',
+    status: 'running',
+    progress: 65,
+    duration: '4m 12s',
+    createdAt: '2025-01-28 15:15',
+    author: 'lisi',
+  },
+  {
+    id: '3',
+    name: 'Arduino-Sensor-Lib',
+    platform: 'Arduino',
+    version: 'v0.8.2',
+    status: 'failed',
+    duration: '1m 45s',
+    createdAt: '2025-01-28 14:45',
+    author: 'wangwu',
+  },
+  {
+    id: '4',
+    name: 'Raspberry-Pi-Driver',
+    platform: 'RaspberryPi',
+    version: 'v3.0.1',
+    status: 'success',
+    duration: '8m 22s',
+    createdAt: '2025-01-28 14:00',
+    author: 'zhaoliu',
+  },
+  {
+    id: '5',
+    name: 'PIC18F-Bootloader',
+    platform: 'PIC',
+    version: 'v1.0.0',
+    status: 'pending',
+    duration: '-',
+    createdAt: '2025-01-28 13:30',
+    author: 'qianqi',
+  },
+  {
+    id: '6',
+    name: 'AVR-Toolchain',
+    platform: 'AVR',
+    version: 'v2.0.0',
+    status: 'cancelled',
+    duration: '0m 30s',
+    createdAt: '2025-01-28 13:00',
+    author: 'sunba',
+  },
 ];
 
 const STATUS_COLORS = {
@@ -47,7 +102,7 @@ export const Builds: React.FC = () => {
   const [platformFilter, setPlatformFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
-  const filteredBuilds = mockBuilds.filter((build) => {
+  const filteredBuilds = mockBuilds.filter(build => {
     const matchesSearch =
       build.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       build.author.toLowerCase().includes(searchTerm.toLowerCase());
@@ -70,12 +125,8 @@ export const Builds: React.FC = () => {
               STATUS_COLORS[record.status]
             }`}
           >
-            {record.status === 'running' && (
-              <RefreshCw className="h-3 w-3 animate-spin" />
-            )}
-            {record.status === 'pending' && (
-              <Clock className="h-3 w-3" />
-            )}
+            {record.status === 'running' && <RefreshCw className="h-3 w-3 animate-spin" />}
+            {record.status === 'pending' && <Clock className="h-3 w-3" />}
             {STATUS_LABELS[record.status]}
           </span>
           {record.status === 'running' && record.progress && (
@@ -130,7 +181,7 @@ export const Builds: React.FC = () => {
             type="text"
             placeholder="搜索构建名称或创建者..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
             className="h-10 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 pl-9 pr-4 text-sm text-slate-700 dark:text-slate-200 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
         </div>
@@ -139,7 +190,7 @@ export const Builds: React.FC = () => {
           <Filter className="h-4 w-4 text-slate-400" />
           <select
             value={platformFilter}
-            onChange={(e) => setPlatformFilter(e.target.value)}
+            onChange={e => setPlatformFilter(e.target.value)}
             className="h-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-sm text-slate-700 dark:text-slate-200 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           >
             <option value="all">所有平台</option>
@@ -153,7 +204,7 @@ export const Builds: React.FC = () => {
 
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={e => setStatusFilter(e.target.value)}
             className="h-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-sm text-slate-700 dark:text-slate-200 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           >
             <option value="all">所有状态</option>
@@ -182,9 +233,9 @@ export const Builds: React.FC = () => {
         rowSelection={{
           selectedRowKeys: selectedKeys,
           onChange: setSelectedKeys,
-          rowKey: (record) => record.id,
+          rowKey: record => record.id,
         }}
-        onRowClick={(record) => navigate(`/admin/builds/${record.id}`)}
+        onRowClick={record => navigate(`/admin/builds/${record.id}`)}
         pagination={{
           current: 1,
           pageSize: 10,

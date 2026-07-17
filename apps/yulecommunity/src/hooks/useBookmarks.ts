@@ -34,7 +34,10 @@ type SyncStatus = 'idle' | 'syncing' | 'error';
  */
 export function useBookmarks() {
   const { isAuthenticated, token } = useAuth();
-  const [localBookmarks, setLocalBookmarks] = useLocalStorage<BookmarkedArticle[]>(BOOKMARKS_KEY, []);
+  const [localBookmarks, setLocalBookmarks] = useLocalStorage<BookmarkedArticle[]>(
+    BOOKMARKS_KEY,
+    []
+  );
   const [cloudBookmarks, setCloudBookmarks] = useState<BookmarkItem[]>([]);
   const [syncStatus, setSyncStatus] = useState<SyncStatus>('idle');
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +61,7 @@ export function useBookmarks() {
         const response = await userApi.getBookmarks({ limit: 100 });
         const remoteBookmarks = response.data;
 
-          // 合并本地收藏到云端
+        // 合并本地收藏到云端
         if (localBookmarks.length > 0) {
           const remoteIds = new Set(remoteBookmarks.map(b => b.content.contentId));
           const localToSync = localBookmarks.filter(b => !remoteIds.has(b.slug));
@@ -133,81 +136,93 @@ export function useBookmarks() {
   /**
    * 添加收藏
    */
-  const addBookmark = useCallback(async (article: BlogArticle) => {
-    // 先更新本地
-    setLocalBookmarks(prev => {
-      if (prev.some(b => b.id === article.id)) return prev;
-      const newBookmark: BookmarkedArticle = {
-        id: article.id,
-        title: article.title,
-        slug: article.slug,
-        description: article.description,
-        category: article.category,
-        author: {
-          id: article.author.id,
-          name: article.author.name,
-        },
-        bookmarkedAt: new Date().toISOString(),
-      };
-      return [newBookmark, ...prev].slice(0, MAX_BOOKMARKS);
-    });
+  const addBookmark = useCallback(
+    async (article: BlogArticle) => {
+      // 先更新本地
+      setLocalBookmarks(prev => {
+        if (prev.some(b => b.id === article.id)) return prev;
+        const newBookmark: BookmarkedArticle = {
+          id: article.id,
+          title: article.title,
+          slug: article.slug,
+          description: article.description,
+          category: article.category,
+          author: {
+            id: article.author.id,
+            name: article.author.name,
+          },
+          bookmarkedAt: new Date().toISOString(),
+        };
+        return [newBookmark, ...prev].slice(0, MAX_BOOKMARKS);
+      });
 
-    // 如果已登录，同步到云端
-    if (isAuthenticated) {
-      try {
-        const result = await userApi.addBookmark(article);
-        if (result.success) {
-          setCloudBookmarks(prev => [result.bookmark, ...prev]);
+      // 如果已登录，同步到云端
+      if (isAuthenticated) {
+        try {
+          const result = await userApi.addBookmark(article);
+          if (result.success) {
+            setCloudBookmarks(prev => [result.bookmark, ...prev]);
+          }
+        } catch (err) {
+          console.error('同步收藏到云端失败:', err);
         }
-      } catch (err) {
-        console.error('同步收藏到云端失败:', err);
       }
-    }
-  }, [isAuthenticated, setLocalBookmarks]);
+    },
+    [isAuthenticated, setLocalBookmarks]
+  );
 
   /**
    * 移除收藏
    */
-  const removeBookmark = useCallback(async (articleId: string) => {
-    // 更新本地
-    setLocalBookmarks(prev => prev.filter(b => b.id !== articleId));
+  const removeBookmark = useCallback(
+    async (articleId: string) => {
+      // 更新本地
+      setLocalBookmarks(prev => prev.filter(b => b.id !== articleId));
 
-    // 如果已登录，同步到云端
-    if (isAuthenticated) {
-      try {
-        // 找到对应的云端收藏
-        const cloudItem = cloudBookmarks.find(b => b.content.contentId === articleId);
-        if (cloudItem) {
-          await userApi.removeBookmark(articleId);
-          setCloudBookmarks(prev => prev.filter(b => b.content.contentId !== articleId));
+      // 如果已登录，同步到云端
+      if (isAuthenticated) {
+        try {
+          // 找到对应的云端收藏
+          const cloudItem = cloudBookmarks.find(b => b.content.contentId === articleId);
+          if (cloudItem) {
+            await userApi.removeBookmark(articleId);
+            setCloudBookmarks(prev => prev.filter(b => b.content.contentId !== articleId));
+          }
+        } catch (err) {
+          console.error('从云端移除收藏失败:', err);
         }
-      } catch (err) {
-        console.error('从云端移除收藏失败:', err);
       }
-    }
-  }, [isAuthenticated, cloudBookmarks, setLocalBookmarks]);
+    },
+    [isAuthenticated, cloudBookmarks, setLocalBookmarks]
+  );
 
   /**
    * 切换收藏状态
    */
-  const toggleBookmark = useCallback(async (article: BlogArticle): Promise<boolean> => {
-    const isCurrentlyBookmarked = bookmarks.some(b => b.id === article.id);
+  const toggleBookmark = useCallback(
+    async (article: BlogArticle): Promise<boolean> => {
+      const isCurrentlyBookmarked = bookmarks.some(b => b.id === article.id);
 
-    if (isCurrentlyBookmarked) {
-      await removeBookmark(article.id);
-      return false;
-    } else {
-      await addBookmark(article);
-      return true;
-    }
-  }, [bookmarks, addBookmark, removeBookmark]);
+      if (isCurrentlyBookmarked) {
+        await removeBookmark(article.id);
+        return false;
+      } else {
+        await addBookmark(article);
+        return true;
+      }
+    },
+    [bookmarks, addBookmark, removeBookmark]
+  );
 
   /**
    * 检查是否已收藏
    */
-  const isBookmarked = useCallback((articleId: string) => {
-    return bookmarks.some(b => b.id === articleId);
-  }, [bookmarks]);
+  const isBookmarked = useCallback(
+    (articleId: string) => {
+      return bookmarks.some(b => b.id === articleId);
+    },
+    [bookmarks]
+  );
 
   /**
    * 清空所有收藏

@@ -33,7 +33,10 @@ describe('ReadingProgress', () => {
     // 模拟窗口尺寸和滚动
     Object.defineProperty(window, 'innerHeight', { value: 800, writable: true });
     Object.defineProperty(window, 'scrollY', { value: 0, writable: true });
-    Object.defineProperty(document.documentElement, 'scrollHeight', { value: 3000, writable: true });
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      value: 3000,
+      writable: true,
+    });
   });
 
   afterEach(() => {

@@ -304,11 +304,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "ActivateTask",
-    "ActivateTaskAsyn",
-    "Adc0_Isr_Bat"
-  ],
+  "required": ["ActivateTask", "ActivateTaskAsyn", "Adc0_Isr_Bat"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

@@ -35,6 +35,7 @@ git push -u origin main
 ```
 
 **GitHub Secrets 配置:**
+
 ```
 Settings > Secrets and variables > Actions > New repository secret
 - VSCE_PAT: 用于 VS Code Marketplace 发布的 Personal Access Token
@@ -94,15 +95,16 @@ pnpm test:e2e:report
 
 ### P5-T1: yuleCommunity 集成进度
 
-| 子任务 | 状态 | 说明 |
-|--------|------|------|
-| yuleCommunity-web 路由 | ✅ 已存在 | /yuleasr, /yuleasr/editor/:id |
-| YuleASRPage | ✅ 已存在 | 配置列表页面 |
-| YuleASREditorPage | ✅ 已存在 | 配置编辑页面 |
-| yuleCommunity-cloud API | ⏳ 待完善 | 需添加 /api/yuleasr/* 接口 |
-| 用户会话同步 | ⏳ 待完善 | SSO 和配置关联 |
+| 子任务                  | 状态      | 说明                          |
+| ----------------------- | --------- | ----------------------------- |
+| yuleCommunity-web 路由  | ✅ 已存在 | /yuleasr, /yuleasr/editor/:id |
+| YuleASRPage             | ✅ 已存在 | 配置列表页面                  |
+| YuleASREditorPage       | ✅ 已存在 | 配置编辑页面                  |
+| yuleCommunity-cloud API | ⏳ 待完善 | 需添加 /api/yuleasr/\* 接口   |
+| 用户会话同步            | ⏳ 待完善 | SSO 和配置关联                |
 
 **API 接口需求:**
+
 ```typescript
 // yuleCommunity-cloud 需添加的接口
 POST   /api/yuleasr/configs          // 创建配置
@@ -182,12 +184,12 @@ POST   /api/yuleasr/configs/:id/build // 触发构建
 
 ### 监控指标
 
-| 指标 | 目标值 | 监控方式 |
-|------|--------|---------|
-| 页面加载时间 | < 3s | Lighthouse CI |
-| 测试覆盖率 | > 80% | Codecov |
-| 构建成功率 | > 95% | GitHub Actions |
-| 用户活跃度 | - | Google Analytics |
+| 指标         | 目标值 | 监控方式         |
+| ------------ | ------ | ---------------- |
+| 页面加载时间 | < 3s   | Lighthouse CI    |
+| 测试覆盖率   | > 80%  | Codecov          |
+| 构建成功率   | > 95%  | GitHub Actions   |
+| 用户活跃度   | -      | Google Analytics |
 
 ---
 
@@ -210,16 +212,21 @@ POST   /api/yuleasr/configs/:id/build // 触发构建
 ## 💡 常见问题解答
 
 ### Q: 配置页面打不开怎么办？
+
 A: 检查 yuleasr-editor-core 是否已构建：`pnpm run build --filter=yuleasr-editor-core`
 
 ### Q: VS Code 扩展调试失败？
+
 A: 确保已运行 `pnpm install` 并重启 VS Code 窗口
 
 ### Q: E2E 测试失败？
+
 A: 运行 `npx playwright install` 安装浏览器驱动
 
 ### Q: 如何添加新的 AutoSAR 模块？
-A: 编辑 `scripts/sync-schema.ts` 添加模块定义，然后运行 `npx tsx scripts/sync-schema.ts`
+
+A: 编辑 `scripts/sync-schema.ts` 添加模块定义，然后运行
+`npx tsx scripts/sync-schema.ts`
 
 ---
 
@@ -231,4 +238,4 @@ A: 编辑 `scripts/sync-schema.ts` 添加模块定义，然后运行 `npx tsx sc
 
 ---
 
-*本文档最后更新: 2025-05-11*
+_本文档最后更新: 2025-05-11_

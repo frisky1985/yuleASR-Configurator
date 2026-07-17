@@ -30,13 +30,13 @@ export interface SEOInfo {
 }
 
 /** 博客分类 */
-export type BlogCategory = 
-  | 'MCAL' 
-  | 'ECUAL' 
-  | 'Service' 
-  | '工具链' 
-  | '功能安全' 
-  | '架构设计' 
+export type BlogCategory =
+  | 'MCAL'
+  | 'ECUAL'
+  | 'Service'
+  | '工具链'
+  | '功能安全'
+  | '架构设计'
   | '全部';
 
 /** 博客文章 */
@@ -157,25 +157,25 @@ export interface PaginatedResult<T> {
 export interface IArticleService {
   /** 获取文章列表 */
   getArticles(params: ArticleQueryParams): Promise<PaginatedResult<BlogArticle>>;
-  
+
   /** 获取单篇文章 */
   getArticleById(id: string): Promise<BlogArticle | null>;
-  
+
   /** 根据 slug 获取文章 */
   getArticleBySlug(slug: string): Promise<BlogArticle | null>;
-  
+
   /** 获取热门文章 */
   getHotArticles(limit?: number): Promise<BlogArticle[]>;
-  
+
   /** 获取相关文章 */
   getRelatedArticles(articleId: string, limit?: number): Promise<BlogArticle[]>;
-  
+
   /** 搜索文章 */
   searchArticles(query: string): Promise<BlogArticle[]>;
-  
+
   /** 增加阅读量 */
   incrementViewCount(articleId: string): Promise<void>;
-  
+
   /** 点赞文章 */
   toggleLike(articleId: string): Promise<boolean>;
 }
@@ -184,13 +184,13 @@ export interface IArticleService {
 export interface ICommentService {
   /** 获取文章评论 */
   getComments(articleId: string): Promise<BlogComment[]>;
-  
+
   /** 添加评论 */
   addComment(articleId: string, content: string, author: CommentAuthor): Promise<BlogComment>;
-  
+
   /** 删除评论 */
   deleteComment(commentId: string): Promise<boolean>;
-  
+
   /** 点赞评论 */
   toggleCommentLike(commentId: string, userId: string): Promise<boolean>;
 }
@@ -199,10 +199,10 @@ export interface ICommentService {
 export interface ITagService {
   /** 获取所有标签 */
   getAllTags(): Promise<BlogTag[]>;
-  
+
   /** 获取热门标签 */
   getHotTags(limit?: number): Promise<BlogTag[]>;
-  
+
   /** 获取标签下的文章 */
   getArticlesByTag(tagName: string): Promise<BlogArticle[]>;
 }

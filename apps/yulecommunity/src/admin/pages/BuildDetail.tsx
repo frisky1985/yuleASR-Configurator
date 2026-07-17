@@ -74,31 +74,131 @@ const mockBuild: BuildDetail = {
 
 const mockLogs: LogEntry[] = [
   { timestamp: '2025-01-28 15:30:05', level: 'info', message: 'Build started', step: 'init' },
-  { timestamp: '2025-01-28 15:30:06', level: 'info', message: 'Cloning repository...', step: 'checkout' },
-  { timestamp: '2025-01-28 15:30:08', level: 'info', message: 'Repository cloned successfully', step: 'checkout' },
-  { timestamp: '2025-01-28 15:30:09', level: 'info', message: 'Checking out branch: main', step: 'checkout' },
-  { timestamp: '2025-01-28 15:30:10', level: 'info', message: 'Commit: a1b2c3d - Update CAN driver configuration', step: 'checkout' },
-  { timestamp: '2025-01-28 15:30:11', level: 'info', message: 'Installing dependencies...', step: 'deps' },
-  { timestamp: '2025-01-28 15:30:15', level: 'info', message: 'Dependencies installed', step: 'deps' },
-  { timestamp: '2025-01-28 15:30:16', level: 'info', message: 'Running build script...', step: 'build' },
-  { timestamp: '2025-01-28 15:30:20', level: 'info', message: 'Compiling main.c...', step: 'build' },
-  { timestamp: '2025-01-28 15:30:25', level: 'info', message: 'Compiling can_driver.c...', step: 'build' },
-  { timestamp: '2025-01-28 15:30:30', level: 'info', message: 'Compiling uart_driver.c...', step: 'build' },
-  { timestamp: '2025-01-28 15:30:35', level: 'warning', message: 'uart_driver.c:45: warning: unused variable', step: 'build' },
-  { timestamp: '2025-01-28 15:30:40', level: 'info', message: 'Compiling gpio_driver.c...', step: 'build' },
+  {
+    timestamp: '2025-01-28 15:30:06',
+    level: 'info',
+    message: 'Cloning repository...',
+    step: 'checkout',
+  },
+  {
+    timestamp: '2025-01-28 15:30:08',
+    level: 'info',
+    message: 'Repository cloned successfully',
+    step: 'checkout',
+  },
+  {
+    timestamp: '2025-01-28 15:30:09',
+    level: 'info',
+    message: 'Checking out branch: main',
+    step: 'checkout',
+  },
+  {
+    timestamp: '2025-01-28 15:30:10',
+    level: 'info',
+    message: 'Commit: a1b2c3d - Update CAN driver configuration',
+    step: 'checkout',
+  },
+  {
+    timestamp: '2025-01-28 15:30:11',
+    level: 'info',
+    message: 'Installing dependencies...',
+    step: 'deps',
+  },
+  {
+    timestamp: '2025-01-28 15:30:15',
+    level: 'info',
+    message: 'Dependencies installed',
+    step: 'deps',
+  },
+  {
+    timestamp: '2025-01-28 15:30:16',
+    level: 'info',
+    message: 'Running build script...',
+    step: 'build',
+  },
+  {
+    timestamp: '2025-01-28 15:30:20',
+    level: 'info',
+    message: 'Compiling main.c...',
+    step: 'build',
+  },
+  {
+    timestamp: '2025-01-28 15:30:25',
+    level: 'info',
+    message: 'Compiling can_driver.c...',
+    step: 'build',
+  },
+  {
+    timestamp: '2025-01-28 15:30:30',
+    level: 'info',
+    message: 'Compiling uart_driver.c...',
+    step: 'build',
+  },
+  {
+    timestamp: '2025-01-28 15:30:35',
+    level: 'warning',
+    message: 'uart_driver.c:45: warning: unused variable',
+    step: 'build',
+  },
+  {
+    timestamp: '2025-01-28 15:30:40',
+    level: 'info',
+    message: 'Compiling gpio_driver.c...',
+    step: 'build',
+  },
   { timestamp: '2025-01-28 15:30:50', level: 'info', message: 'Linking...', step: 'link' },
-  { timestamp: '2025-01-28 15:31:00', level: 'info', message: 'Generating binary output...', step: 'post' },
-  { timestamp: '2025-01-28 15:31:05', level: 'info', message: 'Generating hex file...', step: 'post' },
-  { timestamp: '2025-01-28 15:31:10', level: 'info', message: 'Build completed successfully', step: 'post' },
-  { timestamp: '2025-01-28 15:31:12', level: 'info', message: 'Artifacts uploaded', step: 'upload' },
+  {
+    timestamp: '2025-01-28 15:31:00',
+    level: 'info',
+    message: 'Generating binary output...',
+    step: 'post',
+  },
+  {
+    timestamp: '2025-01-28 15:31:05',
+    level: 'info',
+    message: 'Generating hex file...',
+    step: 'post',
+  },
+  {
+    timestamp: '2025-01-28 15:31:10',
+    level: 'info',
+    message: 'Build completed successfully',
+    step: 'post',
+  },
+  {
+    timestamp: '2025-01-28 15:31:12',
+    level: 'info',
+    message: 'Artifacts uploaded',
+    step: 'upload',
+  },
 ];
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; icon: any }> = {
-  pending: { label: '等待中', color: 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900/20 dark:text-yellow-400', icon: Clock },
-  running: { label: '构建中', color: 'text-blue-600 bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400', icon: Loader2 },
-  success: { label: '成功', color: 'text-green-600 bg-green-100 dark:bg-green-900/20 dark:text-green-400', icon: CheckCircle },
-  failed: { label: '失败', color: 'text-red-600 bg-red-100 dark:bg-red-900/20 dark:text-red-400', icon: XCircle },
-  cancelled: { label: '已取消', color: 'text-gray-600 bg-gray-100 dark:bg-gray-800 dark:text-gray-400', icon: XCircle },
+  pending: {
+    label: '等待中',
+    color: 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900/20 dark:text-yellow-400',
+    icon: Clock,
+  },
+  running: {
+    label: '构建中',
+    color: 'text-blue-600 bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400',
+    icon: Loader2,
+  },
+  success: {
+    label: '成功',
+    color: 'text-green-600 bg-green-100 dark:bg-green-900/20 dark:text-green-400',
+    icon: CheckCircle,
+  },
+  failed: {
+    label: '失败',
+    color: 'text-red-600 bg-red-100 dark:bg-red-900/20 dark:text-red-400',
+    icon: XCircle,
+  },
+  cancelled: {
+    label: '已取消',
+    color: 'text-gray-600 bg-gray-100 dark:bg-gray-800 dark:text-gray-400',
+    icon: XCircle,
+  },
 };
 
 const LOG_COLORS: Record<string, string> = {
@@ -115,7 +215,9 @@ export const BuildDetail: React.FC = () => {
   const [logs, setLogs] = useState<LogEntry[]>(mockLogs);
   const [isLoading, setIsLoading] = useState(false);
   const [autoScroll, setAutoScroll] = useState(true);
-  const [expandedSteps, setExpandedSteps] = useState<Set<string>>(new Set(['init', 'checkout', 'deps', 'build', 'link', 'post', 'upload']));
+  const [expandedSteps, setExpandedSteps] = useState<Set<string>>(
+    new Set(['init', 'checkout', 'deps', 'build', 'link', 'post', 'upload'])
+  );
   const [filter, setFilter] = useState<'all' | 'info' | 'warning' | 'error'>('all');
   const logEndRef = useRef<HTMLDivElement>(null);
   const logContainerRef = useRef<HTMLDivElement>(null);
@@ -149,7 +251,12 @@ export const BuildDetail: React.FC = () => {
     if (!window.confirm('确定要重新构建吗？')) return;
     setIsLoading(true);
     await new Promise(resolve => setTimeout(resolve, 500));
-    setBuild({ ...build, status: 'running', startedAt: new Date().toISOString(), completedAt: undefined });
+    setBuild({
+      ...build,
+      status: 'running',
+      startedAt: new Date().toISOString(),
+      completedAt: undefined,
+    });
     setIsLoading(false);
   };
 
@@ -183,12 +290,15 @@ export const BuildDetail: React.FC = () => {
     return log.level === filter || log.level === 'error';
   });
 
-  const groupedLogs = filteredLogs.reduce((acc, log) => {
-    const step = log.step || 'other';
-    if (!acc[step]) acc[step] = [];
-    acc[step].push(log);
-    return acc;
-  }, {} as Record<string, LogEntry[]>);
+  const groupedLogs = filteredLogs.reduce(
+    (acc, log) => {
+      const step = log.step || 'other';
+      if (!acc[step]) acc[step] = [];
+      acc[step].push(log);
+      return acc;
+    },
+    {} as Record<string, LogEntry[]>
+  );
 
   const StatusIcon = STATUS_CONFIG[build.status]?.icon || Clock;
   const statusConfig = STATUS_CONFIG[build.status];
@@ -216,8 +326,12 @@ export const BuildDetail: React.FC = () => {
           <div>
             <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{build.name}</h1>
             <div className="flex items-center gap-4 mt-1">
-              <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${statusConfig.color}`}>
-                <StatusIcon className={`h-3.5 w-3.5 ${build.status === 'running' ? 'animate-spin' : ''}`} />
+              <span
+                className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${statusConfig.color}`}
+              >
+                <StatusIcon
+                  className={`h-3.5 w-3.5 ${build.status === 'running' ? 'animate-spin' : ''}`}
+                />
                 {statusConfig.label}
               </span>
               <span className="text-sm text-slate-500 dark:text-slate-400">ID: {build.id}</span>
@@ -264,7 +378,9 @@ export const BuildDetail: React.FC = () => {
             </div>
             <div>
               <p className="text-sm text-slate-500 dark:text-slate-400">构建时长</p>
-              <p className="text-lg font-semibold text-slate-900 dark:text-white">{formatDuration()}</p>
+              <p className="text-lg font-semibold text-slate-900 dark:text-white">
+                {formatDuration()}
+              </p>
             </div>
           </div>
         </div>
@@ -275,7 +391,9 @@ export const BuildDetail: React.FC = () => {
             </div>
             <div>
               <p className="text-sm text-slate-500 dark:text-slate-400">创建者</p>
-              <p className="text-lg font-semibold text-slate-900 dark:text-white">{build.userName}</p>
+              <p className="text-lg font-semibold text-slate-900 dark:text-white">
+                {build.userName}
+              </p>
             </div>
           </div>
         </div>
@@ -297,7 +415,9 @@ export const BuildDetail: React.FC = () => {
             </div>
             <div>
               <p className="text-sm text-slate-500 dark:text-slate-400">Commit</p>
-              <p className="text-lg font-semibold text-slate-900 dark:text-white font-mono">{build.commit}</p>
+              <p className="text-lg font-semibold text-slate-900 dark:text-white font-mono">
+                {build.commit}
+              </p>
             </div>
           </div>
         </div>
@@ -311,15 +431,21 @@ export const BuildDetail: React.FC = () => {
           <div className="space-y-4">
             <div className="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
               <span className="text-sm text-slate-500 dark:text-slate-400">目标平台</span>
-              <span className="text-sm font-medium text-slate-900 dark:text-white">{build.platform}</span>
+              <span className="text-sm font-medium text-slate-900 dark:text-white">
+                {build.platform}
+              </span>
             </div>
             <div className="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
               <span className="text-sm text-slate-500 dark:text-slate-400">编译器</span>
-              <span className="text-sm font-medium text-slate-900 dark:text-white">{build.compiler}</span>
+              <span className="text-sm font-medium text-slate-900 dark:text-white">
+                {build.compiler}
+              </span>
             </div>
             <div className="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
               <span className="text-sm text-slate-500 dark:text-slate-400">优化级别</span>
-              <span className="text-sm font-medium text-slate-900 dark:text-white">{build.optimization}</span>
+              <span className="text-sm font-medium text-slate-900 dark:text-white">
+                {build.optimization}
+              </span>
             </div>
             <div className="flex justify-between py-2 border-b border-slate-100 dark:border-slate-800">
               <span className="text-sm text-slate-500 dark:text-slate-400">创建时间</span>
@@ -340,7 +466,7 @@ export const BuildDetail: React.FC = () => {
         <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-6">
           <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">构建产物</h3>
           <div className="space-y-2">
-            {build.artifacts.map((artifact) => (
+            {build.artifacts.map(artifact => (
               <div
                 key={artifact.id}
                 className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800 rounded-lg"
@@ -348,7 +474,9 @@ export const BuildDetail: React.FC = () => {
                 <div className="flex items-center gap-3">
                   <FileCode className="h-5 w-5 text-slate-400" />
                   <div>
-                    <p className="text-sm font-medium text-slate-900 dark:text-white">{artifact.name}</p>
+                    <p className="text-sm font-medium text-slate-900 dark:text-white">
+                      {artifact.name}
+                    </p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">{artifact.size}</p>
                   </div>
                 </div>
@@ -374,7 +502,7 @@ export const BuildDetail: React.FC = () => {
           <div className="flex items-center gap-2">
             <select
               value={filter}
-              onChange={(e) => setFilter(e.target.value as any)}
+              onChange={e => setFilter(e.target.value as any)}
               className="bg-slate-800 text-slate-300 text-sm rounded px-2 py-1 border border-slate-700"
             >
               <option value="all">全部</option>
@@ -394,7 +522,14 @@ export const BuildDetail: React.FC = () => {
             </button>
             <button
               onClick={() => {
-                const blob = new Blob([logs.map(l => `[${l.timestamp}] [${l.level.toUpperCase()}] ${l.message}`).join('\n')], { type: 'text/plain' });
+                const blob = new Blob(
+                  [
+                    logs
+                      .map(l => `[${l.timestamp}] [${l.level.toUpperCase()}] ${l.message}`)
+                      .join('\n'),
+                  ],
+                  { type: 'text/plain' }
+                );
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;

@@ -8,14 +8,16 @@
  * Replaces the old per-module hardcoded generator functions.
  */
 
-import type { ConfigModule } from '@/types/config';
 import { EcucCodeGenerator } from '@yuletech/core/generator';
+
 import { uiModuleToGenerator, uiModulesToGenerator } from './ui-adapter';
 
+import type { ConfigModule } from '@/types/config';
+
 export interface GeneratedFile {
-  filename: string
-  content: string
-  language: 'c' | 'h'
+  filename: string;
+  content: string;
+  language: 'c' | 'h';
 }
 
 const generator = new EcucCodeGenerator();

@@ -87,10 +87,13 @@ export function RelatedArticles({
   }, [currentArticle, articles, maxCount]);
 
   // 点击跳转
-  const handleClick = useCallback((slug: string) => {
-    navigate(`#/blog/${slug}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [navigate]);
+  const handleClick = useCallback(
+    (slug: string) => {
+      navigate(`#/blog/${slug}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    [navigate]
+  );
 
   // 如果没有相关文章，不显示
   if (relatedArticles.length === 0) {
@@ -116,7 +119,7 @@ export function RelatedArticles({
             className="group cursor-pointer p-4 bg-card border rounded-xl hover:border-primary/50 hover:shadow-md transition-all duration-200"
             role="link"
             tabIndex={0}
-            onKeyDown={(e) => e.key === 'Enter' && handleClick(article.slug)}
+            onKeyDown={e => e.key === 'Enter' && handleClick(article.slug)}
           >
             {/* 分类和标签 */}
             <div className="flex items-center gap-2 mb-3">
@@ -136,9 +139,7 @@ export function RelatedArticles({
             </h4>
 
             {/* 描述 */}
-            <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-              {article.description}
-            </p>
+            <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{article.description}</p>
 
             {/* 元信息 */}
             <div className="flex items-center justify-between text-xs text-muted-foreground">

@@ -77,14 +77,14 @@ describe('BlogSidebar', () => {
 
   it('应该渲染搜索框', () => {
     render(<BlogSidebar />);
-    
+
     expect(screen.getByPlaceholderText('搜索文章...')).toBeInTheDocument();
     expect(screen.getByText('搜索文章')).toBeInTheDocument();
   });
 
   it('应该渲染热门文章列表', () => {
     render(<BlogSidebar hotArticles={mockArticles} />);
-    
+
     expect(screen.getByText('热门文章')).toBeInTheDocument();
     expect(screen.getByText('热门文章1')).toBeInTheDocument();
     expect(screen.getByText('热门文章2')).toBeInTheDocument();
@@ -92,7 +92,7 @@ describe('BlogSidebar', () => {
 
   it('应该渲染标签云', () => {
     render(<BlogSidebar tags={mockTags} />);
-    
+
     expect(screen.getByText('热门标签')).toBeInTheDocument();
     expect(screen.getByText('AutoSAR')).toBeInTheDocument();
     expect(screen.getByText('CAN')).toBeInTheDocument();
@@ -101,52 +101,52 @@ describe('BlogSidebar', () => {
   it('点击搜索按钮时应该触发 onSearch 回调', () => {
     const handleSearch = vi.fn();
     render(<BlogSidebar onSearch={handleSearch} />);
-    
+
     const input = screen.getByPlaceholderText('搜索文章...');
     fireEvent.change(input, { target: { value: '测试搜索' } });
-    
+
     const searchButton = screen.getByLabelText('搜索');
     fireEvent.click(searchButton);
-    
+
     expect(handleSearch).toHaveBeenCalledWith('测试搜索');
   });
 
   it('按下 Enter 键时应该触发搜索', () => {
     const handleSearch = vi.fn();
     render(<BlogSidebar onSearch={handleSearch} />);
-    
+
     const input = screen.getByPlaceholderText('搜索文章...');
     fireEvent.change(input, { target: { value: 'Enter测试' } });
     fireEvent.keyDown(input, { key: 'Enter' });
-    
+
     expect(handleSearch).toHaveBeenCalledWith('Enter测试');
   });
 
   it('点击标签时应该触发 onTagClick 回调', () => {
     const handleTagClick = vi.fn();
     render(<BlogSidebar tags={mockTags} onTagClick={handleTagClick} />);
-    
+
     const tagButton = screen.getByText('AutoSAR').closest('button');
     if (tagButton) {
       fireEvent.click(tagButton);
     }
-    
+
     expect(handleTagClick).toHaveBeenCalledWith('AutoSAR');
   });
 
   it('点击文章时应该触发 onArticleClick 回调', () => {
     const handleArticleClick = vi.fn();
     render(<BlogSidebar hotArticles={mockArticles} onArticleClick={handleArticleClick} />);
-    
+
     const article = screen.getByText('热门文章1');
     fireEvent.click(article);
-    
+
     expect(handleArticleClick).toHaveBeenCalledWith('hot-article-1');
   });
 
   it('应该显示选中的标签样式', () => {
     render(<BlogSidebar tags={mockTags} selectedTag="AutoSAR" />);
-    
+
     const tagButtons = screen.getAllByRole('button');
     const autoSarTag = tagButtons.find(btn => btn.textContent?.includes('AutoSAR'));
     expect(autoSarTag).toBeDefined();
@@ -154,26 +154,26 @@ describe('BlogSidebar', () => {
 
   it('空热门文章时不应显示热门文章区域', () => {
     render(<BlogSidebar hotArticles={[]} />);
-    
+
     expect(screen.queryByText('热门文章')).not.toBeInTheDocument();
   });
 
   it('空标签时不应显示标签云区域', () => {
     render(<BlogSidebar tags={[]} />);
-    
+
     expect(screen.queryByText('热门标签')).not.toBeInTheDocument();
   });
 
   it('应该显示文章阅读量', () => {
     render(<BlogSidebar hotArticles={mockArticles} />);
-    
+
     expect(screen.getByText('1,000 阅读')).toBeInTheDocument();
     expect(screen.getByText('800 阅读')).toBeInTheDocument();
   });
 
   it('应该显示标签文章数量', () => {
     render(<BlogSidebar tags={mockTags} />);
-    
+
     expect(screen.getByText('(10)')).toBeInTheDocument();
     expect(screen.getByText('(5)')).toBeInTheDocument();
   });
@@ -196,7 +196,7 @@ describe('BlogDetailSidebar', () => {
 
   it('应该渲染作者信息', () => {
     render(<BlogDetailSidebar author={mockAuthor} />);
-    
+
     expect(screen.getByText('关于作者')).toBeInTheDocument();
     expect(screen.getByText('测试作者')).toBeInTheDocument();
     expect(screen.getByText('高级工程师')).toBeInTheDocument();
@@ -205,7 +205,7 @@ describe('BlogDetailSidebar', () => {
 
   it('应该渲染目录', () => {
     render(<BlogDetailSidebar toc={mockToc} />);
-    
+
     expect(screen.getByText('目录')).toBeInTheDocument();
     expect(screen.getByText('第一节')).toBeInTheDocument();
     expect(screen.getByText('第二节')).toBeInTheDocument();
@@ -214,7 +214,7 @@ describe('BlogDetailSidebar', () => {
 
   it('应该渲染相关文章', () => {
     render(<BlogDetailSidebar relatedArticles={mockArticles} />);
-    
+
     expect(screen.getByText('相关文章')).toBeInTheDocument();
     expect(screen.getByText('热门文章1')).toBeInTheDocument();
     expect(screen.getByText('热门文章2')).toBeInTheDocument();
@@ -223,44 +223,46 @@ describe('BlogDetailSidebar', () => {
   it('点击目录项时应该触发 onTocClick 回调', () => {
     const handleTocClick = vi.fn();
     render(<BlogDetailSidebar toc={mockToc} onTocClick={handleTocClick} />);
-    
+
     const tocItem = screen.getByText('第一节');
     fireEvent.click(tocItem);
-    
+
     expect(handleTocClick).toHaveBeenCalledWith('section1');
   });
 
   it('点击相关文章时应该触发 onArticleClick 回调', () => {
     const handleArticleClick = vi.fn();
-    render(<BlogDetailSidebar relatedArticles={mockArticles} onArticleClick={handleArticleClick} />);
-    
+    render(
+      <BlogDetailSidebar relatedArticles={mockArticles} onArticleClick={handleArticleClick} />
+    );
+
     const article = screen.getByText('热门文章1');
     fireEvent.click(article);
-    
+
     expect(handleArticleClick).toHaveBeenCalledWith('hot-article-1');
   });
 
   it('空目录时不应显示目录区域', () => {
     render(<BlogDetailSidebar toc={[]} />);
-    
+
     expect(screen.queryByText('目录')).not.toBeInTheDocument();
   });
 
   it('空作者时不应显示作者区域', () => {
     render(<BlogDetailSidebar />);
-    
+
     expect(screen.queryByText('关于作者')).not.toBeInTheDocument();
   });
 
   it('空相关文章时不应显示相关文章区域', () => {
     render(<BlogDetailSidebar relatedArticles={[]} />);
-    
+
     expect(screen.queryByText('相关文章')).not.toBeInTheDocument();
   });
 
   it('应该高亮当前选中的目录项', () => {
     render(<BlogDetailSidebar toc={mockToc} activeTocId="section2" />);
-    
+
     const tocItems = screen.getAllByRole('button');
     expect(tocItems.length).toBeGreaterThan(0);
   });

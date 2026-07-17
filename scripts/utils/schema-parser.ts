@@ -1,6 +1,6 @@
 /**
  * Schema Parser Utility
- * 
+ *
  * Parses XDM/ARXML/JSON configuration files from yuleASR
  * and converts them to JSON Schema format
  */
@@ -23,7 +23,7 @@ import type {
   ParameterDataType,
   YuleSchema,
   ParseResult,
-  ModuleDependency
+  ModuleDependency,
 } from '../../packages/@yuletech/core/src/types/schema';
 
 export interface SchemaParserOptions {
@@ -46,7 +46,7 @@ export class SchemaParser {
       includeModules: [],
       excludeModules: [],
       includeOs: true,
-      ...options
+      ...options,
     };
   }
 
@@ -81,7 +81,7 @@ export class SchemaParser {
         return {
           success: false,
           errors: this.errors,
-          warnings: this.warnings
+          warnings: this.warnings,
         };
       }
 
@@ -91,20 +91,20 @@ export class SchemaParser {
         source: this.options.yuleASRPath,
         modules,
         osConfig,
-        dependencies
+        dependencies,
       };
 
       return {
         success: true,
         schema,
         errors: this.errors,
-        warnings: this.warnings
+        warnings: this.warnings,
       };
     } catch (error) {
       return {
         success: false,
         errors: [error instanceof Error ? error.message : String(error)],
-        warnings: this.warnings
+        warnings: this.warnings,
       };
     }
   }
@@ -133,9 +133,15 @@ export class SchemaParser {
     if (fs.existsSync(srcBswPath)) {
       const mcalModules = await this.parseSourceModules(path.join(srcBswPath, 'mcal'), 'MCAL');
       const ecualModules = await this.parseSourceModules(path.join(srcBswPath, 'ecual'), 'ECUAL');
-      const serviceModules = await this.parseSourceModules(path.join(srcBswPath, 'services'), 'SERVICE');
-      const integrationModules = await this.parseSourceModules(path.join(srcBswPath, 'integration'), 'INTEGRATION');
-      
+      const serviceModules = await this.parseSourceModules(
+        path.join(srcBswPath, 'services'),
+        'SERVICE'
+      );
+      const integrationModules = await this.parseSourceModules(
+        path.join(srcBswPath, 'integration'),
+        'INTEGRATION'
+      );
+
       modules.push(...mcalModules, ...ecualModules, ...serviceModules, ...integrationModules);
     }
 
@@ -147,16 +153,16 @@ export class SchemaParser {
    */
   private parseSpecMarkdown(content: string): BswModule[] {
     const modules: BswModule[] = [];
-    
+
     // Parse MCAL modules
     const mcalSection = this.extractSection(content, '### 1. MCAL', '### 2.');
     if (mcalSection) {
       const mcuModule = this.parseModuleSection(mcalSection, 'MCU Driver', 'MCAL');
       if (mcuModule) modules.push(mcuModule);
-      
+
       const gpioModule = this.parseModuleSection(mcalSection, 'GPIO Driver', 'MCAL');
       if (gpioModule) modules.push(gpioModule);
-      
+
       const canModule = this.parseModuleSection(mcalSection, 'CAN Driver', 'MCAL');
       if (canModule) modules.push(canModule);
     }
@@ -171,7 +177,7 @@ export class SchemaParser {
         category: 'ECUAL',
         version: '1.0.0',
         dependencies: ['Port', 'Dio', 'Adc', 'Pwm'],
-        containers: []
+        containers: [],
       };
       modules.push(ioHwAbModule);
     }
@@ -179,13 +185,17 @@ export class SchemaParser {
     // Parse Service layer modules
     const serviceSection = this.extractSection(content, '### 3. Service Layer', '##');
     if (serviceSection) {
-      const comModule = this.parseModuleSection(serviceSection, 'Communication Services', 'SERVICE');
+      const comModule = this.parseModuleSection(
+        serviceSection,
+        'Communication Services',
+        'SERVICE'
+      );
       if (comModule) {
         comModule.name = 'Com';
         comModule.moduleDef = 'AUTOSAR/EcucDefs/Com';
         modules.push(comModule);
       }
-      
+
       const dcmModule = this.parseModuleSection(serviceSection, 'Diagnostic Services', 'SERVICE');
       if (dcmModule) {
         dcmModule.name = 'Dcm';
@@ -200,7 +210,7 @@ export class SchemaParser {
         category: 'SERVICE',
         version: '1.0.0',
         dependencies: ['MemIf', 'Fee', 'Ea'],
-        containers: []
+        containers: [],
       };
       modules.push(nvmModule);
     }
@@ -211,18 +221,26 @@ export class SchemaParser {
   /**
    * Parse a module section from markdown
    */
-  private parseModuleSection(content: string, sectionName: string, category: BswModule['category']): BswModule | null {
+  private parseModuleSection(
+    content: string,
+    sectionName: string,
+    category: BswModule['category']
+  ): BswModule | null {
     const sectionRegex = new RegExp(`#### .*${sectionName}.*\n\n([^#]+)`, 'i');
     const match = content.match(sectionRegex);
-    
+
     if (!match) return null;
 
     const section = match[1];
-    
+
     // Extract description
     const descMatch = section.match(/\*\*功能要求\*\*:\n([^]+?)(?=\*\*|$)/);
-    const description = descMatch 
-      ? descMatch[1].split('\n').filter(l => l.startsWith('-')).map(l => l.replace(/^- /, '')).join('; ')
+    const description = descMatch
+      ? descMatch[1]
+          .split('\n')
+          .filter(l => l.startsWith('-'))
+          .map(l => l.replace(/^- /, ''))
+          .join('; ')
       : sectionName;
 
     // Map section name to module name
@@ -231,7 +249,7 @@ export class SchemaParser {
       'GPIO Driver': 'Port',
       'CAN Driver': 'Can',
       'Communication Services': 'Com',
-      'Diagnostic Services': 'Dcm'
+      'Diagnostic Services': 'Dcm',
     };
 
     const name = nameMap[sectionName] || sectionName.replace(/\s+/g, '');
@@ -243,7 +261,7 @@ export class SchemaParser {
       category,
       version: '1.0.0',
       dependencies: [],
-      containers: this.extractContainersFromSection(section)
+      containers: this.extractContainersFromSection(section),
     };
   }
 
@@ -252,16 +270,16 @@ export class SchemaParser {
    */
   private extractContainersFromSection(section: string): ModuleContainer[] {
     const containers: ModuleContainer[] = [];
-    
+
     // Look for interface definitions in C code blocks
     const codeBlockMatch = section.match(/```c\n([^`]+)```/);
     if (codeBlockMatch) {
       const code = codeBlockMatch[1];
-      
+
       // Extract configuration-related functions
       const configParams: ModuleParameter[] = [];
       const lines = code.split('\n');
-      
+
       for (const line of lines) {
         // Look for config types
         const configMatch = line.match(/(\w+)_ConfigType/);
@@ -271,7 +289,7 @@ export class SchemaParser {
             value: '',
             type: 'REFERENCE',
             definition: `${configMatch[1]}_ConfigType`,
-            description: `Configuration for ${configMatch[1]}`
+            description: `Configuration for ${configMatch[1]}`,
           });
         }
       }
@@ -281,7 +299,7 @@ export class SchemaParser {
           name: 'General',
           definition: 'GeneralConfiguration',
           description: 'General configuration parameters',
-          parameters: configParams
+          parameters: configParams,
         });
       }
     }
@@ -292,25 +310,30 @@ export class SchemaParser {
   /**
    * Parse source modules from directory
    */
-  private async parseSourceModules(dirPath: string, category: BswModule['category']): Promise<BswModule[]> {
+  private async parseSourceModules(
+    dirPath: string,
+    category: BswModule['category']
+  ): Promise<BswModule[]> {
     const modules: BswModule[] = [];
-    
+
     if (!fs.existsSync(dirPath)) {
       return modules;
     }
 
     const entries = fs.readdirSync(dirPath, { withFileTypes: true });
-    
+
     for (const entry of entries) {
       if (entry.isDirectory()) {
         const moduleName = entry.name.charAt(0).toUpperCase() + entry.name.slice(1).toLowerCase();
-        
+
         // Skip if not in include list (if specified)
-        if (this.options.includeModules?.length && 
-            !this.options.includeModules.includes(moduleName)) {
+        if (
+          this.options.includeModules?.length &&
+          !this.options.includeModules.includes(moduleName)
+        ) {
           continue;
         }
-        
+
         // Skip if in exclude list
         if (this.options.excludeModules?.includes(moduleName)) {
           continue;
@@ -323,7 +346,7 @@ export class SchemaParser {
           category,
           version: '1.0.0',
           dependencies: [],
-          containers: await this.parseModuleContainers(path.join(dirPath, entry.name))
+          containers: await this.parseModuleContainers(path.join(dirPath, entry.name)),
         };
 
         modules.push(module);
@@ -338,12 +361,12 @@ export class SchemaParser {
    */
   private async parseModuleContainers(modulePath: string): Promise<ModuleContainer[]> {
     const containers: ModuleContainer[] = [];
-    
+
     // Look for config headers
     const configFiles = [
       path.join(modulePath, 'include', `${path.basename(modulePath)}_Cfg.h`),
       path.join(modulePath, 'config', `${path.basename(modulePath)}_Cfg.h`),
-      path.join(modulePath, `${path.basename(modulePath)}_Cfg.h`)
+      path.join(modulePath, `${path.basename(modulePath)}_Cfg.h`),
     ];
 
     for (const configFile of configFiles) {
@@ -368,11 +391,11 @@ export class SchemaParser {
     // Parse #define macros for configuration
     const defineRegex = /#define\s+(\w+)\s+(\w+)/g;
     let match;
-    
+
     while ((match = defineRegex.exec(content)) !== null) {
       const name = match[1];
       const value = match[2];
-      
+
       // Skip include guards and internal macros
       if (name.endsWith('_H') || name.includes('_INTERNAL_')) {
         continue;
@@ -392,12 +415,17 @@ export class SchemaParser {
 
       parameters.push({
         name,
-        value: type === 'BOOLEAN' ? (value.toLowerCase() === 'true') : 
-               type === 'INTEGER' ? parseInt(value, value.startsWith('0x') ? 16 : 10) :
-               type === 'FLOAT' ? parseFloat(value) : value,
+        value:
+          type === 'BOOLEAN'
+            ? value.toLowerCase() === 'true'
+            : type === 'INTEGER'
+              ? parseInt(value, value.startsWith('0x') ? 16 : 10)
+              : type === 'FLOAT'
+                ? parseFloat(value)
+                : value,
         type,
         definition: `#define ${name}`,
-        description: `Configuration parameter ${name}`
+        description: `Configuration parameter ${name}`,
       });
     }
 
@@ -409,7 +437,7 @@ export class SchemaParser {
       name: 'Config',
       definition: `${path.basename(filePath, '.h')}`,
       description: `Configuration from ${path.basename(filePath)}`,
-      parameters
+      parameters,
     };
   }
 
@@ -417,8 +445,11 @@ export class SchemaParser {
    * Parse OS configuration
    */
   private async parseOsConfig(): Promise<OsConfig | undefined> {
-    const osConfigPath = path.join(this.options.yuleASRPath, 'tools/yule-configurator/os/example_os_config.json');
-    
+    const osConfigPath = path.join(
+      this.options.yuleASRPath,
+      'tools/yule-configurator/os/example_os_config.json'
+    );
+
     if (!fs.existsSync(osConfigPath)) {
       this.warnings.push(`OS config not found: ${osConfigPath}`);
       return undefined;
@@ -432,31 +463,39 @@ export class SchemaParser {
         name: data.os?.name || 'YuleOS',
         version: data.os?.version || '1.0.0',
         status: data.os?.status || 'STANDARD',
-        tasks: (data.tasks || []).map((t: any): OsTask => ({
-          name: t.name,
-          priority: t.priority,
-          activation: t.activation,
-          autostart: t.autostart,
-          schedule: t.schedule,
-          events: t.events
-        })),
-        alarms: (data.alarms || []).map((a: any): OsAlarm => ({
-          name: a.name,
-          counter: a.counter,
-          action: a.action,
-          task: a.task,
-          autostart: a.autostart,
-          period: a.period
-        })),
-        resources: (data.resources || []).map((r: any): OsResource => ({
-          name: r.name,
-          priorityCeiling: r.priority_ceiling
-        })),
-        events: (data.events || []).map((e: any): OsEvent => ({
-          name: e.name,
-          mask: e.mask
-        })),
-        scheduleTables: data.schedule_tables || []
+        tasks: (data.tasks || []).map(
+          (t: any): OsTask => ({
+            name: t.name,
+            priority: t.priority,
+            activation: t.activation,
+            autostart: t.autostart,
+            schedule: t.schedule,
+            events: t.events,
+          })
+        ),
+        alarms: (data.alarms || []).map(
+          (a: any): OsAlarm => ({
+            name: a.name,
+            counter: a.counter,
+            action: a.action,
+            task: a.task,
+            autostart: a.autostart,
+            period: a.period,
+          })
+        ),
+        resources: (data.resources || []).map(
+          (r: any): OsResource => ({
+            name: r.name,
+            priorityCeiling: r.priority_ceiling,
+          })
+        ),
+        events: (data.events || []).map(
+          (e: any): OsEvent => ({
+            name: e.name,
+            mask: e.mask,
+          })
+        ),
+        scheduleTables: data.schedule_tables || [],
       };
     } catch (error) {
       this.warnings.push(`Failed to parse OS config: ${error}`);
@@ -476,15 +515,15 @@ export class SchemaParser {
     }
 
     const content = fs.readFileSync(specPath, 'utf-8');
-    
+
     // Parse module dependencies from YAML block
     const yamlMatch = content.match(/```yaml\n(modules:[^`]+)```/);
     if (yamlMatch) {
       const yamlContent = yamlMatch[1];
       const lines = yamlContent.split('\n');
-      
+
       let currentModule: ModuleDependency | null = null;
-      
+
       for (const line of lines) {
         const moduleMatch = line.match(/^\s+- name:\s*(\w+)/);
         if (moduleMatch) {
@@ -494,10 +533,10 @@ export class SchemaParser {
           currentModule = {
             module: moduleMatch[1],
             requiredBy: [],
-            requires: []
+            requires: [],
           };
         }
-        
+
         const depsMatch = line.match(/^\s+dependencies:\s*\[(.*?)\]/);
         if (depsMatch && currentModule) {
           currentModule.requires = depsMatch[1]
@@ -506,7 +545,7 @@ export class SchemaParser {
             .filter(d => d.length > 0);
         }
       }
-      
+
       if (currentModule) {
         dependencies.push(currentModule);
       }
@@ -544,7 +583,7 @@ export class SchemaParser {
 
         if (data.name && data.containers) {
           const category = this.inferCategory(data.name);
-          
+
           const module: BswModule = {
             name: data.name,
             moduleDef: data.module_def || `AUTOSAR/EcucDefs/${data.name}`,
@@ -552,18 +591,22 @@ export class SchemaParser {
             category,
             version: '1.0.0',
             dependencies: [],
-            containers: data.containers.map((c: any): ModuleContainer => ({
-              name: c.name,
-              definition: c.definition,
-              description: c.description,
-              parameters: (c.parameters || []).map((p: any): ModuleParameter => ({
-                name: p.name,
-                value: this.parseValue(p.value, p.type),
-                type: p.type,
-                definition: p.definition,
-                description: p.description
-              }))
-            }))
+            containers: data.containers.map(
+              (c: any): ModuleContainer => ({
+                name: c.name,
+                definition: c.definition,
+                description: c.description,
+                parameters: (c.parameters || []).map(
+                  (p: any): ModuleParameter => ({
+                    name: p.name,
+                    value: this.parseValue(p.value, p.type),
+                    type: p.type,
+                    definition: p.definition,
+                    description: p.description,
+                  })
+                ),
+              })
+            ),
           };
 
           modules.push(module);
@@ -580,10 +623,33 @@ export class SchemaParser {
    * Infer module category from name
    */
   private inferCategory(name: string): BswModule['category'] {
-    const mcalModules = ['Mcu', 'Port', 'Dio', 'Can', 'Spi', 'Gpt', 'Pwm', 'Adc', 'Wdg', 'Icu', 'Lin', 'Flash'];
-    const ecualModules = ['CanIf', 'IoHwAb', 'CanTp', 'EthIf', 'MemIf', 'Fee', 'Ea', 'FrIf', 'LinIf'];
+    const mcalModules = [
+      'Mcu',
+      'Port',
+      'Dio',
+      'Can',
+      'Spi',
+      'Gpt',
+      'Pwm',
+      'Adc',
+      'Wdg',
+      'Icu',
+      'Lin',
+      'Flash',
+    ];
+    const ecualModules = [
+      'CanIf',
+      'IoHwAb',
+      'CanTp',
+      'EthIf',
+      'MemIf',
+      'Fee',
+      'Ea',
+      'FrIf',
+      'LinIf',
+    ];
     const integrationModules = ['BswM', 'EcuM'];
-    
+
     if (mcalModules.includes(name)) return 'MCAL';
     if (ecualModules.includes(name)) return 'ECUAL';
     if (integrationModules.includes(name)) return 'INTEGRATION';
@@ -627,12 +693,12 @@ export class SchemaParser {
   private extractSection(content: string, startMarker: string, endMarker: string): string | null {
     const startIndex = content.indexOf(startMarker);
     if (startIndex === -1) return null;
-    
+
     const endIndex = content.indexOf(endMarker, startIndex);
     if (endIndex === -1) {
       return content.substring(startIndex);
     }
-    
+
     return content.substring(startIndex, endIndex);
   }
 
@@ -644,28 +710,28 @@ export class SchemaParser {
       name: {
         type: 'string',
         description: 'Module name',
-        default: module.name
+        default: module.name,
       },
       version: {
         type: 'string',
         description: 'Module version',
-        default: module.version
+        default: module.version,
       },
       enabled: {
         type: 'boolean',
         description: 'Enable this module',
-        default: true
-      }
+        default: true,
+      },
     };
 
     // Add container parameters
     for (const container of module.containers) {
       const containerProps: Record<string, JsonSchemaProperty> = {};
-      
+
       for (const param of container.parameters) {
         const prop: JsonSchemaProperty = {
           type: SchemaParser.mapTypeToJsonSchema(param.type),
-          description: param.description
+          description: param.description,
         };
 
         if (param.enumValues) {
@@ -684,7 +750,7 @@ export class SchemaParser {
       properties[container.name] = {
         type: 'object',
         description: container.description,
-        properties: containerProps
+        properties: containerProps,
       };
     }
 
@@ -695,7 +761,7 @@ export class SchemaParser {
       description: module.description,
       type: 'object',
       properties,
-      required: ['name', 'enabled']
+      required: ['name', 'enabled'],
     };
   }
 
@@ -724,6 +790,6 @@ export class SchemaParser {
 export function createSchemaParser(yuleASRPath: string): SchemaParser {
   return new SchemaParser({
     yuleASRPath,
-    includeOs: true
+    includeOs: true,
   });
 }

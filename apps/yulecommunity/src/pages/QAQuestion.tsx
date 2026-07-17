@@ -1,87 +1,107 @@
-import { useState, useEffect } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import { useState, useEffect } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
-  HelpCircle, CheckCircle2, ThumbsUp, ThumbsDown,
-  MessageSquare, Eye, User, Clock, ArrowLeft,
-  Loader2, Send, Edit3, Trash2
-} from 'lucide-react'
-import qaApi, { type QuestionDetail, type Answer } from '../services/qaApi'
+  HelpCircle,
+  CheckCircle2,
+  ThumbsUp,
+  ThumbsDown,
+  MessageSquare,
+  Eye,
+  User,
+  Clock,
+  ArrowLeft,
+  Loader2,
+  Send,
+  Edit3,
+  Trash2,
+} from 'lucide-react';
+import qaApi, { type QuestionDetail, type Answer } from '../services/qaApi';
 
 export function QAQuestion() {
-  const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
-  const [question, setQuestion] = useState<QuestionDetail | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [answerContent, setAnswerContent] = useState('')
-  const [submitting, setSubmitting] = useState(false)
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [question, setQuestion] = useState<QuestionDetail | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [answerContent, setAnswerContent] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const loadQuestion = async () => {
-    if (!id) return
-    setLoading(true)
-    setError(null)
+    if (!id) return;
+    setLoading(true);
+    setError(null);
     try {
-      const q = await qaApi.getQuestion(parseInt(id, 10))
-      setQuestion(q)
+      const q = await qaApi.getQuestion(parseInt(id, 10));
+      setQuestion(q);
     } catch (err) {
-      console.error('[QAQuestion] Failed to load:', err)
-      setError('无法加载问题详情')
+      console.error('[QAQuestion] Failed to load:', err);
+      setError('无法加载问题详情');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    loadQuestion()
-  }, [id])
+    loadQuestion();
+  }, [id]);
 
-  const handleVote = async (targetType: 'question' | 'answer', targetId: number, voteType: 'up' | 'down') => {
+  const handleVote = async (
+    targetType: 'question' | 'answer',
+    targetId: number,
+    voteType: 'up' | 'down'
+  ) => {
     try {
-      await qaApi.vote({ targetType, targetId, voteType })
-      loadQuestion() // Refresh
+      await qaApi.vote({ targetType, targetId, voteType });
+      loadQuestion(); // Refresh
     } catch (err) {
-      console.error('Vote failed:', err)
+      console.error('Vote failed:', err);
     }
-  }
+  };
 
   const handleAcceptAnswer = async (answerId: number) => {
     try {
-      await qaApi.acceptAnswer(answerId)
-      loadQuestion()
+      await qaApi.acceptAnswer(answerId);
+      loadQuestion();
     } catch (err) {
-      console.error('Accept failed:', err)
+      console.error('Accept failed:', err);
     }
-  }
+  };
 
   const handleSubmitAnswer = async () => {
-    if (!answerContent.trim() || !id) return
-    setSubmitting(true)
+    if (!answerContent.trim() || !id) return;
+    setSubmitting(true);
     try {
-      await qaApi.createAnswer(parseInt(id, 10), { content: answerContent.trim() })
-      setAnswerContent('')
-      loadQuestion()
+      await qaApi.createAnswer(parseInt(id, 10), { content: answerContent.trim() });
+      setAnswerContent('');
+      loadQuestion();
     } catch (err) {
-      console.error('Submit answer failed:', err)
+      console.error('Submit answer failed:', err);
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
-  }
+  };
 
   const handleDeleteQuestion = async () => {
-    if (!question || !confirm('确定删除此问题？')) return
+    if (!question || !confirm('确定删除此问题？')) return;
     try {
-      await qaApi.deleteQuestion(question.id)
-      navigate('/qa')
+      await qaApi.deleteQuestion(question.id);
+      navigate('/qa');
     } catch (err) {
-      console.error('Delete failed:', err)
+      console.error('Delete failed:', err);
     }
-  }
+  };
 
   const formatTime = (iso: string) => {
-    const d = new Date(iso)
-    return d.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })
-  }
+    const d = new Date(iso);
+    return d.toLocaleDateString('zh-CN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
 
   if (loading) {
     return (
@@ -89,7 +109,7 @@ export function QAQuestion() {
         <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
         <span className="ml-2 text-sm text-muted-foreground">加载中...</span>
       </div>
-    )
+    );
   }
 
   if (error || !question) {
@@ -97,10 +117,12 @@ export function QAQuestion() {
       <div className="min-h-screen pt-16 flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-500 mb-4">{error || '问题不存在'}</p>
-          <Link to="/qa" className="text-[hsl(var(--primary))] hover:underline">返回问答列表</Link>
+          <Link to="/qa" className="text-[hsl(var(--primary))] hover:underline">
+            返回问答列表
+          </Link>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -111,7 +133,10 @@ export function QAQuestion() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back Button */}
-        <Link to="/qa" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
+        <Link
+          to="/qa"
+          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6"
+        >
           <ArrowLeft className="w-4 h-4" /> 返回问答列表
         </Link>
 
@@ -128,20 +153,39 @@ export function QAQuestion() {
             <div className="flex-1">
               <h1 className="text-2xl font-bold mb-2">{question.title}</h1>
               <div className="flex items-center gap-3 text-sm text-muted-foreground mb-4">
-                <span className="flex items-center gap-1"><User className="w-3.5 h-3.5" />{question.author.username}</span>
-                <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{formatTime(question.createdAt)}</span>
-                <span className="flex items-center gap-1"><Eye className="w-3.5 h-3.5" />{question.viewCount}</span>
+                <span className="flex items-center gap-1">
+                  <User className="w-3.5 h-3.5" />
+                  {question.author.username}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Clock className="w-3.5 h-3.5" />
+                  {formatTime(question.createdAt)}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Eye className="w-3.5 h-3.5" />
+                  {question.viewCount}
+                </span>
               </div>
               <div className="flex gap-2 mb-4">
-                {question.tags.map((t) => (
-                  <span key={t} className="px-2 py-0.5 bg-muted rounded-full text-xs">{t}</span>
+                {question.tags.map(t => (
+                  <span key={t} className="px-2 py-0.5 bg-muted rounded-full text-xs">
+                    {t}
+                  </span>
                 ))}
-                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                  question.status === 'resolved' ? 'bg-green-500/10 text-green-600' :
-                  question.status === 'closed' ? 'bg-gray-500/10 text-gray-600' :
-                  'bg-amber-500/10 text-amber-600'
-                }`}>
-                  {question.status === 'resolved' ? '已解决' : question.status === 'closed' ? '已关闭' : '待解决'}
+                <span
+                  className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                    question.status === 'resolved'
+                      ? 'bg-green-500/10 text-green-600'
+                      : question.status === 'closed'
+                        ? 'bg-gray-500/10 text-gray-600'
+                        : 'bg-amber-500/10 text-amber-600'
+                  }`}
+                >
+                  {question.status === 'resolved'
+                    ? '已解决'
+                    : question.status === 'closed'
+                      ? '已关闭'
+                      : '待解决'}
                 </span>
               </div>
               <div className="prose prose-sm max-w-none text-foreground whitespace-pre-wrap mb-4">
@@ -185,7 +229,7 @@ export function QAQuestion() {
           )}
 
           <div className="space-y-4">
-            {question.answers?.map((answer) => (
+            {question.answers?.map(answer => (
               <div
                 key={answer.id}
                 className={`bg-card border rounded-xl p-5 ${
@@ -204,9 +248,13 @@ export function QAQuestion() {
                           <CheckCircle2 className="w-3 h-3" /> 已采纳
                         </span>
                       )}
-                      <span className="text-xs text-muted-foreground ml-auto">{formatTime(answer.createdAt)}</span>
+                      <span className="text-xs text-muted-foreground ml-auto">
+                        {formatTime(answer.createdAt)}
+                      </span>
                     </div>
-                    <div className="text-sm text-foreground whitespace-pre-wrap mb-3">{answer.content}</div>
+                    <div className="text-sm text-foreground whitespace-pre-wrap mb-3">
+                      {answer.content}
+                    </div>
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => handleVote('answer', answer.id, 'up')}
@@ -248,8 +296,10 @@ export function QAQuestion() {
             <h3 className="text-lg font-semibold mb-4">写回答</h3>
             <textarea
               value={answerContent}
-              onChange={(e) => setAnswerContent(e.target.value)}
-              placeholder={question.status === 'resolved' ? '该问题已解决，仍可继续回答' : '写下你的回答...'}
+              onChange={e => setAnswerContent(e.target.value)}
+              placeholder={
+                question.status === 'resolved' ? '该问题已解决，仍可继续回答' : '写下你的回答...'
+              }
               rows={5}
               className="w-full px-4 py-3 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30 resize-none mb-4"
             />
@@ -259,7 +309,11 @@ export function QAQuestion() {
                 disabled={!answerContent.trim() || submitting}
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-[hsl(var(--primary))] text-primary-foreground hover:bg-[hsl(var(--primary-glow))] disabled:opacity-40 disabled:cursor-not-allowed transition-colors rounded-lg text-sm font-medium"
               >
-                {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                {submitting ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4" />
+                )}
                 提交回答
               </button>
             </div>
@@ -267,7 +321,7 @@ export function QAQuestion() {
         )}
       </div>
     </div>
-  )
+  );
 }
 
-export default QAQuestion
+export default QAQuestion;

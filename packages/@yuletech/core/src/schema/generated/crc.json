@@ -48,9 +48,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CrcGeneral"
-  ],
+  "required": ["CrcGeneral"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

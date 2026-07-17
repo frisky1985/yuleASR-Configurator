@@ -247,20 +247,40 @@ const fallbackTasks: CommunityTask[] = [
 
 function CpuIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      {...props}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <rect x="4" y="4" width="16" height="16" rx="2" />
       <rect x="9" y="9" width="6" height="6" />
-      <path d="M15 2v2" /><path d="M15 20v2" />
-      <path d="M2 15h2" /><path d="M2 9h2" />
-      <path d="M20 15h2" /><path d="M20 9h2" />
-      <path d="M9 2v2" /><path d="M9 20v2" />
+      <path d="M15 2v2" />
+      <path d="M15 20v2" />
+      <path d="M2 15h2" />
+      <path d="M2 9h2" />
+      <path d="M20 15h2" />
+      <path d="M20 9h2" />
+      <path d="M9 2v2" />
+      <path d="M9 20v2" />
     </svg>
   );
 }
 
 function LayersIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      {...props}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <polygon points="12 2 2 7 12 12 22 7 12 2" />
       <polyline points="2 17 12 22 22 17" />
       <polyline points="2 12 12 17 22 12" />
@@ -270,11 +290,23 @@ function LayersIcon(props: React.SVGProps<SVGSVGElement>) {
 
 function ChipIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18 12h2" /><path d="M4 12h2" />
-      <path d="M12 18v2" /><path d="M12 4v2" />
-      <path d="M8 8l-2-2" /><path d="M16 16l2 2" />
-      <path d="M8 16l-2 2" /><path d="M16 8l2-2" />
+    <svg
+      {...props}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18 12h2" />
+      <path d="M4 12h2" />
+      <path d="M12 18v2" />
+      <path d="M12 4v2" />
+      <path d="M8 8l-2-2" />
+      <path d="M16 16l2 2" />
+      <path d="M8 16l-2 2" />
+      <path d="M16 8l2-2" />
       <rect x="6" y="6" width="12" height="12" rx="2" />
     </svg>
   );
@@ -282,7 +314,15 @@ function ChipIcon(props: React.SVGProps<SVGSVGElement>) {
 
 function ShieldIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      {...props}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
     </svg>
   );
@@ -336,7 +376,7 @@ export function CommunityPage() {
               tags: p.tags.length > 0 ? p.tags : ['讨论'],
               time: timeAgo(p.createdAt),
               hot: p.status === 'published' && posts.indexOf(p) < 3,
-            })),
+            }))
           );
         }
 
@@ -358,7 +398,9 @@ export function CommunityPage() {
       }
     };
     loadData();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const timeAgo = (iso: string) => {
@@ -379,7 +421,10 @@ export function CommunityPage() {
     <div className="min-h-screen pt-16">
       <Helmet>
         <title>社区互动 - YuleTech | 论坛、问答、活动</title>
-        <meta name="description" content="加入 YuleTech 社区，与 2,800+ 汽车软件工程师一起交流学习、协作开发。技术论坛、活动沙龙、工程师圈子、众包任务。" />
+        <meta
+          name="description"
+          content="加入 YuleTech 社区，与 2,800+ 汽车软件工程师一起交流学习、协作开发。技术论坛、活动沙龙、工程师圈子、众包任务。"
+        />
       </Helmet>
       {/* Hero */}
       <section className="relative py-20 overflow-hidden bg-gradient-to-b from-[hsl(var(--primary))]/5 to-transparent">
@@ -416,11 +461,15 @@ export function CommunityPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             <div>
-              <div className="text-2xl font-bold text-[hsl(var(--accent))]">{stats.engineers.toLocaleString()}+</div>
+              <div className="text-2xl font-bold text-[hsl(var(--accent))]">
+                {stats.engineers.toLocaleString()}+
+              </div>
               <div className="text-sm text-muted-foreground">注册工程师</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-[hsl(var(--accent))]">{stats.discussions.toLocaleString()}+</div>
+              <div className="text-2xl font-bold text-[hsl(var(--accent))]">
+                {stats.discussions.toLocaleString()}+
+              </div>
               <div className="text-sm text-muted-foreground">技术讨论</div>
             </div>
             <div>
@@ -474,7 +523,9 @@ export function CommunityPage() {
                   <MessageSquare className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold group-hover:text-[hsl(var(--accent))] transition-colors">技术论坛</h3>
+                  <h3 className="font-semibold group-hover:text-[hsl(var(--accent))] transition-colors">
+                    技术论坛
+                  </h3>
                   <p className="text-sm text-muted-foreground">发帖讨论、分享经验、求助答疑</p>
                 </div>
                 <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-[hsl(var(--accent))] transition-colors" />
@@ -489,7 +540,9 @@ export function CommunityPage() {
                   <HelpCircle className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold group-hover:text-[hsl(var(--accent))] transition-colors">技术问答</h3>
+                  <h3 className="font-semibold group-hover:text-[hsl(var(--accent))] transition-colors">
+                    技术问答
+                  </h3>
                   <p className="text-sm text-muted-foreground">悬赏提问、专家解答、积累知识</p>
                 </div>
                 <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-[hsl(var(--accent))] transition-colors" />
@@ -504,7 +557,9 @@ export function CommunityPage() {
                   <Video className="w-6 h-6 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold group-hover:text-[hsl(var(--accent))] transition-colors">社区活动</h3>
+                  <h3 className="font-semibold group-hover:text-[hsl(var(--accent))] transition-colors">
+                    社区活动
+                  </h3>
                   <p className="text-sm text-muted-foreground">线上沙龙、线下研讨、实战训练营</p>
                 </div>
                 <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-[hsl(var(--accent))] transition-colors" />
@@ -518,7 +573,7 @@ export function CommunityPage() {
       <section className="py-8 sticky top-16 z-30 bg-background/80 backdrop-blur-xl border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 overflow-x-auto pb-2">
-            {tabs.map((tab) => (
+            {tabs.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
@@ -554,57 +609,58 @@ export function CommunityPage() {
                   <span className="ml-2 text-sm text-muted-foreground">加载中...</span>
                 </div>
               )}
-              {!loading && forumTopics.map((topic) => (
-                <div
-                  key={topic.title}
-                  className="group bg-card border border-border rounded-xl p-5 hover:border-[hsl(var(--accent))]/30 transition-all hover:shadow-elegant"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent))] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
-                      {topic.avatar}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold group-hover:text-[hsl(var(--accent))] transition-colors truncate">
-                          {topic.title}
-                        </h3>
-                        {topic.hot && (
-                          <span className="flex items-center gap-1 text-xs font-medium text-red-500 bg-red-500/10 px-2 py-0.5 rounded-full flex-shrink-0">
-                            <Flame className="w-3 h-3" /> 热门
-                          </span>
-                        )}
+              {!loading &&
+                forumTopics.map(topic => (
+                  <div
+                    key={topic.title}
+                    className="group bg-card border border-border rounded-xl p-5 hover:border-[hsl(var(--accent))]/30 transition-all hover:shadow-elegant"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent))] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+                        {topic.avatar}
                       </div>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
-                        <span className="font-medium text-foreground">{topic.author}</span>
-                        <span>·</span>
-                        <span>{topic.role}</span>
-                        <span>·</span>
-                        <span>{topic.time}</span>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <div className="flex flex-wrap gap-1.5">
-                          {topic.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="px-2 py-0.5 bg-muted rounded-md text-xs text-muted-foreground"
-                            >
-                              {tag}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="font-semibold group-hover:text-[hsl(var(--accent))] transition-colors truncate">
+                            {topic.title}
+                          </h3>
+                          {topic.hot && (
+                            <span className="flex items-center gap-1 text-xs font-medium text-red-500 bg-red-500/10 px-2 py-0.5 rounded-full flex-shrink-0">
+                              <Flame className="w-3 h-3" /> 热门
                             </span>
-                          ))}
+                          )}
                         </div>
-                        <div className="flex items-center gap-4 ml-auto text-xs text-muted-foreground flex-shrink-0">
-                          <span className="flex items-center gap-1">
-                            <MessageSquare className="w-3.5 h-3.5" /> {topic.replies}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Heart className="w-3.5 h-3.5" /> {topic.likes}
-                          </span>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+                          <span className="font-medium text-foreground">{topic.author}</span>
+                          <span>·</span>
+                          <span>{topic.role}</span>
+                          <span>·</span>
+                          <span>{topic.time}</span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <div className="flex flex-wrap gap-1.5">
+                            {topic.tags.map(tag => (
+                              <span
+                                key={tag}
+                                className="px-2 py-0.5 bg-muted rounded-md text-xs text-muted-foreground"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
+                          <div className="flex items-center gap-4 ml-auto text-xs text-muted-foreground flex-shrink-0">
+                            <span className="flex items-center gap-1">
+                              <MessageSquare className="w-3.5 h-3.5" /> {topic.replies}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Heart className="w-3.5 h-3.5" /> {topic.likes}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           )}
 
@@ -618,7 +674,7 @@ export function CommunityPage() {
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {eventsData.map((event) => (
+                {eventsData.map(event => (
                   <div
                     key={event.title}
                     className="group bg-card border border-border rounded-xl p-5 hover:border-[hsl(var(--accent))]/30 transition-all hover:shadow-elegant"
@@ -683,13 +739,15 @@ export function CommunityPage() {
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {circlesData.map((circle) => (
+                {circlesData.map(circle => (
                   <div
                     key={circle.name}
                     className="group bg-card border border-border rounded-xl p-5 hover:border-[hsl(var(--accent))]/30 transition-all hover:shadow-elegant"
                   >
                     <div className="flex items-start gap-4">
-                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${circle.color} flex items-center justify-center flex-shrink-0`}>
+                      <div
+                        className={`w-12 h-12 rounded-xl bg-gradient-to-br ${circle.color} flex items-center justify-center flex-shrink-0`}
+                      >
                         <circle.icon className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1">
@@ -724,7 +782,7 @@ export function CommunityPage() {
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {tasksData.map((task) => (
+                {tasksData.map(task => (
                   <div
                     key={task.title}
                     className="group bg-card border border-border rounded-xl p-5 hover:border-[hsl(var(--accent))]/30 transition-all hover:shadow-elegant"
@@ -738,7 +796,7 @@ export function CommunityPage() {
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-1.5 mb-4">
-                      {task.tags.map((tag) => (
+                      {task.tags.map(tag => (
                         <span
                           key={tag}
                           className="px-2 py-0.5 bg-muted rounded-md text-xs text-muted-foreground"
@@ -754,8 +812,8 @@ export function CommunityPage() {
                             task.difficulty === '简单'
                               ? 'text-emerald-500'
                               : task.difficulty === '中等'
-                              ? 'text-amber-500'
-                              : 'text-red-500'
+                                ? 'text-amber-500'
+                                : 'text-red-500'
                           }`}
                         >
                           <Star className="w-3.5 h-3.5" /> {task.difficulty}
@@ -784,8 +842,8 @@ export function CommunityPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">加入 YuleTech 社区</h2>
           <p className="text-white/80 mb-8 max-w-2xl mx-auto">
-            无论你是刚入门的爱好者，还是经验丰富的专家，YuleTech 社区都为你准备了合适的位置。
-            与 2,800+ 工程师一起，为中国汽车基础软件开源生态贡献力量。
+            无论你是刚入门的爱好者，还是经验丰富的专家，YuleTech 社区都为你准备了合适的位置。 与
+            2,800+ 工程师一起，为中国汽车基础软件开源生态贡献力量。
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <button className="px-8 py-3 bg-white text-[hsl(var(--primary))] rounded-xl font-semibold hover:bg-white/90 transition-all shadow-lg">

@@ -1,13 +1,5 @@
 import { useMemo } from 'react';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import type { PointsHistoryItem, PointsAction } from '../../hooks/useUserSystem';
 
@@ -47,13 +39,13 @@ export function PointsSourceChart() {
       event: 0,
     };
 
-    history.forEach((item) => {
+    history.forEach(item => {
       if (item.action in totals) {
         totals[item.action] += item.points;
       }
     });
 
-    return (Object.keys(totals) as PointsAction[]).map((action) => ({
+    return (Object.keys(totals) as PointsAction[]).map(action => ({
       name: ACTION_LABELS[action],
       value: totals[action],
     }));

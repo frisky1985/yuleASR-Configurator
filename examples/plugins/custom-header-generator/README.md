@@ -5,9 +5,9 @@
 
 ## Overview
 
-This example plugin demonstrates how to write a **code generator plugin** for yuleASR.
-It wraps generated C files with a custom copyright header whose content is
-controlled by the plugin's user configuration.
+This example plugin demonstrates how to write a **code generator plugin** for
+yuleASR. It wraps generated C files with a custom copyright header whose content
+is controlled by the plugin's user configuration.
 
 ## What it demonstrates
 
@@ -18,11 +18,11 @@ controlled by the plugin's user configuration.
 
 ## User configuration
 
-| Key | Default | Description |
-|-----|---------|-------------|
-| `company` | `"YuleTech"` | Company name in the copyright header |
-| `author` | `"yuleASR Team"` | Author name in the copyright header |
-| `license` | `"Proprietary"` | License type displayed in the header |
+| Key       | Default          | Description                          |
+| --------- | ---------------- | ------------------------------------ |
+| `company` | `"YuleTech"`     | Company name in the copyright header |
+| `author`  | `"yuleASR Team"` | Author name in the copyright header  |
+| `license` | `"Proprietary"`  | License type displayed in the header |
 
 Set these via `PUT /v1/api/plugins/example-custom-header-generator/config`:
 

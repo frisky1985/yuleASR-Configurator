@@ -3,39 +3,39 @@
  * For large configurations, only renders visible items
  */
 
-import { Folder, FileJson, Settings, Hash, Type, ToggleLeft, ChevronRight, ChevronDown } from 'lucide-react'
-import { useMemo, useCallback, memo } from 'react'
+import { Folder, FileJson, Settings, ChevronRight, ChevronDown } from 'lucide-react';
+import { useMemo, useCallback, memo } from 'react';
 
-import { VirtualList } from './VirtualList'
+import { VirtualList } from './VirtualList';
 
-import { cn } from '@/lib/utils'
-import type { ConfigFile, ConfigModule, ValidationIssue } from '@/types'
+import { cn } from '@/lib/utils';
+import type { ConfigFile, ConfigModule, ValidationIssue } from '@/types';
 
 interface ConfigTreeVirtualProps {
-  config: ConfigFile
-  selectedPath: string | null
-  onSelectPath: (path: string) => void
-  validationIssues: ValidationIssue[]
-  showDisabled: boolean
-  onToggleModule: (id: string, enabled: boolean) => void
-  filterText?: string
+  config: ConfigFile;
+  selectedPath: string | null;
+  onSelectPath: (path: string) => void;
+  validationIssues: ValidationIssue[];
+  showDisabled: boolean;
+  onToggleModule: (id: string, enabled: boolean) => void;
+  filterText?: string;
 }
 
 interface TreeNode {
-  id: string
-  type: 'layer' | 'module' | 'container' | 'parameter'
-  name: string
-  displayName: string
-  path: string
-  depth: number
-  icon: React.ReactNode
-  enabled?: boolean
-  hasChildren: boolean
-  isExpanded: boolean
+  id: string;
+  type: 'layer' | 'module' | 'container' | 'parameter';
+  name: string;
+  displayName: string;
+  path: string;
+  depth: number;
+  icon: React.ReactNode;
+  enabled?: boolean;
+  hasChildren: boolean;
+  isExpanded: boolean;
 }
 
 // Tree item height in pixels
-const ITEM_HEIGHT = 36
+const ITEM_HEIGHT = 36;
 
 export const ConfigTreeVirtual = memo(function ConfigTreeVirtual({
   config,
@@ -48,38 +48,38 @@ export const ConfigTreeVirtual = memo(function ConfigTreeVirtual({
 }: ConfigTreeVirtualProps) {
   // Flatten tree structure for virtualization
   const flattenedNodes = useMemo(() => {
-    const nodes: TreeNode[] = []
-    const expandedPaths = new Set<string>()
+    const nodes: TreeNode[] = [];
+    const expandedPaths = new Set<string>();
 
     // Build expanded paths from selected path
     if (selectedPath) {
-      const parts = selectedPath.split('/')
-      let currentPath = ''
-      parts.forEach((part) => {
-        currentPath = currentPath ? `${currentPath}/${part}` : part
-        expandedPaths.add(currentPath)
-      })
+      const parts = selectedPath.split('/');
+      let currentPath = '';
+      parts.forEach(part => {
+        currentPath = currentPath ? `${currentPath}/${part}` : part;
+        expandedPaths.add(currentPath);
+      });
     }
 
     // Group modules by layer
-    const modulesByLayer: Record<string, ConfigModule[]> = {}
-    config.modules.forEach((module) => {
-      if (!showDisabled && !module.enabled) return
-      if (filterText && !matchesFilter(module, filterText)) return
-      
+    const modulesByLayer: Record<string, ConfigModule[]> = {};
+    config.modules.forEach(module => {
+      if (!showDisabled && !module.enabled) return;
+      if (filterText && !matchesFilter(module, filterText)) return;
+
       if (!modulesByLayer[module.layer]) {
-        modulesByLayer[module.layer] = []
+        modulesByLayer[module.layer] = [];
       }
-      modulesByLayer[module.layer].push(module)
-    })
+      modulesByLayer[module.layer].push(module);
+    });
 
     // Create layer nodes
-    const layers = ['MCAL', 'ECUAL', 'Service', 'RTE', 'OS', 'ASW']
-    layers.forEach((layer) => {
+    const layers = ['MCAL', 'ECUAL', 'Service', 'RTE', 'OS', 'ASW'];
+    layers.forEach(layer => {
       if (modulesByLayer[layer]) {
-        const layerPath = `layer:${layer}`
-        const isExpanded = expandedPaths.has(layerPath)
-        
+        const layerPath = `layer:${layer}`;
+        const isExpanded = expandedPaths.has(layerPath);
+
         nodes.push({
           id: layerPath,
           type: 'layer',
@@ -90,15 +90,15 @@ export const ConfigTreeVirtual = memo(function ConfigTreeVirtual({
           icon: <Folder className="w-4 h-4 text-blue-500" />,
           hasChildren: modulesByLayer[layer].length > 0,
           isExpanded,
-        })
+        });
 
         if (isExpanded) {
-          modulesByLayer[layer].forEach((module) => {
-            const modulePath = `${layerPath}/module:${module.id}`
-            const moduleExpanded = expandedPaths.has(modulePath)
+          modulesByLayer[layer].forEach(module => {
+            const modulePath = `${layerPath}/module:${module.id}`;
+            const moduleExpanded = expandedPaths.has(modulePath);
             const hasErrors = validationIssues.some(
-              (i) => i.module === module.name && i.severity === 'error'
-            )
+              i => i.module === module.name && i.severity === 'error'
+            );
 
             nodes.push({
               id: modulePath,
@@ -115,12 +115,12 @@ export const ConfigTreeVirtual = memo(function ConfigTreeVirtual({
               enabled: module.enabled,
               hasChildren: module.containers.length > 0 || module.parameters.length > 0,
               isExpanded: moduleExpanded,
-            })
+            });
 
             // Add container nodes if expanded
             if (moduleExpanded) {
-              module.containers.forEach((container) => {
-                const containerPath = `${modulePath}/container:${container.id}`
+              module.containers.forEach(container => {
+                const containerPath = `${modulePath}/container:${container.id}`;
                 nodes.push({
                   id: containerPath,
                   type: 'container',
@@ -131,122 +131,128 @@ export const ConfigTreeVirtual = memo(function ConfigTreeVirtual({
                   icon: <Settings className="w-4 h-4 text-gray-500" />,
                   hasChildren: container.parameters.length > 0,
                   isExpanded: expandedPaths.has(containerPath),
-                })
-              })
+                });
+              });
             }
-          })
+          });
         }
       }
-    })
+    });
 
-    return nodes
-  }, [config, selectedPath, validationIssues, showDisabled, filterText])
+    return nodes;
+  }, [config, selectedPath, validationIssues, showDisabled, filterText]);
 
   const matchesFilter = (module: ConfigModule, filter: string): boolean => {
-    const lowerFilter = filter.toLowerCase()
+    const lowerFilter = filter.toLowerCase();
     return (
       module.name.toLowerCase().includes(lowerFilter) ||
       (module.displayName && module.displayName.toLowerCase().includes(lowerFilter)) ||
       module.containers.some(
-        (c) =>
+        c =>
           c.name.toLowerCase().includes(lowerFilter) ||
           (c.displayName && c.displayName.toLowerCase().includes(lowerFilter))
       )
-    )
-  }
+    );
+  };
 
-  const handleToggleExpand = useCallback((node: TreeNode) => {
-    if (!node.hasChildren) {
-      onSelectPath(node.path)
-      return
-    }
+  const handleToggleExpand = useCallback(
+    (node: TreeNode) => {
+      if (!node.hasChildren) {
+        onSelectPath(node.path);
+        return;
+      }
 
-    // Toggle expansion by selecting or deselecting
-    if (selectedPath?.startsWith(node.path)) {
-      // Collapse: go to parent
-      const parentPath = node.path.split('/').slice(0, -1).join('/')
-      onSelectPath(parentPath || node.path)
-    } else {
-      // Expand
-      onSelectPath(node.path)
-    }
-  }, [onSelectPath, selectedPath])
+      // Toggle expansion by selecting or deselecting
+      if (selectedPath?.startsWith(node.path)) {
+        // Collapse: go to parent
+        const parentPath = node.path.split('/').slice(0, -1).join('/');
+        onSelectPath(parentPath || node.path);
+      } else {
+        // Expand
+        onSelectPath(node.path);
+      }
+    },
+    [onSelectPath, selectedPath]
+  );
 
-  const renderNode = useCallback((node: TreeNode) => {
-    const isSelected = selectedPath === node.path
-    const hasErrors = validationIssues.some((i) => i.path.includes(node.name))
+  const renderNode = useCallback(
+    (node: TreeNode) => {
+      const isSelected = selectedPath === node.path;
+      const hasErrors = validationIssues.some(i => i.path.includes(node.name));
 
-    return (
-      <div
-        className={cn(
-          'flex items-center gap-2 px-2 py-2 cursor-pointer select-none transition-colors',
-          isSelected
-            ? 'bg-primary-100 text-primary-900 dark:bg-primary-900/30'
-            : 'hover:bg-accent',
-          node.enabled === false && 'opacity-50'
-        )}
-        style={{ paddingLeft: `${8 + node.depth * 20}px` }}
-        onClick={() => handleToggleExpand(node)}
-      >
-        {/* Expand/Collapse indicator */}
-        {node.hasChildren && (
-          <span className="w-4 h-4 flex items-center justify-center">
-            {node.isExpanded ? (
-              <ChevronDown className="w-3 h-3 text-muted-foreground" />
-            ) : (
-              <ChevronRight className="w-3 h-3 text-muted-foreground" />
-            )}
-          </span>
-        )}
-        {!node.hasChildren && <span className="w-4" />}
-
-        {/* Icon */}
-        <span className="flex-shrink-0">{node.icon}</span>
-
-        {/* Name */}
-        <span
+      return (
+        <div
           className={cn(
-            'flex-1 text-sm truncate',
-            isSelected ? 'font-medium' : 'text-foreground',
-            hasErrors && !isSelected && 'text-red-600'
+            'flex items-center gap-2 px-2 py-2 cursor-pointer select-none transition-colors',
+            isSelected
+              ? 'bg-primary-100 text-primary-900 dark:bg-primary-900/30'
+              : 'hover:bg-accent',
+            node.enabled === false && 'opacity-50'
           )}
+          style={{ paddingLeft: `${8 + node.depth * 20}px` }}
+          onClick={() => handleToggleExpand(node)}
         >
-          {node.displayName}
-        </span>
+          {/* Expand/Collapse indicator */}
+          {node.hasChildren && (
+            <span className="w-4 h-4 flex items-center justify-center">
+              {node.isExpanded ? (
+                <ChevronDown className="w-3 h-3 text-muted-foreground" />
+              ) : (
+                <ChevronRight className="w-3 h-3 text-muted-foreground" />
+              )}
+            </span>
+          )}
+          {!node.hasChildren && <span className="w-4" />}
 
-        {/* Enabled toggle for modules */}
-        {node.type === 'module' && node.enabled !== undefined && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              const moduleId = node.id.split(':')[1]
-              onToggleModule(moduleId, !node.enabled)
-            }}
+          {/* Icon */}
+          <span className="flex-shrink-0">{node.icon}</span>
+
+          {/* Name */}
+          <span
             className={cn(
-              'w-8 h-4 rounded-full transition-colors relative',
-              node.enabled ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'
+              'flex-1 text-sm truncate',
+              isSelected ? 'font-medium' : 'text-foreground',
+              hasErrors && !isSelected && 'text-red-600'
             )}
           >
-            <span
+            {node.displayName}
+          </span>
+
+          {/* Enabled toggle for modules */}
+          {node.type === 'module' && node.enabled !== undefined && (
+            <button
+              onClick={e => {
+                e.stopPropagation();
+                const moduleId = node.id.split(':')[1];
+                onToggleModule(moduleId, !node.enabled);
+              }}
               className={cn(
-                'absolute top-0.5 w-3 h-3 bg-white rounded-full transition-transform',
-                node.enabled ? 'right-0.5' : 'left-0.5'
+                'w-8 h-4 rounded-full transition-colors relative',
+                node.enabled ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'
               )}
-            />
-          </button>
-        )}
-      </div>
-    )
-  }, [selectedPath, validationIssues, handleToggleExpand, onToggleModule])
+            >
+              <span
+                className={cn(
+                  'absolute top-0.5 w-3 h-3 bg-white rounded-full transition-transform',
+                  node.enabled ? 'right-0.5' : 'left-0.5'
+                )}
+              />
+            </button>
+          )}
+        </div>
+      );
+    },
+    [selectedPath, validationIssues, handleToggleExpand, onToggleModule]
+  );
 
   return (
     <div className="h-full bg-card border border-border rounded-lg overflow-hidden">
       <VirtualList
         items={flattenedNodes}
         itemHeight={ITEM_HEIGHT}
-        renderItem={(node) => renderNode(node)}
+        renderItem={node => renderNode(node)}
         className="h-full"
       />
     </div>
-  )
-})
+  );
+});

@@ -24,14 +24,17 @@ describe('ImageLightbox', () => {
   beforeEach(() => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
     // 模拟图片加载
-    vi.stubGlobal('Image', class {
-      onload: (() => void) | null = null;
-      onerror: (() => void) | null = null;
-      src = '';
-      constructor() {
-        setTimeout(() => this.onload?.(), 0);
+    vi.stubGlobal(
+      'Image',
+      class {
+        onload: (() => void) | null = null;
+        onerror: (() => void) | null = null;
+        src = '';
+        constructor() {
+          setTimeout(() => this.onload?.(), 0);
+        }
       }
-    });
+    );
   });
 
   afterEach(() => {
@@ -100,28 +103,14 @@ describe('ImageLightbox', () => {
   });
 
   it('应该有导航按钮当有多张图片时', () => {
-    render(
-      <ImageLightbox
-        {...mockImages[0]}
-        images={mockImages}
-        currentIndex={1}
-        isOpen={true}
-      />
-    );
+    render(<ImageLightbox {...mockImages[0]} images={mockImages} currentIndex={1} isOpen={true} />);
 
     expect(screen.getByLabelText('上一张图片')).toBeInTheDocument();
     expect(screen.getByLabelText('下一张图片')).toBeInTheDocument();
   });
 
   it('应该显示图片计数器', () => {
-    render(
-      <ImageLightbox
-        {...mockImages[0]}
-        images={mockImages}
-        currentIndex={1}
-        isOpen={true}
-      />
-    );
+    render(<ImageLightbox {...mockImages[0]} images={mockImages} currentIndex={1} isOpen={true} />);
 
     expect(screen.getByText('2 / 3')).toBeInTheDocument();
   });
@@ -172,14 +161,7 @@ describe('ImageLightbox', () => {
   });
 
   it('应该隐藏导航按钮当没有更多图片时', () => {
-    render(
-      <ImageLightbox
-        {...mockImages[0]}
-        images={mockImages}
-        currentIndex={0}
-        isOpen={true}
-      />
-    );
+    render(<ImageLightbox {...mockImages[0]} images={mockImages} currentIndex={0} isOpen={true} />);
 
     expect(screen.queryByLabelText('上一张图片')).not.toBeInTheDocument();
     expect(screen.getByLabelText('下一张图片')).toBeInTheDocument();

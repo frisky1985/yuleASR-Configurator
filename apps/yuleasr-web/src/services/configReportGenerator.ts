@@ -5,17 +5,17 @@
  * Output: Beautiful HTML string suitable for download or print.
  */
 
-import type { ConfigFile, ConfigModule, ConfigContainer, ConfigParameter } from '@/types/config'
-import { formatDate } from '@/lib/utils'
+import { formatDate } from '@/lib/utils';
+import type { ConfigFile, ConfigModule, ConfigContainer, ConfigParameter } from '@/types/config';
 
 /**
  * Format a parameter value for display in HTML
  */
 function formatParamValue(value: unknown): string {
-  if (value === undefined || value === null) return '<span class="val-null">—</span>'
-  if (typeof value === 'boolean') return value ? 'true' : 'false'
-  if (Array.isArray(value)) return `[${value.map(v => String(v)).join(', ')}]`
-  return String(value)
+  if (value === undefined || value === null) return '<span class="val-null">—</span>';
+  if (typeof value === 'boolean') return value ? 'true' : 'false';
+  if (Array.isArray(value)) return `[${value.map(v => String(v)).join(', ')}]`;
+  return String(value);
 }
 
 /**
@@ -27,9 +27,9 @@ function moduleStatusBadge(status: ConfigModule['configStatus']): string {
     configuring: { label: 'Configuring', cls: 'badge-blue' },
     partial: { label: 'Partial', cls: 'badge-yellow' },
     unconfigured: { label: 'Unconfigured', cls: 'badge-gray' },
-  }
-  const b = badges[status] || badges.unconfigured
-  return `<span class="badge ${b.cls}">${b.label}</span>`
+  };
+  const b = badges[status] || badges.unconfigured;
+  return `<span class="badge ${b.cls}">${b.label}</span>`;
 }
 
 /**
@@ -41,7 +41,7 @@ function renderParameterRows(parameters: ConfigParameter[], indent = ''): string
     .map(p => {
       const depInfo = p.dependencies?.length
         ? `<span class="dep-badge">depends: ${p.dependencies.map(d => `${d.parameter} ${d.operator} ${d.value}`).join(', ')}</span>`
-        : ''
+        : '';
       return `<tr>
         <td class="param-name">${indent}${p.displayName || p.name}</td>
         <td>${p.type}</td>
@@ -49,159 +49,161 @@ function renderParameterRows(parameters: ConfigParameter[], indent = ''): string
         <td>${p.defaultValue !== undefined ? formatParamValue(p.defaultValue) : '—'}</td>
         <td>${p.unit || '—'}</td>
         <td>${depInfo}</td>
-      </tr>`
+      </tr>`;
     })
-    .join('\n')
+    .join('\n');
 }
 
 /**
  * Render a container and its sub-containers recursively
  */
 function renderContainer(container: ConfigContainer, depth = 1): string {
-  const indent = '  '.repeat(depth)
-  const hasSubs = container.subContainers && container.subContainers.length > 0
-  const hasParams = container.parameters && container.parameters.length > 0
+  const indent = '  '.repeat(depth);
+  const hasSubs = container.subContainers && container.subContainers.length > 0;
+  const hasParams = container.parameters && container.parameters.length > 0;
 
-  let html = ''
+  let html = '';
   if (hasParams) {
-    html += `<h${Math.min(depth + 2, 4)} style="margin:${depth > 1 ? '12px 0 6px' : '16px 0 8px'};color:#374151;">${container.displayName || container.name}</h${Math.min(depth + 2, 4)}>\n`
+    html += `<h${Math.min(depth + 2, 4)} style="margin:${depth > 1 ? '12px 0 6px' : '16px 0 8px'};color:#374151;">${container.displayName || container.name}</h${Math.min(depth + 2, 4)}>\n`;
     if (container.description) {
-      html += `<p style="font-size:0.875rem;color:#6b7280;margin-bottom:8px;">${container.description}</p>\n`
+      html += `<p style="font-size:0.875rem;color:#6b7280;margin-bottom:8px;">${container.description}</p>\n`;
     }
-    html += `<table class="params-table">\n`
-    html += `<thead><tr><th>Parameter</th><th>Type</th><th>Value</th><th>Default</th><th>Unit</th><th>Dependencies</th></tr></thead>\n`
-    html += `<tbody>\n`
-    html += renderParameterRows(container.parameters, '')
-    html += `</tbody>\n</table>\n`
+    html += `<table class="params-table">\n`;
+    html += `<thead><tr><th>Parameter</th><th>Type</th><th>Value</th><th>Default</th><th>Unit</th><th>Dependencies</th></tr></thead>\n`;
+    html += `<tbody>\n`;
+    html += renderParameterRows(container.parameters, '');
+    html += `</tbody>\n</table>\n`;
   }
 
   if (hasSubs) {
-    html += `<div class="sub-container">\n`
+    html += `<div class="sub-container">\n`;
     for (const sub of container.subContainers!) {
-      html += renderContainer(sub, depth + 1)
+      html += renderContainer(sub, depth + 1);
     }
-    html += `</div>\n`
+    html += `</div>\n`;
   }
 
-  return html
+  return html;
 }
 
 /**
  * Render a complete module section
  */
 function renderModule(module: ConfigModule): string {
-  const hasContainerParams = module.containers.some(c =>
-    c.parameters.length > 0 || (c.subContainers && c.subContainers.some(sc => sc.parameters.length > 0))
-  )
-  const hasModuleParams = module.parameters.length > 0
+  const hasContainerParams = module.containers.some(
+    c =>
+      c.parameters.length > 0 ||
+      (c.subContainers && c.subContainers.some(sc => sc.parameters.length > 0))
+  );
+  const hasModuleParams = module.parameters.length > 0;
 
-  let html = `<div class="module-card">\n`
-  html += `<div class="module-header">\n`
-  html += `<div class="module-info">\n`
-  html += `<h3>${module.displayName || module.name}</h3>\n`
-  html += `<span class="module-meta">${module.vendor ? `${module.vendor} | ` : ''}v${module.version} | ${module.layer}</span>\n`
-  html += `</div>\n`
-  html += `<div class="module-status">\n`
-  html += moduleStatusBadge(module.configStatus)
-  html += `<span class="status-indicator ${module.enabled ? 'enabled' : 'disabled'}">${module.enabled ? 'Enabled' : 'Disabled'}</span>\n`
-  html += `</div>\n`
-  html += `</div>\n`
+  let html = `<div class="module-card">\n`;
+  html += `<div class="module-header">\n`;
+  html += `<div class="module-info">\n`;
+  html += `<h3>${module.displayName || module.name}</h3>\n`;
+  html += `<span class="module-meta">${module.vendor ? `${module.vendor} | ` : ''}v${module.version} | ${module.layer}</span>\n`;
+  html += `</div>\n`;
+  html += `<div class="module-status">\n`;
+  html += moduleStatusBadge(module.configStatus);
+  html += `<span class="status-indicator ${module.enabled ? 'enabled' : 'disabled'}">${module.enabled ? 'Enabled' : 'Disabled'}</span>\n`;
+  html += `</div>\n`;
+  html += `</div>\n`;
 
   if (module.description) {
-    html += `<p class="module-desc">${module.description}</p>\n`
+    html += `<p class="module-desc">${module.description}</p>\n`;
   }
 
   // Module-level parameters
   if (hasModuleParams) {
-    html += `<h4 style="margin:12px 0 6px;color:#374151;font-size:0.9rem;">Module Parameters</h4>\n`
-    html += `<table class="params-table">\n`
-    html += `<thead><tr><th>Parameter</th><th>Type</th><th>Value</th><th>Default</th><th>Unit</th><th>Dependencies</th></tr></thead>\n`
-    html += `<tbody>\n`
-    html += renderParameterRows(module.parameters)
-    html += `</tbody>\n</table>\n`
+    html += `<h4 style="margin:12px 0 6px;color:#374151;font-size:0.9rem;">Module Parameters</h4>\n`;
+    html += `<table class="params-table">\n`;
+    html += `<thead><tr><th>Parameter</th><th>Type</th><th>Value</th><th>Default</th><th>Unit</th><th>Dependencies</th></tr></thead>\n`;
+    html += `<tbody>\n`;
+    html += renderParameterRows(module.parameters);
+    html += `</tbody>\n</table>\n`;
   }
 
   // Containers
   if (hasContainerParams) {
     for (const container of module.containers) {
-      html += renderContainer(container)
+      html += renderContainer(container);
     }
   } else if (!hasModuleParams) {
-    html += `<p style="color:#9ca3af;font-size:0.875rem;padding:8px 0;">No parameters configured.</p>\n`
+    html += `<p style="color:#9ca3af;font-size:0.875rem;padding:8px 0;">No parameters configured.</p>\n`;
   }
 
   // Dependencies
   if (module.dependencies.length > 0) {
-    html += `<div class="deps-section">\n`
-    html += `<h4 style="margin:12px 0 4px;color:#6b7280;font-size:0.8rem;text-transform:uppercase;">Dependencies</h4>\n`
-    html += `<div class="deps-list">\n`
+    html += `<div class="deps-section">\n`;
+    html += `<h4 style="margin:12px 0 4px;color:#6b7280;font-size:0.8rem;text-transform:uppercase;">Dependencies</h4>\n`;
+    html += `<div class="deps-list">\n`;
     for (const dep of module.dependencies) {
-      html += `<span class="dep-tag ${dep.required ? 'required' : 'optional'}">${dep.module}${dep.required ? ' (required)' : ''}</span>\n`
+      html += `<span class="dep-tag ${dep.required ? 'required' : 'optional'}">${dep.module}${dep.required ? ' (required)' : ''}</span>\n`;
     }
-    html += `</div>\n`
-    html += `</div>\n`
+    html += `</div>\n`;
+    html += `</div>\n`;
   }
 
   // Validation errors
   if (module.validationErrors && module.validationErrors.length > 0) {
-    html += `<div class="validation-errors">\n`
-    html += `<h4 style="margin:12px 0 4px;color:#dc2626;font-size:0.8rem;text-transform:uppercase;">Validation Issues</h4>\n`
-    html += `<ul>\n`
+    html += `<div class="validation-errors">\n`;
+    html += `<h4 style="margin:12px 0 4px;color:#dc2626;font-size:0.8rem;text-transform:uppercase;">Validation Issues</h4>\n`;
+    html += `<ul>\n`;
     for (const err of module.validationErrors) {
-      html += `<li>${err}</li>\n`
+      html += `<li>${err}</li>\n`;
     }
-    html += `</ul>\n`
-    html += `</div>\n`
+    html += `</ul>\n`;
+    html += `</div>\n`;
   }
 
-  html += `</div>\n`
-  return html
+  html += `</div>\n`;
+  return html;
 }
 
 /**
  * Generate a complete HTML audit report from a configuration
  */
 export function generateAuditReport(config: ConfigFile): string {
-  const now = new Date().toISOString().replace('T', ' ').substring(0, 19)
-  const enabledModules = config.modules.filter(m => m.enabled)
-  const disabledModules = config.modules.filter(m => !m.enabled)
-  const configuredCount = config.modules.filter(m => m.configStatus === 'configured').length
-  const totalModules = config.modules.length
-  const progressPct = totalModules > 0 ? Math.round((configuredCount / totalModules) * 100) : 0
+  const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
+  const enabledModules = config.modules.filter(m => m.enabled);
+  const disabledModules = config.modules.filter(m => !m.enabled);
+  const configuredCount = config.modules.filter(m => m.configStatus === 'configured').length;
+  const totalModules = config.modules.length;
+  const progressPct = totalModules > 0 ? Math.round((configuredCount / totalModules) * 100) : 0;
 
   // Layer summary
-  const layerSummary: Record<string, { total: number; configured: number }> = {}
+  const layerSummary: Record<string, { total: number; configured: number }> = {};
   for (const m of config.modules) {
-    if (!layerSummary[m.layer]) layerSummary[m.layer] = { total: 0, configured: 0 }
-    layerSummary[m.layer].total++
-    if (m.configStatus === 'configured') layerSummary[m.layer].configured++
+    if (!layerSummary[m.layer]) layerSummary[m.layer] = { total: 0, configured: 0 };
+    layerSummary[m.layer].total++;
+    if (m.configStatus === 'configured') layerSummary[m.layer].configured++;
   }
 
   // Module sections
-  const layers = ['MCAL', 'ECUAL', 'Service', 'OS', 'RTE', 'ASW']
-  let moduleHtml = ''
+  const layers = ['MCAL', 'ECUAL', 'Service', 'OS', 'RTE', 'ASW'];
+  let moduleHtml = '';
   for (const layer of layers) {
-    const layerModules = config.modules.filter(m => m.layer === layer && m.enabled)
-    if (layerModules.length === 0) continue
-    moduleHtml += `<h2 class="layer-header">${layer} (${layerModules.length})</h2>\n`
+    const layerModules = config.modules.filter(m => m.layer === layer && m.enabled);
+    if (layerModules.length === 0) continue;
+    moduleHtml += `<h2 class="layer-header">${layer} (${layerModules.length})</h2>\n`;
     for (const mod of layerModules) {
-      moduleHtml += renderModule(mod)
+      moduleHtml += renderModule(mod);
     }
   }
 
   // Disabled modules
   if (disabledModules.length > 0) {
-    moduleHtml += `<h2 class="layer-header" style="color:#9ca3af;">Disabled Modules (${disabledModules.length})</h2>\n`
+    moduleHtml += `<h2 class="layer-header" style="color:#9ca3af;">Disabled Modules (${disabledModules.length})</h2>\n`;
     for (const mod of disabledModules) {
-      moduleHtml += `<div class="module-card disabled">\n`
-      moduleHtml += `<div class="module-header">\n`
-      moduleHtml += `<div class="module-info">\n`
-      moduleHtml += `<h3 style="color:#9ca3af;">${mod.displayName || mod.name}</h3>\n`
-      moduleHtml += `<span class="module-meta">v${mod.version} | ${mod.layer}</span>\n`
-      moduleHtml += `</div>\n`
-      moduleHtml += `<span class="status-indicator disabled">Disabled</span>\n`
-      moduleHtml += `</div>\n`
-      moduleHtml += `</div>\n`
+      moduleHtml += `<div class="module-card disabled">\n`;
+      moduleHtml += `<div class="module-header">\n`;
+      moduleHtml += `<div class="module-info">\n`;
+      moduleHtml += `<h3 style="color:#9ca3af;">${mod.displayName || mod.name}</h3>\n`;
+      moduleHtml += `<span class="module-meta">v${mod.version} | ${mod.layer}</span>\n`;
+      moduleHtml += `</div>\n`;
+      moduleHtml += `<span class="status-indicator disabled">Disabled</span>\n`;
+      moduleHtml += `</div>\n`;
+      moduleHtml += `</div>\n`;
     }
   }
 
@@ -339,14 +341,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helv
 
 <!-- Layer Summary -->
 <div class="summary-grid" style="grid-template-columns:repeat(auto-fit,minmax(120px,1fr));">
-${Object.entries(layerSummary).map(([layer, st]) => {
-  const pct = st.total > 0 ? Math.round((st.configured / st.total) * 100) : 0
-  const color = pct >= 80 ? '#22c55e' : pct >= 40 ? '#f59e0b' : '#ef4444'
-  return `<div class="summary-card" style="border-top:3px solid ${color};">
+${Object.entries(layerSummary)
+  .map(([layer, st]) => {
+    const pct = st.total > 0 ? Math.round((st.configured / st.total) * 100) : 0;
+    const color = pct >= 80 ? '#22c55e' : pct >= 40 ? '#f59e0b' : '#ef4444';
+    return `<div class="summary-card" style="border-top:3px solid ${color};">
     <div class="count" style="color:${color};">${st.configured}/${st.total}</div>
     <div class="label">${layer}</div>
-  </div>`
-}).join('\n')}
+  </div>`;
+  })
+  .join('\n')}
 </div>
 
 <!-- Config Info -->
@@ -361,7 +365,9 @@ ${Object.entries(layerSummary).map(([layer, st]) => {
 </div>
 
 <!-- Validation Status -->
-${config.lastValidation ? `
+${
+  config.lastValidation
+    ? `
 <div style="background:white;border:1px solid #e5e7eb;border-radius:0.5rem;padding:1rem 1.25rem;margin-bottom:1.5rem;">
 <h3 style="font-size:0.95rem;margin-bottom:0.5rem;">Validation Status</h3>
 <div class="summary-grid" style="grid-template-columns:repeat(4,1fr);">
@@ -383,10 +389,14 @@ ${config.lastValidation ? `
   </div>
 </div>
 </div>
-` : ''}
+`
+    : ''
+}
 
 <!-- OS Configuration -->
-${config.os ? `
+${
+  config.os
+    ? `
 <div style="background:white;border:1px solid #e5e7eb;border-radius:0.5rem;padding:1rem 1.25rem;margin-bottom:1.5rem;">
 <h3 style="font-size:0.95rem;margin-bottom:0.5rem;">OS Configuration</h3>
 <div style="display:flex;flex-wrap:wrap;gap:1rem;font-size:0.875rem;">
@@ -401,7 +411,9 @@ ${config.os ? `
   <div><strong>Schedule Tables:</strong> ${config.os.scheduleTables?.length || 0}</div>
 </div>
 </div>
-` : ''}
+`
+    : ''
+}
 
 <!-- Modules Detail -->
 <h2 style="font-size:1.25rem;font-weight:700;margin:1.5rem 0 0.75rem;">Module Configuration Detail</h2>
@@ -415,21 +427,21 @@ ${moduleHtml}
 
 </div>
 </body>
-</html>`
+</html>`;
 }
 
 /**
  * Trigger download of the HTML audit report
  */
 export function downloadAuditReport(config: ConfigFile): void {
-  const html = generateAuditReport(config)
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `audit-report-${config.name.replace(/[^a-zA-Z0-9_-]/g, '_')}-${new Date().toISOString().split('T')[0]}.html`
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
+  const html = generateAuditReport(config);
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `audit-report-${config.name.replace(/[^a-zA-Z0-9_-]/g, '_')}-${new Date().toISOString().split('T')[0]}.html`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }

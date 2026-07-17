@@ -7,16 +7,16 @@ import {
   ReactFlowProvider,
   type Node,
   type Connection,
-} from '@xyflow/react'
-import { useCallback, useState, useRef, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import '@xyflow/react/dist/style.css'
+} from '@xyflow/react';
+import { useCallback, useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '@xyflow/react/dist/style.css';
 
-import { ModuleNode } from './ModuleNode'
+import { ModuleNode } from './ModuleNode';
 
-import { useModuleLayout, useModuleFilter, useDependencyHighlight } from '@/hooks/useModuleLayout'
-import { cn } from '@/lib/utils'
-import type { ModuleLayer , ModuleConfig } from '@/types'
+import { useModuleLayout, useModuleFilter, useDependencyHighlight } from '@/hooks/useModuleLayout';
+import { cn } from '@/lib/utils';
+import type { ModuleLayer, ModuleConfig } from '@/types';
 
 import {
   Search,
@@ -30,111 +30,117 @@ import {
   ZoomIn,
   ZoomOut,
   RotateCcw,
-} from 'lucide-react'
-
+} from 'lucide-react';
 
 // Node types registry
 const nodeTypes = {
   moduleNode: ModuleNode,
-}
+};
 
 interface ModuleGraphProps {
-  configId: string
-  modules: ModuleConfig[]
-  onNodeClick?: (moduleId: string) => void
-  className?: string
+  configId: string;
+  modules: ModuleConfig[];
+  onNodeClick?: (moduleId: string) => void;
+  className?: string;
 }
 
 function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleGraphProps) {
-  const navigate = useNavigate()
-  const { fitView, zoomIn, zoomOut } = useReactFlow()
-  const containerRef = useRef<HTMLDivElement>(null)
-  
+  const navigate = useNavigate();
+  const { fitView, zoomIn, zoomOut } = useReactFlow();
+  const containerRef = useRef<HTMLDivElement>(null);
+
   // State
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
-  const [showFilters, setShowFilters] = useState(false)
-  const [showMiniMap, setShowMiniMap] = useState(true)
-  const [selectedLayers, setSelectedLayers] = useState<ModuleLayer[]>([])
-  const [showDisabled, setShowDisabled] = useState(true)
-  const [highlightPath, setHighlightPath] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [showFilters, setShowFilters] = useState(false);
+  const [showMiniMap, setShowMiniMap] = useState(true);
+  const [selectedLayers, setSelectedLayers] = useState<ModuleLayer[]>([]);
+  const [showDisabled, setShowDisabled] = useState(true);
+  const [highlightPath, setHighlightPath] = useState(true);
 
   // Filter modules
   const filteredModules = useModuleFilter(modules, searchQuery, {
     layers: selectedLayers.length > 0 ? selectedLayers : undefined,
     showDisabled,
-  })
+  });
 
   // Generate layout
-  const { nodes: layoutNodes, edges: layoutEdges } = useModuleLayout(filteredModules)
-  
+  const { nodes: layoutNodes, edges: layoutEdges } = useModuleLayout(filteredModules);
+
   // Highlight dependency paths
-  const highlightedEdges = useDependencyHighlight(layoutEdges, highlightPath ? selectedNodeId : null)
+  const highlightedEdges = useDependencyHighlight(
+    layoutEdges,
+    highlightPath ? selectedNodeId : null
+  );
 
   // Handle node click
-  const handleNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
-    setSelectedNodeId(node.id)
-    
-    // Store click handler in node data
-    const nodeData = node.data as { onClick?: (moduleId: string) => void }
-    if (nodeData.onClick) {
-      nodeData.onClick(node.id)
-    }
-    
-    onNodeClick?.(node.id)
-  }, [onNodeClick])
+  const handleNodeClick = useCallback(
+    (_: React.MouseEvent, node: Node) => {
+      setSelectedNodeId(node.id);
+
+      // Store click handler in node data
+      const nodeData = node.data as { onClick?: (moduleId: string) => void };
+      if (nodeData.onClick) {
+        nodeData.onClick(node.id);
+      }
+
+      onNodeClick?.(node.id);
+    },
+    [onNodeClick]
+  );
 
   // Handle node double click - navigate to config
-  const handleNodeDoubleClick = useCallback((_: React.MouseEvent, node: Node) => {
-    navigate(`/editor/${configId}/${node.id}`)
-  }, [navigate, configId])
+  const handleNodeDoubleClick = useCallback(
+    (_: React.MouseEvent, node: Node) => {
+      navigate(`/editor/${configId}/${node.id}`);
+    },
+    [navigate, configId]
+  );
 
   // Handle pane click - deselect
   const handlePaneClick = useCallback(() => {
-    setSelectedNodeId(null)
-  }, [])
+    setSelectedNodeId(null);
+  }, []);
 
   // Handle edge connection (visual only)
   const onConnect = useCallback((params: Connection) => {
-    console.log('Connection attempted:', params)
+    console.log('Connection attempted:', params);
     // Dependencies are read-only in graph view
-  }, [])
+  }, []);
 
   // Toggle layer filter
   const toggleLayer = useCallback((layer: ModuleLayer) => {
-    setSelectedLayers(prev => 
-      prev.includes(layer) 
-        ? prev.filter(l => l !== layer)
-        : [...prev, layer]
-    )
-  }, [])
+    setSelectedLayers(prev =>
+      prev.includes(layer) ? prev.filter(l => l !== layer) : [...prev, layer]
+    );
+  }, []);
 
   // Reset view
   const handleResetView = useCallback(() => {
-    fitView({ padding: 0.2, duration: 800 })
-    setSelectedNodeId(null)
-    setSearchQuery('')
-    setSelectedLayers([])
-    setShowDisabled(true)
-  }, [fitView])
+    fitView({ padding: 0.2, duration: 800 });
+    setSelectedNodeId(null);
+    setSearchQuery('');
+    setSelectedLayers([]);
+    setShowDisabled(true);
+  }, [fitView]);
 
   // Fit view on initial load
   useEffect(() => {
     const timer = setTimeout(() => {
-      fitView({ padding: 0.2, duration: 800 })
-    }, 100)
-    return () => clearTimeout(timer)
-  }, [fitView, modules.length])
+      fitView({ padding: 0.2, duration: 800 });
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [fitView, modules.length]);
 
   // Layer color map for legend
   const layerColors: Record<ModuleLayer, string> = {
-    MCAL: '#3b82f6',    // blue-500
-    ECUAL: '#a855f7',   // purple-500
+    MCAL: '#3b82f6', // blue-500
+    ECUAL: '#a855f7', // purple-500
     Service: '#f97316', // orange-500
-    RTE: '#ec4899',     // pink-500
-    ASW: '#22c55e',     // green-500
-    OS: '#6366f1',      // indigo-500
-  }
+    RTE: '#ec4899', // pink-500
+    ASW: '#22c55e', // green-500
+    OS: '#6366f1', // indigo-500
+  };
 
   const layerNames: Record<ModuleLayer, string> = {
     MCAL: 'MCAL',
@@ -143,7 +149,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
     RTE: 'Runtime',
     ASW: 'Application',
     OS: 'Operating System',
-  }
+  };
 
   // Update nodes with click handler
   const nodes = layoutNodes.map(node => ({
@@ -152,13 +158,13 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
     data: {
       ...node.data,
       onClick: (moduleId: string) => {
-        setSelectedNodeId(moduleId)
+        setSelectedNodeId(moduleId);
       },
     },
-  }))
+  }));
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className={cn(
         'relative w-full h-full rounded-xl overflow-hidden border border-app-border-primary',
@@ -177,7 +183,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
               type="text"
               placeholder="Search modules..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
               className="w-64 pl-9 pr-8 py-2 text-sm bg-transparent border-0 rounded-lg focus:ring-2 focus:ring-primary-500 focus:outline-none"
             />
             {searchQuery && (
@@ -196,8 +202,8 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
           onClick={() => setShowFilters(!showFilters)}
           className={cn(
             'pointer-events-auto p-2 rounded-lg border shadow-sm transition-colors',
-            showFilters 
-              ? 'bg-primary-50 border-app-border-primary-200 text-primary-700' 
+            showFilters
+              ? 'bg-primary-50 border-app-border-primary-200 text-primary-700'
               : 'bg-app-bg-primary border-app-border-primary text-app-text-secondary hover:bg-app-bg-secondary'
           )}
           title="Toggle filters"
@@ -233,8 +239,8 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
             onClick={() => setShowMiniMap(!showMiniMap)}
             className={cn(
               'p-1.5 rounded-md transition-colors',
-              showMiniMap 
-                ? 'bg-primary-50 text-primary-700' 
+              showMiniMap
+                ? 'bg-primary-50 text-primary-700'
                 : 'text-app-text-secondary hover:bg-app-bg-tertiary'
             )}
             title="Toggle minimap"
@@ -272,7 +278,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
                       : 'hover:bg-app-bg-secondary text-app-text-primary'
                   )}
                 >
-                  <span 
+                  <span
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: layerColors[layer] }}
                   />
@@ -311,7 +317,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
                 highlightPath ? 'bg-primary-500' : 'bg-app-bg-tertiary'
               )}
             >
-              <span 
+              <span
                 className={cn(
                   'absolute top-0.5 left-0.5 w-4 h-4 bg-app-bg-primary rounded-full transition-transform',
                   highlightPath ? 'translate-x-5' : 'translate-x-0'
@@ -323,10 +329,23 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
           {/* Stats */}
           <div className="pt-3 border-t border-app-border-primary">
             <div className="grid grid-cols-2 gap-2 text-xs text-app-text-secondary">
-              <div>Total: <span className="font-medium text-app-text-primary">{modules.length}</span></div>
-              <div>Visible: <span className="font-medium text-app-text-primary">{filteredModules.length}</span></div>
-              <div>Enabled: <span className="font-medium text-green-600">{filteredModules.filter(m => m.enabled).length}</span></div>
-              <div>Selected: <span className="font-medium text-primary-600">{selectedNodeId ? 1 : 0}</span></div>
+              <div>
+                Total: <span className="font-medium text-app-text-primary">{modules.length}</span>
+              </div>
+              <div>
+                Visible:{' '}
+                <span className="font-medium text-app-text-primary">{filteredModules.length}</span>
+              </div>
+              <div>
+                Enabled:{' '}
+                <span className="font-medium text-green-600">
+                  {filteredModules.filter(m => m.enabled).length}
+                </span>
+              </div>
+              <div>
+                Selected:{' '}
+                <span className="font-medium text-primary-600">{selectedNodeId ? 1 : 0}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -344,9 +363,7 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
               <X className="w-4 h-4" />
             </button>
           </div>
-          <p className="text-sm text-app-text-secondary mt-1">
-            Double-click to edit configuration
-          </p>
+          <p className="text-sm text-app-text-secondary mt-1">Double-click to edit configuration</p>
           <button
             onClick={() => navigate(`/editor/${configId}/${selectedNodeId}`)}
             className="mt-3 w-full px-3 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors"
@@ -375,25 +392,21 @@ function ModuleGraphInner({ configId, modules, onNodeClick, className }: ModuleG
         }}
         proOptions={{ hideAttribution: true }}
       >
-        <Background 
-          color="#e2e8f0" 
-          gap={20} 
-          size={1}
-        />
+        <Background color="#e2e8f0" gap={20} size={1} />
         <Controls className="!bg-app-bg-primary !border-app-border-primary !shadow-md" />
         {showMiniMap && (
-          <MiniMap 
+          <MiniMap
             className="!bg-app-bg-primary !border-app-border-primary !rounded-lg !shadow-md"
-            nodeColor={(node) => {
-              const layer = (node.data?.layer as ModuleLayer) || 'MCAL'
-              return layerColors[layer] || '#94a3b8'
+            nodeColor={node => {
+              const layer = (node.data?.layer as ModuleLayer) || 'MCAL';
+              return layerColors[layer] || '#94a3b8';
             }}
             maskColor="rgba(0, 0, 0, 0.1)"
           />
         )}
       </ReactFlow>
     </div>
-  )
+  );
 }
 
 // Wrap with ReactFlowProvider
@@ -402,5 +415,5 @@ export function ModuleGraph(props: ModuleGraphProps) {
     <ReactFlowProvider>
       <ModuleGraphInner {...props} />
     </ReactFlowProvider>
-  )
+  );
 }

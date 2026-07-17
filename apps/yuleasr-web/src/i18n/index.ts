@@ -1,10 +1,10 @@
-import i18n from 'i18next'
-import LanguageDetector from 'i18next-browser-languagedetector'
-import { initReactI18next } from 'react-i18next'
+import i18n from 'i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import { initReactI18next } from 'react-i18next';
 
 // Import translations
-import enTranslations from './locales/en.json'
-import zhTranslations from './locales/zh.json'
+import enTranslations from './locales/en.json';
+import zhTranslations from './locales/zh.json';
 
 const resources = {
   en: {
@@ -13,7 +13,7 @@ const resources = {
   zh: {
     translation: zhTranslations,
   },
-}
+};
 
 i18n
   .use(LanguageDetector)
@@ -32,6 +32,6 @@ i18n
     react: {
       useSuspense: false,
     },
-  })
+  });
 
-export default i18n
+export default i18n;

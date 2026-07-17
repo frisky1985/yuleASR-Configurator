@@ -1,37 +1,32 @@
-import { Handle, Position, type NodeProps, type Node } from '@xyflow/react'
-import { 
-  Cpu, 
-  Layers, 
-  Settings, 
-  Box, 
-  Code,
-  Power,
-  PowerOff
-} from 'lucide-react'
-import { memo } from 'react'
+import { Handle, Position, type NodeProps, type Node } from '@xyflow/react';
+import { Cpu, Layers, Settings, Box, Code, Power, PowerOff } from 'lucide-react';
+import { memo } from 'react';
 
-import { cn } from '@/lib/utils'
-import type { ModuleLayer } from '@/types'
+import { cn } from '@/lib/utils';
+import type { ModuleLayer } from '@/types';
 
 export interface ModuleNodeData extends Record<string, unknown> {
-  id: string
-  name: string
-  label?: string
-  layer: ModuleLayer
-  version: string
-  enabled: boolean
-  description?: string
-  parameterCount: number
-  dependencyCount: number
-  onClick?: (moduleId: string) => void
+  id: string;
+  name: string;
+  label?: string;
+  layer: ModuleLayer;
+  version: string;
+  enabled: boolean;
+  description?: string;
+  parameterCount: number;
+  dependencyCount: number;
+  onClick?: (moduleId: string) => void;
 }
 
-const layerConfig: Record<ModuleLayer, { 
-  icon: typeof Cpu
-  color: string
-  bgColor: string
-  borderColor: string
-}> = {
+const layerConfig: Record<
+  ModuleLayer,
+  {
+    icon: typeof Cpu;
+    color: string;
+    bgColor: string;
+    borderColor: string;
+  }
+> = {
   MCAL: {
     icon: Cpu,
     color: 'text-blue-600',
@@ -68,18 +63,18 @@ const layerConfig: Record<ModuleLayer, {
     bgColor: 'bg-indigo-50',
     borderColor: 'border-indigo-200',
   },
-}
+};
 
 function ModuleNodeComponent(props: NodeProps<Node<ModuleNodeData>>) {
-  const { data, selected } = props
-  const nodeData = data as unknown as ModuleNodeData
-  const config = layerConfig[nodeData.layer]
-  const Icon = config.icon
-  const StatusIcon = nodeData.enabled ? Power : PowerOff
+  const { data, selected } = props;
+  const nodeData = data as unknown as ModuleNodeData;
+  const config = layerConfig[nodeData.layer];
+  const Icon = config.icon;
+  const StatusIcon = nodeData.enabled ? Power : PowerOff;
 
   const handleClick = () => {
-    nodeData.onClick?.(nodeData.id)
-  }
+    nodeData.onClick?.(nodeData.id);
+  };
 
   return (
     <div
@@ -105,56 +100,57 @@ function ModuleNodeComponent(props: NodeProps<Node<ModuleNodeData>>) {
       />
 
       {/* Header */}
-      <div className={cn(
-        'flex items-center gap-3 px-4 py-3 border-b',
-        'bg-app-bg-primary/80 backdrop-blur-sm rounded-t-xl',
-        config.borderColor.replace('border-', 'border-')
-      )}>
-        <div className={cn(
-          'w-10 h-10 rounded-lg flex items-center justify-center',
-          config.bgColor
-        )}>
+      <div
+        className={cn(
+          'flex items-center gap-3 px-4 py-3 border-b',
+          'bg-app-bg-primary/80 backdrop-blur-sm rounded-t-xl',
+          config.borderColor.replace('border-', 'border-')
+        )}
+      >
+        <div
+          className={cn('w-10 h-10 rounded-lg flex items-center justify-center', config.bgColor)}
+        >
           <Icon className={cn('w-5 h-5', config.color)} />
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="font-semibold text-app-text-primary truncate">
             {nodeData.label || nodeData.name}
           </h3>
-          <p className={cn('text-xs font-medium', config.color)}>
-            {nodeData.layer}
-          </p>
+          <p className={cn('text-xs font-medium', config.color)}>{nodeData.layer}</p>
         </div>
-        <StatusIcon 
+        <StatusIcon
           className={cn(
             'w-4 h-4 flex-shrink-0',
             nodeData.enabled ? 'text-green-500' : 'text-app-text-tertiary'
-          )} 
+          )}
         />
       </div>
 
       {/* Body */}
       <div className="px-4 py-3 space-y-2">
         {nodeData.description && (
-          <p className="text-xs text-app-text-secondary line-clamp-2">
-            {nodeData.description}
-          </p>
+          <p className="text-xs text-app-text-secondary line-clamp-2">{nodeData.description}</p>
         )}
-        
+
         <div className="flex items-center justify-between text-xs">
           <span className="text-app-text-secondary">Version</span>
           <span className="font-medium text-app-text-primary">{nodeData.version}</span>
         </div>
-        
+
         <div className="flex items-center justify-between text-xs">
           <span className="text-app-text-secondary">Parameters</span>
-          <span className={cn(
-            'font-medium px-2 py-0.5 rounded-full',
-            nodeData.parameterCount > 0 ? 'bg-primary-100 text-primary-700' : 'bg-app-bg-tertiary text-app-text-secondary'
-          )}>
+          <span
+            className={cn(
+              'font-medium px-2 py-0.5 rounded-full',
+              nodeData.parameterCount > 0
+                ? 'bg-primary-100 text-primary-700'
+                : 'bg-app-bg-tertiary text-app-text-secondary'
+            )}
+          >
             {nodeData.parameterCount}
           </span>
         </div>
-        
+
         {nodeData.dependencyCount > 0 && (
           <div className="flex items-center justify-between text-xs">
             <span className="text-app-text-secondary">Dependencies</span>
@@ -175,8 +171,8 @@ function ModuleNodeComponent(props: NodeProps<Node<ModuleNodeData>>) {
         )}
       />
     </div>
-  )
+  );
 }
 
-export const ModuleNode = memo(ModuleNodeComponent)
-ModuleNode.displayName = 'ModuleNode'
+export const ModuleNode = memo(ModuleNodeComponent);
+ModuleNode.displayName = 'ModuleNode';

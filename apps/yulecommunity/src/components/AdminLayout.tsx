@@ -44,7 +44,9 @@ export function AdminLayout() {
 
   const isActive = (to: string) => {
     if (to.includes('?')) {
-      return location.pathname === to.split('?')[0] && location.search === to.slice(to.indexOf('?'));
+      return (
+        location.pathname === to.split('?')[0] && location.search === to.slice(to.indexOf('?'))
+      );
     }
     return location.pathname === to;
   };
@@ -79,7 +81,7 @@ export function AdminLayout() {
 
         {/* Nav */}
         <nav className="flex-1 py-4 space-y-1 overflow-y-auto">
-          {navItems.map((item) => {
+          {navItems.map(item => {
             const active = isActive(item.to);
             return (
               <Link
@@ -130,7 +132,9 @@ export function AdminLayout() {
             title="退出登录"
           >
             <LogOut className="w-5 h-5 flex-shrink-0" />
-            {sidebarExpanded && <span className="text-sm font-medium whitespace-nowrap">退出登录</span>}
+            {sidebarExpanded && (
+              <span className="text-sm font-medium whitespace-nowrap">退出登录</span>
+            )}
           </button>
         </div>
       </aside>
@@ -146,9 +150,7 @@ export function AdminLayout() {
             >
               <Menu className="w-5 h-5" />
             </button>
-            <h1 className="text-sm font-semibold text-muted-foreground">
-              YuleTech 社区管理后台
-            </h1>
+            <h1 className="text-sm font-semibold text-muted-foreground">YuleTech 社区管理后台</h1>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">

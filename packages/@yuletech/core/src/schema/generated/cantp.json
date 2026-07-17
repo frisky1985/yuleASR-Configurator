@@ -802,11 +802,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CanTpGeneral",
-    "CanTpConfig",
-    "LHBDCANFDTpChannel_fc1f7a07"
-  ],
+  "required": ["CanTpGeneral", "CanTpConfig", "LHBDCANFDTpChannel_fc1f7a07"],
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",

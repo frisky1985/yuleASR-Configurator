@@ -1,8 +1,9 @@
 # Sprint 2: 代码生成器实测 — 编译验证
 
-> **周期:** 2026-07-13 ~ 2026-07-19（1周）
-> **目标:** ecuc-generator 生成真实的 C 代码，在 yuleASR 的编译环境中编译通过
-> **核心理念:** 代码被编译器接受才算真正可用。Sprint 1 证明函数能跑，Sprint 2 证明输出能编译。
+> **周期:** 2026-07-13 ~ 2026-07-19（1周） **目标:**
+> ecuc-generator 生成真实的 C 代码，在 yuleASR 的编译环境中编译通过
+> **核心理念:** 代码被编译器接受才算真正可用。Sprint 1 证明函数能跑，Sprint
+> 2 证明输出能编译。
 
 ---
 
@@ -35,17 +36,26 @@ yuleASR/
 
 ## Task 1: ecuc-generator 输出落地
 
-**Objective:** ecuc-generator.generate() 输出的文件实际写到磁盘，验证文件完整性和基本语法
+**Objective:**
+ecuc-generator.generate() 输出的文件实际写到磁盘，验证文件完整性和基本语法
 
 **Files:**
+
 - Create: `packages/@yuletech/core/src/generator/__tests__/ecuc-output.test.ts`
-- Create: `packages/@yuletech/core/src/generator/__tests__/generated/`（输出目录）
+- Create:
+  `packages/@yuletech/core/src/generator/__tests__/generated/`（输出目录）
 
 **Step 1: 写输出落地测试**
 
 ```typescript
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { mkdtempSync, writeFileSync, rmSync, existsSync, readFileSync } from 'fs';
+import {
+  mkdtempSync,
+  writeFileSync,
+  rmSync,
+  existsSync,
+  readFileSync,
+} from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
 import { EcucCodeGenerator } from '../ecuc-generator';
@@ -70,7 +80,10 @@ describe('EcucCodeGenerator - File output', () => {
       parameters: { canBaudrate: 500000, canDevErrorDetect: false },
       containers: {
         CanController: [
-          { id: 'ctrl0', parameters: { canBaudrate: 500000, canControllerId: 0 } },
+          {
+            id: 'ctrl0',
+            parameters: { canBaudrate: 500000, canControllerId: 0 },
+          },
         ],
       },
     };
@@ -83,15 +96,19 @@ describe('EcucCodeGenerator - File output', () => {
         { name: 'canBaudrate', type: 'integer', required: true },
         { name: 'canDevErrorDetect', type: 'boolean', required: false },
       ],
-      containers: [{
-        name: 'CanController',
-        label: 'CAN Controller',
-        multiple: true,
-        parameters: ['canBaudrate', 'canControllerId'],
-      }],
+      containers: [
+        {
+          name: 'CanController',
+          label: 'CAN Controller',
+          multiple: true,
+          parameters: ['canBaudrate', 'canControllerId'],
+        },
+      ],
     };
 
-    const result = await generator.generate(config, schema, { outputDir: tmpDir });
+    const result = await generator.generate(config, schema, {
+      outputDir: tmpDir,
+    });
 
     // Verify success
     expect(result.success).toBe(true);
@@ -108,21 +125,30 @@ describe('EcucCodeGenerator - File output', () => {
     expect(result.files.length).toBe(4);
 
     // Print paths for debugging
-    console.log('Generated files:', result.files.map(f => f.path));
+    console.log(
+      'Generated files:',
+      result.files.map(f => f.path)
+    );
   });
 
   it('should generate valid AUTOSAR guard syntax', async () => {
     const config: ModuleConfig = {
-      module: 'Can', version: '4.4.0',
+      module: 'Can',
+      version: '4.4.0',
       parameters: { canBaudrate: 500000 },
       containers: {},
     };
     const schema: ModuleSchema = {
-      name: 'Can', label: 'CAN', layer: 'MCAL', version: '4.4.0',
+      name: 'Can',
+      label: 'CAN',
+      layer: 'MCAL',
+      version: '4.4.0',
       parameters: [{ name: 'canBaudrate', type: 'integer', required: true }],
       containers: [],
     };
-    const result = await generator.generate(config, schema, { outputDir: tmpDir });
+    const result = await generator.generate(config, schema, {
+      outputDir: tmpDir,
+    });
 
     // .h content should have proper guard
     const header = result.files[0];
@@ -141,16 +167,22 @@ describe('EcucCodeGenerator - File output', () => {
 
   it('should produce compilable-looking C function declarations', async () => {
     const config: ModuleConfig = {
-      module: 'Can', version: '4.4.0',
+      module: 'Can',
+      version: '4.4.0',
       parameters: { canBaudrate: 500000 },
       containers: {},
     };
     const schema: ModuleSchema = {
-      name: 'Can', label: 'CAN', layer: 'MCAL', version: '4.4.0',
+      name: 'Can',
+      label: 'CAN',
+      layer: 'MCAL',
+      version: '4.4.0',
       parameters: [{ name: 'canBaudrate', type: 'integer', required: true }],
       containers: [],
     };
-    const result = await generator.generate(config, schema, { outputDir: tmpDir });
+    const result = await generator.generate(config, schema, {
+      outputDir: tmpDir,
+    });
 
     const header = result.files.find(f => f.path.endsWith('.h'))!.content;
     // Should include function declarations matching AUTOSAR naming
@@ -167,19 +199,25 @@ describe('EcucCodeGenerator - Multi-module output', () => {
 
   it('should generate valid files for Mcu module', async () => {
     const config: ModuleConfig = {
-      module: 'Mcu', version: '4.4.0',
+      module: 'Mcu',
+      version: '4.4.0',
       parameters: { mcuCoreClock: 96000000, mcuPllRefClk: 8000000 },
       containers: {},
     };
     const schema: ModuleSchema = {
-      name: 'Mcu', label: 'MCU Driver', layer: 'MCAL', version: '4.4.0',
+      name: 'Mcu',
+      label: 'MCU Driver',
+      layer: 'MCAL',
+      version: '4.4.0',
       parameters: [
         { name: 'mcuCoreClock', type: 'integer', required: true },
         { name: 'mcuPllRefClk', type: 'integer', required: false },
       ],
       containers: [],
     };
-    const result = await generator.generate(config, schema, { outputDir: '/tmp/ecuc-test' });
+    const result = await generator.generate(config, schema, {
+      outputDir: '/tmp/ecuc-test',
+    });
     expect(result.success).toBe(true);
     const files = result.files.map(f => f.path);
     expect(files).toContain('/tmp/ecuc-test/Ecuc_Mcu.h');
@@ -188,16 +226,24 @@ describe('EcucCodeGenerator - Multi-module output', () => {
 
   it('should handle Port module with pin configurations', async () => {
     const config: ModuleConfig = {
-      module: 'Port', version: '4.4.0',
+      module: 'Port',
+      version: '4.4.0',
       parameters: { portDevErrorDetect: true },
       containers: {},
     };
     const schema: ModuleSchema = {
-      name: 'Port', label: 'PORT Driver', layer: 'MCAL', version: '4.4.0',
-      parameters: [{ name: 'portDevErrorDetect', type: 'boolean', required: false }],
+      name: 'Port',
+      label: 'PORT Driver',
+      layer: 'MCAL',
+      version: '4.4.0',
+      parameters: [
+        { name: 'portDevErrorDetect', type: 'boolean', required: false },
+      ],
       containers: [],
     };
-    const result = await generator.generate(config, schema, { outputDir: '/tmp/ecuc-test' });
+    const result = await generator.generate(config, schema, {
+      outputDir: '/tmp/ecuc-test',
+    });
     expect(result.success).toBe(true);
     expect(result.files.length).toBe(4);
     const header = result.files.find(f => f.path.endsWith('.h'))!.content;
@@ -226,15 +272,19 @@ git commit -m "test: add ecuc-generator file output tests"
 
 ## Task 2: 对比现有 Can_Cfg.h — 差距分析
 
-**Objective:** 把 ecuc-generator 生成的代码和 yuleASR 项目里的实际 Can_Cfg.h 逐行对比，找结构差异
+**Objective:**
+把 ecuc-generator 生成的代码和 yuleASR 项目里的实际 Can_Cfg.h 逐行对比，找结构差异
 
 **Files:**
+
 - Create: `docs/analysis/generated-vs-handwritten-can.md`
 
 **Step 1: 手动检查差异**
 
 对比维度：
-1. **Include guard 风格** — yuleASR 用 `CAN_CFG_H` vs ecuc-generator 用 `ECUC_CAN_H`
+
+1. **Include guard 风格** — yuleASR 用 `CAN_CFG_H` vs ecuc-generator 用
+   `ECUC_CAN_H`
 2. **类型定义位置** — yuleASR 把类型放在 `.h` 还是 `.c`？
 3. **函数签名** — 参数类型、返回值是否匹配
 4. **宏约定** — 命名规范是否一致
@@ -246,17 +296,18 @@ git commit -m "test: add ecuc-generator file output tests"
 # Generated vs Handwritten: Can Module
 
 ## 对比文件
+
 - **Reference:** `yuleASR/src/bsw/mcal/can/include/Can_Cfg.h`
 - **Generated:** ecuc-generator 输出的 Ecuc_Can.h
 
 ## 差异项
 
-| 维度 | Handwritten (yuleASR) | Generated (ecuc) | 影响 |
-|------|:--------------------:|:-----------------:|:----:|
-| Include guard | `CAN_CFG_H` | `ECUC_CAN_H` | 编译没问题，但其他文件引用 `CAN_CFG_H` 会失败 |
-| MODULE_ID | `#define CAN_MODULE_ID 80` | `ECUC_CAN_MODULE_ID ((uint16)0x...)` | 命名不同，驱动代码可能找不到 |
-| 函数声明 | 在 Can.h 中 | 在 Ecuc_Can.h 中 | 需调整 include 路径 |
-| 数据结构 | _ConfigType 在 Can.h | _ConfigType 在 Ecuc_Can.h | 同样需要调整 |
+| 维度          |   Handwritten (yuleASR)    |           Generated (ecuc)           |                     影响                      |
+| ------------- | :------------------------: | :----------------------------------: | :-------------------------------------------: |
+| Include guard |        `CAN_CFG_H`         |             `ECUC_CAN_H`             | 编译没问题，但其他文件引用 `CAN_CFG_H` 会失败 |
+| MODULE_ID     | `#define CAN_MODULE_ID 80` | `ECUC_CAN_MODULE_ID ((uint16)0x...)` |         命名不同，驱动代码可能找不到          |
+| 函数声明      |        在 Can.h 中         |           在 Ecuc_Can.h 中           |              需调整 include 路径              |
+| 数据结构      |   \_ConfigType 在 Can.h    |      \_ConfigType 在 Ecuc_Can.h      |                 同样需要调整                  |
 ```
 
 **Step 3: Commit**
@@ -270,9 +321,11 @@ git commit -m "docs: gap analysis between generated and handwritten Can_Cfg.h"
 
 ## Task 3: 对齐生成器输出到 yuleASR 约定
 
-**Objective:** 修改 ecuc-generator，使其生成的代码与 yuleASR 现有的头文件约定一致
+**Objective:**
+修改 ecuc-generator，使其生成的代码与 yuleASR 现有的头文件约定一致
 
 **Files:**
+
 - Modify: `packages/@yuletech/core/src/generator/ecuc-generator.ts`
 - Modify: `packages/@yuletech/core/src/generator/autosar-format.ts`（如有需要）
 
@@ -288,14 +341,36 @@ git commit -m "docs: gap analysis between generated and handwritten Can_Cfg.h"
 ```typescript
 /** AUTOSAR 标准 Module IDs */
 export const AUTOSAR_MODULE_IDS: Record<string, number> = {
-  Mcu: 43, Port: 42, Dio: 41, Can: 80, Spi: 122,
-  Icu: 120, Gpt: 121, Pwm: 123, Adc: 44, Wdg: 45,
-  Lin: 183, Fr: 46, Eth: 47,
-  CanIf: 81, LinIf: 187, FrIf: 48, EthIf: 49,
-  CanTp: 82, LinTp: 188, FrTp: 50,
-  Com: 84, PduR: 85, NvM: 150, Dcm: 86, Dem: 87,
-  EcuM: 151, BswM: 152, WdgM: 153,
-  Rte: 16, Os: 1,
+  Mcu: 43,
+  Port: 42,
+  Dio: 41,
+  Can: 80,
+  Spi: 122,
+  Icu: 120,
+  Gpt: 121,
+  Pwm: 123,
+  Adc: 44,
+  Wdg: 45,
+  Lin: 183,
+  Fr: 46,
+  Eth: 47,
+  CanIf: 81,
+  LinIf: 187,
+  FrIf: 48,
+  EthIf: 49,
+  CanTp: 82,
+  LinTp: 188,
+  FrTp: 50,
+  Com: 84,
+  PduR: 85,
+  NvM: 150,
+  Dcm: 86,
+  Dem: 87,
+  EcuM: 151,
+  BswM: 152,
+  WdgM: 153,
+  Rte: 16,
+  Os: 1,
 };
 
 /** AUTOSAR 标准文件命名映射 */
@@ -316,8 +391,10 @@ export function getModuleHeaderName(moduleName: string): string {
 **Step 2: 修改 ecuc-generator 使用模块配置**
 
 修改 `generateHeaderFile` 中的：
+
 - 文件命名：`Ecuc_${module}.h` → `Can_Cfg.h`（用 `getModuleHeaderName`）
-- Module ID：`((uint16)0x${toHex(moduleName.length * 10)})` → 查 `AUTOSAR_MODULE_IDS`
+- Module ID：`((uint16)0x${toHex(moduleName.length * 10)})` → 查
+  `AUTOSAR_MODULE_IDS`
 - Vendor ID：硬编码 → 可配置
 
 **Step 3: 跑测试验证仍然通过**
@@ -341,6 +418,7 @@ git commit -am "feat: align generated output with yuleASR naming conventions"
 **Objective:** 生成一个完整的 Can_Cfg.h 写入 yuleASR 项目，用 build.sh 尝试编译
 
 **Files:**
+
 - Create: `scripts/generate-and-compile.sh`
 - Modify: 无（生成器逻辑已对齐）
 
@@ -385,8 +463,7 @@ Expected: 首次尝试大概率遇到编译错误，正是本任务要捕获的
 
 **Step 3: 记录编译错误，修复后再次运行**
 
-将每次编译的错误记录下来，形成一个"修复-重试"循环。
-最多 3 轮修复后应能编译通过。
+将每次编译的错误记录下来，形成一个"修复-重试"循环。最多 3 轮修复后应能编译通过。
 
 **Step 4: Commit**
 
@@ -402,18 +479,22 @@ git commit -m "feat: add generate-and-compile integration script"
 **Objective:** 修复首次编译发现的问题
 
 **典型问题（预期）：**
+
 1. 缺少 AUTOSAR 标准头文件引用（`#include "Std_Types.h"` 路径不对）
 2. 类型不匹配（`uint16` vs `uint16_t`）
 3. 函数签名不一致（驱动实际需要的参数 vs 生成器认为的参数）
-4. 宏名不匹配（驱动代码里引用 `CAN_MODULE_ID` 但生成器输出 `CAN_MODULE_ID` 时值不对）
+4. 宏名不匹配（驱动代码里引用 `CAN_MODULE_ID` 但生成器输出 `CAN_MODULE_ID`
+   时值不对）
 
 **Files:**
+
 - Modify: `packages/@yuletech/core/src/generator/ecuc-generator.ts`
 - Modify: `packages/@yuletech/core/src/generator/autosar-format.ts`
 
 **Step 1: 分析编译错误**
 
 例如编译器报：
+
 ```
 error: unknown type name 'Std_ReturnType'
 ```
@@ -446,9 +527,8 @@ git commit -am "fix: resolve compilation errors in generated Can_Cfg.h"
 
 **Objective:** 继续修复直到编译通过，或达到 3 轮上限
 
-重复 Task 5 的流程。
-每次只修复一个明确的错误类别。
-3 轮后如果仍然有编译失败，暂停并输出一份"剩余问题清单"。
+重复 Task
+5 的流程。每次只修复一个明确的错误类别。3 轮后如果仍然有编译失败，暂停并输出一份"剩余问题清单"。
 
 ---
 
@@ -457,8 +537,10 @@ git commit -am "fix: resolve compilation errors in generated Can_Cfg.h"
 **Objective:** 至少生成 3 个模块（Can, Mcu, Port）的配置头文件，全部编译通过
 
 **Files:**
+
 - Modify: `scripts/generate-and-compile.sh`
-- Create: `packages/@yuletech/core/src/generator/scripts/generate-multi-config.ts`
+- Create:
+  `packages/@yuletech/core/src/generator/scripts/generate-multi-config.ts`
 
 **Step 1: 创建多模块生成脚本**
 
@@ -491,9 +573,11 @@ git commit -am "feat: multi-module generation (Can, Mcu, Port) with compilation 
 
 ## Task 8: 端到端集成测试
 
-**Objective:** 在 vitest 中实现 end-to-end 测试：生成 → 写文件 → 编译 → 验证编译输出
+**Objective:**
+在 vitest 中实现 end-to-end 测试：生成 → 写文件 → 编译 → 验证编译输出
 
 **Files:**
+
 - Create: `packages/@yuletech/core/src/generator/__tests__/ecuc-compile.test.ts`
 - Modify: `scripts/generate-and-compile.sh`
 
@@ -521,13 +605,27 @@ describe('EcucCodeGenerator - Compilation verification', () => {
 
   it('should generate a file that the ARM GCC preprocessor accepts', () => {
     const generator = new EcucCodeGenerator();
-    const config = { module: 'Can', version: '4.4.0', parameters: { canBaudrate: 500000 }, containers: {} };
-    const schema = { name: 'Can', label: 'CAN', layer: 'MCAL' as const, version: '4.4.0',
-      parameters: [{ name: 'canBaudrate', type: 'integer' as const, required: true }],
-      containers: [] };
+    const config = {
+      module: 'Can',
+      version: '4.4.0',
+      parameters: { canBaudrate: 500000 },
+      containers: {},
+    };
+    const schema = {
+      name: 'Can',
+      label: 'CAN',
+      layer: 'MCAL' as const,
+      version: '4.4.0',
+      parameters: [
+        { name: 'canBaudrate', type: 'integer' as const, required: true },
+      ],
+      containers: [],
+    };
 
     // Generate
-    const result = await generator.generate(config, schema, { outputDir: testDir });
+    const result = await generator.generate(config, schema, {
+      outputDir: testDir,
+    });
 
     // Write files
     for (const f of result.files) {
@@ -539,10 +637,10 @@ describe('EcucCodeGenerator - Compilation verification', () => {
     if (headerFile) {
       try {
         // Attempt syntax check — will likely fail on missing includes
-        execSync(
-          `arm-none-eabi-gcc -fsyntax-only -x c ${headerFile.path}`,
-          { stdio: 'pipe', timeout: 10000 }
-        );
+        execSync(`arm-none-eabi-gcc -fsyntax-only -x c ${headerFile.path}`, {
+          stdio: 'pipe',
+          timeout: 10000,
+        });
         expect(true).toBe(true);
       } catch (e: any) {
         // Expected to fail on missing Std_Types.h — that's OK
@@ -555,7 +653,10 @@ describe('EcucCodeGenerator - Compilation verification', () => {
           .filter(line => !line.includes('fatal error'));
         // If there are non-include errors, the generated code has real issues
         if (nonIncludeErrors.length > 5) {
-          console.warn('Generated code may have issues:', nonIncludeErrors.join('\n'));
+          console.warn(
+            'Generated code may have issues:',
+            nonIncludeErrors.join('\n')
+          );
         }
       }
     }
@@ -580,22 +681,22 @@ git commit -m "test: add end-to-end compilation verification test"
 
 ## Sprint 2 验收标准
 
-| 指标 | 目标 | 验证方式 |
-|------|:----:|:---------|
-| ecuc-generator 文件输出 | 能落盘且结构完整 | `ecuc-output.test.ts` 通过 |
-| 与 yuleASR 差距分析 | 输出对比文档 | `docs/analysis/` 有报告 |
-| 生成器与项目约定对齐 | 文件名/guard/ID 一致 | 对比检查 |
-| 单模块编译通过 | Can_Cfg.h 在 yuleASR 编译通过 | `generate-and-compile.sh` ✅ |
-| 多模块编译通过 | Can + Mcu + Port 三模块编译通过 | 同上 |
-| 端到端测试 | vitest 中触发编译器检查 | `ecuc-compile.test.ts` 通过 |
+| 指标                    |              目标               | 验证方式                     |
+| ----------------------- | :-----------------------------: | :--------------------------- |
+| ecuc-generator 文件输出 |        能落盘且结构完整         | `ecuc-output.test.ts` 通过   |
+| 与 yuleASR 差距分析     |          输出对比文档           | `docs/analysis/` 有报告      |
+| 生成器与项目约定对齐    |      文件名/guard/ID 一致       | 对比检查                     |
+| 单模块编译通过          |  Can_Cfg.h 在 yuleASR 编译通过  | `generate-and-compile.sh` ✅ |
+| 多模块编译通过          | Can + Mcu + Port 三模块编译通过 | 同上                         |
+| 端到端测试              |     vitest 中触发编译器检查     | `ecuc-compile.test.ts` 通过  |
 
 ---
 
 ## 风险
 
-| 风险 | 影响 | 缓解措施 |
-|------|:----:|:---------|
-| yuleASR 编译环境复杂（依赖太多） | 高 | 先试 `-fsyntax-only` 预处理器检查，不要求完整链接 |
-| yuleASR 工程没有 native 编译支持 | 中 | 先确认 `./build.sh -n` 能跑，不行则用 ARM GCC 语法检查 |
-| ecuc-generator 当前输出与 yuleASR 调用约定差距过大 | 中 | 差距分析先做再改，不盲目修改生成器 |
-| 修改生成器输出导致已有测试失败 | 低 | 所有修改后跑全量测试，保证 153+ 继续通过 |
+| 风险                                               | 影响 | 缓解措施                                               |
+| -------------------------------------------------- | :--: | :----------------------------------------------------- |
+| yuleASR 编译环境复杂（依赖太多）                   |  高  | 先试 `-fsyntax-only` 预处理器检查，不要求完整链接      |
+| yuleASR 工程没有 native 编译支持                   |  中  | 先确认 `./build.sh -n` 能跑，不行则用 ARM GCC 语法检查 |
+| ecuc-generator 当前输出与 yuleASR 调用约定差距过大 |  中  | 差距分析先做再改，不盲目修改生成器                     |
+| 修改生成器输出导致已有测试失败                     |  低  | 所有修改后跑全量测试，保证 153+ 继续通过               |

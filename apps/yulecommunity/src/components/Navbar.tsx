@@ -1,6 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Code2, Menu, X, Shield, ChevronDown, LayoutDashboard, FileEdit, FileJson, Settings } from 'lucide-react';
+import {
+  Code2,
+  Menu,
+  X,
+  Shield,
+  ChevronDown,
+  LayoutDashboard,
+  FileEdit,
+  FileJson,
+  Settings,
+} from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { GlobalSearch } from './GlobalSearch';
 import { NotificationCenter } from './NotificationCenter';
@@ -92,15 +102,13 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-6">
-            {navLinks.map((link) => (
+            {navLinks.map(link => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 className={({ isActive }) =>
                   `text-sm font-medium transition-colors relative group whitespace-nowrap shrink-0 ${
-                    isActive
-                      ? 'text-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
+                    isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
                   }`
                 }
               >
@@ -127,15 +135,19 @@ export function Navbar() {
                 className="flex items-center gap-1 text-sm font-medium transition-colors relative group whitespace-nowrap shrink-0 text-muted-foreground hover:text-foreground"
               >
                 配置器
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${configuratorOpen ? 'rotate-180' : ''}`} />
-                <span className={`absolute -bottom-1 left-0 h-0.5 bg-[hsl(var(--accent))] transition-all duration-300 ${configuratorOpen ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+                <ChevronDown
+                  className={`w-3.5 h-3.5 transition-transform duration-200 ${configuratorOpen ? 'rotate-180' : ''}`}
+                />
+                <span
+                  className={`absolute -bottom-1 left-0 h-0.5 bg-[hsl(var(--accent))] transition-all duration-300 ${configuratorOpen ? 'w-full' : 'w-0 group-hover:w-full'}`}
+                />
               </button>
 
               {configuratorOpen && (
                 <div className="absolute right-0 mt-2 w-64 bg-card border border-border rounded-xl shadow-xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                   {/* Configurator app links */}
-                  {configuratorLinks.slice(0, 3).map((link) => {
-                    const Icon = link.icon
+                  {configuratorLinks.slice(0, 3).map(link => {
+                    const Icon = link.icon;
                     return (
                       <a
                         key={link.href}
@@ -150,12 +162,10 @@ export function Navbar() {
                           <div className="text-sm font-medium text-foreground group-hover/link:text-primary transition-colors">
                             {link.label}
                           </div>
-                          <div className="text-xs text-muted-foreground mt-0.5">
-                            {link.desc}
-                          </div>
+                          <div className="text-xs text-muted-foreground mt-0.5">{link.desc}</div>
                         </div>
                       </a>
-                    )
+                    );
                   })}
 
                   {/* Divider */}
@@ -163,8 +173,8 @@ export function Navbar() {
 
                   {/* ASR配置 link */}
                   {(() => {
-                    const link = configuratorLinks[3]
-                    const Icon = link.icon
+                    const link = configuratorLinks[3];
+                    const Icon = link.icon;
                     return (
                       <a
                         key={link.href}
@@ -179,12 +189,10 @@ export function Navbar() {
                           <div className="text-sm font-medium text-foreground group-hover/link:text-primary transition-colors">
                             {link.label}
                           </div>
-                          <div className="text-xs text-muted-foreground mt-0.5">
-                            {link.desc}
-                          </div>
+                          <div className="text-xs text-muted-foreground mt-0.5">{link.desc}</div>
                         </div>
                       </a>
-                    )
+                    );
                   })()}
                 </div>
               )}
@@ -262,7 +270,7 @@ export function Navbar() {
             >
               首页
             </Link>
-            {navLinks.map((link) => (
+            {navLinks.map(link => (
               <Link
                 key={link.to}
                 to={link.to}
@@ -285,7 +293,9 @@ export function Navbar() {
                 className="flex items-center justify-between w-full text-xs font-semibold uppercase tracking-wider text-muted-foreground"
               >
                 配置器
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${mobileConfigOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown
+                  className={`w-3.5 h-3.5 transition-transform duration-200 ${mobileConfigOpen ? 'rotate-180' : ''}`}
+                />
               </button>
             </div>
             <div
@@ -294,19 +304,22 @@ export function Navbar() {
               }`}
             >
               {/* Configurator app links */}
-              {configuratorLinks.slice(0, 3).map((link) => {
-                const Icon = link.icon
+              {configuratorLinks.slice(0, 3).map(link => {
+                const Icon = link.icon;
                 return (
                   <a
                     key={link.href}
                     href={link.href}
-                    onClick={() => { setConfiguratorOpen(false); setIsMobileMenuOpen(false) }}
+                    onClick={() => {
+                      setConfiguratorOpen(false);
+                      setIsMobileMenuOpen(false);
+                    }}
                     className="flex items-center gap-3 px-8 py-2.5 text-sm font-medium rounded-lg transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
                   >
                     <Icon className="w-4 h-4 text-primary" />
                     {link.label}
                   </a>
-                )
+                );
               })}
 
               {/* Divider */}
@@ -314,19 +327,22 @@ export function Navbar() {
 
               {/* ASR配置 link */}
               {(() => {
-                const link = configuratorLinks[3]
-                const Icon = link.icon
+                const link = configuratorLinks[3];
+                const Icon = link.icon;
                 return (
                   <a
                     key={link.href}
                     href={link.href}
-                    onClick={() => { setConfiguratorOpen(false); setIsMobileMenuOpen(false) }}
+                    onClick={() => {
+                      setConfiguratorOpen(false);
+                      setIsMobileMenuOpen(false);
+                    }}
                     className="flex items-center gap-3 px-8 py-2.5 text-sm font-medium rounded-lg transition-colors text-muted-foreground hover:text-foreground hover:bg-muted"
                   >
                     <Icon className="w-4 h-4 text-primary" />
                     {link.label}
                   </a>
-                )
+                );
               })()}
             </div>
             <div className="pt-2 flex flex-col gap-2 px-4">

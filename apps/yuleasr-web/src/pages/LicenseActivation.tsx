@@ -9,12 +9,13 @@ import {
   X,
   Zap,
   Loader2,
-} from 'lucide-react'
-import { useState, useEffect } from 'react'
-import { useLicenseStore, FEATURES } from '@/stores/licenseStore'
-import { useAuthStore } from '@/stores/authStore'
-import { api } from '@/services/api'
-import { cn } from '@/lib/utils'
+} from 'lucide-react';
+import { useState, useEffect } from 'react';
+
+import { cn } from '@/lib/utils';
+import { api } from '@/services/api';
+import { useAuthStore } from '@/stores/authStore';
+import { useLicenseStore, FEATURES } from '@/stores/licenseStore';
 
 function SettingSection({
   title,
@@ -22,10 +23,10 @@ function SettingSection({
   icon,
   children,
 }: {
-  title: string
-  description?: string
-  icon: React.ReactNode
-  children: React.ReactNode
+  title: string;
+  description?: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
 }) {
   return (
     <div className="bg-app-bg-primary border border-app-border-primary rounded-lg overflow-hidden">
@@ -36,93 +37,84 @@ function SettingSection({
           </div>
           <div>
             <h2 className="text-lg font-semibold text-app-text-primary">{title}</h2>
-            {description && (
-              <p className="text-sm text-app-text-secondary">{description}</p>
-            )}
+            {description && <p className="text-sm text-app-text-secondary">{description}</p>}
           </div>
         </div>
       </div>
       <div className="p-6 space-y-6">{children}</div>
     </div>
-  )
+  );
 }
 
 export function LicenseActivation() {
-  const {
-    tier,
-    expiresAt,
-    licenseKey,
-    loading,
-    error,
-    loadFromServer,
-    activateLicense,
-  } = useLicenseStore()
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
-  const user = useAuthStore((s) => s.user)
+  const { tier, expiresAt, licenseKey, loading, error, loadFromServer, activateLicense } =
+    useLicenseStore();
+  const isAuthenticated = useAuthStore(s => s.isAuthenticated);
+  const user = useAuthStore(s => s.user);
 
-  const [activationKey, setActivationKey] = useState('')
-  const [activationError, setActivationError] = useState<string | null>(null)
-  const [activationLoading, setActivationLoading] = useState(false)
-  const [activationSuccess, setActivationSuccess] = useState(false)
-  const [checkoutLoading, setCheckoutLoading] = useState(false)
-  const [checkoutMockResult, setCheckoutMockResult] = useState<string | null>(null)
+  const [activationKey, setActivationKey] = useState('');
+  const [activationError, setActivationError] = useState<string | null>(null);
+  const [activationLoading, setActivationLoading] = useState(false);
+  const [activationSuccess, setActivationSuccess] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutMockResult, setCheckoutMockResult] = useState<string | null>(null);
 
   useEffect(() => {
     if (isAuthenticated) {
-      loadFromServer()
+      loadFromServer();
     }
-  }, [isAuthenticated, loadFromServer])
+  }, [isAuthenticated, loadFromServer]);
 
-  const isPro = tier === 'pro'
-  const isExpired = expiresAt && new Date(expiresAt) < new Date()
+  const isPro = tier === 'pro';
+  const isExpired = expiresAt && new Date(expiresAt) < new Date();
   const daysLeft = expiresAt
     ? Math.ceil((new Date(expiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
-    : null
+    : null;
 
   const handleActivate = async () => {
-    if (!activationKey.trim()) return
-    setActivationLoading(true)
-    setActivationError(null)
-    setActivationSuccess(false)
+    if (!activationKey.trim()) return;
+    setActivationLoading(true);
+    setActivationError(null);
+    setActivationSuccess(false);
 
     try {
-      await activateLicense(activationKey.trim())
-      setActivationSuccess(true)
-      setActivationKey('')
+      await activateLicense(activationKey.trim());
+      setActivationSuccess(true);
+      setActivationKey('');
     } catch (err: any) {
-      setActivationError(err?.message || '激活失败，请检查 License Key')
+      setActivationError(err?.message || '激活失败，请检查 License Key');
     } finally {
-      setActivationLoading(false)
+      setActivationLoading(false);
     }
-  }
+  };
 
   const handleMockCheckout = async (priceId: 'pro_monthly' | 'pro_yearly') => {
     if (!isAuthenticated) {
-      setCheckoutMockResult('请先登录后再订阅')
-      return
+      setCheckoutMockResult('请先登录后再订阅');
+      return;
     }
-    setCheckoutLoading(true)
-    setCheckoutMockResult(null)
+    setCheckoutLoading(true);
+    setCheckoutMockResult(null);
     try {
       const result = await api.post<{ url: string; mock: boolean; sessionId: string }>(
         '/api/payment/create-checkout',
-        { priceId },
-      )
+        { priceId }
+      );
       if (result.mock) {
         // Simulate payment success
-        await api.post('/api/payment/mock-success', { priceId })
-        setCheckoutMockResult('支付模拟成功！Pro 许可证已激活。')
-        await loadFromServer()
+        await api.post('/api/payment/mock-success', { priceId });
+        setCheckoutMockResult('支付模拟成功！Pro 许可证已激活。');
+        await loadFromServer();
       } else {
         // Redirect to Stripe checkout
-        window.location.href = result.url
+        window.location.href = result.url;
       }
     } catch (err: any) {
-      setCheckoutMockResult(`错误: ${err?.message || '支付失败'}`)
+      setCheckoutMockResult(`错误: ${err?.message || '支付失败'}`);
     } finally {
-      setCheckoutLoading(false)
+      setCheckoutLoading(false);
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
@@ -130,9 +122,7 @@ export function LicenseActivation() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-app-text-primary">License & Subscription</h1>
-          <p className="text-app-text-secondary mt-1">
-            管理您的 yuleASR 许可证和订阅
-          </p>
+          <p className="text-app-text-secondary mt-1">管理您的 yuleASR 许可证和订阅</p>
         </div>
       </div>
 
@@ -140,13 +130,7 @@ export function LicenseActivation() {
       <SettingSection
         title="当前计划"
         description="您当前的 yuleASR 订阅状态"
-        icon={
-          isPro && !isExpired ? (
-            <Crown className="w-5 h-5 text-amber-600" />
-          ) : (
-            <SparklesIcon />
-          )
-        }
+        icon={isPro && !isExpired ? <Crown className="w-5 h-5 text-amber-600" /> : <SparklesIcon />}
       >
         <div className="flex items-center justify-between">
           <div>
@@ -156,14 +140,10 @@ export function LicenseActivation() {
                   'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-semibold',
                   isPro && !isExpired
                     ? 'bg-gradient-to-r from-amber-100 to-amber-200 text-amber-800 dark:from-amber-900/40 dark:to-amber-800/40 dark:text-amber-300'
-                    : 'bg-app-bg-tertiary text-app-text-secondary',
+                    : 'bg-app-bg-tertiary text-app-text-secondary'
                 )}
               >
-                {isPro && !isExpired ? (
-                  <Crown className="w-4 h-4" />
-                ) : (
-                  <Zap className="w-4 h-4" />
-                )}
+                {isPro && !isExpired ? <Crown className="w-4 h-4" /> : <Zap className="w-4 h-4" />}
                 {isPro && !isExpired ? 'Pro' : 'Free'}
               </span>
 
@@ -214,10 +194,10 @@ export function LicenseActivation() {
                 <input
                   type="text"
                   value={activationKey}
-                  onChange={(e) => {
-                    setActivationKey(e.target.value.toUpperCase())
-                    setActivationError(null)
-                    setActivationSuccess(false)
+                  onChange={e => {
+                    setActivationKey(e.target.value.toUpperCase());
+                    setActivationError(null);
+                    setActivationSuccess(false);
                   }}
                   placeholder="YULE-XXXX-XXXX-XXXX"
                   className="flex-1 px-4 py-2.5 border border-app-border-primary rounded-lg text-sm bg-app-bg-primary text-app-text-primary font-mono focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
@@ -298,7 +278,7 @@ export function LicenseActivation() {
               'p-3 rounded-lg text-sm',
               checkoutMockResult.includes('成功')
                 ? 'bg-green-50 border border-green-200 text-green-800'
-                : 'bg-red-50 border border-red-200 text-red-800',
+                : 'bg-red-50 border border-red-200 text-red-800'
             )}
           >
             {checkoutMockResult}
@@ -326,9 +306,23 @@ export function LicenseActivation() {
               </tr>
             </thead>
             <tbody className="divide-y divide-app-border-primary">
-              {FEATURES.map((f) => {
-                const freeVal = typeof f.free === 'number' ? (f.free === 9999 ? '无限' : `${f.free}`) : f.free ? '✓' : '✗'
-                const proVal = typeof f.pro === 'number' ? (f.pro === 9999 ? '无限' : `${f.pro}`) : f.pro ? '✓' : '✗'
+              {FEATURES.map(f => {
+                const freeVal =
+                  typeof f.free === 'number'
+                    ? f.free === 9999
+                      ? '无限'
+                      : `${f.free}`
+                    : f.free
+                      ? '✓'
+                      : '✗';
+                const proVal =
+                  typeof f.pro === 'number'
+                    ? f.pro === 9999
+                      ? '无限'
+                      : `${f.pro}`
+                    : f.pro
+                      ? '✓'
+                      : '✗';
                 const featureNames: Record<string, string> = {
                   maxModules: '最大模块数',
                   maxProjects: '最大项目数',
@@ -336,7 +330,7 @@ export function LicenseActivation() {
                   codeGen: '代码生成',
                   vscodeExtension: 'VS Code 扩展',
                   templateMarketUpload: '模板市场上传',
-                }
+                };
                 return (
                   <tr key={f.name} className="hover:bg-app-bg-secondary/50">
                     <td className="px-4 py-3 text-app-text-primary">
@@ -361,20 +355,30 @@ export function LicenseActivation() {
                       )}
                     </td>
                   </tr>
-                )
+                );
               })}
             </tbody>
           </table>
         </div>
       </SettingSection>
     </div>
-  )
+  );
 }
 
 function SparklesIcon() {
   return (
-    <svg className="w-5 h-5 text-app-text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
+    <svg
+      className="w-5 h-5 text-app-text-secondary"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z"
+      />
     </svg>
-  )
+  );
 }

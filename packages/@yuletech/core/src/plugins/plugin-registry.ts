@@ -105,12 +105,12 @@ class PluginRegistryImpl {
 
   /** List plugins by type */
   getByType(type: PluginType): RegisteredPlugin[] {
-    return this.getAll().filter((p) => p.meta.type === type);
+    return this.getAll().filter(p => p.meta.type === type);
   }
 
   /** List plugins by enabled state */
   getEnabled(): RegisteredPlugin[] {
-    return this.getAll().filter((p) => p.meta.enabled);
+    return this.getAll().filter(p => p.meta.enabled);
   }
 
   // ── Code generators ───────────────────────────────────────────
@@ -137,9 +137,7 @@ class PluginRegistryImpl {
    */
   findCodeGeneratorForModule(moduleName: string): CodeGeneratorPlugin | undefined {
     return this.getAllCodeGenerators().find(
-      (g) =>
-        g.supportedModules.includes('*') ||
-        g.supportedModules.includes(moduleName),
+      g => g.supportedModules.includes('*') || g.supportedModules.includes(moduleName)
     );
   }
 
@@ -167,10 +165,10 @@ class PluginRegistryImpl {
    */
   findValidatorsForModule(moduleName: string): ValidatorPlugin[] {
     return this.getAllValidators().filter(
-      (v) =>
+      v =>
         v.targetModules.length === 0 ||
         v.targetModules.includes('*') ||
-        v.targetModules.includes(moduleName),
+        v.targetModules.includes(moduleName)
     );
   }
 
@@ -196,7 +194,7 @@ class PluginRegistryImpl {
 
   /** Export metadata for all plugins (no runtime instances) */
   exportMeta(): PluginMeta[] {
-    return this.getAll().map((p) => p.meta);
+    return this.getAll().map(p => p.meta);
   }
 
   /** Clear everything (useful for testing) */

@@ -32,13 +32,13 @@ export function ThemeToggle() {
   // Simple toggle for quick switch (cycles through themes)
   const handleQuickToggle = () => {
     if (isAnimating) return;
-    
+
     setIsAnimating(true);
     const order: Theme[] = ['light', 'dark', 'system'];
     const currentIndex = order.indexOf(theme);
     const nextIndex = (currentIndex + 1) % order.length;
     setTheme(order[nextIndex]);
-    
+
     // Reset animation after transition
     setTimeout(() => setIsAnimating(false), 500);
   };
@@ -48,7 +48,7 @@ export function ThemeToggle() {
       {/* Quick Toggle Button */}
       <button
         onClick={handleQuickToggle}
-        onContextMenu={(e) => {
+        onContextMenu={e => {
           e.preventDefault();
           setIsOpen(!isOpen);
         }}
@@ -56,22 +56,18 @@ export function ThemeToggle() {
         title={`当前主题: ${themes.find(t => t.value === theme)?.label} (右键选择)`}
         aria-label="切换主题"
       >
-        <Icon 
+        <Icon
           className={`w-5 h-5 transition-all duration-500 ease-out ${
             isAnimating ? 'rotate-180 scale-75' : 'rotate-0 scale-100'
-          }`} 
+          }`}
         />
-        {resolvedTheme === 'dark' && (
-          <span className="sr-only">深色模式</span>
-        )}
+        {resolvedTheme === 'dark' && <span className="sr-only">深色模式</span>}
       </button>
 
       {/* Dropdown Menu */}
       {isOpen && (
         <div className="absolute right-0 top-full mt-2 py-2 w-40 bg-card border border-border rounded-xl shadow-elegant z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-          <div className="px-3 py-1.5 text-xs font-medium text-muted-foreground">
-            选择主题
-          </div>
+          <div className="px-3 py-1.5 text-xs font-medium text-muted-foreground">选择主题</div>
           {themes.map(({ value, label, icon: ThemeIcon }) => (
             <button
               key={value}
@@ -109,11 +105,7 @@ export function ThemeToggleSimple() {
       title={resolvedTheme === 'dark' ? '切换到浅色' : '切换到深色'}
       aria-label={resolvedTheme === 'dark' ? '切换到浅色' : '切换到深色'}
     >
-      {resolvedTheme === 'dark' ? (
-        <Sun className="w-5 h-5" />
-      ) : (
-        <Moon className="w-5 h-5" />
-      )}
+      {resolvedTheme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
     </button>
   );
 }

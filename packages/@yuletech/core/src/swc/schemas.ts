@@ -1,6 +1,6 @@
 /**
  * @yuletech/core - SWC Schema Definitions
- * 
+ *
  * Module schema definitions for AUTOSAR SWC components.
  * These define the configuration parameters for:
  *  - AppSwc (ApplicationSwComponentType)
@@ -47,10 +47,7 @@ const appSwcContainers: ContainerSchema[] = [
         description: 'Client-Server operations',
         multiple: true,
         minInstances: 0,
-        parameters: [
-          'OperationName',
-          'OperationDescription',
-        ],
+        parameters: ['OperationName', 'OperationDescription'],
         children: [
           {
             name: 'OperationArguments',
@@ -58,12 +55,7 @@ const appSwcContainers: ContainerSchema[] = [
             description: 'Arguments for client-server operations',
             multiple: true,
             minInstances: 0,
-            parameters: [
-              'ArgName',
-              'ArgTypeRef',
-              'ArgDirection',
-              'ArgDescription',
-            ],
+            parameters: ['ArgName', 'ArgTypeRef', 'ArgDirection', 'ArgDescription'],
           },
         ],
       },
@@ -76,12 +68,7 @@ const appSwcContainers: ContainerSchema[] = [
     description: 'Component ports (typed with port interfaces)',
     multiple: true,
     minInstances: 0,
-    parameters: [
-      'PortName',
-      'PortDirection',
-      'PortInterfaceRef',
-      'PortDescription',
-    ],
+    parameters: ['PortName', 'PortDirection', 'PortInterfaceRef', 'PortDescription'],
   },
   // --- Runnable Entities ---
   {
@@ -106,12 +93,7 @@ const appSwcContainers: ContainerSchema[] = [
     description: 'Shared memory between runnables within the same SWC',
     multiple: true,
     minInstances: 0,
-    parameters: [
-      'IrvName',
-      'IrvTypeRef',
-      'IrvInitValue',
-      'IrvDescription',
-    ],
+    parameters: ['IrvName', 'IrvTypeRef', 'IrvInitValue', 'IrvDescription'],
   },
   // --- Data Type Mappings ---
   {
@@ -120,10 +102,7 @@ const appSwcContainers: ContainerSchema[] = [
     description: 'ApplicationDataType → ImplementationDataType mapping',
     multiple: true,
     minInstances: 0,
-    parameters: [
-      'MappingApplicationType',
-      'MappingImplementationType',
-    ],
+    parameters: ['MappingApplicationType', 'MappingImplementationType'],
   },
   // --- Data Access Points ---
   {
@@ -147,13 +126,7 @@ const appSwcContainers: ContainerSchema[] = [
     description: 'Server operation invocations from runnables',
     multiple: true,
     minInstances: 0,
-    parameters: [
-      'ScpName',
-      'ScpRunnableRef',
-      'ScpPortRef',
-      'ScpOperationRef',
-      'ScpTimeout',
-    ],
+    parameters: ['ScpName', 'ScpRunnableRef', 'ScpPortRef', 'ScpOperationRef', 'ScpTimeout'],
   },
 ];
 
@@ -199,10 +172,7 @@ const compSwcContainers: ContainerSchema[] = [
     description: 'Component instances within this composition',
     multiple: true,
     minInstances: 0,
-    parameters: [
-      'SubComponentName',
-      'SubComponentTypeRef',
-    ],
+    parameters: ['SubComponentName', 'SubComponentTypeRef'],
   },
   // --- Port Interfaces ---
   {
@@ -211,11 +181,7 @@ const compSwcContainers: ContainerSchema[] = [
     description: 'Interface definitions used by composition boundary ports',
     multiple: true,
     minInstances: 0,
-    parameters: [
-      'PortInterfaceName',
-      'PortInterfaceKind',
-      'PortInterfaceDescription',
-    ],
+    parameters: ['PortInterfaceName', 'PortInterfaceKind', 'PortInterfaceDescription'],
   },
   // --- Composition Boundary Ports ---
   {
@@ -224,12 +190,7 @@ const compSwcContainers: ContainerSchema[] = [
     description: 'Ports on the composition boundary',
     multiple: true,
     minInstances: 0,
-    parameters: [
-      'PortName',
-      'PortDirection',
-      'PortInterfaceRef',
-      'PortDescription',
-    ],
+    parameters: ['PortName', 'PortDirection', 'PortInterfaceRef', 'PortDescription'],
   },
   // --- Assembly Connectors (component-to-component) ---
   {
@@ -290,9 +251,6 @@ export const compSwcSchema: ModuleSchema = {
 // All SWC schemas
 // ============================================================================
 
-export const swcSchemas: ModuleSchema[] = [
-  appSwcSchema,
-  compSwcSchema,
-];
+export const swcSchemas: ModuleSchema[] = [appSwcSchema, compSwcSchema];
 
 export default swcSchemas;

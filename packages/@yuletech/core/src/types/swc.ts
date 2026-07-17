@@ -1,6 +1,6 @@
 /**
  * @yuletech/core - SWC (Application Software Component) Types
- * 
+ *
  * AUTOSAR Application Software Component data model types.
  * Defines the structural elements of SWC configuration:
  *  - ApplicationSwComponentType / CompositionSwComponentType
@@ -103,7 +103,12 @@ export interface SwcDataTypeMapping {
 /**
  * Port interface kind
  */
-export type PortInterfaceKind = 'SenderReceiverInterface' | 'ClientServerInterface' | 'ModeSwitchInterface' | 'ParameterInterface' | 'NvDataInterface';
+export type PortInterfaceKind =
+  | 'SenderReceiverInterface'
+  | 'ClientServerInterface'
+  | 'ModeSwitchInterface'
+  | 'ParameterInterface'
+  | 'NvDataInterface';
 
 /**
  * Base port interface definition
@@ -219,7 +224,13 @@ export interface PortComSpec {
 /**
  * Runnable invocation type
  */
-export type RunnableInvocationType = 'cyclic' | 'event' | 'triggered' | 'onEntry' | 'onExit' | 'onTransition';
+export type RunnableInvocationType =
+  | 'cyclic'
+  | 'event'
+  | 'triggered'
+  | 'onEntry'
+  | 'onExit'
+  | 'onTransition';
 
 /**
  * Runnable entity — a schedulable function inside an SWC

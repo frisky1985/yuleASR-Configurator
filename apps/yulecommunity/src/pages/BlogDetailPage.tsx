@@ -61,11 +61,11 @@ export function BlogDetailPage() {
       try {
         // 尝试从 API 加载
         const articleData = await apiClient.getBlogPost(slug);
-        
+
         setArticle(articleData as unknown as BlogArticle);
         // 检查是否已点赞（使用本地存储）
         setIsLiked(articleService.isArticleLiked(String(articleData.id)));
-        
+
         // 尝试获取相关文章（API 无此端点，使用静态数据回退）
         try {
           const relatedData = await articleService.getRelatedArticles(slug, 4);
@@ -75,7 +75,7 @@ export function BlogDetailPage() {
         }
       } catch (err) {
         console.warn('[BlogDetailPage] API unavailable, falling back to static data:', err);
-        
+
         // Fallback: 使用静态数据
         try {
           const [articleData, relatedData] = await Promise.all([
@@ -150,10 +150,14 @@ export function BlogDetailPage() {
       const newLiked = await articleService.toggleLike(article.id);
       setIsLiked(newLiked);
       // 更新本地点赞数
-      setArticle(prev => prev ? {
-        ...prev,
-        likeCount: newLiked ? prev.likeCount + 1 : prev.likeCount - 1
-      } : null);
+      setArticle(prev =>
+        prev
+          ? {
+              ...prev,
+              likeCount: newLiked ? prev.likeCount + 1 : prev.likeCount - 1,
+            }
+          : null
+      );
     } catch (err) {
       console.error('Failed to toggle like:', err);
     }
@@ -193,20 +197,26 @@ export function BlogDetailPage() {
   }, [navigate]);
 
   // 打开相关文章
-  const handleArticleClick = useCallback((slug: string) => {
-    navigate(`#/blog/${slug}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [navigate]);
+  const handleArticleClick = useCallback(
+    (slug: string) => {
+      navigate(`#/blog/${slug}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    [navigate]
+  );
 
   // 格式化日期
-  const formatDate = useMemo(() => (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('zh-CN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  }, []);
+  const formatDate = useMemo(
+    () => (dateString: string) => {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('zh-CN', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    },
+    []
+  );
 
   // 加载状态
   if (loading) {
@@ -256,34 +266,21 @@ export function BlogDetailPage() {
       category={article.category}
     >
       {/* 阅读进度条 */}
-      <ReadingProgress
-        targetSelector="article"
-        showPercentage
-        percentagePosition="right"
-      />
+      <ReadingProgress targetSelector="article" showPercentage percentagePosition="right" />
 
       {/* 返回顶部按钮 */}
-      <ScrollToTop
-        threshold={500}
-        showProgress
-        position="right"
-        bottomOffset={80}
-      />
+      <ScrollToTop threshold={500} showProgress position="right" bottomOffset={80} />
 
       <div className="min-h-screen bg-background">
         {/* 顶部导航 */}
         <div className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-14">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleBack}
-              >
+              <Button variant="ghost" size="sm" onClick={handleBack}>
                 <ChevronLeft className="w-4 h-4 mr-2" />
                 返回列表
               </Button>
-              
+
               <div className="flex items-center gap-2">
                 <Button
                   variant="ghost"
@@ -293,14 +290,10 @@ export function BlogDetailPage() {
                 >
                   <Heart className={cn('w-5 h-5', isLiked && 'fill-current')} />
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleShare}
-                >
+                <Button variant="ghost" size="icon" onClick={handleShare}>
                   <Share2 className="w-5 h-5" />
                 </Button>
-                
+
                 {/* 收藏按钮 */}
                 {article && <BookmarkButton article={article} variant="icon" />}
               </div>
@@ -422,7 +415,7 @@ export function BlogDetailPage() {
                 {/* 标签 */}
                 <div className="mt-8 flex flex-wrap items-center gap-2">
                   <Tag className="w-4 h-4 text-muted-foreground" />
-                  {article.tags.map((tag) => (
+                  {article.tags.map(tag => (
                     <button
                       key={tag}
                       onClick={() => navigate(`#/blog?tag=${encodeURIComponent(tag)}`)}
@@ -452,18 +445,14 @@ export function BlogDetailPage() {
                 </div>
 
                 {/* Newsletter 订阅 */}
-                <NewsletterSignup 
-                  variant="article-end" 
+                <NewsletterSignup
+                  variant="article-end"
                   articleTitle={article.title}
                   className="mt-8"
                 />
 
                 {/* 相关文章推荐 */}
-                <RelatedArticles
-                  currentArticle={article}
-                  articles={relatedArticles}
-                  maxCount={4}
-                />
+                <RelatedArticles currentArticle={article} articles={relatedArticles} maxCount={4} />
               </div>
 
               {/* 侧边栏 */}

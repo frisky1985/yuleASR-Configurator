@@ -89,9 +89,7 @@ export function BlogCard({
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
-            <span className="text-4xl font-bold text-primary/20">
-              {article.title.charAt(0)}
-            </span>
+            <span className="text-4xl font-bold text-primary/20">{article.title.charAt(0)}</span>
           </div>
         )}
 
@@ -113,11 +111,9 @@ export function BlogCard({
       </div>
 
       {/* 内容区域 */}
-      <div className={cn(
-        'flex flex-col',
-        isCompact ? 'p-4 flex-1' : 'p-5',
-        isFeatured && 'md:p-6'
-      )}>
+      <div
+        className={cn('flex flex-col', isCompact ? 'p-4 flex-1' : 'p-5', isFeatured && 'md:p-6')}
+      >
         {/* 标题 */}
         <h3
           className={cn(
@@ -139,10 +135,10 @@ export function BlogCard({
         {/* 标签 */}
         {!isCompact && article.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mb-4">
-            {article.tags.slice(0, 4).map((tag) => (
+            {article.tags.slice(0, 4).map(tag => (
               <button
                 key={tag}
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation();
                   onTagClick?.(tag);
                 }}
@@ -160,10 +156,12 @@ export function BlogCard({
         )}
 
         {/* 元信息 */}
-        <div className={cn(
-          'mt-auto flex items-center gap-3 text-xs text-muted-foreground',
-          isCompact ? 'flex-wrap' : 'justify-between'
-        )}>
+        <div
+          className={cn(
+            'mt-auto flex items-center gap-3 text-xs text-muted-foreground',
+            isCompact ? 'flex-wrap' : 'justify-between'
+          )}
+        >
           {/* 左侧：作者和日期 */}
           <div className="flex items-center gap-3">
             {showAuthor && (

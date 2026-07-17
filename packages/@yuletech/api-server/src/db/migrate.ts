@@ -1,13 +1,14 @@
-import { migrate } from 'drizzle-orm/postgres-js/migrator'
-import { drizzle } from 'drizzle-orm/postgres-js'
-import postgres from 'postgres'
-import { config } from '../config.js'
+import { drizzle } from 'drizzle-orm/postgres-js';
+import { migrate } from 'drizzle-orm/postgres-js/migrator';
+import postgres from 'postgres';
 
-const migrationClient = postgres(config.databaseUrl, { max: 1 })
-const migrationDb = drizzle(migrationClient)
+import { config } from '../config.js';
 
-console.log('⏳ Running migrations...')
-await migrate(migrationDb, { migrationsFolder: './src/db/migrations' })
-console.log('✅ Migrations complete')
+const migrationClient = postgres(config.databaseUrl, { max: 1 });
+const migrationDb = drizzle(migrationClient);
 
-await migrationClient.end()
+console.log('⏳ Running migrations...');
+await migrate(migrationDb, { migrationsFolder: './src/db/migrations' });
+console.log('✅ Migrations complete');
+
+await migrationClient.end();

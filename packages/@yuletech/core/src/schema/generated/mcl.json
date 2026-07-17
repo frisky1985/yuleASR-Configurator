@@ -730,11 +730,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CommonPublishedInformation",
-    "DmaChannel",
-    "DmaInstance"
-  ],
+  "required": ["CommonPublishedInformation", "DmaChannel", "DmaInstance"],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",

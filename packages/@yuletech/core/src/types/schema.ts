@@ -1,6 +1,6 @@
 /**
  * YuleTech Core Schema Types
- * 
+ *
  * Type definitions for yuleASR BSW module schemas
  */
 
@@ -8,12 +8,12 @@
 export type ParameterValue = string | number | boolean | string[] | number[];
 
 /** Parameter data types */
-export type ParameterDataType = 
-  | 'BOOLEAN' 
-  | 'INTEGER' 
-  | 'FLOAT' 
-  | 'STRING' 
-  | 'ENUM' 
+export type ParameterDataType =
+  | 'BOOLEAN'
+  | 'INTEGER'
+  | 'FLOAT'
+  | 'STRING'
+  | 'ENUM'
   | 'FUNCTION-NAME'
   | 'REFERENCE'
   | 'ARRAY';

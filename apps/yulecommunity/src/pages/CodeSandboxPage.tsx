@@ -1,13 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
-import {
-  Code2,
-  Terminal,
-  BookOpen,
-  Lightbulb,
-  AlertCircle,
-  ExternalLink,
-} from 'lucide-react';
+import { Code2, Terminal, BookOpen, Lightbulb, AlertCircle, ExternalLink } from 'lucide-react';
 import { CodeSandbox } from '../components/CodeSandbox';
 
 const TIPS = [
@@ -40,7 +33,10 @@ export function CodeSandboxPage() {
     <div className="min-h-screen pt-16">
       <Helmet>
         <title>在线代码沙盒 - YuleTech | C 语言在线编程</title>
-        <meta name="description" content="在线 C 语言代码沙盒，支持语法高亮、代码编译、实时运行，带有丰富的示例模板和学习资源。" />
+        <meta
+          name="description"
+          content="在线 C 语言代码沙盒，支持语法高亮、代码编译、实时运行，带有丰富的示例模板和学习资源。"
+        />
       </Helmet>
 
       {/* Hero */}
@@ -135,7 +131,8 @@ export function CodeSandboxPage() {
                 <div className="mt-4 pt-4 border-t border-border text-sm text-muted-foreground">
                   <p className="mb-2">
                     当前版本为演示版本，使用 Monaco Editor 进行代码编辑，代码执行为模拟环境。
-                    如需完整的在线编译执行功能，建议搭建后端服务使用 WebAssembly 或 Docker 容器技术。
+                    如需完整的在线编译执行功能，建议搭建后端服务使用 WebAssembly 或 Docker
+                    容器技术。
                   </p>
                   <a
                     href="https://github.com/microsoft/monaco-editor"
@@ -163,14 +160,15 @@ export function CodeSandboxPage() {
               { title: 'AutoSAR 规范解读', desc: 'BSW 开发指南', link: '/docs/autosar' },
               { title: 'MCAL 驱动开发', desc: '微控制器驱动层', link: '/opensource' },
               { title: '实战项目', desc: '堆校与调试', link: '/learning/projects' },
-            ].map((item) => (
+            ].map(item => (
               <a
                 key={item.title}
                 href={item.link}
                 className="group p-4 bg-card border border-border rounded-xl hover:border-primary/30 hover:shadow-elegant transition-all"
               >
                 <h4 className="font-semibold mb-1 group-hover:text-primary transition-colors">
-                  {item.title}</h4>
+                  {item.title}
+                </h4>
                 <p className="text-sm text-muted-foreground">{item.desc}</p>
               </a>
             ))}

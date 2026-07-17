@@ -15,36 +15,36 @@ export interface SEOWrapperProps {
   title: string;
   description: string;
   keywords?: string[];
-  
+
   // 页面 URL
   url: string;
-  
+
   // OG 图片
   ogImage: string;
   ogType?: SocialMetaProps['type'];
   ogImageAlt?: string;
-  
+
   // 结构化数据
   structuredData?: StructuredDataProps[];
-  
+
   // 文章特有
   author?: string;
   publishedTime?: string;
   modifiedTime?: string;
   tags?: string[];
   section?: string;
-  
+
   // Twitter
   twitterCard?: SocialMetaProps['twitterCard'];
   twitterCreator?: string;
-  
+
   // 子元素
   children: ReactNode;
 }
 
 /**
  * SEO 统一包装组件
- * 
+ *
  * 使用示例:
  * ```tsx
  * <SEOWrapper
@@ -96,12 +96,12 @@ export function SEOWrapper({
         twitterCard={twitterCard}
         twitterCreator={twitterCreator}
       />
-      
+
       {/* 结构化数据 */}
       {structuredData.map((data, index) => (
         <StructuredData key={index} type={data.type} data={data.data} />
       ))}
-      
+
       {/* 页面内容 */}
       {children}
     </>
@@ -137,9 +137,7 @@ export function HomeSEOWrapper({ children }: { children: ReactNode }) {
             url: 'https://frisky1985.github.io/yuleCommunity',
             logo: 'https://frisky1985.github.io/yuleCommunity/icon-192x192.svg',
             description: '国内领先的汽车基础软件开源社区',
-            sameAs: [
-              'https://github.com/frisky1985/yuleCommunity',
-            ],
+            sameAs: ['https://github.com/frisky1985/yuleCommunity'],
           },
         },
         {
@@ -190,7 +188,7 @@ export function BlogArticleSEOWrapper({
 }: BlogArticleSEOWrapperProps) {
   // 生成 OG 图片路径
   const ogImage = `/images/og/${slug}.png`;
-  
+
   return (
     <SEOWrapper
       title={`${title} - YuleTech 技术博客`}

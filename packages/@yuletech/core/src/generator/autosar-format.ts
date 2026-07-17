@@ -1,7 +1,7 @@
 /**
  * @yuletech/core - C Code Generation Utilities
  * Shared utility functions for generating AUTOSAR C code
- * 
+ *
  * Implements AUTOSAR 4.4 standard formatting and conventions
  */
 
@@ -27,7 +27,7 @@ export function formatCValue(value: unknown, type?: string): string {
       return value === true ? 'STD_ON' : 'STD_OFF';
     case 'integer':
       if (typeof value === 'number') {
-        if (value >= 0 && value <= 0xFFFF) {
+        if (value >= 0 && value <= 0xffff) {
           return `((uint16)${value}U)`;
         }
         return `((uint32)${value}U)`;
@@ -65,14 +65,22 @@ export function formatPrimitiveValue(value: unknown): string {
 /** Map a parameter type string to an AUTOSAR C type name */
 export function getCType(type: string): string {
   switch (type) {
-    case 'boolean': return 'boolean';
-    case 'integer': return 'uint32';
-    case 'float': return 'float32';
-    case 'string': return 'const char*';
-    case 'enum': return 'uint8';
-    case 'array': return 'const void*';
-    case 'reference': return 'const void*';
-    default: return 'uint32';
+    case 'boolean':
+      return 'boolean';
+    case 'integer':
+      return 'uint32';
+    case 'float':
+      return 'float32';
+    case 'string':
+      return 'const char*';
+    case 'enum':
+      return 'uint8';
+    case 'array':
+      return 'const void*';
+    case 'reference':
+      return 'const void*';
+    default:
+      return 'uint32';
   }
 }
 
@@ -167,9 +175,12 @@ export interface CompilerAbstraction {
  */
 export function getCompilerAbstraction(compiler?: CompilerType): CompilerAbstraction {
   switch (compiler) {
-    case 'iar': return new IarCompilerAbstraction();
-    case 'tasking': return new TaskingCompilerAbstraction();
-    case 'ghs': return new GhsCompilerAbstraction();
+    case 'iar':
+      return new IarCompilerAbstraction();
+    case 'tasking':
+      return new TaskingCompilerAbstraction();
+    case 'ghs':
+      return new GhsCompilerAbstraction();
     case 'gcc':
     default:
       return new GccCompilerAbstraction();
@@ -202,9 +213,12 @@ export class GccCompilerAbstraction implements CompilerAbstraction {
 
   registerQualifier(direction: 'in' | 'out' | 'inout'): string {
     switch (direction) {
-      case 'in': return 'const volatile';
-      case 'out': return 'volatile';
-      case 'inout': return 'volatile';
+      case 'in':
+        return 'const volatile';
+      case 'out':
+        return 'volatile';
+      case 'inout':
+        return 'volatile';
     }
   }
 
@@ -250,9 +264,7 @@ export class IarCompilerAbstraction implements CompilerAbstraction {
   readonly compiler: CompilerType = 'iar';
 
   interruptAttribute(irqNumber?: number): string {
-    return irqNumber !== undefined
-      ? `__interrupt __irq`
-      : `__interrupt`;
+    return irqNumber !== undefined ? `__interrupt __irq` : `__interrupt`;
   }
 
   addressAttribute(address: number): string {
@@ -265,9 +277,12 @@ export class IarCompilerAbstraction implements CompilerAbstraction {
 
   registerQualifier(direction: 'in' | 'out' | 'inout'): string {
     switch (direction) {
-      case 'in': return '__I';
-      case 'out': return '__O';
-      case 'inout': return '__IO';
+      case 'in':
+        return '__I';
+      case 'out':
+        return '__O';
+      case 'inout':
+        return '__IO';
     }
   }
 
@@ -312,9 +327,7 @@ export class TaskingCompilerAbstraction implements CompilerAbstraction {
   readonly compiler: CompilerType = 'tasking';
 
   interruptAttribute(irqNumber?: number): string {
-    return irqNumber !== undefined
-      ? `ISR(${irqNumber})`
-      : `ISR(0)`;
+    return irqNumber !== undefined ? `ISR(${irqNumber})` : `ISR(0)`;
   }
 
   addressAttribute(address: number): string {
@@ -333,9 +346,12 @@ export class TaskingCompilerAbstraction implements CompilerAbstraction {
 
   registerQualifier(direction: 'in' | 'out' | 'inout'): string {
     switch (direction) {
-      case 'in': return '__far const';
-      case 'out': return '__far';
-      case 'inout': return '__far';
+      case 'in':
+        return '__far const';
+      case 'out':
+        return '__far';
+      case 'inout':
+        return '__far';
     }
   }
 
@@ -393,9 +409,12 @@ export class GhsCompilerAbstraction implements CompilerAbstraction {
 
   registerQualifier(direction: 'in' | 'out' | 'inout'): string {
     switch (direction) {
-      case 'in': return 'const volatile';
-      case 'out': return 'volatile';
-      case 'inout': return 'volatile';
+      case 'in':
+        return 'const volatile';
+      case 'out':
+        return 'volatile';
+      case 'inout':
+        return 'volatile';
     }
   }
 
@@ -433,24 +452,53 @@ export class GhsCompilerAbstraction implements CompilerAbstraction {
 /** AUTOSAR 标准 Module IDs (BSW Module ID Table per AUTOSAR spec 4.4) */
 export const AUTOSAR_MODULE_IDS: Record<string, number> = {
   // MCAL
-  Mcu: 43, Port: 42, Dio: 41, Can: 80, Spi: 122,
-  Icu: 120, Gpt: 121, Pwm: 123, Adc: 44, Wdg: 45,
-  Lin: 183, Fr: 46, Eth: 47,
+  Mcu: 43,
+  Port: 42,
+  Dio: 41,
+  Can: 80,
+  Spi: 122,
+  Icu: 120,
+  Gpt: 121,
+  Pwm: 123,
+  Adc: 44,
+  Wdg: 45,
+  Lin: 183,
+  Fr: 46,
+  Eth: 47,
   // ECUAL
-  CanIf: 81, LinIf: 187, FrIf: 48, EthIf: 49,
-  CanTp: 82, LinTp: 188, FrTp: 50, CanTrcv: 83,
-  Fee: 133, Ea: 134, MemIf: 135, IoHwAb: 140,
+  CanIf: 81,
+  LinIf: 187,
+  FrIf: 48,
+  EthIf: 49,
+  CanTp: 82,
+  LinTp: 188,
+  FrTp: 50,
+  CanTrcv: 83,
+  Fee: 133,
+  Ea: 134,
+  MemIf: 135,
+  IoHwAb: 140,
   // Service
-  Com: 84, PduR: 85, NvM: 150, Dcm: 86, Dem: 87,
-  EcuM: 151, BswM: 152, WdgM: 153, CanNm: 88,
-  CanSm: 89, CanTSyn: 90, Xcp: 91,
+  Com: 84,
+  PduR: 85,
+  NvM: 150,
+  Dcm: 86,
+  Dem: 87,
+  EcuM: 151,
+  BswM: 152,
+  WdgM: 153,
+  CanNm: 88,
+  CanSm: 89,
+  CanTSyn: 90,
+  Xcp: 91,
   // RTE / OS
-  Rte: 16, Os: 1,
+  Rte: 16,
+  Os: 1,
 };
 
 /** Get the AUTOSAR standard Module ID for a module name */
 export function getModuleId(moduleName: string): number {
-  return AUTOSAR_MODULE_IDS[moduleName] || 0xFFFF;
+  return AUTOSAR_MODULE_IDS[moduleName] || 0xffff;
 }
 
 /** AUTOSAR standard configuration header file names */
@@ -480,28 +528,28 @@ export function getModuleHeaderName(moduleName: string): string {
  * AUTOSAR standard service IDs for DET error reporting (per SWS_Det)
  * Each module defines its own API service IDs starting from 0x01 per module
  */
-export const DET_MODULE_ID: number = 15;  // Default Error Tracer module ID per AUTOSAR
+export const DET_MODULE_ID: number = 15; // Default Error Tracer module ID per AUTOSAR
 
 /**
  * Standard AUTOSAR development error codes for Det_ReportError
  * SWS_Det_00400 - Definition of development error codes
  */
 export enum DetErrorCode {
-  DET_E_PARAM_POINTER   = 0x01,  /**< Invalid pointer parameter detected */
-  DET_E_PARAM_CONFIG    = 0x02,  /**< Invalid configuration parameter */
-  DET_E_PARAM_DATA      = 0x03,  /**< Invalid data parameter */  
-  DET_E_PARAM_HANDLE    = 0x04,  /**< Invalid handle */
-  DET_E_UNINIT          = 0x05,  /**< Module not initialized */
-  DET_E_INIT_FAILED     = 0x06,  /**< Module initialization failed */
-  DET_E_TIMEOUT         = 0x07,  /**< Operation timeout */
-  DET_E_WRONG_STATE     = 0x08,  /**< Module in wrong state */
-  DET_E_BUFFER_OVERFLOW = 0x09,  /**< Buffer overflow */
-  DET_E_PARAM_VALUE     = 0x0A,  /**< Invalid parameter value */
+  DET_E_PARAM_POINTER = 0x01 /**< Invalid pointer parameter detected */,
+  DET_E_PARAM_CONFIG = 0x02 /**< Invalid configuration parameter */,
+  DET_E_PARAM_DATA = 0x03 /**< Invalid data parameter */,
+  DET_E_PARAM_HANDLE = 0x04 /**< Invalid handle */,
+  DET_E_UNINIT = 0x05 /**< Module not initialized */,
+  DET_E_INIT_FAILED = 0x06 /**< Module initialization failed */,
+  DET_E_TIMEOUT = 0x07 /**< Operation timeout */,
+  DET_E_WRONG_STATE = 0x08 /**< Module in wrong state */,
+  DET_E_BUFFER_OVERFLOW = 0x09 /**< Buffer overflow */,
+  DET_E_PARAM_VALUE = 0x0a /**< Invalid parameter value */,
 }
 
 /**
  * Generate an AUTOSAR 4.4 compliant Doxygen file header
- * 
+ *
  * @param fileName - The C source/header file name (e.g., "Can_Cfg.h")
  * @param moduleName - The AUTOSAR BSW module name (e.g., "Can")
  * @param moduleId - The AUTOSAR module ID number
@@ -555,7 +603,7 @@ export function generateAutosarFileHeader(
 
 /**
  * Generate a standard AUTOSAR Doxygen function header
- * 
+ *
  * @param brief - Brief function description
  * @param params - Array of {name, direction, description} tuples
  * @param returns - Return value description
@@ -565,7 +613,7 @@ export function generateAutosarFileHeader(
  */
 export function generateAutosarFunctionHeader(
   brief: string,
-  params?: Array<{name: string; direction?: 'in' | 'out' | 'inout'; description: string}>,
+  params?: Array<{ name: string; direction?: 'in' | 'out' | 'inout'; description: string }>,
   returns?: string,
   preconditions?: string[],
   postconditions?: string[]
@@ -606,7 +654,7 @@ export function generateAutosarFunctionHeader(
 
 /**
  * Generate Det_ReportError call block, guarded by DEV_ERROR_DETECT
- * 
+ *
  * @param moduleId - AUTOSAR module ID
  * @param instanceId - Instance ID (usually 0)
  * @param serviceId - Service ID for the API that detected the error
@@ -635,7 +683,7 @@ export function generateDetReportError(
 
 /**
  * Generate the standard AUTOSAR version info macro block for a module header
- * 
+ *
  * @param moduleName - Module name in original case (e.g. "Can")
  * @param swMajor - Software major version (1)
  * @param swMinor - Software minor version (0)
@@ -687,7 +735,7 @@ export function generateVersionInfoMacros(
 
 /**
  * Generate the standard DEV_ERROR_DETECT guard wrapper for a code block
- * 
+ *
  * @param codeBlock - The C code to guard
  * @returns Code wrapped with DEV_ERROR_DETECT if/endif
  */

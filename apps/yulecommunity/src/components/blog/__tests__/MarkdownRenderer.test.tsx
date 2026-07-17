@@ -43,7 +43,7 @@ const markdownWithToc = `
 describe('MarkdownRenderer', () => {
   it('应该正确渲染标题', () => {
     render(<MarkdownRenderer content="# 测试标题" />);
-    
+
     const heading = screen.getByText('测试标题');
     expect(heading).toBeInTheDocument();
     expect(heading.tagName.toLowerCase()).toBe('h1');
@@ -51,13 +51,13 @@ describe('MarkdownRenderer', () => {
 
   it('应该正确渲染段落', () => {
     render(<MarkdownRenderer content="这是一段测试文字。" />);
-    
+
     expect(screen.getByText('这是一段测试文字。')).toBeInTheDocument();
   });
 
   it('应该正确渲染无序列表', () => {
     const { container } = render(<MarkdownRenderer content="- 项1" />);
-    
+
     const li = container.querySelector('li');
     expect(li).toBeInTheDocument();
     expect(li?.textContent).toContain('项1');
@@ -65,7 +65,7 @@ describe('MarkdownRenderer', () => {
 
   it('应该正确渲染有序列表', () => {
     const { container } = render(<MarkdownRenderer content="1. 第一项" />);
-    
+
     const li = container.querySelector('li');
     expect(li).toBeInTheDocument();
     expect(li?.textContent).toContain('第一项');
@@ -73,13 +73,13 @@ describe('MarkdownRenderer', () => {
 
   it('应该正确渲染引用', () => {
     render(<MarkdownRenderer content="> 这是引用" />);
-    
+
     expect(screen.getByText('这是引用')).toBeInTheDocument();
   });
 
   it('应该正确渲染链接', () => {
     render(<MarkdownRenderer content={markdownWithLinks} />);
-    
+
     const link = screen.getByText('访问百度');
     expect(link).toBeInTheDocument();
     expect(link.tagName.toLowerCase()).toBe('a');
@@ -90,7 +90,7 @@ describe('MarkdownRenderer', () => {
 
   it('应该正确渲染表格', () => {
     render(<MarkdownRenderer content={markdownWithTable} />);
-    
+
     expect(screen.getByText('表头1')).toBeInTheDocument();
     expect(screen.getByText('表头2')).toBeInTheDocument();
     expect(screen.getByText('单元1')).toBeInTheDocument();
@@ -99,32 +99,28 @@ describe('MarkdownRenderer', () => {
 
   it('应该正确渲染行内代码', () => {
     render(<MarkdownRenderer content="这是行内代码: `const x = 1`" />);
-    
+
     expect(screen.getByText('const x = 1')).toBeInTheDocument();
   });
 
   it('应该正确渲染水平线', () => {
     const { container } = render(<MarkdownRenderer content="---" />);
-    
+
     const hr = container.querySelector('hr');
     expect(hr).toBeInTheDocument();
   });
 
   it('应该支持 enableToc 并触发 onTocGenerated 回调', async () => {
     const handleTocGenerated = vi.fn();
-    
+
     render(
-      <MarkdownRenderer 
-        content={markdownWithToc}
-        enableToc
-        onTocGenerated={handleTocGenerated}
-      />
+      <MarkdownRenderer content={markdownWithToc} enableToc onTocGenerated={handleTocGenerated} />
     );
-    
+
     await waitFor(() => {
       expect(handleTocGenerated).toHaveBeenCalled();
     });
-    
+
     const toc = handleTocGenerated.mock.calls[0][0];
     expect(toc).toBeInstanceOf(Array);
     expect(toc.length).toBeGreaterThan(0);
@@ -144,19 +140,19 @@ describe('MarkdownRenderer', () => {
 内容
 `;
     const handleTocGenerated = vi.fn();
-    
+
     render(
-      <MarkdownRenderer 
+      <MarkdownRenderer
         content={markdownWithDuplicateTitles}
         enableToc
         onTocGenerated={handleTocGenerated}
       />
     );
-    
+
     await waitFor(() => {
       expect(handleTocGenerated).toHaveBeenCalled();
     });
-    
+
     const toc = handleTocGenerated.mock.calls[0][0];
     expect(toc.length).toBe(2);
     // 检查 ID 是否唯一
@@ -171,7 +167,7 @@ describe('MarkdownRenderer', () => {
 #### H4
 `;
     render(<MarkdownRenderer content={markdownWithAllHeadings} />);
-    
+
     expect(screen.getByText('H1').tagName.toLowerCase()).toBe('h1');
     expect(screen.getByText('H2').tagName.toLowerCase()).toBe('h2');
     expect(screen.getByText('H3').tagName.toLowerCase()).toBe('h3');
@@ -179,28 +175,23 @@ describe('MarkdownRenderer', () => {
   });
 
   it('应该支持自定义类名', () => {
-    const { container } = render(
-      <MarkdownRenderer 
-        content="# 测试"
-        className="custom-class"
-      />
-    );
-    
+    const { container } = render(<MarkdownRenderer content="# 测试" className="custom-class" />);
+
     const wrapper = container.firstChild;
     expect(wrapper).toHaveClass('custom-class');
   });
 
   it('不启用目录时不应调用 onTocGenerated', () => {
     const handleTocGenerated = vi.fn();
-    
+
     render(
-      <MarkdownRenderer 
+      <MarkdownRenderer
         content={markdownWithToc}
         enableToc={false}
         onTocGenerated={handleTocGenerated}
       />
     );
-    
+
     expect(handleTocGenerated).not.toHaveBeenCalled();
   });
 });

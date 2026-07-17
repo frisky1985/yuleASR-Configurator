@@ -4,10 +4,11 @@
  * ConditionEvaluator（条件表达式）为一个入口。
  */
 
-import type { ModuleConfig, ModuleSchema, ValidationError } from '../types';
-import { YuleasrValidator } from './yuleasr-validator';
-import { createCrossModuleValidator } from './cross-module-validator';
 import { evaluateCondition } from '../conditions/evaluator';
+import type { ModuleConfig, ModuleSchema, ValidationError } from '../types';
+
+import { createCrossModuleValidator } from './cross-module-validator';
+import { YuleasrValidator } from './yuleasr-validator';
 
 // ─── Result type ─────────────────────────────────────────────────────────
 
@@ -50,7 +51,7 @@ export class ValidationPipeline {
   validate(
     configs: ModuleConfig[],
     schemas: ModuleSchema[],
-    conditions?: Record<string, string>,
+    conditions?: Record<string, string>
   ): ValidationPipelineResult {
     const warnings: string[] = [];
     const moduleCount = configs.length;
@@ -93,7 +94,7 @@ export class ValidationPipeline {
       ...conditionErrors,
     ]);
 
-    const isValid = allErrors.filter((e) => e.severity === 'error').length === 0;
+    const isValid = allErrors.filter(e => e.severity === 'error').length === 0;
 
     return {
       moduleErrors,
@@ -109,7 +110,7 @@ export class ValidationPipeline {
   /** 合并去重：相同 path + message 的只保留第一条 */
   private deduplicateErrors(errors: ValidationError[]): ValidationError[] {
     const seen = new Set<string>();
-    return errors.filter((e) => {
+    return errors.filter(e => {
       const key = `${e.path}|${e.message}`;
       if (seen.has(key)) return false;
       seen.add(key);
@@ -130,7 +131,7 @@ export class ValidationPipeline {
 export function validateAll(
   configs: ModuleConfig[],
   schemas: ModuleSchema[],
-  conditions?: Record<string, string>,
+  conditions?: Record<string, string>
 ): ValidationPipelineResult {
   const pipeline = new ValidationPipeline();
   return pipeline.validate(configs, schemas, conditions);

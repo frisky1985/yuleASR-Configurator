@@ -72,9 +72,9 @@ export function AdminDashboard() {
   // Generate user stats from all available data
   const userStats = useMemo(() => {
     const authors = new Set<string>();
-    posts.forEach((p) => authors.add(p.author));
-    questions.forEach((q) => authors.add(q.author));
-    events.forEach((e) => authors.add(e.speaker));
+    posts.forEach(p => authors.add(p.author));
+    questions.forEach(q => authors.add(q.author));
+    events.forEach(e => authors.add(e.speaker));
     // Add mock users
     const mockCount = 12;
     return authors.size + mockCount;
@@ -89,19 +89,19 @@ export function AdminDashboard() {
     ];
     // Simulate point distribution based on content authors
     const allAuthors = new Map<string, number>();
-    posts.forEach((p) => {
+    posts.forEach(p => {
       allAuthors.set(p.author, (allAuthors.get(p.author) || 0) + p.likes * 2 + p.views * 0.1);
     });
-    questions.forEach((q) => {
+    questions.forEach(q => {
       allAuthors.set(q.author, (allAuthors.get(q.author) || 0) + q.bounty + q.views * 0.1);
     });
-    events.forEach((e) => {
+    events.forEach(e => {
       allAuthors.set(e.speaker, (allAuthors.get(e.speaker) || 0) + 50);
     });
 
-    allAuthors.forEach((points) => {
+    allAuthors.forEach(points => {
       const info = getLevelInfo(Math.floor(points));
-      const level = levels.find((l) => l.label === info.title);
+      const level = levels.find(l => l.label === info.title);
       if (level) level.count++;
     });
 
@@ -111,27 +111,27 @@ export function AdminDashboard() {
     levels[2].count += 3;
     levels[3].count += 1;
 
-    const maxCount = Math.max(...levels.map((l) => l.count), 1);
-    return levels.map((l) => ({ ...l, percent: Math.round((l.count / maxCount) * 100) }));
+    const maxCount = Math.max(...levels.map(l => l.count), 1);
+    return levels.map(l => ({ ...l, percent: Math.round((l.count / maxCount) * 100) }));
   }, [posts, questions, events]);
 
   const recentActivity = useMemo(() => {
     const activities: RecentActivity[] = [
-      ...posts.map((p) => ({
+      ...posts.map(p => ({
         id: p.id,
         type: 'forum' as const,
         title: p.title,
         timestamp: p.createdAt,
         author: p.author,
       })),
-      ...questions.map((q) => ({
+      ...questions.map(q => ({
         id: q.id,
         type: 'qa' as const,
         title: q.title,
         timestamp: q.createdAt,
         author: q.author,
       })),
-      ...events.map((e) => ({
+      ...events.map(e => ({
         id: e.id,
         type: 'event' as const,
         title: e.title,
@@ -148,10 +148,34 @@ export function AdminDashboard() {
   const storageSize = getStorageSize();
 
   const stats = [
-    { label: '总用户数', value: userStats, icon: Users, color: 'text-blue-500', bg: 'bg-blue-500/10' },
-    { label: '论坛帖子', value: posts.length, icon: MessageSquare, color: 'text-green-500', bg: 'bg-green-500/10' },
-    { label: '问答问题', value: questions.length, icon: HelpCircle, color: 'text-amber-500', bg: 'bg-amber-500/10' },
-    { label: '活动数', value: events.length, icon: Calendar, color: 'text-purple-500', bg: 'bg-purple-500/10' },
+    {
+      label: '总用户数',
+      value: userStats,
+      icon: Users,
+      color: 'text-blue-500',
+      bg: 'bg-blue-500/10',
+    },
+    {
+      label: '论坛帖子',
+      value: posts.length,
+      icon: MessageSquare,
+      color: 'text-green-500',
+      bg: 'bg-green-500/10',
+    },
+    {
+      label: '问答问题',
+      value: questions.length,
+      icon: HelpCircle,
+      color: 'text-amber-500',
+      bg: 'bg-amber-500/10',
+    },
+    {
+      label: '活动数',
+      value: events.length,
+      icon: Calendar,
+      color: 'text-purple-500',
+      bg: 'bg-purple-500/10',
+    },
   ];
 
   return (
@@ -163,7 +187,7 @@ export function AdminDashboard() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat) => (
+        {stats.map(stat => (
           <div key={stat.label} className="bg-card border border-border rounded-xl p-5">
             <div className="flex items-center justify-between">
               <div>
@@ -225,7 +249,7 @@ export function AdminDashboard() {
             <h3 className="font-semibold">最近动态</h3>
           </div>
           <div className="space-y-3">
-            {recentActivity.map((item) => (
+            {recentActivity.map(item => (
               <div
                 key={item.id}
                 className="flex items-start gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
@@ -261,7 +285,7 @@ export function AdminDashboard() {
               <h3 className="font-semibold">积分分布</h3>
             </div>
             <div className="space-y-4">
-              {levelDistribution.map((level) => (
+              {levelDistribution.map(level => (
                 <div key={level.label}>
                   <div className="flex items-center justify-between text-sm mb-1">
                     <span className="text-muted-foreground">{level.label}</span>
@@ -305,11 +329,13 @@ export function AdminDashboard() {
               </div>
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">置顶帖子</span>
-                <span className="font-medium">{posts.filter((p) => p.isPinned).length}</span>
+                <span className="font-medium">{posts.filter(p => p.isPinned).length}</span>
               </div>
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">即将开始活动</span>
-                <span className="font-medium">{events.filter((e) => e.status === 'upcoming').length}</span>
+                <span className="font-medium">
+                  {events.filter(e => e.status === 'upcoming').length}
+                </span>
               </div>
             </div>
           </div>

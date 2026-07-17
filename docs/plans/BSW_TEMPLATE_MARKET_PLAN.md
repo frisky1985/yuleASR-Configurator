@@ -32,24 +32,27 @@ yuleASR-Configurator/                  # pnpm monorepo
 
 ### 1.2 路由结构（涉及模板功能）
 
-| 路径 | 所属 App | 页面组件 | 说明 |
-|------|----------|----------|------|
-| `/templates` | yuleasr-web | `Templates.tsx` | 现有模板浏览页（硬编码数据） |
-| `/yuleasr` | yulecommunity | `YuleASRPage.tsx` | 配置列表/管理 |
-| `/yuleasr/editor/:configId` | yulecommunity | `YuleASREditorPage.tsx` | 配置编辑器 |
-| `/admin` | yulecommunity | 后台管理 | users, builds, content, settings |
-| `/dashboard` | yuleasr-web | `Dashboard.tsx` | 配置器仪表盘 |
+| 路径                        | 所属 App      | 页面组件                | 说明                             |
+| --------------------------- | ------------- | ----------------------- | -------------------------------- |
+| `/templates`                | yuleasr-web   | `Templates.tsx`         | 现有模板浏览页（硬编码数据）     |
+| `/yuleasr`                  | yulecommunity | `YuleASRPage.tsx`       | 配置列表/管理                    |
+| `/yuleasr/editor/:configId` | yulecommunity | `YuleASREditorPage.tsx` | 配置编辑器                       |
+| `/admin`                    | yulecommunity | 后台管理                | users, builds, content, settings |
+| `/dashboard`                | yuleasr-web   | `Dashboard.tsx`         | 配置器仪表盘                     |
 
 ### 1.3 已存在的相关基础设施
 
 1. **许可证系统** — 完整实现：
-   - 前端: `yuleasr-web/src/stores/licenseStore.ts`，FEATURES 含 `templateMarketUpload: { free: false, pro: true }`
+   - 前端: `yuleasr-web/src/stores/licenseStore.ts`，FEATURES 含
+     `templateMarketUpload: { free: false, pro: true }`
    - 后端: `api-server/src/routes/license.ts`，完整 validate/activate/status API
-   - 数据库: Prisma 表 `LicenseKey`（key, tier, maxModules, maxProjects, userId）
+   - 数据库: Prisma 表 `LicenseKey`（key, tier, maxModules, maxProjects,
+     userId）
 
 2. **配置存储** — 已有 CRUD：
    - Backend Drizzle schema: `configs` 和 `config_versions` 表
-   - 后端路由 `configs.ts`: list, get, create, update, remove, getVersions, getByShareToken
+   - 后端路由 `configs.ts`: list, get, create, update, remove, getVersions,
+     getByShareToken
 
 3. **模板预览** — 已有但硬编码：
    - `yuleasr-web/src/pages/Templates.tsx` 中定义本地模板数组
@@ -66,7 +69,8 @@ yuleASR-Configurator/                  # pnpm monorepo
 
 ### 1.4 yulecommunity 和 yuleasr-web 的关系
 
-- **独立部署**：两个独立的 Vite 应用，`/community/` 和 `/configurator/` 不同 base path
+- **独立部署**：两个独立的 Vite 应用，`/community/` 和 `/configurator/`
+  不同 base path
 - **共享后端**：都指向 `@yuletech/api-server`（Fastify + Prisma，Port 3000）
 - **用户系统独立**：各自管理 localStorage 中的 token，但共享后端 JWT
 - **许可证共享**：yuleasr-web 有完整的 licenseStore，yulecommunity 暂无许可证判断
@@ -78,17 +82,17 @@ yuleASR-Configurator/                  # pnpm monorepo
 
 ### 2.1 功能定义
 
-| 功能 | 描述 | 免费用户 | Pro 用户 | Admin |
-|------|------|----------|----------|-------|
-| 浏览模板市场 | 查看所有公开模板 | ✅ | ✅ | ✅ |
-| 搜索/过滤模板 | 按名称、分类、标签搜索 | ✅ | ✅ | ✅ |
-| 模板详情预览 | 查看模板模块和参数详情 | ✅ | ✅ | ✅ |
-| 下载/导入模板 | 将模板导入到编辑器 | ✅ | ✅ | ✅ |
-| 上传模板 | 将当前配置另存为模板 | ❌ | ✅ | ✅ |
-| 更新模板版本 | 发布新版本 | ❌ | ✅ | ✅ |
-| 管理自己模板 | 编辑/删除自己的模板 | ❌ | ✅ | ✅ |
-| 审核模板（Admin） | 审核、下架、删除模板 | — | — | ✅ |
-| 统计查看（Admin） | 下载量、评分、趋势 | — | — | ✅ |
+| 功能              | 描述                   | 免费用户 | Pro 用户 | Admin |
+| ----------------- | ---------------------- | -------- | -------- | ----- |
+| 浏览模板市场      | 查看所有公开模板       | ✅       | ✅       | ✅    |
+| 搜索/过滤模板     | 按名称、分类、标签搜索 | ✅       | ✅       | ✅    |
+| 模板详情预览      | 查看模板模块和参数详情 | ✅       | ✅       | ✅    |
+| 下载/导入模板     | 将模板导入到编辑器     | ✅       | ✅       | ✅    |
+| 上传模板          | 将当前配置另存为模板   | ❌       | ✅       | ✅    |
+| 更新模板版本      | 发布新版本             | ❌       | ✅       | ✅    |
+| 管理自己模板      | 编辑/删除自己的模板    | ❌       | ✅       | ✅    |
+| 审核模板（Admin） | 审核、下架、删除模板   | —        | —        | ✅    |
+| 统计查看（Admin） | 下载量、评分、趋势     | —        | —        | ✅    |
 
 ### 2.2 数据模型
 
@@ -154,111 +158,112 @@ model BSWTemplateVersion {
 ```typescript
 // 在 yulecommunity 或共享包中定义
 
-export type TemplateCategory = 'mcal' | 'ecual' | 'service' | 'full' | 'bsw'
-export type TemplateStatus = 'draft' | 'published' | 'rejected' | 'archived'
-export type TemplateVisibility = 'public' | 'private' | 'team'
+export type TemplateCategory = 'mcal' | 'ecual' | 'service' | 'full' | 'bsw';
+export type TemplateStatus = 'draft' | 'published' | 'rejected' | 'archived';
+export type TemplateVisibility = 'public' | 'private' | 'team';
 
 export interface TemplateModule {
-  id: string
-  name: string
-  layer: 'MCAL' | 'ECUAL' | 'Service' | 'RTE'
-  parameters?: Record<string, any>
+  id: string;
+  name: string;
+  layer: 'MCAL' | 'ECUAL' | 'Service' | 'RTE';
+  parameters?: Record<string, any>;
 }
 
 export interface BSWTemplate {
-  id: number
-  name: string
-  description: string
-  category: TemplateCategory
-  tags: string[]
-  icon?: string
-  modules: TemplateModule[]
-  version: number
-  downloadCount: number
-  viewCount: number
-  favoriteCount: number
-  status: TemplateStatus
-  visibility: TemplateVisibility
-  isOfficial: boolean
-  minTier: 'free' | 'pro'
+  id: number;
+  name: string;
+  description: string;
+  category: TemplateCategory;
+  tags: string[];
+  icon?: string;
+  modules: TemplateModule[];
+  version: number;
+  downloadCount: number;
+  viewCount: number;
+  favoriteCount: number;
+  status: TemplateStatus;
+  visibility: TemplateVisibility;
+  isOfficial: boolean;
+  minTier: 'free' | 'pro';
   author: {
-    id: number
-    username: string
-    avatar?: string
-  }
-  createdAt: string
-  updatedAt: string
+    id: number;
+    username: string;
+    avatar?: string;
+  };
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface BSWTemplateVersion {
-  id: number
-  templateId: number
-  version: number
-  name: string
-  description: string
-  modules: TemplateModule[]
-  changelog?: string
-  createdAt: string
+  id: number;
+  templateId: number;
+  version: number;
+  name: string;
+  description: string;
+  modules: TemplateModule[];
+  changelog?: string;
+  createdAt: string;
 }
 
 export interface BSWTemplateUpload {
-  name: string
-  description: string
-  category: TemplateCategory
-  tags: string[]
-  icon?: string
-  modules: TemplateModule[]
-  data?: any
-  visibility?: TemplateVisibility
+  name: string;
+  description: string;
+  category: TemplateCategory;
+  tags: string[];
+  icon?: string;
+  modules: TemplateModule[];
+  data?: any;
+  visibility?: TemplateVisibility;
 }
 
 export interface BSWTemplateListParams {
-  category?: TemplateCategory
-  search?: string
-  tag?: string
-  sortBy?: 'downloads' | 'date' | 'name'
-  sortOrder?: 'asc' | 'desc'
-  page?: number
-  pageSize?: number
-  authorId?: number
-  status?: TemplateStatus
+  category?: TemplateCategory;
+  search?: string;
+  tag?: string;
+  sortBy?: 'downloads' | 'date' | 'name';
+  sortOrder?: 'asc' | 'desc';
+  page?: number;
+  pageSize?: number;
+  authorId?: number;
+  status?: TemplateStatus;
 }
 ```
 
 ### 2.3 API 端点设计
 
-| 方法 | 端点 | 权限 | 说明 |
-|------|------|------|------|
-| GET | `/api/bsw-templates` | 公开 | 列出公开模板，支持分页/搜索/过滤 |
-| GET | `/api/bsw-templates/:id` | 公开 | 获取模板详情 |
-| GET | `/api/bsw-templates/:id/versions` | 公开 | 获取版本历史 |
-| GET | `/api/bsw-templates/:id/versions/:versionId` | 公开 | 获取特定版本详情 |
-| POST | `/api/bsw-templates` | Pro/Admin | 创建模板（上传） |
-| PUT | `/api/bsw-templates/:id` | 作者/Admin | 更新模板元数据 |
-| DELETE | `/api/bsw-templates/:id` | 作者/Admin | 删除模板 |
-| POST | `/api/bsw-templates/:id/versions` | 作者/Admin | 发布新版本 |
-| POST | `/api/bsw-templates/:id/download` | 登录用户 | 下载模板（计数+1） |
-| PUT | `/api/bsw-templates/:id/status` | Admin | 审核模板（发布/驳回/归档） |
-| GET | `/api/bsw-templates/admin/list` | Admin | 管理员查看所有模板（含审核队列） |
-| GET | `/api/bsw-templates/my` | 登录用户 | 查看我的模板 |
+| 方法   | 端点                                         | 权限       | 说明                             |
+| ------ | -------------------------------------------- | ---------- | -------------------------------- |
+| GET    | `/api/bsw-templates`                         | 公开       | 列出公开模板，支持分页/搜索/过滤 |
+| GET    | `/api/bsw-templates/:id`                     | 公开       | 获取模板详情                     |
+| GET    | `/api/bsw-templates/:id/versions`            | 公开       | 获取版本历史                     |
+| GET    | `/api/bsw-templates/:id/versions/:versionId` | 公开       | 获取特定版本详情                 |
+| POST   | `/api/bsw-templates`                         | Pro/Admin  | 创建模板（上传）                 |
+| PUT    | `/api/bsw-templates/:id`                     | 作者/Admin | 更新模板元数据                   |
+| DELETE | `/api/bsw-templates/:id`                     | 作者/Admin | 删除模板                         |
+| POST   | `/api/bsw-templates/:id/versions`            | 作者/Admin | 发布新版本                       |
+| POST   | `/api/bsw-templates/:id/download`            | 登录用户   | 下载模板（计数+1）               |
+| PUT    | `/api/bsw-templates/:id/status`              | Admin      | 审核模板（发布/驳回/归档）       |
+| GET    | `/api/bsw-templates/admin/list`              | Admin      | 管理员查看所有模板（含审核队列） |
+| GET    | `/api/bsw-templates/my`                      | 登录用户   | 查看我的模板                     |
 
 ### 2.4 前端页面/组件清单
 
 #### A. yulecommunity — 模板市场（社区端）
 
-| 文件 | 类型 | 说明 |
-|------|------|------|
-| `src/pages/BSWTemplateMarketPage.tsx` | **新页面** | 模板市场主页：搜索/过滤/分类浏览 |
-| `src/pages/BSWTemplateDetailPage.tsx` | **新页面** | 模板详情：模块预览、版本历史、下载 |
-| `src/components/BSWTemplateCard.tsx` | **新组件** | 模板卡片（在市场中展示） |
-| `src/components/BSWTemplateUploadModal.tsx` | **新组件** | 上传/发布模板弹窗 |
-| `src/components/BSWTemplateVersionHistory.tsx` | **新组件** | 版本历史列表 |
-| `src/components/BSWTemplatePreview.tsx` | **新组件** | 模板模块/参数预览面板 |
-| `src/services/bswTemplateApi.ts` | **新服务** | BSW 模板 API 服务类 |
-| `src/types/bswTemplate.ts` | **新类型** | BSW 模板类型定义 |
-| `src/hooks/useLicenseCheck.ts` | **新 Hook** | 检查用户是否有权限（免费/Pro） |
+| 文件                                           | 类型        | 说明                               |
+| ---------------------------------------------- | ----------- | ---------------------------------- |
+| `src/pages/BSWTemplateMarketPage.tsx`          | **新页面**  | 模板市场主页：搜索/过滤/分类浏览   |
+| `src/pages/BSWTemplateDetailPage.tsx`          | **新页面**  | 模板详情：模块预览、版本历史、下载 |
+| `src/components/BSWTemplateCard.tsx`           | **新组件**  | 模板卡片（在市场中展示）           |
+| `src/components/BSWTemplateUploadModal.tsx`    | **新组件**  | 上传/发布模板弹窗                  |
+| `src/components/BSWTemplateVersionHistory.tsx` | **新组件**  | 版本历史列表                       |
+| `src/components/BSWTemplatePreview.tsx`        | **新组件**  | 模板模块/参数预览面板              |
+| `src/services/bswTemplateApi.ts`               | **新服务**  | BSW 模板 API 服务类                |
+| `src/types/bswTemplate.ts`                     | **新类型**  | BSW 模板类型定义                   |
+| `src/hooks/useLicenseCheck.ts`                 | **新 Hook** | 检查用户是否有权限（免费/Pro）     |
 
 **集成到路由**（`CommunityRoutes.tsx` 修改）：
+
 ```
 /templates-market                → BSWTemplateMarketPage
 /templates-market/:id            → BSWTemplateDetailPage
@@ -270,13 +275,14 @@ export interface BSWTemplateListParams {
 
 #### B. yulecommunity — Admin 后台管理
 
-| 文件 | 类型 | 说明 |
-|------|------|------|
+| 文件                                     | 类型       | 说明                         |
+| ---------------------------------------- | ---------- | ---------------------------- |
 | `src/admin/pages/TemplateManagement.tsx` | **新页面** | 模板管理：列表/搜索/审核操作 |
-| `src/admin/pages/TemplateReview.tsx` | **新页面** | 模板审核详情：查看/发布/驳回 |
+| `src/admin/pages/TemplateReview.tsx`     | **新页面** | 模板审核详情：查看/发布/驳回 |
 
 **Admin 侧边栏添加**：新菜单项 "模板管理" → `/admin/templates`
 Admin 路由（`CommunityRoutes.tsx`）：
+
 ```
 /admin/templates             → TemplateManagement (模板列表)
 /admin/templates/:id         → TemplateReview (模板审核详情)
@@ -284,18 +290,20 @@ Admin 路由（`CommunityRoutes.tsx`）：
 
 #### C. yuleasr-web — 集成点
 
-| 文件 | 修改 | 说明 |
-|------|------|------|
-| `src/pages/Templates.tsx` | **修改** | 添加"浏览社区模板市场"入口、从社区导入模板 |
-| `src/stores/configStore.ts` | **修改** | 添加 `importTemplate` action |
-| `src/services/api.ts` | **修改** | 添加 bsw-templates 端点 |
+| 文件                        | 修改     | 说明                                       |
+| --------------------------- | -------- | ------------------------------------------ |
+| `src/pages/Templates.tsx`   | **修改** | 添加"浏览社区模板市场"入口、从社区导入模板 |
+| `src/stores/configStore.ts` | **修改** | 添加 `importTemplate` action               |
+| `src/services/api.ts`       | **修改** | 添加 bsw-templates 端点                    |
 
 **Templates 页面修改**：
+
 - 现有硬编码模板保留为"本地推荐模板"
 - 底部或侧边栏添加"浏览社区模板市场"入口
 - "从模板导入"按钮将调用 API 获取模板数据并创建新配置
 
 **编辑器中添加**：
+
 - YuleASREditorPage / Editor 中添加"发布到模板市场"按钮（仅 Pro 用户）
 - 调用 `POST /api/bsw-templates` 将当前配置保存为模板
 
@@ -455,29 +463,37 @@ navigate('/yuleasr/editor/:newConfigId')
 
 ## 5. 注意事项
 
-1. **数据库中存储 `modules` 为 JSON 字符串**：SQLite 不支持原生 JSON 字段，故使用 `@default("[]")` 字符串 + 代码中 `JSON.parse/stringify`
-2. **两套前端 app 共享 token**：理想情况下应共享同一 localStorage key，目前各自独立。建议在集成时统一 token key 名
-3. **Fastify 的 `authenticate` decorator**：认证路由需统一使用 `{ onRequest: [(app as any).authenticate] }`
-4. **模板数据格式兼容**：现有 `Templates.tsx` 中模块格式为 `{ id, name, layer }`，需扩展支持 `parameters`
-5. **PWA 离线缓存**：`vite-plugin-pwa` 配置了 API 路由 `/^https:\/\/api\./i` 的 NetworkFirst 策略，新模板 API 需确保 URL 匹配
-6. **桌面端 (yuleasr-desktop) 和 VS Code 扩展 (yuleasr-vscode)**：暂不修改，但未来可集成模板市场 API
+1. **数据库中存储 `modules`
+   为 JSON 字符串**：SQLite 不支持原生 JSON 字段，故使用 `@default("[]")`
+   字符串 + 代码中 `JSON.parse/stringify`
+2. **两套前端 app 共享 token**：理想情况下应共享同一 localStorage
+   key，目前各自独立。建议在集成时统一 token key 名
+3. **Fastify 的 `authenticate` decorator**：认证路由需统一使用
+   `{ onRequest: [(app as any).authenticate] }`
+4. **模板数据格式兼容**：现有 `Templates.tsx` 中模块格式为
+   `{ id, name, layer }`，需扩展支持 `parameters`
+5. **PWA 离线缓存**：`vite-plugin-pwa` 配置了 API 路由 `/^https:\/\/api\./i`
+   的 NetworkFirst 策略，新模板 API 需确保 URL 匹配
+6. **桌面端 (yuleasr-desktop) 和 VS
+   Code 扩展 (yuleasr-vscode)**：暂不修改，但未来可集成模板市场 API
 
 ---
 
 ## 6. 风险评估
 
-| 风险 | 影响 | 缓解措施 |
-|------|------|----------|
-| Prisma 和 Drizzle 两套 ORM 共存 | 架构复杂度高 | 逐步统一到 Prisma；新功能全部使用 Prisma |
+| 风险                                      | 影响           | 缓解措施                                    |
+| ----------------------------------------- | -------------- | ------------------------------------------- |
+| Prisma 和 Drizzle 两套 ORM 共存           | 架构复杂度高   | 逐步统一到 Prisma；新功能全部使用 Prisma    |
 | yulecommunity 和 yuleasr-web token 不共享 | 用户需分别登录 | 统一 localStorage key（如 `yuleasr_token`） |
-| 模板数据量增长可能导致性能问题 | 页面加载慢 | 后端分页 + 前端虚拟列表 |
-| 用户上传恶意模板内容 | 安全风险 | 后端审核机制 + 内容长度验证 + XSS 防护 |
+| 模板数据量增长可能导致性能问题            | 页面加载慢     | 后端分页 + 前端虚拟列表                     |
+| 用户上传恶意模板内容                      | 安全风险       | 后端审核机制 + 内容长度验证 + XSS 防护      |
 
 ---
 
 ## 7. 总结
 
 BSW 配置模板市场将充分利用现有资源：
+
 - **已有**：许可证系统（Pro/Free）、配置 CRUD、BSW 模块定义、模板 UI 组件
 - **新增**：BSWTemplate 数据模型、模板市场 API、社区前端页面、管理后台审核
 - **集成**：yulecommunity 作为市场前端 ↔ yuleasr-web 编辑器通过导入/上传连接

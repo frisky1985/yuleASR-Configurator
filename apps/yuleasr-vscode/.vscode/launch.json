@@ -5,12 +5,8 @@
       "name": "Run Extension (Dev Web)",
       "type": "extensionHost",
       "request": "launch",
-      "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}"
-      ],
-      "outFiles": [
-        "${workspaceFolder}/out/**/*.js"
-      ],
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"],
       "preLaunchTask": "Build Extension",
       "env": {
         "NODE_ENV": "development",
@@ -22,12 +18,8 @@
       "name": "Run Extension (Webview Built)",
       "type": "extensionHost",
       "request": "launch",
-      "args": [
-        "--extensionDevelopmentPath=${workspaceFolder}"
-      ],
-      "outFiles": [
-        "${workspaceFolder}/out/**/*.js"
-      ],
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
+      "outFiles": ["${workspaceFolder}/out/**/*.js"],
       "preLaunchTask": "Build All (Ext + Webview)",
       "env": {
         "NODE_ENV": "production"
@@ -41,9 +33,7 @@
         "--extensionDevelopmentPath=${workspaceFolder}",
         "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
       ],
-      "outFiles": [
-        "${workspaceFolder}/out/test/**/*.js"
-      ],
+      "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
       "preLaunchTask": "Build Extension"
     }
   ],

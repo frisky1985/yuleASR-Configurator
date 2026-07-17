@@ -30,7 +30,7 @@ export const dailyCodeSnippets: DailyCodeSnippet[] = [
     language: 'c',
     explanation: 'CAN 控制器初始化的标准流程：禁止控制器 → 配置波特率 → 清空邮箱 → 启动',
     module: 'Can',
-    difficulty: 'beginner'
+    difficulty: 'beginner',
   },
   {
     id: '2',
@@ -52,7 +52,7 @@ export const dailyCodeSnippets: DailyCodeSnippet[] = [
     language: 'c',
     explanation: 'PduR 负责在不同通信接口之间转发 PDU，如 CAN 到 Com 的数据路由',
     module: 'PduR',
-    difficulty: 'intermediate'
+    difficulty: 'intermediate',
   },
   {
     id: '3',
@@ -75,7 +75,7 @@ uint16 Rte_Read_VehicleSpeed(void) {
     language: 'c',
     explanation: 'RTE 提供组件间通信的标准化接口，包含写操作、读操作和数据校验',
     module: 'Rte',
-    difficulty: 'intermediate'
+    difficulty: 'intermediate',
   },
   {
     id: '4',
@@ -96,7 +96,7 @@ uint16 Rte_Read_VehicleSpeed(void) {
     language: 'c',
     explanation: 'MCU 时钟初始化关键步骤：启动 HSI → 配置 PLL 倍额 → 切换时钟源',
     module: 'Mcu',
-    difficulty: 'advanced'
+    difficulty: 'advanced',
   },
   {
     id: '5',
@@ -122,7 +122,7 @@ uint16 Rte_Read_VehicleSpeed(void) {
     language: 'c',
     explanation: 'Com 层将应用层的信号映射到 PDU，处理字段偏移和长度，然后触发发送',
     module: 'Com',
-    difficulty: 'intermediate'
+    difficulty: 'intermediate',
   },
   {
     id: '6',
@@ -150,7 +150,7 @@ void Dio_WriteChannel(
     language: 'c',
     explanation: 'Dio 提供数字 IO 端口的基本读写操作，通过端口和引脚编号计算寄存器位置',
     module: 'Dio',
-    difficulty: 'beginner'
+    difficulty: 'beginner',
   },
   {
     id: '7',
@@ -177,7 +177,7 @@ void Dio_WriteChannel(
     language: 'c',
     explanation: 'NvM 管理非易失性数据的存储，通过 MemIf 抽象层访问 Flash/EEPROM',
     module: 'NvM',
-    difficulty: 'advanced'
+    difficulty: 'advanced',
   },
   {
     id: '8',
@@ -202,8 +202,8 @@ void Dio_WriteChannel(
     language: 'c',
     explanation: 'Dem 负责诊断事件管理，实现故障计数器和 DTC 状态机',
     module: 'Dem',
-    difficulty: 'advanced'
-  }
+    difficulty: 'advanced',
+  },
 ];
 
 /**

@@ -139,7 +139,11 @@ export class YuleasrAdapter {
         errors.push('Missing or invalid field: version');
       }
 
-      if (!config.modules || typeof config.modules !== 'object' || Object.keys(config.modules).length === 0) {
+      if (
+        !config.modules ||
+        typeof config.modules !== 'object' ||
+        Object.keys(config.modules).length === 0
+      ) {
         errors.push('Missing or invalid field: modules');
       }
 
@@ -163,7 +167,7 @@ export class YuleasrAdapter {
    */
   importFromArxml(arxmlContent: string): ModuleConfig[] {
     const result = parseArxml(arxmlContent);
-    
+
     if (result.errors.length > 0) {
       throw new Error(`ARXML parse failed: ${result.errors.join(', ')}`);
     }

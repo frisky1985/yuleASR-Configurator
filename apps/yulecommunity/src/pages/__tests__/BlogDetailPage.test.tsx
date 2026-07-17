@@ -89,10 +89,12 @@ const mockRelatedArticles: BlogArticle[] = [
 describe('BlogDetailPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    
+
     // 默认模拟服务调用
     vi.spyOn(blogService.articleService, 'getArticleBySlug').mockResolvedValue(mockArticle);
-    vi.spyOn(blogService.articleService, 'getRelatedArticles').mockResolvedValue(mockRelatedArticles);
+    vi.spyOn(blogService.articleService, 'getRelatedArticles').mockResolvedValue(
+      mockRelatedArticles
+    );
     vi.spyOn(blogService.articleService, 'isArticleLiked').mockReturnValue(false);
   });
 
@@ -100,13 +102,13 @@ describe('BlogDetailPage', () => {
     vi.spyOn(blogService.articleService, 'getArticleBySlug').mockImplementation(
       () => new Promise(() => {})
     );
-    
+
     render(
       <MemoryRouter>
         <BlogDetailPage />
       </MemoryRouter>
     );
-    
+
     // 检查加载状态是否显示
     const loadingElements = document.querySelectorAll('.animate-pulse');
     expect(loadingElements.length).toBeGreaterThan(0);
@@ -118,11 +120,11 @@ describe('BlogDetailPage', () => {
         <BlogDetailPage />
       </MemoryRouter>
     );
-    
+
     await waitFor(() => {
       expect(screen.getByText('测试文章标题')).toBeInTheDocument();
     });
-    
+
     expect(screen.getByText('这是一个测试文章的描述')).toBeInTheDocument();
     // 作者名称在页面中出现多次，检查是否存在
     expect(screen.getAllByText('测试作者').length).toBeGreaterThan(0);
@@ -134,7 +136,7 @@ describe('BlogDetailPage', () => {
         <BlogDetailPage />
       </MemoryRouter>
     );
-    
+
     await waitFor(() => {
       // 作者名称和角色应该存在
       expect(screen.getAllByText('测试作者').length).toBeGreaterThan(0);
@@ -150,7 +152,7 @@ describe('BlogDetailPage', () => {
         <BlogDetailPage />
       </MemoryRouter>
     );
-    
+
     await waitFor(() => {
       expect(screen.getByText('MCAL')).toBeInTheDocument();
       expect(screen.getByText('热门')).toBeInTheDocument();
@@ -163,7 +165,7 @@ describe('BlogDetailPage', () => {
         <BlogDetailPage />
       </MemoryRouter>
     );
-    
+
     await waitFor(() => {
       expect(screen.getByText('1,000 阅读')).toBeInTheDocument();
       expect(screen.getByText('50 点赞')).toBeInTheDocument();
@@ -177,7 +179,7 @@ describe('BlogDetailPage', () => {
         <BlogDetailPage />
       </MemoryRouter>
     );
-    
+
     await waitFor(() => {
       expect(screen.getByText('相关文章')).toBeInTheDocument();
       expect(screen.getByText('相关文章1')).toBeInTheDocument();
@@ -186,13 +188,13 @@ describe('BlogDetailPage', () => {
 
   it('文章不存在时应显示错误信息', async () => {
     vi.spyOn(blogService.articleService, 'getArticleBySlug').mockResolvedValue(null);
-    
+
     render(
       <MemoryRouter>
         <BlogDetailPage />
       </MemoryRouter>
     );
-    
+
     await waitFor(() => {
       expect(screen.getByText('文章不存在')).toBeInTheDocument();
     });
@@ -204,11 +206,11 @@ describe('BlogDetailPage', () => {
         <BlogDetailPage />
       </MemoryRouter>
     );
-    
+
     await waitFor(() => {
       // 检查日期格式化显示
       const dateRegex = /2025年/;
-      const dateElement = screen.getByText((content) => dateRegex.test(content));
+      const dateElement = screen.getByText(content => dateRegex.test(content));
       expect(dateElement).toBeInTheDocument();
     });
   });
@@ -219,7 +221,7 @@ describe('BlogDetailPage', () => {
         <BlogDetailPage />
       </MemoryRouter>
     );
-    
+
     await waitFor(() => {
       expect(screen.getByText('10 分钟阅读')).toBeInTheDocument();
     });
@@ -228,14 +230,16 @@ describe('BlogDetailPage', () => {
 
 describe('BlogDetailPage - 加载错误', () => {
   it('加载失败时应显示错误信息', async () => {
-    vi.spyOn(blogService.articleService, 'getArticleBySlug').mockRejectedValue(new Error('Network error'));
-    
+    vi.spyOn(blogService.articleService, 'getArticleBySlug').mockRejectedValue(
+      new Error('Network error')
+    );
+
     render(
       <MemoryRouter>
         <BlogDetailPage />
       </MemoryRouter>
     );
-    
+
     await waitFor(() => {
       expect(screen.getByText('文章不存在')).toBeInTheDocument();
     });

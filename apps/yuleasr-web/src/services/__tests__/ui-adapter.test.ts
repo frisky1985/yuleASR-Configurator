@@ -1,10 +1,12 @@
 import { describe, it, expect } from 'vitest';
+
 import {
   uiModuleToGenerator,
   buildModuleSchema,
   buildModuleConfig,
   getModuleShortName,
 } from '../ui-adapter';
+
 import type { ConfigModule, ConfigContainer, ConfigParameter } from '@/types/config';
 
 function makeModule(overrides: Partial<ConfigModule> = {}): ConfigModule {
@@ -42,14 +44,16 @@ describe('getModuleShortName', () => {
 describe('buildModuleSchema', () => {
   it('builds schema with parameters from non-multiple containers', () => {
     const module = makeModule({
-      containers: [{
-        id: 'cangeneral',
-        name: 'CanGeneral',
-        parameters: [
-          { id: 'det', name: 'CanDevErrorDetect', type: 'boolean', value: true },
-          { id: 'ver', name: 'CanVersionInfoApi', type: 'boolean', value: false },
-        ],
-      }],
+      containers: [
+        {
+          id: 'cangeneral',
+          name: 'CanGeneral',
+          parameters: [
+            { id: 'det', name: 'CanDevErrorDetect', type: 'boolean', value: true },
+            { id: 'ver', name: 'CanVersionInfoApi', type: 'boolean', value: false },
+          ],
+        },
+      ],
     });
     const schema = buildModuleSchema(module, 'Can');
     expect(schema.name).toBe('Can');
@@ -63,22 +67,26 @@ describe('buildModuleSchema', () => {
 
   it('builds container schema from multiple containers with subContainers', () => {
     const module = makeModule({
-      containers: [{
-        id: 'canconfigset',
-        name: 'CanConfigSet',
-        multiple: true,
-        minInstances: 0,
-        parameters: [],
-        subContainers: [{
-          id: 'ctrl0',
-          name: 'CanController_0',
-          shortName: 'CanController',
-          parameters: [
-            { id: 'baud', name: 'CanControllerBaudRate', type: 'integer', value: 500000 },
-            { id: 'id', name: 'CanControllerId', type: 'integer', value: 0 },
+      containers: [
+        {
+          id: 'canconfigset',
+          name: 'CanConfigSet',
+          multiple: true,
+          minInstances: 0,
+          parameters: [],
+          subContainers: [
+            {
+              id: 'ctrl0',
+              name: 'CanController_0',
+              shortName: 'CanController',
+              parameters: [
+                { id: 'baud', name: 'CanControllerBaudRate', type: 'integer', value: 500000 },
+                { id: 'id', name: 'CanControllerId', type: 'integer', value: 0 },
+              ],
+            },
           ],
-        }],
-      }],
+        },
+      ],
     });
     const schema = buildModuleSchema(module, 'Can');
     expect(schema.containers).toHaveLength(1);
@@ -92,13 +100,13 @@ describe('buildModuleSchema', () => {
 describe('buildModuleConfig', () => {
   it('extracts parameters from non-multiple container parameters', () => {
     const module = makeModule({
-      containers: [{
-        id: 'cangeneral',
-        name: 'CanGeneral',
-        parameters: [
-          { id: 'det', name: 'CanDevErrorDetect', type: 'boolean', value: true },
-        ],
-      }],
+      containers: [
+        {
+          id: 'cangeneral',
+          name: 'CanGeneral',
+          parameters: [{ id: 'det', name: 'CanDevErrorDetect', type: 'boolean', value: true }],
+        },
+      ],
     });
     const config = buildModuleConfig(module, 'Can');
     expect(config.module).toBe('Can');
@@ -107,30 +115,32 @@ describe('buildModuleConfig', () => {
 
   it('builds container instances from multiple containers', () => {
     const module = makeModule({
-      containers: [{
-        id: 'canconfigset',
-        name: 'CanConfigSet',
-        multiple: true,
-        parameters: [],
-        subContainers: [
-          {
-            id: 'ctrl0',
-            name: 'CanController_0',
-            shortName: 'CanController',
-            parameters: [
-              { id: 'baud', name: 'CanControllerBaudRate', type: 'integer', value: 500000 },
-            ],
-          },
-          {
-            id: 'ctrl1',
-            name: 'CanController_1',
-            shortName: 'CanController',
-            parameters: [
-              { id: 'baud', name: 'CanControllerBaudRate', type: 'integer', value: 250000 },
-            ],
-          },
-        ],
-      }],
+      containers: [
+        {
+          id: 'canconfigset',
+          name: 'CanConfigSet',
+          multiple: true,
+          parameters: [],
+          subContainers: [
+            {
+              id: 'ctrl0',
+              name: 'CanController_0',
+              shortName: 'CanController',
+              parameters: [
+                { id: 'baud', name: 'CanControllerBaudRate', type: 'integer', value: 500000 },
+              ],
+            },
+            {
+              id: 'ctrl1',
+              name: 'CanController_1',
+              shortName: 'CanController',
+              parameters: [
+                { id: 'baud', name: 'CanControllerBaudRate', type: 'integer', value: 250000 },
+              ],
+            },
+          ],
+        },
+      ],
     });
     const config = buildModuleConfig(module, 'Can');
     expect(config.containers).toBeDefined();
@@ -148,26 +158,29 @@ describe('uiModuleToGenerator', () => {
 
   it('produces valid schema + config pair for a configured module', () => {
     const module = makeModule({
-      containers: [{
-        id: 'cangeneral',
-        name: 'CanGeneral',
-        parameters: [
-          { id: 'det', name: 'CanDevErrorDetect', type: 'boolean', value: false },
-        ],
-      }, {
-        id: 'canconfigset',
-        name: 'CanConfigSet',
-        multiple: true,
-        parameters: [],
-        subContainers: [{
-          id: 'ctrl0',
-          name: 'CanController_0',
-          shortName: 'CanController',
-          parameters: [
-            { id: 'baud', name: 'CanControllerBaudRate', type: 'integer', value: 500000 },
+      containers: [
+        {
+          id: 'cangeneral',
+          name: 'CanGeneral',
+          parameters: [{ id: 'det', name: 'CanDevErrorDetect', type: 'boolean', value: false }],
+        },
+        {
+          id: 'canconfigset',
+          name: 'CanConfigSet',
+          multiple: true,
+          parameters: [],
+          subContainers: [
+            {
+              id: 'ctrl0',
+              name: 'CanController_0',
+              shortName: 'CanController',
+              parameters: [
+                { id: 'baud', name: 'CanControllerBaudRate', type: 'integer', value: 500000 },
+              ],
+            },
           ],
-        }],
-      }],
+        },
+      ],
     });
     const result = uiModuleToGenerator(module);
     expect(result).not.toBeNull();

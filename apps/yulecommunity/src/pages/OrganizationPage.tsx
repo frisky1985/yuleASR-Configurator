@@ -47,7 +47,17 @@ const planLabels = {
   enterprise: '企业版',
 };
 
-function StatCard({ icon: Icon, label, value, subtext }: { icon: any; label: string; value: string | number; subtext?: string }) {
+function StatCard({
+  icon: Icon,
+  label,
+  value,
+  subtext,
+}: {
+  icon: any;
+  label: string;
+  value: string | number;
+  subtext?: string;
+}) {
   return (
     <div className="bg-card border border-border rounded-xl p-4">
       <div className="flex items-center gap-3 mb-2">
@@ -79,12 +89,12 @@ function MemberCard({ member, isAdmin }: { member: User; isAdmin: boolean }) {
         <div className="font-medium">{member.name}</div>
         <div className="text-sm text-muted-foreground">{member.email}</div>
       </div>
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${roleLabels[member.role].color}`}>
+      <span
+        className={`px-2 py-1 rounded-full text-xs font-medium ${roleLabels[member.role].color}`}
+      >
         {roleLabels[member.role].label}
       </span>
-      <div className="text-sm text-muted-foreground">
-        加入于 {member.joinedAt}
-      </div>
+      <div className="text-sm text-muted-foreground">加入于 {member.joinedAt}</div>
       {isAdmin && (
         <button className="p-2 hover:bg-muted rounded-lg">
           <MoreVertical className="w-4 h-4" />
@@ -128,8 +138,7 @@ function ModuleCard({ module }: { module: PrivateModule }) {
       <div className="flex items-center justify-between text-sm text-muted-foreground">
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1">
-            <GitBranch className="w-4 h-4" />
-            v{module.version}
+            <GitBranch className="w-4 h-4" />v{module.version}
           </span>
           <span className="flex items-center gap-1">
             <Download className="w-4 h-4" />
@@ -144,7 +153,9 @@ function ModuleCard({ module }: { module: PrivateModule }) {
 }
 
 export function OrganizationPage() {
-  const [activeTab, setActiveTab] = useState<'overview' | 'modules' | 'members' | 'teams'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'modules' | 'members' | 'teams'>(
+    'overview'
+  );
   const [searchQuery, setSearchQuery] = useState('');
 
   // 使用演示数据
@@ -152,9 +163,10 @@ export function OrganizationPage() {
   const modules = mockPrivateModules;
   const limits = getPlanLimits(org.plan);
 
-  const filteredModules = modules.filter(m =>
-    m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    m.description.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredModules = modules.filter(
+    m =>
+      m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      m.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // 使用统计数据
@@ -191,13 +203,16 @@ export function OrganizationPage() {
               <div>
                 <div className="flex items-center gap-3">
                   <h1 className="text-2xl font-bold">{org.name}</h1>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium text-white ${planColors[org.plan]}`}>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium text-white ${planColors[org.plan]}`}
+                  >
                     {planLabels[org.plan]}
                   </span>
                 </div>
                 <p className="text-muted-foreground">{org.description}</p>
-                <p className="text-sm text-muted-foreground mt-1">创建于 {org.createdAt} · {org.members.length} 成员
-</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  创建于 {org.createdAt} · {org.members.length} 成员
+                </p>
               </div>
             </div>
             {isCurrentUserAdmin && (
@@ -261,11 +276,7 @@ export function OrganizationPage() {
                 value={org.members.length}
                 subtext={`限制 ${limits.maxMembers}`}
               />
-              <StatCard
-                icon={TrendingUp}
-                label="活跃项目"
-                value={org.stats.activeProjects}
-              />
+              <StatCard icon={TrendingUp} label="活跃项目" value={org.stats.activeProjects} />
             </div>
 
             {/* Charts */}
@@ -317,7 +328,10 @@ export function OrganizationPage() {
                 <div className="flex justify-center gap-4 mt-2">
                   {moduleTypeData.map(item => (
                     <div key={item.name} className="flex items-center gap-2 text-sm">
-                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
+                      <div
+                        className="w-3 h-3 rounded-full"
+                        style={{ backgroundColor: item.color }}
+                      />
                       {item.name}: {item.value}
                     </div>
                   ))}
@@ -354,7 +368,7 @@ export function OrganizationPage() {
                   type="text"
                   placeholder="搜索模块..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={e => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
@@ -472,9 +486,7 @@ export function OrganizationPage() {
                         </div>
                       )}
                     </div>
-                    <span className="text-xs text-muted-foreground">
-                      创建于 {team.createdAt}
-                    </span>
+                    <span className="text-xs text-muted-foreground">创建于 {team.createdAt}</span>
                   </div>
                 </div>
               ))}

@@ -40,9 +40,11 @@ function ProviderCard({
   onConfigure: (provider: SSOProvider) => void;
 }) {
   return (
-    <div className={`bg-card border rounded-xl p-5 transition-colors ${
-      provider.enabled ? 'border-primary/30' : 'border-border'
-    }`}>
+    <div
+      className={`bg-card border rounded-xl p-5 transition-colors ${
+        provider.enabled ? 'border-primary/30' : 'border-border'
+      }`}
+    >
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           <div className="text-3xl">{provider.icon}</div>
@@ -65,9 +67,11 @@ function ProviderCard({
               provider.enabled ? 'bg-primary' : 'bg-muted'
             }`}
           >
-            <span className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${
-              provider.enabled ? 'left-7' : 'left-1'
-            }`} />
+            <span
+              className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${
+                provider.enabled ? 'left-7' : 'left-1'
+              }`}
+            />
           </button>
         </div>
       </div>
@@ -106,13 +110,15 @@ function LoginAttemptRow({ attempt }: { attempt: SSOLoginAttempt }) {
         )}
       </td>
       <td className="py-3 px-4">
-        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
-          attempt.status === 'success'
-            ? 'bg-green-500/10 text-green-500'
-            : attempt.status === 'failed'
-            ? 'bg-red-500/10 text-red-500'
-            : 'bg-yellow-500/10 text-yellow-500'
-        }`}>
+        <span
+          className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${
+            attempt.status === 'success'
+              ? 'bg-green-500/10 text-green-500'
+              : attempt.status === 'failed'
+                ? 'bg-red-500/10 text-red-500'
+                : 'bg-yellow-500/10 text-yellow-500'
+          }`}
+        >
           {attempt.status === 'success' ? (
             <CheckCircle className="w-3 h-3" />
           ) : attempt.status === 'failed' ? (
@@ -127,9 +133,7 @@ function LoginAttemptRow({ attempt }: { attempt: SSOLoginAttempt }) {
       <td className="py-3 px-4 text-sm text-muted-foreground">
         {new Date(attempt.timestamp).toLocaleString('zh-CN')}
       </td>
-      <td className="py-3 px-4 text-sm text-red-500">
-        {attempt.errorMessage || '-'}
-      </td>
+      <td className="py-3 px-4 text-sm text-red-500">{attempt.errorMessage || '-'}</td>
     </tr>
   );
 }
@@ -173,8 +177,7 @@ export function SSOPage() {
               <span className="text-gradient-accent"> 集成</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              支持企业微信、钉钉、LDAP/AD、SAML 2.0 等多种身份提供商，
-              实现企业内部统一认证。
+              支持企业微信、钉钉、LDAP/AD、SAML 2.0 等多种身份提供商， 实现企业内部统一认证。
             </p>
           </div>
         </div>
@@ -215,8 +218,8 @@ export function SSOPage() {
                 <ProviderCard
                   key={provider.id}
                   provider={provider}
-                  onToggle={(id) => console.log('Toggle', id)}
-                  onConfigure={(p) => console.log('Configure', p.id)}
+                  onToggle={id => console.log('Toggle', id)}
+                  onConfigure={p => console.log('Configure', p.id)}
                 />
               ))}
             </div>
@@ -230,7 +233,9 @@ export function SSOPage() {
                   </div>
                   <div>
                     <h4 className="font-medium">选择身份提供商</h4>
-                    <p className="text-sm text-muted-foreground">根据企业已有的认证系统选择合适的提供商类型</p>
+                    <p className="text-sm text-muted-foreground">
+                      根据企业已有的认证系统选择合适的提供商类型
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -239,7 +244,9 @@ export function SSOPage() {
                   </div>
                   <div>
                     <h4 className="font-medium">配置认证参数</h4>
-                    <p className="text-sm text-muted-foreground">填写提供商分配的应用 ID、密钥等信息</p>
+                    <p className="text-sm text-muted-foreground">
+                      填写提供商分配的应用 ID、密钥等信息
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -248,7 +255,9 @@ export function SSOPage() {
                   </div>
                   <div>
                     <h4 className="font-medium">测试登录</h4>
-                    <p className="text-sm text-muted-foreground">使用测试账号验证登录流程是否正常</p>
+                    <p className="text-sm text-muted-foreground">
+                      使用测试账号验证登录流程是否正常
+                    </p>
                   </div>
                 </div>
               </div>
@@ -350,7 +359,7 @@ export function SSOPage() {
                   type="text"
                   placeholder="搜索日志..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={e => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 bg-card border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>

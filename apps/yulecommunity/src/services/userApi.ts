@@ -81,10 +81,10 @@ class UserApiService {
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const url = `${API_BASE_URL}/api${endpoint}`;
-    
+
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...options.headers as Record<string, string>,
+      ...(options.headers as Record<string, string>),
     };
 
     if (this.token) {
@@ -198,10 +198,7 @@ class UserApiService {
     return this.request('/user/points');
   }
 
-  async getPointsHistory(params?: {
-    page?: number;
-    limit?: number;
-  }): Promise<{
+  async getPointsHistory(params?: { page?: number; limit?: number }): Promise<{
     success: boolean;
     data: PointsHistoryItem[];
     pagination: {
@@ -227,7 +224,10 @@ class UserApiService {
     });
   }
 
-  async getPointsRules(): Promise<{ success: boolean; data: Record<string, { points: number; dailyLimit?: number }> }> {
+  async getPointsRules(): Promise<{
+    success: boolean;
+    data: Record<string, { points: number; dailyLimit?: number }>;
+  }> {
     return this.request('/user/points/rules');
   }
 

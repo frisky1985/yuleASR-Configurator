@@ -3,14 +3,23 @@
  * Based on OSEK/VDX and AUTOSAR OS standard
  */
 
-import type { OSConfig, OSTask, OSEvent, OSAlarm, OSResource, OSCounter, OSScheduleTable, OSISR } from '@/types/config'
+import type {
+  OSConfig,
+  OSTask,
+  OSEvent,
+  OSAlarm,
+  OSResource,
+  OSCounter,
+  OSScheduleTable,
+  OSISR,
+} from '@/types/config';
 
 export const defaultOSConfig: OSConfig = {
   id: 'os-1',
   name: 'OSEK OS',
   version: '2.2.3',
   enabled: true,
-  
+
   // OS Configuration Properties
   scalabilityClass: 'SC2',
   statusLevel: 'EXTENDED',
@@ -18,7 +27,7 @@ export const defaultOSConfig: OSConfig = {
   shutdownHooks: true,
   errorHooks: true,
   protectionHooks: false,
-  
+
   // Tasks
   tasks: [
     {
@@ -99,7 +108,7 @@ export const defaultOSConfig: OSConfig = {
       stackSize: 512,
     },
   ],
-  
+
   // Events
   events: [
     { id: 'evt-10ms', name: 'Event_10ms', mask: '0x01' },
@@ -108,26 +117,26 @@ export const defaultOSConfig: OSConfig = {
     { id: 'evt-can-rx', name: 'Event_CanRx', mask: '0x10' },
     { id: 'evt-can-tx', name: 'Event_CanTx', mask: '0x20' },
   ],
-  
+
   // Resources
   resources: [
-    { 
-      id: 'res-1', 
+    {
+      id: 'res-1',
       name: 'Resource_1',
       linkedResources: [],
     },
-    { 
-      id: 'res-can', 
+    {
+      id: 'res-can',
       name: 'Resource_CAN',
       linkedResources: [],
     },
-    { 
-      id: 'res-nvm', 
+    {
+      id: 'res-nvm',
       name: 'Resource_NvM',
       linkedResources: [],
     },
   ],
-  
+
   // Counters
   counters: [
     {
@@ -138,7 +147,7 @@ export const defaultOSConfig: OSConfig = {
       minCycle: 1,
     },
   ],
-  
+
   // Alarms
   alarms: [
     {
@@ -172,7 +181,7 @@ export const defaultOSConfig: OSConfig = {
       event: 'Event_100ms',
     },
   ],
-  
+
   // Schedule Tables
   scheduleTables: [
     {
@@ -209,7 +218,7 @@ export const defaultOSConfig: OSConfig = {
       ],
     },
   ],
-  
+
   // ISRs
   isrs: [
     {
@@ -251,7 +260,7 @@ export const defaultOSConfig: OSConfig = {
       vector: 'USART1_IRQn',
     },
   ],
-}
+};
 
 // OS validation rules
 export const osValidationRules = {
@@ -271,4 +280,4 @@ export const osValidationRules = {
   },
   maxTaskNameLength: 32,
   maxEventNameLength: 32,
-}
+};

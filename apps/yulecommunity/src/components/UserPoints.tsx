@@ -35,7 +35,9 @@ export function UserPoints({ showHistory = false }: UserPointsProps) {
         <div className="space-y-1">
           <div className="flex items-center justify-between text-xs">
             <span className="text-muted-foreground">等级进度</span>
-            <span className="font-medium">{user.points} / {levelInfo.max === Infinity ? '∞' : levelInfo.max}</span>
+            <span className="font-medium">
+              {user.points} / {levelInfo.max === Infinity ? '∞' : levelInfo.max}
+            </span>
           </div>
           <div className="h-2.5 bg-muted rounded-full overflow-hidden">
             <div
@@ -45,7 +47,9 @@ export function UserPoints({ showHistory = false }: UserPointsProps) {
           </div>
           <div className="flex items-center justify-between text-[10px] text-muted-foreground">
             <span>{levelInfo.title}</span>
-            <span>{levelInfo.max === Infinity ? '已满级' : getLevelInfo(levelInfo.max + 1).title}</span>
+            <span>
+              {levelInfo.max === Infinity ? '已满级' : getLevelInfo(levelInfo.max + 1).title}
+            </span>
           </div>
         </div>
       </div>
@@ -57,11 +61,16 @@ export function UserPoints({ showHistory = false }: UserPointsProps) {
             积分记录
           </h3>
           {user.history.length === 0 ? (
-            <p className="text-sm text-muted-foreground text-center py-8">暂无积分记录，快去社区互动吧！</p>
+            <p className="text-sm text-muted-foreground text-center py-8">
+              暂无积分记录，快去社区互动吧！
+            </p>
           ) : (
             <div className="space-y-3">
-              {user.history.map((item) => (
-                <div key={item.id} className="flex items-center justify-between py-2 border-b border-border last:border-b-0">
+              {user.history.map(item => (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between py-2 border-b border-border last:border-b-0"
+                >
                   <div>
                     <div className="text-sm font-medium">{item.description}</div>
                     <div className="text-xs text-muted-foreground">

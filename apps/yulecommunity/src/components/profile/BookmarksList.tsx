@@ -6,15 +6,7 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import {
-  Bookmark,
-  Trash2,
-  Tag,
-  Folder,
-  AlertCircle,
-  Cloud,
-  Loader2,
-} from 'lucide-react';
+import { Bookmark, Trash2, Tag, Folder, AlertCircle, Cloud, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useBookmarks } from '@/hooks/useBookmarks';
 
@@ -31,17 +23,25 @@ interface BookmarksListProps {
 /**
  * 收藏列表组件
  */
-export function BookmarksList({ 
-  showHeader = false,
-  emptyAction 
-}: BookmarksListProps) {
+export function BookmarksList({ showHeader = false, emptyAction }: BookmarksListProps) {
   const navigate = useNavigate();
-  const { bookmarks, removeBookmark, clearBookmarks, count, isAuthenticated, syncStatus, syncBookmarks } = useBookmarks();
+  const {
+    bookmarks,
+    removeBookmark,
+    clearBookmarks,
+    count,
+    isAuthenticated,
+    syncStatus,
+    syncBookmarks,
+  } = useBookmarks();
 
   // 打开文章
-  const handleArticleClick = useCallback((slug: string) => {
-    navigate(`/blog/${slug}`);
-  }, [navigate]);
+  const handleArticleClick = useCallback(
+    (slug: string) => {
+      navigate(`/blog/${slug}`);
+    },
+    [navigate]
+  );
 
   // 格式化日期
   const formatDate = (dateString: string) => {
@@ -67,11 +67,7 @@ export function BookmarksList({
         <p className="text-sm text-muted-foreground mb-4">
           浏览博客时点击收藏按钮，将感兴趣的文章保存到这里
         </p>
-        {emptyAction && (
-          <Button onClick={emptyAction.onClick}>
-            {emptyAction.text}
-          </Button>
-        )}
+        {emptyAction && <Button onClick={emptyAction.onClick}>{emptyAction.text}</Button>}
       </motion.div>
     );
   }
@@ -128,9 +124,7 @@ export function BookmarksList({
                 </h3>
 
                 {/* 描述 */}
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  {bookmark.description}
-                </p>
+                <p className="text-sm text-muted-foreground line-clamp-2">{bookmark.description}</p>
 
                 {/* 作者 */}
                 <div className="flex items-center gap-2 text-xs text-muted-foreground mt-2">
@@ -147,7 +141,7 @@ export function BookmarksList({
                 variant="ghost"
                 size="icon"
                 className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-destructive flex-shrink-0"
-                onClick={(e) => {
+                onClick={e => {
                   e.stopPropagation();
                   removeBookmark(bookmark.id);
                 }}
@@ -170,10 +164,7 @@ export function BookmarksList({
           <div className="flex items-center gap-2 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg text-xs text-yellow-600 dark:text-yellow-400">
             <AlertCircle className="w-4 h-4" />
             <span>同步失败，使用本地数据</span>
-            <button 
-              onClick={syncBookmarks}
-              className="underline hover:no-underline ml-2"
-            >
+            <button onClick={syncBookmarks} className="underline hover:no-underline ml-2">
               重试
             </button>
           </div>

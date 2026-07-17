@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { 
-  Plus, 
-  FolderOpen, 
-  Clock, 
-  Users, 
+import {
+  Plus,
+  FolderOpen,
+  Clock,
+  Users,
   MoreVertical,
   Search,
   Filter,
@@ -16,7 +16,7 @@ import {
   CheckCircle,
   AlertCircle,
   Cloud,
-  CloudOff
+  CloudOff,
 } from 'lucide-react';
 import { AnimatedPage } from '../components/AnimatedPage';
 import { useAuth } from '../hooks/useAuth';
@@ -55,7 +55,7 @@ export function YuleASRPage() {
     try {
       // 模拟 API 调用
       await new Promise(resolve => setTimeout(resolve, 800));
-      
+
       const mockConfigs: ConfigItem[] = [
         {
           id: '1',
@@ -70,7 +70,7 @@ export function YuleASRPage() {
           ownerId: 'user1',
           collaborators: 3,
           syncStatus: 'synced',
-          moduleCount: 12
+          moduleCount: 12,
         },
         {
           id: '2',
@@ -83,7 +83,7 @@ export function YuleASRPage() {
           ownerId: 'user1',
           collaborators: 0,
           syncStatus: 'pending',
-          moduleCount: 8
+          moduleCount: 8,
         },
         {
           id: '3',
@@ -98,10 +98,10 @@ export function YuleASRPage() {
           ownerId: 'user2',
           collaborators: 5,
           syncStatus: 'synced',
-          moduleCount: 15
-        }
+          moduleCount: 15,
+        },
       ];
-      
+
       setConfigs(mockConfigs);
     } catch (error) {
       console.error('Failed to fetch configs:', error);
@@ -110,11 +110,15 @@ export function YuleASRPage() {
     }
   };
 
-  const handleCreateConfig = async (data: { name: string; description: string; platform: string }) => {
+  const handleCreateConfig = async (data: {
+    name: string;
+    description: string;
+    platform: string;
+  }) => {
     try {
       // 模拟创建 API
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       const newConfig: ConfigItem = {
         id: Date.now().toString(),
         name: data.name,
@@ -126,12 +130,12 @@ export function YuleASRPage() {
         ownerId: user?.id || 'user1',
         collaborators: 0,
         syncStatus: 'synced',
-        moduleCount: 0
+        moduleCount: 0,
       };
-      
+
       setConfigs(prev => [newConfig, ...prev]);
       setShowCreateModal(false);
-      
+
       // 跳转到编辑器
       navigate(`/yuleasr/editor/${newConfig.id}`);
     } catch (error) {
@@ -141,7 +145,7 @@ export function YuleASRPage() {
 
   const handleDeleteConfig = async (id: string) => {
     if (!confirm('确定要删除此配置吗？')) return;
-    
+
     try {
       await new Promise(resolve => setTimeout(resolve, 300));
       setConfigs(prev => prev.filter(c => c.id !== id));
@@ -151,8 +155,9 @@ export function YuleASRPage() {
   };
 
   const filteredConfigs = configs.filter(config => {
-    const matchesSearch = config.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         config.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch =
+      config.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      config.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesPlatform = filterPlatform === 'all' || config.platform === filterPlatform;
     return matchesSearch && matchesPlatform;
   });
@@ -162,7 +167,7 @@ export function YuleASRPage() {
       stm32: '🔵',
       esp32: '🟢',
       linux: '🟡',
-      windows: '🔴'
+      windows: '🔴',
     };
     return icons[platform] || '⚙️';
   };
@@ -188,9 +193,7 @@ export function YuleASRPage() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div>
               <h1 className="text-3xl font-bold text-foreground">yuleASR 配置中心</h1>
-              <p className="text-muted-foreground mt-1">
-                管理和配置您的嵌入式ASR项目
-              </p>
+              <p className="text-muted-foreground mt-1">管理和配置您的嵌入式ASR项目</p>
             </div>
             <button
               onClick={() => setShowCreateModal(true)}
@@ -209,14 +212,14 @@ export function YuleASRPage() {
                 type="text"
                 placeholder="搜索配置..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
             <div className="flex gap-2">
               <select
                 value={filterPlatform}
-                onChange={(e) => setFilterPlatform(e.target.value)}
+                onChange={e => setFilterPlatform(e.target.value)}
                 className="px-3 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="all">所有平台</option>
@@ -271,7 +274,7 @@ export function YuleASRPage() {
                     </div>
                     <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button
-                        onClick={(e) => {
+                        onClick={e => {
                           e.stopPropagation();
                           handleDeleteConfig(config.id);
                         }}
@@ -281,11 +284,11 @@ export function YuleASRPage() {
                       </button>
                     </div>
                   </div>
-                  
+
                   <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                     {config.description}
                   </p>
-                  
+
                   <div className="flex items-center justify-between text-sm">
                     <div className="flex items-center gap-4">
                       <span className="text-muted-foreground">v{config.version}</span>
@@ -298,7 +301,7 @@ export function YuleASRPage() {
                     </div>
                     {getSyncStatusIcon(config.syncStatus)}
                   </div>
-                  
+
                   <div className="mt-4 pt-4 border-t border-border">
                     <div className="flex items-center justify-between text-xs text-muted-foreground">
                       <span className="flex items-center gap-1">
@@ -316,12 +319,24 @@ export function YuleASRPage() {
               <table className="w-full">
                 <thead className="bg-muted">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">配置名称</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">平台</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">版本</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">状态</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">更新时间</th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">操作</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                      配置名称
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                      平台
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                      版本
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                      状态
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                      更新时间
+                    </th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-muted-foreground uppercase">
+                      操作
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -336,11 +351,15 @@ export function YuleASRPage() {
                           <span className="text-xl">{getPlatformIcon(config.platform)}</span>
                           <div>
                             <div className="font-medium text-foreground">{config.name}</div>
-                            <div className="text-sm text-muted-foreground">{config.description}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {config.description}
+                            </div>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-muted-foreground capitalize">{config.platform}</td>
+                      <td className="px-6 py-4 text-sm text-muted-foreground capitalize">
+                        {config.platform}
+                      </td>
                       <td className="px-6 py-4 text-sm text-muted-foreground">v{config.version}</td>
                       <td className="px-6 py-4">{getSyncStatusIcon(config.syncStatus)}</td>
                       <td className="px-6 py-4 text-sm text-muted-foreground">
@@ -348,7 +367,7 @@ export function YuleASRPage() {
                       </td>
                       <td className="px-6 py-4 text-right">
                         <button
-                          onClick={(e) => {
+                          onClick={e => {
                             e.stopPropagation();
                             handleDeleteConfig(config.id);
                           }}
@@ -378,18 +397,24 @@ export function YuleASRPage() {
 }
 
 // 创建配置模态框组件
-function CreateConfigModal({ onClose, onCreate }: { onClose: () => void; onCreate: (data: any) => void }) {
+function CreateConfigModal({
+  onClose,
+  onCreate,
+}: {
+  onClose: () => void;
+  onCreate: (data: any) => void;
+}) {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    platform: 'stm32'
+    platform: 'stm32',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim()) return;
-    
+
     setIsSubmitting(true);
     await onCreate(formData);
     setIsSubmitting(false);
@@ -405,7 +430,7 @@ function CreateConfigModal({ onClose, onCreate }: { onClose: () => void; onCreat
             <input
               type="text"
               value={formData.name}
-              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+              onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
               placeholder="输入配置名称"
               className="w-full px-3 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               autoFocus
@@ -415,7 +440,7 @@ function CreateConfigModal({ onClose, onCreate }: { onClose: () => void; onCreat
             <label className="block text-sm font-medium text-foreground mb-1">描述</label>
             <textarea
               value={formData.description}
-              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+              onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
               placeholder="输入配置描述（可选）"
               rows={3}
               className="w-full px-3 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
@@ -425,7 +450,7 @@ function CreateConfigModal({ onClose, onCreate }: { onClose: () => void; onCreat
             <label className="block text-sm font-medium text-foreground mb-1">目标平台</label>
             <select
               value={formData.platform}
-              onChange={(e) => setFormData(prev => ({ ...prev, platform: e.target.value }))}
+              onChange={e => setFormData(prev => ({ ...prev, platform: e.target.value }))}
               className="w-full px-3 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
             >
               <option value="stm32">STM32</option>

@@ -15,42 +15,50 @@ import {
   ChevronDown,
   ChevronRight,
   GripVertical,
-} from 'lucide-react'
-import { useState } from 'react'
+} from 'lucide-react';
+import { useState } from 'react';
 
-import { cn } from '@/lib/utils'
-import { useConfigStore } from '@/stores/configStore'
-import type { OSConfig, OSTask, OSEvent, OSAlarm, OSResource, OSCounter, OSISR } from '@/types/config'
+import { cn } from '@/lib/utils';
+import { useConfigStore } from '@/stores/configStore';
+import type {
+  OSConfig,
+  OSTask,
+  OSEvent,
+  OSAlarm,
+  OSResource,
+  OSCounter,
+  OSISR,
+} from '@/types/config';
 
 interface OSEditorProps {
-  className?: string
+  className?: string;
 }
 
-type OSTab = 'general' | 'tasks' | 'events' | 'alarms' | 'resources' | 'counters' | 'isrs'
+type OSTab = 'general' | 'tasks' | 'events' | 'alarms' | 'resources' | 'counters' | 'isrs';
 
 export function OSEditor({ className }: OSEditorProps) {
-  const { currentConfig, updateOS } = useConfigStore()
-  const [activeTab, setActiveTab] = useState<OSTab>('tasks')
-  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set())
+  const { currentConfig, updateOS } = useConfigStore();
+  const [activeTab, setActiveTab] = useState<OSTab>('tasks');
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
-  const os = currentConfig?.os
+  const os = currentConfig?.os;
   if (!os) {
     return (
       <div className={cn('p-8 text-center', className)}>
         <p className="text-app-text-secondary">No OS configuration found</p>
       </div>
-    )
+    );
   }
 
   const toggleExpanded = (id: string) => {
-    const newSet = new Set(expandedItems)
+    const newSet = new Set(expandedItems);
     if (newSet.has(id)) {
-      newSet.delete(id)
+      newSet.delete(id);
     } else {
-      newSet.add(id)
+      newSet.add(id);
     }
-    setExpandedItems(newSet)
-  }
+    setExpandedItems(newSet);
+  };
 
   const tabs = [
     { id: 'general' as OSTab, label: 'General', icon: Settings },
@@ -60,7 +68,7 @@ export function OSEditor({ className }: OSEditorProps) {
     { id: 'resources' as OSTab, label: 'Resources', icon: Lock, count: os.resources.length },
     { id: 'counters' as OSTab, label: 'Counters', icon: GripVertical, count: os.counters.length },
     { id: 'isrs' as OSTab, label: 'ISRs', icon: Zap, count: os.isrs.length },
-  ]
+  ];
 
   return (
     <div className={cn('bg-app-bg-primary rounded-lg border border-app-border-primary', className)}>
@@ -69,13 +77,19 @@ export function OSEditor({ className }: OSEditorProps) {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-lg font-semibold text-app-text-primary">{os.name}</h2>
-            <p className="text-sm text-app-text-secondary">OS Version {os.version} • {os.scalabilityClass}</p>
+            <p className="text-sm text-app-text-secondary">
+              OS Version {os.version} • {os.scalabilityClass}
+            </p>
           </div>
           <div className="flex items-center gap-2">
-            <span className={cn(
-              'px-2 py-1 text-xs font-medium rounded-full',
-              os.enabled ? 'bg-green-100 text-green-700' : 'bg-app-bg-tertiary text-app-text-secondary'
-            )}>
+            <span
+              className={cn(
+                'px-2 py-1 text-xs font-medium rounded-full',
+                os.enabled
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-app-bg-tertiary text-app-text-secondary'
+              )}
+            >
               {os.enabled ? 'Enabled' : 'Disabled'}
             </span>
           </div>
@@ -85,8 +99,8 @@ export function OSEditor({ className }: OSEditorProps) {
       {/* Tabs */}
       <div className="border-b border-app-border-primary">
         <div className="flex overflow-x-auto">
-          {tabs.map((tab) => {
-            const Icon = tab.icon
+          {tabs.map(tab => {
+            const Icon = tab.icon;
             return (
               <button
                 key={tab.id}
@@ -106,7 +120,7 @@ export function OSEditor({ className }: OSEditorProps) {
                   </span>
                 )}
               </button>
-            )
+            );
           })}
         </div>
       </div>
@@ -114,15 +128,43 @@ export function OSEditor({ className }: OSEditorProps) {
       {/* Content */}
       <div className="p-4">
         {activeTab === 'general' && <GeneralEditor os={os} onUpdate={updateOS} />}
-        {activeTab === 'tasks' && <TasksEditor tasks={os.tasks} onUpdate={(tasks) => updateOS({ ...os, tasks })} />}
-        {activeTab === 'events' && <EventsEditor events={os.events} onUpdate={(events) => updateOS({ ...os, events })} />}
-        {activeTab === 'alarms' && <AlarmsEditor alarms={os.alarms} tasks={os.tasks} events={os.events} counters={os.counters} onUpdate={(alarms) => updateOS({ ...os, alarms })} />}
-        {activeTab === 'resources' && <ResourcesEditor resources={os.resources} onUpdate={(resources) => updateOS({ ...os, resources })} />}
-        {activeTab === 'counters' && <CountersEditor counters={os.counters} onUpdate={(counters) => updateOS({ ...os, counters })} />}
-        {activeTab === 'isrs' && <ISRsEditor isrs={os.isrs} resources={os.resources} onUpdate={(isrs) => updateOS({ ...os, isrs })} />}
+        {activeTab === 'tasks' && (
+          <TasksEditor tasks={os.tasks} onUpdate={tasks => updateOS({ ...os, tasks })} />
+        )}
+        {activeTab === 'events' && (
+          <EventsEditor events={os.events} onUpdate={events => updateOS({ ...os, events })} />
+        )}
+        {activeTab === 'alarms' && (
+          <AlarmsEditor
+            alarms={os.alarms}
+            tasks={os.tasks}
+            events={os.events}
+            counters={os.counters}
+            onUpdate={alarms => updateOS({ ...os, alarms })}
+          />
+        )}
+        {activeTab === 'resources' && (
+          <ResourcesEditor
+            resources={os.resources}
+            onUpdate={resources => updateOS({ ...os, resources })}
+          />
+        )}
+        {activeTab === 'counters' && (
+          <CountersEditor
+            counters={os.counters}
+            onUpdate={counters => updateOS({ ...os, counters })}
+          />
+        )}
+        {activeTab === 'isrs' && (
+          <ISRsEditor
+            isrs={os.isrs}
+            resources={os.resources}
+            onUpdate={isrs => updateOS({ ...os, isrs })}
+          />
+        )}
       </div>
     </div>
-  )
+  );
 }
 
 // General OS Settings Editor
@@ -135,7 +177,7 @@ function GeneralEditor({ os, onUpdate }: { os: OSConfig; onUpdate: (os: OSConfig
           <input
             type="text"
             value={os.name}
-            onChange={(e) => onUpdate({ ...os, name: e.target.value })}
+            onChange={e => onUpdate({ ...os, name: e.target.value })}
             className="w-full px-3 py-2 border border-app-border-primary rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
@@ -144,7 +186,7 @@ function GeneralEditor({ os, onUpdate }: { os: OSConfig; onUpdate: (os: OSConfig
           <input
             type="text"
             value={os.version}
-            onChange={(e) => onUpdate({ ...os, version: e.target.value })}
+            onChange={e => onUpdate({ ...os, version: e.target.value })}
             className="w-full px-3 py-2 border border-app-border-primary rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
@@ -152,10 +194,14 @@ function GeneralEditor({ os, onUpdate }: { os: OSConfig; onUpdate: (os: OSConfig
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-app-text-primary mb-1">Scalability Class</label>
+          <label className="block text-sm font-medium text-app-text-primary mb-1">
+            Scalability Class
+          </label>
           <select
             value={os.scalabilityClass}
-            onChange={(e) => onUpdate({ ...os, scalabilityClass: e.target.value as OSConfig['scalabilityClass'] })}
+            onChange={e =>
+              onUpdate({ ...os, scalabilityClass: e.target.value as OSConfig['scalabilityClass'] })
+            }
             className="w-full px-3 py-2 border border-app-border-primary rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="SC1">SC1 (Single Core, No Hooks)</option>
@@ -165,10 +211,14 @@ function GeneralEditor({ os, onUpdate }: { os: OSConfig; onUpdate: (os: OSConfig
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-app-text-primary mb-1">Status Level</label>
+          <label className="block text-sm font-medium text-app-text-primary mb-1">
+            Status Level
+          </label>
           <select
             value={os.statusLevel}
-            onChange={(e) => onUpdate({ ...os, statusLevel: e.target.value as OSConfig['statusLevel'] })}
+            onChange={e =>
+              onUpdate({ ...os, statusLevel: e.target.value as OSConfig['statusLevel'] })
+            }
             className="w-full px-3 py-2 border border-app-border-primary rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="STANDARD">STANDARD</option>
@@ -178,7 +228,9 @@ function GeneralEditor({ os, onUpdate }: { os: OSConfig; onUpdate: (os: OSConfig
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-app-text-primary mb-3">Hooks Configuration</label>
+        <label className="block text-sm font-medium text-app-text-primary mb-3">
+          Hooks Configuration
+        </label>
         <div className="grid grid-cols-2 gap-4">
           {[
             { key: 'startupHooks', label: 'Startup Hooks' },
@@ -190,7 +242,7 @@ function GeneralEditor({ os, onUpdate }: { os: OSConfig; onUpdate: (os: OSConfig
               <input
                 type="checkbox"
                 checked={os[key as keyof OSConfig] as boolean}
-                onChange={(e) => onUpdate({ ...os, [key]: e.target.checked })}
+                onChange={e => onUpdate({ ...os, [key]: e.target.checked })}
                 className="w-4 h-4 text-blue-600 border-app-border-primary rounded focus:ring-blue-500"
               />
               <span className="text-sm text-app-text-primary">{label}</span>
@@ -199,11 +251,17 @@ function GeneralEditor({ os, onUpdate }: { os: OSConfig; onUpdate: (os: OSConfig
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 // Tasks Editor
-function TasksEditor({ tasks, onUpdate }: { tasks: OSTask[]; onUpdate: (tasks: OSTask[]) => void }) {
+function TasksEditor({
+  tasks,
+  onUpdate,
+}: {
+  tasks: OSTask[];
+  onUpdate: (tasks: OSTask[]) => void;
+}) {
   const addTask = () => {
     const newTask: OSTask = {
       id: `task-${Date.now()}`,
@@ -215,19 +273,19 @@ function TasksEditor({ tasks, onUpdate }: { tasks: OSTask[]; onUpdate: (tasks: O
       resources: [],
       events: [],
       stackSize: 512,
-    }
-    onUpdate([...tasks, newTask])
-  }
+    };
+    onUpdate([...tasks, newTask]);
+  };
 
   const updateTask = (index: number, updates: Partial<OSTask>) => {
-    const newTasks = [...tasks]
-    newTasks[index] = { ...newTasks[index], ...updates }
-    onUpdate(newTasks)
-  }
+    const newTasks = [...tasks];
+    newTasks[index] = { ...newTasks[index], ...updates };
+    onUpdate(newTasks);
+  };
 
   const removeTask = (index: number) => {
-    onUpdate(tasks.filter((_, i) => i !== index))
-  }
+    onUpdate(tasks.filter((_, i) => i !== index));
+  };
 
   return (
     <div className="space-y-4">
@@ -247,17 +305,25 @@ function TasksEditor({ tasks, onUpdate }: { tasks: OSTask[]; onUpdate: (tasks: O
           <TaskItem
             key={task.id}
             task={task}
-            onUpdate={(updates) => updateTask(index, updates)}
+            onUpdate={updates => updateTask(index, updates)}
             onRemove={() => removeTask(index)}
           />
         ))}
       </div>
     </div>
-  )
+  );
 }
 
-function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updates: Partial<OSTask>) => void; onRemove: () => void }) {
-  const [isExpanded, setIsExpanded] = useState(false)
+function TaskItem({
+  task,
+  onUpdate,
+  onRemove,
+}: {
+  task: OSTask;
+  onUpdate: (updates: Partial<OSTask>) => void;
+  onRemove: () => void;
+}) {
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <div className="border border-app-border-primary rounded-lg overflow-hidden">
@@ -266,7 +332,11 @@ function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updat
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-2">
-          {isExpanded ? <ChevronDown className="w-4 h-4 text-app-text-secondary" /> : <ChevronRight className="w-4 h-4 text-app-text-secondary" />}
+          {isExpanded ? (
+            <ChevronDown className="w-4 h-4 text-app-text-secondary" />
+          ) : (
+            <ChevronRight className="w-4 h-4 text-app-text-secondary" />
+          )}
           <span className="font-medium text-sm">{task.name}</span>
           <span className="text-xs text-app-text-secondary">Priority: {task.priority}</span>
           {task.autostart && (
@@ -274,7 +344,10 @@ function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updat
           )}
         </div>
         <button
-          onClick={(e) => { e.stopPropagation(); onRemove() }}
+          onClick={e => {
+            e.stopPropagation();
+            onRemove();
+          }}
           className="p-1 text-red-500 hover:bg-red-50 rounded"
         >
           <Trash2 className="w-4 h-4" />
@@ -289,18 +362,20 @@ function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updat
               <input
                 type="text"
                 value={task.name}
-                onChange={(e) => onUpdate({ name: e.target.value })}
+                onChange={e => onUpdate({ name: e.target.value })}
                 className="w-full px-2 py-1.5 text-sm border border-app-border-primary rounded"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-app-text-secondary mb-1">Priority (1-255)</label>
+              <label className="block text-xs font-medium text-app-text-secondary mb-1">
+                Priority (1-255)
+              </label>
               <input
                 type="number"
                 min={1}
                 max={255}
                 value={task.priority}
-                onChange={(e) => onUpdate({ priority: parseInt(e.target.value) })}
+                onChange={e => onUpdate({ priority: parseInt(e.target.value) })}
                 className="w-full px-2 py-1.5 text-sm border border-app-border-primary rounded"
               />
             </div>
@@ -308,10 +383,12 @@ function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updat
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-app-text-secondary mb-1">Schedule</label>
+              <label className="block text-xs font-medium text-app-text-secondary mb-1">
+                Schedule
+              </label>
               <select
                 value={task.schedule}
-                onChange={(e) => onUpdate({ schedule: e.target.value as 'NON' | 'FULL' })}
+                onChange={e => onUpdate({ schedule: e.target.value as 'NON' | 'FULL' })}
                 className="w-full px-2 py-1.5 text-sm border border-app-border-primary rounded"
               >
                 <option value="NON">NON (Non-preemptive)</option>
@@ -319,11 +396,13 @@ function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updat
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-app-text-secondary mb-1">Stack Size (bytes)</label>
+              <label className="block text-xs font-medium text-app-text-secondary mb-1">
+                Stack Size (bytes)
+              </label>
               <input
                 type="number"
                 value={task.stackSize}
-                onChange={(e) => onUpdate({ stackSize: parseInt(e.target.value) })}
+                onChange={e => onUpdate({ stackSize: parseInt(e.target.value) })}
                 className="w-full px-2 py-1.5 text-sm border border-app-border-primary rounded"
               />
             </div>
@@ -334,7 +413,7 @@ function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updat
               <input
                 type="checkbox"
                 checked={task.autostart}
-                onChange={(e) => onUpdate({ autostart: e.target.checked })}
+                onChange={e => onUpdate({ autostart: e.target.checked })}
                 className="w-4 h-4"
               />
               <span className="text-sm">Autostart</span>
@@ -344,7 +423,7 @@ function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updat
                 type="number"
                 min={1}
                 value={task.activation}
-                onChange={(e) => onUpdate({ activation: parseInt(e.target.value) })}
+                onChange={e => onUpdate({ activation: parseInt(e.target.value) })}
                 className="w-16 px-2 py-1 text-sm border border-app-border-primary rounded"
               />
               <span className="text-sm">Activation Count</span>
@@ -353,29 +432,35 @@ function TaskItem({ task, onUpdate, onRemove }: { task: OSTask; onUpdate: (updat
         </div>
       )}
     </div>
-  )
+  );
 }
 
 // Events Editor
-function EventsEditor({ events, onUpdate }: { events: OSEvent[]; onUpdate: (events: OSEvent[]) => void }) {
+function EventsEditor({
+  events,
+  onUpdate,
+}: {
+  events: OSEvent[];
+  onUpdate: (events: OSEvent[]) => void;
+}) {
   const addEvent = () => {
     const newEvent: OSEvent = {
       id: `evt-${Date.now()}`,
       name: `Event_${events.length + 1}`,
       mask: `0x${(1 << events.length).toString(16).padStart(2, '0')}`,
-    }
-    onUpdate([...events, newEvent])
-  }
+    };
+    onUpdate([...events, newEvent]);
+  };
 
   const updateEvent = (index: number, updates: Partial<OSEvent>) => {
-    const newEvents = [...events]
-    newEvents[index] = { ...newEvents[index], ...updates }
-    onUpdate(newEvents)
-  }
+    const newEvents = [...events];
+    newEvents[index] = { ...newEvents[index], ...updates };
+    onUpdate(newEvents);
+  };
 
   const removeEvent = (index: number) => {
-    onUpdate(events.filter((_, i) => i !== index))
-  }
+    onUpdate(events.filter((_, i) => i !== index));
+  };
 
   return (
     <div className="space-y-4">
@@ -392,18 +477,21 @@ function EventsEditor({ events, onUpdate }: { events: OSEvent[]; onUpdate: (even
 
       <div className="grid gap-2">
         {events.map((event, index) => (
-          <div key={event.id} className="flex items-center gap-2 p-2 border border-app-border-primary rounded-lg">
+          <div
+            key={event.id}
+            className="flex items-center gap-2 p-2 border border-app-border-primary rounded-lg"
+          >
             <input
               type="text"
               value={event.name}
-              onChange={(e) => updateEvent(index, { name: e.target.value })}
+              onChange={e => updateEvent(index, { name: e.target.value })}
               className="flex-1 px-2 py-1.5 text-sm border border-app-border-primary rounded"
               placeholder="Event name"
             />
             <input
               type="text"
               value={event.mask}
-              onChange={(e) => updateEvent(index, { mask: e.target.value })}
+              onChange={e => updateEvent(index, { mask: e.target.value })}
               className="w-24 px-2 py-1.5 text-sm border border-app-border-primary rounded font-mono"
               placeholder="0x01"
             />
@@ -417,34 +505,42 @@ function EventsEditor({ events, onUpdate }: { events: OSEvent[]; onUpdate: (even
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 // Resources Editor
-function ResourcesEditor({ resources, onUpdate }: { resources: OSResource[]; onUpdate: (resources: OSResource[]) => void }) {
+function ResourcesEditor({
+  resources,
+  onUpdate,
+}: {
+  resources: OSResource[];
+  onUpdate: (resources: OSResource[]) => void;
+}) {
   const addResource = () => {
     const newResource: OSResource = {
       id: `res-${Date.now()}`,
       name: `Resource_${resources.length + 1}`,
       linkedResources: [],
-    }
-    onUpdate([...resources, newResource])
-  }
+    };
+    onUpdate([...resources, newResource]);
+  };
 
   const updateResource = (index: number, updates: Partial<OSResource>) => {
-    const newResources = [...resources]
-    newResources[index] = { ...newResources[index], ...updates }
-    onUpdate(newResources)
-  }
+    const newResources = [...resources];
+    newResources[index] = { ...newResources[index], ...updates };
+    onUpdate(newResources);
+  };
 
   const removeResource = (index: number) => {
-    onUpdate(resources.filter((_, i) => i !== index))
-  }
+    onUpdate(resources.filter((_, i) => i !== index));
+  };
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-sm font-medium text-app-text-primary">Resources ({resources.length})</h3>
+        <h3 className="text-sm font-medium text-app-text-primary">
+          Resources ({resources.length})
+        </h3>
         <button
           onClick={addResource}
           className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
@@ -456,11 +552,14 @@ function ResourcesEditor({ resources, onUpdate }: { resources: OSResource[]; onU
 
       <div className="grid gap-2">
         {resources.map((resource, index) => (
-          <div key={resource.id} className="flex items-center gap-2 p-2 border border-app-border-primary rounded-lg">
+          <div
+            key={resource.id}
+            className="flex items-center gap-2 p-2 border border-app-border-primary rounded-lg"
+          >
             <input
               type="text"
               value={resource.name}
-              onChange={(e) => updateResource(index, { name: e.target.value })}
+              onChange={e => updateResource(index, { name: e.target.value })}
               className="flex-1 px-2 py-1.5 text-sm border border-app-border-primary rounded"
               placeholder="Resource name"
             />
@@ -474,11 +573,17 @@ function ResourcesEditor({ resources, onUpdate }: { resources: OSResource[]; onU
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 // Counters Editor
-function CountersEditor({ counters, onUpdate }: { counters: OSCounter[]; onUpdate: (counters: OSCounter[]) => void }) {
+function CountersEditor({
+  counters,
+  onUpdate,
+}: {
+  counters: OSCounter[];
+  onUpdate: (counters: OSCounter[]) => void;
+}) {
   const addCounter = () => {
     const newCounter: OSCounter = {
       id: `cnt-${Date.now()}`,
@@ -486,19 +591,19 @@ function CountersEditor({ counters, onUpdate }: { counters: OSCounter[]; onUpdat
       maxAllowedValue: 4294967295,
       ticksPerBase: 1,
       minCycle: 1,
-    }
-    onUpdate([...counters, newCounter])
-  }
+    };
+    onUpdate([...counters, newCounter]);
+  };
 
   const updateCounter = (index: number, updates: Partial<OSCounter>) => {
-    const newCounters = [...counters]
-    newCounters[index] = { ...newCounters[index], ...updates }
-    onUpdate(newCounters)
-  }
+    const newCounters = [...counters];
+    newCounters[index] = { ...newCounters[index], ...updates };
+    onUpdate(newCounters);
+  };
 
   const removeCounter = (index: number) => {
-    onUpdate(counters.filter((_, i) => i !== index))
-  }
+    onUpdate(counters.filter((_, i) => i !== index));
+  };
 
   return (
     <div className="space-y-4">
@@ -515,12 +620,15 @@ function CountersEditor({ counters, onUpdate }: { counters: OSCounter[]; onUpdat
 
       <div className="space-y-2">
         {counters.map((counter, index) => (
-          <div key={counter.id} className="p-3 border border-app-border-primary rounded-lg space-y-2">
+          <div
+            key={counter.id}
+            className="p-3 border border-app-border-primary rounded-lg space-y-2"
+          >
             <div className="flex items-center gap-2">
               <input
                 type="text"
                 value={counter.name}
-                onChange={(e) => updateCounter(index, { name: e.target.value })}
+                onChange={e => updateCounter(index, { name: e.target.value })}
                 className="flex-1 px-2 py-1.5 text-sm border border-app-border-primary rounded"
                 placeholder="Counter name"
               />
@@ -537,7 +645,9 @@ function CountersEditor({ counters, onUpdate }: { counters: OSCounter[]; onUpdat
                 <input
                   type="number"
                   value={counter.maxAllowedValue}
-                  onChange={(e) => updateCounter(index, { maxAllowedValue: parseInt(e.target.value) })}
+                  onChange={e =>
+                    updateCounter(index, { maxAllowedValue: parseInt(e.target.value) })
+                  }
                   className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                 />
               </div>
@@ -546,7 +656,7 @@ function CountersEditor({ counters, onUpdate }: { counters: OSCounter[]; onUpdat
                 <input
                   type="number"
                   value={counter.ticksPerBase}
-                  onChange={(e) => updateCounter(index, { ticksPerBase: parseInt(e.target.value) })}
+                  onChange={e => updateCounter(index, { ticksPerBase: parseInt(e.target.value) })}
                   className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                 />
               </div>
@@ -555,7 +665,7 @@ function CountersEditor({ counters, onUpdate }: { counters: OSCounter[]; onUpdat
                 <input
                   type="number"
                   value={counter.minCycle}
-                  onChange={(e) => updateCounter(index, { minCycle: parseInt(e.target.value) })}
+                  onChange={e => updateCounter(index, { minCycle: parseInt(e.target.value) })}
                   className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                 />
               </div>
@@ -564,14 +674,20 @@ function CountersEditor({ counters, onUpdate }: { counters: OSCounter[]; onUpdat
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 // Alarms Editor
-function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: { 
-  alarms: OSAlarm[]; 
-  tasks: OSTask[]; 
-  events: OSEvent[]; 
+function AlarmsEditor({
+  alarms,
+  tasks,
+  events,
+  counters,
+  onUpdate,
+}: {
+  alarms: OSAlarm[];
+  tasks: OSTask[];
+  events: OSEvent[];
   counters: OSCounter[];
   onUpdate: (alarms: OSAlarm[]) => void;
 }) {
@@ -584,19 +700,19 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
       period: 100,
       action: 'ACTIVATETASK',
       task: tasks[0]?.name || '',
-    }
-    onUpdate([...alarms, newAlarm])
-  }
+    };
+    onUpdate([...alarms, newAlarm]);
+  };
 
   const updateAlarm = (index: number, updates: Partial<OSAlarm>) => {
-    const newAlarms = [...alarms]
-    newAlarms[index] = { ...newAlarms[index], ...updates }
-    onUpdate(newAlarms)
-  }
+    const newAlarms = [...alarms];
+    newAlarms[index] = { ...newAlarms[index], ...updates };
+    onUpdate(newAlarms);
+  };
 
   const removeAlarm = (index: number) => {
-    onUpdate(alarms.filter((_, i) => i !== index))
-  }
+    onUpdate(alarms.filter((_, i) => i !== index));
+  };
 
   return (
     <div className="space-y-4">
@@ -618,7 +734,7 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
               <input
                 type="text"
                 value={alarm.name}
-                onChange={(e) => updateAlarm(index, { name: e.target.value })}
+                onChange={e => updateAlarm(index, { name: e.target.value })}
                 className="flex-1 px-2 py-1.5 text-sm border border-app-border-primary rounded"
                 placeholder="Alarm name"
               />
@@ -629,17 +745,19 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
                 <Trash2 className="w-4 h-4" />
               </button>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <label className="block text-xs text-app-text-secondary mb-1">Counter</label>
                 <select
                   value={alarm.counter}
-                  onChange={(e) => updateAlarm(index, { counter: e.target.value })}
+                  onChange={e => updateAlarm(index, { counter: e.target.value })}
                   className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                 >
-                  {counters.map((c) => (
-                    <option key={c.id} value={c.name}>{c.name}</option>
+                  {counters.map(c => (
+                    <option key={c.id} value={c.name}>
+                      {c.name}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -647,7 +765,9 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
                 <label className="block text-xs text-app-text-secondary mb-1">Action</label>
                 <select
                   value={alarm.action}
-                  onChange={(e) => updateAlarm(index, { action: e.target.value as OSAlarm['action'] })}
+                  onChange={e =>
+                    updateAlarm(index, { action: e.target.value as OSAlarm['action'] })
+                  }
                   className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                 >
                   <option value="ACTIVATETASK">Activate Task</option>
@@ -663,11 +783,13 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
                   <label className="block text-xs text-app-text-secondary mb-1">Target Task</label>
                   <select
                     value={alarm.task}
-                    onChange={(e) => updateAlarm(index, { task: e.target.value })}
+                    onChange={e => updateAlarm(index, { task: e.target.value })}
                     className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                   >
-                    {tasks.map((t) => (
-                      <option key={t.id} value={t.name}>{t.name}</option>
+                    {tasks.map(t => (
+                      <option key={t.id} value={t.name}>
+                        {t.name}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -677,11 +799,13 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
                   <label className="block text-xs text-app-text-secondary mb-1">Event</label>
                   <select
                     value={alarm.event || ''}
-                    onChange={(e) => updateAlarm(index, { event: e.target.value })}
+                    onChange={e => updateAlarm(index, { event: e.target.value })}
                     className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                   >
-                    {events.map((e) => (
-                      <option key={e.id} value={e.name}>{e.name}</option>
+                    {events.map(e => (
+                      <option key={e.id} value={e.name}>
+                        {e.name}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -693,7 +817,7 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
                 <input
                   type="checkbox"
                   checked={alarm.autostart}
-                  onChange={(e) => updateAlarm(index, { autostart: e.target.checked })}
+                  onChange={e => updateAlarm(index, { autostart: e.target.checked })}
                   className="w-4 h-4"
                 />
                 <span className="text-sm">Autostart</span>
@@ -703,7 +827,7 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
                 <input
                   type="number"
                   value={alarm.period}
-                  onChange={(e) => updateAlarm(index, { period: parseInt(e.target.value) })}
+                  onChange={e => updateAlarm(index, { period: parseInt(e.target.value) })}
                   className="w-20 px-2 py-1 text-sm border border-app-border-primary rounded"
                 />
                 <span className="text-xs text-app-text-secondary">ticks</span>
@@ -713,12 +837,16 @@ function AlarmsEditor({ alarms, tasks, events, counters, onUpdate }: {
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 // ISRs Editor
-function ISRsEditor({ isrs, resources, onUpdate }: { 
-  isrs: OSISR[]; 
+function ISRsEditor({
+  isrs,
+  resources,
+  onUpdate,
+}: {
+  isrs: OSISR[];
   resources: OSResource[];
   onUpdate: (isrs: OSISR[]) => void;
 }) {
@@ -729,19 +857,19 @@ function ISRsEditor({ isrs, resources, onUpdate }: {
       category: 2,
       priority: 50,
       vector: 'IRQn',
-    }
-    onUpdate([...isrs, newISR])
-  }
+    };
+    onUpdate([...isrs, newISR]);
+  };
 
   const updateISR = (index: number, updates: Partial<OSISR>) => {
-    const newISRs = [...isrs]
-    newISRs[index] = { ...newISRs[index], ...updates }
-    onUpdate(newISRs)
-  }
+    const newISRs = [...isrs];
+    newISRs[index] = { ...newISRs[index], ...updates };
+    onUpdate(newISRs);
+  };
 
   const removeISR = (index: number) => {
-    onUpdate(isrs.filter((_, i) => i !== index))
-  }
+    onUpdate(isrs.filter((_, i) => i !== index));
+  };
 
   return (
     <div className="space-y-4">
@@ -763,7 +891,7 @@ function ISRsEditor({ isrs, resources, onUpdate }: {
               <input
                 type="text"
                 value={isr.name}
-                onChange={(e) => updateISR(index, { name: e.target.value })}
+                onChange={e => updateISR(index, { name: e.target.value })}
                 className="flex-1 px-2 py-1.5 text-sm border border-app-border-primary rounded"
                 placeholder="ISR name"
               />
@@ -774,13 +902,13 @@ function ISRsEditor({ isrs, resources, onUpdate }: {
                 <Trash2 className="w-4 h-4" />
               </button>
             </div>
-            
+
             <div className="grid grid-cols-3 gap-2">
               <div>
                 <label className="block text-xs text-app-text-secondary mb-1">Category</label>
                 <select
                   value={isr.category}
-                  onChange={(e) => updateISR(index, { category: parseInt(e.target.value) as 1 | 2 })}
+                  onChange={e => updateISR(index, { category: parseInt(e.target.value) as 1 | 2 })}
                   className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                 >
                   <option value={1}>Category 1</option>
@@ -794,7 +922,7 @@ function ISRsEditor({ isrs, resources, onUpdate }: {
                   min={1}
                   max={255}
                   value={isr.priority}
-                  onChange={(e) => updateISR(index, { priority: parseInt(e.target.value) })}
+                  onChange={e => updateISR(index, { priority: parseInt(e.target.value) })}
                   className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                 />
               </div>
@@ -803,7 +931,7 @@ function ISRsEditor({ isrs, resources, onUpdate }: {
                 <input
                   type="text"
                   value={isr.vector}
-                  onChange={(e) => updateISR(index, { vector: e.target.value })}
+                  onChange={e => updateISR(index, { vector: e.target.value })}
                   className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
                   placeholder="IRQn"
                 />
@@ -811,15 +939,19 @@ function ISRsEditor({ isrs, resources, onUpdate }: {
             </div>
 
             <div>
-              <label className="block text-xs text-app-text-secondary mb-1">Resource (Optional)</label>
+              <label className="block text-xs text-app-text-secondary mb-1">
+                Resource (Optional)
+              </label>
               <select
                 value={isr.resource || ''}
-                onChange={(e) => updateISR(index, { resource: e.target.value || undefined })}
+                onChange={e => updateISR(index, { resource: e.target.value || undefined })}
                 className="w-full px-2 py-1 text-sm border border-app-border-primary rounded"
               >
                 <option value="">None</option>
-                {resources.map((r) => (
-                  <option key={r.id} value={r.name}>{r.name}</option>
+                {resources.map(r => (
+                  <option key={r.id} value={r.name}>
+                    {r.name}
+                  </option>
                 ))}
               </select>
             </div>
@@ -827,5 +959,5 @@ function ISRsEditor({ isrs, resources, onUpdate }: {
         ))}
       </div>
     </div>
-  )
+  );
 }

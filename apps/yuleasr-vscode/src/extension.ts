@@ -5,88 +5,81 @@ import { ConfigTreeProvider, ConfigTreeItem } from './providers/ConfigTreeProvid
 import { ConfigEditorPanel } from './panels/ConfigEditorPanel';
 
 export function activate(context: vscode.ExtensionContext): void {
-    console.log('yuleASR Configurator extension is now active');
+  console.log('yuleASR Configurator extension is now active');
 
-    // Initialize tree view provider
-    const treeProvider = new ConfigTreeProvider(vscode.workspace.rootPath);
-    
-    // Register tree view
-    const treeView = vscode.window.createTreeView('yuleasrExplorer', {
-        treeDataProvider: treeProvider,
-        showCollapseAll: true,
-        canSelectMany: false
-    });
+  // Initialize tree view provider
+  const treeProvider = new ConfigTreeProvider(vscode.workspace.rootPath);
 
-    // Register all commands
-    registerCommands(context, treeProvider);
+  // Register tree view
+  const treeView = vscode.window.createTreeView('yuleasrExplorer', {
+    treeDataProvider: treeProvider,
+    showCollapseAll: true,
+    canSelectMany: false,
+  });
 
-    // Register command: Open Dashboard (full web configurator)
-    const openDashboardCmd = vscode.commands.registerCommand(
-        'yuleasr.openDashboard',
-        () => {
-            ConfigEditorPanel.createOrShow(context.extensionUri);
-        }
-    );
-    context.subscriptions.push(openDashboardCmd);
+  // Register all commands
+  registerCommands(context, treeProvider);
 
-    // Add to subscriptions
-    context.subscriptions.push(treeView);
+  // Register command: Open Dashboard (full web configurator)
+  const openDashboardCmd = vscode.commands.registerCommand('yuleasr.openDashboard', () => {
+    ConfigEditorPanel.createOrShow(context.extensionUri);
+  });
+  context.subscriptions.push(openDashboardCmd);
 
-    // Watch for configuration file changes
-    setupFileWatchers(context, treeProvider);
+  // Add to subscriptions
+  context.subscriptions.push(treeView);
 
-    // Set workspace context if yuleASR config exists
-    checkYuleASRWorkspace();
+  // Watch for configuration file changes
+  setupFileWatchers(context, treeProvider);
+
+  // Set workspace context if yuleASR config exists
+  checkYuleASRWorkspace();
 }
 
 export function deactivate(): void {
-    console.log('yuleASR Configurator extension is now deactivated');
+  console.log('yuleASR Configurator extension is now deactivated');
 }
 
 function setupFileWatchers(
-    context: vscode.ExtensionContext,
-    treeProvider: ConfigTreeProvider
+  context: vscode.ExtensionContext,
+  treeProvider: ConfigTreeProvider
 ): void {
-    // Watch for yuleASR config files
-    const configWatcher = vscode.workspace.createFileSystemWatcher(
-        '**/*.{yule.json,xdm,arxml}'
-    );
+  // Watch for yuleASR config files
+  const configWatcher = vscode.workspace.createFileSystemWatcher('**/*.{yule.json,xdm,arxml}');
 
-    configWatcher.onDidCreate(() => treeProvider.refresh());
-    configWatcher.onDidDelete(() => treeProvider.refresh());
-    configWatcher.onDidChange(() => treeProvider.refresh());
+  configWatcher.onDidCreate(() => treeProvider.refresh());
+  configWatcher.onDidDelete(() => treeProvider.refresh());
+  configWatcher.onDidChange(() => treeProvider.refresh());
 
-    context.subscriptions.push(configWatcher);
+  context.subscriptions.push(configWatcher);
 
-    // Watch for workspace configuration
-    const workspaceWatcher = vscode.workspace.createFileSystemWatcher(
-        '**/yuleasr.config.json'
-    );
+  // Watch for workspace configuration
+  const workspaceWatcher = vscode.workspace.createFileSystemWatcher('**/yuleasr.config.json');
 
-    workspaceWatcher.onDidCreate(() => {
-        vscode.commands.executeCommand('setContext', 'workspaceHasYuleASR', true);
-        treeProvider.refresh();
-    });
+  workspaceWatcher.onDidCreate(() => {
+    vscode.commands.executeCommand('setContext', 'workspaceHasYuleASR', true);
+    treeProvider.refresh();
+  });
 
-    workspaceWatcher.onDidDelete(() => {
-        vscode.commands.executeCommand('setContext', 'workspaceHasYuleASR', false);
-    });
+  workspaceWatcher.onDidDelete(() => {
+    vscode.commands.executeCommand('setContext', 'workspaceHasYuleASR', false);
+  });
 
-    context.subscriptions.push(workspaceWatcher);
+  context.subscriptions.push(workspaceWatcher);
 }
 
 async function checkYuleASRWorkspace(): Promise<void> {
-    if (!vscode.workspace.workspaceFolders) {
-        return;
-    }
+  if (!vscode.workspace.workspaceFolders) {
+    return;
+  }
 
-    const hasYuleASR = await Promise.any(
-        vscode.workspace.workspaceFolders.map(async (folder) => {
-            const pattern = new vscode.RelativePattern(folder, '**/yuleasr.config.json');
-            const files = await vscode.workspace.findFiles(pattern, null, 1);
-            return files.length > 0;
-        })
-    ).catch(() => false);
+  const hasYuleASR = await Promise.any(
+    vscode.workspace.workspaceFolders.map(async folder => {
+      const pattern = new vscode.RelativePattern(folder, '**/yuleasr.config.json');
+      const files = await vscode.workspace.findFiles(pattern, null, 1);
+      return files.length > 0;
+    })
+  ).catch(() => false);
 
-    vscode.commands.executeCommand('setContext', 'workspaceHasYuleASR', hasYuleASR);
+  vscode.commands.executeCommand('setContext', 'workspaceHasYuleASR', hasYuleASR);
 }

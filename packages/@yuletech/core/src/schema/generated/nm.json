@@ -386,11 +386,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "NmGlobalConfig",
-    "NmGlobalFeatures",
-    "NmGeneration"
-  ],
+  "required": ["NmGlobalConfig", "NmGlobalFeatures", "NmGeneration"],
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",

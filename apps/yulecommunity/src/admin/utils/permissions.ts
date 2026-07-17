@@ -1,6 +1,6 @@
 // RBAC Permission System
 export type Role = 'user' | 'vip' | 'admin' | 'super_admin';
-export type Permission = 
+export type Permission =
   // User permissions
   | 'user:read'
   | 'user:update'
@@ -24,20 +24,8 @@ export type Permission =
 
 // Role-based permission mapping
 export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
-  user: [
-    'user:read',
-    'build:read',
-    'build:create',
-    'content:read',
-  ],
-  vip: [
-    'user:read',
-    'user:update',
-    'build:read',
-    'build:create',
-    'build:update',
-    'content:read',
-  ],
+  user: ['user:read', 'build:read', 'build:create', 'content:read'],
+  vip: ['user:read', 'user:update', 'build:read', 'build:create', 'build:update', 'content:read'],
   admin: [
     'user:read',
     'user:update',

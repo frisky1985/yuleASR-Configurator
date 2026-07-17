@@ -64,9 +64,12 @@ export function useModuleCompare() {
     });
   }, []);
 
-  const isSelected = useCallback((moduleId: string) => {
-    return selectedModules.some(m => m.id === moduleId);
-  }, [selectedModules]);
+  const isSelected = useCallback(
+    (moduleId: string) => {
+      return selectedModules.some(m => m.id === moduleId);
+    },
+    [selectedModules]
+  );
 
   const clearAll = useCallback(() => {
     setSelectedModules([]);

@@ -6,7 +6,14 @@
 import type { ValidationResult, ValidationError } from '@yuletech/core';
 import EventEmitter from 'eventemitter3';
 
-import type { ConfigProject, ConfigModel, ModuleConfigModel, ParameterValueModel , ConfigChangeEvent, ParameterValue } from '../models';
+import type {
+  ConfigProject,
+  ConfigModel,
+  ModuleConfigModel,
+  ParameterValueModel,
+  ConfigChangeEvent,
+  ParameterValue,
+} from '../models';
 
 /**
  * 历史记录类型
@@ -429,7 +436,12 @@ export class ConfigEngine extends EventEmitter<EngineEvents> {
         }
       } else if (entry.type === 'set') {
         // 恢复之前的值
-        this.project.setParameterValue(config.id, entry.module, entry.parameter, entry.oldValue as ParameterValue);
+        this.project.setParameterValue(
+          config.id,
+          entry.module,
+          entry.parameter,
+          entry.oldValue as ParameterValue
+        );
       }
 
       // 发送变更事件
@@ -475,7 +487,12 @@ export class ConfigEngine extends EventEmitter<EngineEvents> {
     if (entry.module && entry.parameter) {
       if (entry.type === 'delete') {
         // 重新删除
-        this.project.setParameterValue(config.id, entry.module, entry.parameter, undefined as unknown as ParameterValue);
+        this.project.setParameterValue(
+          config.id,
+          entry.module,
+          entry.parameter,
+          undefined as unknown as ParameterValue
+        );
       } else if (entry.type === 'set' && entry.newValue !== undefined) {
         // 重新应用新值
         this.project.setParameterValue(config.id, entry.module, entry.parameter, entry.newValue);

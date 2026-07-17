@@ -38,11 +38,44 @@ const mcalModules: McalModule[] = [
     name: 'Mcu (微控制器驱动)',
     icon: Cpu,
     params: [
-      { name: 'sysClockHz', label: '系统时钟频率 (Hz)', type: 'number', defaultValue: 1800000000, desc: '目标处理器主频，默认 1.8GHz' },
-      { name: 'ahbPrescaler', label: 'AHB 分频系数', type: 'select', options: ['1', '2', '4', '8'], defaultValue: '2', desc: 'AHB 总线时钟分频' },
-      { name: 'apbPrescaler', label: 'APB 分频系数', type: 'select', options: ['1', '2', '4', '8'], defaultValue: '4', desc: 'APB 外设时钟分频' },
-      { name: 'lowPowerEnable', label: '低功耗模式', type: 'boolean', defaultValue: true, desc: '使能低功耗管理模式' },
-      { name: 'wdgClockSrc', label: '看门狗时钟源', type: 'select', options: ['IRC', 'SYSCLK', 'RTC'], defaultValue: 'IRC', desc: '看门狗定时器时钟源选择' },
+      {
+        name: 'sysClockHz',
+        label: '系统时钟频率 (Hz)',
+        type: 'number',
+        defaultValue: 1800000000,
+        desc: '目标处理器主频，默认 1.8GHz',
+      },
+      {
+        name: 'ahbPrescaler',
+        label: 'AHB 分频系数',
+        type: 'select',
+        options: ['1', '2', '4', '8'],
+        defaultValue: '2',
+        desc: 'AHB 总线时钟分频',
+      },
+      {
+        name: 'apbPrescaler',
+        label: 'APB 分频系数',
+        type: 'select',
+        options: ['1', '2', '4', '8'],
+        defaultValue: '4',
+        desc: 'APB 外设时钟分频',
+      },
+      {
+        name: 'lowPowerEnable',
+        label: '低功耗模式',
+        type: 'boolean',
+        defaultValue: true,
+        desc: '使能低功耗管理模式',
+      },
+      {
+        name: 'wdgClockSrc',
+        label: '看门狗时钟源',
+        type: 'select',
+        options: ['IRC', 'SYSCLK', 'RTC'],
+        defaultValue: 'IRC',
+        desc: '看门狗定时器时钟源选择',
+      },
     ],
   },
   {
@@ -50,11 +83,52 @@ const mcalModules: McalModule[] = [
     name: 'Port (端口驱动)',
     icon: Layers,
     params: [
-      { name: 'pinNumber', label: '引脚编号', type: 'select', options: ['GPIO1_IO00', 'GPIO1_IO01', 'GPIO1_IO02', 'GPIO1_IO03', 'GPIO1_IO04', 'GPIO1_IO05'], defaultValue: 'GPIO1_IO00', desc: '选择要配置的 GPIO 引脚' },
-      { name: 'pinMode', label: '引脚模式', type: 'select', options: ['INPUT', 'OUTPUT', 'ALTERNATE_0', 'ALTERNATE_1', 'ALTERNATE_2'], defaultValue: 'OUTPUT', desc: '引脚功能模式' },
-      { name: 'pullConfig', label: '上下拉配置', type: 'select', options: ['NONE', 'PULL_UP', 'PULL_DOWN'], defaultValue: 'PULL_UP', desc: '内部上下拉电阻配置' },
-      { name: 'driveStrength', label: '驱动强度', type: 'select', options: ['LOW', 'MEDIUM', 'HIGH'], defaultValue: 'MEDIUM', desc: '引脚输出驱动能力' },
-      { name: 'slewRate', label: '压摆率控制', type: 'boolean', defaultValue: false, desc: '使能压摆率控制以降低 EMI' },
+      {
+        name: 'pinNumber',
+        label: '引脚编号',
+        type: 'select',
+        options: [
+          'GPIO1_IO00',
+          'GPIO1_IO01',
+          'GPIO1_IO02',
+          'GPIO1_IO03',
+          'GPIO1_IO04',
+          'GPIO1_IO05',
+        ],
+        defaultValue: 'GPIO1_IO00',
+        desc: '选择要配置的 GPIO 引脚',
+      },
+      {
+        name: 'pinMode',
+        label: '引脚模式',
+        type: 'select',
+        options: ['INPUT', 'OUTPUT', 'ALTERNATE_0', 'ALTERNATE_1', 'ALTERNATE_2'],
+        defaultValue: 'OUTPUT',
+        desc: '引脚功能模式',
+      },
+      {
+        name: 'pullConfig',
+        label: '上下拉配置',
+        type: 'select',
+        options: ['NONE', 'PULL_UP', 'PULL_DOWN'],
+        defaultValue: 'PULL_UP',
+        desc: '内部上下拉电阻配置',
+      },
+      {
+        name: 'driveStrength',
+        label: '驱动强度',
+        type: 'select',
+        options: ['LOW', 'MEDIUM', 'HIGH'],
+        defaultValue: 'MEDIUM',
+        desc: '引脚输出驱动能力',
+      },
+      {
+        name: 'slewRate',
+        label: '压摆率控制',
+        type: 'boolean',
+        defaultValue: false,
+        desc: '使能压摆率控制以降低 EMI',
+      },
     ],
   },
   {
@@ -62,13 +136,59 @@ const mcalModules: McalModule[] = [
     name: 'Can (CAN 控制器驱动)',
     icon: Database,
     params: [
-      { name: 'canInstance', label: 'CAN 实例', type: 'select', options: ['CAN0', 'CAN1', 'CAN2'], defaultValue: 'CAN1', desc: '选择 CAN 控制器实例' },
-      { name: 'baudrate', label: '波特率 (bps)', type: 'select', options: ['125000', '250000', '500000', '1000000'], defaultValue: '500000', desc: 'CAN 总线通信波特率' },
-      { name: 'samplePoint', label: '采样点 (%)', type: 'select', options: ['75', '80', '87.5'], defaultValue: '87.5', desc: '位采样点位置' },
-      { name: 'canFdEnable', label: 'CAN FD 模式', type: 'boolean', defaultValue: true, desc: '使能 CAN FD 灵活数据速率' },
-      { name: 'fdDataBaudrate', label: 'FD 数据段波特率', type: 'select', options: ['1000000', '2000000', '4000000', '8000000'], defaultValue: '2000000', desc: 'CAN FD 数据段波特率' },
-      { name: 'rxFifoDepth', label: '接收 FIFO 深度', type: 'number', defaultValue: 64, desc: '接收缓冲区大小' },
-      { name: 'txQueueDepth', label: '发送队列深度', type: 'number', defaultValue: 16, desc: '发送缓冲区大小' },
+      {
+        name: 'canInstance',
+        label: 'CAN 实例',
+        type: 'select',
+        options: ['CAN0', 'CAN1', 'CAN2'],
+        defaultValue: 'CAN1',
+        desc: '选择 CAN 控制器实例',
+      },
+      {
+        name: 'baudrate',
+        label: '波特率 (bps)',
+        type: 'select',
+        options: ['125000', '250000', '500000', '1000000'],
+        defaultValue: '500000',
+        desc: 'CAN 总线通信波特率',
+      },
+      {
+        name: 'samplePoint',
+        label: '采样点 (%)',
+        type: 'select',
+        options: ['75', '80', '87.5'],
+        defaultValue: '87.5',
+        desc: '位采样点位置',
+      },
+      {
+        name: 'canFdEnable',
+        label: 'CAN FD 模式',
+        type: 'boolean',
+        defaultValue: true,
+        desc: '使能 CAN FD 灵活数据速率',
+      },
+      {
+        name: 'fdDataBaudrate',
+        label: 'FD 数据段波特率',
+        type: 'select',
+        options: ['1000000', '2000000', '4000000', '8000000'],
+        defaultValue: '2000000',
+        desc: 'CAN FD 数据段波特率',
+      },
+      {
+        name: 'rxFifoDepth',
+        label: '接收 FIFO 深度',
+        type: 'number',
+        defaultValue: 64,
+        desc: '接收缓冲区大小',
+      },
+      {
+        name: 'txQueueDepth',
+        label: '发送队列深度',
+        type: 'number',
+        defaultValue: 16,
+        desc: '发送缓冲区大小',
+      },
     ],
   },
   {
@@ -76,12 +196,53 @@ const mcalModules: McalModule[] = [
     name: 'Spi (SPI 串行外设接口)',
     icon: Layers,
     params: [
-      { name: 'spiInstance', label: 'SPI 实例', type: 'select', options: ['SPI0', 'SPI1', 'SPI2', 'SPI3'], defaultValue: 'SPI1', desc: '选择 SPI 控制器实例' },
-      { name: 'baudrateHz', label: 'SPI 时钟频率 (Hz)', type: 'number', defaultValue: 10000000, desc: 'SPI 通信时钟频率' },
-      { name: 'clockPolarity', label: '时钟极性 (CPOL)', type: 'select', options: ['LOW', 'HIGH'], defaultValue: 'LOW', desc: '空闲时时钟电平' },
-      { name: 'clockPhase', label: '时钟相位 (CPHA)', type: 'select', options: ['FIRST_EDGE', 'SECOND_EDGE'], defaultValue: 'FIRST_EDGE', desc: '数据采样边沿' },
-      { name: 'dataWidth', label: '数据位宽', type: 'select', options: ['8', '16', '32'], defaultValue: '8', desc: '单次传输数据位宽' },
-      { name: 'chipSelectPolarity', label: '片选极性', type: 'select', options: ['ACTIVE_LOW', 'ACTIVE_HIGH'], defaultValue: 'ACTIVE_LOW', desc: '片选信号有效电平' },
+      {
+        name: 'spiInstance',
+        label: 'SPI 实例',
+        type: 'select',
+        options: ['SPI0', 'SPI1', 'SPI2', 'SPI3'],
+        defaultValue: 'SPI1',
+        desc: '选择 SPI 控制器实例',
+      },
+      {
+        name: 'baudrateHz',
+        label: 'SPI 时钟频率 (Hz)',
+        type: 'number',
+        defaultValue: 10000000,
+        desc: 'SPI 通信时钟频率',
+      },
+      {
+        name: 'clockPolarity',
+        label: '时钟极性 (CPOL)',
+        type: 'select',
+        options: ['LOW', 'HIGH'],
+        defaultValue: 'LOW',
+        desc: '空闲时时钟电平',
+      },
+      {
+        name: 'clockPhase',
+        label: '时钟相位 (CPHA)',
+        type: 'select',
+        options: ['FIRST_EDGE', 'SECOND_EDGE'],
+        defaultValue: 'FIRST_EDGE',
+        desc: '数据采样边沿',
+      },
+      {
+        name: 'dataWidth',
+        label: '数据位宽',
+        type: 'select',
+        options: ['8', '16', '32'],
+        defaultValue: '8',
+        desc: '单次传输数据位宽',
+      },
+      {
+        name: 'chipSelectPolarity',
+        label: '片选极性',
+        type: 'select',
+        options: ['ACTIVE_LOW', 'ACTIVE_HIGH'],
+        defaultValue: 'ACTIVE_LOW',
+        desc: '片选信号有效电平',
+      },
     ],
   },
   {
@@ -89,11 +250,44 @@ const mcalModules: McalModule[] = [
     name: 'Gpt (通用定时器)',
     icon: Cpu,
     params: [
-      { name: 'timerInstance', label: '定时器实例', type: 'select', options: ['GPT1', 'GPT2', 'GPT3', 'GPT4'], defaultValue: 'GPT1', desc: '选择定时器硬件实例' },
-      { name: 'clockSource', label: '时钟源', type: 'select', options: ['PERIPHERAL_CLK', 'HIGH_FREQ_REF', 'LOW_FREQ_REF'], defaultValue: 'PERIPHERAL_CLK', desc: '定时器计数时钟源' },
-      { name: 'prescaler', label: '预分频系数', type: 'number', defaultValue: 1, desc: '计数器预分频值' },
-      { name: 'maxCounterValue', label: '最大计数值', type: 'number', defaultValue: 4294967295, desc: '计数器溢出值 (32-bit)' },
-      { name: 'channelMode', label: '通道模式', type: 'select', options: ['CONTINUOUS', 'ONE_SHOT'], defaultValue: 'CONTINUOUS', desc: '计数器运行模式' },
+      {
+        name: 'timerInstance',
+        label: '定时器实例',
+        type: 'select',
+        options: ['GPT1', 'GPT2', 'GPT3', 'GPT4'],
+        defaultValue: 'GPT1',
+        desc: '选择定时器硬件实例',
+      },
+      {
+        name: 'clockSource',
+        label: '时钟源',
+        type: 'select',
+        options: ['PERIPHERAL_CLK', 'HIGH_FREQ_REF', 'LOW_FREQ_REF'],
+        defaultValue: 'PERIPHERAL_CLK',
+        desc: '定时器计数时钟源',
+      },
+      {
+        name: 'prescaler',
+        label: '预分频系数',
+        type: 'number',
+        defaultValue: 1,
+        desc: '计数器预分频值',
+      },
+      {
+        name: 'maxCounterValue',
+        label: '最大计数值',
+        type: 'number',
+        defaultValue: 4294967295,
+        desc: '计数器溢出值 (32-bit)',
+      },
+      {
+        name: 'channelMode',
+        label: '通道模式',
+        type: 'select',
+        options: ['CONTINUOUS', 'ONE_SHOT'],
+        defaultValue: 'CONTINUOUS',
+        desc: '计数器运行模式',
+      },
     ],
   },
 ];
@@ -123,12 +317,49 @@ const bswModules: BswModule[] = [
     layer: 'Service',
     icon: Database,
     params: [
-      { name: 'numSignals', label: '信号数量', type: 'number', defaultValue: 32, desc: 'COM 模块管理的信号总数' },
-      { name: 'numIPdus', label: 'I-PDU 数量', type: 'number', defaultValue: 16, desc: '交互层 PDU 数量' },
-      { name: 'signalBufferSize', label: '信号缓冲区大小 (字节)', type: 'number', defaultValue: 256, desc: '信号数据缓冲区总大小' },
-      { name: 'txMode', label: '默认发送模式', type: 'select', options: ['DIRECT', 'PERIODIC', 'MIXED'], defaultValue: 'MIXED', desc: 'I-PDU 默认传输模式' },
-      { name: 'devErrorDetect', label: '开发错误检测', type: 'boolean', defaultValue: true, desc: '使能 DET 错误检测' },
-      { name: 'versionInfoApi', label: '版本信息 API', type: 'boolean', defaultValue: true, desc: '提供版本信息查询接口' },
+      {
+        name: 'numSignals',
+        label: '信号数量',
+        type: 'number',
+        defaultValue: 32,
+        desc: 'COM 模块管理的信号总数',
+      },
+      {
+        name: 'numIPdus',
+        label: 'I-PDU 数量',
+        type: 'number',
+        defaultValue: 16,
+        desc: '交互层 PDU 数量',
+      },
+      {
+        name: 'signalBufferSize',
+        label: '信号缓冲区大小 (字节)',
+        type: 'number',
+        defaultValue: 256,
+        desc: '信号数据缓冲区总大小',
+      },
+      {
+        name: 'txMode',
+        label: '默认发送模式',
+        type: 'select',
+        options: ['DIRECT', 'PERIODIC', 'MIXED'],
+        defaultValue: 'MIXED',
+        desc: 'I-PDU 默认传输模式',
+      },
+      {
+        name: 'devErrorDetect',
+        label: '开发错误检测',
+        type: 'boolean',
+        defaultValue: true,
+        desc: '使能 DET 错误检测',
+      },
+      {
+        name: 'versionInfoApi',
+        label: '版本信息 API',
+        type: 'boolean',
+        defaultValue: true,
+        desc: '提供版本信息查询接口',
+      },
     ],
   },
   {
@@ -137,10 +368,34 @@ const bswModules: BswModule[] = [
     layer: 'Service',
     icon: Layers,
     params: [
-      { name: 'numRoutingPaths', label: '路由路径数量', type: 'number', defaultValue: 20, desc: 'PDU 路由路径总数' },
-      { name: 'numDestinations', label: '每路径最大目标数', type: 'number', defaultValue: 4, desc: '单条路径最多目标模块数' },
-      { name: 'fifoDepth', label: 'FIFO 队列深度', type: 'number', defaultValue: 8, desc: '延迟路由 FIFO 深度' },
-      { name: 'devErrorDetect', label: '开发错误检测', type: 'boolean', defaultValue: true, desc: '使能 DET 错误检测' },
+      {
+        name: 'numRoutingPaths',
+        label: '路由路径数量',
+        type: 'number',
+        defaultValue: 20,
+        desc: 'PDU 路由路径总数',
+      },
+      {
+        name: 'numDestinations',
+        label: '每路径最大目标数',
+        type: 'number',
+        defaultValue: 4,
+        desc: '单条路径最多目标模块数',
+      },
+      {
+        name: 'fifoDepth',
+        label: 'FIFO 队列深度',
+        type: 'number',
+        defaultValue: 8,
+        desc: '延迟路由 FIFO 深度',
+      },
+      {
+        name: 'devErrorDetect',
+        label: '开发错误检测',
+        type: 'boolean',
+        defaultValue: true,
+        desc: '使能 DET 错误检测',
+      },
     ],
   },
   {
@@ -149,11 +404,42 @@ const bswModules: BswModule[] = [
     layer: 'Service',
     icon: Database,
     params: [
-      { name: 'numBlocks', label: 'NV Block 数量', type: 'number', defaultValue: 32, desc: '管理的非易失性数据块数量' },
-      { name: 'blockSize', label: '块大小 (字节)', type: 'number', defaultValue: 64, desc: '单个 NV Block 大小' },
-      { name: 'redundancy', label: '冗余策略', type: 'select', options: ['NONE', 'MIRROR', 'BLOCK_REDUNDANCY'], defaultValue: 'MIRROR', desc: '数据冗余保护策略' },
-      { name: 'writeCycleLimit', label: '写入周期限制', type: 'number', defaultValue: 100000, desc: 'Flash 最大写入次数' },
-      { name: 'readAllAtInit', label: '初始化时读取全部', type: 'boolean', defaultValue: true, desc: '启动时自动读取所有 NV Block' },
+      {
+        name: 'numBlocks',
+        label: 'NV Block 数量',
+        type: 'number',
+        defaultValue: 32,
+        desc: '管理的非易失性数据块数量',
+      },
+      {
+        name: 'blockSize',
+        label: '块大小 (字节)',
+        type: 'number',
+        defaultValue: 64,
+        desc: '单个 NV Block 大小',
+      },
+      {
+        name: 'redundancy',
+        label: '冗余策略',
+        type: 'select',
+        options: ['NONE', 'MIRROR', 'BLOCK_REDUNDANCY'],
+        defaultValue: 'MIRROR',
+        desc: '数据冗余保护策略',
+      },
+      {
+        name: 'writeCycleLimit',
+        label: '写入周期限制',
+        type: 'number',
+        defaultValue: 100000,
+        desc: 'Flash 最大写入次数',
+      },
+      {
+        name: 'readAllAtInit',
+        label: '初始化时读取全部',
+        type: 'boolean',
+        defaultValue: true,
+        desc: '启动时自动读取所有 NV Block',
+      },
     ],
   },
   {
@@ -162,11 +448,41 @@ const bswModules: BswModule[] = [
     layer: 'ECUAL',
     icon: Layers,
     params: [
-      { name: 'numControllers', label: '控制器数量', type: 'number', defaultValue: 2, desc: 'CAN 控制器实例数' },
-      { name: 'numTxPdus', label: '发送 PDU 数量', type: 'number', defaultValue: 32, desc: '发送方向 PDU 配置数' },
-      { name: 'numRxPdus', label: '接收 PDU 数量', type: 'number', defaultValue: 32, desc: '接收方向 PDU 配置数' },
-      { name: 'softwareFiltering', label: '软件过滤', type: 'boolean', defaultValue: true, desc: '使能软件层面报文过滤' },
-      { name: 'devErrorDetect', label: '开发错误检测', type: 'boolean', defaultValue: true, desc: '使能 DET 错误检测' },
+      {
+        name: 'numControllers',
+        label: '控制器数量',
+        type: 'number',
+        defaultValue: 2,
+        desc: 'CAN 控制器实例数',
+      },
+      {
+        name: 'numTxPdus',
+        label: '发送 PDU 数量',
+        type: 'number',
+        defaultValue: 32,
+        desc: '发送方向 PDU 配置数',
+      },
+      {
+        name: 'numRxPdus',
+        label: '接收 PDU 数量',
+        type: 'number',
+        defaultValue: 32,
+        desc: '接收方向 PDU 配置数',
+      },
+      {
+        name: 'softwareFiltering',
+        label: '软件过滤',
+        type: 'boolean',
+        defaultValue: true,
+        desc: '使能软件层面报文过滤',
+      },
+      {
+        name: 'devErrorDetect',
+        label: '开发错误检测',
+        type: 'boolean',
+        defaultValue: true,
+        desc: '使能 DET 错误检测',
+      },
     ],
   },
   {
@@ -175,17 +491,51 @@ const bswModules: BswModule[] = [
     layer: 'ECUAL',
     icon: Wrench,
     params: [
-      { name: 'numAnalogChannels', label: '模拟通道数', type: 'number', defaultValue: 8, desc: 'ADC 模拟输入通道数' },
-      { name: 'numDigitalChannels', label: '数字通道数', type: 'number', defaultValue: 16, desc: 'DIO 数字通道数' },
-      { name: 'numPwmChannels', label: 'PWM 通道数', type: 'number', defaultValue: 4, desc: 'PWM 输出通道数' },
-      { name: 'adcResolution', label: 'ADC 分辨率 (位)', type: 'select', options: ['8', '10', '12', '16'], defaultValue: '12', desc: 'ADC 采样分辨率' },
-      { name: 'pwmFrequencyHz', label: 'PWM 默认频率 (Hz)', type: 'number', defaultValue: 1000, desc: 'PWM 默认输出频率' },
+      {
+        name: 'numAnalogChannels',
+        label: '模拟通道数',
+        type: 'number',
+        defaultValue: 8,
+        desc: 'ADC 模拟输入通道数',
+      },
+      {
+        name: 'numDigitalChannels',
+        label: '数字通道数',
+        type: 'number',
+        defaultValue: 16,
+        desc: 'DIO 数字通道数',
+      },
+      {
+        name: 'numPwmChannels',
+        label: 'PWM 通道数',
+        type: 'number',
+        defaultValue: 4,
+        desc: 'PWM 输出通道数',
+      },
+      {
+        name: 'adcResolution',
+        label: 'ADC 分辨率 (位)',
+        type: 'select',
+        options: ['8', '10', '12', '16'],
+        defaultValue: '12',
+        desc: 'ADC 采样分辨率',
+      },
+      {
+        name: 'pwmFrequencyHz',
+        label: 'PWM 默认频率 (Hz)',
+        type: 'number',
+        defaultValue: 1000,
+        desc: 'PWM 默认输出频率',
+      },
     ],
   },
 ];
 
 /* ---------- Code Generators ---------- */
-function generateMcalCode(moduleId: string, values: Record<string, string | boolean | number>): string {
+function generateMcalCode(
+  moduleId: string,
+  values: Record<string, string | boolean | number>
+): string {
   const timestamp = new Date().toISOString().split('T')[0];
   let code = `/**\n * @file ${moduleId.toUpperCase()}_Cfg.h\n * @brief Auto-generated MCAL ${moduleId.toUpperCase()} Configuration\n * @version 1.0.0\n * @date ${timestamp}\n * @generated-by YuleTech ConfigGenerator\n */\n\n`;
   code += `#ifndef ${moduleId.toUpperCase()}_CFG_H\n`;
@@ -287,7 +637,10 @@ function generateMcalCode(moduleId: string, values: Record<string, string | bool
   return code;
 }
 
-function generateBswCode(moduleId: string, values: Record<string, string | boolean | number>): string {
+function generateBswCode(
+  moduleId: string,
+  values: Record<string, string | boolean | number>
+): string {
   const timestamp = new Date().toISOString().split('T')[0];
   const modUpper = moduleId.toUpperCase();
   let code = `/**\n * @file ${modUpper}_Cfg.h\n * @brief Auto-generated BSW ${modUpper} Configuration\n * @version 1.0.0\n * @date ${timestamp}\n * @generated-by YuleTech ConfigGenerator\n */\n\n`;
@@ -393,37 +746,45 @@ export function ConfigGenerator() {
   const [activeTab, setActiveTab] = useState<ConfigTab>('mcal');
   const [selectedMcalModule, setSelectedMcalModule] = useState<string>(mcalModules[0].id);
   const [selectedBswModule, setSelectedBswModule] = useState<string>(bswModules[0].id);
-  const [mcalValues, setMcalValues] = useState<Record<string, Record<string, string | boolean | number>>>(() => {
+  const [mcalValues, setMcalValues] = useState<
+    Record<string, Record<string, string | boolean | number>>
+  >(() => {
     const mcalDefaults: Record<string, Record<string, string | boolean | number>> = {};
-    mcalModules.forEach((mod) => {
+    mcalModules.forEach(mod => {
       mcalDefaults[mod.id] = {};
-      mod.params.forEach((p) => { mcalDefaults[mod.id][p.name] = p.defaultValue; });
+      mod.params.forEach(p => {
+        mcalDefaults[mod.id][p.name] = p.defaultValue;
+      });
     });
     return mcalDefaults;
   });
-  const [bswValues, setBswValues] = useState<Record<string, Record<string, string | boolean | number>>>(() => {
+  const [bswValues, setBswValues] = useState<
+    Record<string, Record<string, string | boolean | number>>
+  >(() => {
     const bswDefaults: Record<string, Record<string, string | boolean | number>> = {};
-    bswModules.forEach((mod) => {
+    bswModules.forEach(mod => {
       bswDefaults[mod.id] = {};
-      mod.params.forEach((p) => { bswDefaults[mod.id][p.name] = p.defaultValue; });
+      mod.params.forEach(p => {
+        bswDefaults[mod.id][p.name] = p.defaultValue;
+      });
     });
     return bswDefaults;
   });
   const [generatedCode, setGeneratedCode] = useState<string>('');
   const [copied, setCopied] = useState(false);
 
-  const currentMcalModule = mcalModules.find((m) => m.id === selectedMcalModule) || mcalModules[0];
-  const currentBswModule = bswModules.find((m) => m.id === selectedBswModule) || bswModules[0];
+  const currentMcalModule = mcalModules.find(m => m.id === selectedMcalModule) || mcalModules[0];
+  const currentBswModule = bswModules.find(m => m.id === selectedBswModule) || bswModules[0];
 
   function handleMcalChange(paramName: string, value: string | boolean | number) {
-    setMcalValues((prev) => ({
+    setMcalValues(prev => ({
       ...prev,
       [selectedMcalModule]: { ...prev[selectedMcalModule], [paramName]: value },
     }));
   }
 
   function handleBswChange(paramName: string, value: string | boolean | number) {
-    setBswValues((prev) => ({
+    setBswValues(prev => ({
       ...prev,
       [selectedBswModule]: { ...prev[selectedBswModule], [paramName]: value },
     }));
@@ -471,12 +832,10 @@ export function ConfigGenerator() {
             <Settings className="w-4 h-4" />
             在线配置工具
           </span>
-          <h2 className="text-3xl font-bold mb-3">
-            可视化配置生成器
-          </h2>
+          <h2 className="text-3xl font-bold mb-3">可视化配置生成器</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            通过图形化界面配置 MCAL 驱动和 BSW 模块参数，一键生成符合 AutoSAR 标准的
-            C 语言配置头文件，直接集成到您的项目中。
+            通过图形化界面配置 MCAL 驱动和 BSW 模块参数，一键生成符合 AutoSAR 标准的 C
+            语言配置头文件，直接集成到您的项目中。
           </p>
         </div>
 
@@ -484,7 +843,10 @@ export function ConfigGenerator() {
         <div className="flex justify-center mb-8">
           <div className="inline-flex bg-muted rounded-xl p-1">
             <button
-              onClick={() => { setActiveTab('mcal'); setGeneratedCode(''); }}
+              onClick={() => {
+                setActiveTab('mcal');
+                setGeneratedCode('');
+              }}
               className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 activeTab === 'mcal'
                   ? 'bg-[hsl(var(--primary))] text-primary-foreground shadow-sm'
@@ -495,7 +857,10 @@ export function ConfigGenerator() {
               MCAL 配置
             </button>
             <button
-              onClick={() => { setActiveTab('bsw'); setGeneratedCode(''); }}
+              onClick={() => {
+                setActiveTab('bsw');
+                setGeneratedCode('');
+              }}
               className={`flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 activeTab === 'bsw'
                   ? 'bg-[hsl(var(--primary))] text-primary-foreground shadow-sm'
@@ -521,20 +886,18 @@ export function ConfigGenerator() {
             <div className="p-6 space-y-6">
               {/* Module Selector */}
               <div>
-                <label className="block text-sm font-medium mb-2">
-                  选择模块
-                </label>
+                <label className="block text-sm font-medium mb-2">选择模块</label>
                 <div className="relative">
                   <select
                     value={activeTab === 'mcal' ? selectedMcalModule : selectedBswModule}
-                    onChange={(e) =>
+                    onChange={e =>
                       activeTab === 'mcal'
                         ? setSelectedMcalModule(e.target.value)
                         : setSelectedBswModule(e.target.value)
                     }
                     className="w-full pl-10 pr-10 py-2.5 bg-muted border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/50 appearance-none"
                   >
-                    {(activeTab === 'mcal' ? mcalModules : bswModules).map((mod) => (
+                    {(activeTab === 'mcal' ? mcalModules : bswModules).map(mod => (
                       <option key={mod.id} value={mod.id}>
                         {mod.name}
                       </option>
@@ -547,84 +910,89 @@ export function ConfigGenerator() {
 
               {/* Parameters */}
               <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
-                {(activeTab === 'mcal' ? currentMcalModule.params : currentBswModule.params).map((param) => (
-                  <div key={param.name}>
-                    <label className="block text-sm font-medium mb-1.5">
-                      {param.label}
-                    </label>
-                    {param.type === 'select' && param.options ? (
-                      <select
-                        value={String(
-                          (activeTab === 'mcal'
+                {(activeTab === 'mcal' ? currentMcalModule.params : currentBswModule.params).map(
+                  param => (
+                    <div key={param.name}>
+                      <label className="block text-sm font-medium mb-1.5">{param.label}</label>
+                      {param.type === 'select' && param.options ? (
+                        <select
+                          value={String(
+                            (activeTab === 'mcal'
+                              ? mcalValues[selectedMcalModule]?.[param.name]
+                              : bswValues[selectedBswModule]?.[param.name]) ?? param.defaultValue
+                          )}
+                          onChange={e =>
+                            activeTab === 'mcal'
+                              ? handleMcalChange(param.name, e.target.value)
+                              : handleBswChange(param.name, e.target.value)
+                          }
+                          className="w-full px-3 py-2 bg-muted border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/50"
+                        >
+                          {param.options.map(opt => (
+                            <option key={opt} value={opt}>
+                              {opt}
+                            </option>
+                          ))}
+                        </select>
+                      ) : param.type === 'boolean' ? (
+                        <button
+                          onClick={() =>
+                            activeTab === 'mcal'
+                              ? handleMcalChange(
+                                  param.name,
+                                  !(
+                                    mcalValues[selectedMcalModule]?.[param.name] ??
+                                    param.defaultValue
+                                  )
+                                )
+                              : handleBswChange(
+                                  param.name,
+                                  !(
+                                    bswValues[selectedBswModule]?.[param.name] ?? param.defaultValue
+                                  )
+                                )
+                          }
+                          className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm border transition-all ${
+                            ((activeTab === 'mcal'
+                              ? mcalValues[selectedMcalModule]?.[param.name]
+                              : bswValues[selectedBswModule]?.[param.name]) ?? param.defaultValue)
+                              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600'
+                              : 'bg-muted border-border text-muted-foreground'
+                          }`}
+                        >
+                          <CheckCircle2 className="w-4 h-4" />
+                          {((activeTab === 'mcal'
                             ? mcalValues[selectedMcalModule]?.[param.name]
-                            : bswValues[selectedBswModule]?.[param.name]) ?? param.defaultValue
-                        )}
-                        onChange={(e) =>
-                          activeTab === 'mcal'
-                            ? handleMcalChange(param.name, e.target.value)
-                            : handleBswChange(param.name, e.target.value)
-                        }
-                        className="w-full px-3 py-2 bg-muted border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/50"
-                      >
-                        {param.options.map((opt) => (
-                          <option key={opt} value={opt}>
-                            {opt}
-                          </option>
-                        ))}
-                      </select>
-                    ) : param.type === 'boolean' ? (
-                      <button
-                        onClick={() =>
-                          activeTab === 'mcal'
-                            ? handleMcalChange(
-                                param.name,
-                                !(mcalValues[selectedMcalModule]?.[param.name] ?? param.defaultValue)
-                              )
-                            : handleBswChange(
-                                param.name,
-                                !(bswValues[selectedBswModule]?.[param.name] ?? param.defaultValue)
-                              )
-                        }
-                        className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm border transition-all ${
-                          (activeTab === 'mcal'
-                            ? mcalValues[selectedMcalModule]?.[param.name]
-                            : bswValues[selectedBswModule]?.[param.name]) ?? param.defaultValue
-                            ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600'
-                            : 'bg-muted border-border text-muted-foreground'
-                        }`}
-                      >
-                        <CheckCircle2 className="w-4 h-4" />
-                        {(activeTab === 'mcal'
-                          ? mcalValues[selectedMcalModule]?.[param.name]
-                          : bswValues[selectedBswModule]?.[param.name]) ?? param.defaultValue
-                          ? '已启用'
-                          : '已禁用'}
-                      </button>
-                    ) : (
-                      <input
-                        type={param.type === 'number' ? 'number' : 'text'}
-                        value={String(
-                          (activeTab === 'mcal'
-                            ? mcalValues[selectedMcalModule]?.[param.name]
-                            : bswValues[selectedBswModule]?.[param.name]) ?? param.defaultValue
-                        )}
-                        onChange={(e) =>
-                          activeTab === 'mcal'
-                            ? handleMcalChange(
-                                param.name,
-                                param.type === 'number' ? Number(e.target.value) : e.target.value
-                              )
-                            : handleBswChange(
-                                param.name,
-                                param.type === 'number' ? Number(e.target.value) : e.target.value
-                              )
-                        }
-                        className="w-full px-3 py-2 bg-muted border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/50 font-mono"
-                      />
-                    )}
-                    <p className="text-xs text-muted-foreground mt-1">{param.desc}</p>
-                  </div>
-                ))}
+                            : bswValues[selectedBswModule]?.[param.name]) ?? param.defaultValue)
+                            ? '已启用'
+                            : '已禁用'}
+                        </button>
+                      ) : (
+                        <input
+                          type={param.type === 'number' ? 'number' : 'text'}
+                          value={String(
+                            (activeTab === 'mcal'
+                              ? mcalValues[selectedMcalModule]?.[param.name]
+                              : bswValues[selectedBswModule]?.[param.name]) ?? param.defaultValue
+                          )}
+                          onChange={e =>
+                            activeTab === 'mcal'
+                              ? handleMcalChange(
+                                  param.name,
+                                  param.type === 'number' ? Number(e.target.value) : e.target.value
+                                )
+                              : handleBswChange(
+                                  param.name,
+                                  param.type === 'number' ? Number(e.target.value) : e.target.value
+                                )
+                          }
+                          className="w-full px-3 py-2 bg-muted border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/50 font-mono"
+                        />
+                      )}
+                      <p className="text-xs text-muted-foreground mt-1">{param.desc}</p>
+                    </div>
+                  )
+                )}
               </div>
 
               {/* Generate Button */}
@@ -651,7 +1019,11 @@ export function ConfigGenerator() {
                   disabled={!generatedCode}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-white/10 text-white hover:bg-white/20 transition-all disabled:opacity-30"
                 >
-                  {copied ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  {copied ? (
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                  ) : (
+                    <Copy className="w-3.5 h-3.5" />
+                  )}
                   {copied ? '已复制' : '复制'}
                 </button>
                 <button

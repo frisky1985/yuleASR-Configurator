@@ -47,7 +47,7 @@ function checkNumericParam(
   paramName: string,
   min: number,
   max: number,
-  module: string,
+  module: string
 ): ValidationResult[] {
   const results: ValidationResult[] = [];
   const params = (config.parameters as Record<string, unknown>) ?? {};
@@ -104,25 +104,21 @@ function checkNumericParam(
  *   - pllDivider      (number)     — PLL output divider
  *   - externalOsc     (number, Hz) — External oscillator frequency (optional)
  */
-async function validateMcuConfig(
-  config: Record<string, unknown>,
-): Promise<ValidationResult[]> {
+async function validateMcuConfig(config: Record<string, unknown>): Promise<ValidationResult[]> {
   const results: ValidationResult[] = [];
   const module = (config.module as string) || 'Mcu';
 
   // 1. Validate clock frequency
-  results.push(
-    ...checkNumericParam(config, 'clockFrequency', MIN_CLOCK_HZ, MAX_CLOCK_HZ, module),
-  );
+  results.push(...checkNumericParam(config, 'clockFrequency', MIN_CLOCK_HZ, MAX_CLOCK_HZ, module));
 
   // 2. Validate PLL multiplier
   results.push(
-    ...checkNumericParam(config, 'pllMultiplier', PLL_MULTIPLIER_MIN, PLL_MULTIPLIER_MAX, module),
+    ...checkNumericParam(config, 'pllMultiplier', PLL_MULTIPLIER_MIN, PLL_MULTIPLIER_MAX, module)
   );
 
   // 3. Validate PLL divider
   results.push(
-    ...checkNumericParam(config, 'pllDivider', PLL_DIVIDER_MIN, PLL_DIVIDER_MAX, module),
+    ...checkNumericParam(config, 'pllDivider', PLL_DIVIDER_MIN, PLL_DIVIDER_MAX, module)
   );
 
   // 4. If external oscillator is provided, check it
@@ -156,7 +152,8 @@ async function validateMcuConfig(
       results.push({
         module,
         severity: 'error',
-        message: `PLL output frequency ${pllOutput} Hz exceeds maximum ${MAX_CLOCK_HZ} Hz ` +
+        message:
+          `PLL output frequency ${pllOutput} Hz exceeds maximum ${MAX_CLOCK_HZ} Hz ` +
           `(clockFrequency=${clockFreq} × pllMultiplier=${pllMult} / pllDivider=${pllDiv})`,
         param: 'pllMultiplier',
       });
@@ -190,7 +187,8 @@ const mcuValidator: YulePlugin = {
   name: 'MCU Clock Validator',
   version: '1.0.0',
   type: 'validator',
-  description: 'Validates MCU module clock configuration including frequency, PLL, and oscillator settings',
+  description:
+    'Validates MCU module clock configuration including frequency, PLL, and oscillator settings',
   author: 'YuleTech Examples',
 
   async activate(context: PluginContext): Promise<void> {
@@ -203,9 +201,7 @@ const mcuValidator: YulePlugin = {
       // Only applies to the "Mcu" module
       targetModules: ['Mcu'],
 
-      async validate(
-        config: Record<string, unknown>,
-      ): Promise<ValidationResult[]> {
+      async validate(config: Record<string, unknown>): Promise<ValidationResult[]> {
         return validateMcuConfig(config);
       },
     };

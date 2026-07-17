@@ -131,11 +131,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "SbcPublicCfg",
-    "tcan2451",
-    "SbcWatchdogPeripheral"
-  ],
+  "required": ["SbcPublicCfg", "tcan2451", "SbcWatchdogPeripheral"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

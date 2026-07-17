@@ -1,9 +1,9 @@
-import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import { ArrowLeft, Upload, Loader2, CheckCircle2, AlertCircle } from 'lucide-react'
-import { bswTemplateApi } from '../services/bswTemplateApi'
-import { getApiToken } from '../services/apiClient'
-import type { TemplateCategory } from '../types/bswTemplate'
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { ArrowLeft, Upload, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { bswTemplateApi } from '../services/bswTemplateApi';
+import { getApiToken } from '../services/apiClient';
+import type { TemplateCategory } from '../types/bswTemplate';
 
 const categories: { value: TemplateCategory; label: string }[] = [
   { value: 'mcal', label: 'MCAL' },
@@ -11,37 +11,37 @@ const categories: { value: TemplateCategory; label: string }[] = [
   { value: 'service', label: 'Service' },
   { value: 'full', label: 'Full' },
   { value: 'bsw', label: 'BSW' },
-]
+];
 
 export function BSWTemplateUploadPage() {
-  const navigate = useNavigate()
-  const isLoggedIn = !!getApiToken()
+  const navigate = useNavigate();
+  const isLoggedIn = !!getApiToken();
 
-  const [name, setName] = useState('')
-  const [description, setDescription] = useState('')
-  const [category, setCategory] = useState<TemplateCategory>('mcal')
-  const [tagsStr, setTagsStr] = useState('')
-  const [isPublic, setIsPublic] = useState(true)
-  const [minTier, setMinTier] = useState<'free' | 'pro'>('free')
-  const [submitting, setSubmitting] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState(false)
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState<TemplateCategory>('mcal');
+  const [tagsStr, setTagsStr] = useState('');
+  const [isPublic, setIsPublic] = useState(true);
+  const [minTier, setMinTier] = useState<'free' | 'pro'>('free');
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!name.trim() || !description.trim()) {
-      setError('Name and description are required')
-      return
+      setError('Name and description are required');
+      return;
     }
 
-    setSubmitting(true)
-    setError(null)
+    setSubmitting(true);
+    setError(null);
 
     try {
       const tags = tagsStr
         .split(',')
         .map(t => t.trim())
-        .filter(Boolean)
+        .filter(Boolean);
 
       const result = await bswTemplateApi.create({
         name: name.trim(),
@@ -50,18 +50,18 @@ export function BSWTemplateUploadPage() {
         tags,
         isPublic,
         minTier,
-      })
+      });
 
-      setSuccess(true)
+      setSuccess(true);
       setTimeout(() => {
-        navigate(`/templates-market/${result.id}`)
-      }, 1500)
+        navigate(`/templates-market/${result.id}`);
+      }, 1500);
     } catch (err: any) {
-      setError(err.message || 'Failed to create template')
+      setError(err.message || 'Failed to create template');
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
-  }
+  };
 
   if (!isLoggedIn) {
     return (
@@ -80,7 +80,7 @@ export function BSWTemplateUploadPage() {
           Sign In
         </Link>
       </div>
-    )
+    );
   }
 
   if (success) {
@@ -90,11 +90,9 @@ export function BSWTemplateUploadPage() {
         <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
           Template Created!
         </h2>
-        <p className="text-slate-500 dark:text-slate-400">
-          Redirecting to template detail...
-        </p>
+        <p className="text-slate-500 dark:text-slate-400">Redirecting to template detail...</p>
       </div>
-    )
+    );
   }
 
   return (
@@ -244,11 +242,12 @@ export function BSWTemplateUploadPage() {
               {submitting ? 'Publishing...' : 'Publish Template'}
             </button>
             <p className="text-xs text-center text-slate-400 dark:text-slate-500 mt-2">
-              Pro license required to publish templates. Templates are published as draft and reviewed by admins.
+              Pro license required to publish templates. Templates are published as draft and
+              reviewed by admins.
             </p>
           </div>
         </form>
       </div>
     </div>
-  )
+  );
 }

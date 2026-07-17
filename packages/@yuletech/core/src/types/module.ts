@@ -109,12 +109,12 @@ export interface ModuleSchema {
 /**
  * 模块参数类型
  */
-export type ParameterType = 
-  | 'boolean' 
-  | 'integer' 
-  | 'float' 
-  | 'string' 
-  | 'enum' 
+export type ParameterType =
+  | 'boolean'
+  | 'integer'
+  | 'float'
+  | 'string'
+  | 'enum'
   | 'reference'
   | 'array'
   | 'object';

@@ -43,11 +43,11 @@ export function BookmarkButton({
 
   const handleClick = useCallback(async () => {
     if (isProcessing || isLoading) return;
-    
+
     setIsProcessing(true);
     try {
       const newState = await toggleBookmark(article);
-      
+
       // 显示提示
       setToastMessage(newState ? '已添加到收藏' : '已取消收藏');
       setShowToast(true);
@@ -101,9 +101,7 @@ export function BookmarkButton({
             </motion.span>
           </AnimatePresence>
           <span>{bookmarked ? '已收藏' : '收藏'}</span>
-          {showCount && count > 0 && (
-            <span className="ml-1 text-xs opacity-70">({count})</span>
-          )}
+          {showCount && count > 0 && <span className="ml-1 text-xs opacity-70">({count})</span>}
         </Button>
 
         {/* Toast 提示 */}

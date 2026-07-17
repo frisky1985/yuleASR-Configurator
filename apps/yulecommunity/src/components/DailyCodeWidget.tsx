@@ -2,7 +2,12 @@ import { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Code2, Lightbulb, BookOpen } from 'lucide-react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus, prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { getTodaySnippet, getNextSnippet, getPrevSnippet, type DailyCodeSnippet } from '../data/dailyCode';
+import {
+  getTodaySnippet,
+  getNextSnippet,
+  getPrevSnippet,
+  type DailyCodeSnippet,
+} from '../data/dailyCode';
 import { useTheme } from '../contexts/ThemeContext';
 
 export function DailyCodeWidget() {
@@ -54,7 +59,7 @@ export function DailyCodeWidget() {
     <section className="py-12 relative overflow-hidden">
       {/* 背景装饰 */}
       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5" />
-      
+
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* 标题区 */}
         <div className="flex items-center justify-between mb-6">
@@ -67,7 +72,7 @@ export function DailyCodeWidget() {
               <p className="text-sm text-muted-foreground">每天学习一个关键代码片段</p>
             </div>
           </div>
-          
+
           {/* 切换按钮 */}
           <div className="flex items-center gap-2">
             <button
@@ -88,7 +93,7 @@ export function DailyCodeWidget() {
         </div>
 
         {/* 代码卡片 */}
-        <div 
+        <div
           className={`
             bg-card border border-border rounded-2xl overflow-hidden
             transition-all duration-150
@@ -104,9 +109,7 @@ export function DailyCodeWidget() {
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground font-mono">
-                {snippet.module}
-              </span>
+              <span className="text-xs text-muted-foreground font-mono">{snippet.module}</span>
               <span className="w-2 h-2 rounded-full bg-primary/50" />
               <span className="w-2 h-2 rounded-full bg-primary/30" />
               <span className="w-2 h-2 rounded-full bg-primary/10" />
@@ -143,9 +146,7 @@ export function DailyCodeWidget() {
           <div className="px-4 py-3 bg-muted/20 border-t border-border">
             <div className="flex items-start gap-2">
               <Lightbulb className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {snippet.explanation}
-              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">{snippet.explanation}</p>
             </div>
           </div>
         </div>

@@ -1,28 +1,28 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest';
 
-import type { ModuleConfig } from '../../types'
-import { YuleasrValidator, yuleasrValidator } from '../yuleasr-validator'
+import type { ModuleConfig } from '../../types';
+import { YuleasrValidator, yuleasrValidator } from '../yuleasr-validator';
 
 function makeConfig(module: string, params: Record<string, unknown> = {}): ModuleConfig {
   return {
     module,
     version: '4.4.0',
     parameters: params,
-  }
+  };
 }
 
 describe('YuleasrValidator', () => {
-  let validator: YuleasrValidator
+  let validator: YuleasrValidator;
 
   beforeEach(() => {
-    validator = new YuleasrValidator()
+    validator = new YuleasrValidator();
     validator.registerModuleRules({
       module: 'Mcu',
       rules: [
         {
           type: 'custom',
           message: 'Mcu must be enabled for all configurations',
-          condition: (config) => config.parameters.clock_frequency !== undefined,
+          condition: config => config.parameters.clock_frequency !== undefined,
         },
       ],
       parameterRules: {
@@ -31,78 +31,75 @@ describe('YuleasrValidator', () => {
           { type: 'range', message: 'Clock frequency must be positive' },
         ],
       },
-    })
+    });
     validator.registerModuleRules({
       module: 'Can',
       rules: [],
       parameterRules: {
         baudrate: [{ type: 'required', message: 'Baudrate is required' }],
       },
-    })
-  })
+    });
+  });
 
   describe('validateModule', () => {
     it('should pass for valid Mcu config', () => {
-      const config = makeConfig('Mcu', { clock_frequency: 160000000 })
-      const errors = validator.validateModule(config)
-      expect(errors).toHaveLength(0)
-    })
+      const config = makeConfig('Mcu', { clock_frequency: 160000000 });
+      const errors = validator.validateModule(config);
+      expect(errors).toHaveLength(0);
+    });
 
     it('should fail Mcu when clock_frequency is missing', () => {
-      const config = makeConfig('Mcu', {})
-      const errors = validator.validateModule(config)
-      expect(errors.length).toBeGreaterThan(0)
-      expect(errors.some((e) => e.path.includes('clock_frequency'))).toBe(true)
-    })
+      const config = makeConfig('Mcu', {});
+      const errors = validator.validateModule(config);
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors.some(e => e.path.includes('clock_frequency'))).toBe(true);
+    });
 
     it('should fail Can when baudrate is missing', () => {
-      const config = makeConfig('Can', {})
-      const errors = validator.validateModule(config)
-      expect(errors.some((e) => e.path.includes('baudrate'))).toBe(true)
-    })
+      const config = makeConfig('Can', {});
+      const errors = validator.validateModule(config);
+      expect(errors.some(e => e.path.includes('baudrate'))).toBe(true);
+    });
 
     it('should use generic validation for unregistered modules', () => {
-      const config = makeConfig('Spi', { someParam: 1 })
-      const errors = validator.validateModule(config)
+      const config = makeConfig('Spi', { someParam: 1 });
+      const errors = validator.validateModule(config);
       // Generic only checks module/version/undefined params
-      expect(errors).toHaveLength(0)
-    })
+      expect(errors).toHaveLength(0);
+    });
 
     it('should fail generic validation when module name is empty', () => {
-      const config = makeConfig('', {})
-      const errors = validator.validateModule(config)
-      expect(errors.some((e) => e.message.includes('Module name is required'))).toBe(true)
-    })
-  })
+      const config = makeConfig('', {});
+      const errors = validator.validateModule(config);
+      expect(errors.some(e => e.message.includes('Module name is required'))).toBe(true);
+    });
+  });
 
   describe('validateModules - dependency checks', () => {
     it('should pass when all dependencies are satisfied', () => {
-      const configs = [
-        makeConfig('Can', { baudrate: 500000 }),
-        makeConfig('CanIf'),
-      ]
-      const errors = validator.validateModules(configs)
-      expect(errors.filter((e) => e.severity === 'error')).toHaveLength(0)
-    })
+      const configs = [makeConfig('Can', { baudrate: 500000 }), makeConfig('CanIf')];
+      const errors = validator.validateModules(configs);
+      expect(errors.filter(e => e.severity === 'error')).toHaveLength(0);
+    });
 
     it('should report error when CanIf lacks Can', () => {
-      const configs = [makeConfig('CanIf')]
-      const errors = validator.validateModules(configs)
-      expect(errors.some((e) => e.message.includes('CanIf requires Can'))).toBe(true)
-      expect(errors.some((e) => e.severity === 'error')).toBe(true)
-    })
+      const configs = [makeConfig('CanIf')];
+      const errors = validator.validateModules(configs);
+      expect(errors.some(e => e.message.includes('CanIf requires Can'))).toBe(true);
+      expect(errors.some(e => e.severity === 'error')).toBe(true);
+    });
 
     it('should report error when CanTp lacks PduR and CanIf', () => {
-      const configs = [makeConfig('CanTp')]
-      const errors = validator.validateModules(configs)
-      expect(errors.filter((e) => e.severity === 'error').length).toBe(2)
-    })
+      const configs = [makeConfig('CanTp')];
+      const errors = validator.validateModules(configs);
+      expect(errors.filter(e => e.severity === 'error').length).toBe(2);
+    });
 
     it('should report warning for optional missing dependencies', () => {
-      const configs = [makeConfig('Fls')]
-      const errors = validator.validateModules(configs)
-      expect(errors.some((e) => e.severity === 'warning' && e.message.includes('Mcu'))).toBe(true)
-    })
+      const configs = [makeConfig('Fls')];
+      const errors = validator.validateModules(configs);
+      expect(errors.some(e => e.severity === 'warning' && e.message.includes('Mcu'))).toBe(true);
+    });
 
     it('should validate complete BSW stack without errors', () => {
       const configs = [
@@ -127,41 +124,38 @@ describe('YuleasrValidator', () => {
         makeConfig('MemIf'),
         makeConfig('Fee'),
         makeConfig('Fls'),
-      ]
-      const errors = validator.validateModules(configs)
+      ];
+      const errors = validator.validateModules(configs);
       // Note: CanIf may emit a warning if Can has no CanController containers
       // Filter to check only error-severity
-      expect(errors.filter((e) => e.severity === 'error')).toHaveLength(0)
-    })
+      expect(errors.filter(e => e.severity === 'error')).toHaveLength(0);
+    });
 
     it('should warn when CanIf depends on Can but Can has no controller', () => {
       // Can exists but has no CanController container instances
-      const configs = [
-        makeConfig('Can', { baudrate: 500000 }),
-        makeConfig('CanIf'),
-      ]
-      const errors = validator.validateModules(configs)
+      const configs = [makeConfig('Can', { baudrate: 500000 }), makeConfig('CanIf')];
+      const errors = validator.validateModules(configs);
       // Should have a warning about missing CanController
-      expect(errors.some((e) => e.severity === 'warning' && e.message.includes('CAN controller'))).toBe(true)
-    })
+      expect(
+        errors.some(e => e.severity === 'warning' && e.message.includes('CAN controller'))
+      ).toBe(true);
+    });
 
     it('should pass CanIf param check when Can has controllers', () => {
       const configs: ModuleConfig[] = [
         {
           ...makeConfig('Can', { baudrate: 500000 }),
           containers: {
-            CanController: [
-              { id: 'ctrl0', parameters: { canBaudrate: 500000 } },
-            ],
+            CanController: [{ id: 'ctrl0', parameters: { canBaudrate: 500000 } }],
           },
         },
         makeConfig('CanIf'),
-      ]
-      const errors = validator.validateModules(configs)
+      ];
+      const errors = validator.validateModules(configs);
       // No warning about missing CanController
-      expect(errors.some((e) => e.message.includes('CAN controller'))).toBe(false)
-    })
-  })
+      expect(errors.some(e => e.message.includes('CAN controller'))).toBe(false);
+    });
+  });
 
   describe('getValidationStats', () => {
     it('should count errors and warnings correctly', () => {
@@ -169,27 +163,60 @@ describe('YuleasrValidator', () => {
         { path: 'a', message: 'err1', severity: 'error' as const },
         { path: 'b', message: 'err2', severity: 'error' as const },
         { path: 'c', message: 'warn1', severity: 'warning' as const },
-      ]
-      const stats = validator.getValidationStats(errors)
-      expect(stats.errorCount).toBe(2)
-      expect(stats.warningCount).toBe(1)
-      expect(stats.infoCount).toBe(0)
-    })
-  })
-})
+      ];
+      const stats = validator.getValidationStats(errors);
+      expect(stats.errorCount).toBe(2);
+      expect(stats.warningCount).toBe(1);
+      expect(stats.infoCount).toBe(0);
+    });
+  });
+});
 
 describe('Default yuleasrValidator instance', () => {
   it('should have all 37 modules registered', () => {
     const allModules = [
-      'Adc', 'Arti', 'Ble', 'BswM', 'Can', 'CanIf', 'CanNm', 'CanSM', 'CanTp', 'CanTrcv',
-      'Com', 'ComM', 'Crc', 'CryIf', 'Crypto', 'Csm', 'Dcm', 'Dem', 'Det', 'Dio',
-      'EcuM', 'Fee', 'Fls', 'Gpt', 'Icu', 'IoHwAb', 'Mcl', 'Mcu', 'MemIf', 'Nm',
-      'NvM', 'Os', 'PduR', 'Port', 'Rte', 'Sbc', 'Spi',
-    ]
+      'Adc',
+      'Arti',
+      'Ble',
+      'BswM',
+      'Can',
+      'CanIf',
+      'CanNm',
+      'CanSM',
+      'CanTp',
+      'CanTrcv',
+      'Com',
+      'ComM',
+      'Crc',
+      'CryIf',
+      'Crypto',
+      'Csm',
+      'Dcm',
+      'Dem',
+      'Det',
+      'Dio',
+      'EcuM',
+      'Fee',
+      'Fls',
+      'Gpt',
+      'Icu',
+      'IoHwAb',
+      'Mcl',
+      'Mcu',
+      'MemIf',
+      'Nm',
+      'NvM',
+      'Os',
+      'PduR',
+      'Port',
+      'Rte',
+      'Sbc',
+      'Spi',
+    ];
     for (const mod of allModules) {
-      const errors = yuleasrValidator.validateModule(makeConfig(mod))
+      const errors = yuleasrValidator.validateModule(makeConfig(mod));
       // Should not throw and should return an array
-      expect(Array.isArray(errors)).toBe(true)
+      expect(Array.isArray(errors)).toBe(true);
     }
-  })
-})
+  });
+});

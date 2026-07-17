@@ -239,11 +239,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "ComMGeneral",
-    "ComMGeneration",
-    "ComMConfigSet"
-  ],
+  "required": ["ComMGeneral", "ComMGeneration", "ComMConfigSet"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

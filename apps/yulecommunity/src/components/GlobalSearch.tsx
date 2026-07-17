@@ -51,7 +51,7 @@ export function GlobalSearch() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
-        setIsOpen((prev) => !prev);
+        setIsOpen(prev => !prev);
       }
       if (e.key === 'Escape' && isOpen) {
         setIsOpen(false);
@@ -69,7 +69,7 @@ export function GlobalSearch() {
     const questions = readStorage<Question[]>('yuletech-qa-questions', initialQuestions);
     const events = readStorage<CommunityEvent[]>('yuletech-events', initialEvents);
 
-    posts.forEach((post) => {
+    posts.forEach(post => {
       if (post.title.toLowerCase().includes(q) || post.content.toLowerCase().includes(q)) {
         results.push({
           id: post.id,
@@ -81,7 +81,7 @@ export function GlobalSearch() {
       }
     });
 
-    questions.forEach((question) => {
+    questions.forEach(question => {
       if (question.title.toLowerCase().includes(q) || question.content.toLowerCase().includes(q)) {
         results.push({
           id: question.id,
@@ -93,7 +93,7 @@ export function GlobalSearch() {
       }
     });
 
-    articlesData.forEach((article) => {
+    articlesData.forEach(article => {
       if (
         article.title.toLowerCase().includes(q) ||
         article.desc.toLowerCase().includes(q) ||
@@ -109,7 +109,7 @@ export function GlobalSearch() {
       }
     });
 
-    events.forEach((evt) => {
+    events.forEach(evt => {
       if (evt.title.toLowerCase().includes(q) || evt.description.toLowerCase().includes(q)) {
         results.push({
           id: evt.id,
@@ -123,7 +123,7 @@ export function GlobalSearch() {
 
     // 代码搜索
     const codeResults = searchCode(q);
-    codeResults.forEach((item) => {
+    codeResults.forEach(item => {
       results.push({
         id: `code-${item.id}`,
         title: item.signature || item.name,
@@ -142,12 +142,18 @@ export function GlobalSearch() {
 
   const typeLabel = (type: SearchResult['type']) => {
     switch (type) {
-      case 'forum': return '论坛';
-      case 'qa': return '问答';
-      case 'blog': return '博客';
-      case 'event': return '活动';
-      case 'code': return '代码';
-      default: return type;
+      case 'forum':
+        return '论坛';
+      case 'qa':
+        return '问答';
+      case 'blog':
+        return '博客';
+      case 'event':
+        return '活动';
+      case 'code':
+        return '代码';
+      default:
+        return type;
     }
   };
 
@@ -171,30 +177,30 @@ export function GlobalSearch() {
                 type="text"
                 placeholder="搜索帖子、问答、文章、活动、代码..."
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={e => setQuery(e.target.value)}
                 className="w-full pl-9 pr-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
               />
             </div>
           </div>
           <div className="max-h-80 overflow-y-auto">
             {results.length === 0 && q.length >= 1 && (
-              <div className="p-4 text-center text-sm text-muted-foreground">
-                没有找到相关结果
-              </div>
+              <div className="p-4 text-center text-sm text-muted-foreground">没有找到相关结果</div>
             )}
             {results.length === 0 && q.length === 0 && (
               <div className="p-4 text-center text-sm text-muted-foreground">
                 输入关键词开始搜索
               </div>
             )}
-            {results.map((result) => (
+            {results.map(result => (
               <button
                 key={result.id}
                 onClick={() => handleSelect(result.link)}
                 className="w-full text-left px-4 py-3 hover:bg-muted transition-colors border-b border-border last:border-b-0"
               >
                 <div className="flex items-center gap-2 mb-1">
-                  {result.type === 'forum' && <MessageSquare className="w-3.5 h-3.5 text-blue-500" />}
+                  {result.type === 'forum' && (
+                    <MessageSquare className="w-3.5 h-3.5 text-blue-500" />
+                  )}
                   {result.type === 'qa' && <HelpCircle className="w-3.5 h-3.5 text-amber-500" />}
                   {result.type === 'blog' && <FileText className="w-3.5 h-3.5 text-cyan-500" />}
                   {result.type === 'event' && <Calendar className="w-3.5 h-3.5 text-green-500" />}
@@ -204,7 +210,9 @@ export function GlobalSearch() {
                   </span>
                 </div>
                 <div className="text-sm font-medium line-clamp-1">{result.title}</div>
-                <div className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{result.excerpt}</div>
+                <div className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
+                  {result.excerpt}
+                </div>
               </button>
             ))}
           </div>

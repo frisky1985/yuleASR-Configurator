@@ -18,7 +18,7 @@ interface AdminState {
   isAuthenticated: boolean;
   isLoading: boolean;
   sidebarCollapsed: boolean;
-  
+
   // Actions
   setUser: (user: AdminUser | null) => void;
   setToken: (token: string | null) => void;
@@ -32,7 +32,10 @@ interface AdminState {
   checkAdminAccess: () => boolean;
 }
 
-type AdminStorePersist = Pick<AdminState, 'token' | 'refreshToken' | 'user' | 'isAuthenticated' | 'sidebarCollapsed'>;
+type AdminStorePersist = Pick<
+  AdminState,
+  'token' | 'refreshToken' | 'user' | 'isAuthenticated' | 'sidebarCollapsed'
+>;
 
 export const useAdminStore = create<AdminState>()(
   persist(
@@ -50,12 +53,13 @@ export const useAdminStore = create<AdminState>()(
       setAuthenticated: (isAuthenticated: boolean) => set({ isAuthenticated }),
       setLoading: (isLoading: boolean) => set({ isLoading }),
       toggleSidebar: () => set({ sidebarCollapsed: !get().sidebarCollapsed }),
-      logout: () => set({
-        user: null,
-        token: null,
-        refreshToken: null,
-        isAuthenticated: false,
-      }),
+      logout: () =>
+        set({
+          user: null,
+          token: null,
+          refreshToken: null,
+          isAuthenticated: false,
+        }),
       checkPermission: (permission: Permission) => {
         const { user } = get();
         if (!user) return false;

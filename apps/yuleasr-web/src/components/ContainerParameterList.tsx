@@ -1,14 +1,14 @@
-import { ChevronRight, ChevronDown } from 'lucide-react'
-import { useState, type ReactNode } from 'react'
+import { ChevronRight, ChevronDown } from 'lucide-react';
+import { useState, type ReactNode } from 'react';
 
-import { ParameterEditor } from '@/components/ParameterEditor'
-import { cn } from '@/lib/utils'
-import type { ConfigContainer } from '@/types/config'
+import { ParameterEditor } from '@/components/ParameterEditor';
+import { cn } from '@/lib/utils';
+import type { ConfigContainer } from '@/types/config';
 
 interface ContainerParameterListProps {
-  container: ConfigContainer
-  level?: number
-  onParamChange: (name: string, value: unknown) => void
+  container: ConfigContainer;
+  level?: number;
+  onParamChange: (name: string, value: unknown) => void;
 }
 
 export function ContainerParameterList({
@@ -16,31 +16,28 @@ export function ContainerParameterList({
   level = 0,
   onParamChange,
 }: ContainerParameterListProps) {
-  const hasSubContainers = (container.subContainers?.length ?? 0) > 0
-  const hasParams = container.parameters.length > 0
+  const hasSubContainers = (container.subContainers?.length ?? 0) > 0;
+  const hasParams = container.parameters.length > 0;
 
   if (!hasParams && !hasSubContainers) {
     return (
       <p className="text-xs text-app-text-tertiary italic px-2 py-1">
         No parameters in {container.displayName || container.name}
       </p>
-    )
+    );
   }
 
   return (
     <div className={cn(level > 0 && 'ml-4 border-l-2 border-app-border-primary pl-3')}>
       {/* Direct parameters of this container */}
-      {container.parameters.map((param) => (
+      {container.parameters.map(param => (
         <div key={param.id} className="py-1.5">
-          <ParameterEditor
-            parameter={param}
-            onChange={(value) => onParamChange(param.name, value)}
-          />
+          <ParameterEditor parameter={param} onChange={value => onParamChange(param.name, value)} />
         </div>
       ))}
 
       {/* Sub-containers - recursively render */}
-      {container.subContainers?.map((sub) => (
+      {container.subContainers?.map(sub => (
         <SubContainerGroup
           key={sub.id}
           container={sub}
@@ -49,21 +46,17 @@ export function ContainerParameterList({
         />
       ))}
     </div>
-  )
+  );
 }
 
 interface SubContainerGroupProps {
-  container: ConfigContainer
-  level: number
-  onParamChange: (name: string, value: unknown) => void
+  container: ConfigContainer;
+  level: number;
+  onParamChange: (name: string, value: unknown) => void;
 }
 
-function SubContainerGroup({
-  container,
-  level,
-  onParamChange,
-}: SubContainerGroupProps) {
-  const [isExpanded, setIsExpanded] = useState(true)
+function SubContainerGroup({ container, level, onParamChange }: SubContainerGroupProps) {
+  const [isExpanded, setIsExpanded] = useState(true);
 
   return (
     <div className="mt-2">
@@ -88,22 +81,20 @@ function SubContainerGroup({
       {isExpanded && (
         <div className="ml-4 border-l-2 border-app-border-primary pl-3 mt-1">
           {container.parameters.length > 0 ? (
-            container.parameters.map((param) => (
+            container.parameters.map(param => (
               <div key={param.id} className="py-1.5">
                 <ParameterEditor
                   parameter={param}
-                  onChange={(value) => onParamChange(param.name, value)}
+                  onChange={value => onParamChange(param.name, value)}
                 />
               </div>
             ))
           ) : (
-            <p className="text-xs text-app-text-tertiary italic px-2 py-1">
-              No parameters
-            </p>
+            <p className="text-xs text-app-text-tertiary italic px-2 py-1">No parameters</p>
           )}
 
           {/* Nested sub-containers */}
-          {container.subContainers?.map((sub) => (
+          {container.subContainers?.map(sub => (
             <SubContainerGroup
               key={sub.id}
               container={sub}
@@ -114,5 +105,5 @@ function SubContainerGroup({
         </div>
       )}
     </div>
-  )
+  );
 }

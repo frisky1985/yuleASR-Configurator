@@ -1,32 +1,32 @@
 import { useEffect, useState } from 'react';
-import { 
-  GitBranch, 
-  Star, 
-  GitFork, 
-  CircleDot, 
+import {
+  GitBranch,
+  Star,
+  GitFork,
+  CircleDot,
   Eye,
   TrendingUp,
   Activity,
-  Code2
+  Code2,
 } from 'lucide-react';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   LineChart,
   Line,
-  Cell
+  Cell,
 } from 'recharts';
-import { 
-  getCachedRepoStats, 
-  calculateTotals, 
+import {
+  getCachedRepoStats,
+  calculateTotals,
   generateMockContributions,
   getModuleProgress,
-  type RepoStats 
+  type RepoStats,
 } from '../services/githubApi';
 
 export function GitHubDashboard() {
@@ -149,14 +149,9 @@ export function GitHubDashboard() {
                 <BarChart data={moduleProgress} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
                   <XAxis type="number" domain={[0, 100]} />
-                  <YAxis 
-                    dataKey="name" 
-                    type="category" 
-                    width={60}
-                    tick={{ fontSize: 12 }}
-                  />
-                  <Tooltip 
-                    formatter={(value) => [`${value}%`, '完成度']}
+                  <YAxis dataKey="name" type="category" width={60} tick={{ fontSize: 12 }} />
+                  <Tooltip
+                    formatter={value => [`${value}%`, '完成度']}
                     contentStyle={{
                       backgroundColor: 'hsl(var(--card))',
                       border: '1px solid hsl(var(--border))',
@@ -183,18 +178,18 @@ export function GitHubDashboard() {
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={contributions}>
                   <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                  <XAxis 
-                    dataKey="date" 
-                    tickFormatter={(date) => {
+                  <XAxis
+                    dataKey="date"
+                    tickFormatter={date => {
                       const d = new Date(date);
                       return `${d.getMonth() + 1}/${d.getDate()}`;
                     }}
                     tick={{ fontSize: 12 }}
                   />
                   <YAxis tick={{ fontSize: 12 }} />
-                  <Tooltip 
-                    formatter={(value) => [value, '贡献次数']}
-                    labelFormatter={(date) => {
+                  <Tooltip
+                    formatter={value => [value, '贡献次数']}
+                    labelFormatter={date => {
                       const d = new Date(date);
                       return d.toLocaleDateString('zh-CN');
                     }}
@@ -204,10 +199,10 @@ export function GitHubDashboard() {
                       borderRadius: '8px',
                     }}
                   />
-                  <Line 
-                    type="monotone" 
-                    dataKey="count" 
-                    stroke="hsl(var(--accent))" 
+                  <Line
+                    type="monotone"
+                    dataKey="count"
+                    stroke="hsl(var(--accent))"
                     strokeWidth={2}
                     dot={{ fill: 'hsl(var(--accent))', strokeWidth: 0 }}
                   />
@@ -225,7 +220,7 @@ export function GitHubDashboard() {
               <h3 className="text-lg font-semibold">热门仓库</h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {stats.slice(0, 6).map((repo) => (
+              {stats.slice(0, 6).map(repo => (
                 <a
                   key={repo.name}
                   href={`https://github.com/frisky1985/${repo.name}`}
@@ -241,9 +236,7 @@ export function GitHubDashboard() {
                       <div className="font-medium text-sm group-hover:text-primary transition-colors">
                         {repo.name}
                       </div>
-                      <div className="text-xs text-muted-foreground">
-                        {repo.language}
-                      </div>
+                      <div className="text-xs text-muted-foreground">{repo.language}</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 text-sm text-muted-foreground">
@@ -270,8 +263,7 @@ export function GitHubDashboard() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            <GitBranch className="w-4 h-4" />
-            在 GitHub 上查看全部项目 →
+            <GitBranch className="w-4 h-4" />在 GitHub 上查看全部项目 →
           </a>
         </div>
       </div>

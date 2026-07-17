@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+
 import type { GeneratorOptions, GeneratedFile, GenerationResult } from '../index';
 
 describe('Generator Interfaces', () => {

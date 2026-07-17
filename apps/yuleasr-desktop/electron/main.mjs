@@ -1,6 +1,9 @@
-import { app, BrowserWindow, Menu, dialog, ipcMain } from 'electron';
+/* global process */
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+
+import { app, BrowserWindow, Menu, dialog, ipcMain } from 'electron';
+
 import { isGccAvailable, verifyFiles, saveFilesToDir, getGccVersion } from './desktop-utils.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

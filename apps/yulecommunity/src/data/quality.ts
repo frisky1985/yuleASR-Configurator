@@ -26,23 +26,100 @@ export interface ModuleQuality {
 
 export const qualityBadges: QualityBadge[] = [
   // Overall badges
-  { id: 'excellent', name: '极优', icon: '🏆', description: '综合评分达到 90+', minScore: 90, category: 'overall' },
-  { id: 'great', name: '优秀', icon: '⭐', description: '综合评分达到 80+', minScore: 80, category: 'overall' },
-  { id: 'good', name: '良好', icon: '👍', description: '综合评分达到 70+', minScore: 70, category: 'overall' },
-  { id: 'pass', name: '合格', icon: '✅', description: '综合评分达到 60+', minScore: 60, category: 'overall' },
+  {
+    id: 'excellent',
+    name: '极优',
+    icon: '🏆',
+    description: '综合评分达到 90+',
+    minScore: 90,
+    category: 'overall',
+  },
+  {
+    id: 'great',
+    name: '优秀',
+    icon: '⭐',
+    description: '综合评分达到 80+',
+    minScore: 80,
+    category: 'overall',
+  },
+  {
+    id: 'good',
+    name: '良好',
+    icon: '👍',
+    description: '综合评分达到 70+',
+    minScore: 70,
+    category: 'overall',
+  },
+  {
+    id: 'pass',
+    name: '合格',
+    icon: '✅',
+    description: '综合评分达到 60+',
+    minScore: 60,
+    category: 'overall',
+  },
 
   // Code quality badges
-  { id: 'clean-code', name: '优质代码', icon: '✨', description: '代码质量分达到 85+', minScore: 85, category: 'code' },
-  { id: 'secure', name: '安全可靠', icon: '🔒', description: '安全评分达到 90+', minScore: 90, category: 'code' },
-  { id: 'performant', name: '性能优异', icon: '🚀', description: '性能评分达到 85+', minScore: 85, category: 'code' },
+  {
+    id: 'clean-code',
+    name: '优质代码',
+    icon: '✨',
+    description: '代码质量分达到 85+',
+    minScore: 85,
+    category: 'code',
+  },
+  {
+    id: 'secure',
+    name: '安全可靠',
+    icon: '🔒',
+    description: '安全评分达到 90+',
+    minScore: 90,
+    category: 'code',
+  },
+  {
+    id: 'performant',
+    name: '性能优异',
+    icon: '🚀',
+    description: '性能评分达到 85+',
+    minScore: 85,
+    category: 'code',
+  },
 
   // Test badges
-  { id: 'well-tested', name: '测试充分', icon: '🧪', description: '测试覆盖率达到 80+', minScore: 80, category: 'test' },
-  { id: 'stable', name: '稳定可靠', icon: '🤝', description: '测试通过率达到 95+', minScore: 95, category: 'test' },
+  {
+    id: 'well-tested',
+    name: '测试充分',
+    icon: '🧪',
+    description: '测试覆盖率达到 80+',
+    minScore: 80,
+    category: 'test',
+  },
+  {
+    id: 'stable',
+    name: '稳定可靠',
+    icon: '🤝',
+    description: '测试通过率达到 95+',
+    minScore: 95,
+    category: 'test',
+  },
 
   // Documentation badges
-  { id: 'documented', name: '文档完善', icon: '📚', description: '文档评分达到 80+', minScore: 80, category: 'docs' },
-  { id: 'maintainable', name: '易于维护', icon: '🔧', description: '可维护性评分达到 80+', minScore: 80, category: 'docs' },
+  {
+    id: 'documented',
+    name: '文档完善',
+    icon: '📚',
+    description: '文档评分达到 80+',
+    minScore: 80,
+    category: 'docs',
+  },
+  {
+    id: 'maintainable',
+    name: '易于维护',
+    icon: '🔧',
+    description: '可维护性评分达到 80+',
+    minScore: 80,
+    category: 'docs',
+  },
 ];
 
 export const moduleQualityData: ModuleQuality[] = [

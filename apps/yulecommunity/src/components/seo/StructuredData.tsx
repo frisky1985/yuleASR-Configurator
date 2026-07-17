@@ -178,17 +178,17 @@ export function StructuredData({ type, data }: StructuredDataProps) {
     if (!schema) return;
 
     const scriptId = `structured-data-${type}`;
-    
+
     // 检查是否已存在
     let script = document.getElementById(scriptId) as HTMLScriptElement;
-    
+
     if (!script) {
       script = document.createElement('script');
       script.id = scriptId;
       script.type = 'application/ld+json';
       document.head.appendChild(script);
     }
-    
+
     script.textContent = JSON.stringify(schema);
 
     return () => {
@@ -206,10 +206,10 @@ export function StructuredData({ type, data }: StructuredDataProps) {
 /**
  * 多个结构化数据组合
  */
-export function MultipleStructuredData({ 
-  items 
-}: { 
-  items: Array<{ type: SchemaType; data: any }> 
+export function MultipleStructuredData({
+  items,
+}: {
+  items: Array<{ type: SchemaType; data: any }>;
 }) {
   return (
     <>

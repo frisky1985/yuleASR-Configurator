@@ -14,7 +14,15 @@ import {
   BarChart3,
   X,
 } from 'lucide-react';
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Legend } from 'recharts';
+import {
+  Radar,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  ResponsiveContainer,
+  Legend,
+} from 'recharts';
 import { allModulesList } from '../data/modules';
 
 const layerColors: Record<string, string> = {
@@ -114,10 +122,7 @@ export function ModuleComparePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link
-                to="/opensource"
-                className="p-2 hover:bg-muted rounded-lg transition-colors"
-              >
+              <Link to="/opensource" className="p-2 hover:bg-muted rounded-lg transition-colors">
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <div>
@@ -131,7 +136,9 @@ export function ModuleComparePage() {
               <button
                 onClick={() => setShowRadar(!showRadar)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
-                  showRadar ? 'bg-primary/10 border-primary/20 text-primary' : 'border-border hover:bg-muted'
+                  showRadar
+                    ? 'bg-primary/10 border-primary/20 text-primary'
+                    : 'border-border hover:bg-muted'
                 }`}
               >
                 <BarChart3 className="w-4 h-4" />
@@ -188,13 +195,15 @@ export function ModuleComparePage() {
               <thead>
                 <tr className="border-b border-border">
                   <th className="text-left p-4 font-medium text-muted-foreground">对比项</th>
-                  {modules.map((module) => (
+                  {modules.map(module => (
                     <th key={module.id} className="p-4 min-w-[180px]">
                       <div className="flex items-center justify-between">
                         <div className="text-left">
                           <div className="font-semibold text-lg">{module.name}</div>
                           <div className="flex items-center gap-2 mt-1">
-                            <span className={`px-2 py-0.5 text-xs rounded-full ${layerColors[module.layer] || 'bg-muted'}`}>
+                            <span
+                              className={`px-2 py-0.5 text-xs rounded-full ${layerColors[module.layer] || 'bg-muted'}`}
+                            >
                               {module.layer}
                             </span>
                           </div>
@@ -213,14 +222,24 @@ export function ModuleComparePage() {
               <tbody>
                 <tr className="border-b border-border/50">
                   <td className="p-4 text-muted-foreground">状态</td>
-                  {modules.map((m) => (
+                  {modules.map(m => (
                     <td key={m.id} className="p-4">
-                      <span className={`inline-flex items-center gap-1.5 text-sm ${
-                        m.status === '已完成' ? 'text-green-500' :
-                        m.status === '开发中' ? 'text-amber-500' : 'text-muted-foreground'
-                      }`}>
-                        {m.status === '已完成' ? <CheckCircle2 className="w-4 h-4" /> :
-                         m.status === '开发中' ? <Clock className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
+                      <span
+                        className={`inline-flex items-center gap-1.5 text-sm ${
+                          m.status === '已完成'
+                            ? 'text-green-500'
+                            : m.status === '开发中'
+                              ? 'text-amber-500'
+                              : 'text-muted-foreground'
+                        }`}
+                      >
+                        {m.status === '已完成' ? (
+                          <CheckCircle2 className="w-4 h-4" />
+                        ) : m.status === '开发中' ? (
+                          <Clock className="w-4 h-4" />
+                        ) : (
+                          <AlertCircle className="w-4 h-4" />
+                        )}
                         {m.status}
                       </span>
                     </td>
@@ -228,13 +247,15 @@ export function ModuleComparePage() {
                 </tr>
                 <tr className="border-b border-border/50">
                   <td className="p-4 text-muted-foreground">版本</td>
-                  {modules.map((m) => (
-                    <td key={m.id} className="p-4 font-medium">{m.version || '-'}</td>
+                  {modules.map(m => (
+                    <td key={m.id} className="p-4 font-medium">
+                      {m.version || '-'}
+                    </td>
                   ))}
                 </tr>
                 <tr className="border-b border-border/50">
                   <td className="p-4 text-muted-foreground">GitHub Stars</td>
-                  {modules.map((m) => (
+                  {modules.map(m => (
                     <td key={m.id} className="p-4">
                       <span className="inline-flex items-center gap-1.5">
                         <Star className="w-4 h-4 text-amber-500" />
@@ -245,7 +266,7 @@ export function ModuleComparePage() {
                 </tr>
                 <tr className="border-b border-border/50">
                   <td className="p-4 text-muted-foreground">Forks</td>
-                  {modules.map((m) => (
+                  {modules.map(m => (
                     <td key={m.id} className="p-4">
                       <span className="inline-flex items-center gap-1.5">
                         <GitFork className="w-4 h-4" />
@@ -256,7 +277,7 @@ export function ModuleComparePage() {
                 </tr>
                 <tr className="border-b border-border/50">
                   <td className="p-4 text-muted-foreground">API数量</td>
-                  {modules.map((m) => (
+                  {modules.map(m => (
                     <td key={m.id} className="p-4">
                       <span className="inline-flex items-center gap-1.5">
                         <FileCode className="w-4 h-4" />
@@ -267,7 +288,7 @@ export function ModuleComparePage() {
                 </tr>
                 <tr className="border-b border-border/50">
                   <td className="p-4 text-muted-foreground">测试覆盖率</td>
-                  {modules.map((m) => (
+                  {modules.map(m => (
                     <td key={m.id} className="p-4">
                       <div className="flex items-center gap-2">
                         <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden max-w-[100px]">
@@ -283,22 +304,29 @@ export function ModuleComparePage() {
                 </tr>
                 <tr className="border-b border-border/50">
                   <td className="p-4 text-muted-foreground">复杂度评分</td>
-                  {modules.map((m) => (
+                  {modules.map(m => (
                     <td key={m.id} className="p-4">
-                      <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                        m.metrics.complexity < 30 ? 'bg-green-500/10 text-green-500' :
-                        m.metrics.complexity < 50 ? 'bg-amber-500/10 text-amber-500' :
-                        'bg-red-500/10 text-red-500'
-                      }`}>
-                        {m.metrics.complexity < 30 ? '简单' :
-                         m.metrics.complexity < 50 ? '中等' : '复杂'}
+                      <span
+                        className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                          m.metrics.complexity < 30
+                            ? 'bg-green-500/10 text-green-500'
+                            : m.metrics.complexity < 50
+                              ? 'bg-amber-500/10 text-amber-500'
+                              : 'bg-red-500/10 text-red-500'
+                        }`}
+                      >
+                        {m.metrics.complexity < 30
+                          ? '简单'
+                          : m.metrics.complexity < 50
+                            ? '中等'
+                            : '复杂'}
                       </span>
                     </td>
                   ))}
                 </tr>
                 <tr className="border-b border-border/50">
                   <td className="p-4 text-muted-foreground">描述</td>
-                  {modules.map((m) => (
+                  {modules.map(m => (
                     <td key={m.id} className="p-4 text-sm text-muted-foreground max-w-[200px]">
                       {m.shortDesc}
                     </td>
@@ -306,7 +334,7 @@ export function ModuleComparePage() {
                 </tr>
                 <tr>
                   <td className="p-4"></td>
-                  {modules.map((m) => (
+                  {modules.map(m => (
                     <td key={m.id} className="p-4">
                       <Link
                         to={`/modules/${m.id}`}

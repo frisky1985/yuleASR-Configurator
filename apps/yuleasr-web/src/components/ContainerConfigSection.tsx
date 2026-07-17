@@ -1,13 +1,13 @@
-import { ParameterEditor } from '@/components/ParameterEditor'
-import { CollapsibleSection } from '@/components/CollapsibleSection'
-import { cn } from '@/lib/utils'
-import type { ConfigContainer } from '@/types/config'
+import { CollapsibleSection } from '@/components/CollapsibleSection';
+import { ParameterEditor } from '@/components/ParameterEditor';
+import { cn } from '@/lib/utils';
+import type { ConfigContainer } from '@/types/config';
 
 interface ContainerConfigSectionProps {
-  container: ConfigContainer
-  level: number
-  defaultExpanded?: boolean
-  onParamChange: (name: string, value: unknown) => void
+  container: ConfigContainer;
+  level: number;
+  defaultExpanded?: boolean;
+  onParamChange: (name: string, value: unknown) => void;
 }
 
 export function ContainerConfigSection({
@@ -16,21 +16,22 @@ export function ContainerConfigSection({
   defaultExpanded = true,
   onParamChange,
 }: ContainerConfigSectionProps) {
-  const indentClass = level > 0 ? `ml-${Math.min(level * 4, 8)} border-l-2 border-app-border-primary pl-3` : ''
+  const indentClass =
+    level > 0 ? `ml-${Math.min(level * 4, 8)} border-l-2 border-app-border-primary pl-3` : '';
 
   return (
     <div className={cn('space-y-3', indentClass)}>
       {/* Direct parameters */}
-      {container.parameters.map((param) => (
+      {container.parameters.map(param => (
         <ParameterEditor
           key={param.id}
           parameter={param}
-          onChange={(value) => onParamChange(param.name, value)}
+          onChange={value => onParamChange(param.name, value)}
         />
       ))}
 
       {/* Sub-containers */}
-      {container.subContainers?.map((sub) => (
+      {container.subContainers?.map(sub => (
         <CollapsibleSection
           key={sub.id}
           title={sub.displayName || sub.name}
@@ -46,5 +47,5 @@ export function ContainerConfigSection({
         </CollapsibleSection>
       ))}
     </div>
-  )
+  );
 }

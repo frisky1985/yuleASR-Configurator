@@ -621,11 +621,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "AdcConfigSet",
-    "AdcHwUnit_0",
-    "Adc_A8_BAT"
-  ],
+  "required": ["AdcConfigSet", "AdcHwUnit_0", "Adc_A8_BAT"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

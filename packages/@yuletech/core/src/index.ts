@@ -20,10 +20,10 @@ export * from './schema-extractor';
 export * from './swc';
 
 // 导出 yuleASR 验证器 (使用别名避免冲突)
-export { 
-  YuleasrValidator, 
+export {
+  YuleasrValidator,
   yuleasrValidator,
-  type ModuleValidationRules 
+  type ModuleValidationRules,
 } from './validators/yuleasr-validator';
 
 // 导出 ARXML 解析器
@@ -31,7 +31,7 @@ export {
   parseArxml,
   validateArxml,
   convertArxmlToYuleasr,
-  type ArxmlParseResult
+  type ArxmlParseResult,
 } from './adapters/arxml-parser';
 
 // 导出插件系统

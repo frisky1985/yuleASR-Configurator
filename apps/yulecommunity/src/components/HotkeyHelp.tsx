@@ -7,59 +7,59 @@ export function useHotkeys() {
   const navigate = useNavigate();
   const [showHelp, setShowHelp] = useState(false);
 
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (
-      e.target instanceof HTMLInputElement ||
-      e.target instanceof HTMLTextAreaElement
-    ) {
-      if (e.key !== 'Escape') return;
-    }
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        if (e.key !== 'Escape') return;
+      }
 
-    if (e.key.toLowerCase() === 'g') {
-      const handleGKey = (ev: KeyboardEvent) => {
-        if (ev.target instanceof HTMLInputElement) return;
-        
-        const key = ev.key.toLowerCase();
-        const goKeys: Record<string, string> = {
-          'o': '/opensource',
-          't': '/toolchain',
-          'l': '/learning',
-          'b': '/blog',
-          'd': '/docs',
-          'h': '/hardware',
+      if (e.key.toLowerCase() === 'g') {
+        const handleGKey = (ev: KeyboardEvent) => {
+          if (ev.target instanceof HTMLInputElement) return;
+
+          const key = ev.key.toLowerCase();
+          const goKeys: Record<string, string> = {
+            o: '/opensource',
+            t: '/toolchain',
+            l: '/learning',
+            b: '/blog',
+            d: '/docs',
+            h: '/hardware',
+          };
+
+          if (goKeys[key]) {
+            ev.preventDefault();
+            navigate(goKeys[key]);
+            document.removeEventListener('keydown', handleGKey);
+          } else if (ev.key !== 'Shift') {
+            document.removeEventListener('keydown', handleGKey);
+          }
         };
 
-        if (goKeys[key]) {
-          ev.preventDefault();
-          navigate(goKeys[key]);
-          document.removeEventListener('keydown', handleGKey);
-        } else if (ev.key !== 'Shift') {
-          document.removeEventListener('keydown', handleGKey);
-        }
-      };
+        document.addEventListener('keydown', handleGKey, { once: true });
+        return;
+      }
 
-      document.addEventListener('keydown', handleGKey, { once: true });
-      return;
-    }
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        document.dispatchEvent(new CustomEvent('open-search'));
+        return;
+      }
 
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-      e.preventDefault();
-      document.dispatchEvent(new CustomEvent('open-search'));
-      return;
-    }
+      if (e.key === '?') {
+        e.preventDefault();
+        setShowHelp(true);
+        return;
+      }
 
-    if (e.key === '?') {
-      e.preventDefault();
-      setShowHelp(true);
-      return;
-    }
-
-    if (e.key === 'Escape') {
-      document.dispatchEvent(new CustomEvent('close-modal'));
-      setShowHelp(false);
-      return;
-    }
-  }, [navigate]);
+      if (e.key === 'Escape') {
+        document.dispatchEvent(new CustomEvent('close-modal'));
+        setShowHelp(false);
+        return;
+      }
+    },
+    [navigate]
+  );
 
   useEffect(() => {
     if (!isListening) {
@@ -103,14 +103,11 @@ export function HotkeyHelp({ isOpen, onClose }: HotkeyHelpProps) {
     >
       <div
         className="bg-card rounded-xl border border-border shadow-2xl max-w-md w-full mx-4 p-6"
-        onClick={(e) => e.stopPropagation()}
+        onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold">Keyboard Shortcuts</h2>
-          <button
-            onClick={onClose}
-            className="p-2 rounded-lg hover:bg-muted transition-colors"
-          >
+          <button onClick={onClose} className="p-2 rounded-lg hover:bg-muted transition-colors">
             x
           </button>
         </div>
@@ -123,7 +120,7 @@ export function HotkeyHelp({ isOpen, onClose }: HotkeyHelpProps) {
             >
               <span className="text-muted-foreground">{desc}</span>
               <div className="flex items-center gap-1">
-                {keys.map((key) => (
+                {keys.map(key => (
                   <kbd
                     key={key}
                     className="px-2 py-1 text-xs font-mono bg-muted rounded border border-border"

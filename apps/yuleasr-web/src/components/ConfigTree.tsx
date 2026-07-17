@@ -1,7 +1,7 @@
 /**
  * Hierarchical Configuration Tree Component
  * Similar to Vector Configurator's module tree
- * 
+ *
  * Features:
  * - Collapsible layers (MCAL, ECUAL, Service, RTE, OS, ASW)
  * - Collapsible modules within each layer
@@ -10,63 +10,93 @@
  * - Dependency highlighting
  */
 
-import { 
-  Cpu, Settings, Layers, Box, Code, Search, ChevronDown, ChevronRight, 
-  Power, AlertCircle, AlertTriangle, Info, Folder, FolderOpen, 
-  FileText, Hash, ToggleLeft, List, Filter, ChevronRightSquare,
-  ChevronDownSquare, CircleDot, Layers2, Trash2, AlertTriangle as AlertTri,
-  CheckCircle, XCircle, Lock, Crown
-} from 'lucide-react'
-import { useState, useMemo, useCallback, useEffect, forwardRef, useImperativeHandle } from 'react'
+import {
+  Cpu,
+  Settings,
+  Layers,
+  Box,
+  Code,
+  Search,
+  ChevronDown,
+  ChevronRight,
+  Power,
+  AlertCircle,
+  AlertTriangle,
+  Info,
+  Folder,
+  FolderOpen,
+  FileText,
+  Hash,
+  ToggleLeft,
+  List,
+  Filter,
+  Layers2,
+  AlertTriangle as AlertTri,
+  CheckCircle,
+  XCircle,
+  Lock,
+} from 'lucide-react';
+import { useState, useMemo, useCallback, useEffect, forwardRef, useImperativeHandle } from 'react';
 
-import { cn } from '@/lib/utils'
-import type { ConfigFile, ConfigModule, ConfigContainer, ConfigParameter, ValidationIssue } from '@/types/config'
-import { useLicenseStore } from '@/stores/licenseStore'
-import { UpgradeDialog } from '@/components/UpgradeDialog'
+import { UpgradeDialog } from '@/components/UpgradeDialog';
+import { cn } from '@/lib/utils';
+import { useLicenseStore } from '@/stores/licenseStore';
+import type {
+  ConfigFile,
+  ConfigModule,
+  ConfigContainer,
+  ConfigParameter,
+  ValidationIssue,
+} from '@/types/config';
 
 export interface ConfigTreeProps {
-  config: ConfigFile
-  selectedPath: string | null
-  onSelectPath: (path: string) => void
-  validationIssues?: ValidationIssue[]
-  highlightDependencies?: boolean
-  showDisabled?: boolean
-  onToggleModule?: (moduleId: string, enabled: boolean) => void
-  filterText?: string
+  config: ConfigFile;
+  selectedPath: string | null;
+  onSelectPath: (path: string) => void;
+  validationIssues?: ValidationIssue[];
+  highlightDependencies?: boolean;
+  showDisabled?: boolean;
+  onToggleModule?: (moduleId: string, enabled: boolean) => void;
+  filterText?: string;
   /** Called when an instance parameter value changes */
-  onInstanceParamChange?: (containerPath: string, instanceName: string, paramId: string, value: unknown) => void
+  onInstanceParamChange?: (
+    containerPath: string,
+    instanceName: string,
+    paramId: string,
+    value: unknown
+  ) => void;
 }
 
 export interface ConfigTreeHandle {
   /** Add a new dynamic instance to the given container path, returns the instance name */
-  addInstance: (containerPath: string) => string | undefined
+  addInstance: (containerPath: string) => string | undefined;
 }
 
 interface TreeNodeData {
-  id: string
-  type: 'layer' | 'module' | 'container' | 'parameter'
-  name: string
-  displayName: string
-  path: string
-  icon: React.ReactNode
-  hasChildren: boolean
-  enabled?: boolean
-  configStatus?: 'unconfigured' | 'configuring' | 'configured' | 'partial'
-  errorCount: number
-  warningCount: number
-  children?: TreeNodeData[]
-  data: ConfigModule | ConfigContainer | ConfigParameter
+  id: string;
+  type: 'layer' | 'module' | 'container' | 'parameter';
+  name: string;
+  displayName: string;
+  path: string;
+  icon: React.ReactNode;
+  hasChildren: boolean;
+  enabled?: boolean;
+  configStatus?: 'unconfigured' | 'configuring' | 'configured' | 'partial';
+  errorCount: number;
+  warningCount: number;
+  children?: TreeNodeData[];
+  data: ConfigModule | ConfigContainer | ConfigParameter;
   // Dynamic instance support
-  isDynamic?: boolean
-  isDynamicParent?: boolean
-  parentContainerPath?: string
-  instanceName?: string
+  isDynamic?: boolean;
+  isDynamicParent?: boolean;
+  parentContainerPath?: string;
+  instanceName?: string;
   /** Number of instances for this dynamic parent (for × visibility check) */
-  instanceCount?: number
+  instanceCount?: number;
   /** Minimum instances (× hidden when count <= min) */
-  minInstanceCount?: number
+  minInstanceCount?: number;
   /** Pro plan: module locked behind upgrade */
-  locked?: boolean
+  locked?: boolean;
 }
 
 const layerIcons: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -76,497 +106,595 @@ const layerIcons: Record<string, React.ComponentType<{ className?: string }>> = 
   RTE: Box,
   OS: Code,
   ASW: Box,
-}
+};
 
 const layerColors: Record<string, string> = {
   MCAL: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800',
-  ECUAL: 'bg-green-50 text-green-700 border-green-200 dark:bg-green-950/40 dark:text-green-300 dark:border-green-800',
-  Service: 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/40 dark:text-purple-300 dark:border-purple-800',
+  ECUAL:
+    'bg-green-50 text-green-700 border-green-200 dark:bg-green-950/40 dark:text-green-300 dark:border-green-800',
+  Service:
+    'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/40 dark:text-purple-300 dark:border-purple-800',
   RTE: 'bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-950/40 dark:text-orange-300 dark:border-orange-800',
   OS: 'bg-pink-50 text-pink-700 border-pink-200 dark:bg-pink-950/40 dark:text-pink-300 dark:border-pink-800',
   ASW: 'bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-950/40 dark:text-cyan-300 dark:border-cyan-800',
-}
+};
 
-const layerOrder = ['MCAL', 'ECUAL', 'Service', 'OS', 'RTE', 'ASW']
+const layerOrder = ['MCAL', 'ECUAL', 'Service', 'OS', 'RTE', 'ASW'];
 
-export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function ConfigTree({
-  config,
-  selectedPath,
-  onSelectPath,
-  validationIssues = [],
-  highlightDependencies = false,
-  showDisabled = true,
-  onToggleModule,
-  filterText = '',
-}: ConfigTreeProps, ref) {
-  const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set())
-  const [searchQuery, setSearchQuery] = useState(filterText)
-  const [showFilterMenu, setShowFilterMenu] = useState(false)
-  
+export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function ConfigTree(
+  {
+    config,
+    selectedPath,
+    onSelectPath,
+    validationIssues = [],
+    _highlightDependencies = false,
+    showDisabled = true,
+    onToggleModule,
+    filterText = '',
+  }: ConfigTreeProps,
+  ref
+) {
+  const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
+  const [searchQuery, setSearchQuery] = useState(filterText);
+  const [showFilterMenu, setShowFilterMenu] = useState(false);
+
   // Instance data with per-instance parameter values
   interface InstanceEntry {
-    name: string
-    paramValues: Record<string, unknown>
+    name: string;
+    paramValues: Record<string, unknown>;
   }
 
   // Track dynamic instances per container: path → array of {name, paramValues}
   const [dynamicInstances, setDynamicInstances] = useState<Record<string, InstanceEntry[]>>(() => {
-    const initial: Record<string, InstanceEntry[]> = {}
+    const initial: Record<string, InstanceEntry[]> = {};
     for (const module of config.modules) {
-      const modulePath = `layer:${module.layer}/module:${module.id}`
-      collectDynamicContainers(module.containers, modulePath, initial)
+      const modulePath = `layer:${module.layer}/module:${module.id}`;
+      collectDynamicContainers(module.containers, modulePath, initial);
     }
-    return initial
-  })
-  
+    return initial;
+  });
+
   // Delete confirmation state
   const [deleteTarget, setDeleteTarget] = useState<{
-    containerPath: string
-    instanceName: string
-  } | null>(null)
-  
+    containerPath: string;
+    instanceName: string;
+  } | null>(null);
+
   // Inline rename state
-  const [renamingPath, setRenamingPath] = useState<string | null>(null)
-  const [renameValue, setRenameValue] = useState('')
-  
+  const [renamingPath, setRenamingPath] = useState<string | null>(null);
+  const [renameValue, setRenameValue] = useState('');
+
   // Context menu state
   const [contextMenu, setContextMenu] = useState<{
-    x: number
-    y: number
-    nodePath: string
-    containerPath: string
-    instanceName: string
-  } | null>(null)
+    x: number;
+    y: number;
+    nodePath: string;
+    containerPath: string;
+    instanceName: string;
+  } | null>(null);
 
   // Close context menu on click outside
   useEffect(() => {
-    const handler = () => setContextMenu(null)
-    window.addEventListener('click', handler)
-    return () => window.removeEventListener('click', handler)
-  }, [])
+    const handler = () => setContextMenu(null);
+    window.addEventListener('click', handler);
+    return () => window.removeEventListener('click', handler);
+  }, []);
 
   const [dragSource, setDragSource] = useState<{
-    containerPath: string
-    instanceName: string
-  } | null>(null)
-  const [dragOverPath, setDragOverPath] = useState<string | null>(null)
+    containerPath: string;
+    instanceName: string;
+  } | null>(null);
+  const [dragOverPath, setDragOverPath] = useState<string | null>(null);
 
-  const [upgradeDialogOpen, setUpgradeDialogOpen] = useState(false)
+  const [upgradeDialogOpen, setUpgradeDialogOpen] = useState(false);
 
-  const licenseTier = useLicenseStore(s => s.tier)
-  const maxModules = useLicenseStore(s => s.getFeatureLimit('maxModules'))
+  const licenseTier = useLicenseStore(s => s.tier);
+  const maxModules = useLicenseStore(s => s.getFeatureLimit('maxModules'));
   const lockedModuleIds = useMemo(() => {
-    if (licenseTier !== 'free') return new Set<string>()
-    const enabledModules = config.modules.filter(m => m.enabled)
-    const locked = new Set<string>()
+    if (licenseTier !== 'free') return new Set<string>();
+    const enabledModules = config.modules.filter(m => m.enabled);
+    const locked = new Set<string>();
     for (let i = maxModules; i < enabledModules.length; i++) {
-      locked.add(enabledModules[i].id)
+      locked.add(enabledModules[i].id);
     }
-    return locked
-  }, [config.modules, licenseTier, maxModules])
-  
+    return locked;
+  }, [config.modules, licenseTier, maxModules]);
+
   // Collect initial dynamic instances from module containers
   function collectDynamicContainers(
-    containers: ConfigContainer[], 
-    parentPath: string, 
+    containers: ConfigContainer[],
+    parentPath: string,
     acc: Record<string, InstanceEntry[]>
   ) {
     for (const container of containers) {
-      const contPath = `${parentPath}/container:${container.id}`
+      const contPath = `${parentPath}/container:${container.id}`;
       if (container.multiple) {
-        const count = container.minInstances ?? 0
+        const count = container.minInstances ?? 0;
         if (container.subContainers && container.subContainers.length > 0) {
           // Has template in subContainers[0] (existing behavior)
-          const template = container.subContainers[0]
-          const baseName = template.name.replace(/_\d+$/, '') || template.name
-          const entries: InstanceEntry[] = []
+          const template = container.subContainers[0];
+          const baseName = template.name.replace(/_\d+$/, '') || template.name;
+          const entries: InstanceEntry[] = [];
           for (let i = 0; i < count; i++) {
             entries.push({
               name: `${baseName}_${i}`,
               paramValues: extractParamValues(template),
-            })
+            });
           }
-          acc[contPath] = entries
+          acc[contPath] = entries;
           // For each instance, also collect nested dynamic containers from template's subContainers
           for (const entry of entries) {
-            const instPath = `${contPath}/instance:${entry.name}`
-            collectDynamicContainers(template.subContainers || [], instPath, acc)
+            const instPath = `${contPath}/instance:${entry.name}`;
+            collectDynamicContainers(template.subContainers || [], instPath, acc);
           }
         } else {
           // Self-template mode: the container itself IS the template
-          const baseName = container.shortName || container.name.replace(/_\d+$/, '') || container.name
-          const entries: InstanceEntry[] = []
+          const baseName =
+            container.shortName || container.name.replace(/_\d+$/, '') || container.name;
+          const entries: InstanceEntry[] = [];
           for (let i = 0; i < count; i++) {
             entries.push({
               name: `${baseName}_${i}`,
               paramValues: extractParamValues(container),
-            })
+            });
           }
-          acc[contPath] = entries
+          acc[contPath] = entries;
         }
       }
       if (container.subContainers) {
-        collectDynamicContainers(container.subContainers, contPath, acc)
+        collectDynamicContainers(container.subContainers, contPath, acc);
       }
     }
   }
-  
+
   // Extract default parameter values from a container template
   function extractParamValues(container: ConfigContainer): Record<string, unknown> {
-    const values: Record<string, unknown> = {}
+    const values: Record<string, unknown> = {};
     for (const param of container.parameters || []) {
-      values[param.id] = param.value ?? param.defaultValue
+      values[param.id] = param.value ?? param.defaultValue;
     }
     for (const sub of container.subContainers || []) {
-      Object.assign(values, extractParamValues(sub))
+      Object.assign(values, extractParamValues(sub));
     }
-    return values
+    return values;
   }
-  
+
   // Add a new dynamic instance
-  const addInstance = useCallback((containerPath: string) => {
-    setDynamicInstances(prev => {
-      const entries = [...(prev[containerPath] || [])]
-      let maxIdx = -1
-      for (const e of entries) {
-        const match = e.name.match(/_(\\d+)$/)
-        if (match) maxIdx = Math.max(maxIdx, parseInt(match[1]))
-      }
-      let baseName = 'Instance'
-      if (entries.length > 0) {
-        baseName = entries[0].name.replace(/_\\d+$/, '') || baseName
-      } else {
+  const addInstance = useCallback(
+    (containerPath: string) => {
+      setDynamicInstances(prev => {
+        const entries = [...(prev[containerPath] || [])];
+        let maxIdx = -1;
+        for (const e of entries) {
+          const match = e.name.match(/_(\\d+)$/);
+          if (match) maxIdx = Math.max(maxIdx, parseInt(match[1]));
+        }
+        let baseName = 'Instance';
+        if (entries.length > 0) {
+          baseName = entries[0].name.replace(/_\\d+$/, '') || baseName;
+        } else {
+          for (const mod of config.modules) {
+            const found = findTemplateName(
+              mod.containers,
+              containerPath,
+              `layer:${mod.layer}/module:${mod.id}`
+            );
+            if (found) {
+              baseName = found;
+              break;
+            }
+          }
+        }
+        const newName = `${baseName}_${maxIdx + 1}`;
+        // Get param values from template
+        const newParams: Record<string, unknown> = {};
         for (const mod of config.modules) {
-          const found = findTemplateName(mod.containers, containerPath, `layer:${mod.layer}/module:${mod.id}`)
-          if (found) { baseName = found; break }
+          const found = findTemplateContainer(
+            mod.containers,
+            containerPath,
+            `layer:${mod.layer}/module:${mod.id}`
+          );
+          if (found) {
+            Object.assign(newParams, extractParamValues(found.subContainers?.[0] || found));
+            break;
+          }
         }
-      }
-      const newName = `${baseName}_${maxIdx + 1}`
-      // Get param values from template
-      const newParams: Record<string, unknown> = {}
-      for (const mod of config.modules) {
-        const found = findTemplateContainer(mod.containers, containerPath, `layer:${mod.layer}/module:${mod.id}`)
-        if (found) {
-          Object.assign(newParams, extractParamValues(found.subContainers?.[0] || found))
-          break
+        entries.push({ name: newName, paramValues: newParams });
+
+        // Also seed nested dynamic containers for the new instance
+        const newPrev = { ...prev, [containerPath]: entries };
+        const instPath = `${containerPath}/instance:${newName}`;
+        // Find template and seed nested dynamics
+        for (const mod of config.modules) {
+          const found = findTemplateContainer(
+            mod.containers,
+            containerPath,
+            `layer:${mod.layer}/module:${mod.id}`
+          );
+          if (found) {
+            const template = found.subContainers?.[0] || found;
+            seedNestedDynamics(template.subContainers || [], instPath, newPrev);
+            break;
+          }
         }
-      }
-      entries.push({ name: newName, paramValues: newParams })
-      
-      // Also seed nested dynamic containers for the new instance
-      const newPrev = { ...prev, [containerPath]: entries }
-      const instPath = `${containerPath}/instance:${newName}`
-      // Find template and seed nested dynamics
-      for (const mod of config.modules) {
-        const found = findTemplateContainer(mod.containers, containerPath, `layer:${mod.layer}/module:${mod.id}`)
-        if (found) {
-          const template = found.subContainers?.[0] || found
-          seedNestedDynamics(template.subContainers || [], instPath, newPrev)
-          break
-        }
-      }
-      
-      return newPrev
-    })
-  }, [config])
+
+        return newPrev;
+      });
+    },
+    [config]
+  );
 
   // Seed nested dynamic containers for a newly created instance
-  function seedNestedDynamics(containers: ConfigContainer[], parentPath: string, acc: Record<string, InstanceEntry[]>) {
+  function seedNestedDynamics(
+    containers: ConfigContainer[],
+    parentPath: string,
+    acc: Record<string, InstanceEntry[]>
+  ) {
     for (const container of containers) {
-      const contPath = `${parentPath}/container:${container.id}`
+      const contPath = `${parentPath}/container:${container.id}`;
       if (container.multiple) {
-        const count = container.minInstances ?? 0
-        const baseName = container.shortName || container.name.replace(/_\\d+$/, '') || container.name
-        const nestedEntries: InstanceEntry[] = []
+        const count = container.minInstances ?? 0;
+        const baseName =
+          container.shortName || container.name.replace(/_\\d+$/, '') || container.name;
+        const nestedEntries: InstanceEntry[] = [];
         for (let i = 0; i < count; i++) {
           nestedEntries.push({
             name: `${baseName}_${i}`,
             paramValues: extractParamValues(container.subContainers?.[0] || container),
-          })
+          });
         }
         if (nestedEntries.length > 0) {
-          acc[contPath] = nestedEntries
+          acc[contPath] = nestedEntries;
           // Recurse into each nested instance
           for (const entry of nestedEntries) {
-            const instPath = `${contPath}/instance:${entry.name}`
-            const template = container.subContainers?.[0] || container
-            seedNestedDynamics(template.subContainers || [], instPath, acc)
+            const instPath = `${contPath}/instance:${entry.name}`;
+            const template = container.subContainers?.[0] || container;
+            seedNestedDynamics(template.subContainers || [], instPath, acc);
           }
         }
       }
       // Also recurse for static sub-containers
       if (!container.multiple && container.subContainers) {
-        seedNestedDynamics(container.subContainers, contPath, acc)
+        seedNestedDynamics(container.subContainers, contPath, acc);
       }
     }
   }
 
   // Expose addInstance to parent via ref, returns the new instance name
-  useImperativeHandle(ref, () => ({
-    addInstance: (containerPath: string): string | undefined => {
-      // Read current state to compute the next name synchronously
-      const currentEntries = dynamicInstances[containerPath] || []
-      let maxIdx = -1
-      for (const e of currentEntries) {
-        const match = e.name.match(/_(\d+)$/)
-        if (match) maxIdx = Math.max(maxIdx, parseInt(match[1]))
-      }
-      let baseName = 'Instance'
-      if (currentEntries.length > 0) {
-        baseName = currentEntries[0].name.replace(/_\d+$/, '') || baseName
-      } else {
-        for (const mod of config.modules) {
-          const found = findTemplateName(mod.containers, containerPath, `layer:${mod.layer}/module:${mod.id}`)
-          if (found) { baseName = found; break }
+  useImperativeHandle(
+    ref,
+    () => ({
+      addInstance: (containerPath: string): string | undefined => {
+        // Read current state to compute the next name synchronously
+        const currentEntries = dynamicInstances[containerPath] || [];
+        let maxIdx = -1;
+        for (const e of currentEntries) {
+          const match = e.name.match(/_(\d+)$/);
+          if (match) maxIdx = Math.max(maxIdx, parseInt(match[1]));
         }
-      }
-      const newName = `${baseName}_${maxIdx + 1}`
-      // Trigger the actual add (state update)
-      addInstance(containerPath)
-      return newName
-    },
-  }), [addInstance, dynamicInstances, config])
-
-  // Strip instance segments (instance:xxx) from a path for config tree lookup
-  function stripPathInstances(path: string): string {
-    return path.replace(/\/instance:[^/]+/g, '')
-  }
+        let baseName = 'Instance';
+        if (currentEntries.length > 0) {
+          baseName = currentEntries[0].name.replace(/_\d+$/, '') || baseName;
+        } else {
+          for (const mod of config.modules) {
+            const found = findTemplateName(
+              mod.containers,
+              containerPath,
+              `layer:${mod.layer}/module:${mod.id}`
+            );
+            if (found) {
+              baseName = found;
+              break;
+            }
+          }
+        }
+        const newName = `${baseName}_${maxIdx + 1}`;
+        // Trigger the actual add (state update)
+        addInstance(containerPath);
+        return newName;
+      },
+    }),
+    [addInstance, dynamicInstances, config]
+  );
 
   // Recursively search for template name matching a container path
   // Uses the last container:id segment to find the container in the config tree
   // (handles paths with instance:xxx segments that don't exist in the static tree)
-  function findTemplateName(containers: ConfigContainer[], targetPath: string, _parentPath: string): string | null {
+  function findTemplateName(
+    containers: ConfigContainer[],
+    targetPath: string,
+    _parentPath: string
+  ): string | null {
     // Extract the last container:id segment to find the matching container
-    const containerSegments = targetPath.split('/').filter(s => s.startsWith('container:'))
-    const lastSeg = containerSegments[containerSegments.length - 1]
-    if (!lastSeg) return null
-    const targetId = lastSeg.split(':')[1]
-    
+    const containerSegments = targetPath.split('/').filter(s => s.startsWith('container:'));
+    const lastSeg = containerSegments[containerSegments.length - 1];
+    if (!lastSeg) return null;
+    const targetId = lastSeg.split(':')[1];
+
     for (const c of containers) {
       if (c.id === targetId) {
         if (c.subContainers?.length) {
-          const tpl = c.subContainers[0]
-          return tpl.shortName || tpl.name.replace(/_\d+$/, '') || tpl.name
+          const tpl = c.subContainers[0];
+          return tpl.shortName || tpl.name.replace(/_\d+$/, '') || tpl.name;
         }
-        return c.shortName || c.name.replace(/_\d+$/, '') || c.name
+        return c.shortName || c.name.replace(/_\d+$/, '') || c.name;
       }
       if (c.subContainers?.length) {
-        const found = findTemplateName(c.subContainers, targetPath, _parentPath)
-        if (found) return found
+        const found = findTemplateName(c.subContainers, targetPath, _parentPath);
+        if (found) return found;
       }
     }
-    return null
+    return null;
   }
 
   // Find template container by path (returns the container object for param extraction)
   // Uses the last container:id segment to find the container in the config tree
-  function findTemplateContainer(containers: ConfigContainer[], targetPath: string, _parentPath: string): ConfigContainer | null {
-    const containerSegments = targetPath.split('/').filter(s => s.startsWith('container:'))
-    const lastSeg = containerSegments[containerSegments.length - 1]
-    if (!lastSeg) return null
-    const targetId = lastSeg.split(':')[1]
-    
+  function findTemplateContainer(
+    containers: ConfigContainer[],
+    targetPath: string,
+    _parentPath: string
+  ): ConfigContainer | null {
+    const containerSegments = targetPath.split('/').filter(s => s.startsWith('container:'));
+    const lastSeg = containerSegments[containerSegments.length - 1];
+    if (!lastSeg) return null;
+    const targetId = lastSeg.split(':')[1];
+
     for (const c of containers) {
-      if (c.id === targetId) return c
+      if (c.id === targetId) return c;
       if (c.subContainers?.length) {
-        const found = findTemplateContainer(c.subContainers, targetPath, _parentPath)
-        if (found) return found
+        const found = findTemplateContainer(c.subContainers, targetPath, _parentPath);
+        if (found) return found;
       }
     }
-    return null
+    return null;
   }
-  
+
   // Remove a dynamic instance
   const removeInstance = useCallback((containerPath: string, instanceName: string) => {
     setDynamicInstances(prev => {
-      const entries = (prev[containerPath] || []).filter(e => e.name !== instanceName)
-      return { ...prev, [containerPath]: entries }
-    })
-  }, [])
-  
+      const entries = (prev[containerPath] || []).filter(e => e.name !== instanceName);
+      return { ...prev, [containerPath]: entries };
+    });
+  }, []);
+
   // Rename an instance
   const renameInstance = useCallback((containerPath: string, oldName: string, newName: string) => {
     setDynamicInstances(prev => {
-      const entries = (prev[containerPath] || []).map(e => e.name === oldName ? { ...e, name: newName } : e)
-      return { ...prev, [containerPath]: entries }
-    })
-  }, [])
-  
+      const entries = (prev[containerPath] || []).map(e =>
+        e.name === oldName ? { ...e, name: newName } : e
+      );
+      return { ...prev, [containerPath]: entries };
+    });
+  }, []);
+
   // Copy an instance (adds a new one with auto-incremented name and copied params)
   const copyInstance = useCallback((containerPath: string, sourceName: string) => {
     setDynamicInstances(prev => {
-      const entries = [...(prev[containerPath] || [])]
-      let maxIdx = -1
+      const entries = [...(prev[containerPath] || [])];
+      let maxIdx = -1;
       for (const e of entries) {
-        const match = e.name.match(/_(\d+)$/)
-        if (match) maxIdx = Math.max(maxIdx, parseInt(match[1]))
+        const match = e.name.match(/_(\d+)$/);
+        if (match) maxIdx = Math.max(maxIdx, parseInt(match[1]));
       }
-      const baseName = sourceName.replace(/_\d+$/, '') || sourceName
-      const source = entries.find(e => e.name === sourceName)
+      const baseName = sourceName.replace(/_\d+$/, '') || sourceName;
+      const source = entries.find(e => e.name === sourceName);
       entries.push({
         name: `${baseName}_${maxIdx + 1}`,
         paramValues: source ? { ...source.paramValues } : {},
-      })
-      return { ...prev, [containerPath]: entries }
-    })
-  }, [])
-  
+      });
+      return { ...prev, [containerPath]: entries };
+    });
+  }, []);
+
   // Start rename (set editing state)
   const startRename = useCallback((path: string, currentName: string) => {
-    setRenamingPath(path)
-    setRenameValue(currentName)
-  }, [])
-  
+    setRenamingPath(path);
+    setRenameValue(currentName);
+  }, []);
+
   // Confirm rename
-  const confirmRename = useCallback((containerPath: string) => {
-    if (renamingPath && renameValue.trim()) {
-      const entry = dynamicInstances[containerPath]?.find(e => {
-        const instPath = `${containerPath}/instance:${e.name}`
-        return instPath === renamingPath
-      })
-      if (entry) {
-        renameInstance(containerPath, entry.name, renameValue.trim())
+  const confirmRename = useCallback(
+    (containerPath: string) => {
+      if (renamingPath && renameValue.trim()) {
+        const entry = dynamicInstances[containerPath]?.find(e => {
+          const instPath = `${containerPath}/instance:${e.name}`;
+          return instPath === renamingPath;
+        });
+        if (entry) {
+          renameInstance(containerPath, entry.name, renameValue.trim());
+        }
       }
-    }
-    setRenamingPath(null)
-    setRenameValue('')
-  }, [renamingPath, renameValue, dynamicInstances, renameInstance])
-  
+      setRenamingPath(null);
+      setRenameValue('');
+    },
+    [renamingPath, renameValue, dynamicInstances, renameInstance]
+  );
+
   // Cancel rename
   const cancelRename = useCallback(() => {
-    setRenamingPath(null)
-    setRenameValue('')
-  }, [])
-  
+    setRenamingPath(null);
+    setRenameValue('');
+  }, []);
+
   // Handle drag start
   const onDragStart = useCallback((containerPath: string, instanceName: string) => {
-    setDragSource({ containerPath, instanceName })
-    setDragOverPath(null)
-  }, [])
-  
+    setDragSource({ containerPath, instanceName });
+    setDragOverPath(null);
+  }, []);
+
   // Handle drag over (prevent default to allow drop)
   const onDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    setDragOverPath((e.currentTarget as HTMLElement).getAttribute('data-path'))
-  }, [])
-  
+    e.preventDefault();
+    setDragOverPath((e.currentTarget as HTMLElement).getAttribute('data-path'));
+  }, []);
+
   // Handle drop - reorder instances
-  const onDrop = useCallback((targetContainerPath: string, targetName: string) => {
-    if (!dragSource || dragSource.containerPath !== targetContainerPath) {
-      setDragSource(null)
-      return
-    }
-    const { instanceName: sourceName } = dragSource
-    if (sourceName === targetName) {
-      setDragSource(null)
-      return
-    }
-    setDynamicInstances(prev => {
-      const entries = [...(prev[targetContainerPath] || [])]
-      const fromIdx = entries.findIndex(e => e.name === sourceName)
-      const toIdx = entries.findIndex(e => e.name === targetName)
-      if (fromIdx === -1 || toIdx === -1) return prev
-      const [moved] = entries.splice(fromIdx, 1)
-      entries.splice(toIdx, 0, moved)
-      return { ...prev, [targetContainerPath]: entries }
-    })
-    setDragSource(null)
-    setDragOverPath(null)
-  }, [dragSource])
-  
+  const onDrop = useCallback(
+    (targetContainerPath: string, targetName: string) => {
+      if (!dragSource || dragSource.containerPath !== targetContainerPath) {
+        setDragSource(null);
+        return;
+      }
+      const { instanceName: sourceName } = dragSource;
+      if (sourceName === targetName) {
+        setDragSource(null);
+        return;
+      }
+      setDynamicInstances(prev => {
+        const entries = [...(prev[targetContainerPath] || [])];
+        const fromIdx = entries.findIndex(e => e.name === sourceName);
+        const toIdx = entries.findIndex(e => e.name === targetName);
+        if (fromIdx === -1 || toIdx === -1) return prev;
+        const [moved] = entries.splice(fromIdx, 1);
+        entries.splice(toIdx, 0, moved);
+        return { ...prev, [targetContainerPath]: entries };
+      });
+      setDragSource(null);
+      setDragOverPath(null);
+    },
+    [dragSource]
+  );
+
   // Recursively search inside module containers and parameters
   function searchInModule(module: ConfigModule, query: string): boolean {
     for (const container of module.containers) {
-      if (searchInContainer(container, query)) return true
+      if (searchInContainer(container, query)) return true;
     }
-    return false
+    return false;
   }
-  
+
   function searchInContainer(container: ConfigContainer, query: string): boolean {
     // Check container name
-    if (container.displayName?.toLowerCase().includes(query)) return true
-    if (container.name?.toLowerCase().includes(query)) return true
-    
+    if (container.displayName?.toLowerCase().includes(query)) return true;
+    if (container.name?.toLowerCase().includes(query)) return true;
+
     // Check parameters
     for (const param of container.parameters || []) {
-      if (param.displayName?.toLowerCase().includes(query)) return true
-      if (param.name?.toLowerCase().includes(query)) return true
-      if (String(param.value ?? '').toLowerCase().includes(query)) return true
+      if (param.displayName?.toLowerCase().includes(query)) return true;
+      if (param.name?.toLowerCase().includes(query)) return true;
+      if (
+        String(param.value ?? '')
+          .toLowerCase()
+          .includes(query)
+      )
+        return true;
     }
-    
+
     // Check sub-containers recursively
     for (const sub of container.subContainers || []) {
-      if (searchInContainer(sub, query)) return true
+      if (searchInContainer(sub, query)) return true;
     }
-    
-    return false
+
+    return false;
   }
 
   // Build tree data structure
   const treeData = useMemo(() => {
-    const nodes: TreeNodeData[] = []
-    
+    const nodes: TreeNodeData[] = [];
+
     // Group modules by layer
-    const modulesByLayer = config.modules.reduce((acc, module) => {
-      if (!acc[module.layer]) acc[module.layer] = []
-      acc[module.layer].push(module)
-      return acc
-    }, {} as Record<string, ConfigModule[]>)
-    
+    const modulesByLayer = config.modules.reduce(
+      (acc, module) => {
+        if (!acc[module.layer]) acc[module.layer] = [];
+        acc[module.layer].push(module);
+        return acc;
+      },
+      {} as Record<string, ConfigModule[]>
+    );
+
     // Add OS if enabled
     if (config.os?.enabled) {
-      modulesByLayer['OS'] = [{
-        id: 'os',
-        name: 'OS',
-        displayName: 'Operating System',
-        description: 'OSEK/AUTOSAR OS Configuration',
-        version: config.os.version,
-        layer: 'OS',
-        enabled: true,
-        configStatus: 'configured',
-        containers: [
-          { id: 'tasks', name: 'Tasks', displayName: 'Task Configuration', parameters: [], subContainers: [] },
-          { id: 'isrs', name: 'ISRs', displayName: 'Interrupt Service Routines', parameters: [], subContainers: [] },
-          { id: 'resources', name: 'Resources', displayName: 'OS Resources', parameters: [], subContainers: [] },
-          { id: 'alarms', name: 'Alarms', displayName: 'OS Alarms', parameters: [], subContainers: [] },
-          { id: 'events', name: 'Events', displayName: 'OS Events', parameters: [], subContainers: [] },
-          { id: 'counters', name: 'Counters', displayName: 'OS Counters', parameters: [], subContainers: [] },
-        ],
-        parameters: [],
-        dependencies: [],
-        createdAt: '',
-        updatedAt: '',
-      } as ConfigModule]
+      modulesByLayer['OS'] = [
+        {
+          id: 'os',
+          name: 'OS',
+          displayName: 'Operating System',
+          description: 'OSEK/AUTOSAR OS Configuration',
+          version: config.os.version,
+          layer: 'OS',
+          enabled: true,
+          configStatus: 'configured',
+          containers: [
+            {
+              id: 'tasks',
+              name: 'Tasks',
+              displayName: 'Task Configuration',
+              parameters: [],
+              subContainers: [],
+            },
+            {
+              id: 'isrs',
+              name: 'ISRs',
+              displayName: 'Interrupt Service Routines',
+              parameters: [],
+              subContainers: [],
+            },
+            {
+              id: 'resources',
+              name: 'Resources',
+              displayName: 'OS Resources',
+              parameters: [],
+              subContainers: [],
+            },
+            {
+              id: 'alarms',
+              name: 'Alarms',
+              displayName: 'OS Alarms',
+              parameters: [],
+              subContainers: [],
+            },
+            {
+              id: 'events',
+              name: 'Events',
+              displayName: 'OS Events',
+              parameters: [],
+              subContainers: [],
+            },
+            {
+              id: 'counters',
+              name: 'Counters',
+              displayName: 'OS Counters',
+              parameters: [],
+              subContainers: [],
+            },
+          ],
+          parameters: [],
+          dependencies: [],
+          createdAt: '',
+          updatedAt: '',
+        } as ConfigModule,
+      ];
     }
-    
+
     // Build layer nodes
     for (const layer of layerOrder) {
-      const modules = modulesByLayer[layer]
-      if (!modules || modules.length === 0) continue
-      
+      const modules = modulesByLayer[layer];
+      if (!modules || modules.length === 0) continue;
+
       // Filter modules based on search and enabled status
       const filteredModules = modules.filter(m => {
-        const matchesSearch = !searchQuery || 
+        const matchesSearch =
+          !searchQuery ||
           m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           m.displayName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
           // Search inside containers and parameters
-          searchInModule(m, searchQuery.toLowerCase())
-        const matchesEnabled = showDisabled || m.enabled
-        return matchesSearch && matchesEnabled
-      })
-      
-      if (filteredModules.length === 0 && searchQuery) continue
-      
-      const Icon = layerIcons[layer] || Settings
-      const layerPath = `layer:${layer}`
-      
+          searchInModule(m, searchQuery.toLowerCase());
+        const matchesEnabled = showDisabled || m.enabled;
+        return matchesSearch && matchesEnabled;
+      });
+
+      if (filteredModules.length === 0 && searchQuery) continue;
+
+      const Icon = layerIcons[layer] || Settings;
+      const layerPath = `layer:${layer}`;
+
       // Count issues for this layer
-      const layerIssues = validationIssues.filter(i => 
-        i.module && modules.some(m => m.name === i.module)
-      )
-      const errorCount = layerIssues.filter(i => i.severity === 'error').length
-      const warningCount = layerIssues.filter(i => i.severity === 'warning').length
-      
+      const layerIssues = validationIssues.filter(
+        i => i.module && modules.some(m => m.name === i.module)
+      );
+      const errorCount = layerIssues.filter(i => i.severity === 'error').length;
+      const warningCount = layerIssues.filter(i => i.severity === 'warning').length;
+
       nodes.push({
         id: layerPath,
         type: 'layer',
@@ -578,25 +706,32 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
         errorCount,
         warningCount,
         data: null as any,
-        children: filteredModules.map(module => buildModuleNode(module, layerPath, validationIssues, lockedModuleIds.has(module.id))),
-      })
+        children: filteredModules.map(module =>
+          buildModuleNode(module, layerPath, validationIssues, lockedModuleIds.has(module.id))
+        ),
+      });
     }
-    
-    return nodes
-  }, [config, validationIssues, showDisabled, searchQuery, dynamicInstances])
+
+    return nodes;
+  }, [config, validationIssues, showDisabled, searchQuery, dynamicInstances]);
 
   // Build module node recursively
-  function buildModuleNode(module: ConfigModule, parentPath: string, issues: ValidationIssue[], locked: boolean = false): TreeNodeData {
-    const path = `${parentPath}/module:${module.id}`
-    const moduleIssues = issues.filter(i => i.module === module.name)
-    const errorCount = moduleIssues.filter(i => i.severity === 'error').length
-    const warningCount = moduleIssues.filter(i => i.severity === 'warning').length
-    
+  function buildModuleNode(
+    module: ConfigModule,
+    parentPath: string,
+    issues: ValidationIssue[],
+    locked: boolean = false
+  ): TreeNodeData {
+    const path = `${parentPath}/module:${module.id}`;
+    const moduleIssues = issues.filter(i => i.module === module.name);
+    const errorCount = moduleIssues.filter(i => i.severity === 'error').length;
+    const warningCount = moduleIssues.filter(i => i.severity === 'warning').length;
+
     // Build container nodes
-    const containerNodes = module.containers.map(container => 
+    const containerNodes = module.containers.map(container =>
       buildContainerNode(container, path, module.name, issues)
-    )
-    
+    );
+
     return {
       id: path,
       type: 'module',
@@ -612,41 +747,46 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
       data: module,
       locked,
       children: containerNodes,
-    }
+    };
   }
 
   // Build container node recursively
-  function buildContainerNode(container: ConfigContainer, parentPath: string, moduleName: string, issues: ValidationIssue[]): TreeNodeData {
-    const path = `${parentPath}/container:${container.id}`
-    const containerIssues = issues.filter(i => 
-      i.module === moduleName && i.container === container.name
-    )
-    const errorCount = containerIssues.filter(i => i.severity === 'error').length
-    const warningCount = containerIssues.filter(i => i.severity === 'warning').length
-    
+  function buildContainerNode(
+    container: ConfigContainer,
+    parentPath: string,
+    moduleName: string,
+    issues: ValidationIssue[]
+  ): TreeNodeData {
+    const path = `${parentPath}/container:${container.id}`;
+    const containerIssues = issues.filter(
+      i => i.module === moduleName && i.container === container.name
+    );
+    const errorCount = containerIssues.filter(i => i.severity === 'error').length;
+    const warningCount = containerIssues.filter(i => i.severity === 'warning').length;
+
     // Check for dynamic instances
-    const isDynamic = !!(container.multiple)
-    const children: TreeNodeData[] = []
-    
+    const isDynamic = !!container.multiple;
+    const children: TreeNodeData[] = [];
+
     if (isDynamic) {
       // Render dynamic instances
-      const instances = dynamicInstances[path] || []
-      const minCount = container.minInstances ?? 1
-      const hasTemplate = container.subContainers && container.subContainers.length > 0
-      
+      const instances = dynamicInstances[path] || [];
+      const minCount = container.minInstances ?? 1;
+      const hasTemplate = container.subContainers && container.subContainers.length > 0;
+
       for (const entry of instances) {
         // Create an instance node based on the template
-        const instPath = `${path}/instance:${entry.name}`
-        const subChildren: TreeNodeData[] = []
-        
+        const instPath = `${path}/instance:${entry.name}`;
+        const subChildren: TreeNodeData[] = [];
+
         if (hasTemplate) {
           // Render sub-containers of the template within each instance
-          const template = container.subContainers![0]
+          const template = container.subContainers![0];
           for (const sub of template.subContainers || []) {
-            subChildren.push(buildContainerNode(sub, instPath, moduleName, issues))
+            subChildren.push(buildContainerNode(sub, instPath, moduleName, issues));
           }
         }
-        
+
         children.push({
           id: instPath,
           type: 'container',
@@ -664,120 +804,113 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
           instanceName: entry.name,
           instanceCount: instances.length,
           minInstanceCount: minCount,
-        })
+        });
       }
     } else {
       // Render static sub-containers (existing behavior)
       for (const sub of container.subContainers || []) {
-        children.push(buildContainerNode(sub, path, moduleName, issues))
+        children.push(buildContainerNode(sub, path, moduleName, issues));
       }
     }
-    
+
     return {
       id: path,
       type: 'container',
       name: container.name,
       displayName: container.displayName || container.name,
       path,
-      icon: isDynamic ? <FolderOpen className="w-4 h-4" /> : (container.subContainers?.length ? <FolderOpen className="w-4 h-4" /> : <FileText className="w-4 h-4" />),
+      icon: isDynamic ? (
+        <FolderOpen className="w-4 h-4" />
+      ) : container.subContainers?.length ? (
+        <FolderOpen className="w-4 h-4" />
+      ) : (
+        <FileText className="w-4 h-4" />
+      ),
       hasChildren: children.length > 0,
       errorCount,
       warningCount,
       data: container,
       children,
       isDynamicParent: isDynamic,
-    }
-  }
-
-  // Get icon based on parameter type
-  function getParameterIcon(type: string): React.ReactNode {
-    switch (type) {
-      case 'integer':
-      case 'float':
-        return <Hash className="w-3.5 h-3.5" />
-      case 'boolean':
-        return <ToggleLeft className="w-3.5 h-3.5" />
-      case 'enum':
-        return <List className="w-3.5 h-3.5" />
-      case 'array':
-        return <Layers2 className="w-3.5 h-3.5" />
-      default:
-        return <FileText className="w-3.5 h-3.5" />
-    }
+    };
   }
 
   // Toggle expansion of a node
   const toggleExpansion = useCallback((path: string) => {
     setExpandedPaths(prev => {
-      const next = new Set(prev)
+      const next = new Set(prev);
       if (next.has(path)) {
-        next.delete(path)
+        next.delete(path);
       } else {
-        next.add(path)
+        next.add(path);
       }
-      return next
-    })
-  }, [])
+      return next;
+    });
+  }, []);
 
   // Expand all
   const expandAll = useCallback(() => {
-    const allPaths = new Set<string>()
+    const allPaths = new Set<string>();
     const collectPaths = (nodes: TreeNodeData[]) => {
       for (const node of nodes) {
-        allPaths.add(node.path)
+        allPaths.add(node.path);
         if (node.children) {
-          collectPaths(node.children)
+          collectPaths(node.children);
         }
       }
-    }
-    collectPaths(treeData)
-    setExpandedPaths(allPaths)
-  }, [treeData])
+    };
+    collectPaths(treeData);
+    setExpandedPaths(allPaths);
+  }, [treeData]);
 
   // Collapse all
   const collapseAll = useCallback(() => {
-    setExpandedPaths(new Set())
-  }, [])
+    setExpandedPaths(new Set());
+  }, []);
 
   // Handle module toggle
   const handleToggleModule = (e: React.MouseEvent, node: TreeNodeData) => {
-    e.stopPropagation()
+    e.stopPropagation();
     if (node.type === 'module' && onToggleModule) {
-      const module = node.data as ConfigModule
-      onToggleModule(module.id, !module.enabled)
+      const module = node.data as ConfigModule;
+      onToggleModule(module.id, !module.enabled);
     }
-  }
+  };
 
   // Highlight matching text in a string for search
   function highlightMatch(text: string, query: string): React.ReactNode {
-    if (!query || !text) return text
-    const lowerText = text.toLowerCase()
-    const lowerQuery = query.toLowerCase()
-    const parts: React.ReactNode[] = []
-    let lastIndex = 0
-    let idx = lowerText.indexOf(lowerQuery)
+    if (!query || !text) return text;
+    const lowerText = text.toLowerCase();
+    const lowerQuery = query.toLowerCase();
+    const parts: React.ReactNode[] = [];
+    let lastIndex = 0;
+    let idx = lowerText.indexOf(lowerQuery);
     while (idx !== -1) {
       if (idx > lastIndex) {
-        parts.push(text.slice(lastIndex, idx))
+        parts.push(text.slice(lastIndex, idx));
       }
-      parts.push(<mark key={idx} className="bg-yellow-200 rounded px-0.5">{text.slice(idx, idx + query.length)}</mark>)
-      lastIndex = idx + query.length
-      idx = lowerText.indexOf(lowerQuery, lastIndex)
+      parts.push(
+        <mark key={idx} className="bg-yellow-200 rounded px-0.5">
+          {text.slice(idx, idx + query.length)}
+        </mark>
+      );
+      lastIndex = idx + query.length;
+      idx = lowerText.indexOf(lowerQuery, lastIndex);
     }
     if (lastIndex < text.length) {
-      parts.push(text.slice(lastIndex))
+      parts.push(text.slice(lastIndex));
     }
-    return parts.length > 0 ? <>{parts}</> : text
+    return parts.length > 0 ? <>{parts}</> : text;
   }
 
   // Render tree node
   const renderNode = (node: TreeNodeData, level: number = 0) => {
-    const isExpanded = expandedPaths.has(node.path)
-    const isSelected = selectedPath === node.path
-    const hasErrors = node.errorCount > 0
-    const hasWarnings = node.warningCount > 0
-    const paddingLeft = level * 12 + 8
-    
+    const isExpanded = expandedPaths.has(node.path);
+    const isSelected = selectedPath === node.path;
+    const hasErrors = node.errorCount > 0;
+    const hasWarnings = node.warningCount > 0;
+    const paddingLeft = level * 12 + 8;
+
     return (
       <div key={node.id}>
         {/* Node row */}
@@ -792,53 +925,53 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
           style={{ paddingLeft: `${paddingLeft}px` }}
           data-path={node.path}
           draggable={node.isDynamic}
-          onDragStart={(e) => {
+          onDragStart={e => {
             if (node.isDynamic && node.parentContainerPath) {
-              onDragStart(node.parentContainerPath, node.instanceName!)
-              e.dataTransfer.effectAllowed = 'move'
+              onDragStart(node.parentContainerPath, node.instanceName!);
+              e.dataTransfer.effectAllowed = 'move';
             }
           }}
           onDragOver={node.isDynamic ? onDragOver : undefined}
           onDragEnd={() => {
             if (node.isDynamic) {
-              setDragSource(null)
-              setDragOverPath(null)
+              setDragSource(null);
+              setDragOverPath(null);
             }
           }}
-          onDrop={(e) => {
+          onDrop={_e => {
             if (node.isDynamic && node.parentContainerPath) {
-              onDrop(node.parentContainerPath, node.instanceName!)
+              onDrop(node.parentContainerPath, node.instanceName!);
             }
           }}
-          onContextMenu={(e) => {
+          onContextMenu={e => {
             if (node.isDynamic && node.parentContainerPath) {
-              e.preventDefault()
+              e.preventDefault();
               setContextMenu({
                 x: e.clientX,
                 y: e.clientY,
                 nodePath: node.path,
                 containerPath: node.parentContainerPath,
                 instanceName: node.instanceName!,
-              })
+              });
             }
           }}
           onClick={() => {
             if (node.locked) {
-              setUpgradeDialogOpen(true)
-              return
+              setUpgradeDialogOpen(true);
+              return;
             }
-            onSelectPath(node.path)
+            onSelectPath(node.path);
             if (node.hasChildren) {
-              toggleExpansion(node.path)
+              toggleExpansion(node.path);
             }
           }}
         >
           {/* Expand/Collapse icon */}
           {node.hasChildren ? (
             <button
-              onClick={(e) => {
-                e.stopPropagation()
-                toggleExpansion(node.path)
+              onClick={e => {
+                e.stopPropagation();
+                toggleExpansion(node.path);
               }}
               className="p-0.5 rounded hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
             >
@@ -851,65 +984,71 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
           ) : (
             <span className="w-5" />
           )}
-          
+
           {/* Node icon */}
-          <span className={cn(
-            'flex-shrink-0',
-            node.type === 'parameter' && 'text-app-text-tertiary',
-            node.type === 'container' && 'text-blue-500',
-            node.type === 'module' && 'text-app-text-secondary',
-          )}>
+          <span
+            className={cn(
+              'flex-shrink-0',
+              node.type === 'parameter' && 'text-app-text-tertiary',
+              node.type === 'container' && 'text-blue-500',
+              node.type === 'module' && 'text-app-text-secondary'
+            )}
+          >
             {node.icon}
           </span>
-          
+
           {/* Node name - with inline rename for dynamic instances */}
-          <span className={cn(
-            'flex-1 text-sm truncate',
-            !isSelected && node.type !== 'layer' && 'text-primary',
-            isSelected && 'text-primary-700 font-medium',
-            node.type === 'layer' && 'font-semibold uppercase tracking-wider text-xs',
-            node.type === 'parameter' && 'text-app-text-secondary',
-            node.enabled === false && 'opacity-50'
-          )}>
+          <span
+            className={cn(
+              'flex-1 text-sm truncate',
+              !isSelected && node.type !== 'layer' && 'text-primary',
+              isSelected && 'text-primary-700 font-medium',
+              node.type === 'layer' && 'font-semibold uppercase tracking-wider text-xs',
+              node.type === 'parameter' && 'text-app-text-secondary',
+              node.enabled === false && 'opacity-50'
+            )}
+          >
             {node.isDynamic && renamingPath === node.path ? (
               <input
                 autoFocus
                 value={renameValue}
-                onChange={(e) => setRenameValue(e.target.value)}
+                onChange={e => setRenameValue(e.target.value)}
                 onBlur={() => {
-                  if (node.parentContainerPath) confirmRename(node.parentContainerPath)
+                  if (node.parentContainerPath) confirmRename(node.parentContainerPath);
                 }}
-                onKeyDown={(e) => {
+                onKeyDown={e => {
                   if (e.key === 'Enter' && node.parentContainerPath) {
-                    confirmRename(node.parentContainerPath)
+                    confirmRename(node.parentContainerPath);
                   } else if (e.key === 'Escape') {
-                    cancelRename()
+                    cancelRename();
                   }
-                  e.stopPropagation()
+                  e.stopPropagation();
                 }}
                 className="w-full px-1 py-0.5 text-sm border border-app-border-primary-400 rounded bg-app-bg-primary focus:outline-none focus:ring-1 focus:ring-primary-500"
-                onClick={(e) => e.stopPropagation()}
+                onClick={e => e.stopPropagation()}
               />
             ) : (
               <span
                 onDoubleClick={() => {
                   if (node.isDynamic) {
-                    startRename(node.path, node.instanceName || node.name)
+                    startRename(node.path, node.instanceName || node.name);
                   }
                 }}
                 title={node.isDynamic ? 'Double-click to rename' : undefined}
               >
-                {searchQuery && node.displayName ? highlightMatch(node.displayName, searchQuery) : node.displayName}
+                {searchQuery && node.displayName
+                  ? highlightMatch(node.displayName, searchQuery)
+                  : node.displayName}
               </span>
             )}
           </span>
-          
+
           {/* Dynamic instance controls */}
           {node.isDynamicParent && (
             <button
-              onClick={(e) => {
-                e.stopPropagation()
-                addInstance(node.path)
+              onClick={e => {
+                e.stopPropagation();
+                addInstance(node.path);
               }}
               className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded text-green-600 hover:bg-green-50 dark:hover:bg-green-900/40 opacity-0 group-hover:opacity-100 transition-opacity text-sm font-bold"
               title={`Add ${node.displayName} instance`}
@@ -920,10 +1059,10 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
           {node.isDynamic && (
             <>
               <button
-                onClick={(e) => {
-                  e.stopPropagation()
+                onClick={e => {
+                  e.stopPropagation();
                   if (node.parentContainerPath) {
-                    copyInstance(node.parentContainerPath, node.instanceName!)
+                    copyInstance(node.parentContainerPath, node.instanceName!);
                   }
                 }}
                 className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/40 opacity-0 group-hover:opacity-100 transition-opacity text-xs font-medium"
@@ -932,13 +1071,13 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
                 ⎘
               </button>
               <button
-                onClick={(e) => {
-                  e.stopPropagation()
+                onClick={e => {
+                  e.stopPropagation();
                   if (node.parentContainerPath) {
                     setDeleteTarget({
                       containerPath: node.parentContainerPath,
-                      instanceName: node.instanceName!
-                    })
+                      instanceName: node.instanceName!,
+                    });
                   }
                 }}
                 className="flex-shrink-0 w-5 h-5 flex items-center justify-center rounded text-red-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/40 opacity-0 group-hover:opacity-100 transition-opacity text-sm"
@@ -948,35 +1087,47 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
               </button>
             </>
           )}
-          
+
           {/* Configuration Status Indicator */}
           {node.type === 'module' && node.configStatus && (
-            <span className={cn(
-              'flex-shrink-0 w-2 h-2 rounded-full',
-              node.configStatus === 'configured' && 'bg-green-500',
-              node.configStatus === 'configuring' && 'bg-blue-500 animate-pulse',
-              node.configStatus === 'partial' && 'bg-yellow-500',
-              node.configStatus === 'unconfigured' && 'bg-app-bg-tertiary'
-            )} title={`Status: ${node.configStatus}`} />
+            <span
+              className={cn(
+                'flex-shrink-0 w-2 h-2 rounded-full',
+                node.configStatus === 'configured' && 'bg-green-500',
+                node.configStatus === 'configuring' && 'bg-blue-500 animate-pulse',
+                node.configStatus === 'partial' && 'bg-yellow-500',
+                node.configStatus === 'unconfigured' && 'bg-app-bg-tertiary'
+              )}
+              title={`Status: ${node.configStatus}`}
+            />
           )}
-          
+
           {/* Module enable toggle */}
           {node.type === 'module' && onToggleModule && (
             <button
-              onClick={(e) => handleToggleModule(e, node)}
+              onClick={e => handleToggleModule(e, node)}
               className={cn(
                 'p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity',
-                node.enabled ? 'text-green-600 hover:bg-green-50 dark:hover:bg-green-900/40' : 'text-app-text-tertiary hover:bg-app-bg-tertiary'
+                node.enabled
+                  ? 'text-green-600 hover:bg-green-50 dark:hover:bg-green-900/40'
+                  : 'text-app-text-tertiary hover:bg-app-bg-tertiary'
               )}
             >
               <Power className="w-3.5 h-3.5" />
             </button>
           )}
-          
+
           {/* Validation indicator: red X for errors, amber triangle for warnings only, green check for clean */}
-          <span className="flex-shrink-0 w-5 h-5 flex items-center justify-center" title={
-            hasErrors ? `${node.errorCount} error(s)` : hasWarnings ? `${node.warningCount} warning(s)` : 'Passed'
-          }>
+          <span
+            className="flex-shrink-0 w-5 h-5 flex items-center justify-center"
+            title={
+              hasErrors
+                ? `${node.errorCount} error(s)`
+                : hasWarnings
+                  ? `${node.warningCount} warning(s)`
+                  : 'Passed'
+            }
+          >
             {hasErrors ? (
               <XCircle className="w-3.5 h-3.5 text-red-500" />
             ) : hasWarnings ? (
@@ -985,32 +1136,45 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
               <CheckCircle className="w-3.5 h-3.5 text-green-500" />
             )}
           </span>
-          
+
           {/* Lock indicator for Pro modules */}
           {node.locked && (
-            <span className="flex-shrink-0 flex items-center gap-1 px-1.5 py-0.5 rounded text-amber-600 bg-amber-50 text-[10px] font-medium" title="Upgrade to Pro to unlock">
+            <span
+              className="flex-shrink-0 flex items-center gap-1 px-1.5 py-0.5 rounded text-amber-600 bg-amber-50 text-[10px] font-medium"
+              title="Upgrade to Pro to unlock"
+            >
               <Lock className="w-3 h-3" />
               Pro
             </span>
           )}
         </div>
-        
+
         {/* Sub-container nodes (including dynamic instances) */}
-        <div className="grid transition-all duration-200 ease-in-out" style={{ gridTemplateRows: isExpanded && node.children && node.children.length > 0 && !node.locked ? '1fr' : '0fr' }}>
+        <div
+          className="grid transition-all duration-200 ease-in-out"
+          style={{
+            gridTemplateRows:
+              isExpanded && node.children && node.children.length > 0 && !node.locked
+                ? '1fr'
+                : '0fr',
+          }}
+        >
           <div className="overflow-hidden">
-            {node.children && node.children.length > 0 && node.children.map(child => renderNode(child, level + 1))}
+            {node.children &&
+              node.children.length > 0 &&
+              node.children.map(child => renderNode(child, level + 1))}
           </div>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   // Count total modules and enabled modules
   const stats = useMemo(() => {
-    const total = config.modules.length
-    const enabled = config.modules.filter(m => m.enabled).length
-    return { total, enabled }
-  }, [config])
+    const total = config.modules.length;
+    const enabled = config.modules.filter(m => m.enabled).length;
+    return { total, enabled };
+  }, [config]);
 
   return (
     <div className="bg-app-bg-primary rounded-lg border border-app-border-primary overflow-hidden flex flex-col h-full">
@@ -1022,7 +1186,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
             {stats.enabled}/{stats.total} modules
           </span>
         </div>
-        
+
         {/* Search */}
         <div className="relative">
           <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-app-text-tertiary" />
@@ -1030,7 +1194,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
             type="text"
             placeholder="Search modules..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={e => setSearchQuery(e.target.value)}
             className="w-full pl-7 pr-7 py-1.5 text-xs border border-app-border-primary rounded-md bg-app-bg-primary text-app-text-primary focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500"
           />
           {searchQuery && (
@@ -1042,7 +1206,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
             </button>
           )}
         </div>
-        
+
         {/* Toolbar */}
         <div className="flex items-center justify-between mt-2">
           <div className="relative">
@@ -1064,7 +1228,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
                   <input
                     type="checkbox"
                     checked={showDisabled}
-                    onChange={(e) => {}}
+                    onChange={_e => {}}
                     className="w-3.5 h-3.5 rounded border-app-border-primary text-primary-600 focus:ring-primary-500"
                   />
                   <span>Show disabled modules</span>
@@ -1072,7 +1236,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
               </div>
             )}
           </div>
-          
+
           <div className="flex items-center gap-1">
             <button
               onClick={expandAll}
@@ -1090,7 +1254,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
           </div>
         </div>
       </div>
-      
+
       {/* Tree content */}
       <div className="flex-1 overflow-y-auto">
         {treeData.length === 0 ? (
@@ -1098,12 +1262,10 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
             <p className="text-sm text-app-text-secondary">No modules found</p>
           </div>
         ) : (
-          <div className="py-1">
-            {treeData.map(node => renderNode(node))}
-          </div>
+          <div className="py-1">{treeData.map(node => renderNode(node))}</div>
         )}
       </div>
-      
+
       {/* Footer - validation summary */}
       {validationIssues.length > 0 && (
         <div className="px-3 py-2 bg-app-bg-secondary border-t border-app-border-primary">
@@ -1135,26 +1297,50 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
         <div
           className="fixed z-50 bg-app-bg-primary rounded-lg shadow-xl border border-app-border-primary py-1 min-w-[140px]"
           style={{ left: contextMenu.x, top: contextMenu.y }}
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
         >
           <button
             className="w-full px-3 py-2 text-left text-sm text-primary hover:bg-app-bg-secondary flex items-center gap-2"
             onClick={() => {
-              startRename(contextMenu.nodePath, contextMenu.instanceName)
-              setContextMenu(null)
+              startRename(contextMenu.nodePath, contextMenu.instanceName);
+              setContextMenu(null);
             }}
           >
-            <svg className="w-4 h-4 text-app-text-tertiary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+            <svg
+              className="w-4 h-4 text-app-text-tertiary"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
             重命名
           </button>
           <button
             className="w-full px-3 py-2 text-left text-sm text-primary hover:bg-app-bg-secondary flex items-center gap-2"
             onClick={() => {
-              copyInstance(contextMenu.containerPath, contextMenu.instanceName)
-              setContextMenu(null)
+              copyInstance(contextMenu.containerPath, contextMenu.instanceName);
+              setContextMenu(null);
             }}
           >
-            <svg className="w-4 h-4 text-app-text-tertiary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+            <svg
+              className="w-4 h-4 text-app-text-tertiary"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+              />
+            </svg>
             复制
           </button>
           <div className="border-t border-app-border-primary my-1" />
@@ -1164,11 +1350,23 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
               setDeleteTarget({
                 containerPath: contextMenu.containerPath,
                 instanceName: contextMenu.instanceName,
-              })
-              setContextMenu(null)
+              });
+              setContextMenu(null);
             }}
           >
-            <svg className="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+            <svg
+              className="w-4 h-4 text-red-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              />
+            </svg>
             删除
           </button>
         </div>
@@ -1176,8 +1374,14 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
 
       {/* Delete confirmation dialog */}
       {deleteTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30" onClick={() => setDeleteTarget(null)}>
-          <div className="bg-app-bg-primary rounded-lg shadow-xl border border-app-border-primary w-96 p-5" onClick={e => e.stopPropagation()}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/30"
+          onClick={() => setDeleteTarget(null)}
+        >
+          <div
+            className="bg-app-bg-primary rounded-lg shadow-xl border border-app-border-primary w-96 p-5"
+            onClick={e => e.stopPropagation()}
+          >
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
                 <AlertTri className="w-5 h-5 text-red-600" />
@@ -1185,7 +1389,8 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
               <div>
                 <h3 className="text-base font-semibold text-app-text-primary">确认删除</h3>
                 <p className="text-sm text-app-text-secondary mt-0.5">
-                  确定删除 <span className="font-medium text-primary">{deleteTarget.instanceName}</span>？
+                  确定删除{' '}
+                  <span className="font-medium text-primary">{deleteTarget.instanceName}</span>？
                 </p>
               </div>
             </div>
@@ -1202,13 +1407,13 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
               <button
                 onClick={() => {
                   // Build the deleted instance's full path
-                  const deletedPath = `${deleteTarget.containerPath}/instance:${deleteTarget.instanceName}`
+                  const deletedPath = `${deleteTarget.containerPath}/instance:${deleteTarget.instanceName}`;
                   // Clear selection if the deleted instance or any of its children was selected
                   if (selectedPath?.startsWith(deletedPath)) {
-                    onSelectPath('')
+                    onSelectPath('');
                   }
-                  removeInstance(deleteTarget.containerPath, deleteTarget.instanceName)
-                  setDeleteTarget(null)
+                  removeInstance(deleteTarget.containerPath, deleteTarget.instanceName);
+                  setDeleteTarget(null);
                 }}
                 className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors"
               >
@@ -1222,7 +1427,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
       {/* Upgrade Dialog for locked Pro modules */}
       <UpgradeDialog isOpen={upgradeDialogOpen} onClose={() => setUpgradeDialogOpen(false)} />
     </div>
-  )
-})
+  );
+});
 
-export default ConfigTree
+export default ConfigTree;

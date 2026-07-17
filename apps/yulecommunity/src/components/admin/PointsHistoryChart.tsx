@@ -1,13 +1,5 @@
 import { useMemo } from 'react';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import type { PointsHistoryItem } from '../../hooks/useUserSystem';
 
@@ -42,7 +34,7 @@ export function PointsHistoryChart() {
       dailyNegative.set(key, 0);
     }
 
-    history.forEach((item) => {
+    history.forEach(item => {
       const key = item.timestamp.split('T')[0];
       if (dailyPositive.has(key)) {
         if (item.points >= 0) {
@@ -67,7 +59,7 @@ export function PointsHistoryChart() {
     return days;
   }, [state]);
 
-  const hasData = data.some((d) => d.positive > 0 || d.negative > 0);
+  const hasData = data.some(d => d.positive > 0 || d.negative > 0);
 
   if (!hasData) {
     return (

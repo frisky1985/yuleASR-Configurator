@@ -14,18 +14,20 @@
   e.g. `"yuletech-generator-can"`, `"mycompany-validator-mcu"`.
 - **Use SemVer versions** — Follow `MAJOR.MINOR.PATCH`. Breaking changes to the
   generated output or validation behaviour should increment the major version.
-- **Be descriptive** — Set a meaningful `name` and `description`. Users see these
-  in the plugin list and API responses.
+- **Be descriptive** — Set a meaningful `name` and `description`. Users see
+  these in the plugin list and API responses.
 
 ### 2. Activation (the `activate` method)
 
-- **Keep activation fast** — Don't perform heavy I/O or network calls in `activate()`.
-  Defer expensive operations to the first `generate()` / `validate()` / `export()` call.
+- **Keep activation fast** — Don't perform heavy I/O or network calls in
+  `activate()`. Defer expensive operations to the first `generate()` /
+  `validate()` / `export()` call.
 - **Register early** — Register all generators, validators, and exporters during
   activation. The plugin manager auto-prefixes names with your plugin ID, so
   collisions are unlikely.
-- **Validate user config** — If your plugin requires user configuration (e.g. API keys,
-  copyright text), check for it in `activate()` and log a clear warning if missing.
+- **Validate user config** — If your plugin requires user configuration (e.g.
+  API keys, copyright text), check for it in `activate()` and log a clear
+  warning if missing.
 
 ```typescript
 async activate(context: PluginContext): Promise<void> {
@@ -39,13 +41,15 @@ async activate(context: PluginContext): Promise<void> {
 
 ### 3. Code Generator Plugins
 
-- **Use `supportedModules` precisely** — List only the modules your generator actually
-  handles. Use `['*']` only for universal generators (like a copyright header inserter).
-- **The `config` parameter** — Contains the module configuration. Expect it to have
-  a `module` (string) field and a `parameters` (Record<string, unknown>) field.
+- **Use `supportedModules` precisely** — List only the modules your generator
+  actually handles. Use `['*']` only for universal generators (like a copyright
+  header inserter).
+- **The `config` parameter** — Contains the module configuration. Expect it to
+  have a `module` (string) field and a `parameters` (Record<string, unknown>)
+  field.
 - **File paths** — Use relative paths. The caller prepends the output directory.
-- **Error handling** — If generation fails, throw a descriptive error. Do not catch
-  and return an empty `{ files: [] }`.
+- **Error handling** — If generation fails, throw a descriptive error. Do not
+  catch and return an empty `{ files: [] }`.
 
 ```typescript
 async generate(config, options) {
@@ -59,12 +63,12 @@ async generate(config, options) {
 
 ### 4. Validator Plugins
 
-- **Return structured results** — Don't throw exceptions for validation failures.
-  Return `ValidationResult[]` with appropriate severity levels.
-- **Be specific** — Include the exact parameter name in `param` and `module` fields
-  so the UI can highlight the problematic field.
-- **Validate dependencies** — If a module depends on another (e.g. CanTrcv depends on Can),
-  check that the dependent module's config is also present.
+- **Return structured results** — Don't throw exceptions for validation
+  failures. Return `ValidationResult[]` with appropriate severity levels.
+- **Be specific** — Include the exact parameter name in `param` and `module`
+  fields so the UI can highlight the problematic field.
+- **Validate dependencies** — If a module depends on another (e.g. CanTrcv
+  depends on Can), check that the dependent module's config is also present.
 
 ```typescript
 async validate(config): Promise<ValidationResult[]> {
@@ -84,23 +88,24 @@ async validate(config): Promise<ValidationResult[]> {
 
 ### 5. Data Exporter Plugins
 
-- **Use `outputExtension`** — Set this to the correct file extension (e.g. `"json"`,
-  `"yaml"`, `"xml"`). The UI uses this to suggest filenames.
+- **Use `outputExtension`** — Set this to the correct file extension (e.g.
+  `"json"`, `"yaml"`, `"xml"`). The UI uses this to suggest filenames.
 - **Handle large configs** — The `config` passed to `export()` may be the entire
-  project configuration. Consider adding filtering options (e.g. `options.filterModule`).
-- **Format nicely** — For text-based formats (JSON, YAML), produce human-readable
-  output with indentation.
+  project configuration. Consider adding filtering options (e.g.
+  `options.filterModule`).
+- **Format nicely** — For text-based formats (JSON, YAML), produce
+  human-readable output with indentation.
 
 ### 6. Common Pitfalls
 
-| Pitfall | Solution |
-|---------|----------|
-| Registering the same generator on every `generate()` call | Register once in `activate()` |
-| Hardcoding paths | Return relative paths; let the caller resolve the output directory |
-| Forgetting `await` on plugin functions | Always `await` `generate()`, `validate()`, `export()` |
-| Mutating `context.config` | It is read-only. Use `pluginManager.updateConfig()` to change it |
-| Using Node APIs in browser context | Only use pure JS/TS or check environment (e.g. `typeof window === 'undefined'`) |
-| Not handling `deactivate` | Clean up timers, intervals, and file handles to avoid resource leaks |
+| Pitfall                                                   | Solution                                                                        |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Registering the same generator on every `generate()` call | Register once in `activate()`                                                   |
+| Hardcoding paths                                          | Return relative paths; let the caller resolve the output directory              |
+| Forgetting `await` on plugin functions                    | Always `await` `generate()`, `validate()`, `export()`                           |
+| Mutating `context.config`                                 | It is read-only. Use `pluginManager.updateConfig()` to change it                |
+| Using Node APIs in browser context                        | Only use pure JS/TS or check environment (e.g. `typeof window === 'undefined'`) |
+| Not handling `deactivate`                                 | Clean up timers, intervals, and file handles to avoid resource leaks            |
 
 ### 7. Testing
 
@@ -124,7 +129,8 @@ test('should register a code generator', async () => {
 
 - Bundle your plugin with **tsup** or **tsc** targeting ES2022+.
 - Ensure your plugin works both as **ESM** (`import`) and **CJS** (`require`).
-- Publish to npm or distribute as a `.js` file placed in the external plugin directory.
+- Publish to npm or distribute as a `.js` file placed in the external plugin
+  directory.
 
 ---
 
@@ -164,13 +170,13 @@ test('should register a code generator', async () => {
 
 ### 6. 常见陷阱
 
-| 陷阱 | 解决方案 |
-|------|---------|
-| 每次 `generate()` 调用都注册生成器 | 在 `activate()` 中只注册一次 |
-| 硬编码路径 | 返回相对路径 |
-| 忘记 `await` 插件函数 | 始终 `await` 异步调用 |
-| 修改 `context.config` | 只读，使用 `pluginManager.updateConfig()` |
-| 在浏览器环境中使用 Node API | 只使用纯 JS/TS 或检查环境 |
+| 陷阱                               | 解决方案                                  |
+| ---------------------------------- | ----------------------------------------- |
+| 每次 `generate()` 调用都注册生成器 | 在 `activate()` 中只注册一次              |
+| 硬编码路径                         | 返回相对路径                              |
+| 忘记 `await` 插件函数              | 始终 `await` 异步调用                     |
+| 修改 `context.config`              | 只读，使用 `pluginManager.updateConfig()` |
+| 在浏览器环境中使用 Node API        | 只使用纯 JS/TS 或检查环境                 |
 
 ### 7. 测试
 

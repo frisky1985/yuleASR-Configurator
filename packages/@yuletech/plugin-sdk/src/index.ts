@@ -5,11 +5,7 @@
 /**
  * Supported plugin types
  */
-export type PluginType =
-  | 'code-generator'
-  | 'validator'
-  | 'data-export'
-  | 'ui-extension';
+export type PluginType = 'code-generator' | 'validator' | 'data-export' | 'ui-extension';
 
 // ------------------------------------------------------------------
 // Plugin Lifecycle
@@ -50,7 +46,7 @@ export interface CodeGeneratorPlugin {
    */
   generate(
     config: Record<string, unknown>,
-    options: Record<string, unknown>,
+    options: Record<string, unknown>
   ): Promise<{ files: { path: string; content: string }[] }>;
 }
 
@@ -100,9 +96,7 @@ export interface ValidatorPlugin {
    * @param config - Module configuration object
    * @returns A list of validation results
    */
-  validate(
-    config: Record<string, unknown>,
-  ): Promise<ValidationResult[]>;
+  validate(config: Record<string, unknown>): Promise<ValidationResult[]>;
 }
 
 // ------------------------------------------------------------------
@@ -132,7 +126,7 @@ export interface DataExporterPlugin {
    */
   export(
     config: Record<string, unknown>,
-    options: Record<string, unknown>,
+    options: Record<string, unknown>
   ): Promise<{ content: string; extension: string }>;
 }
 

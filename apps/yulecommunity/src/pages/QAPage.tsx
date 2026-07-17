@@ -60,7 +60,10 @@ function postToQuestion(p: ForumPostSummary): Question {
 const fallbackQuestions: Question[] = [];
 
 export function QAPage() {
-  const [questions, setQuestions] = useLocalStorage<Question[]>('yuletech-qa-questions', fallbackQuestions);
+  const [questions, setQuestions] = useLocalStorage<Question[]>(
+    'yuletech-qa-questions',
+    fallbackQuestions
+  );
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState(false);
   const [searchQueryVal, setSearchQuery] = useState('');
@@ -107,11 +110,13 @@ export function QAPage() {
       // Data already exists in localStorage; still try API for refresh
       loadQuestions();
     }
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const filteredQuestions = questions
-    .filter((q) => {
+    .filter(q => {
       const matchSearch =
         q.title.toLowerCase().includes(searchQueryVal.toLowerCase()) ||
         q.content.toLowerCase().includes(searchQueryVal.toLowerCase());
@@ -119,25 +124,28 @@ export function QAPage() {
       return matchSearch && matchStatus;
     })
     .sort((a, b) => {
-      if (sortByVal === 'newest') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      if (sortByVal === 'newest')
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       if (sortByVal === 'bounty') return b.bounty - a.bounty;
       if (sortByVal === 'views') return b.views - a.views;
       return 0;
     });
 
   const handleLikeAnswer = (questionId: string, answerId: string) => {
-    setQuestions((prev) =>
-      prev.map((q) => {
+    setQuestions(prev =>
+      prev.map(q => {
         if (q.id !== questionId) return q;
         return {
           ...q,
-          answers: q.answers.map((ans) => {
+          answers: q.answers.map(ans => {
             if (ans.id !== answerId) return ans;
             const alreadyLiked = ans.likedBy.includes(currentUser);
             return {
               ...ans,
               likes: alreadyLiked ? ans.likes - 1 : ans.likes + 1,
-              likedBy: alreadyLiked ? ans.likedBy.filter((u) => u !== currentUser) : [...ans.likedBy, currentUser],
+              likedBy: alreadyLiked
+                ? ans.likedBy.filter(u => u !== currentUser)
+                : [...ans.likedBy, currentUser],
             };
           }),
         };
@@ -146,15 +154,15 @@ export function QAPage() {
   };
 
   const handleAcceptAnswer = (questionId: string, answerId: string) => {
-    const question = questions.find((q) => q.id === questionId);
-    const answer = question?.answers.find((a) => a.id === answerId);
-    setQuestions((prev) =>
-      prev.map((q) => {
+    const question = questions.find(q => q.id === questionId);
+    const answer = question?.answers.find(a => a.id === answerId);
+    setQuestions(prev =>
+      prev.map(q => {
         if (q.id !== questionId) return q;
         return {
           ...q,
           status: 'resolved' as const,
-          answers: q.answers.map((ans) => ({
+          answers: q.answers.map(ans => ({
             ...ans,
             isAccepted: ans.id === answerId,
           })),
@@ -174,7 +182,7 @@ export function QAPage() {
 
   const handleAddAnswer = (questionId: string) => {
     if (!answerContent.trim()) return;
-    const question = questions.find((q) => q.id === questionId);
+    const question = questions.find(q => q.id === questionId);
     const newAnswer: Answer = {
       id: generateId('ans'),
       content: answerContent.trim(),
@@ -186,8 +194,8 @@ export function QAPage() {
       likedBy: [],
       createdAt: new Date().toISOString(),
     };
-    setQuestions((prev) =>
-      prev.map((q) => (q.id === questionId ? { ...q, answers: [...q.answers, newAnswer] } : q))
+    setQuestions(prev =>
+      prev.map(q => (q.id === questionId ? { ...q, answers: [...q.answers, newAnswer] } : q))
     );
     setAnswerContent('');
     addPoints('answer');
@@ -205,7 +213,7 @@ export function QAPage() {
     if (!newTitle.trim() || !newContent.trim()) return;
     const tags = newTags
       .split(/[,，]/)
-      .map((t) => t.trim())
+      .map(t => t.trim())
       .filter(Boolean);
     const newQuestion: Question = {
       id: generateId('qa'),
@@ -221,7 +229,7 @@ export function QAPage() {
       answers: [],
       createdAt: new Date().toISOString(),
     };
-    setQuestions((prev) => [newQuestion, ...prev]);
+    setQuestions(prev => [newQuestion, ...prev]);
     setNewTitle('');
     setNewContent('');
     setNewTags('');
@@ -260,7 +268,10 @@ export function QAPage() {
     <div className="min-h-screen bg-background pt-16">
       <Helmet>
         <title>技术问答 - YuleTech | AutoSAR 悬赏问答</title>
-        <meta name="description" content="悬赏提问，专家解答，共建 AutoSAR 知识库。解决 MCAL、ECUAL、Service 层开发中的具体技术难题。" />
+        <meta
+          name="description"
+          content="悬赏提问，专家解答，共建 AutoSAR 知识库。解决 MCAL、ECUAL、Service 层开发中的具体技术难题。"
+        />
       </Helmet>
       {/* Header */}
       <div className="bg-gradient-to-br from-muted/50 to-background border-b border-border">
@@ -287,7 +298,7 @@ export function QAPage() {
                 type="text"
                 placeholder="搜索问题..."
                 value={searchQueryVal}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
               />
             </div>
@@ -295,10 +306,10 @@ export function QAPage() {
               <Filter className="w-4 h-4 text-muted-foreground" />
               <select
                 value={sortByVal}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={e => setSortBy(e.target.value)}
                 className="px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
               >
-                {sortOptions.map((opt) => (
+                {sortOptions.map(opt => (
                   <option key={opt.value} value={opt.value}>
                     {opt.label}
                   </option>
@@ -309,7 +320,7 @@ export function QAPage() {
 
           {/* Status Filters */}
           <div className="mt-4 flex gap-2">
-            {statusFilters.map((f) => (
+            {statusFilters.map(f => (
               <button
                 key={f.value}
                 onClick={() => setStatusFilter(f.value)}
@@ -344,7 +355,7 @@ export function QAPage() {
           </div>
         )}
         <div className="space-y-4">
-          {filteredQuestions.map((q) => {
+          {filteredQuestions.map(q => {
             const isExpanded = expandedQuestionId === q.id;
             return (
               <div
@@ -356,8 +367,10 @@ export function QAPage() {
                   onClick={() => {
                     setExpandedQuestionId(isExpanded ? null : q.id);
                     if (!isExpanded) {
-                      setQuestions((prev) =>
-                        prev.map((item) => (item.id === q.id ? { ...item, views: item.views + 1 } : item))
+                      setQuestions(prev =>
+                        prev.map(item =>
+                          item.id === q.id ? { ...item, views: item.views + 1 } : item
+                        )
                       );
                     }
                   }}
@@ -401,8 +414,11 @@ export function QAPage() {
                           {q.answers.length} 回答
                         </span>
                         <div className="flex gap-1 ml-auto">
-                          {q.tags.map((tag) => (
-                            <span key={tag} className="px-2 py-0.5 bg-muted rounded-full text-[10px]">
+                          {q.tags.map(tag => (
+                            <span
+                              key={tag}
+                              className="px-2 py-0.5 bg-muted rounded-full text-[10px]"
+                            >
                               {tag}
                             </span>
                           ))}
@@ -422,13 +438,17 @@ export function QAPage() {
                   <div className="border-t border-border px-5 pb-5">
                     <div className="pt-4 space-y-4">
                       {q.answers.length === 0 && (
-                        <p className="text-sm text-muted-foreground text-center py-4">暂无回答，来抢首答吧！</p>
+                        <p className="text-sm text-muted-foreground text-center py-4">
+                          暂无回答，来抢首答吧！
+                        </p>
                       )}
-                      {q.answers.map((ans) => (
+                      {q.answers.map(ans => (
                         <div
                           key={ans.id}
                           className={`flex gap-3 p-4 rounded-xl ${
-                            ans.isAccepted ? 'bg-green-500/5 border border-green-500/20' : 'bg-muted/30'
+                            ans.isAccepted
+                              ? 'bg-green-500/5 border border-green-500/20'
+                              : 'bg-muted/30'
                           }`}
                         >
                           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center text-xs font-bold text-muted-foreground">
@@ -443,9 +463,13 @@ export function QAPage() {
                                   已采纳
                                 </span>
                               )}
-                              <span className="text-xs text-muted-foreground ml-auto">{formatTime(ans.createdAt)}</span>
+                              <span className="text-xs text-muted-foreground ml-auto">
+                                {formatTime(ans.createdAt)}
+                              </span>
                             </div>
-                            <p className="text-sm text-foreground whitespace-pre-wrap">{ans.content}</p>
+                            <p className="text-sm text-foreground whitespace-pre-wrap">
+                              {ans.content}
+                            </p>
                             <div className="flex items-center gap-4 mt-3">
                               <button
                                 onClick={() => handleLikeAnswer(q.id, ans.id)}
@@ -480,8 +504,10 @@ export function QAPage() {
                         <div className="flex-1 flex gap-2">
                           <textarea
                             value={answerContent}
-                            onChange={(e) => setAnswerContent(e.target.value)}
-                            placeholder={q.status === 'resolved' ? '该问题已解决' : '写下你的回答...'}
+                            onChange={e => setAnswerContent(e.target.value)}
+                            placeholder={
+                              q.status === 'resolved' ? '该问题已解决' : '写下你的回答...'
+                            }
                             disabled={q.status === 'resolved'}
                             rows={3}
                             className="flex-1 px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30 resize-none disabled:opacity-50"
@@ -516,7 +542,10 @@ export function QAPage() {
           <div className="bg-card border border-border rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
             <div className="flex items-center justify-between p-5 border-b border-border">
               <h2 className="text-lg font-bold">我要提问</h2>
-              <button onClick={() => setShowNewQuestion(false)} className="p-1.5 rounded-lg hover:bg-muted transition-colors">
+              <button
+                onClick={() => setShowNewQuestion(false)}
+                className="p-1.5 rounded-lg hover:bg-muted transition-colors"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -526,7 +555,7 @@ export function QAPage() {
                 <input
                   type="text"
                   value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
+                  onChange={e => setNewTitle(e.target.value)}
                   placeholder="一句话描述你的问题"
                   className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
                 />
@@ -535,7 +564,7 @@ export function QAPage() {
                 <label className="block text-sm font-medium mb-1.5">问题详情</label>
                 <textarea
                   value={newContent}
-                  onChange={(e) => setNewContent(e.target.value)}
+                  onChange={e => setNewContent(e.target.value)}
                   placeholder="详细描述你遇到的问题，包括环境、已尝试的方案等..."
                   rows={6}
                   className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30 resize-none"
@@ -546,7 +575,7 @@ export function QAPage() {
                 <input
                   type="text"
                   value={newTags}
-                  onChange={(e) => setNewTags(e.target.value)}
+                  onChange={e => setNewTags(e.target.value)}
                   placeholder="例如：OS, FreeRTOS, Alarm"
                   className="w-full px-3 py-2.5 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
                 />
@@ -560,10 +589,12 @@ export function QAPage() {
                     max={100}
                     step={5}
                     value={newBounty}
-                    onChange={(e) => setNewBounty(Number(e.target.value))}
+                    onChange={e => setNewBounty(Number(e.target.value))}
                     className="flex-1"
                   />
-                  <span className="text-sm font-bold text-amber-500 w-12 text-right">{newBounty}</span>
+                  <span className="text-sm font-bold text-amber-500 w-12 text-right">
+                    {newBounty}
+                  </span>
                 </div>
               </div>
             </div>

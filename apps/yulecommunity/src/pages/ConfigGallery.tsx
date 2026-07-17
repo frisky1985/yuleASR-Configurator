@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Search,
   Grid3X3,
@@ -14,30 +14,30 @@ import {
   ArrowUpDown,
   ChevronLeft,
   ChevronRight,
-} from 'lucide-react'
-import { sharedConfigApi } from '../services/sharedConfigApi'
-import type { SharedConfig } from '../types/bswTemplate'
+} from 'lucide-react';
+import { sharedConfigApi } from '../services/sharedConfigApi';
+import type { SharedConfig } from '../types/bswTemplate';
 
 const sortOptions = [
   { value: 'createdAt', label: '最新发布' },
   { value: 'likeCount', label: '最多点赞' },
   { value: 'viewCount', label: '最多浏览' },
-]
+];
 
 export function ConfigGallery() {
-  const [configs, setConfigs] = useState<SharedConfig[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [search, setSearch] = useState('')
-  const [sortBy, setSortBy] = useState('createdAt')
-  const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
-  const [total, setTotal] = useState(0)
-  const pageSize = 12
+  const [configs, setConfigs] = useState<SharedConfig[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
+  const [sortBy, setSortBy] = useState('createdAt');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [total, setTotal] = useState(0);
+  const pageSize = 12;
 
   const fetchConfigs = async () => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
       const result = await sharedConfigApi.list({
         search: search || undefined,
@@ -45,26 +45,26 @@ export function ConfigGallery() {
         sortOrder: 'desc',
         page,
         pageSize,
-      })
-      setConfigs(result.data)
-      setTotal(result.total)
-      setTotalPages(result.totalPages)
+      });
+      setConfigs(result.data);
+      setTotal(result.total);
+      setTotalPages(result.totalPages);
     } catch (err: any) {
-      setError(err.message || '加载失败')
+      setError(err.message || '加载失败');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchConfigs()
-  }, [sortBy, page])
+    fetchConfigs();
+  }, [sortBy, page]);
 
   const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    setPage(1)
-    fetchConfigs()
-  }
+    e.preventDefault();
+    setPage(1);
+    fetchConfigs();
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -85,7 +85,7 @@ export function ConfigGallery() {
           <input
             type="text"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={e => setSearch(e.target.value)}
             placeholder="搜索配置名称、描述..."
             className="w-full pl-10 pr-4 py-2.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
           />
@@ -94,11 +94,16 @@ export function ConfigGallery() {
           <ArrowUpDown className="w-4 h-4 text-slate-400" />
           <select
             value={sortBy}
-            onChange={(e) => { setSortBy(e.target.value); setPage(1) }}
+            onChange={e => {
+              setSortBy(e.target.value);
+              setPage(1);
+            }}
             className="px-3 py-2.5 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
           >
-            {sortOptions.map((opt) => (
-              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            {sortOptions.map(opt => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
             ))}
           </select>
         </div>
@@ -122,14 +127,12 @@ export function ConfigGallery() {
           <h3 className="text-lg font-medium text-slate-700 dark:text-slate-300 mb-1">
             暂无分享的配置
           </h3>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            成为第一个分享配置的人吧！
-          </p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">成为第一个分享配置的人吧！</p>
         </div>
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {configs.map((config) => (
+            {configs.map(config => (
               <Link
                 key={config.id}
                 to={`/gallery/${config.id}`}
@@ -169,7 +172,7 @@ export function ConfigGallery() {
                   {/* Tags */}
                   {config.tags && config.tags.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mb-3">
-                      {config.tags.slice(0, 4).map((tag) => (
+                      {config.tags.slice(0, 4).map(tag => (
                         <span
                           key={tag}
                           className="px-1.5 py-0.5 text-xs bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 rounded"
@@ -215,14 +218,14 @@ export function ConfigGallery() {
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-2 mt-8">
               <button
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
                 className="p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               {Array.from({ length: totalPages }, (_, i) => i + 1)
-                .filter((p) => p === 1 || p === totalPages || Math.abs(p - page) <= 2)
+                .filter(p => p === 1 || p === totalPages || Math.abs(p - page) <= 2)
                 .map((p, idx, arr) => (
                   <span key={p} className="flex items-center">
                     {idx > 0 && arr[idx - 1] !== p - 1 && (
@@ -241,7 +244,7 @@ export function ConfigGallery() {
                   </span>
                 ))}
               <button
-                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                 disabled={page === totalPages}
                 className="p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
@@ -252,7 +255,7 @@ export function ConfigGallery() {
         </>
       )}
     </div>
-  )
+  );
 }
 
-export default ConfigGallery
+export default ConfigGallery;

@@ -1,14 +1,14 @@
-import { ChevronDown, ChevronRight } from 'lucide-react'
-import { useState, type ReactNode } from 'react'
+import { ChevronDown, ChevronRight } from 'lucide-react';
+import { useState, type ReactNode } from 'react';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 interface CollapsibleSectionProps {
-  title: string
-  subtitle?: string
-  defaultExpanded?: boolean
-  children: ReactNode
-  className?: string
+  title: string;
+  subtitle?: string;
+  defaultExpanded?: boolean;
+  children: ReactNode;
+  className?: string;
 }
 
 export function CollapsibleSection({
@@ -18,7 +18,7 @@ export function CollapsibleSection({
   children,
   className,
 }: CollapsibleSectionProps) {
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded)
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
   return (
     <div className={cn('border border-app-border-primary rounded-lg overflow-hidden', className)}>
@@ -37,15 +37,9 @@ export function CollapsibleSection({
           {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
         </span>
         <span className="flex-1 text-sm font-medium text-app-text-primary">{title}</span>
-        {subtitle && (
-          <span className="text-xs text-app-text-secondary">{subtitle}</span>
-        )}
+        {subtitle && <span className="text-xs text-app-text-secondary">{subtitle}</span>}
       </button>
-      {isExpanded && (
-        <div className="p-3 space-y-3 bg-app-bg-primary">
-          {children}
-        </div>
-      )}
+      {isExpanded && <div className="p-3 space-y-3 bg-app-bg-primary">{children}</div>}
     </div>
-  )
+  );
 }

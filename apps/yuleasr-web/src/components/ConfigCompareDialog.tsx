@@ -3,23 +3,40 @@
  * Two-column layout with color-coded diff indicators
  */
 
-import { X, FileJson, GitCompare, ChevronDown, ChevronRight, Loader2, AlertCircle } from 'lucide-react'
-import { useState, useEffect, useMemo, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
+import {
+  X,
+  FileJson,
+  GitCompare,
+  ChevronDown,
+  ChevronRight,
+  Loader2,
+  AlertCircle,
+} from 'lucide-react';
+import { useState, useEffect, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import { configComparer, type ComparisonResult, type ConfigDiff, type CompareStatus, type ParamDiff } from '@/services/compareEngine'
-import { cn } from '@/lib/utils'
-import { useConfigStore } from '@/stores/configStore'
+import { cn } from '@/lib/utils';
+import {
+  configComparer,
+  type ComparisonResult,
+  type ConfigDiff,
+  type CompareStatus,
+  type ParamDiff,
+} from '@/services/compareEngine';
+import { useConfigStore } from '@/stores/configStore';
 
 interface ConfigCompareDialogProps {
-  isOpen: boolean
-  onClose: () => void
-  configAId?: string
-  configBId?: string
+  isOpen: boolean;
+  onClose: () => void;
+  configAId?: string;
+  configBId?: string;
 }
 
 // Color mapping for diff status
-const statusColors: Record<CompareStatus, { bg: string; text: string; border: string; label: string }> = {
+const statusColors: Record<
+  CompareStatus,
+  { bg: string; text: string; border: string; label: string }
+> = {
   same: {
     bg: 'bg-app-bg-secondary',
     text: 'text-app-text-secondary',
@@ -44,92 +61,123 @@ const statusColors: Record<CompareStatus, { bg: string; text: string; border: st
     border: 'border-yellow-300 dark:border-yellow-800',
     label: 'Only in B',
   },
-}
+};
 
-// Instance count diff color (blue)
-const instanceDiffColor = 'bg-blue-50 text-blue-700 border-blue-300 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800'
-
-function getStatusStyle(status: CompareStatus, isInstanceDiff?: boolean): { bg: string; text: string; border: string } {
+function getStatusStyle(
+  status: CompareStatus,
+  isInstanceDiff?: boolean
+): { bg: string; text: string; border: string } {
   if (isInstanceDiff && status === 'different') {
-    return { bg: 'bg-blue-50 dark:bg-blue-950/40', text: 'text-blue-700 dark:text-blue-300', border: 'border-blue-300 dark:border-blue-800' }
+    return {
+      bg: 'bg-blue-50 dark:bg-blue-950/40',
+      text: 'text-blue-700 dark:text-blue-300',
+      border: 'border-blue-300 dark:border-blue-800',
+    };
   }
-  const s = statusColors[status]
-  return { bg: s.bg, text: s.text, border: s.border }
-}
-
-function getStatusIcon(status: CompareStatus) {
-  switch (status) {
-    case 'same': return null
-    case 'different': return <span className="text-red-500 font-bold">≠</span>
-    case 'only_a': return <span className="text-yellow-500 font-bold">A</span>
-    case 'only_b': return <span className="text-yellow-500 font-bold">B</span>
-  }
+  const s = statusColors[status];
+  return { bg: s.bg, text: s.text, border: s.border };
 }
 
 function formatValue(val: unknown): string {
-  if (val === undefined || val === null) return '—'
-  if (typeof val === 'boolean') return val ? 'true' : 'false'
-  if (Array.isArray(val)) return `[${val.join(', ')}]`
-  return String(val)
+  if (val === undefined || val === null) return '—';
+  if (typeof val === 'boolean') return val ? 'true' : 'false';
+  if (Array.isArray(val)) return `[${val.join(', ')}]`;
+  return String(val);
 }
 
 // ── Report Export Helpers ──
 
 function downloadBlob(content: string, filename: string, mimeType: string) {
-  const blob = new Blob([content], { type: mimeType })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = filename
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
-function generateHtmlReport(result: ComparisonResult, configA: { id: string; name: string }, configB: { id: string; name: string }): string {
-  const now = new Date().toISOString().replace('T', ' ').substring(0, 19)
+function generateHtmlReport(
+  result: ComparisonResult,
+  configA: { id: string; name: string },
+  configB: { id: string; name: string }
+): string {
+  const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
 
   // Build hierarchical diff rows
-  const rows: string[] = []
+  const rows: string[] = [];
 
   for (const md of result.moduleDiffs) {
-    const moduleStatusLabel = md.status === 'same' ? 'Same' : md.status === 'different' ? 'Different' : md.status === 'only_a' ? 'Only in A' : 'Only in B'
-    const moduleRowClass = md.status === 'same' ? 'same' : md.status === 'different' ? 'different' : 'only-one'
+    const moduleStatusLabel =
+      md.status === 'same'
+        ? 'Same'
+        : md.status === 'different'
+          ? 'Different'
+          : md.status === 'only_a'
+            ? 'Only in A'
+            : 'Only in B';
+    const moduleRowClass =
+      md.status === 'same' ? 'same' : md.status === 'different' ? 'different' : 'only-one';
 
-    rows.push(`<tr class="${moduleRowClass} module-row"><td class="name"><strong>${md.moduleName}</strong></td><td>—</td><td>—</td><td><span class="badge badge-${moduleRowClass}">${moduleStatusLabel}</span></td><td>Module</td></tr>`)
+    rows.push(
+      `<tr class="${moduleRowClass} module-row"><td class="name"><strong>${md.moduleName}</strong></td><td>—</td><td>—</td><td><span class="badge badge-${moduleRowClass}">${moduleStatusLabel}</span></td><td>Module</td></tr>`
+    );
 
     // Show enabled status for modules that differ
     if (md.status === 'different' && md.enabledA !== undefined && md.enabledB !== undefined) {
-      rows.push(`<tr class="different"><td class="name param-name">  enabled</td><td>${md.enabledA}</td><td>${md.enabledB}</td><td><span class="badge badge-different">Different</span></td><td>Param</td></tr>`)
+      rows.push(
+        `<tr class="different"><td class="name param-name">  enabled</td><td>${md.enabledA}</td><td>${md.enabledB}</td><td><span class="badge badge-different">Different</span></td><td>Param</td></tr>`
+      );
     }
 
     // Container-level rows for this module
-    const moduleContainers = result.containerDiffs.filter(c => c.moduleName === md.moduleName)
+    const moduleContainers = result.containerDiffs.filter(c => c.moduleName === md.moduleName);
     for (const cd of moduleContainers) {
-      const containerStatusLabel = cd.status === 'same' ? 'Same' : cd.status === 'different' ? 'Different' : cd.status === 'only_a' ? 'Only in A' : 'Only in B'
-      const containerRowClass = cd.status === 'same' ? 'same' : cd.status === 'different' ? 'different' : 'only-one'
+      const containerStatusLabel =
+        cd.status === 'same'
+          ? 'Same'
+          : cd.status === 'different'
+            ? 'Different'
+            : cd.status === 'only_a'
+              ? 'Only in A'
+              : 'Only in B';
+      const containerRowClass =
+        cd.status === 'same' ? 'same' : cd.status === 'different' ? 'different' : 'only-one';
 
-      let valueA = ''
-      let valueB = ''
-      if (cd.instanceCountA !== undefined) valueA = `Instances: ${cd.instanceCountA}`
-      if (cd.instanceCountB !== undefined) valueB = `Instances: ${cd.instanceCountB}`
+      let valueA = '';
+      let valueB = '';
+      if (cd.instanceCountA !== undefined) valueA = `Instances: ${cd.instanceCountA}`;
+      if (cd.instanceCountB !== undefined) valueB = `Instances: ${cd.instanceCountB}`;
 
-      rows.push(`<tr class="${containerRowClass} container-row"><td class="name">  ${cd.containerName}</td><td>${valueA}</td><td>${valueB}</td><td><span class="badge badge-${containerRowClass}">${containerStatusLabel}</span></td><td>Container</td></tr>`)
+      rows.push(
+        `<tr class="${containerRowClass} container-row"><td class="name">  ${cd.containerName}</td><td>${valueA}</td><td>${valueB}</td><td><span class="badge badge-${containerRowClass}">${containerStatusLabel}</span></td><td>Container</td></tr>`
+      );
 
       // Parameter-level rows for this container
       const containerPath = cd.containerName.includes('.')
         ? cd.containerName
-        : `${md.moduleName}.${cd.containerName}`
+        : `${md.moduleName}.${cd.containerName}`;
       const containerParams = result.paramDiffs.filter(
         p => p.moduleName === md.moduleName && p.containerPath === containerPath
-      )
+      );
       for (const pd of containerParams) {
-        const paramRowClass = pd.status === 'same' ? 'same' : pd.status === 'different' ? 'different' : 'only-one'
-        const paramStatusLabel = pd.status === 'same' ? 'Same' : pd.status === 'different' ? 'Different' : pd.status === 'only_a' ? 'Only in A' : 'Only in B'
-        const valA = pd.valueA !== undefined ? String(pd.valueA) : '—'
-        const valB = pd.valueB !== undefined ? String(pd.valueB) : '—'
-        rows.push(`<tr class="${paramRowClass}"><td class="name param-name">    ${pd.parameterName}</td><td>${valA}</td><td>${valB}</td><td><span class="badge badge-${paramRowClass}">${paramStatusLabel}</span></td><td>${pd.type || 'Param'}</td></tr>`)
+        const paramRowClass =
+          pd.status === 'same' ? 'same' : pd.status === 'different' ? 'different' : 'only-one';
+        const paramStatusLabel =
+          pd.status === 'same'
+            ? 'Same'
+            : pd.status === 'different'
+              ? 'Different'
+              : pd.status === 'only_a'
+                ? 'Only in A'
+                : 'Only in B';
+        const valA = pd.valueA !== undefined ? String(pd.valueA) : '—';
+        const valB = pd.valueB !== undefined ? String(pd.valueB) : '—';
+        rows.push(
+          `<tr class="${paramRowClass}"><td class="name param-name">    ${pd.parameterName}</td><td>${valA}</td><td>${valB}</td><td><span class="badge badge-${paramRowClass}">${paramStatusLabel}</span></td><td>${pd.type || 'Param'}</td></tr>`
+        );
       }
     }
   }
@@ -212,396 +260,433 @@ ${rows.join('\n')}
 </table>
 </div>
 </body>
-</html>`
-  return html
+</html>`;
+  return html;
 }
 
-function generateMarkdownReport(result: ComparisonResult, configA: { id: string; name: string }, configB: { id: string; name: string }): string {
-  const now = new Date().toISOString().replace('T', ' ').substring(0, 19)
+function generateMarkdownReport(
+  result: ComparisonResult,
+  configA: { id: string; name: string },
+  configB: { id: string; name: string }
+): string {
+  const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
 
-  const lines: string[] = []
+  const lines: string[] = [];
 
-  lines.push('# Configuration Comparison Report')
-  lines.push('')
-  lines.push(`Generated: ${now}`)
-  lines.push('')
-  lines.push('## Configurations')
-  lines.push('')
-  lines.push(`- **A**: ${configA.name} (${configA.id})`)
-  lines.push(`- **B**: ${configB.name} (${configB.id})`)
-  lines.push('')
-  lines.push('## Summary')
-  lines.push('')
-  lines.push('| Level | Total | Same | Different | Only in A | Only in B |')
-  lines.push('|-------|-------|------|-----------|-----------|-----------|')
-  lines.push(`| Modules | ${result.moduleDiffs.length} | ${result.summary.modulesSame} | ${result.summary.modulesDifferent} | ${result.summary.modulesOnlyA} | ${result.summary.modulesOnlyB} |`)
-  lines.push(`| Containers | ${result.containerDiffs.length} | ${result.summary.containersSame} | ${result.summary.containersDifferent} | ${result.summary.containersOnlyA} | ${result.summary.containersOnlyB} |`)
-  lines.push(`| Parameters | ${result.paramDiffs.length} | ${result.summary.paramsSame} | ${result.summary.paramsDifferent} | ${result.summary.paramsOnlyA} | ${result.summary.paramsOnlyB} |`)
-  lines.push('')
-  lines.push('## Detailed Differences')
-  lines.push('')
+  lines.push('# Configuration Comparison Report');
+  lines.push('');
+  lines.push(`Generated: ${now}`);
+  lines.push('');
+  lines.push('## Configurations');
+  lines.push('');
+  lines.push(`- **A**: ${configA.name} (${configA.id})`);
+  lines.push(`- **B**: ${configB.name} (${configB.id})`);
+  lines.push('');
+  lines.push('## Summary');
+  lines.push('');
+  lines.push('| Level | Total | Same | Different | Only in A | Only in B |');
+  lines.push('|-------|-------|------|-----------|-----------|-----------|');
+  lines.push(
+    `| Modules | ${result.moduleDiffs.length} | ${result.summary.modulesSame} | ${result.summary.modulesDifferent} | ${result.summary.modulesOnlyA} | ${result.summary.modulesOnlyB} |`
+  );
+  lines.push(
+    `| Containers | ${result.containerDiffs.length} | ${result.summary.containersSame} | ${result.summary.containersDifferent} | ${result.summary.containersOnlyA} | ${result.summary.containersOnlyB} |`
+  );
+  lines.push(
+    `| Parameters | ${result.paramDiffs.length} | ${result.summary.paramsSame} | ${result.summary.paramsDifferent} | ${result.summary.paramsOnlyA} | ${result.summary.paramsOnlyB} |`
+  );
+  lines.push('');
+  lines.push('## Detailed Differences');
+  lines.push('');
 
   for (const md of result.moduleDiffs) {
-    const moduleMarker = md.status === 'same' ? '🟢' : md.status === 'different' ? '🔴' : '🟡'
-    const moduleStatus = md.status === 'same' ? 'Same' : md.status === 'different' ? 'Different' : md.status === 'only_a' ? 'Only in A' : 'Only in B'
-    lines.push(`### ${moduleMarker} Module: ${md.moduleName} (${moduleStatus})`)
-    lines.push('')
+    const moduleMarker = md.status === 'same' ? '🟢' : md.status === 'different' ? '🔴' : '🟡';
+    const moduleStatus =
+      md.status === 'same'
+        ? 'Same'
+        : md.status === 'different'
+          ? 'Different'
+          : md.status === 'only_a'
+            ? 'Only in A'
+            : 'Only in B';
+    lines.push(`### ${moduleMarker} Module: ${md.moduleName} (${moduleStatus})`);
+    lines.push('');
 
     if (md.status === 'different' && md.enabledA !== undefined && md.enabledB !== undefined) {
-      lines.push(`- enabled: A=${md.enabledA}, B=${md.enabledB}`)
+      lines.push(`- enabled: A=${md.enabledA}, B=${md.enabledB}`);
     }
     if (md.status === 'only_a' && md.enabledA !== undefined) {
-      lines.push(`- enabled: ${md.enabledA}`)
+      lines.push(`- enabled: ${md.enabledA}`);
     }
     if (md.status === 'only_b' && md.enabledB !== undefined) {
-      lines.push(`- enabled: ${md.enabledB}`)
+      lines.push(`- enabled: ${md.enabledB}`);
     }
 
-    const moduleContainers = result.containerDiffs.filter(c => c.moduleName === md.moduleName)
+    const moduleContainers = result.containerDiffs.filter(c => c.moduleName === md.moduleName);
     for (const cd of moduleContainers) {
-      const containerMarker = cd.status === 'same' ? '🟢' : cd.status === 'different' ? '🔴' : '🟡'
-      const containerStatus = cd.status === 'same' ? 'Same' : cd.status === 'different' ? 'Different' : cd.status === 'only_a' ? 'Only in A' : 'Only in B'
-      lines.push(`  ${containerMarker} **Container: ${cd.containerName}** (${containerStatus})`)
+      const containerMarker = cd.status === 'same' ? '🟢' : cd.status === 'different' ? '🔴' : '🟡';
+      const containerStatus =
+        cd.status === 'same'
+          ? 'Same'
+          : cd.status === 'different'
+            ? 'Different'
+            : cd.status === 'only_a'
+              ? 'Only in A'
+              : 'Only in B';
+      lines.push(`  ${containerMarker} **Container: ${cd.containerName}** (${containerStatus})`);
       if (cd.instanceCountA !== undefined || cd.instanceCountB !== undefined) {
-        lines.push(`    - Instances: A=${cd.instanceCountA ?? '—'}, B=${cd.instanceCountB ?? '—'}`)
+        lines.push(`    - Instances: A=${cd.instanceCountA ?? '—'}, B=${cd.instanceCountB ?? '—'}`);
       }
 
       const containerPath = cd.containerName.includes('.')
         ? cd.containerName
-        : `${md.moduleName}.${cd.containerName}`
+        : `${md.moduleName}.${cd.containerName}`;
       const containerParams = result.paramDiffs.filter(
         p => p.moduleName === md.moduleName && p.containerPath === containerPath
-      )
+      );
       for (const pd of containerParams) {
-        const paramMarker = pd.status === 'same' ? '🟢' : pd.status === 'different' ? '🔴' : '🟡'
-        const paramStatus = pd.status === 'same' ? 'Same' : pd.status === 'different' ? 'Different' : pd.status === 'only_a' ? 'Only in A' : 'Only in B'
-        const valA = pd.valueA !== undefined ? String(pd.valueA) : '—'
-        const valB = pd.valueB !== undefined ? String(pd.valueB) : '—'
-        lines.push(`    ${paramMarker} **${pd.parameterName}**: A=\`${valA}\`, B=\`${valB}\` (${paramStatus})`)
+        const paramMarker = pd.status === 'same' ? '🟢' : pd.status === 'different' ? '🔴' : '🟡';
+        const paramStatus =
+          pd.status === 'same'
+            ? 'Same'
+            : pd.status === 'different'
+              ? 'Different'
+              : pd.status === 'only_a'
+                ? 'Only in A'
+                : 'Only in B';
+        const valA = pd.valueA !== undefined ? String(pd.valueA) : '—';
+        const valB = pd.valueB !== undefined ? String(pd.valueB) : '—';
+        lines.push(
+          `    ${paramMarker} **${pd.parameterName}**: A=\`${valA}\`, B=\`${valB}\` (${paramStatus})`
+        );
       }
     }
-    lines.push('')
+    lines.push('');
   }
 
-  return lines.join('\n')
+  return lines.join('\n');
 }
 
-export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: ConfigCompareDialogProps) {
-  const { t } = useTranslation()
-  const { configList, loadConfig, currentConfig } = useConfigStore()
-  const [leftConfigId, setLeftConfigId] = useState<string>(configAId || '')
-  const [rightConfigId, setRightConfigId] = useState<string>(configBId || '')
-  const [result, setResult] = useState<ComparisonResult | null>(null)
-  const [isComparing, setIsComparing] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [filter, setFilter] = useState<'all' | 'diff_only'>('all')
-  const [selectedNode, setSelectedNode] = useState<ConfigDiff | null>(null)
-  const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set())
-  const [syncedParamIds, setSyncedParamIds] = useState<Set<string>>(new Set())
-  const [navIndex, setNavIndex] = useState(0)
-  const [showExportMenu, setShowExportMenu] = useState(false)
-  const exportMenuRef = useRef<HTMLDivElement>(null)
+export function ConfigCompareDialog({
+  isOpen,
+  onClose,
+  configAId,
+  configBId,
+}: ConfigCompareDialogProps) {
+  const { t } = useTranslation();
+  const { configList, loadConfig } = useConfigStore();
+  const [leftConfigId, setLeftConfigId] = useState<string>(configAId || '');
+  const [rightConfigId, setRightConfigId] = useState<string>(configBId || '');
+  const [result, setResult] = useState<ComparisonResult | null>(null);
+  const [isComparing, setIsComparing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<'all' | 'diff_only'>('all');
+  const [selectedNode, setSelectedNode] = useState<ConfigDiff | null>(null);
+  const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
+  const [syncedParamIds, setSyncedParamIds] = useState<Set<string>>(new Set());
+  const [navIndex, setNavIndex] = useState(0);
+  const [showExportMenu, setShowExportMenu] = useState(false);
+  const exportMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen) {
-      loadConfigList()
+      loadConfigList();
       // Sync with props when dialog opens
-      if (configAId) setLeftConfigId(configAId)
-      if (configBId) setRightConfigId(configBId)
+      if (configAId) setLeftConfigId(configAId);
+      if (configBId) setRightConfigId(configBId);
     }
-  }, [isOpen, configAId, configBId])
+  }, [isOpen, configAId, configBId]);
 
   const loadConfigList = async () => {
-    const store = useConfigStore.getState()
+    const store = useConfigStore.getState();
     if (store.loadConfigList) {
-      await store.loadConfigList()
+      await store.loadConfigList();
     }
-  }
+  };
 
   const handleCompare = async () => {
     if (!leftConfigId || !rightConfigId) {
-      setError(t('compare.selectBoth'))
-      return
+      setError(t('compare.selectBoth'));
+      return;
     }
     if (leftConfigId === rightConfigId) {
-      setError(t('compare.sameConfig'))
-      return
+      setError(t('compare.sameConfig'));
+      return;
     }
 
-    setIsComparing(true)
-    setError(null)
-    setResult(null)
-    setSelectedNode(null)
+    setIsComparing(true);
+    setError(null);
+    setResult(null);
+    setSelectedNode(null);
 
     try {
-      await loadConfig(leftConfigId)
-      const configA = useConfigStore.getState().currentConfig
+      await loadConfig(leftConfigId);
+      const configA = useConfigStore.getState().currentConfig;
 
-      await loadConfig(rightConfigId)
-      const configB = useConfigStore.getState().currentConfig
+      await loadConfig(rightConfigId);
+      const configB = useConfigStore.getState().currentConfig;
 
       if (!configA || !configB) {
-        throw new Error('Could not load configurations')
+        throw new Error('Could not load configurations');
       }
 
-      const comparison = configComparer.compare(configA, configB)
-      setResult(comparison)
+      const comparison = configComparer.compare(configA, configB);
+      setResult(comparison);
 
       // Auto-expand all modules
-      const paths = new Set<string>()
+      const paths = new Set<string>();
       for (const md of comparison.moduleDiffs) {
-        paths.add(md.moduleName)
+        paths.add(md.moduleName);
       }
-      setExpandedPaths(paths)
+      setExpandedPaths(paths);
     } catch (err) {
-      setError((err as Error).message || 'Comparison failed')
+      setError((err as Error).message || 'Comparison failed');
     } finally {
-      setIsComparing(false)
+      setIsComparing(false);
     }
-  }
+  };
 
   // Reset when config IDs change
   useEffect(() => {
-    if (configAId) setLeftConfigId(configAId)
-    if (configBId) setRightConfigId(configBId)
-    setResult(null)
-    setError(null)
-    setSelectedNode(null)
-  }, [configAId, configBId])
+    if (configAId) setLeftConfigId(configAId);
+    if (configBId) setRightConfigId(configBId);
+    setResult(null);
+    setError(null);
+    setSelectedNode(null);
+  }, [configAId, configBId]);
 
   // Close export menu on click outside
   useEffect(() => {
-    if (!showExportMenu) return
+    if (!showExportMenu) return;
     const handleClick = (e: MouseEvent) => {
       if (exportMenuRef.current && !exportMenuRef.current.contains(e.target as Node)) {
-        setShowExportMenu(false)
+        setShowExportMenu(false);
       }
-    }
-    document.addEventListener('mousedown', handleClick)
-    return () => document.removeEventListener('mousedown', handleClick)
-  }, [showExportMenu])
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [showExportMenu]);
 
   const diffTree = useMemo(() => {
-    if (!result) return []
-    return configComparer.buildDiffTree(result, filter)
-  }, [result, filter])
+    if (!result) return [];
+    return configComparer.buildDiffTree(result, filter);
+  }, [result, filter]);
 
   const handleNodeClick = (node: ConfigDiff) => {
-    setSelectedNode(node)
-  }
+    setSelectedNode(node);
+  };
 
   const toggleExpand = (path: string) => {
     setExpandedPaths(prev => {
-      const next = new Set(prev)
+      const next = new Set(prev);
       if (next.has(path)) {
-        next.delete(path)
+        next.delete(path);
       } else {
-        next.add(path)
+        next.add(path);
       }
-      return next
-    })
-  }
+      return next;
+    });
+  };
 
   // Re-run comparison after syncing
   const reCompare = async () => {
-    const store = useConfigStore.getState()
-    if (!leftConfigId || !rightConfigId) return
+    const store = useConfigStore.getState();
+    if (!leftConfigId || !rightConfigId) return;
 
-    await store.loadConfig(leftConfigId)
-    const configA = store.currentConfig
+    await store.loadConfig(leftConfigId);
+    const configA = store.currentConfig;
 
-    await store.loadConfig(rightConfigId)
-    const configB = store.currentConfig
+    await store.loadConfig(rightConfigId);
+    const configB = store.currentConfig;
 
     if (configA && configB) {
-      const comparison = configComparer.compare(configA, configB)
-      setResult(comparison)
+      const comparison = configComparer.compare(configA, configB);
+      setResult(comparison);
       // Auto-expand all modules
-      const paths = new Set<string>()
+      const paths = new Set<string>();
       for (const md of comparison.moduleDiffs) {
-        paths.add(md.moduleName)
+        paths.add(md.moduleName);
       }
-      setExpandedPaths(paths)
+      setExpandedPaths(paths);
     }
-  }
+  };
 
   // Find parameter in config by parameterId and update its value
   function updateParamValueInConfig(config: any, paramId: string, value: unknown) {
-    const newConfig = JSON.parse(JSON.stringify(config))
+    const newConfig = JSON.parse(JSON.stringify(config));
     for (const mod of newConfig.modules) {
       for (const p of mod.parameters || []) {
         if (p.id === paramId) {
-          p.value = value
-          return newConfig
+          p.value = value;
+          return newConfig;
         }
       }
       for (const container of mod.containers || []) {
         for (const p of container.parameters || []) {
           if (p.id === paramId) {
-            p.value = value
-            return newConfig
+            p.value = value;
+            return newConfig;
           }
         }
         for (const sub of container.subContainers || []) {
           for (const p of sub.parameters || []) {
             if (p.id === paramId) {
-              p.value = value
-              return newConfig
+              p.value = value;
+              return newConfig;
             }
           }
         }
       }
     }
-    return newConfig
+    return newConfig;
   }
 
   // Sync a single parameter from source to target config
   const syncParameter = async (param: ParamDiff, direction: 'a_to_b' | 'b_to_a') => {
-    const targetConfigId = direction === 'a_to_b' ? rightConfigId : leftConfigId
-    const value = direction === 'a_to_b' ? param.valueA : param.valueB
+    const targetConfigId = direction === 'a_to_b' ? rightConfigId : leftConfigId;
+    const value = direction === 'a_to_b' ? param.valueA : param.valueB;
 
-    if (!targetConfigId) return
+    if (!targetConfigId) return;
 
-    const configKey = `yuleasr_config_${targetConfigId}`
-    const configStr = localStorage.getItem(configKey)
-    if (!configStr) return
+    const configKey = `yuleasr_config_${targetConfigId}`;
+    const configStr = localStorage.getItem(configKey);
+    if (!configStr) return;
 
-    const config = JSON.parse(configStr)
-    const updatedConfig = updateParamValueInConfig(config, param.parameterId, value)
-    localStorage.setItem(configKey, JSON.stringify(updatedConfig))
+    const config = JSON.parse(configStr);
+    const updatedConfig = updateParamValueInConfig(config, param.parameterId, value);
+    localStorage.setItem(configKey, JSON.stringify(updatedConfig));
 
     // Re-compare
-    await reCompare()
+    await reCompare();
 
     // Mark as synced
-    setSyncedParamIds(prev => new Set([...prev, param.parameterId]))
-  }
+    setSyncedParamIds(prev => new Set([...prev, param.parameterId]));
+  };
 
   // Batch sync all different params in current view
   const batchSync = async (direction: 'a_to_b' | 'b_to_a') => {
-    const diffParams = selectedParams.filter(p => p.status === 'different')
-    const targetConfigId = direction === 'a_to_b' ? rightConfigId : leftConfigId
+    const diffParams = selectedParams.filter(p => p.status === 'different');
+    const targetConfigId = direction === 'a_to_b' ? rightConfigId : leftConfigId;
 
-    if (!targetConfigId || diffParams.length === 0) return
+    if (!targetConfigId || diffParams.length === 0) return;
 
-    const configKey = `yuleasr_config_${targetConfigId}`
-    const configStr = localStorage.getItem(configKey)
-    if (!configStr) return
+    const configKey = `yuleasr_config_${targetConfigId}`;
+    const configStr = localStorage.getItem(configKey);
+    if (!configStr) return;
 
-    let config = JSON.parse(configStr)
-    const synced: string[] = []
+    let config = JSON.parse(configStr);
+    const synced: string[] = [];
 
     for (const param of diffParams) {
-      const value = direction === 'a_to_b' ? param.valueA : param.valueB
-      const updated = updateParamValueInConfig(config, param.parameterId, value)
+      const value = direction === 'a_to_b' ? param.valueA : param.valueB;
+      const updated = updateParamValueInConfig(config, param.parameterId, value);
       if (updated !== config) {
-        config = updated
-        synced.push(param.parameterId)
+        config = updated;
+        synced.push(param.parameterId);
       }
     }
 
-    localStorage.setItem(configKey, JSON.stringify(config))
+    localStorage.setItem(configKey, JSON.stringify(config));
 
     // Re-compare
-    await reCompare()
+    await reCompare();
 
     // Mark all as synced
-    setSyncedParamIds(prev => new Set([...prev, ...synced]))
-  }
+    setSyncedParamIds(prev => new Set([...prev, ...synced]));
+  };
 
   // Collect all diff navigation items from tree
   const collectNavItems = (nodes: ConfigDiff[]): ConfigDiff[] => {
-    const items: ConfigDiff[] = []
+    const items: ConfigDiff[] = [];
     for (const node of nodes) {
       if (node.status !== 'same') {
-        items.push(node)
+        items.push(node);
       }
       if (node.children) {
-        items.push(...collectNavItems(node.children))
+        items.push(...collectNavItems(node.children));
       }
     }
-    return items
-  }
+    return items;
+  };
 
   // Computed nav items from diff tree
-  const navItems = useMemo(() => collectNavItems(diffTree), [diffTree])
+  const navItems = useMemo(() => collectNavItems(diffTree), [diffTree]);
 
   // Navigate to a diff item
   const navigateTo = (direction: 'prev' | 'next') => {
-    if (navItems.length === 0) return
+    if (navItems.length === 0) return;
 
-    let newIndex: number
+    let newIndex: number;
     if (direction === 'next') {
-      newIndex = (navIndex + 1) % navItems.length
+      newIndex = (navIndex + 1) % navItems.length;
     } else {
-      newIndex = (navIndex - 1 + navItems.length) % navItems.length
+      newIndex = (navIndex - 1 + navItems.length) % navItems.length;
     }
-    setNavIndex(newIndex)
+    setNavIndex(newIndex);
 
-    const target = navItems[newIndex]
-    setSelectedNode(target)
+    const target = navItems[newIndex];
+    setSelectedNode(target);
 
     // Auto-expand parent paths
     setExpandedPaths(prev => {
-      const next = new Set(prev)
-      const parts = target.path.split('.')
+      const next = new Set(prev);
+      const parts = target.path.split('.');
       for (let i = 0; i < parts.length; i++) {
-        next.add(parts.slice(0, i + 1).join('.'))
+        next.add(parts.slice(0, i + 1).join('.'));
       }
-      return next
-    })
+      return next;
+    });
 
     // Scroll to the target node
     setTimeout(() => {
-      const el = document.querySelector(`[data-diff-path="${target.path}"]`)
+      const el = document.querySelector(`[data-diff-path="${target.path}"]`);
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
-    }, 50)
-  }
+    }, 50);
+  };
 
   // Collect params for the selected node
   const selectedParams = useMemo(() => {
-    if (!selectedNode || !result) return []
-    
+    if (!selectedNode || !result) return [];
+
     if (selectedNode.type === 'module') {
-      return result.paramDiffs.filter(p => p.moduleName === selectedNode.name)
+      return result.paramDiffs.filter(p => p.moduleName === selectedNode.name);
     }
     if (selectedNode.type === 'container') {
       // Container name could be qualified or simple
-      const parts = selectedNode.path.split('.')
-      const containerName = parts[parts.length - 1]
-      const moduleName = parts[0]
+      const parts = selectedNode.path.split('.');
+      const containerName = parts[parts.length - 1];
+      const moduleName = parts[0];
       return result.paramDiffs.filter(
-        p => p.moduleName === moduleName && (
-          p.containerPath === selectedNode.path || 
-          p.containerPath.endsWith(`.${containerName}`)
-        )
-      )
+        p =>
+          p.moduleName === moduleName &&
+          (p.containerPath === selectedNode.path || p.containerPath.endsWith(`.${containerName}`))
+      );
     }
     // For parameter-level, show just this param
     if (selectedNode.type === 'parameter') {
       return result.paramDiffs.filter(p => {
-        const paramPath = `${p.containerPath}.${p.parameterName}`
-        return paramPath === selectedNode.path
-      })
+        const paramPath = `${p.containerPath}.${p.parameterName}`;
+        return paramPath === selectedNode.path;
+      });
     }
-    return []
-  }, [selectedNode, result])
+    return [];
+  }, [selectedNode, result]);
 
   const renderTreeNode = (node: ConfigDiff, depth: number = 0): React.ReactNode => {
-    const hasChildren = node.children && node.children.length > 0
-    const isExpanded = expandedPaths.has(node.path)
-    const isSelected = selectedNode?.path === node.path
-    const style = getStatusStyle(node.status)
+    const hasChildren = node.children && node.children.length > 0;
+    const isExpanded = expandedPaths.has(node.path);
+    const isSelected = selectedNode?.path === node.path;
+    const style = getStatusStyle(node.status);
 
     return (
       <div key={node.path}>
         <button
           data-diff-path={node.path}
           onClick={() => {
-            if (hasChildren) toggleExpand(node.path)
-            handleNodeClick(node)
+            if (hasChildren) toggleExpand(node.path);
+            handleNodeClick(node);
           }}
           className={cn(
             'w-full flex items-center gap-2 px-2 py-1.5 text-left hover:bg-accent/50 transition-colors',
@@ -622,46 +707,52 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
           )}
 
           {/* Status indicator dot */}
-          <span className={cn(
-            'w-2 h-2 rounded-full shrink-0',
-            node.status === 'same' && 'bg-app-bg-tertiary',
-            node.status === 'different' && 'bg-red-500',
-            (node.status === 'only_a' || node.status === 'only_b') && 'bg-yellow-500',
-          )} />
+          <span
+            className={cn(
+              'w-2 h-2 rounded-full shrink-0',
+              node.status === 'same' && 'bg-app-bg-tertiary',
+              node.status === 'different' && 'bg-red-500',
+              (node.status === 'only_a' || node.status === 'only_b') && 'bg-yellow-500'
+            )}
+          />
 
-          <span className={cn(
-            'text-sm truncate',
-            style.text,
-            node.status !== 'same' && 'font-medium'
-          )}>
+          <span
+            className={cn('text-sm truncate', style.text, node.status !== 'same' && 'font-medium')}
+          >
             {node.name}
           </span>
 
           {/* Badge */}
           {node.status !== 'same' && (
-            <span className={cn(
-              'ml-auto px-1.5 py-0.5 rounded text-[10px] font-medium uppercase',
-              style.bg === 'bg-red-50' ? 'bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300' :
-              style.bg === 'bg-blue-50' ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300' :
-              'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-600 dark:text-yellow-300'
-            )}>
-              {node.status === 'different' ? '≠' :
-               node.status === 'only_a' ? 'A' :
-               node.status === 'only_b' ? 'B' : ''}
+            <span
+              className={cn(
+                'ml-auto px-1.5 py-0.5 rounded text-[10px] font-medium uppercase',
+                style.bg === 'bg-red-50'
+                  ? 'bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-300'
+                  : style.bg === 'bg-blue-50'
+                    ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-300'
+                    : 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-600 dark:text-yellow-300'
+              )}
+            >
+              {node.status === 'different'
+                ? '≠'
+                : node.status === 'only_a'
+                  ? 'A'
+                  : node.status === 'only_b'
+                    ? 'B'
+                    : ''}
             </span>
           )}
         </button>
 
         {hasChildren && isExpanded && (
-          <div>
-            {node.children!.map(child => renderTreeNode(child, depth + 1))}
-          </div>
+          <div>{node.children!.map(child => renderTreeNode(child, depth + 1))}</div>
         )}
       </div>
-    )
-  }
+    );
+  };
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -670,7 +761,9 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
         <div className="flex items-center justify-between p-4 border-b border-border">
           <div className="flex items-center gap-3">
             <GitCompare className="w-5 h-5 text-primary" />
-            <h2 className="text-xl font-semibold text-foreground">{t('compare.title') || 'Compare Configurations'}</h2>
+            <h2 className="text-xl font-semibold text-foreground">
+              {t('compare.title') || 'Compare Configurations'}
+            </h2>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-accent rounded-lg transition-colors">
             <X className="w-5 h-5" />
@@ -681,15 +774,19 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
         <div className="p-4 border-b border-border bg-muted/50">
           <div className="flex items-end gap-4">
             <div className="flex-1">
-              <label className="block text-sm text-muted-foreground mb-1 font-medium">Configuration A</label>
+              <label className="block text-sm text-muted-foreground mb-1 font-medium">
+                Configuration A
+              </label>
               <select
                 value={leftConfigId}
-                onChange={(e) => setLeftConfigId(e.target.value)}
+                onChange={e => setLeftConfigId(e.target.value)}
                 className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm"
               >
                 <option value="">{t('compare.selectConfig') || 'Select...'}</option>
-                {configList.map((config) => (
-                  <option key={config.id} value={config.id}>{config.name}</option>
+                {configList.map(config => (
+                  <option key={config.id} value={config.id}>
+                    {config.name}
+                  </option>
                 ))}
               </select>
             </div>
@@ -697,15 +794,19 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
               <span className="text-muted-foreground text-sm font-medium px-2">vs</span>
             </div>
             <div className="flex-1">
-              <label className="block text-sm text-muted-foreground mb-1 font-medium">Configuration B</label>
+              <label className="block text-sm text-muted-foreground mb-1 font-medium">
+                Configuration B
+              </label>
               <select
                 value={rightConfigId}
-                onChange={(e) => setRightConfigId(e.target.value)}
+                onChange={e => setRightConfigId(e.target.value)}
                 className="w-full px-3 py-2 bg-background border border-border rounded-lg text-sm"
               >
                 <option value="">{t('compare.selectConfig') || 'Select...'}</option>
-                {configList.map((config) => (
-                  <option key={config.id} value={config.id}>{config.name}</option>
+                {configList.map(config => (
+                  <option key={config.id} value={config.id}>
+                    {config.name}
+                  </option>
                 ))}
               </select>
             </div>
@@ -714,9 +815,9 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
                 onClick={handleCompare}
                 disabled={!leftConfigId || !rightConfigId || isComparing}
                 className={cn(
-                  "px-5 py-2 rounded-lg text-sm font-medium transition-colors",
-                  "bg-primary text-primary-foreground hover:bg-primary/90",
-                  "disabled:opacity-50 disabled:cursor-not-allowed"
+                  'px-5 py-2 rounded-lg text-sm font-medium transition-colors',
+                  'bg-primary text-primary-foreground hover:bg-primary/90',
+                  'disabled:opacity-50 disabled:cursor-not-allowed'
                 )}
               >
                 {isComparing ? (
@@ -751,12 +852,23 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
               <div className="flex items-center gap-4 text-sm">
                 <span className="flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
-                  <span className="font-medium">{result.summary.modulesDifferent + result.summary.containersDifferent + result.summary.paramsDifferent}</span>
+                  <span className="font-medium">
+                    {result.summary.modulesDifferent +
+                      result.summary.containersDifferent +
+                      result.summary.paramsDifferent}
+                  </span>
                   <span className="text-muted-foreground">different</span>
                 </span>
                 <span className="flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-yellow-500" />
-                  <span className="font-medium">{result.summary.modulesOnlyA + result.summary.modulesOnlyB + result.summary.containersOnlyA + result.summary.containersOnlyB + result.summary.paramsOnlyA + result.summary.paramsOnlyB}</span>
+                  <span className="font-medium">
+                    {result.summary.modulesOnlyA +
+                      result.summary.modulesOnlyB +
+                      result.summary.containersOnlyA +
+                      result.summary.containersOnlyB +
+                      result.summary.paramsOnlyA +
+                      result.summary.paramsOnlyB}
+                  </span>
                   <span className="text-muted-foreground">missing</span>
                 </span>
                 <span className="flex items-center gap-1.5">
@@ -795,15 +907,17 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
                   >
                     <FileJson className="w-3.5 h-3.5" />
                     Export Report
-                    <ChevronDown className={`w-3 h-3 transition-transform ${showExportMenu ? 'rotate-180' : ''}`} />
+                    <ChevronDown
+                      className={`w-3 h-3 transition-transform ${showExportMenu ? 'rotate-180' : ''}`}
+                    />
                   </button>
                   {showExportMenu && (
                     <div className="absolute right-0 top-full mt-1 bg-card border border-border rounded-lg shadow-lg z-50 min-w-[160px] py-1">
                       <button
                         onClick={() => {
-                          setShowExportMenu(false)
-                          const html = generateHtmlReport(result!, result.configA, result.configB)
-                          downloadBlob(html, `compare-report-${Date.now()}.html`, 'text/html')
+                          setShowExportMenu(false);
+                          const html = generateHtmlReport(result!, result.configA, result.configB);
+                          downloadBlob(html, `compare-report-${Date.now()}.html`, 'text/html');
                         }}
                         className="w-full text-left px-3 py-2 text-xs hover:bg-accent/50 transition-colors flex items-center gap-2"
                       >
@@ -812,9 +926,13 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
                       </button>
                       <button
                         onClick={() => {
-                          setShowExportMenu(false)
-                          const md = generateMarkdownReport(result!, result.configA, result.configB)
-                          downloadBlob(md, `compare-report-${Date.now()}.md`, 'text/markdown')
+                          setShowExportMenu(false);
+                          const md = generateMarkdownReport(
+                            result!,
+                            result.configA,
+                            result.configB
+                          );
+                          downloadBlob(md, `compare-report-${Date.now()}.md`, 'text/markdown');
                         }}
                         className="w-full text-left px-3 py-2 text-xs hover:bg-accent/50 transition-colors flex items-center gap-2"
                       >
@@ -826,7 +944,7 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
                 </div>
                 <select
                   value={filter}
-                  onChange={(e) => setFilter(e.target.value as typeof filter)}
+                  onChange={e => setFilter(e.target.value as typeof filter)}
                   className="px-2.5 py-1.5 bg-background border border-border rounded-lg text-xs"
                 >
                   <option value="all">All items</option>
@@ -881,8 +999,8 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
               <div className="border-t border-border max-h-[200px] overflow-y-auto">
                 {/* Batch sync toolbar */}
                 {(() => {
-                  const diffCount = selectedParams.filter(p => p.status === 'different').length
-                  if (diffCount === 0) return null
+                  const diffCount = selectedParams.filter(p => p.status === 'different').length;
+                  if (diffCount === 0) return null;
                   return (
                     <div className="px-4 py-1.5 bg-muted/20 border-b border-border flex items-center gap-2">
                       <button
@@ -898,7 +1016,7 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
                         Accept B → A ({diffCount})
                       </button>
                     </div>
-                  )
+                  );
                 })()}
                 <div className="px-4 py-2 bg-muted/30 border-b border-border flex items-center justify-between">
                   <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider">
@@ -912,17 +1030,29 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
                   <table className="w-full text-xs">
                     <thead>
                       <tr className="bg-muted/20">
-                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">Parameter</th>
-                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">Type</th>
-                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">Value (A)</th>
-                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">Value (B)</th>
-                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">Status</th>
-                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">Actions</th>
+                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">
+                          Parameter
+                        </th>
+                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">
+                          Type
+                        </th>
+                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">
+                          Value (A)
+                        </th>
+                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">
+                          Value (B)
+                        </th>
+                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">
+                          Status
+                        </th>
+                        <th className="px-3 py-1.5 text-left text-muted-foreground font-medium">
+                          Actions
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {selectedParams.map((param, idx) => {
-                        const pStyle = getStatusStyle(param.status)
+                        const pStyle = getStatusStyle(param.status);
                         return (
                           <tr
                             key={`${param.parameterId}-${idx}`}
@@ -932,37 +1062,53 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
                             )}
                           >
                             <td className="px-3 py-1.5 font-mono">{param.parameterName}</td>
-                            <td className="px-3 py-1.5 text-muted-foreground">{param.type || '—'}</td>
-                            <td className={cn(
-                              'px-3 py-1.5 font-mono',
-                              param.status === 'different' && 'text-red-600',
-                              param.status === 'only_a' && 'text-yellow-600 font-medium',
-                              (param.status === 'only_b' || param.status === 'same') && 'text-foreground'
-                            )}>
+                            <td className="px-3 py-1.5 text-muted-foreground">
+                              {param.type || '—'}
+                            </td>
+                            <td
+                              className={cn(
+                                'px-3 py-1.5 font-mono',
+                                param.status === 'different' && 'text-red-600',
+                                param.status === 'only_a' && 'text-yellow-600 font-medium',
+                                (param.status === 'only_b' || param.status === 'same') &&
+                                  'text-foreground'
+                              )}
+                            >
                               {param.status === 'only_b' ? '—' : formatValue(param.valueA)}
                             </td>
-                            <td className={cn(
-                              'px-3 py-1.5 font-mono',
-                              param.status === 'different' && 'text-green-600',
-                              param.status === 'only_b' && 'text-yellow-600 font-medium',
-                              (param.status === 'only_a' || param.status === 'same') && 'text-foreground'
-                            )}>
+                            <td
+                              className={cn(
+                                'px-3 py-1.5 font-mono',
+                                param.status === 'different' && 'text-green-600',
+                                param.status === 'only_b' && 'text-yellow-600 font-medium',
+                                (param.status === 'only_a' || param.status === 'same') &&
+                                  'text-foreground'
+                              )}
+                            >
                               {param.status === 'only_a' ? '—' : formatValue(param.valueB)}
                             </td>
                             <td className="px-3 py-1.5">
-                              <span className={cn(
-                                'px-1.5 py-0.5 rounded text-[10px] font-medium',
-                                pStyle.bg,
-                                pStyle.text
-                              )}>
-                                {param.status === 'same' ? '=' :
-                                 param.status === 'different' ? '≠' :
-                                 param.status === 'only_a' ? 'A only' : 'B only'}
+                              <span
+                                className={cn(
+                                  'px-1.5 py-0.5 rounded text-[10px] font-medium',
+                                  pStyle.bg,
+                                  pStyle.text
+                                )}
+                              >
+                                {param.status === 'same'
+                                  ? '='
+                                  : param.status === 'different'
+                                    ? '≠'
+                                    : param.status === 'only_a'
+                                      ? 'A only'
+                                      : 'B only'}
                               </span>
                             </td>
                             <td className="px-3 py-1.5">
                               {syncedParamIds.has(param.parameterId) ? (
-                                <span className="text-green-600 text-[10px] font-medium">✅ Synced</span>
+                                <span className="text-green-600 text-[10px] font-medium">
+                                  ✅ Synced
+                                </span>
                               ) : param.status === 'different' ? (
                                 <div className="flex items-center gap-1">
                                   <button
@@ -983,7 +1129,7 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
                               ) : null}
                             </td>
                           </tr>
-                        )
+                        );
                       })}
                     </tbody>
                   </table>
@@ -1000,11 +1146,13 @@ export function ConfigCompareDialog({ isOpen, onClose, configAId, configBId }: C
             <div className="text-center">
               <GitCompare className="w-12 h-12 mx-auto mb-4 opacity-30" />
               <p className="text-sm">Select two configurations and click Compare</p>
-              <p className="text-xs text-muted-foreground mt-1">Color-coded diff indicators will show the differences</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Color-coded diff indicators will show the differences
+              </p>
             </div>
           </div>
         )}
       </div>
     </div>
-  )
+  );
 }

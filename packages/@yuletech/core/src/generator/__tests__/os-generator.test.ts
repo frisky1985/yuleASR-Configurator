@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { OsCodeGenerator } from '../os-generator';
+
 import type { ModuleConfig, ModuleSchema } from '../../types';
+import { OsCodeGenerator } from '../os-generator';
 
 describe('OsCodeGenerator', () => {
   const generator = new OsCodeGenerator();
@@ -703,8 +704,16 @@ describe('OsCodeGenerator - Edge Cases', () => {
             OsScheduleTableDuration: 10000,
             OsScheduleTableSyncStrategy: 'NONE',
             OsScheduleTableExpiryPoints: [
-              { ExpiryPointOffset: 2000, ExpiryPointActionType: 'ActivateTask', ExpiryPointTaskRef: 'HighTask' },
-              { ExpiryPointOffset: 6000, ExpiryPointActionType: 'ActivateTask', ExpiryPointTaskRef: 'LowTask' },
+              {
+                ExpiryPointOffset: 2000,
+                ExpiryPointActionType: 'ActivateTask',
+                ExpiryPointTaskRef: 'HighTask',
+              },
+              {
+                ExpiryPointOffset: 6000,
+                ExpiryPointActionType: 'ActivateTask',
+                ExpiryPointTaskRef: 'LowTask',
+              },
             ],
           },
         ],

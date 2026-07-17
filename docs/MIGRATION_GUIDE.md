@@ -29,15 +29,16 @@ FRONTEND_URL=https://yuleasr.com
 
 ```typescript
 // 替换模拟 Stripe 创建
-import Stripe from 'stripe'
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+import Stripe from 'stripe';
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 // POST /api/payment/create-checkout
 async (request, reply) => {
-  const { tier = 'pro' } = request.body as any
-  const priceId = tier === 'pro_yearly' 
-    ? process.env.STRIPE_PRICE_YEARLY 
-    : process.env.STRIPE_PRICE_MONTHLY
+  const { tier = 'pro' } = request.body as any;
+  const priceId =
+    tier === 'pro_yearly'
+      ? process.env.STRIPE_PRICE_YEARLY
+      : process.env.STRIPE_PRICE_MONTHLY;
 
   const session = await stripe.checkout.sessions.create({
     mode: 'subscription',
@@ -46,10 +47,10 @@ async (request, reply) => {
     cancel_url: `${process.env.FRONTEND_URL}/settings/license?canceled=true`,
     customer_email: request.user?.email,
     metadata: { userId: request.user?.id },
-  })
+  });
 
-  return { url: session.url }
-}
+  return { url: session.url };
+};
 ```
 
 ### 4. Webhook 端点
@@ -58,16 +59,16 @@ async (request, reply) => {
 
 ```typescript
 // POST /api/payment/webhook
-const sig = request.headers['stripe-signature']
+const sig = request.headers['stripe-signature'];
 const event = stripe.webhooks.constructEvent(
   request.body as any,
   sig as string,
   process.env.STRIPE_WEBHOOK_SECRET!
-)
+);
 
 if (event.type === 'checkout.session.completed') {
-  const session = event.data.object
-  await createLicenseForUser(session.metadata.userId, 'pro')
+  const session = event.data.object;
+  await createLicenseForUser(session.metadata.userId, 'pro');
 }
 ```
 
@@ -98,9 +99,12 @@ LEMONSQUEEZY_WEBHOOK_SECRET=xxxxx
 ### 3. 创建结账
 
 ```typescript
-import { lemonSqueezySetup, createCheckout } from '@lemonsqueezy/lemonsqueezy.js'
+import {
+  lemonSqueezySetup,
+  createCheckout,
+} from '@lemonsqueezy/lemonsqueezy.js';
 
-lemonSqueezySetup({ apiKey: process.env.LEMONSQUEEZY_API_KEY! })
+lemonSqueezySetup({ apiKey: process.env.LEMONSQUEEZY_API_KEY! });
 
 // POST /api/payment/create-checkout
 const { data } = await createCheckout(
@@ -115,12 +119,13 @@ const { data } = await createCheckout(
       redirectUrl: `${process.env.FRONTEND_URL}/settings/license?success=true`,
     },
   }
-)
+);
 ```
 
 ### 4. Webhook 验证
 
-LemonSqueezy 支持 webhook 签名验证，参考 [文档](https://docs.lemonsqueezy.com/api/webhooks)。
+LemonSqueezy 支持 webhook 签名验证，参考
+[文档](https://docs.lemonsqueezy.com/api/webhooks)。
 
 ## 建议
 

@@ -52,7 +52,7 @@ export function OptimizedImage({
 
   // 生成 WebP 路径
   const webpSrc = src.replace(/\.(jpg|jpeg|png)$/i, '.webp');
-  
+
   // 生成响应式 srcset（如果服务器支持多尺寸图片）
   const generateSrcSet = (baseSrc: string) => {
     // 检查是否是本地图片路径
@@ -64,11 +64,7 @@ export function OptimizedImage({
   };
 
   return (
-    <div
-      ref={imgRef}
-      className={`relative overflow-hidden ${className}`}
-      style={{ width, height }}
-    >
+    <div ref={imgRef} className={`relative overflow-hidden ${className}`} style={{ width, height }}>
       <AnimatePresence>
         {!isLoaded && placeholder !== 'none' && (
           <motion.div
@@ -85,11 +81,7 @@ export function OptimizedImage({
 
       {isInView && (
         <picture>
-          <source 
-            srcSet={generateSrcSet(webpSrc)} 
-            type="image/webp" 
-            sizes={sizes}
-          />
+          <source srcSet={generateSrcSet(webpSrc)} type="image/webp" sizes={sizes} />
           <img
             src={src}
             alt={alt}
@@ -131,11 +123,7 @@ export function ImageCard({
       transition={{ duration: 0.2 }}
     >
       <div className="aspect-video relative overflow-hidden">
-        <OptimizedImage
-          src={src}
-          alt={alt}
-          className="w-full h-full"
-        />
+        <OptimizedImage src={src} alt={alt} className="w-full h-full" />
         <motion.div
           className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
           initial={{ opacity: 0 }}
@@ -145,9 +133,7 @@ export function ImageCard({
       </div>
       <div className="p-4">
         <h3 className="font-semibold text-lg mb-1">{title}</h3>
-        {description && (
-          <p className="text-sm text-muted-foreground">{description}</p>
-        )}
+        {description && <p className="text-sm text-muted-foreground">{description}</p>}
       </div>
     </motion.div>
   );

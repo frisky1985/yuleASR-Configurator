@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
   Heart,
@@ -19,73 +19,77 @@ import {
   Code2,
   Check,
   Copy,
-} from 'lucide-react'
-import { sharedConfigApi } from '../services/sharedConfigApi'
-import { getApiToken } from '../services/apiClient'
-import type { SharedConfig } from '../types/bswTemplate'
+} from 'lucide-react';
+import { sharedConfigApi } from '../services/sharedConfigApi';
+import { getApiToken } from '../services/apiClient';
+import type { SharedConfig } from '../types/bswTemplate';
 
 export function ConfigGalleryDetail() {
-  const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
-  const [config, setConfig] = useState<SharedConfig | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [showAllModules, setShowAllModules] = useState(false)
-  const [liking, setLiking] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const [importing, setImporting] = useState(false)
-  const isLoggedIn = !!getApiToken()
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [config, setConfig] = useState<SharedConfig | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showAllModules, setShowAllModules] = useState(false);
+  const [liking, setLiking] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const isLoggedIn = !!getApiToken();
 
   useEffect(() => {
-    if (!id) return
-    setLoading(true)
-    sharedConfigApi.get(parseInt(id, 10))
+    if (!id) return;
+    setLoading(true);
+    sharedConfigApi
+      .get(parseInt(id, 10))
       .then(setConfig)
       .catch(err => setError(err.message || 'Failed to load config'))
-      .finally(() => setLoading(false))
-  }, [id])
+      .finally(() => setLoading(false));
+  }, [id]);
 
   const handleLike = async () => {
-    if (!config || !isLoggedIn) return
-    setLiking(true)
+    if (!config || !isLoggedIn) return;
+    setLiking(true);
     try {
-      const result = await sharedConfigApi.like(config.id)
-      setConfig(prev => prev ? { ...prev, likeCount: result.likeCount } : prev)
+      const result = await sharedConfigApi.like(config.id);
+      setConfig(prev => (prev ? { ...prev, likeCount: result.likeCount } : prev));
     } catch (err) {
-      console.error('Like failed:', err)
+      console.error('Like failed:', err);
     } finally {
-      setLiking(false)
+      setLiking(false);
     }
-  }
+  };
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handleImport = () => {
-    if (!config) return
-    setImporting(true)
+    if (!config) return;
+    setImporting(true);
 
     // Store config data in localStorage for the configurator to pick up
-    localStorage.setItem('yuleasr_import_template', JSON.stringify({
-      name: config.name,
-      description: config.description,
-      configData: config.configData || { modules: config.modules },
-    }))
+    localStorage.setItem(
+      'yuleasr_import_template',
+      JSON.stringify({
+        name: config.name,
+        description: config.description,
+        configData: config.configData || { modules: config.modules },
+      })
+    );
 
     // Open yuleasr configurator
-    window.open(`/configurator/?importGallery=${config.id}`, '_blank')
-    setImporting(false)
-  }
+    window.open(`/configurator/?importGallery=${config.id}`, '_blank');
+    setImporting(false);
+  };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
       </div>
-    )
+    );
   }
 
   if (error || !config) {
@@ -98,15 +102,15 @@ export function ConfigGalleryDetail() {
           Back to Gallery
         </Link>
       </div>
-    )
+    );
   }
 
-  const displayModules = showAllModules ? config.modules : config.modules?.slice(0, 10)
-  const modulesByLayer: Record<string, any[]> = {}
+  const displayModules = showAllModules ? config.modules : config.modules?.slice(0, 10);
+  const modulesByLayer: Record<string, any[]> = {};
   for (const m of config.modules || []) {
-    const layer = m.layer || 'General'
-    if (!modulesByLayer[layer]) modulesByLayer[layer] = []
-    modulesByLayer[layer].push(m)
+    const layer = m.layer || 'General';
+    if (!modulesByLayer[layer]) modulesByLayer[layer] = [];
+    modulesByLayer[layer].push(m);
   }
 
   return (
@@ -129,17 +133,18 @@ export function ConfigGalleryDetail() {
               {config.name}
             </h1>
             {config.description && (
-              <p className="text-slate-600 dark:text-slate-400 mb-4">
-                {config.description}
-              </p>
+              <p className="text-slate-600 dark:text-slate-400 mb-4">{config.description}</p>
             )}
 
             {/* Tags */}
             {config.tags && config.tags.length > 0 && (
               <div className="flex flex-wrap items-center gap-2">
                 <Tag className="w-4 h-4 text-slate-400" />
-                {config.tags.map((tag) => (
-                  <span key={tag} className="px-2.5 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-xs rounded-full">
+                {config.tags.map(tag => (
+                  <span
+                    key={tag}
+                    className="px-2.5 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-xs rounded-full"
+                  >
                     {tag}
                   </span>
                 ))}
@@ -269,7 +274,11 @@ export function ConfigGalleryDetail() {
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-sm font-bold text-primary-600 dark:text-primary-400">
                 {config.author?.avatar ? (
-                  <img src={config.author.avatar} alt="" className="w-10 h-10 rounded-full object-cover" />
+                  <img
+                    src={config.author.avatar}
+                    alt=""
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
                 ) : (
                   config.author?.username?.charAt(0).toUpperCase() || '?'
                 )}
@@ -337,13 +346,16 @@ export function ConfigGalleryDetail() {
 
           {!isLoggedIn && (
             <p className="text-xs text-center text-slate-400 dark:text-slate-500">
-              <Link to="/login" className="text-primary-600 hover:underline">Sign in</Link> to like and import configs
+              <Link to="/login" className="text-primary-600 hover:underline">
+                Sign in
+              </Link>{' '}
+              to like and import configs
             </p>
           )}
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default ConfigGalleryDetail
+export default ConfigGalleryDetail;

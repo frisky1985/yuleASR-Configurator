@@ -19,25 +19,25 @@ import {
   Crown,
   Sparkles,
   Key,
-} from 'lucide-react'
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+} from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { cn } from '@/lib/utils'
-import { useLicenseStore } from '@/stores/licenseStore'
-import { 
-  useSettingsStore, 
-  type EditorTheme, 
-  type UILanguage, 
+import { cn } from '@/lib/utils';
+import { useLicenseStore } from '@/stores/licenseStore';
+import {
+  useSettingsStore,
+  type EditorTheme,
+  type UILanguage,
   type ExportFormat,
-  type FileNamingRule 
-} from '@/stores/settingsStore'
+  type FileNamingRule,
+} from '@/stores/settingsStore';
 
 interface SettingSectionProps {
-  title: string
-  description?: string
-  icon: React.ReactNode
-  children: React.ReactNode
+  title: string;
+  description?: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
 }
 
 function SettingSection({ title, description, icon, children }: SettingSectionProps) {
@@ -50,21 +50,19 @@ function SettingSection({ title, description, icon, children }: SettingSectionPr
           </div>
           <div>
             <h2 className="text-lg font-semibold text-app-text-primary">{title}</h2>
-            {description && (
-              <p className="text-sm text-app-text-secondary">{description}</p>
-            )}
+            {description && <p className="text-sm text-app-text-secondary">{description}</p>}
           </div>
         </div>
       </div>
       <div className="p-6 space-y-6">{children}</div>
     </div>
-  )
+  );
 }
 
 interface SettingItemProps {
-  label: string
-  description?: string
-  children: React.ReactNode
+  label: string;
+  description?: string;
+  children: React.ReactNode;
 }
 
 function SettingItem({ label, description, children }: SettingItemProps) {
@@ -72,16 +70,22 @@ function SettingItem({ label, description, children }: SettingItemProps) {
     <div className="flex items-center justify-between">
       <div className="flex-1">
         <label className="text-sm font-medium text-app-text-primary">{label}</label>
-        {description && (
-          <p className="text-sm text-app-text-secondary mt-0.5">{description}</p>
-        )}
+        {description && <p className="text-sm text-app-text-secondary mt-0.5">{description}</p>}
       </div>
       <div className="ml-4">{children}</div>
     </div>
-  )
+  );
 }
 
-function Toggle({ checked, onChange, disabled = false }: { checked: boolean; onChange: (checked: boolean) => void; disabled?: boolean }) {
+function Toggle({
+  checked,
+  onChange,
+  disabled = false,
+}: {
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  disabled?: boolean;
+}) {
   return (
     <button
       type="button"
@@ -90,44 +94,44 @@ function Toggle({ checked, onChange, disabled = false }: { checked: boolean; onC
       disabled={disabled}
       onClick={() => onChange(!checked)}
       className={cn(
-        "relative inline-flex h-6 w-11 items-center rounded-full transition-colors",
-        checked ? "bg-primary-600" : "bg-app-bg-tertiary",
-        disabled && "opacity-50 cursor-not-allowed"
+        'relative inline-flex h-6 w-11 items-center rounded-full transition-colors',
+        checked ? 'bg-primary-600' : 'bg-app-bg-tertiary',
+        disabled && 'opacity-50 cursor-not-allowed'
       )}
     >
       <span
         className={cn(
-          "inline-block h-4 w-4 transform rounded-full bg-app-bg-primary transition-transform",
-          checked ? "translate-x-6" : "translate-x-1"
+          'inline-block h-4 w-4 transform rounded-full bg-app-bg-primary transition-transform',
+          checked ? 'translate-x-6' : 'translate-x-1'
         )}
       />
     </button>
-  )
+  );
 }
 
-function Select<T extends string>({ 
-  value, 
-  onChange, 
+function Select<T extends string>({
+  value,
+  onChange,
   options,
-  disabled = false
-}: { 
-  value: T; 
-  onChange: (value: T) => void; 
-  options: { value: T; label: string; icon?: React.ReactNode }[]
-  disabled?: boolean
+  disabled = false,
+}: {
+  value: T;
+  onChange: (value: T) => void;
+  options: { value: T; label: string; icon?: React.ReactNode }[];
+  disabled?: boolean;
 }) {
   return (
     <div className="relative">
       <select
         value={value}
         disabled={disabled}
-        onChange={(e) => onChange(e.target.value as T)}
+        onChange={e => onChange(e.target.value as T)}
         className={cn(
-          "appearance-none bg-app-bg-primary text-app-text-primary border border-app-border-primary rounded-lg pl-3 pr-10 py-2 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
-          disabled && "opacity-50 cursor-not-allowed bg-app-bg-secondary"
+          'appearance-none bg-app-bg-primary text-app-text-primary border border-app-border-primary rounded-lg pl-3 pr-10 py-2 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+          disabled && 'opacity-50 cursor-not-allowed bg-app-bg-secondary'
         )}
       >
-        {options.map((opt) => (
+        {options.map(opt => (
           <option key={opt.value} value={opt.value}>
             {opt.label}
           </option>
@@ -137,21 +141,21 @@ function Select<T extends string>({
         <ChevronRight className="w-4 h-4 text-app-text-tertiary rotate-90" />
       </div>
     </div>
-  )
+  );
 }
 
-function Input({ 
-  value, 
-  onChange, 
-  type = "text",
+function Input({
+  value,
+  onChange,
+  type = 'text',
   min,
   max,
   placeholder,
   disabled = false,
-  className: inputClassName = ""
-}: { 
-  value: string | number; 
-  onChange: (value: string) => void; 
+  className: inputClassName = '',
+}: {
+  value: string | number;
+  onChange: (value: string) => void;
   type?: string;
   min?: number;
   max?: number;
@@ -167,14 +171,14 @@ function Input({
       max={max}
       placeholder={placeholder}
       disabled={disabled}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={e => onChange(e.target.value)}
       className={cn(
-        "w-full px-3 py-2 border border-app-border-primary rounded-lg text-sm bg-app-bg-primary text-app-text-primary focus:ring-2 focus:ring-primary-500 focus:border-primary-500",
-        disabled && "opacity-50 cursor-not-allowed bg-app-bg-secondary",
+        'w-full px-3 py-2 border border-app-border-primary rounded-lg text-sm bg-app-bg-primary text-app-text-primary focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+        disabled && 'opacity-50 cursor-not-allowed bg-app-bg-secondary',
         inputClassName
       )}
     />
-  )
+  );
 }
 
 export function Settings() {
@@ -191,84 +195,84 @@ export function Settings() {
     updateUISettings,
     setLastCheckedAt,
     resetAllSettings,
-  } = useSettingsStore()
-  const navigate = useNavigate()
-  const licenseTier = useLicenseStore((s) => s.tier)
-  const licenseExpiresAt = useLicenseStore((s) => s.expiresAt)
+  } = useSettingsStore();
+  const navigate = useNavigate();
+  const licenseTier = useLicenseStore(s => s.tier);
+  const licenseExpiresAt = useLicenseStore(s => s.expiresAt);
 
-  const [savedMessage, setSavedMessage] = useState<string | null>(null)
-  const [checkingUpdate, setCheckingUpdate] = useState(false)
-  const [updateAvailable, setUpdateAvailable] = useState<boolean | null>(null)
-  const [showResetConfirm, setShowResetConfirm] = useState(false)
+  const [savedMessage, setSavedMessage] = useState<string | null>(null);
+  const [checkingUpdate, setCheckingUpdate] = useState(false);
+  const [updateAvailable, setUpdateAvailable] = useState<boolean | null>(null);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
 
   // Show saved notification
   const showSaved = (message: string) => {
-    setSavedMessage(message)
-    setTimeout(() => setSavedMessage(null), 2000)
-  }
+    setSavedMessage(message);
+    setTimeout(() => setSavedMessage(null), 2000);
+  };
 
   // Check for updates
   const handleCheckUpdate = async () => {
-    setCheckingUpdate(true)
+    setCheckingUpdate(true);
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    setCheckingUpdate(false)
-    setUpdateAvailable(false) // Mock: no update available
-    setLastCheckedAt(new Date().toISOString())
-  }
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setCheckingUpdate(false);
+    setUpdateAvailable(false); // Mock: no update available
+    setLastCheckedAt(new Date().toISOString());
+  };
 
   // Reset all settings
   const handleReset = () => {
-    resetAllSettings()
-    setShowResetConfirm(false)
-    showSaved('Settings reset to defaults')
-  }
+    resetAllSettings();
+    setShowResetConfirm(false);
+    showSaved('Settings reset to defaults');
+  };
 
   // Apply theme to document
   useEffect(() => {
     const applyTheme = () => {
-      const root = document.documentElement
-      const isDark = 
-        editor.theme === 'dark' || 
-        (editor.theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-      
+      const root = document.documentElement;
+      const isDark =
+        editor.theme === 'dark' ||
+        (editor.theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
       if (isDark) {
-        root.classList.add('dark')
+        root.classList.add('dark');
       } else {
-        root.classList.remove('dark')
+        root.classList.remove('dark');
       }
-    }
-    
-    applyTheme()
-    
+    };
+
+    applyTheme();
+
     if (editor.theme === 'system') {
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-      mediaQuery.addEventListener('change', applyTheme)
-      return () => mediaQuery.removeEventListener('change', applyTheme)
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      mediaQuery.addEventListener('change', applyTheme);
+      return () => mediaQuery.removeEventListener('change', applyTheme);
     }
-  }, [editor.theme])
+  }, [editor.theme]);
 
   const themeOptions: { value: EditorTheme; label: string; icon: React.ReactNode }[] = [
     { value: 'light', label: 'Light', icon: <Sun className="w-4 h-4" /> },
     { value: 'dark', label: 'Dark', icon: <Moon className="w-4 h-4" /> },
     { value: 'system', label: 'System', icon: <Monitor className="w-4 h-4" /> },
-  ]
+  ];
 
   const languageOptions: { value: UILanguage; label: string }[] = [
     { value: 'zh-CN', label: '简体中文' },
     { value: 'en-US', label: 'English' },
-  ]
+  ];
 
   const exportFormatOptions: { value: ExportFormat; label: string; icon: React.ReactNode }[] = [
     { value: 'json', label: 'JSON', icon: <FileJson className="w-4 h-4" /> },
     { value: 'arxml', label: 'ARXML', icon: <FileCode className="w-4 h-4" /> },
-  ]
+  ];
 
   const fileNamingOptions: { value: FileNamingRule; label: string }[] = [
     { value: 'timestamp', label: 'Timestamp (YYYYMMDD-HHmmss)' },
     { value: 'config-name', label: 'Config Name' },
     { value: 'custom', label: 'Custom Pattern' },
-  ]
+  ];
 
   return (
     <div className="space-y-6">
@@ -314,9 +318,9 @@ export function Settings() {
             >
               <Toggle
                 checked={editor.defaultExpandParams}
-                onChange={(checked) => {
-                  updateEditorSettings({ defaultExpandParams: checked })
-                  showSaved('Editor settings saved')
+                onChange={checked => {
+                  updateEditorSettings({ defaultExpandParams: checked });
+                  showSaved('Editor settings saved');
                 }}
               />
             </SettingItem>
@@ -331,9 +335,9 @@ export function Settings() {
                   min={0}
                   max={300}
                   value={editor.autoSaveInterval}
-                  onChange={(value) => {
-                    const num = parseInt(value) || 0
-                    updateEditorSettings({ autoSaveInterval: num })
+                  onChange={value => {
+                    const num = parseInt(value) || 0;
+                    updateEditorSettings({ autoSaveInterval: num });
                   }}
                   className="w-24"
                 />
@@ -341,23 +345,20 @@ export function Settings() {
               </div>
             </SettingItem>
 
-            <SettingItem
-              label="Editor Theme"
-              description="Choose your preferred color theme"
-            >
+            <SettingItem label="Editor Theme" description="Choose your preferred color theme">
               <div className="flex items-center gap-2">
-                {themeOptions.map((opt) => (
+                {themeOptions.map(opt => (
                   <button
                     key={opt.value}
                     onClick={() => {
-                      updateEditorSettings({ theme: opt.value })
-                      showSaved('Theme updated')
+                      updateEditorSettings({ theme: opt.value });
+                      showSaved('Theme updated');
                     }}
                     className={cn(
-                      "flex items-center gap-2 px-3 py-2 rounded-lg border text-sm transition-colors",
+                      'flex items-center gap-2 px-3 py-2 rounded-lg border text-sm transition-colors',
                       editor.theme === opt.value
-                        ? "border-primary-600 bg-primary-50 text-primary-700"
-                        : "border-app-border-primary hover:border-app-border-primary hover:bg-app-bg-secondary"
+                        ? 'border-primary-600 bg-primary-50 text-primary-700'
+                        : 'border-app-border-primary hover:border-app-border-primary hover:bg-app-bg-secondary'
                     )}
                   >
                     {opt.icon}
@@ -380,14 +381,16 @@ export function Settings() {
             >
               <Toggle
                 checked={validation.enabled}
-                onChange={(checked) => {
-                  updateValidationSettings({ enabled: checked })
-                  showSaved('Validation settings saved')
+                onChange={checked => {
+                  updateValidationSettings({ enabled: checked });
+                  showSaved('Validation settings saved');
                 }}
               />
             </SettingItem>
 
-            <div className={cn("space-y-6", !validation.enabled && "opacity-50 pointer-events-none")}>
+            <div
+              className={cn('space-y-6', !validation.enabled && 'opacity-50 pointer-events-none')}
+            >
               <SettingItem
                 label="Max Parameter Count"
                 description="Warn when a module exceeds this parameter limit"
@@ -397,13 +400,13 @@ export function Settings() {
                   min={100}
                   max={10000}
                   value={validation.customThresholds.maxParameterCount}
-                  onChange={(value) => {
+                  onChange={value => {
                     updateValidationSettings({
                       customThresholds: {
                         ...validation.customThresholds,
                         maxParameterCount: parseInt(value) || 1000,
                       },
-                    })
+                    });
                   }}
                   className="w-32"
                 />
@@ -418,13 +421,13 @@ export function Settings() {
                   min={1}
                   max={20}
                   value={validation.customThresholds.maxNestingDepth}
-                  onChange={(value) => {
+                  onChange={value => {
                     updateValidationSettings({
                       customThresholds: {
                         ...validation.customThresholds,
                         maxNestingDepth: parseInt(value) || 5,
                       },
-                    })
+                    });
                   }}
                   className="w-32"
                 />
@@ -436,14 +439,14 @@ export function Settings() {
               >
                 <Toggle
                   checked={validation.customThresholds.requireDescription}
-                  onChange={(checked) => {
+                  onChange={checked => {
                     updateValidationSettings({
                       customThresholds: {
                         ...validation.customThresholds,
                         requireDescription: checked,
                       },
-                    })
-                    showSaved('Validation settings saved')
+                    });
+                    showSaved('Validation settings saved');
                   }}
                 />
               </SettingItem>
@@ -462,23 +465,20 @@ export function Settings() {
             >
               <Select
                 value={importExport.defaultFormat}
-                onChange={(value) => {
-                  updateImportExportSettings({ defaultFormat: value })
-                  showSaved('Export settings saved')
+                onChange={value => {
+                  updateImportExportSettings({ defaultFormat: value });
+                  showSaved('Export settings saved');
                 }}
                 options={exportFormatOptions}
               />
             </SettingItem>
 
-            <SettingItem
-              label="File Naming Rule"
-              description="How exported files should be named"
-            >
+            <SettingItem label="File Naming Rule" description="How exported files should be named">
               <Select
                 value={importExport.fileNamingRule}
-                onChange={(value) => {
-                  updateImportExportSettings({ fileNamingRule: value })
-                  showSaved('Naming rule saved')
+                onChange={value => {
+                  updateImportExportSettings({ fileNamingRule: value });
+                  showSaved('Naming rule saved');
                 }}
                 options={fileNamingOptions}
               />
@@ -491,8 +491,8 @@ export function Settings() {
               >
                 <Input
                   value={importExport.customFilePattern}
-                  onChange={(value) => {
-                    updateImportExportSettings({ customFilePattern: value })
+                  onChange={value => {
+                    updateImportExportSettings({ customFilePattern: value });
                   }}
                   placeholder="{name}-{date}"
                   className="w-48"
@@ -506,9 +506,9 @@ export function Settings() {
             >
               <Toggle
                 checked={importExport.includeMetadata}
-                onChange={(checked) => {
-                  updateImportExportSettings({ includeMetadata: checked })
-                  showSaved('Export settings saved')
+                onChange={checked => {
+                  updateImportExportSettings({ includeMetadata: checked });
+                  showSaved('Export settings saved');
                 }}
               />
             </SettingItem>
@@ -523,29 +523,23 @@ export function Settings() {
             description="Language and display preferences"
             icon={<Globe className="w-5 h-5 text-blue-600" />}
           >
-            <SettingItem
-              label="Language"
-              description="Select your preferred language"
-            >
+            <SettingItem label="Language" description="Select your preferred language">
               <Select
                 value={ui.language}
-                onChange={(value) => {
-                  updateUISettings({ language: value })
-                  showSaved('Language updated')
+                onChange={value => {
+                  updateUISettings({ language: value });
+                  showSaved('Language updated');
                 }}
                 options={languageOptions}
               />
             </SettingItem>
 
-            <SettingItem
-              label="Show Tooltips"
-              description="Display helpful tooltips on hover"
-            >
+            <SettingItem label="Show Tooltips" description="Display helpful tooltips on hover">
               <Toggle
                 checked={ui.showTooltips}
-                onChange={(checked) => {
-                  updateUISettings({ showTooltips: checked })
-                  showSaved('UI settings saved')
+                onChange={checked => {
+                  updateUISettings({ showTooltips: checked });
+                  showSaved('UI settings saved');
                 }}
               />
             </SettingItem>
@@ -556,9 +550,9 @@ export function Settings() {
             >
               <Toggle
                 checked={ui.confirmBeforeDelete}
-                onChange={(checked) => {
-                  updateUISettings({ confirmBeforeDelete: checked })
-                  showSaved('UI settings saved')
+                onChange={checked => {
+                  updateUISettings({ confirmBeforeDelete: checked });
+                  showSaved('UI settings saved');
                 }}
               />
             </SettingItem>
@@ -722,5 +716,5 @@ export function Settings() {
         </div>
       )}
     </div>
-  )
+  );
 }

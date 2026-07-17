@@ -1,82 +1,106 @@
-import { yuleasrValidator } from '@yuletech/core'
-import type { ModuleConfig, ValidationError, ValidationResult } from '@yuletech/core'
-import { CheckCircle, AlertTriangle, XCircle, RefreshCw, ChevronDown, ChevronRight } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { yuleasrValidator } from '@yuletech/core';
+import type { ModuleConfig, ValidationError, ValidationResult } from '@yuletech/core';
+import {
+  CheckCircle,
+  AlertTriangle,
+  XCircle,
+  RefreshCw,
+  ChevronDown,
+  ChevronRight,
+} from 'lucide-react';
+import { useState, useEffect } from 'react';
 
-import { cn } from '@/lib/utils'
-
+import { cn } from '@/lib/utils';
 
 interface ValidationPanelProps {
-  modules: ModuleConfig[]
-  result?: ValidationResult | null
-  onNavigate?: (path: string) => void
-  className?: string
+  modules: ModuleConfig[];
+  result?: ValidationResult | null;
+  onNavigate?: (path: string) => void;
+  className?: string;
 }
 
-export function ValidationPanel({ modules, result: externalResult, onNavigate, className }: ValidationPanelProps) {
-  const [internalErrors, setInternalErrors] = useState<ValidationError[]>([])
-  const [isValidating, setIsValidating] = useState(false)
-  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set(['errors', 'warnings']))
-  
-  const errors = externalResult?.errors || internalErrors
-  const warnings = externalResult?.warnings || []
+export function ValidationPanel({
+  modules,
+  result: externalResult,
+  onNavigate,
+  className,
+}: ValidationPanelProps) {
+  const [internalErrors, setInternalErrors] = useState<ValidationError[]>([]);
+  const [isValidating, setIsValidating] = useState(false);
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
+    new Set(['errors', 'warnings'])
+  );
+
+  const errors = externalResult?.errors || internalErrors;
+  const warnings = externalResult?.warnings || [];
 
   const validate = () => {
-    setIsValidating(true)
+    setIsValidating(true);
     setTimeout(() => {
-      const validationErrors = yuleasrValidator.validateModules(modules)
-      setInternalErrors(validationErrors)
-      setIsValidating(false)
-    }, 500)
-  }
+      const validationErrors = yuleasrValidator.validateModules(modules);
+      setInternalErrors(validationErrors);
+      setIsValidating(false);
+    }, 500);
+  };
 
   useEffect(() => {
     if (!externalResult) {
-      validate()
+      validate();
     }
-  }, [modules, externalResult])
+  }, [modules, externalResult]);
 
-  const stats = yuleasrValidator.getValidationStats(errors)
+  const stats = yuleasrValidator.getValidationStats(errors);
 
   const handleItemClick = (path: string) => {
     if (onNavigate) {
-      onNavigate(path)
+      onNavigate(path);
     }
-  }
+  };
 
   const toggleGroup = (group: string) => {
     setExpandedGroups(prev => {
-      const newSet = new Set(prev)
+      const newSet = new Set(prev);
       if (newSet.has(group)) {
-        newSet.delete(group)
+        newSet.delete(group);
       } else {
-        newSet.add(group)
+        newSet.add(group);
       }
-      return newSet
-    })
-  }
+      return newSet;
+    });
+  };
 
   // Group errors by module
-  const groupedErrors = errors.reduce((acc, error) => {
-    const moduleName = error.path.split('.')[0] || 'general'
-    if (!acc[moduleName]) acc[moduleName] = []
-    acc[moduleName].push(error)
-    return acc
-  }, {} as Record<string, ValidationError[]>)
+  const groupedErrors = errors.reduce(
+    (acc, error) => {
+      const moduleName = error.path.split('.')[0] || 'general';
+      if (!acc[moduleName]) acc[moduleName] = [];
+      acc[moduleName].push(error);
+      return acc;
+    },
+    {} as Record<string, ValidationError[]>
+  );
 
-  const groupedWarnings = warnings.reduce((acc, warning) => {
-    const moduleName = warning.path.split('.')[0] || 'general'
-    if (!acc[moduleName]) acc[moduleName] = []
-    acc[moduleName].push(warning)
-    return acc
-  }, {} as Record<string, ValidationError[]>)
+  const groupedWarnings = warnings.reduce(
+    (acc, warning) => {
+      const moduleName = warning.path.split('.')[0] || 'general';
+      if (!acc[moduleName]) acc[moduleName] = [];
+      acc[moduleName].push(warning);
+      return acc;
+    },
+    {} as Record<string, ValidationError[]>
+  );
 
-  const hasErrors = stats.errorCount > 0
-  const hasWarnings = stats.warningCount > 0
-  const isValid = !hasErrors && !hasWarnings
+  const hasErrors = stats.errorCount > 0;
+  const hasWarnings = stats.warningCount > 0;
+  const isValid = !hasErrors && !hasWarnings;
 
   return (
-    <div className={cn("bg-app-bg-primary border border-app-border-primary rounded-lg overflow-hidden", className)}>
+    <div
+      className={cn(
+        'bg-app-bg-primary border border-app-border-primary rounded-lg overflow-hidden',
+        className
+      )}
+    >
       {/* Header */}
       <div className="px-4 py-3 border-b border-app-border-primary bg-app-bg-secondary flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -108,7 +132,7 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
           disabled={isValidating}
           className="flex items-center gap-1 px-3 py-1.5 text-sm text-app-text-secondary hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/40 rounded-lg transition-colors disabled:opacity-50"
         >
-          <RefreshCw className={cn("w-4 h-4", isValidating && "animate-spin")} />
+          <RefreshCw className={cn('w-4 h-4', isValidating && 'animate-spin')} />
           Refresh
         </button>
       </div>
@@ -210,7 +234,7 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
                             </div>
                           </div>
                         ))}
-                  </div>
+                      </div>
                     ))}
                   </div>
                 )}
@@ -227,5 +251,5 @@ export function ValidationPanel({ modules, result: externalResult, onNavigate, c
         </div>
       )}
     </div>
-  )
+  );
 }

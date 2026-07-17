@@ -65,10 +65,5 @@ export interface ConditionEvalContext {
   /** module name → { param name → value } */
   getParam(module: string, param: string): unknown;
   /** module name → container name → instance[] → instance param value */
-  getContainerParam(
-    module: string,
-    container: string,
-    index: number,
-    param: string
-  ): unknown;
+  getContainerParam(module: string, container: string, index: number, param: string): unknown;
 }

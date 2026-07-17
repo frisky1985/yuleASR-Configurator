@@ -1,29 +1,30 @@
-import { Crown, Sparkles } from 'lucide-react'
-import { useState } from 'react'
-import { useLicenseStore } from '@/stores/licenseStore'
-import { cn } from '@/lib/utils'
-import { UpgradeDialog } from '@/components/UpgradeDialog'
+import { Crown, Sparkles } from 'lucide-react';
+import { useState } from 'react';
+
+import { UpgradeDialog } from '@/components/UpgradeDialog';
+import { cn } from '@/lib/utils';
+import { useLicenseStore } from '@/stores/licenseStore';
 
 interface LicenseBadgeProps {
-  className?: string
+  className?: string;
 }
 
 export function LicenseBadge({ className }: LicenseBadgeProps) {
-  const tier = useLicenseStore((s) => s.tier)
-  const expiresAt = useLicenseStore((s) => s.expiresAt)
-  const [upgradeOpen, setUpgradeOpen] = useState(false)
+  const tier = useLicenseStore(s => s.tier);
+  const expiresAt = useLicenseStore(s => s.expiresAt);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
 
-  const isExpired = expiresAt && new Date(expiresAt) < new Date()
-  const displayTier = isExpired ? 'free' : tier
+  const isExpired = expiresAt && new Date(expiresAt) < new Date();
+  const displayTier = isExpired ? 'free' : tier;
 
   const handleClick = () => {
-    setUpgradeOpen(true)
-  }
+    setUpgradeOpen(true);
+  };
 
   if (displayTier === 'pro') {
     const daysLeft = expiresAt
       ? Math.ceil((new Date(expiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
-      : null
+      : null;
 
     return (
       <>
@@ -35,7 +36,7 @@ export function LicenseBadge({ className }: LicenseBadgeProps) {
             'dark:from-amber-900/40 dark:to-amber-800/40 dark:text-amber-300',
             'border border-amber-300/50 dark:border-amber-700/50',
             'hover:shadow-sm transition-all',
-            className,
+            className
           )}
           title={daysLeft !== null ? `剩余 ${daysLeft} 天` : 'Pro 用户'}
         >
@@ -47,7 +48,7 @@ export function LicenseBadge({ className }: LicenseBadgeProps) {
         </button>
         <UpgradeDialog isOpen={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
       </>
-    )
+    );
   }
 
   return (
@@ -60,7 +61,7 @@ export function LicenseBadge({ className }: LicenseBadgeProps) {
           'hover:bg-primary-50 hover:text-primary-700 hover:border-primary-300',
           'dark:hover:bg-primary-900/20 dark:hover:text-primary-400',
           'transition-all',
-          className,
+          className
         )}
         title="点击升级到 Pro"
       >
@@ -69,5 +70,5 @@ export function LicenseBadge({ className }: LicenseBadgeProps) {
       </button>
       <UpgradeDialog isOpen={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
     </>
-  )
+  );
 }

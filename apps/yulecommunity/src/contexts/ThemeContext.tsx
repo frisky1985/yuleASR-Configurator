@@ -57,7 +57,7 @@ export function ThemeProvider({ children, defaultTheme = 'system' }: ThemeProvid
   // 更新文档主题类
   useEffect(() => {
     if (!mounted) return;
-    
+
     const root = document.documentElement;
     root.classList.remove('light', 'dark');
     root.classList.add(resolvedTheme);
@@ -95,15 +95,15 @@ export function ThemeProvider({ children, defaultTheme = 'system' }: ThemeProvid
   // Prevent flash of wrong theme
   if (!mounted) {
     return (
-      <ThemeContext.Provider value={{
-        theme: defaultTheme,
-        resolvedTheme: 'light',
-        setTheme: () => {},
-        toggleTheme: () => {}
-      }}>
-        <div style={{ visibility: 'hidden' }}>
-          {children}
-        </div>
+      <ThemeContext.Provider
+        value={{
+          theme: defaultTheme,
+          resolvedTheme: 'light',
+          setTheme: () => {},
+          toggleTheme: () => {},
+        }}
+      >
+        <div style={{ visibility: 'hidden' }}>{children}</div>
       </ThemeContext.Provider>
     );
   }

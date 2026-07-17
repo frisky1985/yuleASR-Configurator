@@ -70,7 +70,9 @@ export function PointsDisplay({ detailed = false }: PointsDisplayProps) {
             </div>
           </div>
           <div className="text-right">
-            <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full bg-background ${levelColor}`}>
+            <div
+              className={`inline-flex items-center gap-1 px-3 py-1 rounded-full bg-background ${levelColor}`}
+            >
               <Star className="w-4 h-4" />
               <span className="font-medium">Lv.{level}</span>
             </div>

@@ -30,7 +30,10 @@ export function AdminContent() {
   // Forum
   const [posts, setPosts] = useLocalStorage<ForumPost[]>('yuletech-forum-posts', initialForumPosts);
   // QA
-  const [questions, setQuestions] = useLocalStorage<Question[]>('yuletech-qa-questions', initialQuestions);
+  const [questions, setQuestions] = useLocalStorage<Question[]>(
+    'yuletech-qa-questions',
+    initialQuestions
+  );
   // Events
   const [events, setEvents] = useLocalStorage<CommunityEvent[]>('yuletech-events', initialEvents);
 
@@ -46,55 +49,57 @@ export function AdminContent() {
   ];
 
   const filteredPosts = posts.filter(
-    (p) =>
+    p =>
       p.title.toLowerCase().includes(search.toLowerCase()) ||
       p.content.toLowerCase().includes(search.toLowerCase())
   );
 
   const filteredQuestions = questions.filter(
-    (q) =>
+    q =>
       q.title.toLowerCase().includes(search.toLowerCase()) ||
       q.content.toLowerCase().includes(search.toLowerCase())
   );
 
   const filteredEvents = events.filter(
-    (e) =>
+    e =>
       e.title.toLowerCase().includes(search.toLowerCase()) ||
       e.description.toLowerCase().includes(search.toLowerCase())
   );
 
   const handleDeletePost = (id: string) => {
     if (!window.confirm('确定要删除这条帖子吗？此操作不可撤销。')) return;
-    setPosts((prev) => prev.filter((p) => p.id !== id));
+    setPosts(prev => prev.filter(p => p.id !== id));
   };
 
   const handleTogglePin = (id: string) => {
-    setPosts((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, isPinned: !p.isPinned } : p))
-    );
+    setPosts(prev => prev.map(p => (p.id === id ? { ...p, isPinned: !p.isPinned } : p)));
   };
 
   const handleDeleteQuestion = (id: string) => {
     if (!window.confirm('确定要删除这个问题吗？此操作不可撤销。')) return;
-    setQuestions((prev) => prev.filter((q) => q.id !== id));
+    setQuestions(prev => prev.filter(q => q.id !== id));
   };
 
   const handleChangeBounty = (id: string, newBounty: number) => {
-    setQuestions((prev) =>
-      prev.map((q) => (q.id === id ? { ...q, bounty: Math.max(0, newBounty) } : q))
+    setQuestions(prev =>
+      prev.map(q => (q.id === id ? { ...q, bounty: Math.max(0, newBounty) } : q))
     );
   };
 
   const handleDeleteEvent = (id: string) => {
     if (!window.confirm('确定要删除这个活动吗？此操作不可撤销。')) return;
-    setEvents((prev) => prev.filter((e) => e.id !== id));
+    setEvents(prev => prev.filter(e => e.id !== id));
   };
 
   const handleChangeEventStatus = (id: string, status: CommunityEvent['status']) => {
-    setEvents((prev) => prev.map((e) => (e.id === id ? { ...e, status } : e)));
+    setEvents(prev => prev.map(e => (e.id === id ? { ...e, status } : e)));
   };
 
-  const toggleExpand = (id: string, set: Set<string>, setFn: React.Dispatch<React.SetStateAction<Set<string>>>) => {
+  const toggleExpand = (
+    id: string,
+    set: Set<string>,
+    setFn: React.Dispatch<React.SetStateAction<Set<string>>>
+  ) => {
     const next = new Set(set);
     if (next.has(id)) next.delete(id);
     else next.add(id);
@@ -103,7 +108,11 @@ export function AdminContent() {
 
   const formatTime = (iso: string) => {
     const d = new Date(iso);
-    return d.toLocaleDateString('zh-CN') + ' ' + d.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+    return (
+      d.toLocaleDateString('zh-CN') +
+      ' ' +
+      d.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
+    );
   };
 
   return (
@@ -115,10 +124,13 @@ export function AdminContent() {
 
       {/* Tabs */}
       <div className="flex items-center gap-2 border-b border-border">
-        {tabs.map((tab) => (
+        {tabs.map(tab => (
           <button
             key={tab.key}
-            onClick={() => { setActiveTab(tab.key); setSearch(''); }}
+            onClick={() => {
+              setActiveTab(tab.key);
+              setSearch('');
+            }}
             className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
               activeTab === tab.key
                 ? 'border-[hsl(var(--primary))] text-foreground'
@@ -136,7 +148,7 @@ export function AdminContent() {
         <input
           type="text"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={e => setSearch(e.target.value)}
           placeholder={`搜索${activeTab === 'forum' ? '帖子' : activeTab === 'qa' ? '问题' : '活动'}...`}
           className="w-full pl-10 pr-4 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[hsl(var(--accent))]/30"
         />
@@ -151,27 +163,38 @@ export function AdminContent() {
                 <tr className="border-b border-border bg-muted/30">
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">标题</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">作者</th>
-                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">回复/浏览</th>
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
+                    回复/浏览
+                  </th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">状态</th>
                   <th className="text-left px-4 py-3 font-medium text-muted-foreground">操作</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredPosts.map((post) => {
+                {filteredPosts.map(post => {
                   const expanded = expandedForum.has(post.id);
                   return (
                     <>
-                      <tr key={post.id} className="border-b border-border last:border-b-0 hover:bg-muted/20 transition-colors">
+                      <tr
+                        key={post.id}
+                        className="border-b border-border last:border-b-0 hover:bg-muted/20 transition-colors"
+                      >
                         <td className="px-4 py-3 max-w-xs">
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() => toggleExpand(post.id, expandedForum, setExpandedForum)}
                               className="text-muted-foreground hover:text-foreground"
                             >
-                              {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                              {expanded ? (
+                                <ChevronUp className="w-3.5 h-3.5" />
+                              ) : (
+                                <ChevronDown className="w-3.5 h-3.5" />
+                              )}
                             </button>
                             <span className="font-medium truncate">{post.title}</span>
-                            {post.isPinned && <Pin className="w-3.5 h-3.5 text-[hsl(var(--accent))]" />}
+                            {post.isPinned && (
+                              <Pin className="w-3.5 h-3.5 text-[hsl(var(--accent))]" />
+                            )}
                           </div>
                         </td>
                         <td className="px-4 py-3 text-muted-foreground">{post.author}</td>
@@ -180,9 +203,13 @@ export function AdminContent() {
                         </td>
                         <td className="px-4 py-3">
                           {post.isPinned ? (
-                            <span className="text-xs px-2 py-0.5 rounded-full bg-[hsl(var(--accent))]/10 text-[hsl(var(--accent))]">置顶</span>
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-[hsl(var(--accent))]/10 text-[hsl(var(--accent))]">
+                              置顶
+                            </span>
                           ) : (
-                            <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">普通</span>
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+                              普通
+                            </span>
                           )}
                         </td>
                         <td className="px-4 py-3">
@@ -192,7 +219,11 @@ export function AdminContent() {
                               className="p-1.5 rounded-lg hover:bg-[hsl(var(--accent))]/10 hover:text-[hsl(var(--accent))] text-muted-foreground transition-colors"
                               title={post.isPinned ? '取消置顶' : '置顶'}
                             >
-                              {post.isPinned ? <PinOff className="w-3.5 h-3.5" /> : <Pin className="w-3.5 h-3.5" />}
+                              {post.isPinned ? (
+                                <PinOff className="w-3.5 h-3.5" />
+                              ) : (
+                                <Pin className="w-3.5 h-3.5" />
+                              )}
                             </button>
                             <button
                               onClick={() => handleDeletePost(post.id)}
@@ -207,8 +238,12 @@ export function AdminContent() {
                       {expanded && (
                         <tr>
                           <td colSpan={5} className="px-4 py-3 bg-muted/20">
-                            <p className="text-sm text-muted-foreground whitespace-pre-wrap line-clamp-4">{post.content}</p>
-                            <p className="text-xs text-muted-foreground mt-2">发布时间：{formatTime(post.createdAt)}</p>
+                            <p className="text-sm text-muted-foreground whitespace-pre-wrap line-clamp-4">
+                              {post.content}
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-2">
+                              发布时间：{formatTime(post.createdAt)}
+                            </p>
                           </td>
                         </tr>
                       )}
@@ -243,18 +278,25 @@ export function AdminContent() {
                 </tr>
               </thead>
               <tbody>
-                {filteredQuestions.map((q) => {
+                {filteredQuestions.map(q => {
                   const expanded = expandedQA.has(q.id);
                   return (
                     <>
-                      <tr key={q.id} className="border-b border-border last:border-b-0 hover:bg-muted/20 transition-colors">
+                      <tr
+                        key={q.id}
+                        className="border-b border-border last:border-b-0 hover:bg-muted/20 transition-colors"
+                      >
                         <td className="px-4 py-3 max-w-xs">
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() => toggleExpand(q.id, expandedQA, setExpandedQA)}
                               className="text-muted-foreground hover:text-foreground"
                             >
-                              {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                              {expanded ? (
+                                <ChevronUp className="w-3.5 h-3.5" />
+                              ) : (
+                                <ChevronDown className="w-3.5 h-3.5" />
+                              )}
                             </button>
                             <span className="font-medium truncate">{q.title}</span>
                           </div>
@@ -268,13 +310,15 @@ export function AdminContent() {
                               min={0}
                               max={1000}
                               value={q.bounty}
-                              onChange={(e) => handleChangeBounty(q.id, Number(e.target.value))}
+                              onChange={e => handleChangeBounty(q.id, Number(e.target.value))}
                               className="w-16 px-1.5 py-0.5 bg-background border border-border rounded text-sm focus:outline-none focus:ring-1 focus:ring-[hsl(var(--accent))]/30"
                             />
                           </div>
                         </td>
                         <td className="px-4 py-3">
-                          <span className={`text-xs px-2 py-0.5 rounded-full ${q.status === 'resolved' ? 'bg-green-500/10 text-green-500' : 'bg-[hsl(var(--accent))]/10 text-[hsl(var(--accent))]'}`}>
+                          <span
+                            className={`text-xs px-2 py-0.5 rounded-full ${q.status === 'resolved' ? 'bg-green-500/10 text-green-500' : 'bg-[hsl(var(--accent))]/10 text-[hsl(var(--accent))]'}`}
+                          >
                             {q.status === 'resolved' ? '已解决' : '未解决'}
                           </span>
                         </td>
@@ -291,8 +335,12 @@ export function AdminContent() {
                       {expanded && (
                         <tr>
                           <td colSpan={5} className="px-4 py-3 bg-muted/20">
-                            <p className="text-sm text-muted-foreground whitespace-pre-wrap line-clamp-4">{q.content}</p>
-                            <p className="text-xs text-muted-foreground mt-2">提问时间：{formatTime(q.createdAt)} · {q.answers.length} 个回答</p>
+                            <p className="text-sm text-muted-foreground whitespace-pre-wrap line-clamp-4">
+                              {q.content}
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-2">
+                              提问时间：{formatTime(q.createdAt)} · {q.answers.length} 个回答
+                            </p>
                           </td>
                         </tr>
                       )}
@@ -327,28 +375,44 @@ export function AdminContent() {
                 </tr>
               </thead>
               <tbody>
-                {filteredEvents.map((evt) => {
+                {filteredEvents.map(evt => {
                   const expanded = expandedEvents.has(evt.id);
                   return (
                     <>
-                      <tr key={evt.id} className="border-b border-border last:border-b-0 hover:bg-muted/20 transition-colors">
+                      <tr
+                        key={evt.id}
+                        className="border-b border-border last:border-b-0 hover:bg-muted/20 transition-colors"
+                      >
                         <td className="px-4 py-3 max-w-xs">
                           <div className="flex items-center gap-2">
                             <button
-                              onClick={() => toggleExpand(evt.id, expandedEvents, setExpandedEvents)}
+                              onClick={() =>
+                                toggleExpand(evt.id, expandedEvents, setExpandedEvents)
+                              }
                               className="text-muted-foreground hover:text-foreground"
                             >
-                              {expanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                              {expanded ? (
+                                <ChevronUp className="w-3.5 h-3.5" />
+                              ) : (
+                                <ChevronDown className="w-3.5 h-3.5" />
+                              )}
                             </button>
                             <span className="font-medium truncate">{evt.title}</span>
                           </div>
                         </td>
                         <td className="px-4 py-3 text-muted-foreground">{evt.date}</td>
-                        <td className="px-4 py-3 text-muted-foreground">{evt.type === 'online' ? '线上' : '线下'}</td>
+                        <td className="px-4 py-3 text-muted-foreground">
+                          {evt.type === 'online' ? '线上' : '线下'}
+                        </td>
                         <td className="px-4 py-3">
                           <select
                             value={evt.status}
-                            onChange={(e) => handleChangeEventStatus(evt.id, e.target.value as CommunityEvent['status'])}
+                            onChange={e =>
+                              handleChangeEventStatus(
+                                evt.id,
+                                e.target.value as CommunityEvent['status']
+                              )
+                            }
                             className="px-2 py-1 bg-background border border-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-[hsl(var(--accent))]/30"
                           >
                             <option value="upcoming">即将开始</option>
@@ -369,7 +433,9 @@ export function AdminContent() {
                       {expanded && (
                         <tr>
                           <td colSpan={5} className="px-4 py-3 bg-muted/20">
-                            <p className="text-sm text-muted-foreground whitespace-pre-wrap line-clamp-3">{evt.description}</p>
+                            <p className="text-sm text-muted-foreground whitespace-pre-wrap line-clamp-3">
+                              {evt.description}
+                            </p>
                             <p className="text-xs text-muted-foreground mt-2">
                               时间：{evt.time} · 地点：{evt.location || '-'} · 主讲：{evt.speaker}
                             </p>

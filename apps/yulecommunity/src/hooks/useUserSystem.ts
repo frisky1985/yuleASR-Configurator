@@ -66,7 +66,7 @@ export function getLevelThresholds(): LevelThreshold[] {
     if (raw) {
       const parsed = JSON.parse(raw) as LevelThreshold[];
       if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed.map((t) => ({
+        return parsed.map(t => ({
           ...t,
           max: t.max ?? Infinity,
         }));
@@ -94,28 +94,34 @@ export function useUserSystem() {
     history: [],
   });
 
-  const addPoints = useCallback((action: PointsAction, description?: string) => {
-    const actionPoints = getActionPoints();
-    const points = actionPoints[action];
-    const item: PointsHistoryItem = {
-      id: generateId('pts'),
-      action,
-      description: description || ACTION_DESCRIPTIONS[action],
-      points,
-      timestamp: new Date().toISOString(),
-    };
-    setState((prev) => ({
-      points: prev.points + points,
-      history: [item, ...prev.history],
-    }));
-  }, [setState]);
+  const addPoints = useCallback(
+    (action: PointsAction, description?: string) => {
+      const actionPoints = getActionPoints();
+      const points = actionPoints[action];
+      const item: PointsHistoryItem = {
+        id: generateId('pts'),
+        action,
+        description: description || ACTION_DESCRIPTIONS[action],
+        points,
+        timestamp: new Date().toISOString(),
+      };
+      setState(prev => ({
+        points: prev.points + points,
+        history: [item, ...prev.history],
+      }));
+    },
+    [setState]
+  );
 
-  const setPoints = useCallback((points: number) => {
-    setState((prev) => ({
-      ...prev,
-      points: Math.max(0, points),
-    }));
-  }, [setState]);
+  const setPoints = useCallback(
+    (points: number) => {
+      setState(prev => ({
+        ...prev,
+        points: Math.max(0, points),
+      }));
+    },
+    [setState]
+  );
 
   const levelInfo = getLevelInfo(state.points);
 

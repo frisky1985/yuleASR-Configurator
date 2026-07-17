@@ -12,11 +12,11 @@ import { useAdminStore } from './stores/adminStore';
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated, checkAdminAccess } = useAdminStore.getState();
-  
+
   if (!isAuthenticated || !checkAdminAccess()) {
     return <Navigate to="/admin/login" replace />;
   }
-  
+
   return <>{children}</>;
 };
 

@@ -1,6 +1,7 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
+
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 
 // yuleASR Desktop — wraps the yuleasr-web app
 export default defineConfig({

@@ -50,9 +50,7 @@ class ArticleService implements IArticleService {
     let filteredArticles = [...articles];
 
     if (category && category !== '全部') {
-      filteredArticles = filteredArticles.filter(
-        article => article.category === category
-      );
+      filteredArticles = filteredArticles.filter(article => article.category === category);
     }
 
     if (tag) {
@@ -76,8 +74,7 @@ class ArticleService implements IArticleService {
       let comparison = 0;
       switch (sortBy) {
         case 'date':
-          comparison =
-            new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime();
+          comparison = new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime();
           break;
         case 'views':
           comparison = b.viewCount - a.viewCount;
@@ -86,8 +83,7 @@ class ArticleService implements IArticleService {
           comparison = b.likeCount - a.likeCount;
           break;
         default:
-          comparison =
-            new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime();
+          comparison = new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime();
       }
       return sortOrder === 'asc' ? -comparison : comparison;
     });

@@ -18,25 +18,25 @@ export interface SocialMetaProps {
   title: string;
   description: string;
   url: string;
-  
+
   // OG 图片
   image: string;
   imageAlt?: string;
   imageWidth?: number;
   imageHeight?: number;
-  
+
   // OG 类型
   type?: OGType;
   siteName?: string;
   locale?: string;
-  
+
   // 文章特有
   author?: string;
   publishedTime?: string;
   modifiedTime?: string;
   tags?: string[];
   section?: string;
-  
+
   // Twitter 特定
   twitterCard?: TwitterCardType;
   twitterSite?: string; // @username
@@ -60,12 +60,10 @@ const DEFAULT_CONFIG = {
  * 设置 Meta 标签
  */
 function setMetaTag(property: string, content: string, isProperty = true) {
-  const selector = isProperty 
-    ? `meta[property="${property}"]` 
-    : `meta[name="${property}"]`;
-  
+  const selector = isProperty ? `meta[property="${property}"]` : `meta[name="${property}"]`;
+
   let meta = document.querySelector(selector) as HTMLMetaElement;
-  
+
   if (!meta) {
     meta = document.createElement('meta');
     if (isProperty) {
@@ -75,7 +73,7 @@ function setMetaTag(property: string, content: string, isProperty = true) {
     }
     document.head.appendChild(meta);
   }
-  
+
   meta.content = content;
   return meta;
 }

@@ -1,22 +1,16 @@
-import { Link } from 'react-router-dom'
-import {
-  Cpu,
-  Wifi,
-  Database,
-  Layers,
-  Download,
-  Eye,
-  Star,
-  CheckCircle2,
-} from 'lucide-react'
-import type { BSWTemplate } from '../types/bswTemplate'
+import { Link } from 'react-router-dom';
+import { Cpu, Wifi, Database, Layers, Download, Eye, Star, CheckCircle2 } from 'lucide-react';
+import type { BSWTemplate } from '../types/bswTemplate';
 
 interface Props {
-  template: BSWTemplate
-  onUse?: (template: BSWTemplate) => void
+  template: BSWTemplate;
+  onUse?: (template: BSWTemplate) => void;
 }
 
-const categoryConfig: Record<string, { icon: React.ReactNode; color: string; bg: string; label: string }> = {
+const categoryConfig: Record<
+  string,
+  { icon: React.ReactNode; color: string; bg: string; label: string }
+> = {
   mcal: {
     icon: <Cpu className="w-5 h-5" />,
     color: 'text-blue-600',
@@ -47,11 +41,11 @@ const categoryConfig: Record<string, { icon: React.ReactNode; color: string; bg:
     bg: 'bg-rose-50',
     label: 'BSW',
   },
-}
+};
 
 export function BSWTemplateCard({ template, onUse }: Props) {
-  const cfg = categoryConfig[template.category] || categoryConfig.bsw
-  const moduleCount = template.modules?.length || 0
+  const cfg = categoryConfig[template.category] || categoryConfig.bsw;
+  const moduleCount = template.modules?.length || 0;
 
   return (
     <div className="group bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl hover:shadow-lg hover:border-primary-300 dark:hover:border-primary-600 transition-all overflow-hidden">
@@ -61,7 +55,9 @@ export function BSWTemplateCard({ template, onUse }: Props) {
       <div className="p-5">
         {/* Header */}
         <div className="flex items-start justify-between mb-3">
-          <div className={`w-10 h-10 ${cfg.bg} rounded-lg flex items-center justify-center ${cfg.color}`}>
+          <div
+            className={`w-10 h-10 ${cfg.bg} rounded-lg flex items-center justify-center ${cfg.color}`}
+          >
             {cfg.icon}
           </div>
           <div className="flex items-center gap-1.5">
@@ -109,9 +105,7 @@ export function BSWTemplateCard({ template, onUse }: Props) {
             <Star className="w-3.5 h-3.5" />
             {template.rating || 0}
           </span>
-          <span className="ml-auto text-slate-400 dark:text-slate-500">
-            v{template.version}
-          </span>
+          <span className="ml-auto text-slate-400 dark:text-slate-500">v{template.version}</span>
         </div>
 
         {/* Author */}
@@ -145,5 +139,5 @@ export function BSWTemplateCard({ template, onUse }: Props) {
         </div>
       </div>
     </div>
-  )
+  );
 }

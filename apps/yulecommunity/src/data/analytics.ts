@@ -38,24 +38,132 @@ export interface TimeSeriesData {
 }
 
 export const mockContributors: Contributor[] = [
-  { id: 'u1', name: '张工', avatar: 'Z', commits: 245, additions: 12500, deletions: 3200, modules: 8, lastActive: '2024-01-20' },
-  { id: 'u2', name: '李研发', avatar: 'L', commits: 198, additions: 9800, deletions: 2100, modules: 6, lastActive: '2024-01-20' },
-  { id: 'u3', name: '王工程师', avatar: 'W', commits: 156, additions: 7600, deletions: 1800, modules: 5, lastActive: '2024-01-19' },
-  { id: 'u4', name: '赵测试', avatar: 'Z', commits: 89, additions: 3200, deletions: 900, modules: 3, lastActive: '2024-01-18' },
+  {
+    id: 'u1',
+    name: '张工',
+    avatar: 'Z',
+    commits: 245,
+    additions: 12500,
+    deletions: 3200,
+    modules: 8,
+    lastActive: '2024-01-20',
+  },
+  {
+    id: 'u2',
+    name: '李研发',
+    avatar: 'L',
+    commits: 198,
+    additions: 9800,
+    deletions: 2100,
+    modules: 6,
+    lastActive: '2024-01-20',
+  },
+  {
+    id: 'u3',
+    name: '王工程师',
+    avatar: 'W',
+    commits: 156,
+    additions: 7600,
+    deletions: 1800,
+    modules: 5,
+    lastActive: '2024-01-19',
+  },
+  {
+    id: 'u4',
+    name: '赵测试',
+    avatar: 'Z',
+    commits: 89,
+    additions: 3200,
+    deletions: 900,
+    modules: 3,
+    lastActive: '2024-01-18',
+  },
 ];
 
 export const mockModuleUsage: ModuleUsage[] = [
-  { moduleId: 'can', moduleName: 'CAN Driver', downloads: 3420, uniqueProjects: 45, stars: 128, lastDownload: '2024-01-20', trend: 'up', trendValue: 15 },
-  { moduleId: 'adc', moduleName: 'ADC Driver', downloads: 2890, uniqueProjects: 38, stars: 96, lastDownload: '2024-01-20', trend: 'up', trendValue: 8 },
-  { moduleId: 'spi', moduleName: 'SPI Driver', downloads: 2150, uniqueProjects: 28, stars: 72, lastDownload: '2024-01-19', trend: 'stable', trendValue: 0 },
-  { moduleId: 'gpio', moduleName: 'GPIO Driver', downloads: 4120, uniqueProjects: 52, stars: 156, lastDownload: '2024-01-20', trend: 'up', trendValue: 22 },
-  { moduleId: 'uart', moduleName: 'UART Driver', downloads: 1980, uniqueProjects: 25, stars: 64, lastDownload: '2024-01-18', trend: 'down', trendValue: -5 },
+  {
+    moduleId: 'can',
+    moduleName: 'CAN Driver',
+    downloads: 3420,
+    uniqueProjects: 45,
+    stars: 128,
+    lastDownload: '2024-01-20',
+    trend: 'up',
+    trendValue: 15,
+  },
+  {
+    moduleId: 'adc',
+    moduleName: 'ADC Driver',
+    downloads: 2890,
+    uniqueProjects: 38,
+    stars: 96,
+    lastDownload: '2024-01-20',
+    trend: 'up',
+    trendValue: 8,
+  },
+  {
+    moduleId: 'spi',
+    moduleName: 'SPI Driver',
+    downloads: 2150,
+    uniqueProjects: 28,
+    stars: 72,
+    lastDownload: '2024-01-19',
+    trend: 'stable',
+    trendValue: 0,
+  },
+  {
+    moduleId: 'gpio',
+    moduleName: 'GPIO Driver',
+    downloads: 4120,
+    uniqueProjects: 52,
+    stars: 156,
+    lastDownload: '2024-01-20',
+    trend: 'up',
+    trendValue: 22,
+  },
+  {
+    moduleId: 'uart',
+    moduleName: 'UART Driver',
+    downloads: 1980,
+    uniqueProjects: 25,
+    stars: 64,
+    lastDownload: '2024-01-18',
+    trend: 'down',
+    trendValue: -5,
+  },
 ];
 
 export const mockTeamMetrics: TeamMetric[] = [
-  { teamId: 't1', teamName: 'MCAL 团队', members: 3, commits: 156, issues: 23, prs: 45, velocity: 32, sprintCompletion: 92 },
-  { teamId: 't2', teamName: '网络通信', members: 2, commits: 89, issues: 15, prs: 28, velocity: 24, sprintCompletion: 88 },
-  { teamId: 't3', teamName: '功能安全', members: 2, commits: 67, issues: 12, prs: 19, velocity: 18, sprintCompletion: 95 },
+  {
+    teamId: 't1',
+    teamName: 'MCAL 团队',
+    members: 3,
+    commits: 156,
+    issues: 23,
+    prs: 45,
+    velocity: 32,
+    sprintCompletion: 92,
+  },
+  {
+    teamId: 't2',
+    teamName: '网络通信',
+    members: 2,
+    commits: 89,
+    issues: 15,
+    prs: 28,
+    velocity: 24,
+    sprintCompletion: 88,
+  },
+  {
+    teamId: 't3',
+    teamName: '功能安全',
+    members: 2,
+    commits: 67,
+    issues: 12,
+    prs: 19,
+    velocity: 18,
+    sprintCompletion: 95,
+  },
 ];
 
 export const mockActivityData: TimeSeriesData[] = [
@@ -132,7 +240,10 @@ export function getDashboardSummary(): DashboardSummary {
   };
 }
 
-export function generateReport(type: 'usage' | 'quality' | 'team', format: 'pdf' | 'excel'): string {
+export function generateReport(
+  type: 'usage' | 'quality' | 'team',
+  format: 'pdf' | 'excel'
+): string {
   // 演示函数，实际实现需要后端支持
   return `report_${type}_${new Date().toISOString().split('T')[0]}.${format}`;
 }

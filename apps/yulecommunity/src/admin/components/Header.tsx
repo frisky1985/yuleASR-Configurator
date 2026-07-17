@@ -31,9 +31,7 @@ export const Header: React.FC<HeaderProps> = ({ title }) => {
     >
       <div className="flex h-full items-center justify-between px-4 sm:px-6">
         {/* Title */}
-        <h1 className="text-xl font-semibold text-slate-800 dark:text-white">
-          {title}
-        </h1>
+        <h1 className="text-xl font-semibold text-slate-800 dark:text-white">{title}</h1>
 
         {/* Right Actions */}
         <div className="flex items-center gap-3">

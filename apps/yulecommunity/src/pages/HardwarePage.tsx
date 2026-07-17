@@ -39,7 +39,10 @@ export function HardwarePage() {
     <div className="min-h-screen pt-16">
       <Helmet>
         <title>开发板 - YuleTech | 硬件平台</title>
-        <meta name="description" content="专为 AutoSAR BSW 开发优化的开发板，预装 YuleTech 开源基础软件栈，提供从驱动开发到系统集成的完整硬件支持。" />
+        <meta
+          name="description"
+          content="专为 AutoSAR BSW 开发优化的开发板，预装 YuleTech 开源基础软件栈，提供从驱动开发到系统集成的完整硬件支持。"
+        />
       </Helmet>
       {/* Hero */}
       <section className="relative py-16 overflow-hidden bg-gradient-to-b from-[hsl(var(--primary))]/5 to-transparent">
@@ -113,7 +116,7 @@ export function HardwarePage() {
               </CardHeader>
               <CardContent>
                 <div className="divide-y divide-border">
-                  {specs.map((spec) => (
+                  {specs.map(spec => (
                     <div key={spec.label} className="flex items-center gap-3 py-3">
                       <spec.icon className="w-4 h-4 text-[hsl(var(--accent))]" />
                       <span className="text-sm text-muted-foreground w-24">{spec.label}</span>
@@ -135,12 +138,17 @@ export function HardwarePage() {
             使用教程
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {tutorials.map((t) => (
-              <Card key={t.title} className="hover:border-[hsl(var(--accent))]/30 transition-all cursor-pointer group">
+            {tutorials.map(t => (
+              <Card
+                key={t.title}
+                className="hover:border-[hsl(var(--accent))]/30 transition-all cursor-pointer group"
+              >
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <h3 className="font-semibold group-hover:text-[hsl(var(--accent))] transition-colors">{t.title}</h3>
+                      <h3 className="font-semibold group-hover:text-[hsl(var(--accent))] transition-colors">
+                        {t.title}
+                      </h3>
                       <p className="text-sm text-muted-foreground mt-1">{t.desc}</p>
                     </div>
                     <ExternalLink className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-1" />

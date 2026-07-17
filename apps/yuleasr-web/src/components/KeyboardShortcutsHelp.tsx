@@ -3,20 +3,29 @@
  * Display available keyboard shortcuts in a modal
  */
 
-import { X, Command, Keyboard, Save, Search, ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react'
-import { useEffect } from 'react'
+import {
+  X,
+  Command,
+  Keyboard,
+  Save,
+  Search,
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle,
+} from 'lucide-react';
+import { useEffect } from 'react';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 interface KeyboardShortcutsHelpProps {
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 interface Shortcut {
-  keys: string[]
-  description: string
-  icon?: React.ReactNode
+  keys: string[];
+  description: string;
+  icon?: React.ReactNode;
 }
 
 const shortcuts: Shortcut[] = [
@@ -55,32 +64,29 @@ const shortcuts: Shortcut[] = [
     description: 'Navigate between fields',
     icon: <ArrowRight className="w-4 h-4" />,
   },
-]
+];
 
 export function KeyboardShortcutsHelp({ isOpen, onClose }: KeyboardShortcutsHelpProps) {
   useEffect(() => {
-    if (!isOpen) return
+    if (!isOpen) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        onClose()
+        onClose();
       }
-    }
+    };
 
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen, onClose])
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div 
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={onClose}
-      />
-      
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+
       {/* Dialog */}
       <div className="relative w-full max-w-lg bg-card border border-border rounded-xl shadow-2xl overflow-hidden">
         {/* Header */}
@@ -106,9 +112,7 @@ export function KeyboardShortcutsHelp({ isOpen, onClose }: KeyboardShortcutsHelp
                 className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-accent/50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  {shortcut.icon && (
-                    <span className="text-muted-foreground">{shortcut.icon}</span>
-                  )}
+                  {shortcut.icon && <span className="text-muted-foreground">{shortcut.icon}</span>}
                   <span className="text-foreground">{shortcut.description}</span>
                 </div>
                 <div className="flex items-center gap-1">
@@ -129,11 +133,13 @@ export function KeyboardShortcutsHelp({ isOpen, onClose }: KeyboardShortcutsHelp
 
           <div className="mt-6 pt-4 border-t border-border">
             <p className="text-sm text-muted-foreground">
-              <strong>Note:</strong> On macOS, use <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">Cmd</kbd> instead of <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">Ctrl</kbd>
+              <strong>Note:</strong> On macOS, use{' '}
+              <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">Cmd</kbd> instead of{' '}
+              <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">Ctrl</kbd>
             </p>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

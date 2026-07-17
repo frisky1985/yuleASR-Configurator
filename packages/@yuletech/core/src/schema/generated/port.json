@@ -1135,11 +1135,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "BLE_3V3",
-    "CAN_SPI_CLK",
-    "CAN_SPI_CS"
-  ],
+  "required": ["BLE_3V3", "CAN_SPI_CLK", "CAN_SPI_CS"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

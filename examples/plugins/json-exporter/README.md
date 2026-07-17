@@ -5,9 +5,9 @@
 
 ## Overview
 
-This example plugin demonstrates how to write a **data exporter plugin** for yuleASR.
-It exports the full project configuration as a pretty-printed JSON report with
-metadata (timestamp, module count).
+This example plugin demonstrates how to write a **data exporter plugin** for
+yuleASR. It exports the full project configuration as a pretty-printed JSON
+report with metadata (timestamp, module count).
 
 ## What it demonstrates
 
@@ -19,10 +19,10 @@ metadata (timestamp, module count).
 
 ## User configuration
 
-| Key | Default | Description |
-|-----|---------|-------------|
-| `indent` | `2` | Number of spaces for JSON indentation |
-| `includeTimestamp` | `true` | Whether to include generation timestamp in the report |
+| Key                | Default | Description                                           |
+| ------------------ | ------- | ----------------------------------------------------- |
+| `indent`           | `2`     | Number of spaces for JSON indentation                 |
+| `includeTimestamp` | `true`  | Whether to include generation timestamp in the report |
 
 Set via `PUT /v1/api/plugins/example-json-exporter/config`:
 
@@ -64,7 +64,17 @@ await pluginManager.activate(jsonExporterPlugin, { indent: 4 });
 // Export with default settings
 const result = await pluginRegistry
   .getDataExporter('example-json-exporter:JsonExporter')
-  ?.export({ Can: { /* ... */ }, Mcu: { /* ... */ } }, {});
+  ?.export(
+    {
+      Can: {
+        /* ... */
+      },
+      Mcu: {
+        /* ... */
+      },
+    },
+    {}
+  );
 
 console.log(result?.content);
 ```

@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { RteCodeGenerator } from '../rte-generator';
+
 import type { ModuleConfig, ModuleSchema } from '../../types';
+import { RteCodeGenerator } from '../rte-generator';
 
 describe('RteCodeGenerator', () => {
   const generator = new RteCodeGenerator();
@@ -94,7 +95,13 @@ describe('RteCodeGenerator', () => {
           { name: 'DoorCommand', type: 'ClientServer', dataType: 'uint8' },
         ],
         RteTasks: [
-          { name: 'Task_10ms', priority: 5, periodMs: 10, activationType: 'cyclic', runnableList: ['Runnable_Speed'] },
+          {
+            name: 'Task_10ms',
+            priority: 5,
+            periodMs: 10,
+            activationType: 'cyclic',
+            runnableList: ['Runnable_Speed'],
+          },
         ],
       },
       containers: {},

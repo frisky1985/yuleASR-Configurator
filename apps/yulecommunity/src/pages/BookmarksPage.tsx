@@ -6,10 +6,7 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import {
-  Bookmark,
-  ArrowLeft,
-} from 'lucide-react';
+import { Bookmark, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useBookmarks } from '@/hooks/useBookmarks';
 import { HomeSEOWrapper } from '@/components/seo';
@@ -48,9 +45,7 @@ export function BookmarksPage() {
                     <Bookmark className="w-6 h-6 text-yellow-500 fill-yellow-500" />
                     我的收藏
                   </h1>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    共 {count} 篇文章
-                  </p>
+                  <p className="text-sm text-muted-foreground mt-1">共 {count} 篇文章</p>
                 </div>
               </div>
             </div>
@@ -59,15 +54,12 @@ export function BookmarksPage() {
 
         {/* 收藏列表 */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <BookmarksList 
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <BookmarksList
               showHeader={false}
               emptyAction={{
                 text: '去看看文章',
-                onClick: handleGoToBlog
+                onClick: handleGoToBlog,
               }}
             />
           </motion.div>

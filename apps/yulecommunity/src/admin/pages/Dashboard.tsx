@@ -36,19 +36,79 @@ const fallbackStats: DashboardStats = {
 };
 
 const fallbackRecentUsers: RecentUser[] = [
-  { id: '1', username: 'zhangsan', email: 'zhangsan@example.com', status: 'active', createdAt: '2025-01-28 14:30' },
-  { id: '2', username: 'lisi', email: 'lisi@example.com', status: 'active', createdAt: '2025-01-28 12:15' },
-  { id: '3', username: 'wangwu', email: 'wangwu@example.com', status: 'inactive', createdAt: '2025-01-28 10:45' },
-  { id: '4', username: 'zhaoliu', email: 'zhaoliu@example.com', status: 'active', createdAt: '2025-01-28 09:20' },
-  { id: '5', username: 'qianqi', email: 'qianqi@example.com', status: 'active', createdAt: '2025-01-28 08:00' },
+  {
+    id: '1',
+    username: 'zhangsan',
+    email: 'zhangsan@example.com',
+    status: 'active',
+    createdAt: '2025-01-28 14:30',
+  },
+  {
+    id: '2',
+    username: 'lisi',
+    email: 'lisi@example.com',
+    status: 'active',
+    createdAt: '2025-01-28 12:15',
+  },
+  {
+    id: '3',
+    username: 'wangwu',
+    email: 'wangwu@example.com',
+    status: 'inactive',
+    createdAt: '2025-01-28 10:45',
+  },
+  {
+    id: '4',
+    username: 'zhaoliu',
+    email: 'zhaoliu@example.com',
+    status: 'active',
+    createdAt: '2025-01-28 09:20',
+  },
+  {
+    id: '5',
+    username: 'qianqi',
+    email: 'qianqi@example.com',
+    status: 'active',
+    createdAt: '2025-01-28 08:00',
+  },
 ];
 
 const fallbackRecentBuilds: RecentBuild[] = [
-  { id: '1', name: 'STM32-GCC-Build', platform: 'STM32', status: 'success', createdAt: '2025-01-28 15:30' },
-  { id: '2', name: 'ESP32-IDF-Release', platform: 'ESP32', status: 'running', createdAt: '2025-01-28 15:15' },
-  { id: '3', name: 'Arduino-Sensor-Lib', platform: 'Arduino', status: 'failed', createdAt: '2025-01-28 14:45' },
-  { id: '4', name: 'Raspberry-Pi-Driver', platform: 'RaspberryPi', status: 'success', createdAt: '2025-01-28 14:00' },
-  { id: '5', name: 'PIC18F-Bootloader', platform: 'PIC', status: 'success', createdAt: '2025-01-28 13:30' },
+  {
+    id: '1',
+    name: 'STM32-GCC-Build',
+    platform: 'STM32',
+    status: 'success',
+    createdAt: '2025-01-28 15:30',
+  },
+  {
+    id: '2',
+    name: 'ESP32-IDF-Release',
+    platform: 'ESP32',
+    status: 'running',
+    createdAt: '2025-01-28 15:15',
+  },
+  {
+    id: '3',
+    name: 'Arduino-Sensor-Lib',
+    platform: 'Arduino',
+    status: 'failed',
+    createdAt: '2025-01-28 14:45',
+  },
+  {
+    id: '4',
+    name: 'Raspberry-Pi-Driver',
+    platform: 'RaspberryPi',
+    status: 'success',
+    createdAt: '2025-01-28 14:00',
+  },
+  {
+    id: '5',
+    name: 'PIC18F-Bootloader',
+    platform: 'PIC',
+    status: 'success',
+    createdAt: '2025-01-28 13:30',
+  },
 ];
 
 export const Dashboard: React.FC = () => {
@@ -89,7 +149,7 @@ export const Dashboard: React.FC = () => {
               email: `${p.username}@example.com`,
               status: (i % 3 === 2 ? 'inactive' : 'active') as 'active' | 'inactive',
               createdAt: new Date(p.createdAt).toLocaleString('zh-CN'),
-            })),
+            }))
           );
         }
       } catch (err) {
@@ -101,7 +161,9 @@ export const Dashboard: React.FC = () => {
       }
     };
     loadData();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const userColumns = [
@@ -137,8 +199,8 @@ export const Dashboard: React.FC = () => {
             record.status === 'success'
               ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'
               : record.status === 'failed'
-              ? 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400'
-              : 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400 animate-pulse'
+                ? 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+                : 'bg-blue-100 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400 animate-pulse'
           }`}
         >
           {record.status === 'success' ? '成功' : record.status === 'failed' ? '失败' : '运行中'}
