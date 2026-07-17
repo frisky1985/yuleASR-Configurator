@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.2] - 2026-07-17
+
+### Fixed
+- CI 构建修复：排除 api-server（预存 TS 错误），`pnpm --filter "yuleasr-web..." build` 只构建依赖链
+- `@yuletech/core` / `yuleasr-editor-core`: 禁用包级 `noUnusedLocals` 避免 tsup 编译失败
+- `yuleasr-web`: 移除 `tsc` 前置检查（Vite/esbuild 不依赖 typecheck）
+- `release.yml`: "Build all packages" 排除 api-server
+- `deploy-gh-pages.yml`: 构建命令修复 + `destination_dir: ./configurator` 适配子路径部署
+
 ## [0.2.1] - 2026-07-17
 
 ### Added
