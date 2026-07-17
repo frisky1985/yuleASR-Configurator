@@ -74,8 +74,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build web app
-        run: pnpm --filter yuleasr-web build -- --base=/yuleASR-Configurator/
+      - name: Build web app with dependencies
+        run: pnpm --filter "yuleasr-web..." build -- --base=/yuleASR-Configurator/
 
       - name: Prepare GH Pages dist
         run: cp apps/yuleasr-web/dist/index.html apps/yuleasr-web/dist/404.html

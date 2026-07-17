@@ -28,8 +28,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Build web app
-        run: pnpm -r build --filter '!@yuletech/api-server' --filter '!yuleasr-vscode'
+      - name: Build web app with dependencies
+        run: pnpm --filter "yuleasr-web..." build
 
       - name: Prepare dist
         run: |
