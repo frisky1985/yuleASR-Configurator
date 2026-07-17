@@ -35,6 +35,7 @@ jobs:
         run: pnpm install
 
       - name: Setup Pages
+        id: pages
         uses: actions/configure-pages@v4
 
       - name: Build web app with dependencies (skip api-server)
