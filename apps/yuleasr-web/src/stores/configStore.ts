@@ -752,6 +752,17 @@ export const useConfigStore = create<ConfigState>()(
           // Always save to localStorage first
           saveToLocalStorage(config)
 
+          // Update the config list index in localStorage
+          const list = loadConfigListFromLocalStorage()
+          list.push({
+            id: config.id,
+            name: config.name,
+            description: config.description || '',
+            moduleCount: config.modules?.length || 0,
+            lastModified: new Date().toISOString(),
+          })
+          saveConfigListToLocalStorage(list)
+
           // If authenticated, also create via API
           if (isAuthenticated()) {
             try {

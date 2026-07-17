@@ -126,6 +126,17 @@ export function Dashboard() {
     loadConfigList()
   }, [loadConfigList])
 
+  // Close create modal on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && showCreateModal) {
+        setShowCreateModal(false)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [showCreateModal])
+
   const handleCreateConfig = async () => {
     if (!newConfigName.trim()) return
     await createConfig(newConfigName, newConfigDesc)

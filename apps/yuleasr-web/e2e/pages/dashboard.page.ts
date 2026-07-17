@@ -125,9 +125,10 @@ export class DashboardPage {
     })
     
     const configItem = this.page.locator('h3').filter({ hasText: configName }).first()
-    // Find the parent row that contains this config and has a delete button
+    // Find the delete button in the config row. Dashboard buttons have visible text "删除".
     const row = configItem.locator('xpath=../..')
-    const deleteButton = row.locator('button').filter({ hasText: /删除|Delete/i }).first()
+    // Delete button is icon-only with title="删除" (no visible text)
+    const deleteButton = row.locator('button[title*="删除"], button[title*="Delete"]').first()
     await deleteButton.click()
     await this.page.waitForTimeout(500)
   }

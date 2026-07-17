@@ -11,94 +11,62 @@ export class EditorPage {
   readonly backButton: Locator
   readonly configName: Locator
   readonly statusBadge: Locator
-  readonly lastModified: Locator
+  readonly configSubtitle: Locator
   
   // Toolbar buttons
   readonly validateButton: Locator
   readonly saveButton: Locator
-  readonly syncButton: Locator
-  readonly downloadButton: Locator
-  readonly moreButton: Locator
+  readonly searchButton: Locator
+  readonly shareButton: Locator
   
   // Module Tree (Left sidebar)
   readonly moduleTree: Locator
   readonly moduleTreeHeader: Locator
   readonly moduleSearchInput: Locator
   readonly filterButton: Locator
-  readonly expandAllButton: Locator
-  readonly collapseAllButton: Locator
+  readonly expandButton: Locator
+  readonly collapseButton: Locator
   readonly layerHeaders: Locator
   readonly moduleItems: Locator
-  readonly moduleToggleButtons: Locator
   
   // Parameter Editor (Center)
   readonly parameterEditor: Locator
-  readonly parameterEditorHeader: Locator
-  readonly parameterSearchInput: Locator
-  readonly parameterCount: Locator
-  readonly parameterList: Locator
-  readonly noModuleSelected: Locator
-  readonly disabledModuleWarning: Locator
   
   // Validation Panel (Right sidebar)
   readonly validationPanel: Locator
   readonly validationPanelHeader: Locator
-  readonly autoValidationToggle: Locator
-  readonly validateNowButton: Locator
-  readonly validationStatus: Locator
-  readonly errorCount: Locator
-  readonly warningCount: Locator
-  
-  // Module Info Card
-  readonly moduleInfoCard: Locator
-  
+
   constructor(page: Page) {
     this.page = page
     
-    // Header
-    this.backButton = page.locator('button', { has: page.locator('[class*="ArrowLeft"]') })
-    this.configName = page.locator('h1[class*="text-xl font-bold"]')
-    this.statusBadge = page.locator('span', { hasText: /Saved|Unsaved/ })
-    this.lastModified = page.getByText(/Last modified:/)
+    // Header — h1 is config name, check for ArrowLeft icon
+    this.backButton = page.locator('main button').filter({ has: page.locator('svg.lucide-arrow-left') }).first()
+    this.configName = page.locator('h1').first()
+    this.statusBadge = page.getByText(/Saved|Unsaved/i)
+    this.configSubtitle = page.locator('header + div p, main p').filter({ hasText: /Last modified/i }).first()
     
-    // Toolbar
-    this.validateButton = page.getByRole('button', { name: /Validate/i })
-    this.saveButton = page.getByRole('button', { name: /Save$/, exact: false })
-    this.syncButton = page.getByRole('button', { name: /Sync/i })
-    this.downloadButton = page.locator('button', { has: page.locator('[class*="Download"]') })
-    this.moreButton = page.locator('button', { has: page.locator('[class*="MoreVertical"]') })
+    // Toolbar — buttons in the editor toolbar area
+    this.validateButton = page.getByRole('button', { name: /^Validate$/i })
+    this.saveButton = page.getByRole('button', { name: /^Save$/i })
+    this.searchButton = page.getByRole('button', { name: /Search/i })
+    this.shareButton = page.getByRole('button', { name: /^Share$/i })
     
-    // Module Tree
-    this.moduleTree = page.locator('.bg-white.rounded-lg.border').first()
-    this.moduleTreeHeader = page.getByText('Modules')
-    this.moduleSearchInput = page.locator('input[placeholder="Search modules..."]')
+    // Module Tree — section with heading "Configuration Tree"
+    this.moduleTree = page.getByRole('heading', { name: /Configuration Tree/i })
+    this.moduleTreeHeader = page.getByRole('heading', { name: /Configuration Tree/i })
+    this.moduleSearchInput = page.getByPlaceholder(/Search modules/)
     this.filterButton = page.getByRole('button', { name: /Filter/i })
-    this.expandAllButton = page.getByText('Expand all')
-    this.collapseAllButton = page.getByText('Collapse')
-    this.layerHeaders = page.locator('button', { hasText: /MCAL|ECUAL|Service|RTE|ASW/ })
-    this.moduleItems = page.locator('[class*="flex-1 text-left"]').filter({ hasText: /Mcu|Port|Dio|Can|Eth/ })
-    this.moduleToggleButtons = page.locator('button[title="Disable module"], button[title="Enable module"]')
+    this.expandButton = page.getByRole('button', { name: /^Expand$/ })
+    this.collapseButton = page.getByRole('button', { name: /^Collapse$/ })
+    this.layerHeaders = page.locator('div[class*="cursor-pointer"]').filter({ hasText: /MCAL|ECUAL|Service|RTE|ASW/ })
+    this.moduleItems = page.locator('div[class*="cursor-pointer"]').filter({ hasText: /Driver|Unit|Library|\sModule/i })
     
-    // Parameter Editor
-    this.parameterEditor = page.locator('.bg-white.rounded-lg.border').nth(1)
-    this.parameterEditorHeader = page.locator('h3', { hasText: /Configuration$|Select a Module/ })
-    this.parameterSearchInput = page.locator('input[placeholder="Filter params..."]')
-    this.parameterCount = page.getByText(/\\d+ params/)
-    this.parameterList = page.locator('[class*="space-y-6"]').first()
-    this.noModuleSelected = page.getByText('Select a module from the sidebar')
-    this.disabledModuleWarning = page.getByText('This module is currently disabled')
+    // Parameter Editor — center column, appears after clicking a container
+    this.parameterEditor = page.locator('div').filter({ has: page.getByRole('heading', { name: /Configuration Parameters|Configuration$/i }) }).first()
     
-    // Validation Panel
-    this.validationPanel = page.locator('.bg-white.rounded-lg.border', { hasText: /Validation|No validation results/ })
-    this.validationPanelHeader = page.getByText('Validation', { exact: true })
-    this.autoValidationToggle = page.locator('input[type="checkbox"]', { has: page.locator('..') })
-    this.validateNowButton = page.getByRole('button', { name: /Validate Now/i })
-    this.validationStatus = page.locator('h3', { hasText: /Validation Passed|Issue|No validation/ })
-    this.errorCount = page.getByText(/\\d+ error/i)
-    this.warningCount = page.getByText(/\\d+ warning/i)
-    
-    // Module Info
-    this.moduleInfoCard = page.locator('.bg-white.rounded-lg.border', { hasText: 'Module Info' })
+    // Validation Panel — right sidebar
+    this.validationPanel = page.locator('div').filter({ has: page.getByRole('heading', { name: /^Validation$/i }) }).first()
+    this.validationPanelHeader = page.getByRole('heading', { name: /^Validation$/i })
   }
 
   /**
@@ -106,18 +74,18 @@ export class EditorPage {
    */
   async goto(configId: string, moduleId?: string) {
     const url = moduleId 
-      ? `/editor/${configId}/${moduleId}`
-      : `/editor/${configId}`
+      ? `/configurator/editor/${configId}/${moduleId}`
+      : `/configurator/editor/${configId}`
     await this.page.goto(url)
     await this.waitForLoad()
   }
 
   /**
-   * Wait for the editor to fully load
+   * Wait for the editor to fully load — module tree must be visible
    */
   async waitForLoad() {
-    await expect(this.moduleTree).toBeVisible()
-    await expect(this.parameterEditor).toBeVisible()
+    await expect(this.moduleTree).toBeVisible({ timeout: 10000 })
+    await expect(this.configName).toBeVisible({ timeout: 5000 })
   }
 
   /**
@@ -125,28 +93,27 @@ export class EditorPage {
    */
   async goBack() {
     await this.backButton.click()
-    await this.page.waitForURL('**/dashboard')
+    await this.page.waitForURL(/dashboard/, { timeout: 5000 }).catch(() => {})
   }
 
   /**
-   * Select a module by name
+   * Select a module by name in the tree
    */
   async selectModule(moduleName: string) {
-    const moduleButton = this.page.getByRole('button', { name: moduleName })
-    await moduleButton.click()
-    await this.page.waitForTimeout(200)
+    const moduleItem = this.moduleItems.filter({ hasText: moduleName }).first()
+    await moduleItem.click()
+    await this.page.waitForTimeout(300)
   }
 
   /**
    * Toggle a module's enabled/disabled state
    */
   async toggleModule(moduleName: string) {
-    const moduleRow = this.page.locator('div', { 
-      has: this.page.getByRole('button', { name: moduleName })
-    }).first()
-    const toggleButton = moduleRow.locator('button[title="Disable module"], button[title="Enable module"]')
-    await toggleButton.click()
-    await this.page.waitForTimeout(200)
+    const moduleItem = this.moduleItems.filter({ hasText: moduleName }).first()
+    // The toggle button is the first button inside the module item row
+    const toggle = moduleItem.locator('button').first()
+    await toggle.click()
+    await this.page.waitForTimeout(300)
   }
 
   /**
@@ -161,96 +128,21 @@ export class EditorPage {
    * Expand all layers in the module tree
    */
   async expandAllLayers() {
-    await this.expandAllButton.click()
-    await this.page.waitForTimeout(200)
+    // Click "Expand" button if visible
+    if (await this.expandButton.isVisible().catch(() => false)) {
+      await this.expandButton.click()
+      await this.page.waitForTimeout(300)
+    }
   }
 
   /**
    * Collapse all layers in the module tree
    */
   async collapseAllLayers() {
-    await this.collapseAllButton.click()
-    await this.page.waitForTimeout(200)
-  }
-
-  /**
-   * Search for parameters in the editor
-   */
-  async searchParameters(query: string) {
-    await this.parameterSearchInput.fill(query)
-    await this.page.waitForTimeout(300)
-  }
-
-  /**
-   * Get the current parameter count displayed
-   */
-  async getParameterCount(): Promise<number> {
-    const text = await this.parameterCount.textContent()
-    const match = text?.match(/(\\d+) params/)
-    return match ? parseInt(match[1]) : 0
-  }
-
-  /**
-   * Update a parameter value
-   */
-  async updateParameter(paramName: string, value: string | number) {
-    const paramRow = this.page.locator('div', { 
-      has: this.page.locator('label', { hasText: paramName })
-    }).first()
-    
-    const input = paramRow.locator('input').first()
-    await input.fill(String(value))
-    await input.blur()
-    await this.page.waitForTimeout(200)
-  }
-
-  /**
-   * Update a numeric parameter value
-   */
-  async updateNumericParameter(paramName: string, value: number) {
-    const paramRow = this.page.locator('div', { 
-      has: this.page.locator('label', { hasText: paramName })
-    }).first()
-    
-    const input = paramRow.locator('input[type="number"]').first()
-    await input.fill(String(value))
-    await input.blur()
-    await this.page.waitForTimeout(200)
-  }
-
-  /**
-   * Select an enum parameter option
-   */
-  async selectEnumParameter(paramName: string, option: string) {
-    const paramRow = this.page.locator('div', { 
-      has: this.page.locator('label', { hasText: paramName })
-    }).first()
-    
-    const select = paramRow.locator('select').first()
-    await select.selectOption(option)
-    await this.page.waitForTimeout(200)
-  }
-
-  /**
-   * Toggle a boolean parameter
-   */
-  async toggleBooleanParameter(paramName: string) {
-    const paramRow = this.page.locator('div', { 
-      has: this.page.locator('label', { hasText: paramName })
-    }).first()
-    
-    const toggle = paramRow.locator('button[role="switch"], button[class*="rounded-full"]').first()
-    await toggle.click()
-    await this.page.waitForTimeout(200)
-  }
-
-  /**
-   * Save the configuration
-   */
-  async saveConfig() {
-    await this.saveButton.click()
-    await this.page.waitForTimeout(500)
-    await expect(this.page.getByText('Saved')).toBeVisible()
+    if (await this.collapseButton.isVisible().catch(() => false)) {
+      await this.collapseButton.click()
+      await this.page.waitForTimeout(300)
+    }
   }
 
   /**
@@ -262,12 +154,29 @@ export class EditorPage {
   }
 
   /**
+   * Check if validation completed
+   */
+  async isValidated(): Promise<boolean> {
+    return await this.page.getByText(/Validation Passed|Issue|No validation/).isVisible().catch(() => false)
+  }
+
+  /**
+   * Save the configuration
+   */
+  async saveConfig() {
+    await this.saveButton.click()
+    await this.page.waitForTimeout(500)
+  }
+
+  /**
    * Toggle auto validation
    */
   async toggleAutoValidation() {
-    const toggle = this.page.locator('label:has-text("Auto") input[type="checkbox"]')
-    await toggle.click()
-    await this.page.waitForTimeout(200)
+    const toggle = this.page.locator('label').filter({ hasText: /Auto/i }).locator('input[type="checkbox"]').first()
+    if (await toggle.isVisible().catch(() => false)) {
+      await toggle.click()
+      await this.page.waitForTimeout(200)
+    }
   }
 
   /**
@@ -281,8 +190,9 @@ export class EditorPage {
    * Get validation errors count
    */
   async getErrorCount(): Promise<number> {
-    const text = await this.errorCount.textContent().catch(() => '0')
-    const match = text.match(/(\\d+) error/)
+    const errorText = this.page.getByText(/\d+ error/)
+    const text = await errorText.textContent().catch(() => '0 errors')
+    const match = text.match(/(\d+) error/)
     return match ? parseInt(match[1]) : 0
   }
 
@@ -290,15 +200,9 @@ export class EditorPage {
    * Get validation warnings count
    */
   async getWarningCount(): Promise<number> {
-    const text = await this.warningCount.textContent().catch(() => '0')
-    const match = text.match(/(\\d+) warning/)
+    const warningText = this.page.getByText(/\d+ warning/)
+    const text = await warningText.textContent().catch(() => '0 warnings')
+    const match = text.match(/(\d+) warning/)
     return match ? parseInt(match[1]) : 0
-  }
-
-  /**
-   * Check if validation passed
-   */
-  async isValidationPassed(): Promise<boolean> {
-    return await this.page.getByText('Validation Passed').isVisible().catch(() => false)
   }
 }

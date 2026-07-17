@@ -61,6 +61,12 @@ export function Editor() {
   const [savedGeneratedCode, setSavedGeneratedCode] = useState<string | null>(null)
   const [showExportMenu, setShowExportMenu] = useState(false)
   const exportMenuRef = useRef<HTMLDivElement>(null)
+  const [showImportMenu, setShowImportMenu] = useState(false)
+  const importMenuRef = useRef<HTMLDivElement>(null)
+  const [showSaveMenu, setShowSaveMenu] = useState(false)
+  const saveMenuRef = useRef<HTMLDivElement>(null)
+  const [showOverflowMenu, setShowOverflowMenu] = useState(false)
+  const overflowMenuRef = useRef<HTMLDivElement>(null)
 
   // ── Code gen state (declared early — used by Electron useEffect below) ──
   const [importing, setImporting] = useState(false)
@@ -93,17 +99,26 @@ export function Editor() {
     }
   }, [configId, loadConfig])
 
-  // Close export menu on click outside
+  // Close dropdown menus on click outside
   useEffect(() => {
-    if (!showExportMenu) return
+    if (!showExportMenu && !showSaveMenu && !showOverflowMenu) return
     const handleClick = (e: MouseEvent) => {
       if (exportMenuRef.current && !exportMenuRef.current.contains(e.target as Node)) {
         setShowExportMenu(false)
       }
+      if (importMenuRef.current && !importMenuRef.current.contains(e.target as Node)) {
+        setShowImportMenu(false)
+      }
+      if (saveMenuRef.current && !saveMenuRef.current.contains(e.target as Node)) {
+        setShowSaveMenu(false)
+      }
+      if (overflowMenuRef.current && !overflowMenuRef.current.contains(e.target as Node)) {
+        setShowOverflowMenu(false)
+      }
     }
     document.addEventListener('mousedown', handleClick)
     return () => document.removeEventListener('mousedown', handleClick)
-  }, [showExportMenu])
+  }, [showExportMenu, showSaveMenu, showOverflowMenu])
 
   // Electron menu event listeners
   useEffect(() => {
@@ -408,37 +423,53 @@ export function Editor() {
             )}
             Validate
           </button>
-          <button
-            onClick={handleSave}
-            disabled={!isDirty || isLoading}
-            className={cn(
-              'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors',
-              !isDirty || isLoading
-                ? 'bg-app-bg-tertiary text-app-text-tertiary cursor-not-allowed'
-                : 'bg-primary-600 text-white hover:bg-primary-700'
+          {/* Save Dropdown — Save + Save as Template */}
+          <div className="relative" ref={saveMenuRef}>
+            <button
+              onClick={() => setShowSaveMenu(!showSaveMenu)}
+              disabled={!isDirty || isLoading}
+              className={cn(
+                'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors',
+                !isDirty || isLoading
+                  ? 'bg-app-bg-tertiary text-app-text-tertiary cursor-not-allowed'
+                  : 'bg-primary-600 text-white hover:bg-primary-700'
+              )}
+            >
+              <Save className="w-4 h-4" />
+              {isLoading ? 'Saving...' : 'Save'}
+              <svg className={`w-3 h-3 transition-transform ${showSaveMenu && !isDirty && !isLoading ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            {showSaveMenu && (
+              <div className="absolute right-0 top-full mt-1 bg-app-bg-primary border border-app-border-primary rounded-lg shadow-lg z-50 min-w-[190px] py-1">
+                <button
+                  onClick={() => {
+                    setShowSaveMenu(false)
+                    handleSave()
+                  }}
+                  disabled={!isDirty || isLoading}
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-app-bg-secondary transition-colors flex items-center gap-2 disabled:opacity-40"
+                >
+                  <Save className="w-4 h-4 text-primary-500" />
+                  Save
+                </button>
+                <button
+                  onClick={() => {
+                    setShowSaveMenu(false)
+                    const name = prompt('模板名称:', currentConfig?.name || '')
+                    if (name) {
+                      const desc = prompt('模板描述:', '')
+                      useConfigStore.getState().saveTemplate(name, desc || '')
+                    }
+                  }}
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-app-bg-secondary transition-colors flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
+                  Save as Template
+                </button>
+              </div>
             )}
-          >
-            <Save className="w-4 h-4" />
-            {isLoading ? 'Saving...' : 'Save'}
-          </button>
-          <button
-            onClick={() => setShowShareDialog(true)}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
-            title="Share configuration"
-          >
-            <Share2 className="w-4 h-4" />
-            Share
-          </button>
-          <button
-            onClick={() => setShowDiffPreview(true)}
-            disabled={codeGenFiles.length === 0}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-            title="Preview code differences"
-          >
-            <Eye className="w-4 h-4" />
-            Diff
-          </button>
-          {/* Export Dropdown */}
+          </div>
+          {/* Export Dropdown — JSON + Audit Report + ARXML */}
           <div className="relative" ref={exportMenuRef}>
             <button
               onClick={() => setShowExportMenu(!showExportMenu)}
@@ -450,7 +481,7 @@ export function Editor() {
               <svg className={`w-3 h-3 transition-transform ${showExportMenu ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
             {showExportMenu && (
-              <div className="absolute right-0 top-full mt-1 bg-app-bg-primary border border-app-border-primary rounded-lg shadow-lg z-50 min-w-[180px] py-1">
+              <div className="absolute right-0 top-full mt-1 bg-app-bg-primary border border-app-border-primary rounded-lg shadow-lg z-50 min-w-[190px] py-1">
                 <button
                   onClick={() => {
                     setShowExportMenu(false)
@@ -473,18 +504,64 @@ export function Editor() {
                   <svg className="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                   Export Audit Report
                 </button>
+                <button
+                  onClick={() => {
+                    setShowExportMenu(false)
+                    if (!currentConfig) return
+                    const arxml = generateArxml(currentConfig)
+                    const blob = new Blob([arxml], { type: 'application/xml' })
+                    const url = URL.createObjectURL(blob)
+                    const a = document.createElement('a')
+                    a.href = url
+                    a.download = `${currentConfig.name.replace(/\s+/g, '_')}.arxml`
+                    a.click()
+                    URL.revokeObjectURL(url)
+                  }}
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-app-bg-secondary transition-colors flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                  Export ARXML
+                </button>
               </div>
             )}
           </div>
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            disabled={importing}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors disabled:opacity-50"
-            title="Import configuration from JSON"
-          >
-            <Upload className="w-4 h-4" />
-            {importing ? 'Importing...' : 'Import'}
-          </button>
+          {/* Import Dropdown — JSON + ARXML */}
+          <div className="relative" ref={importMenuRef}>
+            <button
+              onClick={() => setShowImportMenu(!showImportMenu)}
+              disabled={importing || importArxml}
+              className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors disabled:opacity-50"
+              title="Import configuration"
+            >
+              <Upload className="w-4 h-4" />
+              {importing ? 'Importing...' : importArxml ? 'Parsing...' : 'Import'}
+              <svg className={`w-3 h-3 transition-transform ${showImportMenu ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            {showImportMenu && (
+              <div className="absolute right-0 top-full mt-1 bg-app-bg-primary border border-app-border-primary rounded-lg shadow-lg z-50 min-w-[190px] py-1">
+                <button
+                  onClick={() => {
+                    setShowImportMenu(false)
+                    fileInputRef.current?.click()
+                  }}
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-app-bg-secondary transition-colors flex items-center gap-2"
+                >
+                  <FileJson className="w-4 h-4 text-blue-500" />
+                  Import JSON
+                </button>
+                <button
+                  onClick={() => {
+                    setShowImportMenu(false)
+                    arxmlInputRef.current?.click()
+                  }}
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-app-bg-secondary transition-colors flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                  Import ARXML
+                </button>
+              </div>
+            )}
+          </div>
           <input
             ref={fileInputRef}
             type="file"
@@ -492,29 +569,13 @@ export function Editor() {
             onChange={handleImport}
             className="hidden"
           />
-          <button
-            onClick={() => {
-              const name = prompt('模板名称:', currentConfig?.name || '')
-              if (name) {
-                const desc = prompt('模板描述:', '')
-                useConfigStore.getState().saveTemplate(name, desc || '')
-              }
-            }}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
-            title="Save current config as template"
-          >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
-            Template
-          </button>
-          <button
-            onClick={() => arxmlInputRef.current?.click()}
-            disabled={importArxml}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors disabled:opacity-50"
-            title="Import ARXML configuration file"
-          >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-            {importArxml ? 'Parsing...' : 'ARXML'}
-          </button>
+          <input
+            ref={arxmlInputRef}
+            type="file"
+            accept=".arxml"
+            onChange={handleImportArxml}
+            className="hidden"
+          />
           <button
             onClick={async () => {
               if (!currentConfig) return
@@ -538,34 +599,41 @@ export function Editor() {
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
             Generate
           </button>
-          <button
-            onClick={() => {
-              if (!currentConfig) return
-              const arxml = generateArxml(currentConfig)
-              const blob = new Blob([arxml], { type: 'application/xml' })
-              const url = URL.createObjectURL(blob)
-              const a = document.createElement('a')
-              a.href = url
-              a.download = `${currentConfig.name.replace(/\s+/g, '_')}.arxml`
-              a.click()
-              URL.revokeObjectURL(url)
-            }}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
-            title="Export ARXML configuration file"
-          >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-            ARXML
-          </button>
-          <input
-            ref={arxmlInputRef}
-            type="file"
-            accept=".arxml"
-            onChange={handleImportArxml}
-            className="hidden"
-          />
-          <button className="p-2 text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-tertiary rounded-lg transition-colors">
-            <MoreVertical className="w-4 h-4" />
-          </button>
+          {/* Overflow menu — secondary actions & future extensions */}
+          <div className="relative" ref={overflowMenuRef}>
+            <button
+              onClick={() => setShowOverflowMenu(!showOverflowMenu)}
+              className="p-2 text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-tertiary rounded-lg transition-colors"
+              title="More actions"
+            >
+              <MoreVertical className="w-5 h-5" />
+            </button>
+            {showOverflowMenu && (
+              <div className="absolute right-0 top-full mt-1 bg-app-bg-primary border border-app-border-primary rounded-lg shadow-lg z-50 min-w-[190px] py-1">
+                <button
+                  onClick={() => {
+                    setShowOverflowMenu(false)
+                    setShowShareDialog(true)
+                  }}
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-app-bg-secondary transition-colors flex items-center gap-2"
+                >
+                  <Share2 className="w-4 h-4 text-sky-500" />
+                  Share Configuration
+                </button>
+                <button
+                  onClick={() => {
+                    setShowOverflowMenu(false)
+                    setShowDiffPreview(true)
+                  }}
+                  disabled={codeGenFiles.length === 0}
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-app-bg-secondary transition-colors flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  <Eye className="w-4 h-4" />
+                  View Diff
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
