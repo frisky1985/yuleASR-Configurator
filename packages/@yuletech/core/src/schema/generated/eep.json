@@ -1,0 +1,214 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/eep.json",
+  "title": "Eep Configuration",
+  "description": "EEPROM 驱动",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        },
+        "VendorApiInfix": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "VendorApiInfix 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EepConfigSet": {
+      "description": "EepConfigSet 配置容器",
+      "type": "object",
+      "properties": {
+        "EepBaseAddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "EepBaseAddress 参数"
+        },
+        "EepSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "EepSize 参数"
+        },
+        "EepPageSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EepPageSize 参数"
+        },
+        "EepJobCallCycle": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "EepJobCallCycle 参数"
+        },
+        "EepWriteCycleTime": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "EepWriteCycleTime 参数"
+        },
+        "EepEraseCycleTime": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "EepEraseCycleTime 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EepGeneral": {
+      "description": "EepGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "EepDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "EepDevErrorDetect 参数"
+        },
+        "EepVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "EepVersionInfoApi 参数"
+        },
+        "EepDeInitApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "EepDeInitApi 参数"
+        },
+        "EepCancelApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "EepCancelApi 参数"
+        },
+        "EepGetStatusApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "EepGetStatusApi 参数"
+        },
+        "EepGetJobResultApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "EepGetJobResultApi 参数"
+        },
+        "EepMainFunctionPeriod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "EepMainFunctionPeriod 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EepPublishedInformation": {
+      "description": "EepPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "EepTotalSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "EepTotalSize 参数"
+        },
+        "EepPageSizeDefault": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EepPageSizeDefault 参数"
+        },
+        "EepEraseTime": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "EepEraseTime 参数"
+        },
+        "EepWriteTime": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "EepWriteTime 参数"
+        },
+        "EepSpecifiedEraseCycles": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "EepSpecifiedEraseCycles 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "AutosarExt": {
+      "description": "AutosarExt 配置容器",
+      "type": "object",
+      "properties": {
+        "EepDisableDemReportErrorStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "EepDisableDemReportErrorStatus 参数"
+        },
+        "EepEnableUserModeSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "EepEnableUserModeSupport 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": ["CommonPublishedInformation", "EepConfigSet", "EepGeneral"],
+  "additionalProperties": false,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

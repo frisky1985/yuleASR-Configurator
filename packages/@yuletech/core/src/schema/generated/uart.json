@@ -1,0 +1,634 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/uart.json",
+  "title": "Uart Configuration",
+  "description": "UART 驱动",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        },
+        "VendorApiInfix": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "VendorApiInfix 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "UartConfigSet": {
+      "description": "UartConfigSet 配置容器",
+      "type": "object",
+      "properties": {
+        "UartBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "UartBaudRate 参数"
+        },
+        "UartParityType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartParityType 参数"
+        },
+        "UartStopBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartStopBits 参数"
+        },
+        "UartDataBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartDataBits 参数"
+        },
+        "UartClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartClockSource 参数"
+        },
+        "UartHardwareFlowControl": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartHardwareFlowControl 参数"
+        },
+        "UartChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartChannelId 参数"
+        },
+        "UartRxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartRxBufferSize 参数"
+        },
+        "UartTxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartTxBufferSize 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "UartGeneral": {
+      "description": "UartGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "UartDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "UartDevErrorDetect 参数"
+        },
+        "UartVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "UartVersionInfoApi 参数"
+        },
+        "UartDeInitApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "UartDeInitApi 参数"
+        },
+        "UartWakeupSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "UartWakeupSupport 参数"
+        },
+        "UartRxInterruptEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "UartRxInterruptEnable 参数"
+        },
+        "UartTxInterruptEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "UartTxInterruptEnable 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "UartPublishedInformation": {
+      "description": "UartPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "UartNumberOfChannels": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartNumberOfChannels 参数"
+        },
+        "UartMaxBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "UartMaxBaudRate 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "UartChannel_0": {
+      "description": "UartChannel_0 配置容器",
+      "type": "object",
+      "properties": {
+        "UartBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "UartBaudRate 参数"
+        },
+        "UartParityType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartParityType 参数"
+        },
+        "UartStopBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartStopBits 参数"
+        },
+        "UartDataBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartDataBits 参数"
+        },
+        "UartClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartClockSource 参数"
+        },
+        "UartHardwareFlowControl": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartHardwareFlowControl 参数"
+        },
+        "UartChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartChannelId 参数"
+        },
+        "UartRxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartRxBufferSize 参数"
+        },
+        "UartTxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartTxBufferSize 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "UartChannel_1": {
+      "description": "UartChannel_1 配置容器",
+      "type": "object",
+      "properties": {
+        "UartBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "UartBaudRate 参数"
+        },
+        "UartParityType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartParityType 参数"
+        },
+        "UartStopBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartStopBits 参数"
+        },
+        "UartDataBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartDataBits 参数"
+        },
+        "UartClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartClockSource 参数"
+        },
+        "UartHardwareFlowControl": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartHardwareFlowControl 参数"
+        },
+        "UartChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartChannelId 参数"
+        },
+        "UartRxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartRxBufferSize 参数"
+        },
+        "UartTxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartTxBufferSize 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "UartChannel_2": {
+      "description": "UartChannel_2 配置容器",
+      "type": "object",
+      "properties": {
+        "UartBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "UartBaudRate 参数"
+        },
+        "UartParityType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartParityType 参数"
+        },
+        "UartStopBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartStopBits 参数"
+        },
+        "UartDataBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartDataBits 参数"
+        },
+        "UartClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartClockSource 参数"
+        },
+        "UartHardwareFlowControl": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartHardwareFlowControl 参数"
+        },
+        "UartChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartChannelId 参数"
+        },
+        "UartRxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartRxBufferSize 参数"
+        },
+        "UartTxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartTxBufferSize 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "UartChannel_3": {
+      "description": "UartChannel_3 配置容器",
+      "type": "object",
+      "properties": {
+        "UartBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "UartBaudRate 参数"
+        },
+        "UartParityType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartParityType 参数"
+        },
+        "UartStopBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartStopBits 参数"
+        },
+        "UartDataBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartDataBits 参数"
+        },
+        "UartClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartClockSource 参数"
+        },
+        "UartHardwareFlowControl": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartHardwareFlowControl 参数"
+        },
+        "UartChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartChannelId 参数"
+        },
+        "UartRxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartRxBufferSize 参数"
+        },
+        "UartTxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartTxBufferSize 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "UartChannel_4": {
+      "description": "UartChannel_4 配置容器",
+      "type": "object",
+      "properties": {
+        "UartBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "UartBaudRate 参数"
+        },
+        "UartParityType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartParityType 参数"
+        },
+        "UartStopBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartStopBits 参数"
+        },
+        "UartDataBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartDataBits 参数"
+        },
+        "UartClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartClockSource 参数"
+        },
+        "UartHardwareFlowControl": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartHardwareFlowControl 参数"
+        },
+        "UartChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartChannelId 参数"
+        },
+        "UartRxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartRxBufferSize 参数"
+        },
+        "UartTxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartTxBufferSize 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "UartChannel_5": {
+      "description": "UartChannel_5 配置容器",
+      "type": "object",
+      "properties": {
+        "UartBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "UartBaudRate 参数"
+        },
+        "UartParityType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartParityType 参数"
+        },
+        "UartStopBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartStopBits 参数"
+        },
+        "UartDataBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartDataBits 参数"
+        },
+        "UartClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartClockSource 参数"
+        },
+        "UartHardwareFlowControl": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartHardwareFlowControl 参数"
+        },
+        "UartChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartChannelId 参数"
+        },
+        "UartRxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartRxBufferSize 参数"
+        },
+        "UartTxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartTxBufferSize 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "UartChannel_6": {
+      "description": "UartChannel_6 配置容器",
+      "type": "object",
+      "properties": {
+        "UartBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "UartBaudRate 参数"
+        },
+        "UartParityType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartParityType 参数"
+        },
+        "UartStopBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartStopBits 参数"
+        },
+        "UartDataBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartDataBits 参数"
+        },
+        "UartClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartClockSource 参数"
+        },
+        "UartHardwareFlowControl": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartHardwareFlowControl 参数"
+        },
+        "UartChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartChannelId 参数"
+        },
+        "UartRxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartRxBufferSize 参数"
+        },
+        "UartTxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartTxBufferSize 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "UartChannel_7": {
+      "description": "UartChannel_7 配置容器",
+      "type": "object",
+      "properties": {
+        "UartBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "UartBaudRate 参数"
+        },
+        "UartParityType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartParityType 参数"
+        },
+        "UartStopBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartStopBits 参数"
+        },
+        "UartDataBits": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartDataBits 参数"
+        },
+        "UartClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartClockSource 参数"
+        },
+        "UartHardwareFlowControl": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "UartHardwareFlowControl 参数"
+        },
+        "UartChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartChannelId 参数"
+        },
+        "UartRxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartRxBufferSize 参数"
+        },
+        "UartTxBufferSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "UartTxBufferSize 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": ["CommonPublishedInformation", "UartConfigSet", "UartGeneral"],
+  "additionalProperties": false,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

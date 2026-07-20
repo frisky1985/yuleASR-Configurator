@@ -1,0 +1,693 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/pwm.json",
+  "title": "Pwm Configuration",
+  "description": "PWM 驱动",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        },
+        "VendorApiInfix": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "VendorApiInfix 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PwmConfigSet": {
+      "description": "PwmConfigSet 配置容器",
+      "type": "object",
+      "properties": {
+        "PwmChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7,
+          "description": "PwmChannelId 参数"
+        },
+        "PwmChannelClass": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmChannelClass 参数"
+        },
+        "PwmDefaultPeriod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "PwmDefaultPeriod 参数"
+        },
+        "PwmDefaultDutyCycle": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmDefaultDutyCycle 参数"
+        },
+        "PwmIdleState": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmIdleState 参数"
+        },
+        "PwmPolarity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmPolarity 参数"
+        },
+        "PwmNotificationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmNotificationSupported 参数"
+        },
+        "PwmNotificationFn": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmNotificationFn 参数"
+        },
+        "PwmClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmClockSource 参数"
+        },
+        "PwmClockPrescaler": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmClockPrescaler 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PwmGeneral": {
+      "description": "PwmGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "PwmDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmDevErrorDetect 参数"
+        },
+        "PwmVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmVersionInfoApi 参数"
+        },
+        "PwmDeInitApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmDeInitApi 参数"
+        },
+        "PwmSetDutyCycleApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmSetDutyCycleApi 参数"
+        },
+        "PwmSetPeriodAndDutyApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmSetPeriodAndDutyApi 参数"
+        },
+        "PwmSetOutputToIdleApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmSetOutputToIdleApi 参数"
+        },
+        "PwmGetOutputStateApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmGetOutputStateApi 参数"
+        },
+        "PwmNotificationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmNotificationSupported 参数"
+        },
+        "PwmPowerStateSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmPowerStateSupported 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PwmPublishedInformation": {
+      "description": "PwmPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "PwmNumberOfChannels": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmNumberOfChannels 参数"
+        },
+        "PwmMaxChannelClass": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmMaxChannelClass 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PwmChannel_0": {
+      "description": "PwmChannel_0 配置容器",
+      "type": "object",
+      "properties": {
+        "PwmChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7,
+          "description": "PwmChannelId 参数"
+        },
+        "PwmChannelClass": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmChannelClass 参数"
+        },
+        "PwmDefaultPeriod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "PwmDefaultPeriod 参数"
+        },
+        "PwmDefaultDutyCycle": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmDefaultDutyCycle 参数"
+        },
+        "PwmIdleState": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmIdleState 参数"
+        },
+        "PwmPolarity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmPolarity 参数"
+        },
+        "PwmNotificationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmNotificationSupported 参数"
+        },
+        "PwmNotificationFn": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmNotificationFn 参数"
+        },
+        "PwmClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmClockSource 参数"
+        },
+        "PwmClockPrescaler": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmClockPrescaler 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PwmChannel_1": {
+      "description": "PwmChannel_1 配置容器",
+      "type": "object",
+      "properties": {
+        "PwmChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7,
+          "description": "PwmChannelId 参数"
+        },
+        "PwmChannelClass": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmChannelClass 参数"
+        },
+        "PwmDefaultPeriod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "PwmDefaultPeriod 参数"
+        },
+        "PwmDefaultDutyCycle": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmDefaultDutyCycle 参数"
+        },
+        "PwmIdleState": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmIdleState 参数"
+        },
+        "PwmPolarity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmPolarity 参数"
+        },
+        "PwmNotificationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmNotificationSupported 参数"
+        },
+        "PwmNotificationFn": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmNotificationFn 参数"
+        },
+        "PwmClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmClockSource 参数"
+        },
+        "PwmClockPrescaler": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmClockPrescaler 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PwmChannel_2": {
+      "description": "PwmChannel_2 配置容器",
+      "type": "object",
+      "properties": {
+        "PwmChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7,
+          "description": "PwmChannelId 参数"
+        },
+        "PwmChannelClass": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmChannelClass 参数"
+        },
+        "PwmDefaultPeriod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "PwmDefaultPeriod 参数"
+        },
+        "PwmDefaultDutyCycle": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmDefaultDutyCycle 参数"
+        },
+        "PwmIdleState": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmIdleState 参数"
+        },
+        "PwmPolarity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmPolarity 参数"
+        },
+        "PwmNotificationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmNotificationSupported 参数"
+        },
+        "PwmNotificationFn": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmNotificationFn 参数"
+        },
+        "PwmClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmClockSource 参数"
+        },
+        "PwmClockPrescaler": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmClockPrescaler 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PwmChannel_3": {
+      "description": "PwmChannel_3 配置容器",
+      "type": "object",
+      "properties": {
+        "PwmChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7,
+          "description": "PwmChannelId 参数"
+        },
+        "PwmChannelClass": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmChannelClass 参数"
+        },
+        "PwmDefaultPeriod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "PwmDefaultPeriod 参数"
+        },
+        "PwmDefaultDutyCycle": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmDefaultDutyCycle 参数"
+        },
+        "PwmIdleState": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmIdleState 参数"
+        },
+        "PwmPolarity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmPolarity 参数"
+        },
+        "PwmNotificationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmNotificationSupported 参数"
+        },
+        "PwmNotificationFn": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmNotificationFn 参数"
+        },
+        "PwmClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmClockSource 参数"
+        },
+        "PwmClockPrescaler": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmClockPrescaler 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PwmChannel_4": {
+      "description": "PwmChannel_4 配置容器",
+      "type": "object",
+      "properties": {
+        "PwmChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7,
+          "description": "PwmChannelId 参数"
+        },
+        "PwmChannelClass": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmChannelClass 参数"
+        },
+        "PwmDefaultPeriod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "PwmDefaultPeriod 参数"
+        },
+        "PwmDefaultDutyCycle": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmDefaultDutyCycle 参数"
+        },
+        "PwmIdleState": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmIdleState 参数"
+        },
+        "PwmPolarity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmPolarity 参数"
+        },
+        "PwmNotificationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmNotificationSupported 参数"
+        },
+        "PwmNotificationFn": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmNotificationFn 参数"
+        },
+        "PwmClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmClockSource 参数"
+        },
+        "PwmClockPrescaler": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmClockPrescaler 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PwmChannel_5": {
+      "description": "PwmChannel_5 配置容器",
+      "type": "object",
+      "properties": {
+        "PwmChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7,
+          "description": "PwmChannelId 参数"
+        },
+        "PwmChannelClass": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmChannelClass 参数"
+        },
+        "PwmDefaultPeriod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "PwmDefaultPeriod 参数"
+        },
+        "PwmDefaultDutyCycle": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmDefaultDutyCycle 参数"
+        },
+        "PwmIdleState": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmIdleState 参数"
+        },
+        "PwmPolarity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmPolarity 参数"
+        },
+        "PwmNotificationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmNotificationSupported 参数"
+        },
+        "PwmNotificationFn": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmNotificationFn 参数"
+        },
+        "PwmClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmClockSource 参数"
+        },
+        "PwmClockPrescaler": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmClockPrescaler 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PwmChannel_6": {
+      "description": "PwmChannel_6 配置容器",
+      "type": "object",
+      "properties": {
+        "PwmChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7,
+          "description": "PwmChannelId 参数"
+        },
+        "PwmChannelClass": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmChannelClass 参数"
+        },
+        "PwmDefaultPeriod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "PwmDefaultPeriod 参数"
+        },
+        "PwmDefaultDutyCycle": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmDefaultDutyCycle 参数"
+        },
+        "PwmIdleState": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmIdleState 参数"
+        },
+        "PwmPolarity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmPolarity 参数"
+        },
+        "PwmNotificationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmNotificationSupported 参数"
+        },
+        "PwmNotificationFn": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmNotificationFn 参数"
+        },
+        "PwmClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmClockSource 参数"
+        },
+        "PwmClockPrescaler": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmClockPrescaler 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PwmChannel_7": {
+      "description": "PwmChannel_7 配置容器",
+      "type": "object",
+      "properties": {
+        "PwmChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7,
+          "description": "PwmChannelId 参数"
+        },
+        "PwmChannelClass": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmChannelClass 参数"
+        },
+        "PwmDefaultPeriod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "PwmDefaultPeriod 参数"
+        },
+        "PwmDefaultDutyCycle": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmDefaultDutyCycle 参数"
+        },
+        "PwmIdleState": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmIdleState 参数"
+        },
+        "PwmPolarity": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmPolarity 参数"
+        },
+        "PwmNotificationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "PwmNotificationSupported 参数"
+        },
+        "PwmNotificationFn": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmNotificationFn 参数"
+        },
+        "PwmClockSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "PwmClockSource 参数"
+        },
+        "PwmClockPrescaler": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PwmClockPrescaler 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": ["CommonPublishedInformation", "PwmConfigSet", "PwmGeneral"],
+  "additionalProperties": false,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}
