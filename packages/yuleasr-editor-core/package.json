@@ -45,12 +45,12 @@
     "@yuletech/core": "workspace:*",
     "@yuletech/utils": "workspace:*",
     "eventemitter3": "^5.0.1",
-    "isomorphic-git": "^1.37.6"
+    "isomorphic-git": "^1.38.9"
   },
   "devDependencies": {
     "tsup": "^8.0.0",
-    "typescript": "^5.4.0",
-    "vitest": "^1.3.0"
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
   },
   "files": [
     "dist"
