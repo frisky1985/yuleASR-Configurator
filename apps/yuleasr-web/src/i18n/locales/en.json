@@ -8,7 +8,9 @@
     "templates": "Templates",
     "gitSync": "Git Sync",
     "settings": "Settings",
-    "editor": "Editor"
+    "editor": "Editor",
+    "plugins": "Plugins",
+    "migrate": "Migrate"
   },
   "common": {
     "save": "Save",

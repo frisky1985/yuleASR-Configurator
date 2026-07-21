@@ -32,6 +32,7 @@ interface ElectronAPI {
   saveFiles(files: Array<{ filename: string; content: string }>): Promise<SaveResult>;
   platform: string;
   isElectron: boolean;
+  openExternal(url: string): Promise<{ success: boolean; error?: string }>;
 }
 
 declare global {

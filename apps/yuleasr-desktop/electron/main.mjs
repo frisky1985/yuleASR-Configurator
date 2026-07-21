@@ -2,7 +2,7 @@
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-import { app, BrowserWindow, Menu, dialog, ipcMain } from 'electron';
+import { app, BrowserWindow, Menu, dialog, ipcMain, shell } from 'electron';
 
 import { isGccAvailable, verifyFiles, saveFilesToDir, getGccVersion } from './desktop-utils.mjs';
 
@@ -30,6 +30,16 @@ ipcMain.handle('files:save', async (_event, files) => {
     return { success: false, cancelled: true };
   }
   return saveFilesToDir(result.filePaths[0], files);
+});
+
+// ── External links ─────────────────────────────────────────
+
+ipcMain.handle('openExternal', async (_event, url) => {
+  if (typeof url === 'string' && (url.startsWith('https://') || url.startsWith('http://'))) {
+    await shell.openExternal(url);
+    return { success: true };
+  }
+  return { success: false, error: 'Invalid URL' };
 });
 
 // ── Window ────────────────────────────────────────────────

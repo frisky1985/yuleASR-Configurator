@@ -16,7 +16,7 @@ export function MobileNav() {
   const navItems = [
     { path: '/dashboard', label: t('nav.dashboard'), icon: Home },
     { path: '/templates', label: t('nav.templates'), icon: FileJson },
-    { path: '/migrate', label: 'Migrate', icon: ArrowLeftRight },
+    { path: '/migrate', label: t('nav.migrate'), icon: ArrowLeftRight },
     { path: '/sync', label: t('nav.gitSync'), icon: GitBranch },
     { path: '/settings', label: t('nav.settings'), icon: Settings },
   ];

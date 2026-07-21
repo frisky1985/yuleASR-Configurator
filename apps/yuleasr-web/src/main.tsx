@@ -6,6 +6,10 @@ import './i18n'; // Initialize i18n
 import App from './App';
 import './index.css';
 
+// Register built-in AUTOSAR plugins on startup
+import { registerBuiltinPlugins } from '@yuletech/core/plugins';
+registerBuiltinPlugins();
+
 // Desktop (Electron file://) → no basename; VS Code Webview → no basename; Web (HTTP/S) → /configurator
 // GitHub Pages → /yuleASR-Configurator/configurator
 const isVSCodeWebview =

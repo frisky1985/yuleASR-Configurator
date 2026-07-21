@@ -23,4 +23,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Platform info
   platform: process.platform,
   isElectron: true,
+
+  // Open external links in default browser
+  openExternal: (url) => ipcRenderer.invoke('openExternal', url),
 });

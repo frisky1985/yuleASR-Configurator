@@ -46,6 +46,15 @@ app.decorate('authenticate', async function (request: any, reply: any) {
   }
 });
 
+// ── Register built-in AUTOSAR plugins ───────────────────────────────────
+try {
+  const { registerBuiltinPlugins } = await import('@yuletech/core/plugins');
+  await registerBuiltinPlugins();
+  console.log('✅ Built-in AUTOSAR plugins registered');
+} catch (err) {
+  console.warn('⚠️ Failed to register built-in plugins:', err);
+}
+
 // ── Routes ──────────────────────────────────────────────────────────────
 
 await app.register(authRoutes, { prefix: '/v1/auth' });

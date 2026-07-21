@@ -8,7 +8,9 @@
     "templates": "模板",
     "gitSync": "Git 同步",
     "settings": "设置",
-    "editor": "编辑器"
+    "editor": "编辑器",
+    "plugins": "插件管理",
+    "migrate": "迁移"
   },
   "common": {
     "save": "保存",

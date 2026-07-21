@@ -93,7 +93,18 @@ export function Layout({ children }: LayoutProps) {
     i18n.changeLanguage(newLang);
   };
 
-  // ── Top banner community links ──
+  // Open community links — web: relative navigate, desktop: external browser
+  const openCommunityLink = (href: string) => (e: React.MouseEvent) => {
+    if (window.electronAPI?.isElectron) {
+      e.preventDefault();
+      const isGitHubPages = window.location.hostname.includes('github.io');
+      const baseUrl = isGitHubPages
+        ? 'https://frisky1985.github.io/yuleASR-Configurator'
+        : `${window.location.protocol}//${window.location.host}`;
+      window.electronAPI.openExternal(`${baseUrl}${href}`);
+    }
+  };
+
   const communityLinks = [
     { href: '/community/#/', label: '社区首页', icon: Home },
     { href: '/community/#/forum', label: '论坛', icon: MessageSquare },
@@ -105,9 +116,9 @@ export function Layout({ children }: LayoutProps) {
   // ── Main nav items ──
   const navItems = [
     { path: '/dashboard', label: t('nav.dashboard'), icon: Home },
-    { path: '/plugins', label: '插件', icon: Puzzle },
+    { path: '/plugins', label: t('nav.plugins'), icon: Puzzle },
     { path: '/templates', label: t('nav.templates'), icon: FileJson },
-    { path: '/migrate', label: 'Migrate', icon: ArrowLeftRight },
+    { path: '/migrate', label: t('nav.migrate'), icon: ArrowLeftRight },
     { path: '/sync', label: t('nav.gitSync'), icon: GitBranch },
     { path: '/settings', label: t('nav.settings'), icon: Settings },
   ];
@@ -126,6 +137,7 @@ export function Layout({ children }: LayoutProps) {
                     <a
                       key={link.href}
                       href={link.href}
+                      onClick={openCommunityLink(link.href)}
                       className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted"
                     >
                       <Icon className="w-3 h-3" />

@@ -207,7 +207,7 @@ export function BlogListPage() {
 
       <div className="min-h-screen bg-background">
         {/* 页面头部 */}
-        <section className="relative bg-gradient-hero py-16 md:py-24">
+        <section className="relative py-20 overflow-hidden bg-gradient-to-b from-[hsl(var(--primary))]/5 to-transparent">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -215,13 +215,14 @@ export function BlogListPage() {
               transition={{ duration: 0.5 }}
               className="text-center"
             >
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 mb-6">
-                <BookOpen className="w-8 h-8 text-white" />
-              </div>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] text-sm font-medium mb-6">
+                <BookOpen className="w-4 h-4" />
+                技术博客
+              </span>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
                 技术博客
               </h1>
-              <p className="text-white/70 max-w-2xl mx-auto text-lg">
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-8">
                 深度探讨 AutoSAR、汽车软件开发和功能安全等技术领域
               </p>
             </motion.div>

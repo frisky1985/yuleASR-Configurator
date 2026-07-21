@@ -10,6 +10,10 @@
       "import": "./src/index.ts",
       "require": "./src/index.ts"
     },
+    "./plugins": {
+      "import": "./src/plugins/index.ts",
+      "require": "./src/plugins/index.ts"
+    },
     "./schema": {
       "import": "./src/schema/index.ts",
       "require": "./src/schema/index.ts"
