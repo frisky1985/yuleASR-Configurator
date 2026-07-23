@@ -15,7 +15,7 @@
     "@yuletech/core": "workspace:*",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "fast-xml-parser": "^5.10.0",
+    "fast-xml-parser": "^5.10.1",
     "i18next": "^26.2.0",
     "i18next-browser-languagedetector": "^8.2.1",
     "jszip": "^3.10.1",
