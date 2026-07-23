@@ -17,54 +17,16 @@ export interface GitHubStats {
 }
 
 const GITHUB_USERNAME = 'frisky1985';
-const CACHE_KEY = 'yuletech_github_cache';
-const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
-interface CacheEntry {
-  data: GitHubStats;
-  timestamp: number;
-}
-
-function getCache(): GitHubStats | null {
-  try {
-    const raw = sessionStorage.getItem(CACHE_KEY);
-    if (!raw) return null;
-    const entry: CacheEntry = JSON.parse(raw);
-    if (Date.now() - entry.timestamp > CACHE_TTL) {
-      sessionStorage.removeItem(CACHE_KEY);
-      return null;
-    }
-    return entry.data;
-  } catch {
-    return null;
-  }
-}
-
-function setCache(data: GitHubStats): void {
-  try {
-    const entry: CacheEntry = { data, timestamp: Date.now() };
-    sessionStorage.setItem(CACHE_KEY, JSON.stringify(entry));
-  } catch {
-    // ignore
-  }
-}
+import { githubFetch, cacheGet, cacheSet, CACHE_KEYS } from './gitHubClient';
 
 export async function fetchGitHubRepos(): Promise<GitHubStats> {
-  const cached = getCache();
+  const cached = cacheGet<GitHubStats>(CACHE_KEYS.USER_REPOS);
   if (cached) return cached;
 
-  const response = await fetch(
-    `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated&type=public`,
-    {
-      headers: {
-        Accept: 'application/vnd.github.v3+json',
-      },
-    }
+  const response = await githubFetch(
+    `https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated&type=public`
   );
-
-  if (!response.ok) {
-    throw new Error(`GitHub API error: ${response.status}`);
-  }
 
   const repos: GitHubRepo[] = await response.json();
 
@@ -75,7 +37,7 @@ export async function fetchGitHubRepos(): Promise<GitHubStats> {
     repos,
   };
 
-  setCache(stats);
+  cacheSet(CACHE_KEYS.USER_REPOS, stats);
   return stats;
 }
 
