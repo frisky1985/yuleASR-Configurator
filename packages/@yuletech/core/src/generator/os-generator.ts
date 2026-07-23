@@ -20,7 +20,16 @@
 
 import type { ModuleConfig, ModuleSchema } from '../types';
 
-import { formatCValue, toHex, parseVersion, generateAutosarFileHeader } from './autosar-format';
+import {
+  formatCValue,
+  toHex,
+  parseVersion,
+  generateAutosarFileHeader,
+  getCompilerAbstraction,
+  CompilerAbstraction,
+} from './autosar-format';
+
+import { pluginRegistry } from '../plugins/plugin-registry';
 
 import type { CodeGenerator, GeneratorOptions, GenerationResult, GeneratedFile } from './index';
 
@@ -32,6 +41,8 @@ export class OsCodeGenerator implements CodeGenerator {
   name = 'OsCodeGenerator';
   version = '1.0.0';
   supportedModules: string[] = ['Os', 'OS'];
+  private compilerAbstraction: CompilerAbstraction = new (getCompilerAbstraction(undefined)
+    .constructor as new () => CompilerAbstraction)();
 
   supports(moduleName: string): boolean {
     return this.supportedModules.includes(moduleName);
@@ -42,11 +53,34 @@ export class OsCodeGenerator implements CodeGenerator {
     schema: ModuleSchema,
     options: GeneratorOptions
   ): Promise<GenerationResult> {
+    this.compilerAbstraction = getCompilerAbstraction(options.compiler);
+
     const files: GeneratedFile[] = [];
     const errors: string[] = [];
     const warnings: string[] = [];
 
     try {
+      // ── Plugin delegation check ──
+      const pluginGen = pluginRegistry.findCodeGeneratorForModule(config.module);
+      if (pluginGen) {
+        const msg = `[os-generator] Delegating generation of "${config.module}" to plugin generator "${pluginGen.name}"`;
+        console.info(msg);
+        warnings.push(`使用插件生成器: ${pluginGen.name}`);
+        const pluginResult = await pluginGen.generate(
+          config as unknown as Record<string, unknown>,
+          options as unknown as Record<string, unknown>
+        );
+        return {
+          success: true,
+          files: pluginResult.files.map(f => ({
+            path: f.path,
+            content: f.content,
+            language: f.path.endsWith('.h') ? 'h' : 'c',
+          })),
+          warnings,
+        };
+      }
+
       // Extract OS configuration data
       const tasks = this.extractTaskConfigs(config);
       const isrs = this.extractIsrConfigs(config);
@@ -1388,7 +1422,7 @@ const Os_ConfigSetType Os_ConfigSet = {
     .applications         = ${appCount > 0 ? 'OsApplicationConfigTable' : 'NULL_PTR'}
 };
 
-/*==================[OS API implementation]==================================*/
+    /*==================[OS API implementation]==================================*/
 
 /**
  * @brief Initialize the Operating System

@@ -108,7 +108,7 @@ export class EcucCodeGenerator implements CodeGenerator {
         }
       }
 
-      // 生成头文件 (使用标准模块头文件名)
+      // 生成头文件 (使用 Ecuc_ 前缀避免与 yuleASR 现有宏定义头文件冲突)
       const headerName = getModuleHeaderName(config.module);
       const headerFile = this.generateHeaderFile(config, schema, options);
       files.push({
@@ -246,25 +246,29 @@ export class EcucCodeGenerator implements CodeGenerator {
 `;
 
     // AUTOSAR 标准版本信息宏
-    content += generateVersionInfoMacros(
-      moduleName,
-      version.major,
-      version.minor,
-      version.patch,
-      4, // AUTOSAR 4.x
-      4, // 4.4
-      0 // Revision 0
-    );
-
-    // 机构 / 供应商信息
-    content += `\
-/*==================[vendor identification]==================================*/
-/**
- * @brief YuleTech vendor information
- */
-#define YULETECH_VENDOR_ID              ((uint16)0x1234)
+    // 跳过 — 版本宏由手写驱动头文件(如 Can.h)定义，这里不重复生成避免冲突
+    // 如需启用，取消下一行注释
+    // content += generateVersionInfoMacros(moduleName, 4, 4, 0, 4, 4, 0);
+    // 替代: 生成模块 ID 和供应商 ID 宏（不覆盖驱动头文件中的定义）
+    content += `/*==================[module identification]==================================*/
+`;
+    content += `/** @brief ${moduleName} module identification (ECUC config data) */
+`;
+    content += `#ifndef ${moduleName.toUpperCase()}_MODULE_ID
+`;
+    content += `#define ${moduleName.toUpperCase()}_MODULE_ID            ((uint16)0x${toHex(moduleId)})
+`;
+    content += `#endif /* ${moduleName.toUpperCase()}_MODULE_ID */
+`;
+    content += `#ifndef ${moduleName.toUpperCase()}_VENDOR_ID
+`;
+    content += `#define ${moduleName.toUpperCase()}_VENDOR_ID            ((uint16)0x${toHex(vendorId)})
+`;
+    content += `#endif /* ${moduleName.toUpperCase()}_VENDOR_ID */
 
 `;
+
+
 
     // 生成参数宏定义
     content += this.generateParameterMacros(config, schema, options);
@@ -327,13 +331,6 @@ export class EcucCodeGenerator implements CodeGenerator {
     content += `\
 /*==================[includes]==============================================*/
 #include "${headerName}"
-
-/*==================[module identification]=================================*/
-/**
- * @brief ${moduleName} module identification
- */
-#define ${moduleName.toUpperCase()}_MODULE_ID          ((uint16)${moduleId}U)
-#define ${moduleName.toUpperCase()}_VENDOR_ID          ((uint16)0x${toHex(vendorId)})
 
 `;
 
@@ -568,11 +565,8 @@ export class EcucCodeGenerator implements CodeGenerator {
     content += `} ${configSetTypeName};\n\n`;
 
     // 生成配置类型 (ConfigType) - 只包含指向 ConfigSet 的指针
-    const configTypeName = `${moduleName}_ConfigType`;
-    content += `/** @brief ${moduleName} configuration type */\n`;
-    content += `typedef struct {\n`;
-    content += `    const ${configSetTypeName}* configSet;\n`;
-    content += `} ${configTypeName};\n\n`;
+    // 跳过 ConfigType 定义 — 由手写驱动头文件(如 Can.h)定义
+    // ECUC 生成器只负责配置数据结构，不负责驱动接口类型
 
     return content;
   }
@@ -597,9 +591,7 @@ export class EcucCodeGenerator implements CodeGenerator {
 
     // 声明配置结构体
     dataDecl += `/** @brief External configuration set structure */\n`;
-    dataDecl += `extern const ${moduleName}_ConfigSetType ${moduleName}_ConfigSet;\n`;
-    dataDecl += `/** @brief External configuration structure */\n`;
-    dataDecl += `extern const ${moduleName}_ConfigType ${moduleName}_Config;\n\n`;
+    dataDecl += `extern const ${moduleName}_ConfigSetType ${moduleName}_ConfigSet;\n\n`;
 
     // 声明容器实例
     if (schema.containers) {
@@ -615,70 +607,8 @@ export class EcucCodeGenerator implements CodeGenerator {
     // 用 MemMap.h 段标记包裹数据声明
     content += this.wrapMemMapSection(moduleName, 'CONST_UNSPECIFIED', dataDecl);
 
-    // AUTOSAR 标准函数声明（带 Doxygen 文档）
-    content += '\n/*==================[function declarations]=================================*/\n';
-
-    // Module_Init
-    content += generateAutosarFunctionHeader(
-      `Initialize the ${moduleName} module`,
-      [
-        {
-          name: 'ConfigPtr',
-          direction: 'in',
-          description: `Pointer to the ${moduleName} configuration set`,
-        },
-      ],
-      `Std_ReturnType: E_OK if initialization succeeded, E_NOT_OK otherwise`,
-      ['The module shall be uninitialized'],
-      [`The ${moduleName} module is fully initialized and operational`]
-    );
-    content += `Std_ReturnType ${moduleName}_Init(const ${moduleName}_ConfigType* ConfigPtr);\n\n`;
-
-    // Module_DeInit
-    content += generateAutosarFunctionHeader(
-      `De-initialize the ${moduleName} module`,
-      [],
-      `Std_ReturnType: E_OK if de-initialization succeeded, E_NOT_OK otherwise`,
-      [`The ${moduleName} module shall be initialized`],
-      [`The ${moduleName} module is de-initialized and no longer operational`]
-    );
-    content += `Std_ReturnType ${moduleName}_DeInit(void);\n\n`;
-
-    // Module_MainFunction (AUTOSAR 标准 BSW 主函数模式)
-    content += generateAutosarFunctionHeader(
-      `${moduleName} main function - scheduled cyclic processing`,
-      [],
-      `void`,
-      [`The ${moduleName} module shall be initialized`],
-      [`All pending ${moduleName} processing is completed for this cycle`]
-    );
-    content += `void ${moduleName}_MainFunction(void);\n\n`;
-
-    // Module_GetVersionInfo
-    content += generateAutosarFunctionHeader(
-      `Get the ${moduleName} module version information`,
-      [
-        {
-          name: 'versioninfo',
-          direction: 'out',
-          description: `Pointer to the version information structure to be filled`,
-        },
-      ],
-      `void`,
-      [`versioninfo shall not be NULL_PTR`],
-      [
-        `The version structure contains the ${moduleName} module's vendor, module, and software version IDs`,
-      ]
-    );
-    content += `void ${moduleName}_GetVersionInfo(Std_VersionInfoType* versioninfo);\n\n`;
-
-    // 模块状态查询（可选，但符合 AUTOSAR 标准）
-    content += generateAutosarFunctionHeader(
-      `Check if the ${moduleName} module is initialized`,
-      [],
-      `boolean: TRUE if the module is initialized, FALSE otherwise`
-    );
-    content += `boolean ${moduleName}_IsInitialized(void);\n\n`;
+    // 跳过函数声明 — 由手写驱动头文件(如 Can.h)定义
+    // ECUC 生成器只负责配置数据结构，不负责驱动接口
 
     return content;
   }
@@ -790,11 +720,8 @@ export class EcucCodeGenerator implements CodeGenerator {
 
     dataBlock += `};\n\n`;
 
-    // 生成配置类型 (ConfigType) - 只包含一个指向 ConfigSet 的指针
-    dataBlock += `/** @brief ${moduleName} configuration type */\n`;
-    dataBlock += `const ${moduleName}_ConfigType ${moduleName}_Config = {\n`;
-    dataBlock += `    .configSet = &${moduleName}_ConfigSet,\n`;
-    dataBlock += `};\n\n`;
+    // 跳过 ConfigType 数据定义 — 由手写驱动头文件(如 Can.h)中的 extern 声明引用
+    // ConfigSet 已在上方定义，驱动通过 Can.h 的 Can_ConfigType 间接引用
 
     // 用 MemMap.h 段标记包裹整个数据块
     content += this.wrapMemMapSection(moduleName, 'CONST_UNSPECIFIED', dataBlock);

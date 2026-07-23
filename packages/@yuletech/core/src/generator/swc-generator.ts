@@ -24,9 +24,16 @@ import {
   generateAutosarFileHeader,
   generateAutosarFunctionHeader,
   generateVersionInfoMacros,
+  generateDetReportError,
+  DetErrorCode,
+  wrapDevErrorDetect,
   getModuleId,
   toHex,
+  getCompilerAbstraction,
+  CompilerAbstraction,
 } from './autosar-format';
+
+import { pluginRegistry } from '../plugins/plugin-registry';
 
 import type { CodeGenerator, GeneratorOptions, GenerationResult, GeneratedFile } from './index';
 
@@ -55,6 +62,8 @@ export class SwcCodeGenerator implements CodeGenerator {
   name = 'SwcCodeGenerator';
   version = '1.0.0';
   supportedModules: string[] = ['AppSwc', 'CompSwc'];
+  private compilerAbstraction: CompilerAbstraction = new (getCompilerAbstraction(undefined)
+    .constructor as new () => CompilerAbstraction)();
 
   supports(moduleName: string): boolean {
     return this.supportedModules.includes(moduleName);
@@ -65,11 +74,34 @@ export class SwcCodeGenerator implements CodeGenerator {
     _schema: ModuleSchema,
     options: GeneratorOptions
   ): Promise<GenerationResult> {
+    this.compilerAbstraction = getCompilerAbstraction(options.compiler);
+
     const files: GeneratedFile[] = [];
     const errors: string[] = [];
     const warnings: string[] = [];
 
     try {
+      // ── Plugin delegation check ──
+      const pluginGen = pluginRegistry.findCodeGeneratorForModule(config.module);
+      if (pluginGen) {
+        const msg = `[swc-generator] Delegating generation of "${config.module}" to plugin generator "${pluginGen.name}"`;
+        console.info(msg);
+        warnings.push(`使用插件生成器: ${pluginGen.name}`);
+        const pluginResult = await pluginGen.generate(
+          config as unknown as Record<string, unknown>,
+          options as unknown as Record<string, unknown>
+        );
+        return {
+          success: true,
+          files: pluginResult.files.map(f => ({
+            path: f.path,
+            content: f.content,
+            language: f.path.endsWith('.h') ? 'h' : 'c',
+          })),
+          warnings,
+        };
+      }
+
       const genConfig = this.parseSwcConfig(config);
 
       // 1. Generate the SWC implementation header <SwcName>.h
@@ -298,9 +330,13 @@ export class SwcCodeGenerator implements CodeGenerator {
 /*==================[IRV external declarations]==============================*/
 `;
 
-    // IRV declarations
+    // IRV declarations wrapped with MemMap
+    let irvDeclBlock = '';
     for (const irv of genConfig.irvs) {
-      content += `extern ${irv.typeRef} ${componentName}_${irv.name};\n`;
+      irvDeclBlock += `extern ${irv.typeRef} ${componentName}_${irv.name};\n`;
+    }
+    if (irvDeclBlock) {
+      content += this.compilerAbstraction.wrapMemMapSection(componentName, 'VAR_INIT', irvDeclBlock);
     }
     content += '\n';
 
@@ -383,13 +419,15 @@ static boolean ${componentName}_Initialized = FALSE;
 
 `;
 
-    // IRV storage definitions
+    // IRV storage definitions wrapped with MemMap
     if (genConfig.irvs.length > 0) {
       content += `/*==================[inter-runnable variables]===============================*/\n`;
+      let irvBlock = '';
       for (const irv of genConfig.irvs) {
         const initVal = irv.initValue !== undefined ? ` = ${irv.initValue}` : '';
-        content += `${irv.typeRef} ${componentName}_${irv.name}${initVal};\n`;
+        irvBlock += `${irv.typeRef} ${componentName}_${irv.name}${initVal};\n`;
       }
+      content += this.compilerAbstraction.wrapMemMapSection(componentName, 'VAR_INIT', irvBlock);
       content += '\n';
     }
 
@@ -412,10 +450,11 @@ static boolean ${componentName}_Initialized = FALSE;
  *          Called by the RTE during system startup.
  */
 Std_ReturnType ${componentName}_Init(void) {
+${wrapDevErrorDetect(`
     if (${componentName}_Initialized) {
         return E_OK;
     }
-`;
+`)}`;
 
     // Initialize IRVs
     for (const irv of genConfig.irvs) {
@@ -446,10 +485,10 @@ Std_ReturnType ${componentName}_Init(void) {
  *          Called cyclically by the RTE scheduler.
  */
 void ${componentName}_MainFunction(void) {
-    if (!${componentName}_Initialized) {
+${wrapDevErrorDetect(`    if (!${componentName}_Initialized) {
         return;
     }
-`;
+`)}`;
 
     // Call runnables in sequence
     for (const runnable of genConfig.runnables) {

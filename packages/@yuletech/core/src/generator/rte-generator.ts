@@ -14,9 +14,14 @@ import {
   generateVersionInfoMacros,
   generateDetReportError,
   DetErrorCode,
+  wrapDevErrorDetect,
   getModuleId,
   toHex,
+  getCompilerAbstraction,
+  CompilerAbstraction,
 } from './autosar-format';
+
+import { pluginRegistry } from '../plugins/plugin-registry';
 
 import type { CodeGenerator, GeneratorOptions, GenerationResult, GeneratedFile } from './index';
 
@@ -76,6 +81,8 @@ export class RteCodeGenerator implements CodeGenerator {
   name = 'RteCodeGenerator';
   version = '1.0.0';
   supportedModules: string[] = ['RTE', 'Rte', 'Os'];
+  private compilerAbstraction: CompilerAbstraction = new (getCompilerAbstraction(undefined)
+    .constructor as new () => CompilerAbstraction)();
 
   supports(moduleName: string): boolean {
     return this.supportedModules.includes(moduleName);
@@ -86,11 +93,34 @@ export class RteCodeGenerator implements CodeGenerator {
     _schema: ModuleSchema,
     options: GeneratorOptions
   ): Promise<GenerationResult> {
+    this.compilerAbstraction = getCompilerAbstraction(options.compiler);
+
     const files: GeneratedFile[] = [];
     const errors: string[] = [];
     const warnings: string[] = [];
 
     try {
+      // ── Plugin delegation check ──
+      const pluginGen = pluginRegistry.findCodeGeneratorForModule(config.module);
+      if (pluginGen) {
+        const msg = `[rte-generator] Delegating generation of "${config.module}" to plugin generator "${pluginGen.name}"`;
+        console.info(msg);
+        warnings.push(`使用插件生成器: ${pluginGen.name}`);
+        const pluginResult = await pluginGen.generate(
+          config as unknown as Record<string, unknown>,
+          options as unknown as Record<string, unknown>
+        );
+        return {
+          success: true,
+          files: pluginResult.files.map(f => ({
+            path: f.path,
+            content: f.content,
+            language: f.path.endsWith('.h') ? 'h' : 'c',
+          })),
+          warnings,
+        };
+      }
+
       // 解析 RTE 配置
       const rteConfig = this.parseRteConfiguration(config);
 
@@ -769,54 +799,62 @@ extern void Rte_${conn.portName}_Callback(void);
       content += `/*==================[link-time configuration]===============================*/\n`;
     }
 
+    // Collect all const config data into a block for MemMap wrapping
+    let configBlock = '';
+
     // 任务配置表
     if (rteConfig.tasks.length > 0) {
-      content += `/* Task Configuration Table */\n`;
-      content += `const Rte_TaskConfigType Rte_TaskConfigTable[RTE_TASK_COUNT] = {\n`;
+      configBlock += `/* Task Configuration Table */\n`;
+      configBlock += `const Rte_TaskConfigType Rte_TaskConfigTable[RTE_TASK_COUNT] = {\n`;
       for (const task of rteConfig.tasks) {
-        content += `    {\n`;
-        content += `        .taskId = RTE_TASK_${task.name.toUpperCase()}_ID,\n`;
-        content += `        .priority = ${task.priority}U,\n`;
-        content += `        .periodMs = ${task.periodMs}U,\n`;
-        content += `        .activationType = ${task.activationType.toUpperCase()},\n`;
-        content += `        .runnableCount = ${task.runnableList.length}U,\n`;
-        content += `        .runnableList = { ${task.runnableList.map(r => `Runnable_${r}`).join(', ')} }\n`;
-        content += `    },\n`;
+        configBlock += `    {\n`;
+        configBlock += `        .taskId = RTE_TASK_${task.name.toUpperCase()}_ID,\n`;
+        configBlock += `        .priority = ${task.priority}U,\n`;
+        configBlock += `        .periodMs = ${task.periodMs}U,\n`;
+        configBlock += `        .activationType = ${task.activationType.toUpperCase()},\n`;
+        configBlock += `        .runnableCount = ${task.runnableList.length}U,\n`;
+        configBlock += `        .runnableList = { ${task.runnableList.map(r => `Runnable_${r}`).join(', ')} }\n`;
+        configBlock += `    },\n`;
       }
-      content += `};\n\n`;
+      configBlock += `};\n\n`;
     }
 
     // 接口配置表
     if (rteConfig.interfaces.length > 0) {
-      content += `/* Interface Configuration Table */\n`;
-      content += `const Rte_InterfaceConfigType Rte_InterfaceConfigTable[RTE_INTERFACE_COUNT] = {\n`;
+      configBlock += `/* Interface Configuration Table */\n`;
+      configBlock += `const Rte_InterfaceConfigType Rte_InterfaceConfigTable[RTE_INTERFACE_COUNT] = {\n`;
       for (const iface of rteConfig.interfaces) {
-        content += `    {\n`;
-        content += `        .interfaceId = RTE_INTERFACE_${iface.name.toUpperCase()}_ID,\n`;
-        content += `        .interfaceType = RTE_INTERFACE_${iface.name.toUpperCase()}_TYPE,\n`;
-        content += `        .dataType = &Rte_${iface.dataType}_TypeInfo,\n`;
-        content += `        .isQueued = RTE_INTERFACE_${iface.name.toUpperCase()}_QUEUED,\n`;
-        content += `        .queueLength = ${iface.queueLength || 1}U\n`;
-        content += `    },\n`;
+        configBlock += `    {\n`;
+        configBlock += `        .interfaceId = RTE_INTERFACE_${iface.name.toUpperCase()}_ID,\n`;
+        configBlock += `        .interfaceType = RTE_INTERFACE_${iface.name.toUpperCase()}_TYPE,\n`;
+        configBlock += `        .dataType = &Rte_${iface.dataType}_TypeInfo,\n`;
+        configBlock += `        .isQueued = RTE_INTERFACE_${iface.name.toUpperCase()}_QUEUED,\n`;
+        configBlock += `        .queueLength = ${iface.queueLength || 1}U\n`;
+        configBlock += `    },\n`;
       }
-      content += `};\n\n`;
+      configBlock += `};\n\n`;
     }
 
     // 连接配置表
     if (rteConfig.connections.length > 0) {
-      content += `/* Connection Configuration Table */\n`;
-      content += `const Rte_ConnectionConfigType Rte_ConnectionConfigTable[RTE_CONNECTION_COUNT] = {\n`;
+      configBlock += `/* Connection Configuration Table */\n`;
+      configBlock += `const Rte_ConnectionConfigType Rte_ConnectionConfigTable[RTE_CONNECTION_COUNT] = {\n`;
       for (const conn of rteConfig.connections) {
-        content += `    {\n`;
-        content += `        .connectionId = RTE_CONNECTION_${conn.portName.toUpperCase()}_ID,\n`;
-        content += `        .portName = "${conn.portName}",\n`;
-        content += `        .interfaceName = "${conn.interfaceName}",\n`;
-        content += `        .componentName = "${conn.componentName}",\n`;
-        content += `        .targetComponent = "${conn.targetComponent || 'NULL'}",\n`;
-        content += `        .targetPort = "${conn.targetPort || 'NULL'}"\n`;
-        content += `    },\n`;
+        configBlock += `    {\n`;
+        configBlock += `        .connectionId = RTE_CONNECTION_${conn.portName.toUpperCase()}_ID,\n`;
+        configBlock += `        .portName = "${conn.portName}",\n`;
+        configBlock += `        .interfaceName = "${conn.interfaceName}",\n`;
+        configBlock += `        .componentName = "${conn.componentName}",\n`;
+        configBlock += `        .targetComponent = "${conn.targetComponent || 'NULL'}",\n`;
+        configBlock += `        .targetPort = "${conn.targetPort || 'NULL'}"\n`;
+        configBlock += `    },\n`;
       }
-      content += `};\n\n`;
+      configBlock += `};\n\n`;
+    }
+
+    // Wrap const config data with MemMap
+    if (configBlock) {
+      content += this.compilerAbstraction.wrapMemMapSection('Rte', 'CONST_OCCURRENCE', configBlock);
     }
 
     content += `/*==================[end of file]===========================================*/\n`;
@@ -952,24 +990,22 @@ extern void Rte_${conn.portName}_Callback(void);
       if (iface.type === 'SenderReceiver') {
         content += `/* Read/Write API for ${iface.name} */\n`;
 
-        // Read API
+        // Read API with DET guarding
         content += `Std_ReturnType Rte_Read_${iface.name}(Rte_${iface.name}_Type* data) {\n`;
-        content += `    if (!Rte_Initialized || !Rte_Started) {\n`;
-        content += `        return RTE_E_UNCONNECTED;\n`;
-        content += `    }\n`;
+        content += `${wrapDevErrorDetect(`    if (!Rte_Initialized || !Rte_Started) {\n${generateDetReportError(16, 0, 0x03, DetErrorCode.DET_E_UNINIT, `${iface.name}: RTE not initialized`)}\n        return RTE_E_UNCONNECTED;\n    }\n`)}`;
         content += `    if (data == NULL_PTR) {\n`;
+        content += `${generateDetReportError(16, 0, 0x03, DetErrorCode.DET_E_PARAM_POINTER, `${iface.name}: NULL data pointer`)}\n`;
         content += `        return RTE_E_INVALID;\n`;
         content += `    }\n`;
         content += `    *data = Rte_${iface.name}_Data;\n`;
         content += `    return RTE_E_OK;\n`;
         content += `}\n\n`;
 
-        // Write API
+        // Write API with DET guarding
         content += `Std_ReturnType Rte_Write_${iface.name}(const Rte_${iface.name}_Type* data) {\n`;
-        content += `    if (!Rte_Initialized || !Rte_Started) {\n`;
-        content += `        return RTE_E_UNCONNECTED;\n`;
-        content += `    }\n`;
+        content += `${wrapDevErrorDetect(`    if (!Rte_Initialized || !Rte_Started) {\n${generateDetReportError(16, 0, 0x04, DetErrorCode.DET_E_UNINIT, `${iface.name}: RTE not initialized`)}\n        return RTE_E_UNCONNECTED;\n    }\n`)}`;
         content += `    if (data == NULL_PTR) {\n`;
+        content += `${generateDetReportError(16, 0, 0x04, DetErrorCode.DET_E_PARAM_POINTER, `${iface.name}: NULL data pointer`)}\n`;
         content += `        return RTE_E_INVALID;\n`;
         content += `    }\n`;
         content += `    Rte_${iface.name}_Data = *data;\n`;

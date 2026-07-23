@@ -1663,7 +1663,7 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
 
     // Check headers for ALL modules dynamically
     for (const def of moduleDefs) {
-      const headerName = `${def.config.module}_Cfg.h`;
+      const headerName = `Ecuc_${def.config.module}_Cfg.h`;
       const path = join(tmpDir, headerName);
       expect(existsSync(path)).toBe(true);
       execSync(`gcc -fsyntax-only -x c -I ${tmpDir} ${path}`, { stdio: 'pipe', timeout: 15000 });

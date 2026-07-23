@@ -1,250 +1,320 @@
-'use strict';
-var F = Object.create;
-var A = Object.defineProperty;
-var U = Object.getOwnPropertyDescriptor;
-var O = Object.getOwnPropertyNames;
-var N = Object.getPrototypeOf,
-  V = Object.prototype.hasOwnProperty;
-var H = (s, e) => {
-    for (var o in e) A(s, o, { get: e[o], enumerable: !0 });
-  },
-  $ = (s, e, o, t) => {
-    if ((e && typeof e == 'object') || typeof e == 'function')
-      for (let i of O(e))
-        !V.call(s, i) &&
-          i !== o &&
-          A(s, i, { get: () => e[i], enumerable: !(t = U(e, i)) || t.enumerable });
-    return s;
-  };
-var p = (s, e, o) => (
-    (o = s != null ? F(N(s)) : {}),
-    $(e || !s || !s.__esModule ? A(o, 'default', { value: s, enumerable: !0 }) : o, s)
-  ),
-  G = s => $(A({}, '__esModule', { value: !0 }), s);
-var se = {};
-H(se, { activate: () => ee, deactivate: () => oe });
-module.exports = G(se);
-var m = p(require('vscode'));
-var l = p(require('fs')),
-  h = p(require('path')),
-  n = p(require('vscode'));
-var w = p(require('fs')),
-  v = p(require('path')),
-  d = p(require('vscode')),
-  P = class s {
-    constructor(e, o, t) {
-      this._disposables = [];
-      ((this._panel = e),
-        (this._extensionUri = o),
-        (this._configFilePath = t),
-        this._update(),
-        t && this.loadConfig(t),
-        this._panel.onDidDispose(() => this.dispose(), null, this._disposables),
-        this._panel.onDidChangeViewState(
-          () => {
-            this._panel.visible && this._update();
-          },
-          null,
-          this._disposables
-        ),
-        this._panel.webview.onDidReceiveMessage(
-          async i => {
-            switch (i.type) {
-              case 'ready':
-                this.sendConfigToWebview();
-                break;
-              case 'save':
-                await this.saveConfig(i.data);
-                break;
-              case 'cancel':
-                this.loadConfig(this._configFilePath);
-                break;
-              case 'validate':
-                await this.validateConfig(i.data);
-                break;
-              case 'generate':
-                await this.generateCode();
-                break;
-              case 'getSchema':
-                await this.sendSchema(i.moduleName);
-                break;
-              case 'error':
-                d.window.showErrorMessage(i.error);
-                break;
-              case 'info':
-                d.window.showInformationMessage(i.info);
-                break;
-              default:
-                console.log('Unknown message:', i);
-            }
-          },
-          null,
-          this._disposables
-        ));
+"use strict";
+var __create = Object.create;
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+// src/extension.ts
+var extension_exports = {};
+__export(extension_exports, {
+  activate: () => activate,
+  deactivate: () => deactivate
+});
+module.exports = __toCommonJS(extension_exports);
+var vscode4 = __toESM(require("vscode"));
+
+// src/commands/index.ts
+var fs2 = __toESM(require("fs"));
+var path2 = __toESM(require("path"));
+var vscode2 = __toESM(require("vscode"));
+
+// src/panels/ConfigEditorPanel.ts
+var fs = __toESM(require("fs"));
+var path = __toESM(require("path"));
+var vscode = __toESM(require("vscode"));
+var ConfigEditorPanel = class _ConfigEditorPanel {
+  constructor(panel, extensionUri, configFilePath) {
+    this._disposables = [];
+    this._panel = panel;
+    this._extensionUri = extensionUri;
+    this._configFilePath = configFilePath;
+    this._update();
+    if (configFilePath) {
+      this.loadConfig(configFilePath);
     }
-    static {
-      this.viewType = 'yuleasrConfigEditor';
-    }
-    static get _isDev() {
-      return (
-        process.env.NODE_ENV === 'development' ||
-        process.env.VSCODE_DEBUG === 'true' ||
-        process.env.VSCODE_DEV !== void 0
-      );
-    }
-    static createOrShow(e, o) {
-      let t = d.window.activeTextEditor ? d.window.activeTextEditor.viewColumn : void 0;
-      if (s.currentPanel)
-        return (s.currentPanel._panel.reveal(t), o && s.currentPanel.loadConfig(o), s.currentPanel);
-      let i = [d.Uri.joinPath(e, 'media'), d.Uri.joinPath(e, 'out')];
-      s._isDev && i.push(d.Uri.parse('http://localhost:3000'));
-      let r = d.window.createWebviewPanel(
-        s.viewType,
-        o ? `yuleASR: ${v.basename(o)}` : 'yuleASR Configurator',
-        t || d.ViewColumn.One,
-        { enableScripts: !0, retainContextWhenHidden: !0, localResourceRoots: i }
-      );
-      return ((s.currentPanel = new s(r, e, o || '')), s.currentPanel);
-    }
-    loadConfig(e) {
-      this._configFilePath = e;
-      try {
-        if (w.existsSync(e)) {
-          let o = w.readFileSync(e, 'utf8');
-          ((this._configData = JSON.parse(o)),
-            (this._panel.title = `yuleASR: ${v.basename(e)}`),
-            this.sendConfigToWebview());
-        } else d.window.showErrorMessage(`Configuration file not found: ${e}`);
-      } catch (o) {
-        d.window.showErrorMessage(`Failed to load configuration: ${o}`);
+    this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
+    this._panel.onDidChangeViewState(
+      () => {
+        if (this._panel.visible) {
+          this._update();
+        }
+      },
+      null,
+      this._disposables
+    );
+    this._panel.webview.onDidReceiveMessage(
+      async (message) => {
+        switch (message.type) {
+          case "ready":
+            this.sendConfigToWebview();
+            break;
+          case "save":
+            await this.saveConfig(message.data);
+            break;
+          case "cancel":
+            this.loadConfig(this._configFilePath);
+            break;
+          case "validate":
+            await this.validateConfig(message.data);
+            break;
+          case "generate":
+            await this.generateCode();
+            break;
+          case "getSchema":
+            await this.sendSchema(message.moduleName);
+            break;
+          case "error":
+            vscode.window.showErrorMessage(message.error);
+            break;
+          case "info":
+            vscode.window.showInformationMessage(message.info);
+            break;
+          default:
+            console.log("Unknown message:", message);
+        }
+      },
+      null,
+      this._disposables
+    );
+  }
+  static {
+    this.viewType = "yuleasrConfigEditor";
+  }
+  /**
+   * Whether we are running in development mode (launched via F5 /
+   * the Vite dev server is expected on localhost:3000).
+   */
+  static get _isDev() {
+    return process.env.NODE_ENV === "development" || // VS Code launches extensions with `--extensionDevelopmentPath`
+    // when debugging – we can treat that as dev.
+    process.env.VSCODE_DEBUG === "true" || process.env["VSCODE_DEV"] !== void 0;
+  }
+  static createOrShow(extensionUri, configFilePath) {
+    const column = vscode.window.activeTextEditor ? vscode.window.activeTextEditor.viewColumn : void 0;
+    if (_ConfigEditorPanel.currentPanel) {
+      _ConfigEditorPanel.currentPanel._panel.reveal(column);
+      if (configFilePath) {
+        _ConfigEditorPanel.currentPanel.loadConfig(configFilePath);
       }
+      return _ConfigEditorPanel.currentPanel;
     }
-    sendConfigToWebview() {
+    const localResourceRoots = [
+      vscode.Uri.joinPath(extensionUri, "media"),
+      vscode.Uri.joinPath(extensionUri, "out")
+    ];
+    if (_ConfigEditorPanel._isDev) {
+      localResourceRoots.push(vscode.Uri.parse("http://localhost:3000"));
+    }
+    const panel = vscode.window.createWebviewPanel(
+      _ConfigEditorPanel.viewType,
+      configFilePath ? `yuleASR: ${path.basename(configFilePath)}` : "yuleASR Configurator",
+      column || vscode.ViewColumn.One,
+      {
+        enableScripts: true,
+        retainContextWhenHidden: true,
+        localResourceRoots
+      }
+    );
+    _ConfigEditorPanel.currentPanel = new _ConfigEditorPanel(
+      panel,
+      extensionUri,
+      configFilePath || ""
+    );
+    return _ConfigEditorPanel.currentPanel;
+  }
+  loadConfig(configFilePath) {
+    this._configFilePath = configFilePath;
+    try {
+      if (fs.existsSync(configFilePath)) {
+        const content = fs.readFileSync(configFilePath, "utf8");
+        this._configData = JSON.parse(content);
+        this._panel.title = `yuleASR: ${path.basename(configFilePath)}`;
+        this.sendConfigToWebview();
+      } else {
+        vscode.window.showErrorMessage(`Configuration file not found: ${configFilePath}`);
+      }
+    } catch (error) {
+      vscode.window.showErrorMessage(`Failed to load configuration: ${error}`);
+    }
+  }
+  sendConfigToWebview() {
+    this._panel.webview.postMessage({
+      type: "configData",
+      data: this._configData,
+      filePath: this._configFilePath,
+      fileName: path.basename(this._configFilePath)
+    });
+  }
+  async sendSchema(moduleName) {
+    try {
+      const schemaPaths = [
+        path.join(this._extensionUri.fsPath, "schemas", `${moduleName}.schema.json`),
+        path.join(this._extensionUri.fsPath, "media", "schemas", `${moduleName}.schema.json`)
+      ];
+      let schemaData = null;
+      for (const schemaPath of schemaPaths) {
+        if (fs.existsSync(schemaPath)) {
+          const content = fs.readFileSync(schemaPath, "utf8");
+          schemaData = JSON.parse(content);
+          break;
+        }
+      }
       this._panel.webview.postMessage({
-        type: 'configData',
-        data: this._configData,
-        filePath: this._configFilePath,
-        fileName: v.basename(this._configFilePath),
+        type: "schemaData",
+        moduleName,
+        schema: schemaData
+      });
+    } catch (error) {
+      this._panel.webview.postMessage({
+        type: "schemaData",
+        moduleName,
+        schema: null,
+        error: String(error)
       });
     }
-    async sendSchema(e) {
-      try {
-        let o = [
-            v.join(this._extensionUri.fsPath, 'schemas', `${e}.schema.json`),
-            v.join(this._extensionUri.fsPath, 'media', 'schemas', `${e}.schema.json`),
-          ],
-          t = null;
-        for (let i of o)
-          if (w.existsSync(i)) {
-            let r = w.readFileSync(i, 'utf8');
-            t = JSON.parse(r);
-            break;
-          }
-        this._panel.webview.postMessage({ type: 'schemaData', moduleName: e, schema: t });
-      } catch (o) {
-        this._panel.webview.postMessage({
-          type: 'schemaData',
-          moduleName: e,
-          schema: null,
-          error: String(o),
-        });
+  }
+  async saveConfig(data) {
+    try {
+      const content = JSON.stringify(data, null, 2);
+      fs.writeFileSync(this._configFilePath, content, "utf8");
+      this._configData = data;
+      vscode.window.showInformationMessage("Configuration saved successfully");
+      this._panel.webview.postMessage({ type: "saveSuccess" });
+      const config = vscode.workspace.getConfiguration("yuleasr");
+      if (config.get("validateOnSave", true)) {
+        await this.validateConfig(data);
       }
+    } catch (error) {
+      vscode.window.showErrorMessage(`Failed to save configuration: ${error}`);
+      this._panel.webview.postMessage({
+        type: "saveError",
+        error: String(error)
+      });
     }
-    async saveConfig(e) {
-      try {
-        let o = JSON.stringify(e, null, 2);
-        (w.writeFileSync(this._configFilePath, o, 'utf8'),
-          (this._configData = e),
-          d.window.showInformationMessage('Configuration saved successfully'),
-          this._panel.webview.postMessage({ type: 'saveSuccess' }),
-          d.workspace.getConfiguration('yuleasr').get('validateOnSave', !0) &&
-            (await this.validateConfig(e)));
-      } catch (o) {
-        (d.window.showErrorMessage(`Failed to save configuration: ${o}`),
-          this._panel.webview.postMessage({ type: 'saveError', error: String(o) }));
+  }
+  async validateConfig(data) {
+    try {
+      const validationResult = await this.performValidation(data);
+      this._panel.webview.postMessage({
+        type: "validationResult",
+        result: validationResult
+      });
+      if (validationResult.valid) {
+        vscode.window.showInformationMessage("Configuration is valid");
+      } else {
+        const errorCount = validationResult.errors?.length || 0;
+        vscode.window.showWarningMessage(`Configuration has ${errorCount} validation issue(s)`);
       }
+    } catch (error) {
+      vscode.window.showErrorMessage(`Validation failed: ${error}`);
     }
-    async validateConfig(e) {
-      try {
-        let o = await this.performValidation(e);
-        if ((this._panel.webview.postMessage({ type: 'validationResult', result: o }), o.valid))
-          d.window.showInformationMessage('Configuration is valid');
-        else {
-          let t = o.errors?.length || 0;
-          d.window.showWarningMessage(`Configuration has ${t} validation issue(s)`);
-        }
-      } catch (o) {
-        d.window.showErrorMessage(`Validation failed: ${o}`);
+  }
+  async performValidation(data) {
+    const errors = [];
+    const warnings = [];
+    if (!data || typeof data !== "object") {
+      errors.push({
+        path: "",
+        message: "Configuration must be a valid JSON object",
+        severity: "error"
+      });
+    }
+    return {
+      valid: errors.length === 0,
+      errors,
+      warnings
+    };
+  }
+  async generateCode() {
+    try {
+      const config = vscode.workspace.getConfiguration("yuleasr");
+      const yuleASRPath = config.get("yuleASRPath");
+      if (!yuleASRPath) {
+        vscode.window.showErrorMessage(
+          "yuleASR path not configured. Please set yuleasr.yuleASRPath in settings."
+        );
+        return;
       }
-    }
-    async performValidation(e) {
-      let o = [],
-        t = [];
-      return (
-        (!e || typeof e != 'object') &&
-          o.push({
-            path: '',
-            message: 'Configuration must be a valid JSON object',
-            severity: 'error',
-          }),
-        { valid: o.length === 0, errors: o, warnings: t }
-      );
-    }
-    async generateCode() {
-      try {
-        let e = d.workspace.getConfiguration('yuleasr');
-        if (!e.get('yuleASRPath')) {
-          d.window.showErrorMessage(
-            'yuleASR path not configured. Please set yuleasr.yuleASRPath in settings.'
-          );
-          return;
-        }
-        (d.window.showInformationMessage('Generating code...'),
-          await new Promise(i => setTimeout(i, 1e3)),
-          e.get('showGeneratedCode', !0) && this.showGeneratedCodePreview(),
-          d.window.showInformationMessage('Code generated successfully'));
-      } catch (e) {
-        d.window.showErrorMessage(`Code generation failed: ${e}`);
+      vscode.window.showInformationMessage("Generating code...");
+      await new Promise((resolve) => setTimeout(resolve, 1e3));
+      const showPreview = config.get("showGeneratedCode", true);
+      if (showPreview) {
+        this.showGeneratedCodePreview();
       }
+      vscode.window.showInformationMessage("Code generated successfully");
+    } catch (error) {
+      vscode.window.showErrorMessage(`Code generation failed: ${error}`);
     }
-    showGeneratedCodePreview() {
-      let e = `// Generated code preview for ${v.basename(this._configFilePath)}
+  }
+  showGeneratedCodePreview() {
+    const previewContent = `// Generated code preview for ${path.basename(this._configFilePath)}
 // This is a placeholder for the actual generated code
 
 #include "Std_Types.h"
-#include "${v.basename(this._configFilePath, '.json')}.h"
+#include "${path.basename(this._configFilePath, ".json")}.h"
 
 // Configuration would be generated here
 `;
-      d.workspace.openTextDocument({ content: e, language: 'c' }).then(o => {
-        d.window.showTextDocument(o, d.ViewColumn.Beside);
-      });
+    vscode.workspace.openTextDocument({
+      content: previewContent,
+      language: "c"
+    }).then((doc) => {
+      vscode.window.showTextDocument(doc, vscode.ViewColumn.Beside);
+    });
+  }
+  _update() {
+    const webview = this._panel.webview;
+    this._panel.webview.html = this._getHtmlForWebview(webview);
+  }
+  _getHtmlForWebview(webview) {
+    const nonce = getNonce();
+    if (_ConfigEditorPanel._isDev) {
+      return this._getDevHtml(webview, nonce);
     }
-    _update() {
-      let e = this._panel.webview;
-      this._panel.webview.html = this._getHtmlForWebview(e);
-    }
-    _getHtmlForWebview(e) {
-      let o = q();
-      return s._isDev ? this._getDevHtml(e, o) : this._getProdHtml(e, o);
-    }
-    _getDevHtml(e, o) {
-      return `<!DOCTYPE html>
+    return this._getProdHtml(webview, nonce);
+  }
+  // ── Dev mode: IFrame pointing to Vite dev server ──────────────────
+  _getDevHtml(webview, nonce) {
+    const devServerUrl = "http://localhost:3000/configurator/";
+    return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'none';
-        style-src ${e.cspSource} 'unsafe-inline';
-        script-src 'nonce-${o}' 'unsafe-inline' 'unsafe-eval';
+        style-src ${webview.cspSource} 'unsafe-inline';
+        script-src 'nonce-${nonce}' 'unsafe-inline' 'unsafe-eval';
         frame-src http://localhost:3000;
         connect-src http://localhost:3000 http://localhost:3002;
         img-src http://localhost:3000 data:;
         font-src http://localhost:3000 data:;
     ">
     <title>yuleASR Configurator (Dev)</title>
-    <style nonce="${o}">
+    <style nonce="${nonce}">
         html, body {
             margin: 0;
             padding: 0;
@@ -294,8 +364,8 @@ var w = p(require('fs')),
         <div class="spinner"></div>
         <span>Starting yuleASR Configurator\u2026</span>
     </div>
-    <iframe id="yuleasr-app" src="http://localhost:3000/configurator/"></iframe>
-    <script nonce="${o}">
+    <iframe id="yuleasr-app" src="${devServerUrl}"></iframe>
+    <script nonce="${nonce}">
         const iframe = document.getElementById('yuleasr-app');
         const loading = document.getElementById('loading');
 
@@ -324,52 +394,50 @@ var w = p(require('fs')),
     </script>
 </body>
 </html>`;
-    }
-    _getProdHtml(e, o) {
-      let t = d.Uri.joinPath(this._extensionUri, 'media', 'webview'),
-        i = v.join(t.fsPath, 'index.html');
-      if (w.existsSync(i)) {
-        let r = w.readFileSync(i, 'utf8');
-        r = r.replace(/(src|href)=["'](\.\/assets\/[^"']+)["']/g, (u, C, I) => {
-          let S = e.asWebviewUri(d.Uri.joinPath(t, I));
-          return `${C}="${S}"`;
-        });
-        let c = `<meta http-equiv="Content-Security-Policy" content="
+  }
+  // ── Production mode: serve built web app assets ──────────────────
+  _getProdHtml(webview, nonce) {
+    const webviewDir = vscode.Uri.joinPath(this._extensionUri, "media", "webview");
+    const builtHtmlPath = path.join(webviewDir.fsPath, "index.html");
+    if (fs.existsSync(builtHtmlPath)) {
+      let html = fs.readFileSync(builtHtmlPath, "utf8");
+      html = html.replace(/(src|href)=["'](\.\/assets\/[^"']+)["']/g, (_, attr, assetPath) => {
+        const assetUri = webview.asWebviewUri(vscode.Uri.joinPath(webviewDir, assetPath));
+        return `${attr}="${assetUri}"`;
+      });
+      const cspMeta = `<meta http-equiv="Content-Security-Policy" content="
                 default-src 'none';
-                style-src ${e.cspSource} 'unsafe-inline';
-                script-src 'nonce-${o}' 'unsafe-inline' 'unsafe-eval';
-                connect-src ${e.cspSource} http://localhost:3002 https:;
-                img-src ${e.cspSource} data:;
-                font-src ${e.cspSource} data:;
+                style-src ${webview.cspSource} 'unsafe-inline';
+                script-src 'nonce-${nonce}' 'unsafe-inline' 'unsafe-eval';
+                connect-src ${webview.cspSource} http://localhost:3002 https:;
+                img-src ${webview.cspSource} data:;
+                font-src ${webview.cspSource} data:;
             ">`;
-        return (
-          (r = r.replace(
-            '<head>',
-            `<head>
-    ${c}`
-          )),
-          (r = r.replace(
-            /<script(\s+type="module")?\s+crossorigin\s+src=/,
-            `<script nonce="${o}"$1 crossorigin src=`
-          )),
-          r
-        );
-      }
-      return this._getFallbackHtml(e, o);
+      html = html.replace("<head>", `<head>
+    ${cspMeta}`);
+      html = html.replace(
+        /<script(\s+type="module")?\s+crossorigin\s+src=/,
+        `<script nonce="${nonce}"$1 crossorigin src=`
+      );
+      return html;
     }
-    _getFallbackHtml(e, o) {
-      let t = e.asWebviewUri(d.Uri.joinPath(this._extensionUri, 'media', 'style.css'));
-      return `<!DOCTYPE html>
+    return this._getFallbackHtml(webview, nonce);
+  }
+  _getFallbackHtml(webview, nonce) {
+    const styleUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(this._extensionUri, "media", "style.css")
+    );
+    return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'none';
-        style-src ${e.cspSource};
-        script-src 'nonce-${o}';
+        style-src ${webview.cspSource};
+        script-src 'nonce-${nonce}';
     ">
-    <link href="${t}" rel="stylesheet">
+    <link href="${styleUri}" rel="stylesheet">
     <title>yuleASR Configuration Editor</title>
 </head>
 <body>
@@ -383,590 +451,816 @@ var w = p(require('fs')),
     </div>
 </body>
 </html>`;
-    }
-    dispose() {
-      for (s.currentPanel = void 0, this._panel.dispose(); this._disposables.length; ) {
-        let e = this._disposables.pop();
-        e && e.dispose();
+  }
+  dispose() {
+    _ConfigEditorPanel.currentPanel = void 0;
+    this._panel.dispose();
+    while (this._disposables.length) {
+      const x = this._disposables.pop();
+      if (x) {
+        x.dispose();
       }
     }
-  };
-function q() {
-  let s = '',
-    e = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for (let o = 0; o < 32; o++) s += e.charAt(Math.floor(Math.random() * e.length));
-  return s;
+  }
+};
+function getNonce() {
+  let text = "";
+  const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (let i = 0; i < 32; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
 }
-function L(s, e) {
-  let o = n.commands.registerCommand('yuleasr.openConfig', async f => {
-      let T = typeof f == 'string' ? f : f.filePath;
-      if (!T) {
-        n.window.showErrorMessage('No configuration file specified');
+
+// src/commands/index.ts
+function registerCommands(context, treeProvider) {
+  const openConfigCmd = vscode2.commands.registerCommand(
+    "yuleasr.openConfig",
+    async (arg) => {
+      const configPath = typeof arg === "string" ? arg : arg.filePath;
+      if (!configPath) {
+        vscode2.window.showErrorMessage("No configuration file specified");
         return;
       }
-      let ie = n.workspace.getConfiguration('yuleasr');
-      if (!0) P.createOrShow(s.extensionUri, T);
-      else {
-        let j = await n.workspace.openTextDocument(T);
-        await n.window.showTextDocument(j);
+      const useWebview = true;
+      if (useWebview) {
+        ConfigEditorPanel.createOrShow(context.extensionUri, configPath);
+      } else {
+        const document = await vscode2.workspace.openTextDocument(configPath);
+        await vscode2.window.showTextDocument(document);
       }
-    }),
-    t = n.commands.registerCommand('yuleasr.refreshExplorer', () => {
-      (e.refresh(), n.window.showInformationMessage('yuleASR Explorer refreshed'));
-    }),
-    i = n.commands.registerCommand('yuleasr.syncConfig', async f => {
-      await B(f);
-    }),
-    r = n.commands.registerCommand('yuleasr.validateConfig', async f => {
-      f?.filePath ? await x(f.filePath) : await Y(e);
-    }),
-    c = n.commands.registerCommand('yuleasr.generateCode', async f => {
-      f?.filePath ? await z(f.filePath, f.moduleName) : await J(e);
-    }),
-    u = n.commands.registerCommand('yuleasr.newModule', async () => {
-      await K(e);
-    }),
-    C = n.commands.registerCommand('yuleasr.deleteModule', async f => {
-      await Z(f, e);
-    }),
-    I = n.commands.registerCommand('yuleasr.renameModule', async f => {
-      await Q(f, e);
-    }),
-    S = n.commands.registerCommand('yuleasr.initProject', async () => {
-      await X(e);
-    });
-  s.subscriptions.push(o, t, i, r, c, u, C, I, S);
-  let W = n.languages.registerHoverProvider({ pattern: '**/*.{yule.json,json}' }, new E()),
-    _ = n.languages.registerCompletionItemProvider(
-      { pattern: '**/*.{yule.json,json}' },
-      new R(),
-      '"',
-      ':',
-      '.'
-    ),
-    k = n.languages.createDiagnosticCollection('yuleasr');
-  (s.subscriptions.push(W, _, k),
-    n.workspace.onDidSaveTextDocument(async f => {
-      n.workspace.getConfiguration('yuleasr').get('validateOnSave', !0) &&
-        (f.fileName.endsWith('.yule.json') || f.fileName.endsWith('.json')) &&
-        (await x(f.fileName, k));
-    }));
-}
-async function B(s) {
-  let e = n.workspace.getConfiguration('yuleasr'),
-    o = e.get('yuleASRPath');
-  if (!o) {
-    if (
-      (await n.window.showInformationMessage(
-        'yuleASR path not configured. Would you like to set it now?',
-        'Yes',
-        'No'
-      )) === 'Yes'
-    ) {
-      let i = await n.window.showOpenDialog({
-        canSelectFolders: !0,
-        canSelectFiles: !1,
-        canSelectMany: !1,
-        openLabel: 'Select yuleASR Repository',
-      });
-      i && i.length > 0 && (await e.update('yuleASRPath', i[0].fsPath, !0));
     }
-    return;
-  }
-  if (!l.existsSync(o)) {
-    n.window.showErrorMessage(`yuleASR path does not exist: ${o}`);
-    return;
-  }
-  (await n.window.withProgress(
-    {
-      location: n.ProgressLocation.Notification,
-      title: 'Syncing with yuleASR...',
-      cancellable: !0,
-    },
-    async (t, i) => {
-      (t.report({ increment: 0, message: 'Checking repository...' }),
-        await M(500),
-        !i.isCancellationRequested &&
-          (t.report({ increment: 30, message: 'Syncing schemas...' }),
-          await M(500),
-          !i.isCancellationRequested &&
-            (t.report({ increment: 40, message: 'Syncing configurations...' }),
-            await M(500),
-            !i.isCancellationRequested && t.report({ increment: 30, message: 'Complete' }))));
-    }
-  ),
-    n.window.showInformationMessage('Sync with yuleASR completed successfully'));
-}
-async function x(s, e) {
-  try {
-    let o = l.readFileSync(s, 'utf8'),
-      t = JSON.parse(o),
-      i = [],
-      r = !0;
-    if (!t.moduleName) {
-      r = !1;
-      let c = new n.Range(0, 0, 0, 0),
-        u = new n.Diagnostic(c, 'Missing required field: moduleName', n.DiagnosticSeverity.Error);
-      i.push(u);
-    }
-    if (e) {
-      let c = n.Uri.file(s);
-      e.set(c, i);
-    }
-    return (
-      r
-        ? n.window.showInformationMessage(`Configuration is valid: ${h.basename(s)}`)
-        : n.window.showWarningMessage(`Configuration has errors: ${h.basename(s)}`),
-      r
-    );
-  } catch (o) {
-    return (n.window.showErrorMessage(`Validation failed: ${o}`), !1);
-  }
-}
-async function Y(s) {
-  let e = await s.getAllModules(),
-    o = 0,
-    t = 0;
-  for (let i of e) i.filePath && ((await x(i.filePath)) ? o++ : t++);
-  n.window.showInformationMessage(`Validation complete: ${o} valid, ${t} invalid`);
-}
-async function z(s, e) {
-  if (!n.workspace.getConfiguration('yuleasr').get('yuleASRPath')) {
-    n.window.showErrorMessage('Please configure yuleASR path first');
-    return;
-  }
-  (await n.window.withProgress(
-    {
-      location: n.ProgressLocation.Notification,
-      title: `Generating code for ${e || h.basename(s)}...`,
-      cancellable: !0,
-    },
-    async i => {
-      (i.report({ increment: 50, message: 'Generating...' }),
-        await M(1e3),
-        i.report({ increment: 50, message: 'Done' }));
-    }
-  ),
-    n.window.showInformationMessage(`Code generated for ${e || h.basename(s)}`));
-}
-async function J(s) {
-  let e = await s.getAllModules();
-  (await n.window.withProgress(
-    {
-      location: n.ProgressLocation.Notification,
-      title: 'Generating code for all modules...',
-      cancellable: !0,
-    },
-    async o => {
-      for (let t = 0; t < e.length; t++)
-        e[t].filePath &&
-          (o.report({ increment: 100 / e.length, message: `Processing ${e[t].label}...` }),
-          await M(200));
-    }
-  ),
-    n.window.showInformationMessage(`Code generated for ${e.length} modules`));
-}
-async function K(s) {
-  let e = await n.window.showInputBox({
-    prompt: 'Enter module name',
-    placeHolder: 'e.g., Can, Mcu, Port',
-    validateInput: c =>
-      !c || c.trim().length === 0
-        ? 'Module name is required'
-        : /^[A-Za-z][A-Za-z0-9]*$/.test(c)
-          ? null
-          : 'Module name must start with a letter and contain only letters and numbers',
-  });
-  if (!e) return;
-  let o = await n.window.showQuickPick(
-    ['MCAL', 'ECUAL', 'Service', 'RTE', 'ASW', 'OS', 'Integration'],
-    { placeHolder: 'Select module layer' }
   );
-  if (!o) return;
-  let t = n.workspace.workspaceFolders?.[0].uri.fsPath;
-  if (!t) {
-    n.window.showErrorMessage('No workspace folder open');
+  const refreshExplorerCmd = vscode2.commands.registerCommand("yuleasr.refreshExplorer", () => {
+    treeProvider.refresh();
+    vscode2.window.showInformationMessage("yuleASR Explorer refreshed");
+  });
+  const syncConfigCmd = vscode2.commands.registerCommand(
+    "yuleasr.syncConfig",
+    async (item) => {
+      await syncWithYuleASR(item);
+    }
+  );
+  const validateConfigCmd = vscode2.commands.registerCommand(
+    "yuleasr.validateConfig",
+    async (item) => {
+      if (item?.filePath) {
+        await validateConfiguration(item.filePath);
+      } else {
+        await validateAllConfigurations(treeProvider);
+      }
+    }
+  );
+  const generateCodeCmd = vscode2.commands.registerCommand(
+    "yuleasr.generateCode",
+    async (item) => {
+      if (item?.filePath) {
+        await generateCodeForConfig(item.filePath, item.moduleName);
+      } else {
+        await generateAllCode(treeProvider);
+      }
+    }
+  );
+  const newModuleCmd = vscode2.commands.registerCommand("yuleasr.newModule", async () => {
+    await createNewModule(treeProvider);
+  });
+  const deleteModuleCmd = vscode2.commands.registerCommand(
+    "yuleasr.deleteModule",
+    async (item) => {
+      await deleteModule(item, treeProvider);
+    }
+  );
+  const renameModuleCmd = vscode2.commands.registerCommand(
+    "yuleasr.renameModule",
+    async (item) => {
+      await renameModule(item, treeProvider);
+    }
+  );
+  const initProjectCmd = vscode2.commands.registerCommand("yuleasr.initProject", async () => {
+    await initializeProject(treeProvider);
+  });
+  context.subscriptions.push(
+    openConfigCmd,
+    refreshExplorerCmd,
+    syncConfigCmd,
+    validateConfigCmd,
+    generateCodeCmd,
+    newModuleCmd,
+    deleteModuleCmd,
+    renameModuleCmd,
+    initProjectCmd
+  );
+  const hoverProvider = vscode2.languages.registerHoverProvider(
+    { pattern: "**/*.{yule.json,json}" },
+    new YuleASRHoverProvider()
+  );
+  const completionProvider = vscode2.languages.registerCompletionItemProvider(
+    { pattern: "**/*.{yule.json,json}" },
+    new YuleASRCompletionProvider(),
+    '"',
+    ":",
+    "."
+  );
+  const diagnosticCollection = vscode2.languages.createDiagnosticCollection("yuleasr");
+  context.subscriptions.push(hoverProvider, completionProvider, diagnosticCollection);
+  vscode2.workspace.onDidSaveTextDocument(async (document) => {
+    const config = vscode2.workspace.getConfiguration("yuleasr");
+    if (config.get("validateOnSave", true)) {
+      if (document.fileName.endsWith(".yule.json") || document.fileName.endsWith(".json")) {
+        await validateConfiguration(document.fileName, diagnosticCollection);
+      }
+    }
+  });
+}
+async function syncWithYuleASR(_item) {
+  const config = vscode2.workspace.getConfiguration("yuleasr");
+  const yuleASRPath = config.get("yuleASRPath");
+  if (!yuleASRPath) {
+    const result = await vscode2.window.showInformationMessage(
+      "yuleASR path not configured. Would you like to set it now?",
+      "Yes",
+      "No"
+    );
+    if (result === "Yes") {
+      const folder = await vscode2.window.showOpenDialog({
+        canSelectFolders: true,
+        canSelectFiles: false,
+        canSelectMany: false,
+        openLabel: "Select yuleASR Repository"
+      });
+      if (folder && folder.length > 0) {
+        await config.update("yuleASRPath", folder[0].fsPath, true);
+      }
+    }
     return;
   }
-  let i = h.join(t, 'config', e),
-    r = h.join(i, `${e}.yule.json`);
+  if (!fs2.existsSync(yuleASRPath)) {
+    vscode2.window.showErrorMessage(`yuleASR path does not exist: ${yuleASRPath}`);
+    return;
+  }
+  await vscode2.window.withProgress(
+    {
+      location: vscode2.ProgressLocation.Notification,
+      title: "Syncing with yuleASR...",
+      cancellable: true
+    },
+    async (progress, token) => {
+      progress.report({ increment: 0, message: "Checking repository..." });
+      await delay(500);
+      if (token.isCancellationRequested) {
+        return;
+      }
+      progress.report({ increment: 30, message: "Syncing schemas..." });
+      await delay(500);
+      if (token.isCancellationRequested) {
+        return;
+      }
+      progress.report({ increment: 40, message: "Syncing configurations..." });
+      await delay(500);
+      if (token.isCancellationRequested) {
+        return;
+      }
+      progress.report({ increment: 30, message: "Complete" });
+    }
+  );
+  vscode2.window.showInformationMessage("Sync with yuleASR completed successfully");
+}
+async function validateConfiguration(filePath, diagnosticCollection) {
   try {
-    l.existsSync(i) || l.mkdirSync(i, { recursive: !0 });
-    let c = {
-      moduleName: e,
-      layer: o,
-      version: '1.0.0',
-      description: `${e} module configuration`,
+    const content = fs2.readFileSync(filePath, "utf8");
+    const data = JSON.parse(content);
+    const diagnostics = [];
+    let isValid = true;
+    if (!data.moduleName) {
+      isValid = false;
+      const range = new vscode2.Range(0, 0, 0, 0);
+      const diagnostic = new vscode2.Diagnostic(
+        range,
+        "Missing required field: moduleName",
+        vscode2.DiagnosticSeverity.Error
+      );
+      diagnostics.push(diagnostic);
+    }
+    if (diagnosticCollection) {
+      const uri = vscode2.Uri.file(filePath);
+      diagnosticCollection.set(uri, diagnostics);
+    }
+    if (isValid) {
+      vscode2.window.showInformationMessage(`Configuration is valid: ${path2.basename(filePath)}`);
+    } else {
+      vscode2.window.showWarningMessage(`Configuration has errors: ${path2.basename(filePath)}`);
+    }
+    return isValid;
+  } catch (error) {
+    vscode2.window.showErrorMessage(`Validation failed: ${error}`);
+    return false;
+  }
+}
+async function validateAllConfigurations(treeProvider) {
+  const modules = await treeProvider.getAllModules();
+  let validCount = 0;
+  let invalidCount = 0;
+  for (const module2 of modules) {
+    if (module2.filePath) {
+      const isValid = await validateConfiguration(module2.filePath);
+      if (isValid) {
+        validCount++;
+      } else {
+        invalidCount++;
+      }
+    }
+  }
+  vscode2.window.showInformationMessage(
+    `Validation complete: ${validCount} valid, ${invalidCount} invalid`
+  );
+}
+async function generateCodeForConfig(filePath, moduleName) {
+  const config = vscode2.workspace.getConfiguration("yuleasr");
+  const yuleASRPath = config.get("yuleASRPath");
+  if (!yuleASRPath) {
+    vscode2.window.showErrorMessage("Please configure yuleASR path first");
+    return;
+  }
+  await vscode2.window.withProgress(
+    {
+      location: vscode2.ProgressLocation.Notification,
+      title: `Generating code for ${moduleName || path2.basename(filePath)}...`,
+      cancellable: true
+    },
+    async (progress) => {
+      progress.report({ increment: 50, message: "Generating..." });
+      await delay(1e3);
+      progress.report({ increment: 50, message: "Done" });
+    }
+  );
+  vscode2.window.showInformationMessage(
+    `Code generated for ${moduleName || path2.basename(filePath)}`
+  );
+}
+async function generateAllCode(treeProvider) {
+  const modules = await treeProvider.getAllModules();
+  await vscode2.window.withProgress(
+    {
+      location: vscode2.ProgressLocation.Notification,
+      title: "Generating code for all modules...",
+      cancellable: true
+    },
+    async (progress) => {
+      for (let i = 0; i < modules.length; i++) {
+        if (modules[i].filePath) {
+          progress.report({
+            increment: 100 / modules.length,
+            message: `Processing ${modules[i].label}...`
+          });
+          await delay(200);
+        }
+      }
+    }
+  );
+  vscode2.window.showInformationMessage(`Code generated for ${modules.length} modules`);
+}
+async function createNewModule(treeProvider) {
+  const moduleName = await vscode2.window.showInputBox({
+    prompt: "Enter module name",
+    placeHolder: "e.g., Can, Mcu, Port",
+    validateInput: (value) => {
+      if (!value || value.trim().length === 0) {
+        return "Module name is required";
+      }
+      if (!/^[A-Za-z][A-Za-z0-9]*$/.test(value)) {
+        return "Module name must start with a letter and contain only letters and numbers";
+      }
+      return null;
+    }
+  });
+  if (!moduleName) {
+    return;
+  }
+  const layer = await vscode2.window.showQuickPick(
+    ["MCAL", "ECUAL", "Service", "RTE", "ASW", "OS", "Integration"],
+    {
+      placeHolder: "Select module layer"
+    }
+  );
+  if (!layer) {
+    return;
+  }
+  const workspaceRoot = vscode2.workspace.workspaceFolders?.[0].uri.fsPath;
+  if (!workspaceRoot) {
+    vscode2.window.showErrorMessage("No workspace folder open");
+    return;
+  }
+  const moduleDir = path2.join(workspaceRoot, "config", moduleName);
+  const configFile = path2.join(moduleDir, `${moduleName}.yule.json`);
+  try {
+    if (!fs2.existsSync(moduleDir)) {
+      fs2.mkdirSync(moduleDir, { recursive: true });
+    }
+    const template = {
+      moduleName,
+      layer,
+      version: "1.0.0",
+      description: `${moduleName} module configuration`,
       parameters: {},
       containers: [],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      createdAt: (/* @__PURE__ */ new Date()).toISOString(),
+      updatedAt: (/* @__PURE__ */ new Date()).toISOString()
     };
-    (l.writeFileSync(r, JSON.stringify(c, null, 2)),
-      s.refresh(),
-      (await n.window.showInformationMessage(
-        `Module ${e} created. Open configuration?`,
-        'Open',
-        'Later'
-      )) === 'Open' &&
-        P.createOrShow(n.extensions.getExtension('yuletech.yuleasr-vscode').extensionUri, r));
-  } catch (c) {
-    n.window.showErrorMessage(`Failed to create module: ${c}`);
+    fs2.writeFileSync(configFile, JSON.stringify(template, null, 2));
+    treeProvider.refresh();
+    const openFile = await vscode2.window.showInformationMessage(
+      `Module ${moduleName} created. Open configuration?`,
+      "Open",
+      "Later"
+    );
+    if (openFile === "Open") {
+      ConfigEditorPanel.createOrShow(
+        vscode2.extensions.getExtension("yuletech.yuleasr-vscode").extensionUri,
+        configFile
+      );
+    }
+  } catch (error) {
+    vscode2.window.showErrorMessage(`Failed to create module: ${error}`);
   }
 }
-async function Z(s, e) {
-  if (
-    (await n.window.showWarningMessage(
-      `Are you sure you want to delete ${s.label}?`,
-      { modal: !0 },
-      'Delete'
-    )) === 'Delete'
-  )
-    try {
-      s.filePath && l.unlinkSync(s.filePath);
-      let t = s.filePath ? h.dirname(s.filePath) : void 0;
-      (t && l.existsSync(t) && l.readdirSync(t).length === 0 && l.rmdirSync(t),
-        e.refresh(),
-        n.window.showInformationMessage(`${s.label} deleted successfully`));
-    } catch (t) {
-      n.window.showErrorMessage(`Failed to delete module: ${t}`);
-    }
-}
-async function Q(s, e) {
-  let o = await n.window.showInputBox({
-    prompt: 'Enter new module name',
-    value: s.label,
-    validateInput: t => (!t || t.trim().length === 0 ? 'Module name is required' : null),
-  });
-  if (!(!o || o === s.label))
-    try {
-      if (s.filePath) {
-        let t = h.dirname(s.filePath),
-          i = h.extname(s.filePath),
-          r = h.join(t, `${o}${i}`);
-        l.renameSync(s.filePath, r);
-      }
-      (e.refresh(), n.window.showInformationMessage(`Module renamed to ${o}`));
-    } catch (t) {
-      n.window.showErrorMessage(`Failed to rename module: ${t}`);
-    }
-}
-async function X(s) {
-  let e = n.workspace.workspaceFolders?.[0].uri.fsPath;
-  if (!e) {
-    n.window.showErrorMessage('No workspace folder open');
+async function deleteModule(item, treeProvider) {
+  const confirm = await vscode2.window.showWarningMessage(
+    `Are you sure you want to delete ${item.label}?`,
+    { modal: true },
+    "Delete"
+  );
+  if (confirm !== "Delete") {
     return;
   }
-  let o = h.join(e, 'config'),
-    t = h.join(e, 'yuleasr.config.json');
   try {
-    l.existsSync(o) || l.mkdirSync(o, { recursive: !0 });
-    let i = {
-      name: h.basename(e),
-      version: '0.1.0',
-      description: 'yuleASR Configuration Project',
-      createdAt: new Date().toISOString(),
-      modules: [],
-    };
-    (l.writeFileSync(t, JSON.stringify(i, null, 2)),
-      n.commands.executeCommand('setContext', 'workspaceHasYuleASR', !0),
-      s.refresh(),
-      n.window.showInformationMessage('yuleASR project initialized successfully'));
-  } catch (i) {
-    n.window.showErrorMessage(`Failed to initialize project: ${i}`);
+    if (item.filePath) {
+      fs2.unlinkSync(item.filePath);
+    }
+    const parentDir = item.filePath ? path2.dirname(item.filePath) : void 0;
+    if (parentDir && fs2.existsSync(parentDir) && fs2.readdirSync(parentDir).length === 0) {
+      fs2.rmdirSync(parentDir);
+    }
+    treeProvider.refresh();
+    vscode2.window.showInformationMessage(`${item.label} deleted successfully`);
+  } catch (error) {
+    vscode2.window.showErrorMessage(`Failed to delete module: ${error}`);
   }
 }
-function M(s) {
-  return new Promise(e => setTimeout(e, s));
+async function renameModule(item, treeProvider) {
+  const newName = await vscode2.window.showInputBox({
+    prompt: "Enter new module name",
+    value: item.label,
+    validateInput: (value) => {
+      if (!value || value.trim().length === 0) {
+        return "Module name is required";
+      }
+      return null;
+    }
+  });
+  if (!newName || newName === item.label) {
+    return;
+  }
+  try {
+    if (item.filePath) {
+      const parentDir = path2.dirname(item.filePath);
+      const ext = path2.extname(item.filePath);
+      const newFilePath = path2.join(parentDir, `${newName}${ext}`);
+      fs2.renameSync(item.filePath, newFilePath);
+    }
+    treeProvider.refresh();
+    vscode2.window.showInformationMessage(`Module renamed to ${newName}`);
+  } catch (error) {
+    vscode2.window.showErrorMessage(`Failed to rename module: ${error}`);
+  }
 }
-var E = class {
-    provideHover(e, o) {
-      let t = e.lineAt(o.line).text;
-      if (t.includes('moduleName'))
-        return new n.Hover(
-          new n.MarkdownString(
-            '**moduleName**: The name of the AutoSAR module (e.g., Can, Mcu, Port)'
-          )
-        );
-      if (t.includes('layer'))
-        return new n.Hover(
-          new n.MarkdownString(
-            '**layer**: The BSW layer this module belongs to (MCAL, ECUAL, Service, RTE, ASW, OS)'
-          )
-        );
+async function initializeProject(treeProvider) {
+  const workspaceRoot = vscode2.workspace.workspaceFolders?.[0].uri.fsPath;
+  if (!workspaceRoot) {
+    vscode2.window.showErrorMessage("No workspace folder open");
+    return;
+  }
+  const configDir = path2.join(workspaceRoot, "config");
+  const projectConfig = path2.join(workspaceRoot, "yuleasr.config.json");
+  try {
+    if (!fs2.existsSync(configDir)) {
+      fs2.mkdirSync(configDir, { recursive: true });
     }
-  },
-  R = class {
-    provideCompletionItems(e, o) {
-      let t = e.lineAt(o.line).text.substring(0, o.character),
-        i = [];
-      if (t.includes('layer')) {
-        let r = ['MCAL', 'ECUAL', 'Service', 'RTE', 'ASW', 'OS', 'Integration'];
-        for (let c of r) {
-          let u = new n.CompletionItem(c, n.CompletionItemKind.EnumMember);
-          ((u.detail = `${c} Layer`), i.push(u));
-        }
-      }
-      if (t.includes('moduleName')) {
-        let r = [
-          { name: 'Can', detail: 'CAN Driver' },
-          { name: 'Mcu', detail: 'MCU Driver' },
-          { name: 'Port', detail: 'Port Driver' },
-          { name: 'Dio', detail: 'DIO Driver' },
-          { name: 'Spi', detail: 'SPI Driver' },
-          { name: 'Pwm', detail: 'PWM Driver' },
-          { name: 'Adc', detail: 'ADC Driver' },
-          { name: 'Gpt', detail: 'GPT Driver' },
-          { name: 'Wdg', detail: 'Watchdog Driver' },
-          { name: 'CanIf', detail: 'CAN Interface' },
-          { name: 'PduR', detail: 'PDU Router' },
-          { name: 'Com', detail: 'Communication' },
-          { name: 'BswM', detail: 'BSW Mode Manager' },
-          { name: 'EcuM', detail: 'ECU State Manager' },
-        ];
-        for (let c of r) {
-          let u = new n.CompletionItem(c.name, n.CompletionItemKind.Module);
-          ((u.detail = c.detail), i.push(u));
-        }
-      }
-      return i;
+    const projectData = {
+      name: path2.basename(workspaceRoot),
+      version: "0.1.0",
+      description: "yuleASR Configuration Project",
+      createdAt: (/* @__PURE__ */ new Date()).toISOString(),
+      modules: []
+    };
+    fs2.writeFileSync(projectConfig, JSON.stringify(projectData, null, 2));
+    vscode2.commands.executeCommand("setContext", "workspaceHasYuleASR", true);
+    treeProvider.refresh();
+    vscode2.window.showInformationMessage("yuleASR project initialized successfully");
+  } catch (error) {
+    vscode2.window.showErrorMessage(`Failed to initialize project: ${error}`);
+  }
+}
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+var YuleASRHoverProvider = class {
+  provideHover(document, position) {
+    const lineText = document.lineAt(position.line).text;
+    if (lineText.includes("moduleName")) {
+      return new vscode2.Hover(
+        new vscode2.MarkdownString(
+          "**moduleName**: The name of the AutoSAR module (e.g., Can, Mcu, Port)"
+        )
+      );
     }
-  };
-var y = p(require('fs')),
-  g = p(require('path')),
-  a = p(require('vscode')),
-  b = class extends a.TreeItem {
-    constructor(o, t, i, r, c, u) {
-      super(o, t);
-      this.label = o;
-      this.collapsibleState = t;
-      this.type = i;
-      this.layer = r;
-      this.filePath = c;
-      this.moduleName = u;
-      ((this.tooltip = this.getTooltip()),
-        (this.description = this.getDescription()),
-        (this.iconPath = this.getIconPath()),
-        (this.contextValue = i),
-        i === 'config' &&
-          c &&
-          ((this.command = {
-            command: 'yuleasr.openConfig',
-            title: 'Open Configuration',
-            arguments: [c],
-          }),
-          (this.resourceUri = a.Uri.file(c))));
+    if (lineText.includes("layer")) {
+      return new vscode2.Hover(
+        new vscode2.MarkdownString(
+          "**layer**: The BSW layer this module belongs to (MCAL, ECUAL, Service, RTE, ASW, OS)"
+        )
+      );
     }
-    getTooltip() {
-      switch (this.type) {
-        case 'layer':
-          return `${this.label} Layer`;
-        case 'module':
-          return `${this.moduleName} Module (${this.layer})`;
-        case 'config':
-          return this.filePath || 'Configuration file';
-        default:
-          return this.label;
+    return void 0;
+  }
+};
+var YuleASRCompletionProvider = class {
+  provideCompletionItems(document, position) {
+    const lineText = document.lineAt(position.line).text.substring(0, position.character);
+    const completions = [];
+    if (lineText.includes("layer")) {
+      const layers = ["MCAL", "ECUAL", "Service", "RTE", "ASW", "OS", "Integration"];
+      for (const layer of layers) {
+        const item = new vscode2.CompletionItem(layer, vscode2.CompletionItemKind.EnumMember);
+        item.detail = `${layer} Layer`;
+        completions.push(item);
       }
     }
-    getDescription() {
-      switch (this.type) {
-        case 'layer':
-          return '';
-        case 'module':
-          return this.layer || '';
-        case 'config':
-          return g.basename(this.filePath || '');
-        default:
-          return '';
+    if (lineText.includes("moduleName")) {
+      const modules = [
+        { name: "Can", detail: "CAN Driver" },
+        { name: "Mcu", detail: "MCU Driver" },
+        { name: "Port", detail: "Port Driver" },
+        { name: "Dio", detail: "DIO Driver" },
+        { name: "Spi", detail: "SPI Driver" },
+        { name: "Pwm", detail: "PWM Driver" },
+        { name: "Adc", detail: "ADC Driver" },
+        { name: "Gpt", detail: "GPT Driver" },
+        { name: "Wdg", detail: "Watchdog Driver" },
+        { name: "CanIf", detail: "CAN Interface" },
+        { name: "PduR", detail: "PDU Router" },
+        { name: "Com", detail: "Communication" },
+        { name: "BswM", detail: "BSW Mode Manager" },
+        { name: "EcuM", detail: "ECU State Manager" }
+      ];
+      for (const mod of modules) {
+        const item = new vscode2.CompletionItem(mod.name, vscode2.CompletionItemKind.Module);
+        item.detail = mod.detail;
+        completions.push(item);
       }
     }
-    getIconPath() {
-      switch (this.type) {
-        case 'layer':
-          return new a.ThemeIcon('folder');
-        case 'module':
-          return this.getModuleIcon();
-        case 'config':
-          return new a.ThemeIcon('file-code');
-        default:
-          return;
-      }
-    }
-    getModuleIcon() {
-      switch (this.layer) {
-        case 'MCAL':
-          return new a.ThemeIcon('chip', new a.ThemeColor('symbolIcon.classForeground'));
-        case 'ECUAL':
-          return new a.ThemeIcon('layers', new a.ThemeColor('symbolIcon.interfaceForeground'));
-        case 'Service':
-          return new a.ThemeIcon('gear', new a.ThemeColor('symbolIcon.methodForeground'));
-        case 'RTE':
-          return new a.ThemeIcon('plug', new a.ThemeColor('symbolIcon.variableForeground'));
-        case 'ASW':
-          return new a.ThemeIcon('apps', new a.ThemeColor('symbolIcon.fieldForeground'));
-        case 'OS':
-          return new a.ThemeIcon(
-            'server-process',
-            new a.ThemeColor('symbolIcon.namespaceForeground')
-          );
-        default:
-          return new a.ThemeIcon('symbol-misc');
-      }
-    }
-  },
-  D = class {
-    constructor(e) {
-      this.workspaceRoot = e;
-      this._onDidChangeTreeData = new a.EventEmitter();
-      this.onDidChangeTreeData = this._onDidChangeTreeData.event;
-      this.layerModules = {
-        MCAL: ['Mcu', 'Port', 'Dio', 'Can', 'Spi', 'I2c', 'Pwm', 'Adc', 'Gpt', 'Wdg'],
-        ECUAL: ['CanIf', 'CanTp', 'PduR', 'Com', 'Dcm', 'Dem', 'Nvm', 'Fee', 'Ea'],
-        Service: ['BswM', 'EcuM', 'ComM', 'Nm', 'CanNm'],
-        RTE: ['Rte'],
-        ASW: ['Application', 'Swc'],
-        OS: ['Os'],
-        Integration: ['Ecu'],
-        Unknown: [],
+    return completions;
+  }
+};
+
+// src/providers/ConfigTreeProvider.ts
+var fs3 = __toESM(require("fs"));
+var path3 = __toESM(require("path"));
+var vscode3 = __toESM(require("vscode"));
+var ConfigTreeItem = class extends vscode3.TreeItem {
+  constructor(label, collapsibleState, type, layer, filePath, moduleName) {
+    super(label, collapsibleState);
+    this.label = label;
+    this.collapsibleState = collapsibleState;
+    this.type = type;
+    this.layer = layer;
+    this.filePath = filePath;
+    this.moduleName = moduleName;
+    this.tooltip = this.getTooltip();
+    this.description = this.getDescription();
+    this.iconPath = this.getIconPath();
+    this.contextValue = type;
+    if (type === "config" && filePath) {
+      this.command = {
+        command: "yuleasr.openConfig",
+        title: "Open Configuration",
+        arguments: [filePath]
       };
+      this.resourceUri = vscode3.Uri.file(filePath);
     }
-    refresh() {
-      this._onDidChangeTreeData.fire();
+  }
+  getTooltip() {
+    switch (this.type) {
+      case "layer":
+        return `${this.label} Layer`;
+      case "module":
+        return `${this.moduleName} Module (${this.layer})`;
+      case "config":
+        return this.filePath || "Configuration file";
+      default:
+        return this.label;
     }
-    getTreeItem(e) {
-      return e;
+  }
+  getDescription() {
+    switch (this.type) {
+      case "layer":
+        return "";
+      case "module":
+        return this.layer || "";
+      case "config":
+        return path3.basename(this.filePath || "");
+      default:
+        return "";
     }
-    async getChildren(e) {
-      if (!this.workspaceRoot)
-        return (a.window.showInformationMessage('No workspace folder open'), []);
-      if (!e) return this.getLayers();
-      switch (e.type) {
-        case 'layer':
-          return this.getModulesForLayer(e.layer);
-        case 'module':
-          return this.getConfigsForModule(e.moduleName, e.layer);
-        default:
-          return [];
+  }
+  getIconPath() {
+    switch (this.type) {
+      case "layer":
+        return new vscode3.ThemeIcon("folder");
+      case "module":
+        return this.getModuleIcon();
+      case "config":
+        return new vscode3.ThemeIcon("file-code");
+      default:
+        return void 0;
+    }
+  }
+  getModuleIcon() {
+    switch (this.layer) {
+      case "MCAL":
+        return new vscode3.ThemeIcon("chip", new vscode3.ThemeColor("symbolIcon.classForeground"));
+      case "ECUAL":
+        return new vscode3.ThemeIcon(
+          "layers",
+          new vscode3.ThemeColor("symbolIcon.interfaceForeground")
+        );
+      case "Service":
+        return new vscode3.ThemeIcon("gear", new vscode3.ThemeColor("symbolIcon.methodForeground"));
+      case "RTE":
+        return new vscode3.ThemeIcon("plug", new vscode3.ThemeColor("symbolIcon.variableForeground"));
+      case "ASW":
+        return new vscode3.ThemeIcon("apps", new vscode3.ThemeColor("symbolIcon.fieldForeground"));
+      case "OS":
+        return new vscode3.ThemeIcon(
+          "server-process",
+          new vscode3.ThemeColor("symbolIcon.namespaceForeground")
+        );
+      default:
+        return new vscode3.ThemeIcon("symbol-misc");
+    }
+  }
+};
+var ConfigTreeProvider = class {
+  constructor(workspaceRoot) {
+    this.workspaceRoot = workspaceRoot;
+    this._onDidChangeTreeData = new vscode3.EventEmitter();
+    this.onDidChangeTreeData = this._onDidChangeTreeData.event;
+    // Module layer mappings
+    this.layerModules = {
+      MCAL: ["Mcu", "Port", "Dio", "Can", "Spi", "I2c", "Pwm", "Adc", "Gpt", "Wdg"],
+      ECUAL: ["CanIf", "CanTp", "PduR", "Com", "Dcm", "Dem", "Nvm", "Fee", "Ea"],
+      Service: ["BswM", "EcuM", "ComM", "Nm", "CanNm"],
+      RTE: ["Rte"],
+      ASW: ["Application", "Swc"],
+      OS: ["Os"],
+      Integration: ["Ecu"],
+      Unknown: []
+    };
+  }
+  refresh() {
+    this._onDidChangeTreeData.fire();
+  }
+  getTreeItem(element) {
+    return element;
+  }
+  async getChildren(element) {
+    if (!this.workspaceRoot) {
+      vscode3.window.showInformationMessage("No workspace folder open");
+      return [];
+    }
+    if (!element) {
+      return this.getLayers();
+    }
+    switch (element.type) {
+      case "layer":
+        return this.getModulesForLayer(element.layer);
+      case "module":
+        return this.getConfigsForModule(element.moduleName, element.layer);
+      default:
+        return [];
+    }
+  }
+  async getLayers() {
+    const layers = [];
+    const layerOrder = [
+      "MCAL",
+      "ECUAL",
+      "Service",
+      "RTE",
+      "ASW",
+      "OS",
+      "Integration"
+    ];
+    for (const layer of layerOrder) {
+      const hasModules = await this.hasModulesInLayer(layer);
+      if (hasModules) {
+        layers.push(
+          new ConfigTreeItem(layer, vscode3.TreeItemCollapsibleState.Collapsed, "layer", layer)
+        );
       }
     }
-    async getLayers() {
-      let e = [],
-        o = ['MCAL', 'ECUAL', 'Service', 'RTE', 'ASW', 'OS', 'Integration'];
-      for (let t of o)
-        (await this.hasModulesInLayer(t)) &&
-          e.push(new b(t, a.TreeItemCollapsibleState.Collapsed, 'layer', t));
-      return e;
+    return layers;
+  }
+  async getModulesForLayer(layer) {
+    const modules = [];
+    const moduleNames = this.layerModules[layer];
+    for (const moduleName of moduleNames) {
+      const hasConfig = await this.hasModuleConfig(moduleName, layer);
+      if (hasConfig) {
+        modules.push(
+          new ConfigTreeItem(
+            moduleName,
+            vscode3.TreeItemCollapsibleState.Collapsed,
+            "module",
+            layer,
+            void 0,
+            moduleName
+          )
+        );
+      }
     }
-    async getModulesForLayer(e) {
-      let o = [],
-        t = this.layerModules[e];
-      for (let i of t)
-        (await this.hasModuleConfig(i, e)) &&
-          o.push(new b(i, a.TreeItemCollapsibleState.Collapsed, 'module', e, void 0, i));
-      return (o.sort((i, r) => i.label.localeCompare(r.label)), o);
-    }
-    async getConfigsForModule(e, o) {
-      let t = [],
-        i = await this.findModuleConfigPath(e, o);
-      if (i) {
-        let r = ['.yule.json', '.json', '.xdm', '.arxml'];
-        for (let c of r) {
-          let u = g.join(i, `${e}${c}`);
-          y.existsSync(u) &&
-            t.push(new b(`${e} Configuration`, a.TreeItemCollapsibleState.None, 'config', o, u, e));
+    modules.sort((a, b) => a.label.localeCompare(b.label));
+    return modules;
+  }
+  async getConfigsForModule(moduleName, layer) {
+    const configs = [];
+    const configPath = await this.findModuleConfigPath(moduleName, layer);
+    if (configPath) {
+      const extensions2 = [".yule.json", ".json", ".xdm", ".arxml"];
+      for (const ext of extensions2) {
+        const filePath = path3.join(configPath, `${moduleName}${ext}`);
+        if (fs3.existsSync(filePath)) {
+          configs.push(
+            new ConfigTreeItem(
+              `${moduleName} Configuration`,
+              vscode3.TreeItemCollapsibleState.None,
+              "config",
+              layer,
+              filePath,
+              moduleName
+            )
+          );
         }
-        if (y.existsSync(i)) {
-          let c = y.readdirSync(i);
-          for (let u of c) {
-            let C = g.join(i, u);
-            if (y.statSync(C).isFile() && !t.some(S => S.filePath === C)) {
-              let S = g.extname(u);
-              (['.json', '.xdm', '.arxml'].includes(S) || u.endsWith('.yule.json')) &&
-                t.push(new b(g.basename(u), a.TreeItemCollapsibleState.None, 'config', o, C, e));
+      }
+      if (fs3.existsSync(configPath)) {
+        const files = fs3.readdirSync(configPath);
+        for (const file of files) {
+          const fullPath = path3.join(configPath, file);
+          const stat = fs3.statSync(fullPath);
+          if (stat.isFile() && !configs.some((c) => c.filePath === fullPath)) {
+            const ext = path3.extname(file);
+            if ([".json", ".xdm", ".arxml"].includes(ext) || file.endsWith(".yule.json")) {
+              configs.push(
+                new ConfigTreeItem(
+                  path3.basename(file),
+                  vscode3.TreeItemCollapsibleState.None,
+                  "config",
+                  layer,
+                  fullPath,
+                  moduleName
+                )
+              );
             }
           }
         }
       }
-      return t;
     }
-    async hasModulesInLayer(e) {
-      let o = this.layerModules[e];
-      for (let t of o) if (await this.hasModuleConfig(t, e)) return !0;
-      return !1;
-    }
-    async hasModuleConfig(e, o) {
-      let t = await this.findModuleConfigPath(e, o);
-      return t !== void 0 && y.existsSync(t);
-    }
-    async findModuleConfigPath(e, o) {
-      if (!this.workspaceRoot) return;
-      let t = [
-          g.join(this.workspaceRoot, 'config', e),
-          g.join(this.workspaceRoot, 'configs', e),
-          g.join(this.workspaceRoot, o, e),
-          g.join(this.workspaceRoot, e),
-        ],
-        r = a.workspace.getConfiguration('yuleasr').get('yuleASRPath');
-      r && t.push(g.join(r, 'config', e), g.join(r, 'src', o.toLowerCase(), e, 'config'));
-      for (let c of t) if (y.existsSync(c)) return c;
-    }
-    async findModule(e) {
-      let o = ['MCAL', 'ECUAL', 'Service', 'RTE', 'ASW', 'OS', 'Integration'];
-      for (let t of o)
-        if (await this.hasModuleConfig(e, t))
-          return new b(e, a.TreeItemCollapsibleState.Collapsed, 'module', t, void 0, e);
-    }
-    async getAllModules() {
-      let e = [],
-        o = ['MCAL', 'ECUAL', 'Service', 'RTE', 'ASW', 'OS', 'Integration'];
-      for (let t of o) {
-        let i = await this.getModulesForLayer(t);
-        e.push(...i);
+    return configs;
+  }
+  async hasModulesInLayer(layer) {
+    const moduleNames = this.layerModules[layer];
+    for (const moduleName of moduleNames) {
+      if (await this.hasModuleConfig(moduleName, layer)) {
+        return true;
       }
-      return e;
     }
-  };
-function ee(s) {
-  console.log('yuleASR Configurator extension is now active');
-  let e = new D(m.workspace.rootPath),
-    o = m.window.createTreeView('yuleasrExplorer', {
-      treeDataProvider: e,
-      showCollapseAll: !0,
-      canSelectMany: !1,
-    });
-  L(s, e);
-  let t = m.commands.registerCommand('yuleasr.openDashboard', () => {
-    P.createOrShow(s.extensionUri);
+    return false;
+  }
+  async hasModuleConfig(moduleName, layer) {
+    const configPath = await this.findModuleConfigPath(moduleName, layer);
+    return configPath !== void 0 && fs3.existsSync(configPath);
+  }
+  async findModuleConfigPath(moduleName, layer) {
+    if (!this.workspaceRoot) {
+      return void 0;
+    }
+    const possiblePaths = [
+      path3.join(this.workspaceRoot, "config", moduleName),
+      path3.join(this.workspaceRoot, "configs", moduleName),
+      path3.join(this.workspaceRoot, layer, moduleName),
+      path3.join(this.workspaceRoot, moduleName)
+    ];
+    const config = vscode3.workspace.getConfiguration("yuleasr");
+    const yuleASRPath = config.get("yuleASRPath");
+    if (yuleASRPath) {
+      possiblePaths.push(
+        path3.join(yuleASRPath, "config", moduleName),
+        path3.join(yuleASRPath, "src", layer.toLowerCase(), moduleName, "config")
+      );
+    }
+    for (const configPath of possiblePaths) {
+      if (fs3.existsSync(configPath)) {
+        return configPath;
+      }
+    }
+    return void 0;
+  }
+  /**
+   * Find a module by name
+   */
+  async findModule(moduleName) {
+    const layers = ["MCAL", "ECUAL", "Service", "RTE", "ASW", "OS", "Integration"];
+    for (const layer of layers) {
+      const hasConfig = await this.hasModuleConfig(moduleName, layer);
+      if (hasConfig) {
+        return new ConfigTreeItem(
+          moduleName,
+          vscode3.TreeItemCollapsibleState.Collapsed,
+          "module",
+          layer,
+          void 0,
+          moduleName
+        );
+      }
+    }
+    return void 0;
+  }
+  /**
+   * Get all modules
+   */
+  async getAllModules() {
+    const allModules = [];
+    const layers = ["MCAL", "ECUAL", "Service", "RTE", "ASW", "OS", "Integration"];
+    for (const layer of layers) {
+      const modules = await this.getModulesForLayer(layer);
+      allModules.push(...modules);
+    }
+    return allModules;
+  }
+};
+
+// src/extension.ts
+function activate(context) {
+  console.log("yuleASR Configurator extension is now active");
+  const treeProvider = new ConfigTreeProvider(vscode4.workspace.rootPath);
+  const treeView = vscode4.window.createTreeView("yuleasrExplorer", {
+    treeDataProvider: treeProvider,
+    showCollapseAll: true,
+    canSelectMany: false
   });
-  (s.subscriptions.push(t), s.subscriptions.push(o), te(s, e), ne());
+  registerCommands(context, treeProvider);
+  const openDashboardCmd = vscode4.commands.registerCommand("yuleasr.openDashboard", () => {
+    ConfigEditorPanel.createOrShow(context.extensionUri);
+  });
+  context.subscriptions.push(openDashboardCmd);
+  context.subscriptions.push(treeView);
+  setupFileWatchers(context, treeProvider);
+  checkYuleASRWorkspace();
 }
-function oe() {
-  console.log('yuleASR Configurator extension is now deactivated');
+function deactivate() {
+  console.log("yuleASR Configurator extension is now deactivated");
 }
-function te(s, e) {
-  let o = m.workspace.createFileSystemWatcher('**/*.{yule.json,xdm,arxml}');
-  (o.onDidCreate(() => e.refresh()),
-    o.onDidDelete(() => e.refresh()),
-    o.onDidChange(() => e.refresh()),
-    s.subscriptions.push(o));
-  let t = m.workspace.createFileSystemWatcher('**/yuleasr.config.json');
-  (t.onDidCreate(() => {
-    (m.commands.executeCommand('setContext', 'workspaceHasYuleASR', !0), e.refresh());
-  }),
-    t.onDidDelete(() => {
-      m.commands.executeCommand('setContext', 'workspaceHasYuleASR', !1);
-    }),
-    s.subscriptions.push(t));
+function setupFileWatchers(context, treeProvider) {
+  const configWatcher = vscode4.workspace.createFileSystemWatcher("**/*.{yule.json,xdm,arxml}");
+  configWatcher.onDidCreate(() => treeProvider.refresh());
+  configWatcher.onDidDelete(() => treeProvider.refresh());
+  configWatcher.onDidChange(() => treeProvider.refresh());
+  context.subscriptions.push(configWatcher);
+  const workspaceWatcher = vscode4.workspace.createFileSystemWatcher("**/yuleasr.config.json");
+  workspaceWatcher.onDidCreate(() => {
+    vscode4.commands.executeCommand("setContext", "workspaceHasYuleASR", true);
+    treeProvider.refresh();
+  });
+  workspaceWatcher.onDidDelete(() => {
+    vscode4.commands.executeCommand("setContext", "workspaceHasYuleASR", false);
+  });
+  context.subscriptions.push(workspaceWatcher);
 }
-async function ne() {
-  if (!m.workspace.workspaceFolders) return;
-  let s = await Promise.any(
-    m.workspace.workspaceFolders.map(async e => {
-      let o = new m.RelativePattern(e, '**/yuleasr.config.json');
-      return (await m.workspace.findFiles(o, null, 1)).length > 0;
+async function checkYuleASRWorkspace() {
+  if (!vscode4.workspace.workspaceFolders) {
+    return;
+  }
+  const hasYuleASR = await Promise.any(
+    vscode4.workspace.workspaceFolders.map(async (folder) => {
+      const pattern = new vscode4.RelativePattern(folder, "**/yuleasr.config.json");
+      const files = await vscode4.workspace.findFiles(pattern, null, 1);
+      return files.length > 0;
     })
-  ).catch(() => !1);
-  m.commands.executeCommand('setContext', 'workspaceHasYuleASR', s);
+  ).catch(() => false);
+  vscode4.commands.executeCommand("setContext", "workspaceHasYuleASR", hasYuleASR);
 }
-0 && (module.exports = { activate, deactivate });
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  activate,
+  deactivate
+});
+//# sourceMappingURL=extension.js.map

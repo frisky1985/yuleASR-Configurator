@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { generateHeader } from '../codegen';
+import { generateHeader, generateAllHeaders } from '../codegen';
 
 import type { ConfigModule } from '@/types/config';
 
@@ -53,8 +53,10 @@ describe('Codegen - Module header generation', () => {
     const result = await generateHeader(module);
     expect(result).not.toBeNull();
     expect(result!.filename).toBe('Adc_Cfg.h');
-    expect(result!.content).toContain('ADC_MODULE_ID');
-    expect(result!.content).toContain('ADC_VENDOR_ID');
+    // Macro-only header: starts with include guard
+    expect(result!.content).toContain('ADC_CFG_H');
+    // Has section markers (yuleASR style)
+    expect(result!.content).toContain('PRE-COMPILE CONFIGURATION');
   });
 
   it('should generate Can_Cfg.h for CAN module', async () => {
@@ -87,8 +89,15 @@ describe('Codegen - Module header generation', () => {
     const result = await generateHeader(module);
     expect(result).not.toBeNull();
     expect(result!.filename).toBe('Can_Cfg.h');
-    expect(result!.content).toContain('CAN_MODULE_ID');
-    expect(result!.content).toContain('CAN_VENDOR_ID');
+    // Macro-only yuleASR style: has all the well-known macros
+    expect(result!.content).toContain('CAN_NUM_CONTROLLERS');
+    expect(result!.content).toContain('CAN_NUM_HOH');
+    expect(result!.content).toContain('CAN_DEV_ERROR_DETECT');
+    expect(result!.content).toContain('CAN_TIMEOUT_DURATION');
+    expect(result!.content).toContain('CAN_MAIN_FUNCTION_PERIOD_MS');
+    // No ECUC-style type definitions
+    expect(result!.content).not.toContain('typedef struct');
+    expect(result!.content).not.toContain('ConfigType');
   });
 
   it('should generate Mcu_Cfg.h for MCU module', async () => {
@@ -119,7 +128,8 @@ describe('Codegen - Module header generation', () => {
     const result = await generateHeader(module);
     expect(result).not.toBeNull();
     expect(result!.filename).toBe('Mcu_Cfg.h');
-    expect(result!.content).toContain('MCU_MODULE_ID');
+    expect(result!.content).toContain('MCU_CFG_H');
+    expect(result!.content).toContain('PRE-COMPILE CONFIGURATION');
   });
 
   it('should generate Port_Cfg.h for PORT module', async () => {
@@ -150,7 +160,8 @@ describe('Codegen - Module header generation', () => {
     const result = await generateHeader(module);
     expect(result).not.toBeNull();
     expect(result!.filename).toBe('Port_Cfg.h');
-    expect(result!.content).toContain('PORT_MODULE_ID');
+    expect(result!.content).toContain('PORT_CFG_H');
+    expect(result!.content).toContain('PRE-COMPILE CONFIGURATION');
   });
 
   it('should generate Dio_Cfg.h for DIO module', async () => {
@@ -172,11 +183,11 @@ describe('Codegen - Module header generation', () => {
     const result = await generateHeader(module);
     expect(result).not.toBeNull();
     expect(result!.filename).toBe('Dio_Cfg.h');
-    expect(result!.content).toContain('DIO_MODULE_ID');
+    expect(result!.content).toContain('DIO_CFG_H');
+    expect(result!.content).toContain('PRE-COMPILE CONFIGURATION');
   });
 
   it('should skip disabled modules in generateAllHeaders', async () => {
-    const { generateAllHeaders } = await import('../codegen');
     const module = makeMinimalModule({ id: 'adc', enabled: false });
     const results = await generateAllHeaders([module]);
     expect(results).toHaveLength(0);
@@ -186,8 +197,8 @@ describe('Codegen - Module header generation', () => {
     const module = makeMinimalModule({ id: 'unknown_chip', name: 'UnknownChip' });
     const result = await generateHeader(module);
     expect(result).not.toBeNull();
-    expect(result!.filename).toBe('Unknownchip_Cfg.h');
-    expect(result!.content).toContain('MODULE_ID');
+    expect(result!.filename).toBe('Unknown_chip_Cfg.h');
+    expect(result!.content).toContain('CFG_H');
   });
 
   it('should generate Gpt_Cfg.h for GPT module', async () => {
@@ -223,6 +234,7 @@ describe('Codegen - Module header generation', () => {
     const result = await generateHeader(module);
     expect(result).not.toBeNull();
     expect(result!.filename).toBe('Gpt_Cfg.h');
-    expect(result!.content).toContain('GPT_MODULE_ID');
+    expect(result!.content).toContain('GPT_CFG_H');
+    expect(result!.content).toContain('PRE-COMPILE CONFIGURATION');
   });
 });

@@ -5,7 +5,7 @@
  * Implements AUTOSAR 4.4 standard formatting and conventions
  */
 
-import type { CompilerType } from './index';
+import type { CompilerType, GeneratedFile } from './index';
 
 /** Convert a filename to an include guard name (e.g., "Adc_Cfg.h" → "ADC_CFG_H") */
 export function toGuardName(filename: string): string {
@@ -501,27 +501,27 @@ export function getModuleId(moduleName: string): number {
   return AUTOSAR_MODULE_IDS[moduleName] || 0xffff;
 }
 
-/** AUTOSAR standard configuration header file names */
+/** AUTOSAR ECUC configuration header file names (Ecuc_ prefix avoids conflict with yuleASR macro-only headers) */
 export const MODULE_HEADER_NAMES: Record<string, string> = {
-  Can: 'Can_Cfg.h',
-  Mcu: 'Mcu_Cfg.h',
-  Port: 'Port_Cfg.h',
-  Dio: 'Dio_Cfg.h',
-  Adc: 'Adc_Cfg.h',
-  Icu: 'Icu_Cfg.h',
-  Gpt: 'Gpt_Cfg.h',
-  Pwm: 'Pwm_Cfg.h',
-  Wdg: 'Wdg_Cfg.h',
-  Lin: 'Lin_Cfg.h',
-  Spi: 'Spi_Cfg.h',
-  Fr: 'Fr_Cfg.h',
-  Eth: 'Eth_Cfg.h',
-  Os: 'Os_Cfg.h',
+  Can: 'Ecuc_Can_Cfg.h',
+  Mcu: 'Ecuc_Mcu_Cfg.h',
+  Port: 'Ecuc_Port_Cfg.h',
+  Dio: 'Ecuc_Dio_Cfg.h',
+  Adc: 'Ecuc_Adc_Cfg.h',
+  Icu: 'Ecuc_Icu_Cfg.h',
+  Gpt: 'Ecuc_Gpt_Cfg.h',
+  Pwm: 'Ecuc_Pwm_Cfg.h',
+  Wdg: 'Ecuc_Wdg_Cfg.h',
+  Lin: 'Ecuc_Lin_Cfg.h',
+  Spi: 'Ecuc_Spi_Cfg.h',
+  Fr: 'Ecuc_Fr_Cfg.h',
+  Eth: 'Ecuc_Eth_Cfg.h',
+  Os: 'Ecuc_Os_Cfg.h',
 };
 
-/** Get the standard header filename for a module */
+/** Get the standard ECUC header filename for a module */
 export function getModuleHeaderName(moduleName: string): string {
-  return MODULE_HEADER_NAMES[moduleName] || `${moduleName}_Cfg.h`;
+  return MODULE_HEADER_NAMES[moduleName] || `Ecuc_${moduleName}_Cfg.h`;
 }
 
 /**
@@ -745,4 +745,262 @@ export function wrapDevErrorDetect(codeBlock: string): string {
 ${codeBlock}
 #endif /* DEV_ERROR_DETECT */
 `;
+}
+
+// =========================================================================
+// Phase 1: Shared Template Functions (Code Generator Alignment)
+// =========================================================================
+
+/**
+ * Generate a standard AUTOSAR file include guard for a header filename.
+ * All generated headers use the pattern: MODULE_NAME_CFG_H (uppercase, underscore).
+ *
+ * @param filename - The header file name, e.g. "Can_Cfg.h" → "CAN_CFG_H"
+ * @returns The include guard macro name
+ *
+ * @example
+ *   toStandardGuard('Rte_Type.h')      → 'RTE_TYPE_H'
+ *   toStandardGuard('Os_Cfg.h')        → 'OS_CFG_H'
+ *   toStandardGuard('Ecuc_Can_PBcfg.c') → 'ECUC_CAN_PBCFG_C'
+ */
+export function toStandardGuard(filename: string): string {
+  return filename
+    .replace(/\./g, '_')
+    .replace(/-/g, '_')
+    .toUpperCase();
+}
+
+/**
+ * Generate the complete file header template block (AUTOSAR 4.4 compliant).
+ * Combines Doxygen header, preprocessor guards, and standard includes.
+ *
+ * @param params - Template parameters
+ * @returns Complete file header block
+ */
+export function generateFileTemplate(params: {
+  /** File name for Doxygen @file and guard */
+  fileName: string;
+  /** AUTOSAR module name (e.g. "Can", "Os") */
+  moduleName: string;
+  /** Module ID (use getModuleId()) */
+  moduleId: number;
+  /** Optional vendor ID (default 0x1234) */
+  vendorId?: number;
+  /** Optional description for Doxygen @brief */
+  description?: string;
+  /** Additional includes beyond Std_Types.h / module-specific base */
+  extraIncludes?: string[];
+  /** Override the guard name if non-standard; computed from fileName otherwise */
+  guardOverride?: string;
+}): string {
+  const guard = params.guardOverride || toStandardGuard(params.fileName);
+  const vendorId = params.vendorId ?? 0x1234;
+  const includes = [
+    '"Std_Types.h"',
+    ...(params.extraIncludes || []),
+  ];
+
+  let content = generateAutosarFileHeader(
+    params.fileName,
+    params.moduleName,
+    params.moduleId,
+    vendorId,
+    params.description
+  );
+
+  content += `/*==================[preprocessor guards]====================================*/
+#ifndef ${guard}
+#define ${guard}
+
+/*==================[includes]==============================================*/
+${includes.map(i => `#include ${i}`).join('\n')}
+
+`;
+
+  // version info macros
+  content += generateVersionInfoMacros(params.moduleName);
+
+  return content;
+}
+
+/**
+ * Generate the standard AUTOSAR file footer with guard close and end-of-file marker.
+ *
+ * @param guard - The include guard name used in the header
+ * @returns File footer block
+ */
+export function generateFileFooter(guard: string): string {
+  return `
+#endif /* ${guard} */
+
+/*==================[end of file]===========================================*/\n`;
+}
+
+/**
+ * Generate a function prologue with AUTOSAR Doxygen + DEV_ERROR_DETECT guard.
+ * Wraps a statement block with DEV_ERROR_DETECT and optional MemMap section.
+ *
+ * @param brief - Brief function description
+ * @param options - Optional configuration for MemMap wrapping and DET
+ * @returns Function prologue string
+ */
+export function generateFunctionPrologue(
+  brief: string,
+  options?: {
+    params?: Array<{ name: string; direction?: 'in' | 'out' | 'inout'; description: string }>;
+    returns?: string;
+    preconditions?: string[];
+    postconditions?: string[];
+  }
+): string {
+  return generateAutosarFunctionHeader(brief, options?.params, options?.returns, options?.preconditions, options?.postconditions);
+}
+
+/**
+ * Generate a unified container instance array block.
+ * Creates individual static const instances and a const array pointing to them.
+ * Wraps the block with MemMap.h section markers if a compiler abstraction is provided.
+ *
+ * @param params - Template parameters
+ * @returns Generated C code block for container instances
+ */
+export function generateContainerArrayBlock(params: {
+  /** Container type name (e.g. "Can_ControllerType") */
+  containerType: string;
+  /** Base element name used for variable naming */
+  elementName: string;
+  /** Array of field definitions {name, value, type} for each instance */
+  instances: Array<{
+    /** Instance label / comment name */
+    label: string;
+    /** Field values keyed by struct member name: { name: 'feldname', value: 'formatted_value' } */
+    fields: Array<{ name: string; value: string }>;
+  }>;
+  /** Module name for MemMap section markers */
+  moduleName: string;
+  /** Optional CompilerAbstraction for MemMap wrapping */
+  compilerAbstraction?: CompilerAbstraction;
+  /** MemMap section name (default "CONST_UNSPECIFIED") */
+  sectionName?: string;
+  /** Whether to wrap with MemMap (default true if compilerAbstraction provided) */
+  wrapMemMap?: boolean;
+}): string {
+  const section = params.sectionName || 'CONST_UNSPECIFIED';
+  let body = '';
+
+  // Individual instances
+  for (let i = 0; i < params.instances.length; i++) {
+    const inst = params.instances[i];
+    body += `/** @brief ${inst.label} */\n`;
+    body += `static const ${params.containerType} ${params.elementName}_Instance_${i} = {\n`;
+    for (const field of inst.fields) {
+      body += `    .${field.name} = ${field.value},\n`;
+    }
+    body += `};\n\n`;
+  }
+
+  // Instance array
+  if (params.instances.length > 0) {
+    body += `/** @brief ${params.elementName} instance array */\n`;
+    body += `const ${params.containerType} ${params.elementName}[${params.instances.length}] = {\n`;
+    for (let i = 0; i < params.instances.length; i++) {
+      body += `    ${params.elementName}_Instance_${i},\n`;
+    }
+    body += `};\n\n`;
+  }
+
+  const ca = params.compilerAbstraction;
+  const shouldWrap = params.wrapMemMap !== false && !!ca;
+
+  if (shouldWrap && ca) {
+    return ca.wrapMemMapSection(params.moduleName, section, body);
+  }
+
+  return body;
+}
+
+/**
+ * Generate AUTOSAR plugin delegation guard block.
+ * Checks for a plugin code generator for the given module and delegates if found.
+ *
+ * @param moduleName - Module name to check
+ * @param pluginRegistry - The plugin registry object (must have findCodeGeneratorForModule)
+ * @param warnings - Warning array to append delegation messages to
+ * @returns { delegated: boolean; delegationResult?: GenerationResult }
+ */
+export async function tryPluginDelegation(
+  moduleName: string,
+  pluginRegistryObj: { findCodeGeneratorForModule(name: string): { generate(config: Record<string, unknown>, options: Record<string, unknown>): Promise<{ files: Array<{ path: string; content: string }> }> } | undefined },
+  config: Record<string, unknown>,
+  options: Record<string, unknown>,
+  warnings: string[],
+  generatorName: string
+): Promise<{ delegated: boolean; result?: { files: GeneratedFile[] } }> {
+  const pluginGen = pluginRegistryObj.findCodeGeneratorForModule(moduleName);
+  if (!pluginGen) {
+    return { delegated: false };
+  }
+
+  const msg = `[${generatorName}] Delegating generation of "${moduleName}" to plugin generator "${pluginGen.name}"`;
+  console.info(msg);
+  warnings.push(`使用插件生成器: ${pluginGen.name}`);
+
+  const pluginResult = await pluginGen.generate(config, options);
+  return {
+    delegated: true,
+    result: {
+      files: pluginResult.files.map(f => ({
+        path: f.path,
+        content: f.content,
+        language: f.path.endsWith('.h') ? 'h' as const : 'c' as const,
+      })),
+    },
+  };
+}
+
+/**
+ * Map a parameter type to a standard AUTOSAR config type structure member type.
+ * Used for generating ConfigSetType struct fields.
+ */
+export function getConfigMemberType(type: string): string {
+  switch (type) {
+    case 'boolean':
+      return 'boolean';
+    case 'integer':
+      return 'uint32';
+    case 'float':
+      return 'float32';
+    case 'string':
+      return 'const char*';
+    case 'enum':
+      return 'uint8';
+    default:
+      return 'uint32';
+  }
+}
+
+/**
+ * Generate standard AUTOSAR version identification structure static instance.
+ *
+ * @param moduleName - Module name (e.g., "Can")
+ * @param version - Version string (e.g., "1.0.0")
+ * @param moduleId - AUTOSAR module ID
+ * @param vendorId - Vendor ID (default 0x1234)
+ * @returns C code for static version info structure
+ */
+export function generateVersionInfoStruct(
+  moduleName: string,
+  version: string,
+  moduleId: number,
+  vendorId: number = 0x1234
+): string {
+  const v = parseVersion(version);
+  return `/** @brief ${moduleName} module version information */
+static const Std_VersionInfoType ${moduleName}_VersionInfo = {
+    .vendorID         = ((uint16)0x${toHex(vendorId)}),
+    .moduleID         = ((uint16)${moduleId}U),
+    .sw_major_version = ((uint8)${v.major}U),
+    .sw_minor_version = ((uint8)${v.minor}U),
+    .sw_patch_version = ((uint8)${v.patch}U)
+};\n`;
 }

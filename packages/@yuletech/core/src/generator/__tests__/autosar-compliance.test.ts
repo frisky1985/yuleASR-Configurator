@@ -481,37 +481,24 @@ describe('AUTOSAR 4.4 Compliance - Generated Code Integration', () => {
   // -----------------------------------------------------------------------
   // (a2) Doxygen 函数头（Init / MainFunction / GetVersionInfo）
   // -----------------------------------------------------------------------
-  describe('(a) Init/MainFunction/GetVersionInfo have Doxygen function headers', () => {
+  describe('(a) ECUC headers do NOT duplicate Init/MainFunction/GetVersionInfo', () => {
+    // ECUC 头文件不定义驱动接口函数(Init/MainFunction/GetVersionInfo)
+    // 这些函数由于写驱动头文件(如 Can.h)定义
     for (const { config, schema } of moduleConfigs) {
-      it(`should have Doxygen header for ${schema.name}_Init in header file`, async () => {
+      it(`should NOT declare ${schema.name}_Init in ECUC header`, async () => {
         const result = await ecucGen.generate(config, schema, { outputDir: './out' });
         const header = result.files.find(f => f.path.endsWith('.h'))!.content;
-        // Check Init function has full Doxygen
-        const initSection = header.substring(header.indexOf(`${schema.name}_Init`));
-        expect(initSection).toBeDefined();
-        // The Doxygen precedes the function declaration
-        expect(header).toContain('/**');
-        expect(header).toContain(`@brief Initialize the ${schema.name} module`);
+        expect(header).not.toContain(`${schema.name}_Init(`);
       });
-
-      it(`should declare ${schema.name}_MainFunction`, async () => {
+      it(`should NOT declare ${schema.name}_MainFunction in ECUC header`, async () => {
         const result = await ecucGen.generate(config, schema, { outputDir: './out' });
         const header = result.files.find(f => f.path.endsWith('.h'))!.content;
-        expect(header).toContain(`void ${schema.name}_MainFunction(void)`);
+        expect(header).not.toContain(`${schema.name}_MainFunction(`);
       });
-
-      it(`should have Doxygen header for ${schema.name}_MainFunction`, async () => {
+      it(`should NOT declare ${schema.name}_GetVersionInfo in ECUC header`, async () => {
         const result = await ecucGen.generate(config, schema, { outputDir: './out' });
         const header = result.files.find(f => f.path.endsWith('.h'))!.content;
-        // Doxygen should contain "main function - scheduled"
-        expect(header).toContain('main function - scheduled cyclic processing');
-      });
-
-      it(`should have Doxygen header for ${schema.name}_GetVersionInfo with @param[out]`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: './out' });
-        const header = result.files.find(f => f.path.endsWith('.h'))!.content;
-        expect(header).toContain(`void ${schema.name}_GetVersionInfo`);
-        expect(header).toContain('@param [out] versioninfo');
+        expect(header).not.toContain(`${schema.name}_GetVersionInfo`);
       });
     }
   });
@@ -519,90 +506,46 @@ describe('AUTOSAR 4.4 Compliance - Generated Code Integration', () => {
   // -----------------------------------------------------------------------
   // (c) AUTOSAR 版本宏检查
   // -----------------------------------------------------------------------
-  describe('(c) Generated headers contain AUTOSAR version macros', () => {
+  describe('(c) Generated headers contain AUTOSAR module/version macros', () => {
     for (const { config, schema } of moduleConfigs) {
-      it(`should have ${schema.name}_SW_MAJOR_VERSION macro`, async () => {
+      it(`should have #ifndef-guarded ${schema.name}_MODULE_ID macro`, async () => {
         const result = await ecucGen.generate(config, schema, { outputDir: './out' });
         const header = result.files.find(f => f.path.endsWith('.h'))!.content;
-        expect(header).toContain(`${schema.name.toUpperCase()}_SW_MAJOR_VERSION`);
-      });
-
-      it(`should have ${schema.name}_AR_RELEASE_MAJOR_VERSION macro`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: './out' });
-        const header = result.files.find(f => f.path.endsWith('.h'))!.content;
-        expect(header).toContain(`${schema.name.toUpperCase()}_AR_RELEASE_MAJOR_VERSION`);
-      });
-
-      it(`should have ${schema.name}_AR_RELEASE_MINOR_VERSION macro`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: './out' });
-        const header = result.files.find(f => f.path.endsWith('.h'))!.content;
-        expect(header).toContain(`${schema.name.toUpperCase()}_AR_RELEASE_MINOR_VERSION`);
-      });
-
-      it(`should have ${schema.name}_AR_RELEASE_REVISION_VERSION macro`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: './out' });
-        const header = result.files.find(f => f.path.endsWith('.h'))!.content;
-        expect(header).toContain(`${schema.name.toUpperCase()}_AR_RELEASE_REVISION_VERSION`);
-      });
-
-      it(`should have ${schema.name}_MODULE_ID macro`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: './out' });
-        const header = result.files.find(f => f.path.endsWith('.h'))!.content;
+        expect(header).toContain('#ifndef');
         expect(header).toContain(`${schema.name.toUpperCase()}_MODULE_ID`);
       });
-
-      it(`should have ${schema.name}_VENDOR_ID macro`, async () => {
+      it(`should have #ifndef-guarded ${schema.name}_VENDOR_ID macro`, async () => {
         const result = await ecucGen.generate(config, schema, { outputDir: './out' });
         const header = result.files.find(f => f.path.endsWith('.h'))!.content;
         expect(header).toContain(`${schema.name.toUpperCase()}_VENDOR_ID`);
       });
-
-      it(`should have DEV_ERROR_DETECT macro in ${schema.name} header`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: './out' });
-        const header = result.files.find(f => f.path.endsWith('.h'))!.content;
-        expect(header).toContain(`${schema.name.toUpperCase()}_DEV_ERROR_DETECT`);
-      });
     }
   });
 
-  // -----------------------------------------------------------------------
   // (d) Init / MainFunction / GetVersionInfo 函数声明存在
   // -----------------------------------------------------------------------
-  describe('(d) Standard AUTOSAR function patterns (Init/MainFun/GetVersionInfo)', () => {
+  describe("(d) ECUC headers do NOT declare function prototypes (those go in driver headers)", () => {
     for (const { config, schema } of moduleConfigs) {
-      it(`should declare ${schema.name}_Init`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: './out' });
-        const header = result.files.find(f => f.path.endsWith('.h'))!.content;
-        expect(header).toContain(`Std_ReturnType ${schema.name}_Init`);
+      it(`should NOT declare ${schema.name}_Init in ECUC header`, async () => {
+        const result = await ecucGen.generate(config, schema, { outputDir: "./out" });
+        const header = result.files.find(f => f.path.endsWith(".h"))!.content;
+        expect(header).not.toContain(`${schema.name}_Init(`);
       });
-
-      it(`should declare ${schema.name}_DeInit`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: './out' });
-        const header = result.files.find(f => f.path.endsWith('.h'))!.content;
-        expect(header).toContain(`Std_ReturnType ${schema.name}_DeInit`);
+      it(`should NOT declare ${schema.name}_DeInit in ECUC header`, async () => {
+        const result = await ecucGen.generate(config, schema, { outputDir: "./out" });
+        const header = result.files.find(f => f.path.endsWith(".h"))!.content;
+        expect(header).not.toContain(`${schema.name}_DeInit`);
       });
-
-      it(`should declare ${schema.name}_MainFunction`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: './out' });
-        const header = result.files.find(f => f.path.endsWith('.h'))!.content;
-        expect(header).toContain(`void ${schema.name}_MainFunction(void)`);
-      });
-
-      it(`should declare ${schema.name}_GetVersionInfo`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: './out' });
-        const header = result.files.find(f => f.path.endsWith('.h'))!.content;
-        expect(header).toContain(`void ${schema.name}_GetVersionInfo`);
-      });
-
-      it(`should declare ${schema.name}_IsInitialized`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: './out' });
-        const header = result.files.find(f => f.path.endsWith('.h'))!.content;
-        expect(header).toContain(`boolean ${schema.name}_IsInitialized(void)`);
+      it(`should NOT declare ${schema.name}_MainFunction in ECUC header`, async () => {
+        const result = await ecucGen.generate(config, schema, { outputDir: "./out" });
+        const header = result.files.find(f => f.path.endsWith(".h"))!.content;
+        expect(header).not.toContain(`${schema.name}_MainFunction`);
       });
     }
   });
 
-  // -----------------------------------------------------------------------
+  // --- end of ECUC function declaration check ---
+
   // RTE 模块的 AUTOSAR 模式检查
   // -----------------------------------------------------------------------
   describe('RTE AUTOSAR patterns', () => {

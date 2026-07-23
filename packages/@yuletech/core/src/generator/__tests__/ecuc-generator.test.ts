@@ -59,9 +59,9 @@ describe('EcucCodeGenerator', () => {
     });
     const header = result.files.find(f => f.path.endsWith('.h'));
     expect(header).toBeDefined();
-    expect(header!.content).toContain('#ifndef CAN_CFG_H');
-    expect(header!.content).toContain('#define CAN_CFG_H');
-    expect(header!.content).toContain('#endif /* CAN_CFG_H */');
+    expect(header!.content).toContain('#ifndef ECUC_CAN_CFG_H');
+    expect(header!.content).toContain('#define ECUC_CAN_CFG_H');
+    expect(header!.content).toContain('#endif /* ECUC_CAN_CFG_H */');
   });
 
   it('should include parameter macros in header', async () => {
@@ -80,7 +80,7 @@ describe('EcucCodeGenerator', () => {
     expect(header).toContain('CAN_CANDEVERRORDETECT');
   });
 
-  it('should include Init/DeInit function declarations in header', async () => {
+  it('should NOT include Init/DeInit/MainFunction declarations in ECUC header (those go in driver headers)', async () => {
     const config: ModuleConfig = {
       module: 'Can',
       version: '1.0.0',
@@ -91,11 +91,11 @@ describe('EcucCodeGenerator', () => {
       outputDir: './out',
     });
     const header = result.files.find(f => f.path.endsWith('.h'))!.content;
-    expect(header).toContain('Std_ReturnType Can_Init');
-    expect(header).toContain('Std_ReturnType Can_DeInit');
-    expect(header).toContain('void Can_GetVersionInfo');
-    expect(header).toContain('void Can_MainFunction');
-    expect(header).toContain('boolean Can_IsInitialized');
+    expect(header).not.toContain('Std_ReturnType Can_Init');
+    expect(header).not.toContain('Std_ReturnType Can_DeInit');
+    expect(header).not.toContain('void Can_GetVersionInfo');
+    expect(header).not.toContain('void Can_MainFunction');
+    expect(header).not.toContain('boolean Can_IsInitialized');
   });
 
   it('should fail on missing required parameter', async () => {
@@ -133,7 +133,7 @@ describe('EcucCodeGenerator', () => {
     });
     expect(result.files.length).toBe(4);
     const paths = result.files.map(f => f.path);
-    expect(paths).toContain('./output/Mcu_Cfg.h');
+    expect(paths).toContain('./output/Ecuc_Mcu_Cfg.h');
     expect(paths).toContain('./output/Ecuc_Mcu.c');
     expect(paths).toContain('./output/Ecuc_Mcu_PBcfg.c');
     expect(paths).toContain('./output/Ecuc_Mcu_Lcfg.c');
@@ -243,7 +243,8 @@ describe('EcucCodeGenerator - Container generation', () => {
     });
     const header = result.files.find(f => f.path.endsWith('.h'))!.content;
     expect(header).toContain('Can_CanControllerType');
-    expect(header).toContain('Can_ConfigType');
+    expect(header).toContain('Can_ConfigSetType');
+    expect(header).not.toContain('Can_ConfigType'); // ConfigType defined in driver header, not ECUC
   });
 });
 

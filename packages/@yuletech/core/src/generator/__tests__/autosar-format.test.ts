@@ -166,14 +166,14 @@ describe('autosar-format', () => {
   });
 
   describe('getModuleHeaderName', () => {
-    it('should return standard header names', () => {
-      expect(getModuleHeaderName('Can')).toBe('Can_Cfg.h');
-      expect(getModuleHeaderName('Mcu')).toBe('Mcu_Cfg.h');
-      expect(getModuleHeaderName('Port')).toBe('Port_Cfg.h');
+    it('should return ECUC standard header names with Ecuc_ prefix', () => {
+      expect(getModuleHeaderName('Can')).toBe('Ecuc_Can_Cfg.h');
+      expect(getModuleHeaderName('Mcu')).toBe('Ecuc_Mcu_Cfg.h');
+      expect(getModuleHeaderName('Port')).toBe('Ecuc_Port_Cfg.h');
     });
 
     it('should fallback to pattern for unknown modules', () => {
-      expect(getModuleHeaderName('Unknown')).toBe('Unknown_Cfg.h');
+      expect(getModuleHeaderName('Unknown')).toBe('Ecuc_Unknown_Cfg.h');
     });
   });
 });
