@@ -63,15 +63,7 @@
       "artifactName": "${productName}-${version}-mac-${arch}.${ext}"
     },
     "win": {
-      "target": [
-        "nsis",
-        "zip"
-      ],
-      "nsis": {
-        "oneClick": false,
-        "allowToChangeInstallationDirectory": true,
-        "unicode": true
-      }
+      "target": ["nsis", "zip"]
     },
     "linux": {
       "target": [
