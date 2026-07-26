@@ -62,10 +62,10 @@
   },
   "devDependencies": {
     "@rollup/rollup-darwin-arm64": "^4.62.2",
-    "@vitest/coverage-v8": "^1.6.0",
+    "@vitest/coverage-v8": "^4.1.10",
     "tsup": "^8.0.0",
-    "typescript": "^5.4.0",
-    "vitest": "^1.3.0"
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
   },
   "files": [
     "dist"
