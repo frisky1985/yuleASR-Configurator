@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/wdgif.json",
+  "title": "WdgIf Configuration",
+  "description": "看门狗接口",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "WdgIfConfigSet": {
+      "description": "WdgIfConfigSet 配置容器",
+      "type": "object",
+      "properties": {
+        "WdgIfVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "WdgIfVersionInfoApi 参数 - 版本信息 API 开关"
+        }
+      },
+      "additionalProperties": true
+    },
+    "WdgIfDevice": {
+      "description": "WdgIfDevice 配置容器 - 看门狗接口设备映射",
+      "type": "object",
+      "properties": {
+        "WdgIfDeviceId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "WdgIfDeviceId 参数 - 设备标识"
+        },
+        "WdgIfDeviceRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "WdgIfDeviceRef 参数 - 引用的 Wdg 设备名称"
+        },
+        "WdgIfTriggeredMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "WdgIfTriggeredMode 参数 - 触发模式"
+        }
+      },
+      "additionalProperties": true
+    },
+    "WdgIfGeneral": {
+      "description": "WdgIfGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "WdgIfDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "WdgIfDevErrorDetect 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CommonPublishedInformation",
+    "WdgIfConfigSet",
+    "WdgIfGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

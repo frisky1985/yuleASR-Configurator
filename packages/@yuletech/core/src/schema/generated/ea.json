@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/ea.json",
+  "title": "Ea Configuration",
+  "description": "EEPROM 抽象层",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EaConfigSet": {
+      "description": "EaConfigSet 配置容器",
+      "type": "object",
+      "properties": {
+        "EaMaxBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EaMaxBlockSize 参数 - 最大块大小（字节）"
+        },
+        "EaMaxNumBlocks": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EaMaxNumBlocks 参数 - 最大块数量"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EaBlockConfig": {
+      "description": "EaBlockConfig 配置容器 - EEPROM 块配置",
+      "type": "object",
+      "properties": {
+        "EaBlockNumber": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EaBlockNumber 参数 - 块编号"
+        },
+        "EaBlockSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EaBlockSize 参数 - 块大小（字节）"
+        },
+        "EaBlockId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EaBlockId 参数 - 块标识"
+        },
+        "EaImmediateData": {
+          "type": "boolean",
+          "default": false,
+          "description": "EaImmediateData 参数 - 是否立即写入"
+        },
+        "EaDeviceIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EaDeviceIndex 参数 - 设备索引"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EaGeneral": {
+      "description": "EaGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "EaDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "EaDevErrorDetect 参数"
+        },
+        "EaVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "EaVersionInfoApi 参数"
+        },
+        "EaDeInitApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "EaDeInitApi 参数"
+        },
+        "EaCancelApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "EaCancelApi 参数"
+        },
+        "EaGetStatusApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "EaGetStatusApi 参数"
+        },
+        "EaGetJobResultApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "EaGetJobResultApi 参数"
+        },
+        "EaMainFunctionPeriod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "EaMainFunctionPeriod 参数"
+        },
+        "EaPollingMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "EaPollingMode 参数 - 轮询模式"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CommonPublishedInformation",
+    "EaConfigSet",
+    "EaBlockConfig",
+    "EaGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

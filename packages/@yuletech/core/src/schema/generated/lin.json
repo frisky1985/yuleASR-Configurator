@@ -1,0 +1,186 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/lin.json",
+  "title": "Lin Configuration",
+  "description": "LIN 接口",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LinConfigSet": {
+      "description": "LinConfigSet 配置容器",
+      "type": "object",
+      "properties": {
+        "LinProtocolVersion": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "LinProtocolVersion 参数 - LIN 协议版本"
+        },
+        "LinSpeed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "LinSpeed 参数 - LIN 总线速率（kbps）"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LinChannel": {
+      "description": "LinChannel 配置容器 - LIN 通道",
+      "type": "object",
+      "properties": {
+        "LinChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "LinChannelId 参数"
+        },
+        "LinChannelSpeed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "LinChannelSpeed 参数 - 通道速率"
+        },
+        "LinChannelWakeupSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "LinChannelWakeupSupport 参数 - 唤醒支持"
+        },
+        "LinChannelHandleType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "LinChannelHandleType 参数 - 通道句柄类型"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LinSlot": {
+      "description": "LinSlot 配置容器 - LIN 时隙",
+      "type": "object",
+      "properties": {
+        "LinSlotId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "LinSlotId 参数"
+        },
+        "LinSlotLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "LinSlotLength 参数 - 时隙长度"
+        },
+        "LinSlotDirection": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "LinSlotDirection 参数 - 时隙方向"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LinScheduleTable": {
+      "description": "LinScheduleTable 配置容器 - LIN 调度表",
+      "type": "object",
+      "properties": {
+        "LinScheduleTableId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "LinScheduleTableId 参数"
+        },
+        "LinScheduleTableName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "LinScheduleTableName 参数 - 调度表名称"
+        },
+        "LinScheduleTablePeriod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "LinScheduleTablePeriod 参数 - 调度周期"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LinGeneral": {
+      "description": "LinGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "LinDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "LinDevErrorDetect 参数"
+        },
+        "LinVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "LinVersionInfoApi 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CommonPublishedInformation",
+    "LinConfigSet",
+    "LinChannel",
+    "LinGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

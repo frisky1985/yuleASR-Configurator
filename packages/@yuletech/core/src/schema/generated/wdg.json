@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/wdg.json",
+  "title": "Wdg Configuration",
+  "description": "看门狗驱动",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "WdgConfigSet": {
+      "description": "WdgConfigSet 配置容器",
+      "type": "object",
+      "properties": {
+        "WdgDisableAllowed": {
+          "type": "boolean",
+          "default": false,
+          "description": "WdgDisableAllowed 参数 - 是否允许禁用看门狗"
+        },
+        "WdgTriggerConditionValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "WdgTriggerConditionValue 参数 - 触发条件值（硬件相关）"
+        }
+      },
+      "additionalProperties": true
+    },
+    "WdgDevice": {
+      "description": "WdgDevice 配置容器 - 看门狗设备实例",
+      "type": "object",
+      "properties": {
+        "WdgDeviceId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "WdgDeviceId 参数"
+        },
+        "WdgTimeoutPeriod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "WdgTimeoutPeriod 参数 - 超时时间（硬件相关）"
+        },
+        "WdgTriggerConditionValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "WdgTriggerConditionValue 参数 - 触发条件值"
+        },
+        "WdgTriggeredMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "WdgTriggeredMode 参数 - 触发模式"
+        },
+        "WdgInterruptSource": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "WdgInterruptSource 参数 - 中断源"
+        }
+      },
+      "additionalProperties": true
+    },
+    "WdgGeneral": {
+      "description": "WdgGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "WdgDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "WdgDevErrorDetect 参数"
+        },
+        "WdgVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "WdgVersionInfoApi 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CommonPublishedInformation",
+    "WdgConfigSet",
+    "WdgGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}
