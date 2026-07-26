@@ -48,9 +48,7 @@
       "postcss": "^8.5.18",
       "tar": "^7.5.19",
       "vitest": "^3.2.6",
-      "@vitest/ui": "^3.2.6",
-      "builder-util-runtime": "^9.7.0",
-      "app-builder-lib": "^26.15.0"
+      "@vitest/ui": "^3.2.6"
     }
   }
 }
