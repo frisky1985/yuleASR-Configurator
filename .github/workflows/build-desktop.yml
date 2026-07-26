@@ -174,7 +174,7 @@ jobs:
         run: cd apps/yuleasr-web; npx vite build --base ./
         shell: bash
 
-      - name: Build desktop app for Windows
+      - name: Build desktop app for Windows (portable zip + NSIS)
         run: |
           cd apps/yuleasr-desktop
           cp -r ../yuleasr-web/dist .
