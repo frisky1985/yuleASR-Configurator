@@ -170,11 +170,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
+      - name: Enable Windows long paths (fix NSIS MAX_PATH)
+        if: runner.os == 'Windows'
+        run: |
+          Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1 -Force
+        shell: pwsh
+
       - name: Build web app (for embedding in desktop)
         run: cd apps/yuleasr-web; npx vite build --base ./
         shell: bash
 
-      - name: Build desktop app for Windows (MSI installer + portable zip)
+      - name: Build desktop app for Windows (NSIS installer + portable zip)
         run: |
           cd apps/yuleasr-desktop
           cp -r ../yuleasr-web/dist .
@@ -189,8 +195,8 @@ jobs:
         with:
           name: yuleasr-desktop-win
           path: |
-            apps/yuleasr-desktop/release/*.msi
-            apps/yuleasr-desktop/release/*.zip
+            apps/yuleasr-desktop/release/yuleASR\ Configurator-*.exe
+            apps/yuleasr-desktop/release/yuleASR\ Configurator-*.zip
             apps/yuleasr-desktop/release/latest.yml
           retention-days: 90
 
@@ -199,9 +205,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            apps/yuleasr-desktop/release/*.msi
-            apps/yuleasr-desktop/release/*.zip
-            apps/yuleasr-desktop/release/latest.yml
+            apps/yuleasr-desktop/release/yuleASR Configurator-*.exe
+            apps/yuleasr-desktop/release/yuleASR Configurator-*.zip
           generate_release_notes: false
           append_body: true
         env:
