@@ -29,11 +29,6 @@
     "vite": "^6.0.0",
     "wait-on": "^8.0.0"
   },
-  "pnpm": {
-    "overrides": {
-      "builder-util-runtime": "^9.7.0"
-    }
-  },
   "build": {
     "appId": "com.yuletech.yuleasr-configurator",
     "productName": "yuleASR Configurator",
@@ -69,6 +64,7 @@
     },
     "win": {
       "target": [
+        "nsis",
         "zip"
       ]
     },
