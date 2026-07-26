@@ -1,5 +1,57 @@
 # Changelog
 
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
+with the caveats described in the [Versioning Policy](#versioning-policy) below.
+
+---
+
+## [Unreleased]
+
+### Added
+
+- **Desktop auto-updater**: Integrated `electron-updater` for automatic application updates
+  on the desktop build — users receive new versions without manual re-downloads
+- **CI desktop build pipeline**: Automated build matrix for macOS (x64 + arm64),
+  Linux (x64 + arm64), and Windows (x64) via GitHub Actions
+- **11 new AUTOSAR module schemas**:
+  - `Wdg` (Watchdog Driver) — system-level watchdog configuration
+  - `Lin` (LIN Driver) — Local Interconnect Network driver parameters
+  - `Ea` (EEPROM Abstraction) — EEPROM abstraction layer schema
+  - `WdgIf` (Watchdog Interface) — watchdog driver interface abstraction
+  - `Eth` (Ethernet Driver) — TCP/IP offload and MAC/PHY configuration
+  - `Fr` (FlexRay Driver) — FlexRay communication controller setup
+  - `LinIf` (LIN Interface) — LIN protocol interface layer
+  - `EthIf` (Ethernet Interface) — Ethernet protocol interface layer
+  - `FrIf` (FlexRay Interface) — FlexRay protocol interface layer
+  - `WdgM` (Watchdog Manager) — watchdog supervision and partitioning
+  - `Xcp` (XCP on CAN/FlexRay/Ethernet) — calibration protocol server config
+- **MCAL Schema bundle** — `Pwm`, `I2c`, `Uart`, `Eep` hardware abstraction layer
+  schemas added alongside the existing AUTOSAR MCAL coverage
+- **Built-in plugin system** — first 4 internal plugins demonstrating the new
+  `@yuletech/plugin-sdk` extension model
+- **Vite `/v1` proxy**: Development proxy rule for the `/v1` API prefix,
+  enabling local frontend–backend integration without CORS workarounds
+
+### Fixed
+
+- **i18n navigation fixes**: Translation keys in sidebar and top-nav now correctly
+  resolve under all configured locales; previously hardcoded text in some menu items
+  would not update on language switch
+- **Community link external browser**: "Community" link in the footer now opens in the
+  user's default browser instead of navigating inside the Electron webview
+- **Blog page theme fix**: Blog listing and article pages now respect the active theme
+  (light/dark) — previously some elements remained locked to light mode
+
+### Changed
+
+- **Desktop version sync**: Desktop build version bumped from `0.1.0` → `0.2.3` to
+  align with the monorepo tag, ensuring `app.getVersion()` reports the correct release
+
+---
+
 ## [0.2.3] - 2026-07-17
 
 ### Fixed
@@ -77,3 +129,56 @@
 - Playwright 1.59.1, Chromium 1223 (symlink 避免网络下载)
 - Chinese locale (zh-CN) 默认测试语言
 - 265 单元测试 + 64 E2E 全部通过
+
+---
+
+## Versioning Policy
+
+This project follows [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html)
+with the following project-specific conventions:
+
+### Pre-release phase (`0.x.y`)
+
+While the major version is `0`, the software is in **active pre-release**
+development. Per the semver specification, anything may change at any time —
+the public API is not yet stable.
+
+| Component            | Meaning                                             |
+|----------------------|-----------------------------------------------------|
+| **Patch (`0.x.z`)**  | Bug fixes, minor internal refactors, documentation-only changes |
+| **Minor (`0.y.0`)**  | New features, schema additions, non-breaking enhancements, new plugins |
+| **Major (`0.x`)**    | Breaking changes to the schema format, plugin API, or core data model |
+
+**During `0.x`:**
+
+- A **patch bump** (`0.2.2` → `0.2.3`) is strictly for defects and small
+  improvements that do not add user-facing capability.
+- A **minor bump** (`0.2.3` → `0.3.0`) signals meaningful additions —
+  new AUTOSAR module schemas, new plugins, new editor features, CI pipeline
+  additions, etc. This is the expected jump for most feature work.
+- A **minor bump can also absorb multiple patch-level fixes**, so a minor
+  release may include bug fixes alongside features.
+
+### First stable release (`1.0.0`)
+
+Version `1.0.0` will be the **first commercial release** and marks the point
+at which the plugin SDK, schema format, and core configuration model are
+declared stable. After `1.0.0`:
+
+- **Patch (`1.0.z`)** — backwards-compatible bug fixes
+- **Minor (`1.y.0`)** — backwards-compatible new features and new schemas
+- **Major (`2.0.0`)** — breaking changes requiring migration
+
+### Changelog conventions
+
+- **[Unreleased]** — Changes staged for the next release. New entries are added
+  here as they are merged.
+- When cutting a release, the `[Unreleased]` section is renamed to the new
+  version number and date, and a fresh empty `[Unreleased]` heading is added.
+
+### Version alignment
+
+Desktop builds (`yuleasr-desktop`) are version-synced with the monorepo root
+tag. The Electron `app.getVersion()` API reports the same version string as
+`git describe` for the monorepo. This ensures consistency regardless of which
+build artifact a user downloads.
