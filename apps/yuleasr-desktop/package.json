@@ -70,7 +70,6 @@
       "nsis": {
         "oneClick": false,
         "allowToChangeInstallationDirectory": true,
-        "installerSidebar": null,
         "unicode": true
       }
     },
