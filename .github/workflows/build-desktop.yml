@@ -167,10 +167,6 @@ jobs:
           node-version: '20'
           cache: 'pnpm'
 
-      - name: Set short pnpm store path (Windows MAX_PATH workaround)
-        run: pnpm config set store-dir "C:\pnpm-store" --global 2>$null
-        shell: pwsh
-
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
@@ -178,7 +174,7 @@ jobs:
         run: cd apps/yuleasr-web; npx vite build --base ./
         shell: bash
 
-      - name: Build desktop app for Windows (portable zip + NSIS)
+      - name: Build desktop app for Windows (MSI installer + portable zip)
         run: |
           cd apps/yuleasr-desktop
           cp -r ../yuleasr-web/dist .
@@ -193,7 +189,7 @@ jobs:
         with:
           name: yuleasr-desktop-win
           path: |
-            apps/yuleasr-desktop/release/*.exe
+            apps/yuleasr-desktop/release/*.msi
             apps/yuleasr-desktop/release/*.zip
             apps/yuleasr-desktop/release/latest.yml
           retention-days: 90
@@ -203,7 +199,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            apps/yuleasr-desktop/release/*.exe
+            apps/yuleasr-desktop/release/*.msi
             apps/yuleasr-desktop/release/*.zip
             apps/yuleasr-desktop/release/latest.yml
           generate_release_notes: false

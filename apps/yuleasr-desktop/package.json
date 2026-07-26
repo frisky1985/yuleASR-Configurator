@@ -63,7 +63,7 @@
       "artifactName": "${productName}-${version}-mac-${arch}.${ext}"
     },
     "win": {
-      "target": ["nsis", "zip"]
+      "target": ["msi", "zip"]
     },
     "linux": {
       "target": [
