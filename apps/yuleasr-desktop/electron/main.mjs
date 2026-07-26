@@ -3,6 +3,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 import { app, BrowserWindow, Menu, dialog, ipcMain, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
 
 import { isGccAvailable, verifyFiles, saveFilesToDir, getGccVersion } from './desktop-utils.mjs';
 
@@ -10,6 +11,77 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const isDev = !app.isPackaged;
 
 let mainWindow = null;
+
+// ── Auto Updater ─────────────────────────────────────────
+
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = true;
+
+autoUpdater.on('update-available', (info) => {
+  dialog.showMessageBox(mainWindow, {
+    type: 'info',
+    title: 'Update Available',
+    message: `A new version (${info.version}) is available.`,
+    detail: `Current version: ${app.getVersion()}\nNew version: ${info.version}\n\nWould you like to download and install the update now?`,
+    buttons: ['Download & Install', 'Not Now'],
+    defaultId: 0,
+    cancelId: 1,
+  }).then(({ response }) => {
+    if (response === 0) {
+      autoUpdater.downloadUpdate();
+    }
+  });
+});
+
+autoUpdater.on('update-not-available', () => {
+  dialog.showMessageBox(mainWindow, {
+    type: 'info',
+    title: 'No Update Available',
+    message: 'You are running the latest version.',
+    detail: `yuleASR Configurator ${app.getVersion()} is up to date.`,
+  });
+});
+
+autoUpdater.on('download-progress', (progressObj) => {
+  if (mainWindow) {
+    mainWindow.webContents.send('update-download-progress', progressObj.percent);
+  }
+});
+
+autoUpdater.on('update-downloaded', () => {
+  dialog.showMessageBox(mainWindow, {
+    type: 'info',
+    title: 'Update Downloaded',
+    message: 'Update has been downloaded and will be installed on quit.',
+    detail: 'The application will restart to apply the update.',
+    buttons: ['Restart Now', 'Later'],
+    defaultId: 0,
+    cancelId: 1,
+  }).then(({ response }) => {
+    if (response === 0) {
+      autoUpdater.quitAndInstall();
+    }
+  });
+});
+
+autoUpdater.on('error', (error) => {
+  if (isDev) {
+    console.error('Auto-updater error:', error);
+  }
+});
+
+function checkForUpdates() {
+  if (isDev) {
+    dialog.showMessageBox(mainWindow, {
+      type: 'info',
+      title: 'Development Mode',
+      message: 'Auto-update checking is disabled in development mode.',
+      detail: 'Updates can only be checked when running a packaged application.',
+    });
+    return;
+  }
+  autoUpdater.checkForUpdates();
+}
 
 // ── IPC Handlers ──────────────────────────────────────────
 
@@ -121,12 +193,16 @@ function createWindow() {
       label: 'Help',
       submenu: [
         {
+          label: 'Check for Updates...',
+          click: checkForUpdates,
+        },
+        {
           label: 'About yuleASR Configurator',
           click: () => {
             dialog.showMessageBox(mainWindow, {
               type: 'info',
               title: 'About yuleASR Configurator',
-              message: 'yuleASR Configurator v0.1.0',
+              message: 'yuleASR Configurator v' + app.getVersion(),
               detail: 'AUTOSAR BSW Module Configuration Tool\nBuilt with Electron + React\n\nGCC: ' + getGccVersion(),
             });
           },
@@ -147,6 +223,14 @@ function createWindow() {
   mainWindow.on('closed', () => { mainWindow = null; });
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  createWindow();
+
+  // Check for updates on startup (only in production builds)
+  if (!isDev) {
+    autoUpdater.checkForUpdatesAndNotify();
+  }
+});
+
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
 app.on('activate', () => { if (mainWindow === null) createWindow(); });

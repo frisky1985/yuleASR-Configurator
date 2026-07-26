@@ -1,6 +1,6 @@
 {
   "name": "yuleasr-desktop",
-  "version": "0.1.0",
+  "version": "0.2.3",
   "description": "yuleASR Configurator — Desktop Application",
   "author": "yuleTech <stefan@yuletech.com>",
   "private": true,
@@ -11,10 +11,12 @@
     "build": "cd ../yuleasr-web && npx vite build --base ./ && cd ../yuleasr-desktop && cp -r ../yuleasr-web/dist . && electron-builder",
     "preview": "vite preview",
     "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
-    "electron:build": "vite build && electron-builder"
+    "electron:build": "vite build && electron-builder",
+    "publish": "electron-builder --publish always"
   },
   "dependencies": {
     "@yuletech/core": "workspace:*",
+    "electron-updater": "^6.3.0",
     "yuleasr-editor-core": "workspace:*"
   },
   "devDependencies": {
@@ -38,12 +40,27 @@
       "dist/**/*",
       "electron/**/*"
     ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "frisky1985",
+        "repo": "yuleASR-Configurator",
+        "releaseType": "release"
+      }
+    ],
     "mac": {
       "target": [
-        "dmg",
-        "zip"
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        }
       ],
-      "category": "public.app-category.developer-tools"
+      "category": "public.app-category.developer-tools",
+      "artifactName": "${productName}-${version}-mac-${arch}.${ext}"
     },
     "win": {
       "target": [
