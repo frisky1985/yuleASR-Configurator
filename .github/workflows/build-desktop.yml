@@ -167,6 +167,10 @@ jobs:
           node-version: '20'
           cache: 'pnpm'
 
+      - name: Set short pnpm store path (Windows MAX_PATH workaround)
+        run: pnpm config set store-dir "C:\pnpm-store" --global 2>$null
+        shell: pwsh
+
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
