@@ -1,0 +1,236 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/fr.json",
+  "title": "Fr Configuration",
+  "description": "FlexRay 驱动 - MCAL",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FrConfigSet": {
+      "description": "FrConfigSet 配置容器 - FlexRay 控制器配置集",
+      "type": "object",
+      "properties": {
+        "FrControllerId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrControllerId 参数 - 控制器标识"
+        },
+        "FrControllerActivation": {
+          "type": "boolean",
+          "default": false,
+          "description": "FrControllerActivation 参数 - 控制器激活"
+        },
+        "FrControllerBaseAddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrControllerBaseAddress 参数 - 基地址"
+        },
+        "FrControllerBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrControllerBaudRate 参数 - 波特率"
+        },
+        "FrControllerSyncJumpWidth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrControllerSyncJumpWidth 参数 - 同步跳转宽度"
+        },
+        "FrControllerPropSeg": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrControllerPropSeg 参数 - 传播段"
+        },
+        "FrControllerSeg1": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrControllerSeg1 参数 - 相位段1"
+        },
+        "FrControllerSeg2": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrControllerSeg2 参数 - 相位段2"
+        },
+        "FrWakeUpSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "FrWakeUpSupport 参数 - 唤醒支持"
+        },
+        "FrWakeUpSourceId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrWakeUpSourceId 参数 - 唤醒源标识"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FrChannel": {
+      "description": "FrChannel 配置容器 - FlexRay 通道",
+      "type": "object",
+      "properties": {
+        "FrChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrChannelId 参数 - 通道标识"
+        },
+        "FrChannelName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FrChannelName 参数 - 通道名称"
+        },
+        "FrChannelActivation": {
+          "type": "boolean",
+          "default": false,
+          "description": "FrChannelActivation 参数 - 通道激活"
+        },
+        "FrChannelColdstarter": {
+          "type": "boolean",
+          "default": false,
+          "description": "FrChannelColdstarter 参数 - 冷启动能力"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FrSlot": {
+      "description": "FrSlot 配置容器 - FlexRay 时隙",
+      "type": "object",
+      "properties": {
+        "FrSlotId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrSlotId 参数 - 时隙标识"
+        },
+        "FrSlotLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrSlotLength 参数 - 时隙长度"
+        },
+        "FrSlotBaseCycle": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrSlotBaseCycle 参数 - 基周期"
+        },
+        "FrSlotRepetition": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrSlotRepetition 参数 - 重复次数"
+        },
+        "FrSlotType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FrSlotType 参数 - 时隙类型"
+        },
+        "FrSlotChannelAssignment": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FrSlotChannelAssignment 参数 - 通道分配"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FrGeneral": {
+      "description": "FrGeneral 配置容器 - FlexRay 通用配置",
+      "type": "object",
+      "properties": {
+        "FrDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "FrDevErrorDetect 参数 - 开发错误检测"
+        },
+        "FrVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "FrVersionInfoApi 参数 - 版本信息 API"
+        },
+        "FrTimeoutDuration": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "FrTimeoutDuration 参数 - 超时时间"
+        },
+        "FrMaxSlotCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrMaxSlotCount 参数 - 最大时隙数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CommonPublishedInformation",
+    "FrConfigSet",
+    "FrGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

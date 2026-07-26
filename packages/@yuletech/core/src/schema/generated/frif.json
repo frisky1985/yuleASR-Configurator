@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/frif.json",
+  "title": "FrIf Configuration",
+  "description": "FlexRay 接口层",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FrIfConfigSet": {
+      "description": "FrIfConfigSet 配置容器 - FlexRay 接口配置集",
+      "type": "object",
+      "properties": {
+        "FrIfVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "FrIfVersionInfoApi 参数 - 版本信息 API"
+        },
+        "FrIfDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "FrIfDevErrorDetect 参数 - 开发错误检测"
+        },
+        "FrIfMaxRxPduCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrIfMaxRxPduCount 参数 - 最大接收 PDU 数量"
+        },
+        "FrIfMaxTxPduCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrIfMaxTxPduCount 参数 - 最大发送 PDU 数量"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FrIfController": {
+      "description": "FrIfController 配置容器 - FlexRay 接口控制器",
+      "type": "object",
+      "properties": {
+        "FrIfControllerId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrIfControllerId 参数 - 控制器标识"
+        },
+        "FrIfControllerRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FrIfControllerRef 参数 - 关联的 FlexRay 控制器引用"
+        },
+        "FrIfControllerActivation": {
+          "type": "boolean",
+          "default": false,
+          "description": "FrIfControllerActivation 参数 - 控制器激活"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FrIfRxPdu": {
+      "description": "FrIfRxPdu 配置容器 - FlexRay 接收 PDU 配置",
+      "type": "object",
+      "properties": {
+        "FrIfRxPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrIfRxPduId 参数 - 接收 PDU 标识"
+        },
+        "FrIfRxPduRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FrIfRxPduRef 参数 - 接收 PDU 引用"
+        },
+        "FrIfRxPduDataLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrIfRxPduDataLength 参数 - 数据长度"
+        },
+        "FrIfRxPduSlotId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrIfRxPduSlotId 参数 - 时隙标识"
+        },
+        "FrIfRxPduChannel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FrIfRxPduChannel 参数 - 通道分配"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FrIfTxPdu": {
+      "description": "FrIfTxPdu 配置容器 - FlexRay 发送 PDU 配置",
+      "type": "object",
+      "properties": {
+        "FrIfTxPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrIfTxPduId 参数 - 发送 PDU 标识"
+        },
+        "FrIfTxPduRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FrIfTxPduRef 参数 - 发送 PDU 引用"
+        },
+        "FrIfTxPduDataLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrIfTxPduDataLength 参数 - 数据长度"
+        },
+        "FrIfTxPduSlotId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "FrIfTxPduSlotId 参数 - 时隙标识"
+        },
+        "FrIfTxPduChannel": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FrIfTxPduChannel 参数 - 通道分配"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FrIfGeneral": {
+      "description": "FrIfGeneral 配置容器 - FlexRay 接口通用配置",
+      "type": "object",
+      "properties": {
+        "FrIfNotificationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "FrIfNotificationSupported 参数 - 通知支持"
+        },
+        "FrIfTransmitCancellationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "FrIfTransmitCancellationSupported 参数 - 发送取消支持"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CommonPublishedInformation",
+    "FrIfConfigSet",
+    "FrIfGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

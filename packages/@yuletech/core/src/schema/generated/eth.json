@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/eth.json",
+  "title": "Eth Configuration",
+  "description": "以太网驱动 - MCAL",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EthConfigSet": {
+      "description": "EthConfigSet 配置容器 - 以太网控制器配置集",
+      "type": "object",
+      "properties": {
+        "EthControllerIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthControllerIndex 参数 - 控制器索引"
+        },
+        "EthControllerWakeUpSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "EthControllerWakeUpSupport 参数 - 唤醒支持"
+        },
+        "EthControllerActivation": {
+          "type": "boolean",
+          "default": false,
+          "description": "EthControllerActivation 参数 - 控制器激活"
+        },
+        "EthControllerBaseAddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthControllerBaseAddress 参数 - 基地址"
+        },
+        "EthControllerBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthControllerBaudRate 参数 - 波特率"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EthPhyConfig": {
+      "description": "EthPhyConfig 配置容器 - 以太网 PHY 配置",
+      "type": "object",
+      "properties": {
+        "EthPhyId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthPhyId 参数 - PHY 标识"
+        },
+        "EthPhyAddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthPhyAddress 参数 - PHY 地址"
+        },
+        "EthPhyBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthPhyBaudRate 参数 - PHY 速率"
+        },
+        "EthPhyDevice": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EthPhyDevice 参数 - PHY 设备型号"
+        },
+        "EthPhyResetTime": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "EthPhyResetTime 参数 - PHY 复位时间"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EthDmaConfig": {
+      "description": "EthDmaConfig 配置容器 - 以太网 DMA 配置",
+      "type": "object",
+      "properties": {
+        "EthDmaTxDescrCnt": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthDmaTxDescrCnt 参数 - 发送描述符数量"
+        },
+        "EthDmaRxDescrCnt": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthDmaRxDescrCnt 参数 - 接收描述符数量"
+        },
+        "EthDmaBurstLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthDmaBurstLength 参数 - DMA 突发长度"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EthGeneral": {
+      "description": "EthGeneral 配置容器 - 以太网通用配置",
+      "type": "object",
+      "properties": {
+        "EthDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "EthDevErrorDetect 参数 - 开发错误检测"
+        },
+        "EthVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "EthVersionInfoApi 参数 - 版本信息 API"
+        },
+        "EthWakeUpSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "EthWakeUpSupport 参数 - 唤醒支持"
+        },
+        "EthRxInterruptEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "EthRxInterruptEnable 参数 - 接收中断使能"
+        },
+        "EthTxInterruptEnable": {
+          "type": "boolean",
+          "default": false,
+          "description": "EthTxInterruptEnable 参数 - 发送中断使能"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CommonPublishedInformation",
+    "EthConfigSet",
+    "EthGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

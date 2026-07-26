@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/linif.json",
+  "title": "LinIf Configuration",
+  "description": "LIN 接口层",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LinIfConfigSet": {
+      "description": "LinIfConfigSet 配置容器 - LIN 接口配置集",
+      "type": "object",
+      "properties": {
+        "LinIfVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "LinIfVersionInfoApi 参数 - 版本信息 API"
+        },
+        "LinIfDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "LinIfDevErrorDetect 参数 - 开发错误检测"
+        },
+        "LinIfMaxRxPduCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "LinIfMaxRxPduCount 参数 - 最大接收 PDU 数量"
+        },
+        "LinIfMaxTxPduCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "LinIfMaxTxPduCount 参数 - 最大发送 PDU 数量"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LinIfChannel": {
+      "description": "LinIfChannel 配置容器 - LIN 接口通道",
+      "type": "object",
+      "properties": {
+        "LinIfChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "LinIfChannelId 参数 - 通道标识"
+        },
+        "LinIfChannelRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "LinIfChannelRef 参数 - 关联的 LIN 通道引用"
+        },
+        "LinIfPduRxMapping": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "LinIfPduRxMapping 参数 - 接收 PDU 映射"
+        },
+        "LinIfPduTxMapping": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "LinIfPduTxMapping 参数 - 发送 PDU 映射"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LinIfGeneral": {
+      "description": "LinIfGeneral 配置容器 - LIN 接口通用配置",
+      "type": "object",
+      "properties": {
+        "LinIfNotificationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "LinIfNotificationSupported 参数 - 通知支持"
+        },
+        "LinIfTransmitCancellationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "LinIfTransmitCancellationSupported 参数 - 发送取消支持"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CommonPublishedInformation",
+    "LinIfConfigSet",
+    "LinIfGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

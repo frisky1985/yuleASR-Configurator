@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/ethif.json",
+  "title": "EthIf Configuration",
+  "description": "以太网接口层",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EthIfConfigSet": {
+      "description": "EthIfConfigSet 配置容器 - 以太网接口配置集",
+      "type": "object",
+      "properties": {
+        "EthIfVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "EthIfVersionInfoApi 参数 - 版本信息 API"
+        },
+        "EthIfDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "EthIfDevErrorDetect 参数 - 开发错误检测"
+        },
+        "EthIfMaxRxPduCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthIfMaxRxPduCount 参数 - 最大接收 PDU 数量"
+        },
+        "EthIfMaxTxPduCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthIfMaxTxPduCount 参数 - 最大发送 PDU 数量"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EthIfController": {
+      "description": "EthIfController 配置容器 - 以太网接口控制器",
+      "type": "object",
+      "properties": {
+        "EthIfControllerId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthIfControllerId 参数 - 控制器标识"
+        },
+        "EthIfControllerRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EthIfControllerRef 参数 - 关联的以太网控制器引用"
+        },
+        "EthIfControllerWakeUpSupport": {
+          "type": "boolean",
+          "default": false,
+          "description": "EthIfControllerWakeUpSupport 参数 - 唤醒支持"
+        },
+        "EthIfControllerBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthIfControllerBaudRate 参数 - 控制器波特率"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EthIfRxPdu": {
+      "description": "EthIfRxPdu 配置容器 - 以太网接收 PDU 配置",
+      "type": "object",
+      "properties": {
+        "EthIfRxPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthIfRxPduId 参数 - 接收 PDU 标识"
+        },
+        "EthIfRxPduRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EthIfRxPduRef 参数 - 接收 PDU 引用"
+        },
+        "EthIfRxPduDataLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthIfRxPduDataLength 参数 - 数据长度"
+        },
+        "EthIfRxPduHwFilter": {
+          "type": "boolean",
+          "default": false,
+          "description": "EthIfRxPduHwFilter 参数 - 硬件过滤"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EthIfTxPdu": {
+      "description": "EthIfTxPdu 配置容器 - 以太网发送 PDU 配置",
+      "type": "object",
+      "properties": {
+        "EthIfTxPduId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthIfTxPduId 参数 - 发送 PDU 标识"
+        },
+        "EthIfTxPduRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EthIfTxPduRef 参数 - 发送 PDU 引用"
+        },
+        "EthIfTxPduDataLength": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "EthIfTxPduDataLength 参数 - 数据长度"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EthIfGeneral": {
+      "description": "EthIfGeneral 配置容器 - 以太网接口通用配置",
+      "type": "object",
+      "properties": {
+        "EthIfNotificationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "EthIfNotificationSupported 参数 - 通知支持"
+        },
+        "EthIfTransmitCancellationSupported": {
+          "type": "boolean",
+          "default": false,
+          "description": "EthIfTransmitCancellationSupported 参数 - 发送取消支持"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CommonPublishedInformation",
+    "EthIfConfigSet",
+    "EthIfGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

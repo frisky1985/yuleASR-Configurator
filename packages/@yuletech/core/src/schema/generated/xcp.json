@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/xcp.json",
+  "title": "Xcp Configuration",
+  "description": "XCP 标定协议",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "XcpConfigSet": {
+      "description": "XcpConfigSet 配置容器 - XCP 配置集",
+      "type": "object",
+      "properties": {
+        "XcpVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "XcpVersionInfoApi 参数 - 版本信息 API"
+        },
+        "XcpDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "XcpDevErrorDetect 参数 - 开发错误检测"
+        },
+        "XcpMaxCto": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "XcpMaxCto 参数 - 最大命令传输对象长度"
+        },
+        "XcpMaxDto": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "XcpMaxDto 参数 - 最大数据传输对象长度"
+        },
+        "XcpProtocolLayer": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "XcpProtocolLayer 参数 - 协议层类型"
+        },
+        "XcpTransportLayer": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "XcpTransportLayer 参数 - 传输层类型"
+        }
+      },
+      "additionalProperties": true
+    },
+    "XcpCanTransportLayer": {
+      "description": "XcpCanTransportLayer 配置容器 - XCP over CAN 传输层配置",
+      "type": "object",
+      "properties": {
+        "XcpCanBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "XcpCanBaudRate 参数 - CAN 波特率"
+        },
+        "XcpCanCanId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "XcpCanCanId 参数 - CAN 标识符"
+        },
+        "XcpCanCanIdType": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "XcpCanCanIdType 参数 - CAN ID 类型"
+        },
+        "XcpCanDlc": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "XcpCanDlc 参数 - 数据长度码"
+        },
+        "XcpCanControllerRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "XcpCanControllerRef 参数 - 关联的 CAN 控制器引用"
+        }
+      },
+      "additionalProperties": true
+    },
+    "XcpEthTransportLayer": {
+      "description": "XcpEthTransportLayer 配置容器 - XCP over Ethernet 传输层配置",
+      "type": "object",
+      "properties": {
+        "XcpEthUdpPort": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "XcpEthUdpPort 参数 - UDP 端口号"
+        },
+        "XcpEthTcpPort": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "XcpEthTcpPort 参数 - TCP 端口号"
+        },
+        "XcpEthControllerRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "XcpEthControllerRef 参数 - 关联的以太网控制器引用"
+        }
+      },
+      "additionalProperties": true
+    },
+    "XcpGeneral": {
+      "description": "XcpGeneral 配置容器 - XCP 通用配置",
+      "type": "object",
+      "properties": {
+        "XcpEnableCalibration": {
+          "type": "boolean",
+          "default": false,
+          "description": "XcpEnableCalibration 参数 - 启用标定"
+        },
+        "XcpEnableDaQ": {
+          "type": "boolean",
+          "default": false,
+          "description": "XcpEnableDaQ 参数 - 启用 DAQ（数据采集）"
+        },
+        "XcpEnableStim": {
+          "type": "boolean",
+          "default": false,
+          "description": "XcpEnableStim 参数 - 启用 STIM（激励）"
+        },
+        "XcpMaxDaQList": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "XcpMaxDaQList 参数 - 最大 DAQ 列表数"
+        },
+        "XcpMaxDaQEvent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "XcpMaxDaQEvent 参数 - 最大 DAQ 事件数"
+        },
+        "XcpSeedAndKeyRequired": {
+          "type": "boolean",
+          "default": false,
+          "description": "XcpSeedAndKeyRequired 参数 - Seed&Key 校验要求"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CommonPublishedInformation",
+    "XcpConfigSet",
+    "XcpGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}

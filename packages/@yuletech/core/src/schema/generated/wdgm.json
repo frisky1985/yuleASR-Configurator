@@ -1,0 +1,244 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/wdgm.json",
+  "title": "WdgM Configuration",
+  "description": "看门狗管理器",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "WdgMConfigSet": {
+      "description": "WdgMConfigSet 配置容器 - 看门狗管理器配置集",
+      "type": "object",
+      "properties": {
+        "WdgMEnableUserTiming": {
+          "type": "boolean",
+          "default": false,
+          "description": "WdgMEnableUserTiming 参数 - 启用用户定时"
+        },
+        "WdgMVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "WdgMVersionInfoApi 参数 - 版本信息 API"
+        },
+        "WdgMDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "WdgMDevErrorDetect 参数 - 开发错误检测"
+        },
+        "WdgMMaxExpiredCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "WdgMMaxExpiredCount 参数 - 最大过期计数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "WdgMAliveSupervision": {
+      "description": "WdgMAliveSupervision 配置容器 - 活动监督",
+      "type": "object",
+      "properties": {
+        "WdgMAliveSupervisionId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "WdgMAliveSupervisionId 参数 - 活动监督标识"
+        },
+        "WdgMAliveSupervisionReference": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "WdgMAliveSupervisionReference 参数 - 引用"
+        },
+        "WdgMAliveSupervisionMinMargin": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "WdgMAliveSupervisionMinMargin 参数 - 最小余量"
+        },
+        "WdgMAliveSupervisionMaxMargin": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "WdgMAliveSupervisionMaxMargin 参数 - 最大余量"
+        },
+        "WdgMExpectedAliveIndications": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "WdgMExpectedAliveIndications 参数 - 预期活动指示次数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "WdgMDeadlineSupervision": {
+      "description": "WdgMDeadlineSupervision 配置容器 - 截止时间监督",
+      "type": "object",
+      "properties": {
+        "WdgMDeadlineSupervisionId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "WdgMDeadlineSupervisionId 参数 - 截止时间监督标识"
+        },
+        "WdgMDeadlineSupervisionReference": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "WdgMDeadlineSupervisionReference 参数 - 引用"
+        },
+        "WdgMDeadlineMinMargin": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "WdgMDeadlineMinMargin 参数 - 最小余量"
+        },
+        "WdgMDeadlineMaxMargin": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "WdgMDeadlineMaxMargin 参数 - 最大余量"
+        }
+      },
+      "additionalProperties": true
+    },
+    "WdgMLogicalSupervisionEntity": {
+      "description": "WdgMLogicalSupervisionEntity 配置容器 - 逻辑监督实体",
+      "type": "object",
+      "properties": {
+        "WdgMLogicalSupervisionEntityId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "WdgMLogicalSupervisionEntityId 参数 - 逻辑监督实体标识"
+        },
+        "WdgMLogicalSupervisionEntityRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "WdgMLogicalSupervisionEntityRef 参数 - 引用"
+        },
+        "WdgMEntityTimeout": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "WdgMEntityTimeout 参数 - 实体超时时间"
+        },
+        "WdgMEntityCheckpointRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "WdgMEntityCheckpointRef 参数 - 检查点引用"
+        }
+      },
+      "additionalProperties": true
+    },
+    "WdgMCheckpoint": {
+      "description": "WdgMCheckpoint 配置容器 - 检查点",
+      "type": "object",
+      "properties": {
+        "WdgMCheckpointId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "WdgMCheckpointId 参数 - 检查点标识"
+        },
+        "WdgMCheckpointRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "WdgMCheckpointRef 参数 - 检查点引用"
+        },
+        "WdgMCheckpointInitialValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "WdgMCheckpointInitialValue 参数 - 检查点初始值"
+        }
+      },
+      "additionalProperties": true
+    },
+    "WdgMGeneral": {
+      "description": "WdgMGeneral 配置容器 - 看门狗管理器通用配置",
+      "type": "object",
+      "properties": {
+        "WdgMMainFunctionPeriod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "WdgMMainFunctionPeriod 参数 - 主函数周期"
+        },
+        "WdgMMaxLoopCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "WdgMMaxLoopCount 参数 - 最大循环计数"
+        },
+        "WdgMImmediateReset": {
+          "type": "boolean",
+          "default": false,
+          "description": "WdgMImmediateReset 参数 - 立即复位"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "CommonPublishedInformation",
+    "WdgMConfigSet",
+    "WdgMGeneral"
+  ],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
+}
