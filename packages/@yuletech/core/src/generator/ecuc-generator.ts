@@ -647,7 +647,7 @@ export class EcucCodeGenerator implements CodeGenerator {
     content += ` * AR Version:  4.4.0\n`;
     content += ` */\n`;
 
-    content += `static const Std_VersionInfoType ${moduleName}_VersionInfo = {\n`;
+    content += `__attribute__((unused)) static const Std_VersionInfoType ${moduleName}_VersionInfo = {\n`;
     content += `    .vendorID = ${moduleName.toUpperCase()}_VENDOR_ID,\n`;
     content += `    .moduleID = ${moduleName.toUpperCase()}_MODULE_ID,\n`;
     content += `    .sw_major_version = ${version.major},\n`;
@@ -657,7 +657,7 @@ export class EcucCodeGenerator implements CodeGenerator {
 
     // 初始化状态标志
     content += `/** @brief ${moduleName} module initialization state */\n`;
-    content += `static boolean ${moduleName}_Initialized = FALSE;\n\n`;
+    content += `__attribute__((unused)) static boolean ${moduleName}_Initialized = FALSE;\n\n`;
 
     return content;
   }
