@@ -66,23 +66,23 @@ class PluginRegistryImpl {
     }
 
     // Remove owned generators
-    for (const [name, gen] of this.codeGenerators) {
+    this.codeGenerators.forEach((gen, name) => {
       if (gen.name.startsWith(`${id}:`)) {
         this.codeGenerators.delete(name);
       }
-    }
+    });
     // Remove owned validators
-    for (const [name, val] of this.validators) {
+    this.validators.forEach((val, name) => {
       if (val.name.startsWith(`${id}:`)) {
         this.validators.delete(name);
       }
-    }
+    });
     // Remove owned data exporters
-    for (const [name, exp] of this.dataExporters) {
+    this.dataExporters.forEach((exp, name) => {
       if (exp.name.startsWith(`${id}:`)) {
         this.dataExporters.delete(name);
       }
-    }
+    });
 
     this.plugins.delete(id);
     return true;

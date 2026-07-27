@@ -930,7 +930,7 @@ export function generateContainerArrayBlock(params: {
  */
 export async function tryPluginDelegation(
   moduleName: string,
-  pluginRegistryObj: { findCodeGeneratorForModule(name: string): { generate(config: Record<string, unknown>, options: Record<string, unknown>): Promise<{ files: Array<{ path: string; content: string }> }> } | undefined },
+  pluginRegistryObj: { findCodeGeneratorForModule(name: string): { name: string; generate(config: Record<string, unknown>, options: Record<string, unknown>): Promise<{ files: Array<{ path: string; content: string }> }> } | undefined },
   config: Record<string, unknown>,
   options: Record<string, unknown>,
   warnings: string[],
