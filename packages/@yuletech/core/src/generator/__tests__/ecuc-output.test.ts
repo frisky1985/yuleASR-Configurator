@@ -61,6 +61,83 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
 #endif
 `
     );
+
+    // Write yuleASR BSW driver stubs so ECUC bridge generation can compile
+    writeFileSync(
+      join(tmpDir, 'Can.h'),
+      `
+#ifndef CAN_H
+#define CAN_H
+#include "Std_Types.h"
+typedef uint16 Can_HwHandleType;
+typedef enum { CAN_CS_UNINIT=0, CAN_CS_STARTED, CAN_CS_STOPPED, CAN_CS_SLEEP } Can_ControllerStateType;
+typedef enum { CAN_HOH_TYPE_RECEIVE=0, CAN_HOH_TYPE_TRANSMIT } Can_HohTypeType;
+typedef enum { CAN_ID_TYPE_STANDARD=0, CAN_ID_TYPE_EXTENDED } Can_IdTypeType;
+typedef enum { CAN_OK=0, CAN_NOT_OK, CAN_BUSY } Can_ReturnType;
+typedef struct { Can_HwHandleType Hoh; Can_HohTypeType HohType; Can_IdTypeType IdType; uint32 FirstId; uint32 LastId; uint8 ObjectId; boolean Filtering; } Can_HardwareObjectType;
+typedef struct { uint32 BaudRate; uint32 PropSeg; uint32 PhaseSeg1; uint32 PhaseSeg2; uint32 SyncJumpWidth; uint32 Prescaler; } Can_BaudrateConfigType;
+typedef struct { uint8 ControllerId; uint32 BaseAddress; const Can_BaudrateConfigType* BaudrateConfigs; uint8 NumBaudrateConfigs; const Can_HardwareObjectType* HardwareObjects; uint8 NumHardwareObjects; uint8 RxProcessing; uint8 TxProcessing; boolean BusOffProcessing; boolean WakeupProcessing; boolean WakeupSupport; uint8 DefaultBaudrateIndex; } Can_ControllerConfigType;
+typedef struct { const Can_ControllerConfigType* Controllers; uint8 NumControllers; boolean DevErrorDetect; boolean VersionInfoApi; } Can_ConfigType;
+#define CAN_START_SEC_CONFIG_DATA_UNSPECIFIED
+#include "MemMap.h"
+extern const Can_ConfigType Can_Config;
+#define CAN_STOP_SEC_CONFIG_DATA_UNSPECIFIED
+#include "MemMap.h"
+#define CAN_MODULE_ID ((uint16)0x0050)
+#define CAN_VENDOR_ID ((uint16)0x1234)
+#define CAN_DEV_ERROR_DETECT STD_OFF
+#endif
+`
+    );
+    writeFileSync(
+      join(tmpDir, 'Mcu.h'),
+      `
+#ifndef MCU_H
+#define MCU_H
+#include "Std_Types.h"
+typedef uint32 Mcu_ClockType;
+typedef uint32 Mcu_RawResetType;
+typedef uint8 Mcu_ModeType;
+typedef enum { MCU_RAMSTATE_INVALID=0, MCU_RAMSTATE_VALID, MCU_RAMSTATE_INITIALIZED, MCU_RAMSTATE_UNINITIALIZED } Mcu_RamStateType;
+typedef struct { uint32 PllBaseAddr; uint32 Prediv; uint32 Multiplier; uint32 Postdiv1; uint32 Postdiv2; boolean Enable; } Mcu_PllConfigType;
+typedef struct { uint32 RamBaseAddr; uint32 RamSize; uint8 RamDefaultValue; } Mcu_RamSectionType;
+typedef struct { Mcu_ModeType Mode; } Mcu_ModeConfigType;
+typedef struct { uint32 PllBaseAddr; const Mcu_PllConfigType* PllConfigs; uint8 NumPllConfigs; uint8 ClockSource; uint32 ArmDiv; uint32 AxiDiv; uint32 AhbDiv; } Mcu_ClockConfigType;
+typedef struct { Mcu_ClockType ClockSetting; uint32 ClockFrequency; uint32 PllMultiplier; uint32 PllDivider; boolean PllEnabled; const Mcu_RamSectionType* RamSections; uint8 NumRamSections; const Mcu_ClockConfigType* ClockConfigs; uint8 NumClockConfigs; const Mcu_ModeConfigType* ModeConfigs; uint8 NumModes; } Mcu_ConfigType;
+#define MCU_START_SEC_CONFIG_DATA_UNSPECIFIED
+#include "MemMap.h"
+extern const Mcu_ConfigType Mcu_Config;
+#define MCU_STOP_SEC_CONFIG_DATA_UNSPECIFIED
+#include "MemMap.h"
+#define MCU_MODULE_ID ((uint16)0x0064)
+#define MCU_VENDOR_ID ((uint16)0x0055)
+#define MCU_DEV_ERROR_DETECT STD_ON
+#endif
+`
+    );
+    writeFileSync(
+      join(tmpDir, 'Port.h'),
+      `
+#ifndef PORT_HEADER_H
+#define PORT_HEADER_H
+#include "Std_Types.h"
+typedef uint16 Port_PinType;
+typedef enum { PORT_PIN_IN=0, PORT_PIN_OUT } Port_PinDirectionType;
+typedef uint8 Port_PinModeType;
+typedef enum { PORT_PIN_LEVEL_LOW=0, PORT_PIN_LEVEL_HIGH } Port_PinLevelType;
+typedef struct { Port_PinType Pin; Port_PinDirectionType Direction; Port_PinModeType Mode; boolean DirectionChangeable; boolean ModeChangeable; Port_PinLevelType InitialLevel; boolean PullUpEnable; boolean PullDownEnable; } Port_PinConfigType;
+typedef struct { uint16 NumPins; const Port_PinConfigType* PinConfigs; } Port_ConfigType;
+#define PORT_START_SEC_CONFIG_DATA_UNSPECIFIED
+#include "MemMap.h"
+extern const Port_ConfigType Port_Config;
+#define PORT_STOP_SEC_CONFIG_DATA_UNSPECIFIED
+#include "MemMap.h"
+#define PORT_MODULE_ID ((uint16)0x0074)
+#define PORT_VENDOR_ID ((uint16)0x0055)
+#define PORT_DEV_ERROR_DETECT STD_ON
+#endif
+`
+    );
   });
 
   afterAll(() => {
@@ -104,6 +181,8 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
       const content = readFileSync(file.path, 'utf-8');
       expect(content.length).toBeGreaterThan(0);
     }
+    // Can generates 4 files: .h + .c + _PBcfg.c + _Lcfg.c
+    // (bridge is inlined in Ecuc_Can.c, not as a separate file)
     expect(result.files.length).toBe(4);
   });
 
@@ -266,6 +345,83 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
 #endif
 `
     );
+
+    // Write yuleASR driver stubs for bridge compilation
+    writeFileSync(
+      join(tmpDir, 'Can.h'),
+      `
+#ifndef CAN_H
+#define CAN_H
+#include "Std_Types.h"
+typedef uint16 Can_HwHandleType;
+typedef enum { CAN_CS_UNINIT=0, CAN_CS_STARTED, CAN_CS_STOPPED, CAN_CS_SLEEP } Can_ControllerStateType;
+typedef enum { CAN_HOH_TYPE_RECEIVE=0, CAN_HOH_TYPE_TRANSMIT } Can_HohTypeType;
+typedef enum { CAN_ID_TYPE_STANDARD=0, CAN_ID_TYPE_EXTENDED } Can_IdTypeType;
+typedef enum { CAN_OK=0, CAN_NOT_OK, CAN_BUSY } Can_ReturnType;
+typedef struct { Can_HwHandleType Hoh; Can_HohTypeType HohType; Can_IdTypeType IdType; uint32 FirstId; uint32 LastId; uint8 ObjectId; boolean Filtering; } Can_HardwareObjectType;
+typedef struct { uint32 BaudRate; uint32 PropSeg; uint32 PhaseSeg1; uint32 PhaseSeg2; uint32 SyncJumpWidth; uint32 Prescaler; } Can_BaudrateConfigType;
+typedef struct { uint8 ControllerId; uint32 BaseAddress; const Can_BaudrateConfigType* BaudrateConfigs; uint8 NumBaudrateConfigs; const Can_HardwareObjectType* HardwareObjects; uint8 NumHardwareObjects; uint8 RxProcessing; uint8 TxProcessing; boolean BusOffProcessing; boolean WakeupProcessing; boolean WakeupSupport; uint8 DefaultBaudrateIndex; } Can_ControllerConfigType;
+typedef struct { const Can_ControllerConfigType* Controllers; uint8 NumControllers; boolean DevErrorDetect; boolean VersionInfoApi; } Can_ConfigType;
+#define CAN_START_SEC_CONFIG_DATA_UNSPECIFIED
+#include "MemMap.h"
+extern const Can_ConfigType Can_Config;
+#define CAN_STOP_SEC_CONFIG_DATA_UNSPECIFIED
+#include "MemMap.h"
+#define CAN_MODULE_ID ((uint16)0x0050)
+#define CAN_VENDOR_ID ((uint16)0x1234)
+#define CAN_DEV_ERROR_DETECT STD_OFF
+#endif
+`
+    );
+    writeFileSync(
+      join(tmpDir, 'Mcu.h'),
+      `
+#ifndef MCU_H
+#define MCU_H
+#include "Std_Types.h"
+typedef uint32 Mcu_ClockType;
+typedef uint32 Mcu_RawResetType;
+typedef uint8 Mcu_ModeType;
+typedef enum { MCU_RAMSTATE_INVALID=0, MCU_RAMSTATE_VALID, MCU_RAMSTATE_INITIALIZED, MCU_RAMSTATE_UNINITIALIZED } Mcu_RamStateType;
+typedef struct { uint32 PllBaseAddr; uint32 Prediv; uint32 Multiplier; uint32 Postdiv1; uint32 Postdiv2; boolean Enable; } Mcu_PllConfigType;
+typedef struct { uint32 RamBaseAddr; uint32 RamSize; uint8 RamDefaultValue; } Mcu_RamSectionType;
+typedef struct { Mcu_ModeType Mode; } Mcu_ModeConfigType;
+typedef struct { uint32 PllBaseAddr; const Mcu_PllConfigType* PllConfigs; uint8 NumPllConfigs; uint8 ClockSource; uint32 ArmDiv; uint32 AxiDiv; uint32 AhbDiv; } Mcu_ClockConfigType;
+typedef struct { Mcu_ClockType ClockSetting; uint32 ClockFrequency; uint32 PllMultiplier; uint32 PllDivider; boolean PllEnabled; const Mcu_RamSectionType* RamSections; uint8 NumRamSections; const Mcu_ClockConfigType* ClockConfigs; uint8 NumClockConfigs; const Mcu_ModeConfigType* ModeConfigs; uint8 NumModes; } Mcu_ConfigType;
+#define MCU_START_SEC_CONFIG_DATA_UNSPECIFIED
+#include "MemMap.h"
+extern const Mcu_ConfigType Mcu_Config;
+#define MCU_STOP_SEC_CONFIG_DATA_UNSPECIFIED
+#include "MemMap.h"
+#define MCU_MODULE_ID ((uint16)0x0064)
+#define MCU_VENDOR_ID ((uint16)0x0055)
+#define MCU_DEV_ERROR_DETECT STD_ON
+#endif
+`
+    );
+    writeFileSync(
+      join(tmpDir, 'Port.h'),
+      `
+#ifndef PORT_HEADER_H
+#define PORT_HEADER_H
+#include "Std_Types.h"
+typedef uint16 Port_PinType;
+typedef enum { PORT_PIN_IN=0, PORT_PIN_OUT } Port_PinDirectionType;
+typedef uint8 Port_PinModeType;
+typedef enum { PORT_PIN_LEVEL_LOW=0, PORT_PIN_LEVEL_HIGH } Port_PinLevelType;
+typedef struct { Port_PinType Pin; Port_PinDirectionType Direction; Port_PinModeType Mode; boolean DirectionChangeable; boolean ModeChangeable; Port_PinLevelType InitialLevel; boolean PullUpEnable; boolean PullDownEnable; } Port_PinConfigType;
+typedef struct { uint16 NumPins; const Port_PinConfigType* PinConfigs; } Port_ConfigType;
+#define PORT_START_SEC_CONFIG_DATA_UNSPECIFIED
+#include "MemMap.h"
+extern const Port_ConfigType Port_Config;
+#define PORT_STOP_SEC_CONFIG_DATA_UNSPECIFIED
+#include "MemMap.h"
+#define PORT_MODULE_ID ((uint16)0x0074)
+#define PORT_VENDOR_ID ((uint16)0x0055)
+#define PORT_DEV_ERROR_DETECT STD_ON
+#endif
+`
+    );
   });
 
   afterAll(() => {
@@ -279,7 +435,25 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         version: '4.4.0',
         parameters: { canBaudrate: 500000, canDevErrorDetect: false },
         containers: {
-          CanController: [{ id: 'c0', parameters: { canBaudrate: 500000, canControllerId: 0 } }],
+          CanController: [{
+            id: 'c0',
+            parameters: {
+              canBaudrate: 500000,
+              canControllerId: 0,
+              controllerId: 0,
+              baseAddress: 0x2090000,
+              rxProcessing: 0,
+              txProcessing: 0,
+              busOffProcessing: true,
+              wakeupProcessing: false,
+              wakeupSupport: false,
+              defaultBaudrateIndex: 0,
+            },
+            children: {
+              BaudrateConfig: [{ id: 'br0', parameters: { baudRate: 500000, propSeg: 0, phaseSeg1: 0, phaseSeg2: 0, syncJumpWidth: 0, prescaler: 0 } }],
+              HardwareObject: [{ id: 'hoh0', parameters: { hoh: 0, hohType: 0, idType: 0, firstId: 0, lastId: 0, objectId: 0, filtering: false } }],
+            },
+          }],
         },
       },
       schema: {
@@ -290,6 +464,27 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         parameters: [
           { name: 'canBaudrate', type: 'integer', required: true },
           { name: 'canDevErrorDetect', type: 'boolean', required: false },
+          { name: 'controllerId', type: 'integer', required: false },
+          { name: 'baseAddress', type: 'integer', required: false },
+          { name: 'rxProcessing', type: 'integer', required: false },
+          { name: 'txProcessing', type: 'integer', required: false },
+          { name: 'busOffProcessing', type: 'boolean', required: false },
+          { name: 'wakeupProcessing', type: 'boolean', required: false },
+          { name: 'wakeupSupport', type: 'boolean', required: false },
+          { name: 'defaultBaudrateIndex', type: 'integer', required: false },
+          { name: 'baudRate', type: 'integer', required: false },
+          { name: 'propSeg', type: 'integer', required: false },
+          { name: 'phaseSeg1', type: 'integer', required: false },
+          { name: 'phaseSeg2', type: 'integer', required: false },
+          { name: 'syncJumpWidth', type: 'integer', required: false },
+          { name: 'prescaler', type: 'integer', required: false },
+          { name: 'hoh', type: 'integer', required: false },
+          { name: 'hohType', type: 'integer', required: false },
+          { name: 'idType', type: 'integer', required: false },
+          { name: 'firstId', type: 'integer', required: false },
+          { name: 'lastId', type: 'integer', required: false },
+          { name: 'objectId', type: 'integer', required: false },
+          { name: 'filtering', type: 'boolean', required: false },
         ],
         containers: [
           {
@@ -298,7 +493,25 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
             multiple: true,
             minInstances: 1,
             maxInstances: 4,
-            parameters: ['canBaudrate', 'canControllerId'],
+            parameters: [
+              'canBaudrate', 'canControllerId', 'controllerId', 'baseAddress',
+              'rxProcessing', 'txProcessing', 'busOffProcessing',
+              'wakeupProcessing', 'wakeupSupport', 'defaultBaudrateIndex',
+            ],
+            children: [
+              {
+                name: 'BaudrateConfig',
+                label: 'Baudrate Config',
+                multiple: true,
+                parameters: ['baudRate', 'propSeg', 'phaseSeg1', 'phaseSeg2', 'syncJumpWidth', 'prescaler'],
+              },
+              {
+                name: 'HardwareObject',
+                label: 'Hardware Object',
+                multiple: true,
+                parameters: ['hoh', 'hohType', 'idType', 'firstId', 'lastId', 'objectId', 'filtering'],
+              },
+            ],
           },
         ],
       },
@@ -307,11 +520,16 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
       config: {
         module: 'Mcu',
         version: '4.4.0',
-        parameters: { mcuClockSetting: 16000000, mcuRamSectors: 4 },
+        parameters: { mcuClockSetting: 16000000, mcuRamSectors: 4, clockFrequency: 1000000000, pllMultiplier: 0, pllDivider: 0, pllEnabled: false, mcuDefaultMode: 0 },
         containers: {
-          McuClockSettingConfig: [
-            { id: 'clk0', parameters: { clockId: 0, clockFrequency: 16000000 } },
-          ],
+          McuClockSettingConfig: [{
+            id: 'clk0',
+            parameters: { clockId: 0, clockFrequency: 16000000, pllBaseAddr: 0, clockSource: 0, armDiv: 0, axiDiv: 0, ahbDiv: 0 },
+            children: {
+              PllConfig: [{ id: 'pll0', parameters: { pllBaseAddr: 0, prediv: 1, multiplier: 125, postdiv1: 0, postdiv2: 0, enable: true } }],
+            },
+          }],
+          McuRamSection: [{ id: 'ram0', parameters: { ramBaseAddr: 0x10000000, ramSize: 65536, ramDefaultValue: 0 } }],
         },
       },
       schema: {
@@ -322,6 +540,24 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         parameters: [
           { name: 'mcuClockSetting', type: 'integer', required: true },
           { name: 'mcuRamSectors', type: 'integer', required: false },
+          { name: 'clockFrequency', type: 'integer', required: false },
+          { name: 'pllMultiplier', type: 'integer', required: false },
+          { name: 'pllDivider', type: 'integer', required: false },
+          { name: 'pllEnabled', type: 'boolean', required: false },
+          { name: 'mcuDefaultMode', type: 'integer', required: false },
+          { name: 'pllBaseAddr', type: 'integer', required: false },
+          { name: 'clockSource', type: 'integer', required: false },
+          { name: 'armDiv', type: 'integer', required: false },
+          { name: 'axiDiv', type: 'integer', required: false },
+          { name: 'ahbDiv', type: 'integer', required: false },
+          { name: 'prediv', type: 'integer', required: false },
+          { name: 'multiplier', type: 'integer', required: false },
+          { name: 'postdiv1', type: 'integer', required: false },
+          { name: 'postdiv2', type: 'integer', required: false },
+          { name: 'enable', type: 'boolean', required: false },
+          { name: 'ramBaseAddr', type: 'integer', required: false },
+          { name: 'ramSize', type: 'integer', required: false },
+          { name: 'ramDefaultValue', type: 'integer', required: false },
         ],
         containers: [
           {
@@ -330,7 +566,23 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
             multiple: true,
             minInstances: 1,
             maxInstances: 8,
-            parameters: ['clockId', 'clockFrequency'],
+            parameters: ['clockId', 'clockFrequency', 'pllBaseAddr', 'clockSource', 'armDiv', 'axiDiv', 'ahbDiv'],
+            children: [
+              {
+                name: 'PllConfig',
+                label: 'PLL Config',
+                multiple: true,
+                parameters: ['pllBaseAddr', 'prediv', 'multiplier', 'postdiv1', 'postdiv2', 'enable'],
+              },
+            ],
+          },
+          {
+            name: 'McuRamSection',
+            label: 'RAM Section',
+            multiple: true,
+            minInstances: 0,
+            maxInstances: 16,
+            parameters: ['ramBaseAddr', 'ramSize', 'ramDefaultValue'],
           },
         ],
       },
@@ -342,8 +594,8 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         parameters: { portDevErrorDetect: true, portPinCount: 8 },
         containers: {
           PortPin: [
-            { id: 'p0', parameters: { pinId: 0, pinDirection: 1 } },
-            { id: 'p1', parameters: { pinId: 1, pinDirection: 0 } },
+            { id: 'p0', parameters: { pinId: 0, pinDirection: 1, pinMode: 0, directionChangeable: true, modeChangeable: true, initialLevel: 0, pullUpEnable: true, pullDownEnable: false } },
+            { id: 'p1', parameters: { pinId: 1, pinDirection: 0, pinMode: 0, directionChangeable: false, modeChangeable: false, initialLevel: 0, pullUpEnable: false, pullDownEnable: true } },
           ],
         },
       },
@@ -355,6 +607,14 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
         parameters: [
           { name: 'portDevErrorDetect', type: 'boolean', required: false },
           { name: 'portPinCount', type: 'integer', required: true },
+          { name: 'pinId', type: 'integer', required: false },
+          { name: 'pinDirection', type: 'integer', required: false },
+          { name: 'pinMode', type: 'integer', required: false },
+          { name: 'directionChangeable', type: 'boolean', required: false },
+          { name: 'modeChangeable', type: 'boolean', required: false },
+          { name: 'initialLevel', type: 'integer', required: false },
+          { name: 'pullUpEnable', type: 'boolean', required: false },
+          { name: 'pullDownEnable', type: 'boolean', required: false },
         ],
         containers: [
           {
@@ -363,7 +623,7 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
             multiple: true,
             minInstances: 1,
             maxInstances: 64,
-            parameters: ['pinId', 'pinDirection'],
+            parameters: ['pinId', 'pinDirection', 'pinMode', 'directionChangeable', 'modeChangeable', 'initialLevel', 'pullUpEnable', 'pullDownEnable'],
           },
         ],
       },

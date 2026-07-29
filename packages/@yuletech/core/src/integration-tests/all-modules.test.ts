@@ -75,6 +75,54 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
 `);
   writeFileSync(join(dir, 'Ecuc.h'), `#ifndef ECUC_H\n#define ECUC_H\n#include "Std_Types.h"\n#endif\n`);
   writeFileSync(join(dir, 'MemMap.h'), MEMORY_MAP_STUBS);
+
+  // yuleASR driver stubs for bridge code (#include "Can.h" etc.)
+  writeFileSync(join(dir, 'Can.h'), `
+#ifndef CAN_H
+#define CAN_H
+#include "Std_Types.h"
+typedef uint16 Can_HwHandleType;
+typedef enum { CAN_CS_UNINIT=0, CAN_CS_STARTED, CAN_CS_STOPPED, CAN_CS_SLEEP } Can_ControllerStateType;
+typedef enum { CAN_HOH_TYPE_RECEIVE=0, CAN_HOH_TYPE_TRANSMIT } Can_HohTypeType;
+typedef enum { CAN_ID_TYPE_STANDARD=0, CAN_ID_TYPE_EXTENDED } Can_IdTypeType;
+typedef enum { CAN_OK=0, CAN_NOT_OK, CAN_BUSY } Can_ReturnType;
+typedef struct { Can_HwHandleType Hoh; Can_HohTypeType HohType; Can_IdTypeType IdType; uint32 FirstId; uint32 LastId; uint8 ObjectId; boolean Filtering; } Can_HardwareObjectType;
+typedef struct { uint32 BaudRate; uint32 PropSeg; uint32 PhaseSeg1; uint32 PhaseSeg2; uint32 SyncJumpWidth; uint32 Prescaler; } Can_BaudrateConfigType;
+typedef struct { uint8 ControllerId; uint32 BaseAddress; const Can_BaudrateConfigType* BaudrateConfigs; uint8 NumBaudrateConfigs; const Can_HardwareObjectType* HardwareObjects; uint8 NumHardwareObjects; uint32 RxProcessing; uint32 TxProcessing; boolean BusOffProcessing; boolean WakeupProcessing; boolean WakeupSupport; uint8 DefaultBaudrateIndex; } Can_ControllerConfigType;
+typedef struct { const Can_ControllerConfigType* Controllers; uint8 NumControllers; boolean DevErrorDetect; boolean VersionInfoApi; } Can_ConfigType;
+extern const Can_ConfigType Can_Config;
+#endif
+`);
+  writeFileSync(join(dir, 'Mcu.h'), `
+#ifndef MCU_H
+#define MCU_H
+#include "Std_Types.h"
+typedef uint32 Mcu_ClockType;
+typedef uint32 Mcu_RawResetType;
+typedef uint8 Mcu_ModeType;
+typedef enum { MCU_RAMSTATE_INIT=0, MCU_RAMSTATE_UNINIT, MCU_RAMSTATE_SCRUBBED } Mcu_RamStateType;
+typedef enum { MCU_RESET_TYPE_UNKNOWN=0, MCU_RESET_TYPE_POWER_ON, MCU_RESET_TYPE_WATCHDOG, MCU_RESET_TYPE_SOFTWARE, MCU_RESET_TYPE_EXTERNAL } Mcu_ResetType;
+typedef struct { uint32 PllBaseAddr; uint32 Prediv; uint32 Multiplier; uint32 Postdiv1; uint32 Postdiv2; boolean Enable; } Mcu_PllConfigType;
+typedef struct { uint32 RamBaseAddr; uint32 RamSize; uint8 RamDefaultValue; } Mcu_RamSectionType;
+typedef struct { Mcu_ModeType Mode; } Mcu_ModeConfigType;
+typedef struct { uint32 PllBaseAddr; const Mcu_PllConfigType* PllConfigs; uint8 NumPllConfigs; uint32 ClockSource; uint32 ArmDiv; uint32 AxiDiv; uint32 AhbDiv; } Mcu_ClockConfigType;
+typedef struct { Mcu_ClockType ClockSetting; uint32 ClockFrequency; uint32 PllMultiplier; uint32 PllDivider; boolean PllEnabled; const Mcu_RamSectionType* RamSections; uint8 NumRamSections; const Mcu_ClockConfigType* ClockConfigs; uint8 NumClockConfigs; const Mcu_ModeConfigType* ModeConfigs; uint8 NumModes; } Mcu_ConfigType;
+extern const Mcu_ConfigType Mcu_Config;
+#endif
+`);
+  writeFileSync(join(dir, 'Port.h'), `
+#ifndef PORT_HEADER_H
+#define PORT_HEADER_H
+#include "Std_Types.h"
+typedef uint16 Port_PinType;
+typedef enum { PORT_PIN_IN=0, PORT_PIN_OUT } Port_PinDirectionType;
+typedef uint8 Port_PinModeType;
+typedef enum { PORT_PIN_LEVEL_LOW=0, PORT_PIN_LEVEL_HIGH } Port_PinLevelType;
+typedef struct { Port_PinType Pin; Port_PinDirectionType Direction; Port_PinModeType Mode; boolean DirectionChangeable; boolean ModeChangeable; Port_PinLevelType InitialLevel; boolean PullUpEnable; boolean PullDownEnable; } Port_PinConfigType;
+typedef struct { uint16 NumPins; const Port_PinConfigType* PinConfigs; } Port_ConfigType;
+extern const Port_ConfigType Port_Config;
+#endif
+`);
 }
 
 const MEMORY_MAP_STUBS = `

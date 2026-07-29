@@ -46,6 +46,8 @@ import { downloadAuditReport } from '@/services/configReportGenerator';
 import { useConfigStore } from '@/stores/configStore';
 import type { ValidationResult } from '@/types';
 import type { ConfigContainer } from '@/types/config';
+import { PipelinePushButton } from '@/components/PipelinePushButton';
+import { PipelineStatusPanel } from '@/components/PipelineStatusPanel';
 
 export function Editor() {
   const { configId } = useParams<{ configId: string }>();
@@ -56,6 +58,7 @@ export function Editor() {
   const [showDisabled, setShowDisabled] = useState(true);
   const [isValidating, setIsValidating] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [activePipelineJobId, setActivePipelineJobId] = useState<string | null>(null);
   const configTreeRef = useRef<ConfigTreeHandle>(null);
   const { toggleTheme } = useTheme();
   const [showShortcutsHelp, setShowShortcutsHelp] = useState(false);
@@ -447,6 +450,13 @@ export function Editor() {
             )}
             Validate
           </button>
+          {/* Pipeline Push Button */}
+          <PipelinePushButton
+            config={currentConfig}
+            onPipelineStart={(jobId) => setActivePipelineJobId(jobId)}
+            disabled={!currentConfig}
+            size="sm"
+          />
           {/* Save Split Button — left: save, right: dropdown arrow (always clickable) */}
           <div className="relative flex" ref={saveMenuRef}>
             <button
@@ -748,6 +758,22 @@ export function Editor() {
           </div>
         </div>
       </div>
+
+      {/* Pipeline Status Panel — shown when a pipeline run is active */}
+      {activePipelineJobId && (
+        <PipelineStatusPanel
+          jobId={activePipelineJobId}
+          autoPoll={true}
+          pollInterval={3000}
+          onComplete={(job) => {
+            // Keep showing for 10 seconds after completion
+            setTimeout(() => setActivePipelineJobId(null), 10000);
+          }}
+          onError={() => {
+            // Keep showing on error
+          }}
+        />
+      )}
 
       {/* Main Content */}
       <div className="grid grid-cols-12 gap-4 h-[calc(100vh-12rem)]">

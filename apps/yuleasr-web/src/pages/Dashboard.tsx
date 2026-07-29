@@ -30,6 +30,9 @@ import { YuleasrImportDialog } from '@/components/YuleasrImportDialog';
 import { formatDate, cn } from '@/lib/utils';
 import { useConfigStore } from '@/stores/configStore';
 import type { ModuleConfig, ConfigFile } from '@/types';
+import { PipelinePushButton } from '@/components/PipelinePushButton';
+import { PipelineStatusPanel } from '@/components/PipelineStatusPanel';
+import { listPipelineRuns } from '@/services/yuleoshPipeline';
 
 // Lazy load ModuleGraph component
 const ModuleGraph = lazy(() =>
@@ -76,6 +79,18 @@ export function Dashboard() {
   const [compareConfigAId, setCompareConfigAId] = useState<string>('');
   const [compareConfigBId, setCompareConfigBId] = useState<string>('');
 
+  // Pipeline state
+  const [activePipelineJobId, setActivePipelineJobId] = useState<string | null>(null);
+  const [recentPipelineRuns, setRecentPipelineRuns] = useState<Array<{
+    job_id: string;
+    status: string;
+    type: string;
+    progress: number;
+    current_stage: string;
+    started_at: string | null;
+  }>>([]);
+  const [loadingPipelineRuns, setLoadingPipelineRuns] = useState(false);
+
   // Stats computed from loaded config data
   const [configDetails, setConfigDetails] = useState<ConfigFile[]>([]);
 
@@ -120,6 +135,24 @@ export function Dashboard() {
     setCompareConfigBId(configBId);
     setShowCompareDialog(true);
   };
+
+  // Load recent pipeline runs from yuleOSH
+  useEffect(() => {
+    async function loadPipelineRuns() {
+      setLoadingPipelineRuns(true);
+      try {
+        const resp = await listPipelineRuns();
+        if (resp.ok) {
+          setRecentPipelineRuns(resp.runs);
+        }
+      } catch {
+        // yuleOSH server might not be running — that's ok
+      } finally {
+        setLoadingPipelineRuns(false);
+      }
+    }
+    loadPipelineRuns();
+  }, []);
 
   useEffect(() => {
     loadConfigList();
@@ -794,6 +827,111 @@ export function Dashboard() {
           </div>
         </div>
       )}
+
+      {/* Pipeline Status Panel — shown when a pipeline run is active */}
+      {activePipelineJobId && (
+        <PipelineStatusPanel
+          jobId={activePipelineJobId}
+          autoPoll={true}
+          pollInterval={3000}
+          onComplete={(job) => {
+            setTimeout(() => setActivePipelineJobId(null), 10000);
+          }}
+        />
+      )}
+
+      {/* Recent Pipeline Runs */}
+      <div className="bg-app-bg-primary border border-app-border-primary rounded-xl overflow-hidden shadow-sm">
+        <div className="px-6 py-4 border-b border-app-border-primary bg-app-bg-secondary flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-primary flex items-center gap-2">
+            <svg className="w-5 h-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Recent Pipeline Runs
+          </h2>
+          <PipelinePushButton
+            config={null}
+            onPipelineStart={(jobId) => {
+              setActivePipelineJobId(jobId);
+              // Refresh the runs list
+              setTimeout(() => {
+                listPipelineRuns().then(resp => {
+                  if (resp.ok) setRecentPipelineRuns(resp.runs);
+                }).catch(() => {});
+              }, 2000);
+            }}
+            size="sm"
+          />
+        </div>
+
+        {loadingPipelineRuns ? (
+          <div className="p-8 text-center">
+            <Loader2 className="w-6 h-6 animate-spin text-purple-500 mx-auto mb-2" />
+            <p className="text-sm text-app-text-secondary">Loading recent runs...</p>
+          </div>
+        ) : recentPipelineRuns.length === 0 ? (
+          <div className="py-12 px-8 text-center">
+            <div className="w-16 h-16 bg-purple-50 rounded-2xl flex items-center justify-center mx-auto mb-4 dark:bg-purple-950/40">
+              <svg className="w-8 h-8 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-semibold text-primary mb-1">No Pipeline Runs Yet</h3>
+            <p className="text-sm text-app-text-secondary max-w-sm mx-auto mb-4">
+              Configure your BSW modules in the editor, then push to yuleOSH to start a pipeline run.
+            </p>
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors dark:text-purple-300 dark:bg-purple-950/40"
+            >
+              <Settings className="w-4 h-4" />
+              Open Editor
+            </button>
+          </div>
+        ) : (
+          <div className="divide-y divide-app-border-primary">
+            {recentPipelineRuns.map((run) => (
+              <div
+                key={run.job_id}
+                className="px-6 py-3 flex items-center justify-between hover:bg-app-bg-secondary transition-colors cursor-pointer"
+                onClick={() => setActivePipelineJobId(run.job_id)}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={cn(
+                    'w-2 h-2 rounded-full',
+                    run.status === 'passed' && 'bg-green-500',
+                    run.status === 'failed' && 'bg-red-500',
+                    run.status === 'running' && 'bg-blue-500 animate-pulse',
+                    run.status === 'queued' && 'bg-yellow-500'
+                  )} />
+                  <div>
+                    <span className="text-sm font-medium text-primary">{run.job_id}</span>
+                    <span className="text-xs text-app-text-tertiary ml-2">{run.type}</span>
+                    {run.current_stage && (
+                      <p className="text-xs text-app-text-tertiary mt-0.5">Current: {run.current_stage}</p>
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 text-xs text-app-text-tertiary">
+                  <span className="font-medium">{run.progress}%</span>
+                  {run.started_at && (
+                    <span>{new Date(run.started_at).toLocaleTimeString()}</span>
+                  )}
+                  <span className={cn(
+                    'px-2 py-0.5 rounded-full text-xs font-medium',
+                    run.status === 'passed' && 'bg-green-100 text-green-700',
+                    run.status === 'failed' && 'bg-red-100 text-red-700',
+                    run.status === 'running' && 'bg-blue-100 text-blue-700',
+                    run.status === 'queued' && 'bg-yellow-100 text-yellow-700'
+                  )}>
+                    {run.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* yuleASR Import Dialog */}
       <YuleasrImportDialog
