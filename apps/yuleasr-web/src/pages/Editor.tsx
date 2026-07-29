@@ -48,6 +48,8 @@ import type { ValidationResult } from '@/types';
 import type { ConfigContainer } from '@/types/config';
 import { PipelinePushButton } from '@/components/PipelinePushButton';
 import { PipelineStatusPanel } from '@/components/PipelineStatusPanel';
+import { triggerPipeline } from '@/services/yuleoshPipeline';
+import { useSettingsStore } from '@/stores/settingsStore';
 
 export function Editor() {
   const { configId } = useParams<{ configId: string }>();
@@ -706,6 +708,23 @@ export function Editor() {
               if (window.electronAPI) {
                 const result = await window.electronAPI.gccCheck();
                 setGccAvailable(result.available);
+              }
+              // Auto-trigger pipeline if user has enabled it
+              const { pipeline: pipelineSettings } = useSettingsStore.getState();
+              if (pipelineSettings.autoTriggerOnCodegen) {
+                try {
+                  const triggerResult = await triggerPipeline({
+                    config_json: JSON.stringify(currentConfig),
+                    project_dir: window.location.pathname,
+                    type: 'full',
+                  });
+                  if (triggerResult.ok && triggerResult.job_id) {
+                    setActivePipelineJobId(triggerResult.job_id);
+                    console.log('Pipeline auto-triggered:', triggerResult.job_id);
+                  }
+                } catch (err) {
+                  console.warn('Auto-trigger pipeline failed:', err);
+                }
               }
             }}
             className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"

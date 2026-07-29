@@ -38,6 +38,11 @@ export interface ImportExportSettings {
   includeMetadata: boolean;
 }
 
+export interface PipelineSettings {
+  autoTrigger: boolean;
+  autoTriggerOnCodegen: boolean;
+}
+
 export interface UISettings {
   language: UILanguage;
   sidebarCollapsed: boolean;
@@ -49,6 +54,7 @@ export interface SettingsState {
   editor: EditorSettings;
   validation: ValidationSettings;
   importExport: ImportExportSettings;
+  pipeline: PipelineSettings;
   ui: UISettings;
   version: string;
   lastCheckedAt: string | null;
@@ -57,6 +63,7 @@ export interface SettingsState {
   updateEditorSettings: (settings: Partial<EditorSettings>) => void;
   updateValidationSettings: (settings: Partial<ValidationSettings>) => void;
   updateImportExportSettings: (settings: Partial<ImportExportSettings>) => void;
+  updatePipelineSettings: (settings: Partial<PipelineSettings>) => void;
   updateUISettings: (settings: Partial<UISettings>) => void;
   setVersion: (version: string) => void;
   setLastCheckedAt: (date: string) => void;
@@ -83,6 +90,10 @@ const defaultSettings = {
     fileNamingRule: 'config-name' as FileNamingRule,
     customFilePattern: '{name}-{date}',
     includeMetadata: true,
+  },
+  pipeline: {
+    autoTrigger: false,
+    autoTriggerOnCodegen: true,
   },
   ui: {
     language: 'zh-CN' as UILanguage,
@@ -115,6 +126,12 @@ export const useSettingsStore = create<SettingsState>()(
         updateImportExportSettings: settings => {
           set(state => ({
             importExport: { ...state.importExport, ...settings },
+          }));
+        },
+
+        updatePipelineSettings: settings => {
+          set(state => ({
+            pipeline: { ...state.pipeline, ...settings },
           }));
         },
 

@@ -186,12 +186,14 @@ export function Settings() {
     editor,
     validation,
     importExport,
+    pipeline,
     ui,
     version,
     lastCheckedAt,
     updateEditorSettings,
     updateValidationSettings,
     updateImportExportSettings,
+    updatePipelineSettings,
     updateUISettings,
     setLastCheckedAt,
     resetAllSettings,
@@ -517,6 +519,26 @@ export function Settings() {
 
         {/* Right Column */}
         <div className="space-y-6">
+          {/* Pipeline Settings */}
+          <SettingSection
+            title="Pipeline Settings"
+            description="yuleOSH pipeline integration"
+            icon={<Code2 className="w-5 h-5 text-purple-600" />}
+          >
+            <SettingItem
+              label="Auto-trigger Pipeline on Code Generation"
+              description="Automatically trigger yuleOSH pipeline after code generation completes"
+            >
+              <Toggle
+                checked={pipeline.autoTriggerOnCodegen}
+                onChange={checked => {
+                  updatePipelineSettings({ autoTriggerOnCodegen: checked });
+                  showSaved('Pipeline settings saved');
+                }}
+              />
+            </SettingItem>
+          </SettingSection>
+
           {/* UI Settings */}
           <SettingSection
             title="Interface Settings"
