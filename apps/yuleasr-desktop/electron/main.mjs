@@ -1,4 +1,5 @@
-/* global process */
+/* eslint-env node */
+/* global console, process */
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
