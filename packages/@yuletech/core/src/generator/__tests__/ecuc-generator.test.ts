@@ -242,8 +242,9 @@ describe('EcucCodeGenerator - Container generation', () => {
       outputDir: './out',
     });
     const header = result.files.find(f => f.path.endsWith('.h'))!.content;
-    expect(header).toContain('Can_CanControllerType');
-    expect(header).toContain('Can_ConfigSetType');
+    // Can is a bridge module - uses driver types directly, no ECUC ConfigSet
+    expect(header).not.toContain('Can_CanControllerType');
+    expect(header).not.toContain('Can_ConfigSetType');
     expect(header).not.toContain('Can_ConfigType'); // ConfigType defined in driver header, not ECUC
   });
 });

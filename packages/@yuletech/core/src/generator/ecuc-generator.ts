@@ -338,9 +338,16 @@ export class EcucCodeGenerator implements CodeGenerator {
   }
 
   /**
+   * 判断是否为已知 yuleASR 桥接模块
+   */
+  private isBridgeModule(moduleName: string): boolean {
+    return ['Can', 'Mcu', 'Port'].includes(moduleName);
+  }
+
+  /**
    * 生成源文件 Ecuc_<Module>.c
    * @brief Generates the AUTOSAR 4.4 compliant ECUC configuration source file
-   *        包含 yuleASR bridge 符号 (Can_Config / Mcu_Config / Port_Config)
+   *        包含 yuleASR 驱动期望的 flat 配置符号 (Can_Config / Mcu_Config / Port_Config)
    */
   private generateSourceFile(
     config: ModuleConfig,
@@ -361,20 +368,35 @@ export class EcucCodeGenerator implements CodeGenerator {
       `${schema.label || moduleName} ECU Configuration Source`
     );
 
-    content += `\
+    // 桥接模块额外包含驱动头文件以获取 flat 类型定义
+    if (this.isBridgeModule(moduleName)) {
+      const driverHeader = `${moduleName}.h`;
+      content += `\
+/*==================[includes]==============================================*/
+#include "${headerName}"
+#include "${driverHeader}"
+
+`;
+    } else {
+      content += `\
 /*==================[includes]==============================================*/
 #include "${headerName}"
 
 `;
+    }
 
     // 生成模块信息结构
     content += this.generateModuleInfo(config, schema);
 
-    // 生成配置数据结构
-    content += this.generateConfigData(config, schema, options);
-
-    // 生成 yuleASR bridge 定义 (将 ECUC ConfigSet 填充到驱动期望的 Xxx_ConfigType)
-    content += this.generateYuleASRBridgeDef(config, schema, options);
+    // 桥接模块：直接生成 flat 配置结构（无 ConfigSet 嵌套）
+    // 非桥接模块：生成标准 AUTOSAR ConfigSet 数据结构
+    if (this.isBridgeModule(moduleName)) {
+      // 用 MemMap 段标记包裹 flat 配置数据
+      const bridgeContent = this.generateYuleASRBridgeDef(config, schema, options);
+      content += this.wrapMemMapSection(moduleName, 'CONST_UNSPECIFIED', bridgeContent);
+    } else {
+      content += this.generateConfigData(config, schema, options);
+    }
 
     // 生成常量定义
     content += this.generateConstants(config, schema, options);
@@ -679,10 +701,12 @@ ${content}
   }
 
   /**
-   * 生成 yuleASR 兼容的 flat 配置定义
-   * 桥接 ECUC ConfigSet → BSW Can_ConfigType / Mcu_ConfigType / Port_ConfigType
+   * 生成 yuleASR 兼容的 flat 配置定义（无 ConfigSet 嵌套）
+   * ECUC 生成器直接输出 yuleASR 驱动期望的 flat 类型符号
    * 只有已知的集成模块（Can/Mcu/Port）会生成
-   * 这些定义既会嵌入在 Ecuc_<Module>.c 中，也会生成独立的 Ecuc_<Module>_Bridge.c
+   *
+   * 驱动头文件 (Can.h / Mcu.h / Port.h) 定义了 ConfigType 结构体，
+   * 本方法直接实例化这些类型，跳过 AUTOSAR ConfigSet 中间层。
    */
   private generateYuleASRBridgeDef(
     config: ModuleConfig,
@@ -690,26 +714,20 @@ ${content}
     _options: GeneratorOptions
   ): string {
     const moduleName = config.module;
-    if (!['Can', 'Mcu', 'Port'].includes(moduleName)) {
+    if (!this.isBridgeModule(moduleName)) {
       return '';
     }
 
-    const headerName = `${moduleName}.h`;
-    let content = `\n/*==================[yuleASR bridge - ${moduleName}_Config]==================*/\n`;
+    let content = `\n/*==================[yuleASR flat config - ${moduleName}_Config]============*/\n`;
     content += `/**\n`;
-    content += ` * @brief yuleASR bridge: ECUC ConfigSet → ${moduleName}_ConfigType\n`;
+    content += ` * @brief yuleASR flat configuration - ${moduleName}_Config\n`;
     content += ` * @details\n`;
-    content += ` * This section defines the ${moduleName}_Config symbol expected by yuleASR's\n`;
-    content += ` * ${moduleName}.h driver header. The ECUC ConfigSet uses nested container pointers\n`;
-    content += ` * while the BSW driver expects a flat structure. This bridge fills the gap.\n`;
+    content += ` * This section directly defines the ${moduleName}_Config symbol expected by\n`;
+    content += ` * yuleASR's ${moduleName}.h driver header. The data is generated flat,\n`;
+    content += ` * without the AUTOSAR ConfigSet nesting layer.\n`;
     content += ` *\n`;
-    content += ` * The ${headerName} header must be in the include path when this file is compiled.\n`;
-    content += ` */\n`;
-    content += `#include "${headerName}"\n\n`;
-
-    content += `/* ECUC ConfigSet reference */\n`;
-    content += `/** @brief ECUC internal configuration set (used to populate the bridge) */\n`;
-    content += `extern const ${moduleName}_ConfigSetType ${moduleName}_ConfigSet;\n\n`;
+    content += ` * The ${moduleName}.h header is included at the top of this file.\n`;
+    content += ` */\n\n`;
 
     if (moduleName === 'Can') {
       content += this.generateCanBridge(config, schema, moduleName);
@@ -972,43 +990,48 @@ ${content}
       '/*==================[type definitions]======================================*/\n';
     const moduleName = config.module;
 
-    // 生成容器类型定义（支持嵌套子容器）
-    if (schema.containers) {
-      for (const container of schema.containers) {
-        content += this.generateContainerTypeDef(moduleName, container, schema, 0, []);
-      }
-    }
-
-    // 生成配置集类型 (ConfigSetType)
-    const configSetTypeName = `${moduleName}_ConfigSetType`;
-    content += `/** @brief ${moduleName} configuration set type */\n`;
-    content += `typedef struct {\n`;
-    content += `    uint16 moduleId;\n`;
-    content += `    uint8 versionInfo[3];\n`;
-    content += `    uint8 instanceCount;\n`;
-
-    // 参数成员
-    for (const param of schema.parameters) {
-      if (!config.parameters.hasOwnProperty(param.name)) continue;
-      const cType = getCType(param.type);
-      content += `    ${cType} ${param.name};\n`;
-    }
-
-    // 容器指针引用（用 const 指针替代内联数组）
-    if (schema.containers) {
-      for (const container of schema.containers) {
-        const containerType = `${moduleName}_${container.name}Type`;
-        const count = config.containers?.[container.name]?.length || 0;
-        if (count > 0) {
-          content += `    const ${containerType}* ${container.name};\n`;
+    // 生成容器类型定义（支持嵌套子容器）— 非桥接模块需要 ECUC 自有容器类型
+    // 桥接模块的容器类型由驱动头文件(Can.h/Mcu.h/Port.h)定义，ECUC 不重复定义
+    if (!this.isBridgeModule(moduleName)) {
+      if (schema.containers) {
+        for (const container of schema.containers) {
+          content += this.generateContainerTypeDef(moduleName, container, schema, 0, []);
         }
       }
     }
 
-    content += `} ${configSetTypeName};\n\n`;
+    // 生成配置集类型 (ConfigSetType) — 仅用于非桥接模块
+    // 桥接模块的配置数据直接填充驱动定义的 flat ConfigType，无需 ConfigSet 中间层
+    if (!this.isBridgeModule(moduleName)) {
+      const configSetTypeName = `${moduleName}_ConfigSetType`;
+      content += `/** @brief ${moduleName} configuration set type */\n`;
+      content += `typedef struct {\n`;
+      content += `    uint16 moduleId;\n`;
+      content += `    uint8 versionInfo[3];\n`;
+      content += `    uint8 instanceCount;\n`;
 
-    // 生成配置类型 (ConfigType) - 只包含指向 ConfigSet 的指针
-    // 跳过 ConfigType 定义 — 由手写驱动头文件(如 Can.h)定义
+      // 参数成员
+      for (const param of schema.parameters) {
+        if (!config.parameters.hasOwnProperty(param.name)) continue;
+        const cType = getCType(param.type);
+        content += `    ${cType} ${param.name};\n`;
+      }
+
+      // 容器指针引用（用 const 指针替代内联数组）
+      if (schema.containers) {
+        for (const container of schema.containers) {
+          const containerType = `${moduleName}_${container.name}Type`;
+          const count = config.containers?.[container.name]?.length || 0;
+          if (count > 0) {
+            content += `    const ${containerType}* ${container.name};\n`;
+          }
+        }
+      }
+
+      content += `} ${configSetTypeName};\n\n`;
+    }
+
+    // 配置类型 (ConfigType) 由手写驱动头文件(如 Can.h)定义
     // ECUC 生成器只负责配置数据结构，不负责驱动接口类型
 
     return content;
@@ -1032,30 +1055,30 @@ ${content}
     // 收集数据声明部分
     let dataDecl = '';
 
-    // 声明配置结构体
-    dataDecl += `/** @brief External configuration set structure */\n`;
-    dataDecl += `extern const ${moduleName}_ConfigSetType ${moduleName}_ConfigSet;\n\n`;
+    // 声明配置结构体 — 桥接模块使用 flat 输出，无需 ConfigSet 声明
+    if (!this.isBridgeModule(moduleName)) {
+      dataDecl += `/** @brief External configuration set structure */\n`;
+      dataDecl += `extern const ${moduleName}_ConfigSetType ${moduleName}_ConfigSet;\n\n`;
 
-    // 声明容器实例（递归包含子容器实例）
-    if (schema.containers) {
-      for (const container of schema.containers) {
-        const count = config.containers?.[container.name]?.length || 0;
-        if (count > 0) {
-          dataDecl += `/** @brief ${container.name} container instances */\n`;
-          dataDecl += `extern const ${moduleName}_${container.name}Type ${container.name}_Instances[${count}];\n`;
-        }
-        // 子容器实例声明
-        if (container.children && count > 0) {
-          for (const child of container.children) {
-            let childMaxCount = 0;
-            for (const inst of config.containers?.[container.name] || []) {
-              const childCount = inst.children?.[child.name]?.length || 0;
-              childMaxCount = Math.max(childMaxCount, childCount);
-            }
-            if (childMaxCount > 0) {
-              const childType = `${moduleName}_${child.name}Type`;
-              dataDecl += `/** @brief ${child.name} sub-container instances (for ${container.name}) */\n`;
-              // We don't know the total count across instances — external decl per-instance would be handled in bridge
+      // 声明容器实例（递归包含子容器实例）
+      if (schema.containers) {
+        for (const container of schema.containers) {
+          const count = config.containers?.[container.name]?.length || 0;
+          if (count > 0) {
+            dataDecl += `/** @brief ${container.name} container instances */\n`;
+            dataDecl += `extern const ${moduleName}_${container.name}Type ${container.name}_Instances[${count}];\n`;
+          }
+          // 子容器实例声明
+          if (container.children && count > 0) {
+            for (const child of container.children) {
+              let childMaxCount = 0;
+              for (const inst of config.containers?.[container.name] || []) {
+                const childCount = inst.children?.[child.name]?.length || 0;
+                childMaxCount = Math.max(childMaxCount, childCount);
+              }
+              if (childMaxCount > 0) {
+                // We don't know the total count across instances — external decl per-instance would be handled in bridge
+              }
             }
           }
         }
@@ -1392,6 +1415,11 @@ ${content}
     _options: GeneratorOptions
   ): string {
     const moduleName = config.module;
+    // 桥接模块使用 flat 配置，无需 ConfigSetType 的 post-build 配置
+    if (this.isBridgeModule(moduleName)) {
+      return '/* Post-Build configuration: using flat bridge config (no ConfigSetType) */\n\n';
+    }
+
     let content = '';
 
     // 确定哪些参数可以在 Post-Build 时修改
@@ -1424,6 +1452,11 @@ ${content}
     _options: GeneratorOptions
   ): string {
     const moduleName = config.module;
+    // 桥接模块使用 flat 配置，无需 ConfigSetType 的 link-time 配置
+    if (this.isBridgeModule(moduleName)) {
+      return '/* Link-Time configuration: using flat bridge config (no ConfigSetType) */\n\n';
+    }
+
     let content = '';
 
     content += `/* Link-Time configurable data structures */\n`;
