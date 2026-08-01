@@ -164,7 +164,7 @@
 
 | # | 事项 | 状态 | 说明 |
 |---|------|------|------|
-| P1-1 | 桌面端 CI 构建失败 (三平台) | ✅ 已修复 | 2026-08-01: 根因非 NSIS — @yuletech/ui 包 main 指向 dist/ 但 CI 干净 checkout 未构建，vite build 报 "Failed to resolve entry for package @yuletech/ui"，mac/linux/win 三平台全挂。修复: build-desktop.yml 三处 vite build 前加 `pnpm --filter @yuletech/ui build`。本地复现验证通过 (删 dist 复现 + ui build 后通过) |
+| P1-1 | 桌面端 CI 构建失败 (三平台) | ✅ 已修复 | 2026-08-01: 四层根因全部修复，三平台 CI 全绿 (commit 9e436d26)。① @yuletech/ui 包 main 指向 dist/ 但 CI 干净 checkout 未构建 → vite build 前加 `pnpm --filter @yuletech/ui build`。② macOS `--universal` 与 mac.target(x64/arm64 分开) 冲突报 "not a file" → 去 universal 按配置分构。③ Windows pnpm .pnpm 深层路径超 MAX_PATH → NSIS !include 打不开模板 → `--config.node-linker=hoisted`。④ macOS 空 CSC_LINK secret 注入空串 → electron-builder importCertificate("") 崩溃 → 仅当 secret 非空才注入 env。附加: electron 固定 39.8.10 (Windows range 报错)、Linux 需 homepage 字段 (AppImage/deb) |
 | P1-2 | IoHwAb schema 空壳 | ✅ 已修复 | 2026-08-01 补齐 IoHwAbGeneral/Channel/Signal/Dio/Adc 5 容器，含通道方向/信号类型枚举 |
 | P1-3 | Dashboard Service 层统计仍为 mock | ✅ 已修复 | 2026-08-01 新增"模块分层分布"区块：6 层 (MCAL/ECUAL/Service/RTE/OS/ASW) 模块计数 + 占比条，Service 层高亮；zh/en i18n 齐备 |
 | P1-4 | 28/54 schema 缺 CommonPublishedInformation | ✅ 已修复 | 2026-08-01 全量补齐：54/54 schema 含标准 8 字段 CPI (ArRelease×3 + ModuleId + Sw×3 + VendorId)，新增测试断言 (schema-validation 110→165) |
