@@ -40,6 +40,7 @@ import { useState, useMemo, useCallback, useEffect, forwardRef, useImperativeHan
 
 import { UpgradeDialog } from '@/components/UpgradeDialog';
 import { cn } from '@/lib/utils';
+import { useConfigStore } from '@/stores/configStore';
 import { useLicenseStore } from '@/stores/licenseStore';
 import type {
   ConfigFile,
@@ -138,6 +139,9 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
   const [searchQuery, setSearchQuery] = useState(filterText);
   const [showFilterMenu, setShowFilterMenu] = useState(false);
 
+  // Fix C2: 实例数据同步到 store（随配置持久化）。每次实例操作后调用。
+  const updateContainerInstances = useConfigStore(s => s.updateContainerInstances);
+
   // Instance data with per-instance parameter values
   interface InstanceEntry {
     name: string;
@@ -201,6 +205,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
   }, [config.modules, licenseTier, maxModules]);
 
   // Collect initial dynamic instances from module containers
+  // Fix C2: 优先从 container.instances（store 持久化数据）恢复，否则按模板生成
   function collectDynamicContainers(
     containers: ConfigContainer[],
     parentPath: string,
@@ -209,6 +214,26 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
     for (const container of containers) {
       const contPath = `${parentPath}/container:${container.id}`;
       if (container.multiple) {
+        // 已持久化的实例数据优先（用户编辑过的实例参数在此）
+        if (container.instances && container.instances.length > 0) {
+          acc[contPath] = container.instances.map(inst => ({
+            name: inst.name,
+            paramValues: inst.paramValues,
+          }));
+          // 递归收集嵌套动态容器（基于存储的实例名）
+          for (const inst of container.instances) {
+            const instPath = `${contPath}/instance:${inst.name}`;
+            const template = container.subContainers?.[0];
+            if (template) {
+              collectDynamicContainers(template.subContainers || [], instPath, acc);
+            }
+          }
+          // 继续递归静态子容器（非 multiple 分支在下方统一处理）
+          if (container.subContainers) {
+            collectDynamicContainers(container.subContainers, contPath, acc);
+          }
+          continue;
+        }
         const count = container.minInstances ?? 0;
         if (container.subContainers && container.subContainers.length > 0) {
           // Has template in subContainers[0] (existing behavior)
@@ -266,12 +291,12 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
         const entries = [...(prev[containerPath] || [])];
         let maxIdx = -1;
         for (const e of entries) {
-          const match = e.name.match(/_(\\d+)$/);
+          const match = e.name.match(/_(\d+)$/);
           if (match) maxIdx = Math.max(maxIdx, parseInt(match[1]));
         }
         let baseName = 'Instance';
         if (entries.length > 0) {
-          baseName = entries[0].name.replace(/_\\d+$/, '') || baseName;
+          baseName = entries[0].name.replace(/_\d+$/, '') || baseName;
         } else {
           for (const mod of config.modules) {
             const found = findTemplateName(
@@ -318,10 +343,12 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
           }
         }
 
+        // Fix C2: 同步到 store，保证实例数据持久化
+        updateContainerInstances(containerPath, newPrev[containerPath]);
         return newPrev;
       });
     },
-    [config]
+    [config, updateContainerInstances]
   );
 
   // Seed nested dynamic containers for a newly created instance
@@ -335,7 +362,7 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
       if (container.multiple) {
         const count = container.minInstances ?? 0;
         const baseName =
-          container.shortName || container.name.replace(/_\\d+$/, '') || container.name;
+          container.shortName || container.name.replace(/_\d+$/, '') || container.name;
         const nestedEntries: InstanceEntry[] = [];
         for (let i = 0; i < count; i++) {
           nestedEntries.push({
@@ -453,9 +480,11 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
   const removeInstance = useCallback((containerPath: string, instanceName: string) => {
     setDynamicInstances(prev => {
       const entries = (prev[containerPath] || []).filter(e => e.name !== instanceName);
+      // Fix C2: 同步到 store
+      updateContainerInstances(containerPath, entries);
       return { ...prev, [containerPath]: entries };
     });
-  }, []);
+  }, [updateContainerInstances]);
 
   // Rename an instance
   const renameInstance = useCallback((containerPath: string, oldName: string, newName: string) => {
@@ -463,9 +492,11 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
       const entries = (prev[containerPath] || []).map(e =>
         e.name === oldName ? { ...e, name: newName } : e
       );
+      // Fix C2: 同步到 store
+      updateContainerInstances(containerPath, entries);
       return { ...prev, [containerPath]: entries };
     });
-  }, []);
+  }, [updateContainerInstances]);
 
   // Copy an instance (adds a new one with auto-incremented name and copied params)
   const copyInstance = useCallback((containerPath: string, sourceName: string) => {
@@ -482,9 +513,11 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
         name: `${baseName}_${maxIdx + 1}`,
         paramValues: source ? { ...source.paramValues } : {},
       });
+      // Fix C2: 同步到 store
+      updateContainerInstances(containerPath, entries);
       return { ...prev, [containerPath]: entries };
     });
-  }, []);
+  }, [updateContainerInstances]);
 
   // Start rename (set editing state)
   const startRename = useCallback((path: string, currentName: string) => {
@@ -547,12 +580,14 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
         if (fromIdx === -1 || toIdx === -1) return prev;
         const [moved] = entries.splice(fromIdx, 1);
         entries.splice(toIdx, 0, moved);
+        // Fix C2: 同步到 store
+        updateContainerInstances(targetContainerPath, entries);
         return { ...prev, [targetContainerPath]: entries };
       });
       setDragSource(null);
       setDragOverPath(null);
     },
-    [dragSource]
+    [dragSource, updateContainerInstances]
   );
 
   // Recursively search inside module containers and parameters

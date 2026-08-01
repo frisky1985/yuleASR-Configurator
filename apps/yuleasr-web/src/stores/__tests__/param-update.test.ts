@@ -1,6 +1,11 @@
 import { describe, it, expect, vi } from 'vitest';
 
-import { matchesParamKey, parseParamPath, updateContainerParam } from '../param-update';
+import {
+  matchesParamKey,
+  parseParamPath,
+  setContainerInstances,
+  updateContainerParam,
+} from '../param-update';
 
 import type { ConfigContainer } from '@/types';
 
@@ -102,5 +107,34 @@ describe('updateContainerParam', () => {
     expect(result[0].parameters[0].value).toBe('off'); // 原值不变
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
+  });
+});
+
+describe('setContainerInstances', () => {
+  it('设置容器的实例集合（Fix C2 持久化）', () => {
+    const containers = [makeContainer({ id: 'cancontroller', multiple: true })];
+    const result = setContainerInstances(containers, 'cancontroller', [
+      { name: 'CanController_0', paramValues: { baudrate: 250000 } },
+    ]);
+    expect(result[0].instances).toHaveLength(1);
+    expect(result[0].instances?.[0].name).toBe('CanController_0');
+  });
+
+  it('递归定位嵌套容器并设置实例', () => {
+    const containers = [
+      makeContainer({
+        subContainers: [makeContainer({ id: 'nested-can', multiple: true })],
+      }),
+    ];
+    const result = setContainerInstances(containers, 'nested-can', [
+      { name: 'Nested_0', paramValues: { baudrate: 500000 } },
+    ]);
+    expect(result[0].subContainers?.[0].instances?.[0].paramValues.baudrate).toBe(500000);
+  });
+
+  it('容器不存在时原样返回（不静默新建）', () => {
+    const containers = [makeContainer({})];
+    const result = setContainerInstances(containers, 'notexist', [{ name: 'X_0', paramValues: {} }]);
+    expect(result[0].instances).toBeUndefined();
   });
 });

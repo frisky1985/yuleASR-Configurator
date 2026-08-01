@@ -14,10 +14,11 @@ import { DependencyValidator } from '@/core/DependencyValidator';
 import { allModules } from '@/data/all-modules';
 import { defaultOSConfig } from '@/data/os-config';
 import { api } from '@/services/api';
-import { parseParamPath, matchesParamKey, updateContainerParam } from '@/stores/param-update';
+import { parseParamPath, matchesParamKey, updateContainerParam, setContainerInstances } from '@/stores/param-update';
 import { useAuthStore } from '@/stores/authStore';
 import type {
   ConfigContainer,
+  ConfigContainerInstance,
   ConfigFile,
   ConfigModule,
   ValidationResult,
@@ -120,6 +121,13 @@ interface ConfigState {
     method?: ConfigModule['configMethod']
   ) => void;
   updateParameter: (path: string, value: unknown) => void;
+  /**
+   * 同步动态容器实例集合到 currentConfig（Fix C2）。
+   * ConfigTree 的实例增删改操作后调用，保证实例数据随配置持久化。
+   * @param containerPath 含 container: 段的完整路径（实例操作的目标容器）
+   * @param instances 该容器的完整实例列表
+   */
+  updateContainerInstances: (containerPath: string, instances: ConfigContainerInstance[]) => void;
   setValidationResult: (result: ValidationResult | null) => void;
   setValidationIssues: (issues: ValidationIssue[]) => void;
   validateConfig: () => ValidationResult;
@@ -391,6 +399,35 @@ export const useConfigStore = create<ConfigState>()(
             warnings: [...result.warnings, ...crossIssues.filter(i => i.severity === 'warning')],
           },
           validationIssues: [...result.errors, ...result.warnings, ...crossIssues],
+          isDirty: true,
+        });
+      },
+
+      updateContainerInstances: (containerPath, instances) => {
+        const { currentConfig } = get();
+        if (!currentConfig) return;
+
+        // 从路径提取 module: 与 container: 段（实例操作目标是容器，不含 instance:/param:）
+        const { moduleId, containerId } = parseParamPath(containerPath);
+        if (!moduleId || !containerId) {
+          console.error(`[configStore] updateContainerInstances: 路径缺少 module:/container: 段: ${containerPath}`);
+          return;
+        }
+
+        const updatedModules = currentConfig.modules.map(module => {
+          if (module.id !== moduleId) return module;
+          return {
+            ...module,
+            containers: setContainerInstances(module.containers, containerId, instances),
+          };
+        });
+
+        set({
+          currentConfig: {
+            ...currentConfig,
+            modules: updatedModules,
+            updatedAt: new Date().toISOString(),
+          },
           isDirty: true,
         });
       },

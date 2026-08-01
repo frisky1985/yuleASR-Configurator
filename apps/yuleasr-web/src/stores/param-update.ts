@@ -6,7 +6,7 @@
  * - 静态容器参数: layer:MCAL/module:adc/container:adcconfigset/param:xxx
  * - 动态实例参数: layer:MCAL/module:can/container:cancontroller/instance:CanController_0/param:xxx
  */
-import type { ConfigContainer } from '@/types';
+import type { ConfigContainer, ConfigContainerInstance } from '@/types';
 
 /** 参数 key 匹配：兼容 id（all-modules 小写短名）与 name（UI 传入） */
 export function matchesParamKey(p: { id: string; name?: string }, key: string): boolean {
@@ -82,4 +82,27 @@ export function parseParamPath(path: string): {
     instanceName: instancePart ? instancePart.replace('instance:', '') : null,
     paramKey: paramKey || null,
   };
+}
+
+/**
+ * 递归定位容器并设置其 instances 集合（Fix C2）。
+ * 若容器未找到，记录错误并原样返回（不静默失败）。
+ */
+export function setContainerInstances(
+  containers: ConfigContainer[],
+  containerId: string,
+  instances: ConfigContainerInstance[]
+): ConfigContainer[] {
+  return containers.map(container => {
+    if (container.id !== containerId) {
+      if (container.subContainers?.length) {
+        return {
+          ...container,
+          subContainers: setContainerInstances(container.subContainers, containerId, instances),
+        };
+      }
+      return container;
+    }
+    return { ...container, instances };
+  });
 }
