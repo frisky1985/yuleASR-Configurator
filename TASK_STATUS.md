@@ -155,7 +155,7 @@
 | P0-1 | **Can/Mcu 生成代码 GCC 编译失败** (2 个集成测试失败) | ✅ 已修复 | 2026-08-01: 中间 static const 变量 → 内联 compound literal (修复 initializer not compile-time constant)；补 DEV_ERROR_DETECT 标准宏别名。全量测试首次全绿 576/576 |
 | P0-2 | **macOS 桌面端无法签名发布** | 🔴 阻塞 | 需 Apple Developer 证书: GitHub Secrets `MAC_CSC_LINK` + `MAC_CSC_KEY_PASSWORD` (build-desktop.yml 已支持)；由老板提供证书 |
 | P0-3 | **本地 vite build 失败** (esbuild destructuring) | ✅ 已修复 | 2026-08-01: vite.config.ts build.target: 'esnext' — 避免 esbuild 将 i18next-browser-languagedetector/@xyflow 降级转换报 "Transforming destructuring not supported"。本地 build 3.4s 通过 |
-| P0-4 | **本地 dev server 崩溃** (Node 24) | 🟡 待处理 | Node 24 + vite optimizeDeps 预构建崩溃 (718 errors, EACCES .vite/.npm root 占用)。CI 用 Node 20 正常；本地开发建议 nvm 切 Node 20，或后续排查 optimizeDeps |
+| P0-4 | **本地 dev server 崩溃** (Node 24) | ✅ 已修复 | 2026-08-01: vite.config.ts 加 optimizeDeps.esbuildOptions.target: 'esnext' — dev 模式依赖预构建 (optimizeDeps) 默认 target 是老浏览器集，Node 24 下遇现代语法依赖崩溃 (718 destructuring 错误)；修复后 dev server 0 error，页面完整渲染。剩余无害警告: plugin-manager 动态 import 提示 + api-server 未启动的 proxy 500 |
 
 ### P1 — 应尽快处理
 

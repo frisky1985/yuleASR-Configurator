@@ -31,6 +31,14 @@ export default defineConfig({
       },
     },
   },
+  // dev 模式依赖预构建 (optimizeDeps) 走 esbuild，默认 target 是老浏览器集
+  // (chrome87/edge88/es2020...)，遇到现代语法依赖报
+  // "Transforming destructuring ... not supported yet" —— 与 build.target 同样处理
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'esnext',
+    },
+  },
   build: {
     outDir: 'dist',
     sourcemap: true,

@@ -88,6 +88,7 @@
     "moduleCount_other": "{{count}} modules",
     "percentComplete": "{{count}}% complete",
     "compareConfigs": "Compare Configurations",
+    "diffConfigs": "View Diff",
     "viewDependencyGraph": "View Dependency Graph",
     "exportToYuleasr": "Export to yuleASR",
     "loadingConfigs": "Loading configurations...",

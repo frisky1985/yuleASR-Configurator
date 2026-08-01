@@ -88,6 +88,7 @@
     "moduleCount_other": "{{count}} 个模块",
     "percentComplete": "已完成 {{count}}%",
     "compareConfigs": "比较配置",
+    "diffConfigs": "对比差异",
     "viewDependencyGraph": "查看依赖关系图",
     "exportToYuleasr": "导出到 yuleASR",
     "loadingConfigs": "正在加载配置...",
