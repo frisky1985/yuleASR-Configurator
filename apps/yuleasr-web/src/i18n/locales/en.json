@@ -42,7 +42,10 @@
     "partial": "Partial",
     "validating": "Validating...",
     "validate": "Validate",
-    "sync": "Sync"
+    "sync": "Sync",
+    "saved": "Saved",
+    "syncFailed": "Sync failed",
+    "syncPending": "Not synced"
   },
   "dashboard": {
     "title": "Configurations",

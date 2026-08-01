@@ -15,8 +15,11 @@ import {
   Share2,
   Eye,
   FileJson,
+  Cloud,
+  CloudOff,
 } from 'lucide-react';
 import { useEffect, useState, useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { CodeDiffPreview } from '@/components/CodeDiffPreview';
@@ -63,6 +66,7 @@ export function Editor() {
   const [activePipelineJobId, setActivePipelineJobId] = useState<string | null>(null);
   const configTreeRef = useRef<ConfigTreeHandle>(null);
   const { toggleTheme } = useTheme();
+  const { t } = useTranslation();
   const [showShortcutsHelp, setShowShortcutsHelp] = useState(false);
   const [showShareDialog, setShowShareDialog] = useState(false);
   const [showDiffPreview, setShowDiffPreview] = useState(false);
@@ -97,6 +101,8 @@ export function Editor() {
     validationIssues,
     isDirty,
     isLoading,
+    isCloudSynced,
+    syncError,
     loadConfig,
     setSelectedPath,
     updateParameter,
@@ -422,12 +428,41 @@ export function Editor() {
               <h1 className="text-xl font-bold text-app-text-primary">{currentConfig.name}</h1>
               {isDirty ? (
                 <span className="px-2 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
-                  Unsaved
+                  {t('common.unsaved')}
                 </span>
               ) : (
                 <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded-full">
                   <CheckCircle className="w-3 h-3" />
-                  Saved
+                  {t('common.saved')}
+                </span>
+              )}
+              {/* Fix C4: 云同步状态指示 — 失败时红色+错误详情，未同步时灰色，成功后不再误报 */}
+              {!isDirty && isCloudSynced && (
+                <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded-full">
+                  <Cloud className="w-3 h-3" />
+                  {t('common.sync')}
+                </span>
+              )}
+              {!isDirty && !isCloudSynced && (
+                <span
+                  className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full"
+                  title={syncError ?? undefined}
+                >
+                  {syncError ? (
+                    <>
+                      <AlertCircle className="w-3 h-3" />
+                      <span className="bg-red-100 text-red-800 px-1.5 py-0.5 rounded-full">
+                        {t('common.syncFailed')}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <CloudOff className="w-3 h-3" />
+                      <span className="bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-full">
+                        {t('common.syncPending')}
+                      </span>
+                    </>
+                  )}
                 </span>
               )}
               {validationIssues.length > 0 && (

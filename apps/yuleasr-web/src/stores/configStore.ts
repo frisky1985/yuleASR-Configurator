@@ -100,6 +100,8 @@ interface ConfigState {
 
   // Cloud sync status
   isCloudSynced: boolean;
+  /** 云同步失败原因（Fix C4: 保存失败必须暴露，不得假标记已同步） */
+  syncError: string | null;
 
   // 模板列表
   templates: ConfigTemplate[];
@@ -228,6 +230,7 @@ export const useConfigStore = create<ConfigState>()(
       isLoading: false,
       configList: [],
       isCloudSynced: false,
+      syncError: null,
 
       // ── Actions ──────────────────────────────────────────────
 
@@ -577,8 +580,13 @@ export const useConfigStore = create<ConfigState>()(
           if (isAuthenticated()) {
             try {
               await get().syncToCloud();
-              set({ isCloudSynced: true });
+              set({ isCloudSynced: true, syncError: null });
             } catch (err) {
+              // Fix C4: 同步失败必须置 false + 暴露错误，不得保留旧的"已同步"标记
+              set({
+                isCloudSynced: false,
+                syncError: err instanceof Error ? err.message : '云同步失败',
+              });
               console.warn('Cloud sync failed (offline or auth error), local save preserved:', err);
             }
           }
@@ -650,7 +658,7 @@ export const useConfigStore = create<ConfigState>()(
             description: currentConfig.description,
             data: currentConfig,
           });
-          set({ isCloudSynced: true });
+          set({ isCloudSynced: true, syncError: null });
         } catch (err: any) {
           // If 404, the config doesn't exist on the server yet — create it
           if (err?.status === 404) {
@@ -659,8 +667,12 @@ export const useConfigStore = create<ConfigState>()(
               description: currentConfig.description,
               data: currentConfig,
             });
+            // Fix C4: post 失败（异常已抛出）或未返回 id 都不得标记已同步
+            if (!created || !created.id) {
+              throw new Error('Server did not return a config id after create');
+            }
             // If server assigned a different ID, update local state
-            if (created && created.id && created.id !== currentConfig.id) {
+            if (created.id !== currentConfig.id) {
               const updatedConfig = { ...currentConfig, id: created.id };
               saveToLocalStorage(updatedConfig);
               set({ currentConfig: updatedConfig });
@@ -675,7 +687,7 @@ export const useConfigStore = create<ConfigState>()(
                 }
               } catch {}
             }
-            set({ isCloudSynced: true });
+            set({ isCloudSynced: true, syncError: null });
             return;
           }
           throw err;
@@ -689,7 +701,7 @@ export const useConfigStore = create<ConfigState>()(
 
         try {
           const serverList = await api.get<ConfigListItem[]>('/v1/api/configs');
-          set({ configList: serverList, isCloudSynced: true });
+          set({ configList: serverList, isCloudSynced: true, syncError: null });
 
           // Also persist in localStorage for offline fallback
           saveConfigListToLocalStorage(serverList);
@@ -709,6 +721,8 @@ export const useConfigStore = create<ConfigState>()(
           }
         } catch (err) {
           console.warn('Failed to fetch configs from API, using local cache:', err);
+          // Fix C4: 拉取失败置 false + 暴露错误
+          set({ isCloudSynced: false, syncError: '从云端拉取配置列表失败' });
           // Fall back to localStorage
           const localList = loadConfigListFromLocalStorage();
           set({ configList: localList });
@@ -740,10 +754,11 @@ export const useConfigStore = create<ConfigState>()(
 
               // Persist merged list to localStorage
               saveConfigListToLocalStorage(list);
-              set({ isCloudSynced: true });
+              set({ isCloudSynced: true, syncError: null });
             } catch {
               // API failed — fall through to localStorage
               list = loadConfigListFromLocalStorage();
+              set({ isCloudSynced: false, syncError: '从云端拉取配置列表失败' });
             }
           } else {
             list = loadConfigListFromLocalStorage();
@@ -910,9 +925,11 @@ export const useConfigStore = create<ConfigState>()(
                 saveToLocalStorage(config);
               }
 
-              set({ isCloudSynced: true });
+              set({ isCloudSynced: true, syncError: null });
             } catch (err) {
               console.warn('Failed to create config on server, local copy preserved:', err);
+              // Fix C4: 创建失败不得标记已同步
+              set({ isCloudSynced: false, syncError: '在云端创建配置失败' });
             }
           }
 
@@ -1143,9 +1160,11 @@ export const useConfigStore = create<ConfigState>()(
               description: config.description,
               data: config,
             });
-            set({ isCloudSynced: true });
+            set({ isCloudSynced: true, syncError: null });
           } catch (err) {
             console.warn('Failed to sync imported config to cloud:', err);
+            // Fix C4: 导入同步失败不得标记已同步
+            set({ isCloudSynced: false, syncError: '导入配置云同步失败' });
           }
         }
       },
@@ -1169,7 +1188,7 @@ useAuthStore.subscribe(state => {
   } else {
     // User just logged out — mark cloud sync as inactive
     useConfigStore.getState().setConfigList(loadConfigListFromLocalStorage());
-    useConfigStore.setState({ isCloudSynced: false });
+    useConfigStore.setState({ isCloudSynced: false, syncError: null });
   }
 });
 
