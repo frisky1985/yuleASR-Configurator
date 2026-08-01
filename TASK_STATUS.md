@@ -209,7 +209,8 @@ Code 共享
 
 | 问题 | 状态 | 解决方案 |
 | ---- | ---- | -------- |
-| 无   | -    | -        |
+| macOS 桌面端无法签名发布 | 🔴 阻塞 | 需 Apple Developer 证书: GitHub Secrets `MAC_CSC_LINK` + `MAC_CSC_KEY_PASSWORD`（build-desktop.yml 已支持, 签名后即可发 macOS Release）; 由老板提供证书后处理 |
+| Windows NSIS 安装包构建 | 🔴 待验证 | 已启用 Windows 长路径支持 (commit 52f59b1), CI 验证 NSIS 是否通过; 通过后 Windows 同时出 exe 安装包 + portable zip |
 
 ---
 
