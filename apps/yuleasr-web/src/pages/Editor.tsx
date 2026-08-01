@@ -312,9 +312,13 @@ export function Editor() {
   };
 
   const handleParameterChange = (paramName: string, value: unknown) => {
-    if (selectedPath) {
-      updateParameter(selectedPath, value);
-    }
+    if (!selectedPath) return;
+    // 补拼 param: 段：updateParameter 依赖 param 段定位参数（Fix C1）
+    // 若路径已含 param: 段（GlobalSearch 跳转）则不再追加
+    const path = selectedPath.includes('/param:')
+      ? selectedPath
+      : `${selectedPath}/param:${paramName}`;
+    updateParameter(path, value);
   };
 
   // Get selected module from path

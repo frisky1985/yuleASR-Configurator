@@ -54,6 +54,14 @@ export interface ConfigContainer {
   maxInstances?: number;
   index?: number; // Instance index for multiple containers
   condition?: string; // Conditional display expression
+  /** 动态容器实例（multiple=true 时使用）。Fix C2: 从 ConfigTree 本地 state 提升到 store，随 ConfigFile 序列化 */
+  instances?: ConfigContainerInstance[];
+}
+
+/** 动态容器的一个实例（multiple 容器的 index N） */
+export interface ConfigContainerInstance {
+  name: string;
+  paramValues: Record<string, unknown>;
 }
 
 // Module dependency definition

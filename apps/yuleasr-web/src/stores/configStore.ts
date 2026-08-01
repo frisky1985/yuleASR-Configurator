@@ -14,8 +14,10 @@ import { DependencyValidator } from '@/core/DependencyValidator';
 import { allModules } from '@/data/all-modules';
 import { defaultOSConfig } from '@/data/os-config';
 import { api } from '@/services/api';
+import { parseParamPath, matchesParamKey, updateContainerParam } from '@/stores/param-update';
 import { useAuthStore } from '@/stores/authStore';
 import type {
+  ConfigContainer,
   ConfigFile,
   ConfigModule,
   ValidationResult,
@@ -319,59 +321,78 @@ export const useConfigStore = create<ConfigState>()(
         const { currentConfig } = get();
         if (!currentConfig) return;
 
-        // 解析路径并更新参数
-        const pathParts = path.split('/');
-        let targetModule: ConfigModule | undefined;
-        let targetParam: any;
+        // 统一路径规范: layer:/module:/container:/instance:/param:
+        // GlobalSearch 已生成带 param: 段的路径；此处为兼容旧路径（无 param: 段）做兜底
+        const { moduleId, containerId, instanceName, paramKey } = parseParamPath(path);
 
-        // 简化版本 - 实际应该递归搜索
-        for (const part of pathParts) {
-          if (part.startsWith('module:')) {
-            const moduleId = part.replace('module:', '');
-            targetModule = currentConfig.modules.find(m => m.id === moduleId);
-          }
+        if (!moduleId || !paramKey) {
+          console.error(`[configStore] updateParameter: 路径缺少 module:/param: 段: ${path}`);
+          return;
         }
 
-        if (targetModule) {
-          const updatedModules = currentConfig.modules.map(module => {
-            if (module.id !== targetModule!.id) return module;
+        const targetModule = currentConfig.modules.find(m => m.id === moduleId);
+        if (!targetModule) {
+          console.error(`[configStore] updateParameter: 未找到模块 ${moduleId} (path: ${path})`);
+          return;
+        }
 
+        const updatedModules = currentConfig.modules.map(module => {
+          if (module.id !== moduleId) return module;
+
+          // 模块级参数：无 container: 段
+          if (!containerId) {
+            if (!module.parameters.some(p => matchesParamKey(p, paramKey))) {
+              console.error(`[configStore] 未找到模块级参数 ${paramKey} in ${module.id}`);
+              return module;
+            }
             return {
               ...module,
               parameters: module.parameters.map(p =>
-                p.id === pathParts[pathParts.length - 1] ? { ...p, value } : p
+                matchesParamKey(p, paramKey) ? { ...p, value } : p
               ),
             };
-          });
+          }
 
-          const updatedConfig = {
-            ...currentConfig,
-            modules: updatedModules,
-            updatedAt: new Date().toISOString(),
+          // 容器/实例级参数：递归容器树
+          return {
+            ...module,
+            containers: updateContainerParam(
+              module.containers,
+              containerId,
+              instanceName,
+              paramKey,
+              value
+            ),
           };
+        });
 
-          // 增量跨模块验证：只检查受影响的约束
-          const crossIssues = validateCrossModuleChanges(
-            updatedConfig,
-            targetModule.name,
-            targetParam?.name || pathParts[pathParts.length - 1]
-          );
+        const updatedConfig = {
+          ...currentConfig,
+          modules: updatedModules,
+          updatedAt: new Date().toISOString(),
+        };
 
-          // 全量运行现有验证器，但合并跨模块增量结果
-          const validator = new DependencyValidator(updatedConfig);
-          const result = validator.validate();
+        // 增量跨模块验证：只检查受影响的约束
+        const crossIssues = validateCrossModuleChanges(
+          updatedConfig,
+          targetModule.name,
+          paramKey
+        );
 
-          set({
-            currentConfig: updatedConfig,
-            validationResult: {
-              ...result,
-              errors: [...result.errors, ...crossIssues.filter(i => i.severity === 'error')],
-              warnings: [...result.warnings, ...crossIssues.filter(i => i.severity === 'warning')],
-            },
-            validationIssues: [...result.errors, ...result.warnings, ...crossIssues],
-            isDirty: true,
-          });
-        }
+        // 全量运行现有验证器，但合并跨模块增量结果
+        const validator = new DependencyValidator(updatedConfig);
+        const result = validator.validate();
+
+        set({
+          currentConfig: updatedConfig,
+          validationResult: {
+            ...result,
+            errors: [...result.errors, ...crossIssues.filter(i => i.severity === 'error')],
+            warnings: [...result.warnings, ...crossIssues.filter(i => i.severity === 'warning')],
+          },
+          validationIssues: [...result.errors, ...result.warnings, ...crossIssues],
+          isDirty: true,
+        });
       },
 
       toggleModuleEnabled: (moduleId, enabled) => {
