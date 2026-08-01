@@ -209,8 +209,8 @@ jobs:
         with:
           name: yuleasr-desktop-win
           path: |
-            apps/yuleasr-desktop/release/yuleASR\ Configurator\ Setup*.exe
-            apps/yuleasr-desktop/release/yuleASR\ Configurator-*.zip
+            apps/yuleasr-desktop/release/*.exe
+            apps/yuleasr-desktop/release/*.zip
             apps/yuleasr-desktop/release/latest.yml
           retention-days: 90
 
