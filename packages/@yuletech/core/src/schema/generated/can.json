@@ -710,11 +710,20 @@
   "x-source": "ARXML-Extracted",
   "crossReferences": [
     {
+      "sourceParam": "CanControllerBaudRate",
       "module": "CanTrcv",
       "param": "CanTrcvMaxBaudrate",
-      "relation": "greater_than",
+      "relation": "less_than",
       "severity": "warning",
       "description": "CAN 控制器波特率不应超过收发器最大波特率"
+    },
+    {
+      "sourceParam": "CanControllerFdBaudRate",
+      "module": "CanTrcv",
+      "param": "CanTrcvMaxBaudrate",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "CAN FD 数据波特率不应超过收发器最大波特率"
     }
   ]
 }

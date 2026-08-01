@@ -197,5 +197,15 @@
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "sourceParam": "EthIfControllerRef",
+      "module": "Eth",
+      "param": "EthControllerIndex",
+      "relation": "in_enum",
+      "severity": "warning",
+      "description": "EthIf 控制器引用应匹配 Eth 控制器配置"
+    }
+  ]
 }

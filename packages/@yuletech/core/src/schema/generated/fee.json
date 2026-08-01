@@ -684,5 +684,15 @@
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "sourceParam": "FeeBlockSize",
+      "module": "Fls",
+      "param": "FlsMaxReadNormalMode",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Fee 块大小不应超过 Fls 支持的最大读取大小"
+    }
+  ]
 }

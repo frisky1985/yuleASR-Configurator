@@ -89,6 +89,29 @@ export class CrossModuleValidator {
           }
         }
       }
+
+      // ── 模块级 crossReferences (P2-2): sourceParam 定位源参数 ──
+      if (schema.crossReferences && schema.crossReferences.length > 0) {
+        for (const ref of schema.crossReferences) {
+          if (!ref.sourceParam) continue; // 无 sourceParam 无法定位源参数
+          const sourceValue = config.parameters[ref.sourceParam];
+          if (sourceValue === undefined || sourceValue === null) continue;
+
+          const targetConfig = configMap.get(ref.module);
+          if (!targetConfig) continue;
+
+          const checkResult = this.checkReference(
+            ref.sourceParam,
+            sourceValue,
+            ref,
+            targetConfig,
+            schema
+          );
+          if (checkResult) {
+            errors.push(checkResult);
+          }
+        }
+      }
     }
 
     return errors;
@@ -231,12 +254,28 @@ export class CrossModuleValidator {
         }
       }
 
+      // (A2) Module-level forward: schema.crossReferences whose sourceParam is the changed param
+      if (schema.crossReferences && schema.crossReferences.length > 0 && changedConfig) {
+        for (const ref of schema.crossReferences) {
+          if (!ref.sourceParam || ref.sourceParam !== changedParam) continue;
+          const targetConfig = configMap.get(ref.module);
+          if (!targetConfig) continue;
+
+          const actualValue = changedConfig.parameters[changedParam];
+          if (actualValue === undefined || actualValue === null) continue;
+
+          const r = this.checkReference(changedParam, actualValue, ref, targetConfig, schema);
+          if (r) errors.push(r);
+        }
+      }
+
       // (B) Reverse: other params that cross-reference this changed param
       for (const otherConfig of configs) {
         if (otherConfig.module === changedModule) continue;
         const otherSchema = this.schemas.get(otherConfig.module);
         if (!otherSchema) continue;
 
+        // (B1) Parameter-level reverse
         for (const otherParam of otherSchema.parameters) {
           if (!otherParam.crossReferences) continue;
           for (const ref of otherParam.crossReferences) {
@@ -248,6 +287,23 @@ export class CrossModuleValidator {
               if (!tgt) continue;
 
               const r = this.checkReference(otherParam.name, actualValue, ref, tgt, otherSchema);
+              if (r) errors.push(r);
+            }
+          }
+        }
+
+        // (B2) Module-level reverse: other schema.crossReferences targeting this changed param
+        if (otherSchema.crossReferences && otherSchema.crossReferences.length > 0) {
+          for (const ref of otherSchema.crossReferences) {
+            if (!ref.sourceParam) continue;
+            if (ref.module === changedModule && ref.param === changedParam) {
+              const actualValue = otherConfig.parameters[ref.sourceParam];
+              if (actualValue === undefined || actualValue === null) continue;
+
+              const tgt = configMap.get(changedModule);
+              if (!tgt) continue;
+
+              const r = this.checkReference(ref.sourceParam, actualValue, ref, tgt, otherSchema);
               if (r) errors.push(r);
             }
           }

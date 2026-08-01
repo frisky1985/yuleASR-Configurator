@@ -4,6 +4,7 @@ import {
   defaultCanSchema,
   defaultGptSchema,
 } from '@yuletech/core/schema-extractor';
+import { loadModuleSchemas } from '@yuletech/core/schema/load-generated';
 import type { ModuleConfig, ModuleSchema } from '@yuletech/core/types';
 import { CrossModuleValidator } from '@yuletech/core/validators';
 import { create } from 'zustand';
@@ -54,11 +55,13 @@ function validateCrossModuleChanges(
   changedParamName: string
 ): ValidationIssue[] {
   try {
+    // P2-2: 使用 54 个 generated JSON schema (crossReferences 链路打通)
     const schemas: ModuleSchema[] = [
       defaultMcuSchema,
       defaultCanSchema,
       defaultGptSchema,
       ...schemaExtractor.getAllSchemas(),
+      ...loadModuleSchemas(),
     ];
     const validator = new CrossModuleValidator(new Map(schemas.map(s => [s.name, s])));
     const configs = toModuleConfigs(config);

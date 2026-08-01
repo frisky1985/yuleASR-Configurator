@@ -22,6 +22,10 @@
       "import": "./src/schema/generated/index.ts",
       "require": "./src/schema/generated/index.ts"
     },
+    "./schema/load-generated": {
+      "import": "./src/schema/load-generated.ts",
+      "require": "./src/schema/load-generated.ts"
+    },
     "./types": {
       "import": "./src/types/index.ts",
       "require": "./src/types/index.ts"

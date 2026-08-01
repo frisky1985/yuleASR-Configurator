@@ -849,5 +849,15 @@
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "sourceParam": "ComIPduHandleId",
+      "module": "PduR",
+      "param": "PduRDestPduHandleId",
+      "relation": "equals",
+      "severity": "warning",
+      "description": "Com 的 PDU 句柄应与 PduR 路由目标一致"
+    }
+  ]
 }

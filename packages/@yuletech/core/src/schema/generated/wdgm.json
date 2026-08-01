@@ -240,5 +240,15 @@
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "sourceParam": "WdgMExpectedAliveIndications",
+      "module": "WdgIf",
+      "param": "WdgIfDeviceId",
+      "relation": "in_range",
+      "severity": "warning",
+      "description": "WdgM 期望存活指示应与 WdgIf 设备匹配"
+    }
+  ]
 }

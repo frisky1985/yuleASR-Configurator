@@ -494,5 +494,15 @@
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "sourceParam": "DemUdsDTC",
+      "module": "Dcm",
+      "param": "DcmDsdSidTabServiceId",
+      "relation": "in_enum",
+      "severity": "warning",
+      "description": "Dem DTC 服务应与 Dcm 诊断会话服务匹配"
+    }
+  ]
 }

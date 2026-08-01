@@ -2109,5 +2109,31 @@
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "sourceParam": "NvMNvramBlockIdentifier",
+      "module": "Fee",
+      "param": "FeeBlockNumber",
+      "relation": "in_range",
+      "severity": "warning",
+      "description": "NvM 块标识应在 Fee 块号范围内"
+    },
+    {
+      "sourceParam": "NvMNvramBlockIdentifier",
+      "module": "Ea",
+      "param": "EaBlockNumber",
+      "relation": "in_range",
+      "severity": "warning",
+      "description": "NvM 块标识应在 Ea 块号范围内"
+    },
+    {
+      "sourceParam": "NvMNvBlockLength",
+      "module": "Fee",
+      "param": "FeeBlockSize",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "NvM 块长度不应超过 Fee 块大小"
+    }
+  ]
 }

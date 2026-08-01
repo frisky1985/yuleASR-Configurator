@@ -939,11 +939,12 @@
   "x-source": "ARXML-Extracted",
   "crossReferences": [
     {
+      "sourceParam": "PduRDestPduHandleId",
       "module": "CanIf",
       "param": "CanIfTxPduCanId",
       "relation": "in_enum",
       "severity": "warning",
-      "description": "PduR 路由的 PDU 应匹配 CanIf 配置"
+      "description": "PduR 路由目标 PDU 应匹配 CanIf 配置"
     }
   ]
 }

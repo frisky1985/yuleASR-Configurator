@@ -516,5 +516,15 @@
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "sourceParam": "CsmSymKeyMaxLength",
+      "module": "Crypto",
+      "param": "CryptoKeyLock",
+      "relation": "in_range",
+      "severity": "warning",
+      "description": "Csm 密钥长度应与 Crypto 密钥配置匹配"
+    }
+  ]
 }

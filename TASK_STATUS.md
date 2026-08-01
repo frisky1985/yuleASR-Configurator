@@ -175,7 +175,7 @@
 | # | 事项 | 状态 | 说明 |
 |---|------|------|------|
 | P2-1 | Phase 3 UI 组件库 | ✅ 完成 | 2026-08-01: @yuletech/ui 从空壳 → 8 组件 (Button/Input/Select/FormField/Modal/Tooltip/Tree/PropertyPanel) + cn(); CVA+tailwind-merge 风格, tsup 构建 (cjs/esm/dts), 16 测试全过; web 应用已集成 (Dashboard 新建配置按钮) |
-| P2-2 | schema 层跨模块依赖 (crossReferences) | ✅ 部分完成 | 2026-08-01 类型层 (x-multiplicity/x-config-class/crossReferences) + can/cantrcv/pdur 3 模块落地示例；全量 54 模块推广待做 |
+| P2-2 | schema 层跨模块依赖 (crossReferences) | ✅ 完成 | 2026-08-01: loader (loadModuleSchemas 54 JSON→扁平 ModuleSchema) + validator 模块级引用 (sourceParam) + 19 条 AUTOSAR 约束标注 15 模块 (参数存在性全验) + 链路打通 (schemaExtractor 54/plugin fallback/configStore)；593 测试全绿 (新增 17)。修复历史缺陷: 原 can/cantrcv/pdur 标注缺 sourceParam 且 can 关系反了 (greater_than→less_than)，从未生效 |
 | P2-3 | AUTOSAR ECUC 元模型补全 | ✅ 部分完成 | ReferenceDef/Multiplicity/ConfigurationClass 表达已落地；ChoiceContainerDef 仍缺 |
 
 ---

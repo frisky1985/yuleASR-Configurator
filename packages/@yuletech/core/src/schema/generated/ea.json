@@ -173,5 +173,15 @@
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "sourceParam": "EaBlockNumber",
+      "module": "Eep",
+      "param": "EepSize",
+      "relation": "in_range",
+      "severity": "warning",
+      "description": "Ea 块号应在 EEPROM 容量范围内"
+    }
+  ]
 }

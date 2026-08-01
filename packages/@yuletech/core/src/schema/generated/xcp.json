@@ -206,5 +206,23 @@
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "sourceParam": "XcpCanBaudRate",
+      "module": "Can",
+      "param": "CanControllerBaudRate",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "XCP CAN 波特率不应超过 CAN 控制器波特率"
+    },
+    {
+      "sourceParam": "XcpCanCanId",
+      "module": "CanIf",
+      "param": "CanIfTxPduCanId",
+      "relation": "in_enum",
+      "severity": "warning",
+      "description": "XCP CAN 标识符应匹配 CanIf 配置的 PDU CAN ID"
+    }
+  ]
 }

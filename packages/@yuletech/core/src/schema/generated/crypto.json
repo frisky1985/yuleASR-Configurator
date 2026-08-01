@@ -1012,5 +1012,15 @@
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "sourceParam": "CryptoDriverObjectId",
+      "module": "CryIf",
+      "param": "CryIfChannelId",
+      "relation": "in_enum",
+      "severity": "warning",
+      "description": "Crypto 驱动对象应与 CryIf 通道匹配"
+    }
+  ]
 }

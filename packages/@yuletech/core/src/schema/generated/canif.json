@@ -894,5 +894,15 @@
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "sourceParam": "CanIfTxPduCanId",
+      "module": "Can",
+      "param": "CanControllerBaudRate",
+      "relation": "in_range",
+      "severity": "warning",
+      "description": "CanIf 发送 PDU CAN ID 应在 CAN 控制器范围内"
+    }
+  ]
 }

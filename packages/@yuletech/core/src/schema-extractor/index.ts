@@ -298,3 +298,9 @@ export const defaultGptSchema: ModuleSchema = {
 schemaExtractor.registerSchema(defaultMcuSchema);
 schemaExtractor.registerSchema(defaultCanSchema);
 schemaExtractor.registerSchema(defaultGptSchema);
+
+// P2-2: 注册全部 54 个 generated JSON schema (crossReferences 链路打通)
+import { loadModuleSchemas } from '../schema/load-generated';
+for (const s of loadModuleSchemas()) {
+  schemaExtractor.registerSchema(s);
+}

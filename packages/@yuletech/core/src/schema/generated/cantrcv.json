@@ -335,11 +335,12 @@
   "x-source": "ARXML-Extracted",
   "crossReferences": [
     {
+      "sourceParam": "CanTrcvBaudRate",
       "module": "Can",
       "param": "CanControllerBaudRate",
-      "relation": "less_than",
+      "relation": "equals",
       "severity": "warning",
-      "description": "CAN 控制器波特率不应超过收发器最大波特率"
+      "description": "收发器波特率应与 CAN 控制器波特率一致"
     }
   ]
 }

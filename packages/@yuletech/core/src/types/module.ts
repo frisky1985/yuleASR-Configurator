@@ -98,6 +98,8 @@ export interface ModuleSchema {
   containers?: ContainerSchema[];
   /** 模块依赖 */
   dependencies?: ModuleDependency[];
+  /** 模块级跨模块引用约束 (sourceParam 定位源参数) */
+  crossReferences?: CrossModuleReference[];
   /** 模块元数据 */
   metadata?: ModuleMetadata;
   /** 创建时间 */
@@ -196,6 +198,8 @@ export interface ModuleParameter {
  * 声明当前参数与另一个模块的参数之间的数值/枚举关系
  */
 export interface CrossModuleReference {
+  /** 源参数名称 (模块级引用时必填，用于定位本模块源参数) */
+  sourceParam?: string;
   /** 目标模块名称 */
   module: string;
   /** 目标容器名称 (可选，用于容器内参数) */

@@ -143,5 +143,15 @@
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "sourceParam": "LinIfChannelRef",
+      "module": "Lin",
+      "param": "LinChannelId",
+      "relation": "in_enum",
+      "severity": "warning",
+      "description": "LinIf 通道引用应匹配 Lin 通道配置"
+    }
+  ]
 }

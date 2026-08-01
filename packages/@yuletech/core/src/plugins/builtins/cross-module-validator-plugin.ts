@@ -2,6 +2,7 @@ import type { YulePlugin, PluginContext, ValidationResult } from '@yuletech/plug
 import type { ModuleConfig, ValidationError, ModuleSchema } from '../../types';
 import { validateAll } from '../../validators/validation-pipeline';
 import { schemaCache } from '../../schema';
+import { loadModuleSchemas } from '../../schema/load-generated';
 
 const pluginId = 'yuletech-validator-cross-module';
 
@@ -43,10 +44,14 @@ const crossModuleValidatorPlugin: YulePlugin = {
             })
           );
 
-          // Read schemas from the global schema cache
-          const schemas: ModuleSchema[] = [];
+          // Read schemas from the global schema cache (fallback to loader if empty)
+          let schemas: ModuleSchema[] = [];
           for (const [, schema] of schemaCache.getAll()) {
             schemas.push(schema as unknown as ModuleSchema);
+          }
+          if (schemas.length === 0) {
+            // P2-2: cache 未填充时直接从 54 JSON loader 加载
+            schemas = loadModuleSchemas();
           }
 
           const pipelineResult = validateAll(configs, schemas);
