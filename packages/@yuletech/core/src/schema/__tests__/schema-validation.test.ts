@@ -227,4 +227,26 @@ describe('JSON Schema Validation', () => {
       walk(schema, '');
     }
   });
+
+  it('mcu.json 应含 McuGeneral 容器及 McuClockReferenceFrequency (P2-3 补充)', () => {
+    const mcu = JSON.parse(fs.readFileSync(path.join(GENERATED_DIR, 'mcu.json'), 'utf8'));
+    const general = mcu.properties?.McuGeneral;
+    expect(general, 'mcu.json 应含 McuGeneral 容器').toBeTruthy();
+    const freq = general?.properties?.McuClockReferenceFrequency;
+    expect(freq, 'McuGeneral 应含 McuClockReferenceFrequency').toBeTruthy();
+    expect(freq.type).toBe('integer');
+    expect(freq['x-config-class']).toBe('POSTBUILD');
+  });
+
+  it('Gpt/Spi/Adc 应含指向 Mcu.McuClockReferenceFrequency 的 crossReferences', () => {
+    for (const mod of ['gpt', 'spi', 'adc']) {
+      const schema = JSON.parse(fs.readFileSync(path.join(GENERATED_DIR, `${mod}.json`), 'utf8'));
+      const refs = schema.crossReferences ?? [];
+      const mcuRef = refs.find(
+        (r: any) => r.module === 'Mcu' && r.param === 'McuClockReferenceFrequency'
+      );
+      expect(mcuRef, `${mod}.json 应引用 Mcu.McuClockReferenceFrequency`).toBeTruthy();
+      expect(mcuRef.relation).toBe('less_than');
+    }
+  });
 });

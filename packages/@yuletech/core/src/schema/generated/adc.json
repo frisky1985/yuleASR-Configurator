@@ -621,9 +621,23 @@
       "additionalProperties": true
     }
   },
-  "required": ["AdcConfigSet", "AdcHwUnit_0", "Adc_A8_BAT"],
+  "required": [
+    "AdcConfigSet",
+    "AdcHwUnit_0",
+    "Adc_A8_BAT"
+  ],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "sourceParam": "AdcPowerUpDelayValue",
+      "module": "Mcu",
+      "param": "McuClockReferenceFrequency",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "ADC 上电延迟值不应超过 MCU 主时钟参考频率"
+    }
+  ]
 }

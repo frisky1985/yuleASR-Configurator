@@ -164,7 +164,7 @@
 
 | # | 事项 | 状态 | 说明 |
 |---|------|------|------|
-| P1-1 | Windows NSIS 安装包构建 | 🟡 待验证 | 已启用 Windows 长路径支持 (commit 52f59b1)，CI 验证 NSIS 是否通过 |
+| P1-1 | 桌面端 CI 构建失败 (三平台) | ✅ 已修复 | 2026-08-01: 根因非 NSIS — @yuletech/ui 包 main 指向 dist/ 但 CI 干净 checkout 未构建，vite build 报 "Failed to resolve entry for package @yuletech/ui"，mac/linux/win 三平台全挂。修复: build-desktop.yml 三处 vite build 前加 `pnpm --filter @yuletech/ui build`。本地复现验证通过 (删 dist 复现 + ui build 后通过) |
 | P1-2 | IoHwAb schema 空壳 | ✅ 已修复 | 2026-08-01 补齐 IoHwAbGeneral/Channel/Signal/Dio/Adc 5 容器，含通道方向/信号类型枚举 |
 | P1-3 | Dashboard Service 层统计仍为 mock | ✅ 已修复 | 2026-08-01 新增"模块分层分布"区块：6 层 (MCAL/ECUAL/Service/RTE/OS/ASW) 模块计数 + 占比条，Service 层高亮；zh/en i18n 齐备 |
 | P1-4 | 28/54 schema 缺 CommonPublishedInformation | ✅ 已修复 | 2026-08-01 全量补齐：54/54 schema 含标准 8 字段 CPI (ArRelease×3 + ModuleId + Sw×3 + VendorId)，新增测试断言 (schema-validation 110→165) |

@@ -596,5 +596,15 @@
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "sourceParam": "GptChannelTickFrequency",
+      "module": "Mcu",
+      "param": "McuClockReferenceFrequency",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Gpt 通道时钟频率不应超过 MCU 主时钟参考频率"
+    }
+  ]
 }

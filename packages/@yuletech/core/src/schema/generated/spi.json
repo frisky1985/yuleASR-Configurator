@@ -943,5 +943,15 @@
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "sourceParam": "SpiBaudrate",
+      "module": "Mcu",
+      "param": "McuClockReferenceFrequency",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "SPI 波特率不应超过 MCU 主时钟参考频率"
+    }
+  ]
 }

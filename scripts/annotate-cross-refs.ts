@@ -42,6 +42,9 @@ const CROSS_REF_MATRIX: Array<
   ['Crypto', 'CryptoDriverObjectId', 'CryIf', 'CryIfChannelId', 'in_enum', 'Crypto 驱动对象应与 CryIf 通道匹配'],
   ['Csm', 'CsmSymKeyMaxLength', 'Crypto', 'CryptoKeyLock', 'in_range', 'Csm 密钥长度应与 Crypto 密钥配置匹配'],
   ['PduR', 'PduRDestPduHandleId', 'CanIf', 'CanIfTxPduCanId', 'in_enum', 'PduR 路由目标 PDU 应匹配 CanIf 配置'],
+  ['Gpt', 'GptChannelTickFrequency', 'Mcu', 'McuClockReferenceFrequency', 'less_than', 'Gpt 通道时钟频率不应超过 MCU 主时钟参考频率'],
+  ['Spi', 'SpiBaudrate', 'Mcu', 'McuClockReferenceFrequency', 'less_than', 'SPI 波特率不应超过 MCU 主时钟参考频率'],
+  ['Adc', 'AdcPowerUpDelayValue', 'Mcu', 'McuClockReferenceFrequency', 'less_than', 'ADC 上电延迟值不应超过 MCU 主时钟参考频率'],
 ];
 
 /** 读取 JSON schema 并返回扁平参数集合 */

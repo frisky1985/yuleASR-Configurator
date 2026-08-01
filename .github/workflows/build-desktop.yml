@@ -46,6 +46,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
+      - name: Build @yuletech/ui (workspace dep for web)
+        run: pnpm --filter @yuletech/ui build
+
       - name: Build web app (for embedding in desktop)
         run: cd apps/yuleasr-web && npx vite build --base ./
 
@@ -112,6 +115,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
+      - name: Build @yuletech/ui (workspace dep for web)
+        run: pnpm --filter @yuletech/ui build
+
       - name: Build web app (for embedding in desktop)
         run: cd apps/yuleasr-web && npx vite build --base ./
 
@@ -175,6 +181,10 @@ jobs:
         run: |
           Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value 1 -Force
         shell: pwsh
+
+      - name: Build @yuletech/ui (workspace dep for web)
+        run: pnpm --filter @yuletech/ui build
+        shell: bash
 
       - name: Build web app (for embedding in desktop)
         run: cd apps/yuleasr-web; npx vite build --base ./
