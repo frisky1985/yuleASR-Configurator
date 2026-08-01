@@ -56,10 +56,14 @@ jobs:
         run: |
           cd apps/yuleasr-desktop
           cp -r ../yuleasr-web/dist .
+          # CSC_LINK 为空字符串会触发 electron-builder importCertificate("") bug
+          # (空串被当作有效值 -> path.resolve 到项目目录 -> "not a file")
+          # 仅当 secret 配置时才注入签名环境变量
+          if [ -n "${{ secrets.MAC_CSC_LINK }}" ]; then
+            export CSC_LINK="${{ secrets.MAC_CSC_LINK }}"
+            export CSC_KEY_PASSWORD="${{ secrets.MAC_CSC_KEY_PASSWORD }}"
+          fi
           npx electron-builder --mac --publish never
-        env:
-          CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
-          CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
 
       - name: List release artifacts
         run: ls -la apps/yuleasr-desktop/release/
