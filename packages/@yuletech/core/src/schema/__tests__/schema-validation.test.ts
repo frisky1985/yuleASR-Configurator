@@ -15,8 +15,9 @@ function getSchemaFiles(): string[] {
 describe('JSON Schema Validation', () => {
   const files = getSchemaFiles();
 
-  it('should have exactly 39 schema files', () => {
-    expect(files.length).toBe(39);
+  it('should have exactly 54 schema files', () => {
+    // 2026-08-01: 39 → 54 (模块扩展: +ea/eep/eth/ethif/fr/frif/i2c/lin/linif/pwm/uart/wdg/wdgif/wdgm/xcp)
+    expect(files.length).toBe(54);
   });
 
   it.each(files)('should parse %s as valid JSON', file => {
@@ -66,11 +67,20 @@ describe('JSON Schema Validation', () => {
       'det',
       'dio',
       'ecum',
+      'ea',
+      'eep',
+      'eth',
+      'ethif',
       'fee',
       'fls',
+      'fr',
+      'frif',
       'gpt',
+      'i2c',
       'icu',
       'iohwab',
+      'lin',
+      'linif',
       'mcl',
       'mcu',
       'memif',
@@ -79,9 +89,15 @@ describe('JSON Schema Validation', () => {
       'os',
       'pdur',
       'port',
+      'pwm',
       'rte',
       'sbc',
       'spi',
+      'uart',
+      'wdg',
+      'wdgif',
+      'wdgm',
+      'xcp',
     ];
     expect(names.sort()).toEqual(expected.sort());
   });

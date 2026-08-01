@@ -1,6 +1,6 @@
 # yuleASR-Configurator 开发任务状态
 
-> 最后更新: 2025-01-20 当前阶段: Phase 1 - 完善 Service 层配置数据
+> 最后更新: 2026-08-01 当前阶段: Phase 4-5 收尾 — 测试基线与代码生成质量
 
 ---
 
@@ -16,16 +16,29 @@
 
 ---
 
+## 当前阶段总览
+
+| Phase | 内容 | 状态 | 说明 |
+| ----- | ---- | ---- | ---- |
+| Phase 1 | Service 层配置数据 | 🟡 大部分完成 | 54 模块 schema 已就绪，Dashboard 统计仍为 mock |
+| Phase 2 | VS Code 扩展 | ✅ 完成 | 9 命令 + ConfigEditorPanel + ConfigTreeProvider |
+| Phase 3 | UI 组件库 | ❌ 空壳 | `@yuletech/ui` 仅 `export {}`，未开始 |
+| Phase 4 | 单元测试 | 🟡 进行中 | core 517 测试：515 过 / 2 失败 (Can/Mcu GCC) |
+| Phase 5 | C 代码生成 | 🟡 基本完成 | 4 生成器齐备，但 Can/Mcu 生成代码 GCC 编译失败 |
+
+---
+
 ## 已完成功能清单
 
 ### Core 层 (@yuletech/core)
 
 - [x] 类型系统 (ModuleSchema, ModuleConfig, Validation)
-- [x] Schema 管理 (JSON Schema 转换)
+- [x] Schema 管理 (JSON Schema 转换，54 个模块 schema)
 - [x] 配置验证器
-- [x] 代码生成器接口
+- [x] 代码生成器接口 (ecuc/swc/os/rte 4 个生成器)
 - [x] ARXML 解析器
 - [x] yuleASR 适配器
+- [x] 跨模块验证 (CrossModuleValidator)
 
 ### Editor Core 层 (yuleasr-editor-core)
 
@@ -36,158 +49,28 @@
 
 ### Web 应用 (yuleasr-web)
 
-- [x] Dashboard 页面
-- [x] Editor 页面
-- [x] Templates 页面
-- [x] GitSync 页面
-- [x] Settings 页面
-- [x] Migrate 页面
-- [x] ModuleTree 组件
-- [x] ModuleGraph 组件 (React Flow)
-- [x] ModuleConfigWizard 组件
-- [x] ValidationPanel 组件
-- [x] DiffViewer 组件
-- [x] GlobalSearch 组件
-- [x] MigrationTool 组件
-- [x] VersionHistory 组件
+- [x] Dashboard / Editor / Templates / GitSync / Settings / Migrate 页面
+- [x] ModuleTree / ModuleGraph (React Flow) / ModuleConfigWizard / ValidationPanel
+- [x] DiffViewer / GlobalSearch / MigrationTool / VersionHistory 组件
+
+### VS Code 扩展 (apps/yuleasr-vscode)
+
+- [x] 扩展包 + 清单
+- [x] 侧边栏 ModuleTree Provider
+- [x] 配置编辑器 Webview Panel
+- [x] ARXML 右键导入命令
+- [x] 代码生成 / 配置验证命令
+- [x] 热重载和调试支持
 
 ### 数据层
 
-- [x] MCAL 配置数据
-- [x] ECUAL 配置数据
+- [x] MCAL 配置数据 (11 模块)
+- [x] ECUAL 配置数据 (15 模块)
+- [x] Service 层配置数据 (25 模块)
 - [x] OS 配置数据
+- [x] RTE / ASW 数据模型 (appswc, compswc, rte)
 
----
-
-## 开发阶段规划
-
-### Phase 1: 完善 Service 层配置数据
-
-**状态**: 进行中 **工期**: 3-5天
-**目标**: 补充 Service 层模块定义，完善 AutoSAR 层级支持
-
-**任务清单**:
-
-- [ ] 1.1 定义 Service 层模块分类 (MemStack, ComStack, IoHwAb, etc.)
-- [ ] 1.2 创建 MemStack 模块 (Fee, Ea, MemIf, Nvm)
-- [ ] 1.3 创建 ComStack 模块 (Can, CanIf, CanTp, Com, PduR)
-- [ ] 1.4 创建 IoHwAb 模块
-- [ ] 1.5 创建 CryptoServices 模块
-- [ ] 1.6 创建 WdgServices 模块
-- [ ] 1.7 更新 ModuleTree 支持 Service 层显示
-- [ ] 1.8 更新 Dashboard 统计 Service 层模块
-
-**验收标准**:
-
-- Service 层模块可在 UI 中正常显示和配置
-- 所有 Service 层模块有完整的参数定义
-- 模块间依赖关系正确定义
-
----
-
-### Phase 2: 开发 VS Code 扩展
-
-**状态**: 待启动 **工期**: 5-7天 **目标**: 提供 IDE 原生集成体验
-
-**任务清单**:
-
-- [ ] 2.1 创建 apps/yuleasr-vscode 扩展包
-- [ ] 2.2 配置 VS Code 扩展清单 (package.json)
-- [ ] 2.3 实现侧边栏 ModuleTree Provider
-- [ ] 2.4 实现配置编辑器 Webview Panel
-- [ ] 2.5 实现 ARXML 文件右键导入命令
-- [ ] 2.6 实现代码生成命令
-- [ ] 2.7 实现配置验证命令
-- [ ] 2.8 配置热重载和调试支持
-
-**验收标准**:
-
-- 扩展可在 VS Code 中正常安装和运行
-- 支持 ARXML 文件右键快速导入
-- 支持配置编辑和验证
-- 支持一键代码生成
-
----
-
-### Phase 3: 构建 UI 组件库
-
-**状态**: 待启动 **工期**: 5-7天 **目标**: 提取可复用组件，支持 Web 和 VS
-Code 共享
-
-**任务清单**:
-
-- [ ] 3.1 分析 web 应用中可复用组件
-- [ ] 3.2 提取 Button 组件
-- [ ] 3.3 提取 Input 组件
-- [ ] 3.4 提取 Select 组件
-- [ ] 3.5 提取 FormField 组件
-- [ ] 3.6 提取 Modal 组件
-- [ ] 3.7 提取 Tooltip 组件
-- [ ] 3.8 提取 Tree 组件
-- [ ] 3.9 提取 PropertyPanel 组件
-- [ ] 3.10 配置组件库构建和发布
-
-**验收标准**:
-
-- 组件库可在 @yuletech/ui 中独立构建
-- Web 应用和 VS Code 扩展都能使用
-- 每个组件有完整 props 定义和样式
-
----
-
-### Phase 4: 补充单元测试
-
-**状态**: 待启动 **工期**: 3-5天 **目标**: 提升测试覆盖率至 80%
-
-**任务清单**:
-
-- [ ] 4.1 为核心包配置测试环境
-- [ ] 4.2 编写 Schema 转换测试
-- [ ] 4.3 编写验证器测试
-- [ ] 4.4 编写代码生成器测试
-- [ ] 4.5 编写 ARXML 解析器测试
-- [ ] 4.6 编写配置引擎测试
-- [ ] 4.7 编写组件单元测试
-- [ ] 4.8 配置 CI 测试流程
-
-**验收标准**:
-
-- @yuletech/core 覆盖率 ≥ 80%
-- yuleasr-editor-core 覆盖率 ≥ 80%
-- 关键组件有单元测试
-- CI 自动运行测试
-
----
-
-### Phase 5: 完善 C 代码生成
-
-**状态**: 待启动 **工期**: 7-10天 **目标**: 实现完整的 C 代码和 ARXML 导出
-
-**任务清单**:
-
-- [ ] 5.1 完善 C 头文件生成模板
-- [ ] 5.2 实现 C 源文件生成
-- [ ] 5.3 实现宏定义生成
-- [ ] 5.4 实现类型定义生成
-- [ ] 5.5 实现 ECUC 描述文件生成
-- [ ] 5.6 实现 ARXML 导出功能
-- [ ] 5.7 实现多模块批量生成
-- [ ] 5.8 添加代码格式化选项
-
-**验收标准**:
-
-- 支持生成完整 C 头文件和源文件
-- 支持 ECUC ARXML 导出
-- 生成的代码符合 MISRA C 规范
-- 支持多编译器模板 (GCC/IAR/GHS)
-
----
-
-## 最近完成 — 代码生成器对齐 (2026-07-23)
-
-**耗时:** 17 分钟 (Phase 1→6 完成)
-
-完成 4 个代码生成器在以下维度的全面对齐：
+### 代码生成器对齐 (2026-07-23)
 
 | 维度 | ecuc | swc | os | rte |
 |------|------|-----|-----|-----|
@@ -198,19 +81,126 @@ Code 共享
 | AUTOSAR Doxygen | ✅ | ✅ | ✅ | ✅ |
 | 多编译器支持 | ✅ | ✅ | ✅ | ✅ |
 
-**核心产出:**
-- `autosar-format.ts` 新增 8 个共享模板函数（~258 行）
-- 54 个现有测试全部通过 ✅
-- 完整报告: `docs/reports/codegen-alignment-result.md`
+---
+
+## 开发阶段规划
+
+### Phase 1: 完善 Service 层配置数据
+
+**状态**: 🟡 大部分完成
+**目标**: 补充 Service 层模块定义，完善 AUTOSAR 层级支持
+
+**任务清单**:
+
+- [x] 1.1 定义 Service 层模块分类 (MemStack, ComStack, IoHwAb, etc.)
+- [x] 1.2 创建 MemStack 模块 (Fee, Ea, MemIf, Nvm)
+- [x] 1.3 创建 ComStack 模块 (Can, CanIf, CanTp, Com, PduR)
+- [x] 1.4 创建 IoHwAb 模块 (⚠️ 仅空壳: IoHwAbDio/IoHwAbAdc 无参数定义)
+- [x] 1.5 创建 CryptoServices 模块 (Crypto, Csm, CryIf)
+- [x] 1.6 创建 WdgServices 模块 (Wdg, WdgIf, WdgM)
+- [x] 1.7 更新 ModuleTree 支持 Service 层显示
+- [ ] 1.8 更新 Dashboard 统计 Service 层模块 (仍为 mock)
+
+**验收标准**:
+- Service 层模块可在 UI 中正常显示和配置 — ✅ 通过
+- 所有 Service 层模块有完整的参数定义 — 🟡 IoHwAb 空壳
+- 模块间依赖关系正确定义 — ⚠️ schema 层无 crossReferences
+
+### Phase 2: 开发 VS Code 扩展
+
+**状态**: ✅ 完成
+
+### Phase 3: 构建 UI 组件库
+
+**状态**: ❌ 未开始 — `@yuletech/ui/src/index.ts` 仅 `export {}` 空壳，全部 3.1-3.10 任务待启动
+
+### Phase 4: 补充单元测试
+
+**状态**: 🟡 进行中 — core 包 517 测试，515 过 / 2 失败
+
+**任务清单**:
+
+- [x] 4.1 为核心包配置测试环境 (vitest.config.ts)
+- [x] 4.2 编写 Schema 转换测试 (schema-validation: 110 个断言全过)
+- [x] 4.3 编写验证器测试
+- [x] 4.4 编写代码生成器测试
+- [x] 4.5 编写 ARXML 解析器测试
+- [x] 4.6 编写配置引擎测试
+- [ ] 4.7 编写组件单元测试 (依赖 Phase 3)
+- [x] 4.8 配置 CI 测试流程
+
+**已知失败**: 集成套件 C1 — Can/Mcu 生成代码 GCC 语法检查失败（见 P0 事项）
+
+### Phase 5: 完善 C 代码生成
+
+**状态**: 🟡 基本完成 — 4 生成器 + Doxygen/MISRA 支持，Can/Mcu 有编译 bug
+
+**任务清单**:
+
+- [x] 5.1-5.4 C 头文件/源文件/宏/类型生成
+- [x] 5.5 ECUC 描述文件生成
+- [x] 5.6 ARXML 导出功能
+- [x] 5.7 多模块批量生成
+- [x] 5.8 代码格式化选项
+- [x] Doxygen 头 + AUTOSAR 版本宏 + Det 错误上报 (autosar-44-code-compliance)
 
 ---
 
-## 当前阻塞事项
+## 🔴 阻塞生产上线的关键事项
 
-| 问题 | 状态 | 解决方案 |
-| ---- | ---- | -------- |
-| macOS 桌面端无法签名发布 | 🔴 阻塞 | 需 Apple Developer 证书: GitHub Secrets `MAC_CSC_LINK` + `MAC_CSC_KEY_PASSWORD`（build-desktop.yml 已支持, 签名后即可发 macOS Release）; 由老板提供证书后处理 |
-| Windows NSIS 安装包构建 | 🔴 待验证 | 已启用 Windows 长路径支持 (commit 52f59b1), CI 验证 NSIS 是否通过; 通过后 Windows 同时出 exe 安装包 + portable zip |
+### P0 — 必须修复
+
+| # | 事项 | 状态 | 根因 / 方案 |
+|---|------|------|------------|
+| P0-1 | **Can/Mcu 生成代码 GCC 编译失败** (2 个集成测试失败) | 🔴 未修复 | ① 嵌套 struct 用 `const` 变量引用 → "initializer element is not a compile-time constant"，需改 compound literal 内联；② `CAN_DEV_ERROR_DETECT` 宏未定义 — Cfg.h 生成的宏名是 `CAN_CANDEVERRORDETECT`，bridge 引用标准别名，需生成时补标准别名宏。修复脚本已验证思路，待正确落地（勿用嵌套反引号模板转义） |
+| P0-2 | **macOS 桌面端无法签名发布** | 🔴 阻塞 | 需 Apple Developer 证书: GitHub Secrets `MAC_CSC_LINK` + `MAC_CSC_KEY_PASSWORD` (build-desktop.yml 已支持)；由老板提供证书 |
+
+### P1 — 应尽快处理
+
+| # | 事项 | 状态 | 说明 |
+|---|------|------|------|
+| P1-1 | Windows NSIS 安装包构建 | 🟡 待验证 | 已启用 Windows 长路径支持 (commit 52f59b1)，CI 验证 NSIS 是否通过 |
+| P1-2 | IoHwAb schema 空壳 | 🟡 | `IoHwAbDio`/`IoHwAbAdc` 无参数定义，需按 AUTOSAR IoHwAb 规范补齐 |
+| P1-3 | Dashboard Service 层统计仍为 mock | 🟡 | 1.8 未完成 |
+| P1-4 | 28/54 schema 缺 CommonPublishedInformation | 🟡 | 规范要求每个模块含 ModuleId/BswModuleEntry/ArReleaseVersion 等标准字段 |
+
+### P2 — 后续迭代
+
+| # | 事项 | 状态 | 说明 |
+|---|------|------|------|
+| P2-1 | Phase 3 UI 组件库 | ❌ | @yuletech/ui 空壳，未启动 |
+| P2-2 | schema 层跨模块依赖 (crossReferences) | ❌ | 依赖关系仅在 validator 层，schema 层无表达 |
+| P2-3 | AUTOSAR ECUC 元模型补全 | ❌ | 见下方合规性评估 |
+
+---
+
+## Schema AUTOSAR 合规性评估 (2026-08-01)
+
+**结论: 载体合理、覆盖度高，但未完整表达 AUTOSAR ECUC 元模型语义 — "接近但不完全符合"。**
+
+### ✅ 已满足
+
+- JSON Schema draft 2020-12 载体，54 模块覆盖 5 层 (MCAL 11 / ECUAL 15 / Service 25 / RTE 1 / ASW 2)
+- 容器 + 参数两级结构，AUTOSAR 命名约定 (PascalCase, 模块前缀)
+- x-layer / x-version / x-source 元数据 (50 个标注 ARXML-Extracted)
+- 50 个 schema 从 ARXML 提取，参数含类型/范围约束 (min/max)
+
+### ❌ 与 AUTOSAR ECUC 元模型的差距
+
+| 差距 | 说明 | 影响 |
+|------|------|------|
+| **无 ReferenceDef** | ECUC 核心是 ModuleDef → ContainerDef → ParameterDef/**ReferenceDef** 三层，跨模块/跨容器引用 (如 Can 引用 CanTrcv) 在 schema 中无表达 | 依赖关系无法在配置层校验 |
+| **无 Multiplicity** | AUTOSAR 每个参数/容器有 lower/upperMultiplicity (0..1, 1..*) | 无法表达"至少 1 个"等出现次数约束 |
+| **无 ConfigurationClass** | AUTOSAR 参数分 PREPROCESSOR/POSTBUILD/VARIANT 配置类 | 无法区分编译期/后构建参数 |
+| **枚举覆盖极少** | 仅 3 个 schema 使用 enum (appswc/compswc/os) | AUTOSAR 参数大量是枚举 (如 CanTrcv 唤醒方式)，现多退化为裸 integer |
+| **无 ChoiceContainerDef** | 多选一容器语义缺失 | 无法表达"二选一"配置 |
+| **CPI 覆盖不全** | 仅 26/54 含 CommonPublishedInformation | 标准发布信息不完整 |
+
+### 建议路线
+
+1. **短期 (P1)**: 补齐 CommonPublishedInformation + IoHwAb 参数 + enum 化已知枚举参数
+2. **中期 (P2)**: schema 增加 `x-multiplicity` / `x-config-class` 扩展字段，引入 `crossReferences` 数组表达 ReferenceDef
+3. **长期**: 若需严格 AUTOSAR 工具链互操作，考虑直接生成/消费标准 ECUC ARXML (`EcucModuleDef`)，JSON Schema 作为 UI 编辑中间层
 
 ---
 
@@ -218,7 +208,7 @@ Code 共享
 
 ```bash
 # 启动开发环境
-cd /home/admin/yuleASR-Configurator
+cd /Users/stefan/.openclaw/workspace/yuleASR-Configurator
 pnpm install
 pnpm dev
 
