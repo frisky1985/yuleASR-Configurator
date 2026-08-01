@@ -122,7 +122,9 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 65535,
-          "description": "CanTrcvMaxBaudrate 参数"
+          "description": "CanTrcvMaxBaudrate 参数",
+          "x-multiplicity": "0..1",
+          "x-config-class": "POSTBUILD"
         },
         "CanTrcvWakeupByBusUsed": {
           "type": "boolean",
@@ -179,7 +181,8 @@
           "description": "CanTrcvInitState 参数"
         }
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "x-multiplicity": "1..*"
     },
     "CanTrcvPartialNetwork": {
       "description": "CanTrcvPartialNetwork 配置容器",
@@ -329,5 +332,14 @@
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "module": "Can",
+      "param": "CanControllerBaudRate",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "CAN 控制器波特率不应超过收发器最大波特率"
+    }
+  ]
 }

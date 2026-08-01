@@ -596,6 +596,15 @@ ${content}
 
       const formattedValue = formatCValue(value, param.type);
       content += `#define ${macroName}    ${formattedValue}\n`;
+
+      // AUTOSAR 标准 DEV_ERROR_DETECT 宏别名
+      // (如 CAN_CANDEVERRORDETECT → CAN_DEV_ERROR_DETECT，保证桥接代码中的标准宏名可用)
+      if (param.name.toLowerCase().endsWith('deverrordetect')) {
+        const stdName = `${config.module.toUpperCase()}_DEV_ERROR_DETECT`;
+        content += `#ifndef ${stdName}\n`;
+        content += `#define ${stdName}    ${formattedValue}\n`;
+        content += `#endif /* ${stdName} */\n`;
+      }
     }
 
     // 生成容器宏定义（包含子容器）
@@ -751,82 +760,61 @@ ${content}
     let content = '';
 
     if (controllerCount > 0) {
-      // 每个 controller 实例填充完整的 Can_ControllerConfigType
+      // Can_Controllers 数组 — 每个 controller 元素内联 compound literal。
+      // 注意：C 语言中 static const 对象变量不是常量表达式，不能被静态初始化器引用，
+      // 因此 BaudrateConfigs / HardwareObjects 必须使用 compound literal 内联。
+      content += `/** @brief Can Controller array */\n`;
+      content += `static const Can_ControllerConfigType Can_Controllers[${controllerCount}] = {\n`;
       for (let i = 0; i < controllerCount; i++) {
         const instance = containers[i];
         const params = instance.parameters;
         const baudrateInstances = (instance.children?.['BaudrateConfig'] as ContainerConfig[] | undefined) || [];
         const hohInstances = (instance.children?.['HardwareObject'] as ContainerConfig[] | undefined) || [];
 
-        content += `/** @brief Controller ${i} - BaudrateConfig instances */\n`;
+        // BaudrateConfigs — compound literal，零实例时为 NULL_PTR
+        let baudrateLiteral: string;
         if (baudrateInstances.length > 0) {
+          const entries: string[] = [];
           for (let b = 0; b < baudrateInstances.length; b++) {
             const bp = baudrateInstances[b].parameters;
-            content += `static const Can_BaudrateConfigType Controller_${i}_Baudrate_${b} = {\n`;
-            content += `    .BaudRate = ${formatCValue(bp['baudRate'] ?? 500000, 'integer')},\n`;
-            content += `    .PropSeg = ${formatCValue(bp['propSeg'] ?? 0, 'integer')},\n`;
-            content += `    .PhaseSeg1 = ${formatCValue(bp['phaseSeg1'] ?? 0, 'integer')},\n`;
-            content += `    .PhaseSeg2 = ${formatCValue(bp['phaseSeg2'] ?? 0, 'integer')},\n`;
-            content += `    .SyncJumpWidth = ${formatCValue(bp['syncJumpWidth'] ?? 0, 'integer')},\n`;
-            content += `    .Prescaler = ${formatCValue(bp['prescaler'] ?? 0, 'integer')},\n`;
-            content += `};\n\n`;
+            entries.push(
+              `        { .BaudRate = ${formatCValue(bp['baudRate'] ?? 500000, 'integer')}, .PropSeg = ${formatCValue(bp['propSeg'] ?? 0, 'integer')}, .PhaseSeg1 = ${formatCValue(bp['phaseSeg1'] ?? 0, 'integer')}, .PhaseSeg2 = ${formatCValue(bp['phaseSeg2'] ?? 0, 'integer')}, .SyncJumpWidth = ${formatCValue(bp['syncJumpWidth'] ?? 0, 'integer')}, .Prescaler = ${formatCValue(bp['prescaler'] ?? 0, 'integer')} },`
+            );
           }
-
-          content += `static const Can_BaudrateConfigType Controller_${i}_BaudrateConfigs[${baudrateInstances.length}] = {\n`;
-          for (let b = 0; b < baudrateInstances.length; b++) {
-            content += `    Controller_${i}_Baudrate_${b},\n`;
-          }
-          content += `};\n\n`;
+          baudrateLiteral = `(const Can_BaudrateConfigType[]){\n${entries.join('\n')}\n    }`;
         } else {
-          content += `static const Can_BaudrateConfigType* Controller_${i}_BaudrateConfigs = NULL_PTR;\n\n`;
+          baudrateLiteral = 'NULL_PTR';
         }
 
-        content += `/** @brief Controller ${i} - HardwareObject instances */\n`;
+        // HardwareObjects — compound literal，零实例时为 NULL_PTR
+        let hohLiteral: string;
         if (hohInstances.length > 0) {
+          const entries: string[] = [];
           for (let h = 0; h < hohInstances.length; h++) {
             const hp = hohInstances[h].parameters;
-            content += `static const Can_HardwareObjectType Controller_${i}_Hoh_${h} = {\n`;
-            content += `    .Hoh = ${formatCValue(hp['hoh'] ?? 0, 'integer')},\n`;
-            content += `    .HohType = (Can_HohTypeType)${formatCValue(hp['hohType'] ?? 0, 'enum')},\n`;
-            content += `    .IdType = (Can_IdTypeType)${formatCValue(hp['idType'] ?? 0, 'enum')},\n`;
-            content += `    .FirstId = ${formatCValue(hp['firstId'] ?? 0, 'integer')},\n`;
-            content += `    .LastId = ${formatCValue(hp['lastId'] ?? 0, 'integer')},\n`;
-            content += `    .ObjectId = ${formatCValue(hp['objectId'] ?? 0, 'integer')},\n`;
-            content += `    .Filtering = ${formatCValue(hp['filtering'] ?? false, 'boolean')},\n`;
-            content += `};\n\n`;
+            entries.push(
+              `        { .Hoh = ${formatCValue(hp['hoh'] ?? 0, 'integer')}, .HohType = (Can_HohTypeType)${formatCValue(hp['hohType'] ?? 0, 'enum')}, .IdType = (Can_IdTypeType)${formatCValue(hp['idType'] ?? 0, 'enum')}, .FirstId = ${formatCValue(hp['firstId'] ?? 0, 'integer')}, .LastId = ${formatCValue(hp['lastId'] ?? 0, 'integer')}, .ObjectId = ${formatCValue(hp['objectId'] ?? 0, 'integer')}, .Filtering = ${formatCValue(hp['filtering'] ?? false, 'boolean')} },`
+            );
           }
-
-          content += `static const Can_HardwareObjectType Controller_${i}_HardwareObjects[${hohInstances.length}] = {\n`;
-          for (let h = 0; h < hohInstances.length; h++) {
-            content += `    Controller_${i}_Hoh_${h},\n`;
-          }
-          content += `};\n\n`;
+          hohLiteral = `(const Can_HardwareObjectType[]){\n${entries.join('\n')}\n    }`;
         } else {
-          content += `static const Can_HardwareObjectType* Controller_${i}_HardwareObjects = NULL_PTR;\n\n`;
+          hohLiteral = 'NULL_PTR';
         }
 
-        content += `/** @brief Controller ${i} Config */\n`;
-        content += `static const Can_ControllerConfigType Controller_${i}_Config = {\n`;
-        content += `    .ControllerId = ${formatCValue(params['controllerId'] ?? i, 'integer')},\n`;
-        content += `    .BaseAddress = ${formatCValue(params['baseAddress'] ?? 0, 'integer')},\n`;
-        content += `    .BaudrateConfigs = Controller_${i}_BaudrateConfigs,\n`;
-        content += `    .NumBaudrateConfigs = ${baudrateInstances.length}U,\n`;
-        content += `    .HardwareObjects = Controller_${i}_HardwareObjects,\n`;
-        content += `    .NumHardwareObjects = ${hohInstances.length}U,\n`;
-        content += `    .RxProcessing = ${formatCValue(params['rxProcessing'] ?? 0, 'integer')},\n`;
-        content += `    .TxProcessing = ${formatCValue(params['txProcessing'] ?? 0, 'integer')},\n`;
-        content += `    .BusOffProcessing = ${formatCValue(params['busOffProcessing'] ?? false, 'boolean')},\n`;
-        content += `    .WakeupProcessing = ${formatCValue(params['wakeupProcessing'] ?? false, 'boolean')},\n`;
-        content += `    .WakeupSupport = ${formatCValue(params['wakeupSupport'] ?? false, 'boolean')},\n`;
-        content += `    .DefaultBaudrateIndex = ${formatCValue(params['defaultBaudrateIndex'] ?? 0, 'integer')},\n`;
-        content += `};\n\n`;
-      }
-
-      // Controllers array
-      content += `/** @brief Can Controller array */\n`;
-      content += `static const Can_ControllerConfigType Can_Controllers[${controllerCount}] = {\n`;
-      for (let i = 0; i < controllerCount; i++) {
-        content += `    Controller_${i}_Config,\n`;
+        content += `    {\n`;
+        content += `        .ControllerId = ${formatCValue(params['controllerId'] ?? i, 'integer')},\n`;
+        content += `        .BaseAddress = ${formatCValue(params['baseAddress'] ?? 0, 'integer')},\n`;
+        content += `        .BaudrateConfigs = ${baudrateLiteral},\n`;
+        content += `        .NumBaudrateConfigs = ${baudrateInstances.length}U,\n`;
+        content += `        .HardwareObjects = ${hohLiteral},\n`;
+        content += `        .NumHardwareObjects = ${hohInstances.length}U,\n`;
+        content += `        .RxProcessing = ${formatCValue(params['rxProcessing'] ?? 0, 'integer')},\n`;
+        content += `        .TxProcessing = ${formatCValue(params['txProcessing'] ?? 0, 'integer')},\n`;
+        content += `        .BusOffProcessing = ${formatCValue(params['busOffProcessing'] ?? false, 'boolean')},\n`;
+        content += `        .WakeupProcessing = ${formatCValue(params['wakeupProcessing'] ?? false, 'boolean')},\n`;
+        content += `        .WakeupSupport = ${formatCValue(params['wakeupSupport'] ?? false, 'boolean')},\n`;
+        content += `        .DefaultBaudrateIndex = ${formatCValue(params['defaultBaudrateIndex'] ?? 0, 'integer')},\n`;
+        content += `    },\n`;
       }
       content += `};\n\n`;
     }
@@ -853,66 +841,48 @@ ${content}
     let content = '';
 
     if (clockCount > 0) {
+      // Mcu_ClockConfigs 数组 — 每个时钟配置元素内联 compound literal
+      content += `static const Mcu_ClockConfigType Mcu_ClockConfigs[${clockCount}] = {\n`;
       for (let i = 0; i < clockCount; i++) {
         const instance = containers[i];
         const params = instance.parameters;
         const pllInstances = (instance.children?.['PllConfig'] as ContainerConfig[] | undefined) || [];
 
+        // PllConfigs — compound literal，零实例时为 NULL_PTR
+        let pllLiteral: string;
         if (pllInstances.length > 0) {
+          const entries: string[] = [];
           for (let p = 0; p < pllInstances.length; p++) {
             const pp = pllInstances[p].parameters;
-            content += `static const Mcu_PllConfigType Clock_${i}_Pll_${p} = {\n`;
-            content += `    .PllBaseAddr = ${formatCValue(pp['pllBaseAddr'] ?? 0, 'integer')},\n`;
-            content += `    .Prediv = ${formatCValue(pp['prediv'] ?? 0, 'integer')},\n`;
-            content += `    .Multiplier = ${formatCValue(pp['multiplier'] ?? 0, 'integer')},\n`;
-            content += `    .Postdiv1 = ${formatCValue(pp['postdiv1'] ?? 0, 'integer')},\n`;
-            content += `    .Postdiv2 = ${formatCValue(pp['postdiv2'] ?? 0, 'integer')},\n`;
-            content += `    .Enable = ${formatCValue(pp['enable'] ?? false, 'boolean')},\n`;
-            content += `};\n\n`;
+            entries.push(
+              `        { .PllBaseAddr = ${formatCValue(pp['pllBaseAddr'] ?? 0, 'integer')}, .Prediv = ${formatCValue(pp['prediv'] ?? 0, 'integer')}, .Multiplier = ${formatCValue(pp['multiplier'] ?? 0, 'integer')}, .Postdiv1 = ${formatCValue(pp['postdiv1'] ?? 0, 'integer')}, .Postdiv2 = ${formatCValue(pp['postdiv2'] ?? 0, 'integer')}, .Enable = ${formatCValue(pp['enable'] ?? false, 'boolean')} },`
+            );
           }
-
-          content += `static const Mcu_PllConfigType Clock_${i}_PllConfigs[${pllInstances.length}] = {\n`;
-          for (let p = 0; p < pllInstances.length; p++) {
-            content += `    Clock_${i}_Pll_${p},\n`;
-          }
-          content += `};\n\n`;
+          pllLiteral = `(const Mcu_PllConfigType[]){\n${entries.join('\n')}\n    }`;
         } else {
-          content += `static const Mcu_PllConfigType* Clock_${i}_PllConfigs = NULL_PTR;\n\n`;
+          pllLiteral = 'NULL_PTR';
         }
 
-        content += `/** @brief Clock Config ${i} */\n`;
-        content += `static const Mcu_ClockConfigType Clock_${i}_Config = {\n`;
-        content += `    .PllBaseAddr = ${formatCValue(params['pllBaseAddr'] ?? 0, 'integer')},\n`;
-        content += `    .PllConfigs = Clock_${i}_PllConfigs,\n`;
-        content += `    .NumPllConfigs = ${pllInstances.length}U,\n`;
-        content += `    .ClockSource = ${formatCValue(params['clockSource'] ?? 0, 'integer')},\n`;
-        content += `    .ArmDiv = ${formatCValue(params['armDiv'] ?? 0, 'integer')},\n`;
-        content += `    .AxiDiv = ${formatCValue(params['axiDiv'] ?? 0, 'integer')},\n`;
-        content += `    .AhbDiv = ${formatCValue(params['ahbDiv'] ?? 0, 'integer')},\n`;
-        content += `};\n\n`;
-      }
-
-      content += `static const Mcu_ClockConfigType Mcu_ClockConfigs[${clockCount}] = {\n`;
-      for (let i = 0; i < clockCount; i++) {
-        content += `    Clock_${i}_Config,\n`;
+        content += `    {\n`;
+        content += `        .PllBaseAddr = ${formatCValue(params['pllBaseAddr'] ?? 0, 'integer')},\n`;
+        content += `        .PllConfigs = ${pllLiteral},\n`;
+        content += `        .NumPllConfigs = ${pllInstances.length}U,\n`;
+        content += `        .ClockSource = ${formatCValue(params['clockSource'] ?? 0, 'integer')},\n`;
+        content += `        .ArmDiv = ${formatCValue(params['armDiv'] ?? 0, 'integer')},\n`;
+        content += `        .AxiDiv = ${formatCValue(params['axiDiv'] ?? 0, 'integer')},\n`;
+        content += `        .AhbDiv = ${formatCValue(params['ahbDiv'] ?? 0, 'integer')},\n`;
+        content += `    },\n`;
       }
       content += `};\n\n`;
     }
 
-    // RamSection
+    // RamSection — 内联 compound literal
     const ramInstances = config.containers?.['McuRamSection'] || [];
     if (ramInstances.length > 0) {
-      for (let r = 0; r < ramInstances.length; r++) {
-        const rp = ramInstances[r].parameters;
-        content += `static const Mcu_RamSectionType RamSection_${r} = {\n`;
-        content += `    .RamBaseAddr = ${formatCValue(rp['ramBaseAddr'] ?? 0, 'integer')},\n`;
-        content += `    .RamSize = ${formatCValue(rp['ramSize'] ?? 0, 'integer')},\n`;
-        content += `    .RamDefaultValue = ${formatCValue(rp['ramDefaultValue'] ?? 0, 'integer')},\n`;
-        content += `};\n\n`;
-      }
       content += `static const Mcu_RamSectionType Mcu_RamSections[${ramInstances.length}] = {\n`;
       for (let r = 0; r < ramInstances.length; r++) {
-        content += `    RamSection_${r},\n`;
+        const rp = ramInstances[r].parameters;
+        content += `    { .RamBaseAddr = ${formatCValue(rp['ramBaseAddr'] ?? 0, 'integer')}, .RamSize = ${formatCValue(rp['ramSize'] ?? 0, 'integer')}, .RamDefaultValue = ${formatCValue(rp['ramDefaultValue'] ?? 0, 'integer')} },\n`;
       }
       content += `};\n\n`;
     }

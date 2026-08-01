@@ -936,5 +936,14 @@
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "module": "CanIf",
+      "param": "CanIfTxPduCanId",
+      "relation": "in_enum",
+      "severity": "warning",
+      "description": "PduR 路由的 PDU 应匹配 CanIf 配置"
+    }
+  ]
 }

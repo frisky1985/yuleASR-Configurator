@@ -138,6 +138,10 @@ export interface JsonSchemaProperty {
   properties?: Record<string, JsonSchemaProperty>;
   required?: string[];
   default?: ParameterValue;
+  /** AUTOSAR ECUC Multiplicity: 出现次数，如 "0..1" / "1..*" */
+  'x-multiplicity'?: string;
+  /** AUTOSAR ECUC ConfigurationClass: 配置类 (PREPROCESSOR / POSTBUILD / VARIANT) */
+  'x-config-class'?: 'PREPROCESSOR' | 'POSTBUILD' | 'VARIANT';
 }
 
 /** JSON Schema for a module */
@@ -149,6 +153,10 @@ export interface ModuleJsonSchema {
   type: 'object';
   properties: Record<string, JsonSchemaProperty>;
   required: string[];
+  /** 模块级 AUTOSAR Multiplicity (如 "1..*") */
+  'x-multiplicity'?: string;
+  /** 跨模块引用约束 (AUTOSAR ECUC ReferenceDef) */
+  crossReferences?: CrossModuleReference[];
 }
 
 /** Parser options */

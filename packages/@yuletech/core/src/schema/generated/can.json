@@ -41,7 +41,8 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 65535,
-          "description": "CanControllerBaudRate 参数"
+          "description": "CanControllerBaudRate 参数",
+          "x-config-class": "POSTBUILD"
         },
         "CanControllerPropSeg": {
           "type": "integer",
@@ -303,7 +304,8 @@
           "description": "CanClockSelection 参数"
         }
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "x-multiplicity": "1..*"
     },
     "CanControllerFdBaudrateConfig": {
       "description": "CanControllerFdBaudrateConfig 配置容器",
@@ -705,5 +707,14 @@
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "crossReferences": [
+    {
+      "module": "CanTrcv",
+      "param": "CanTrcvMaxBaudrate",
+      "relation": "greater_than",
+      "severity": "warning",
+      "description": "CAN 控制器波特率不应超过收发器最大波特率"
+    }
+  ]
 }
