@@ -34,5 +34,8 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
+    // 现代浏览器 target：避免 esbuild 将依赖 (i18next-browser-languagedetector 等)
+    // 降级转换时报 "Transforming destructuring ... not supported yet"
+    target: 'esnext',
   },
 });

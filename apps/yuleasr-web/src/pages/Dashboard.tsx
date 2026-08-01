@@ -122,6 +122,15 @@ export function Dashboard() {
           )
         : 0,
     warningsCount: configDetails.reduce((s, cfg) => s + countWarnings(cfg), 0),
+    // 按 AUTOSAR 层聚合 enabled 模块数 (跨所有配置汇总)
+    layerBreakdown: configDetails.reduce<Record<string, number>>((acc, cfg) => {
+      for (const m of cfg.modules) {
+        if (!m.enabled) continue;
+        const layer = m.layer || 'MCAL';
+        acc[layer] = (acc[layer] || 0) + 1;
+      }
+      return acc;
+    }, {}),
   };
 
   const handleOpenCompare = (configId: string) => {
@@ -420,6 +429,61 @@ export function Dashboard() {
               ? t('dashboard.noWarnings')
               : t('dashboard.warningsFound', { count: stats.warningsCount })}
           </p>
+        </div>
+      </div>
+
+      {/* Layer Distribution */}
+      <div className="bg-app-bg-primary border border-app-border-primary rounded-xl p-6 shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-semibold text-primary uppercase tracking-wider">
+            {t('dashboard.layerDistribution')}
+          </h2>
+          <span className="text-xs text-app-text-secondary">
+            {t('dashboard.layerDistributionHint')}
+          </span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[
+            { key: 'MCAL', color: 'bg-blue-500', textColor: 'text-blue-600' },
+            { key: 'ECUAL', color: 'bg-cyan-500', textColor: 'text-cyan-600' },
+            { key: 'Service', color: 'bg-violet-500', textColor: 'text-violet-600' },
+            { key: 'RTE', color: 'bg-orange-500', textColor: 'text-orange-600' },
+            { key: 'OS', color: 'bg-rose-500', textColor: 'text-rose-600' },
+            { key: 'ASW', color: 'bg-emerald-500', textColor: 'text-emerald-600' },
+          ].map(({ key, color, textColor }) => {
+            const count = stats.layerBreakdown[key] || 0;
+            const pct =
+              stats.totalModules > 0
+                ? Math.round((count / stats.totalModules) * 100)
+                : 0;
+            return (
+              <div
+                key={key}
+                className={cn(
+                  'rounded-xl border border-app-border-primary p-4 transition-all',
+                  key === 'Service' && 'border-violet-300 bg-violet-50/50 dark:bg-violet-950/20'
+                )}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <span className={cn('text-sm font-semibold', textColor)}>
+                    {t(`dashboard.layer.${key}`)}
+                  </span>
+                  <span className="text-sm font-bold text-primary">
+                    {count}
+                    <span className="text-xs text-app-text-tertiary font-normal ml-1">
+                      {pct}%
+                    </span>
+                  </span>
+                </div>
+                <div className="h-1.5 bg-app-bg-tertiary rounded-full overflow-hidden">
+                  <div
+                    className={cn('h-full rounded-full transition-all duration-700', color)}
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 

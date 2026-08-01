@@ -20,7 +20,7 @@
 
 | Phase | 内容 | 状态 | 说明 |
 | ----- | ---- | ---- | ---- |
-| Phase 1 | Service 层配置数据 | 🟡 大部分完成 | 54 模块 schema 已就绪，Dashboard 统计仍为 mock |
+| Phase 1 | Service 层配置数据 | ✅ 完成 | 54 模块 schema + Dashboard 分层统计 (2026-08-01) |
 | Phase 2 | VS Code 扩展 | ✅ 完成 | 9 命令 + ConfigEditorPanel + ConfigTreeProvider |
 | Phase 3 | UI 组件库 | ❌ 空壳 | `@yuletech/ui` 仅 `export {}`，未开始 |
 | Phase 4 | 单元测试 | ✅ 完成 | **576 过 / 0 失败** (2026-08-01 P0-1 修复后全绿) |
@@ -99,7 +99,7 @@
 - [x] 1.5 创建 CryptoServices 模块 (Crypto, Csm, CryIf)
 - [x] 1.6 创建 WdgServices 模块 (Wdg, WdgIf, WdgM)
 - [x] 1.7 更新 ModuleTree 支持 Service 层显示
-- [ ] 1.8 更新 Dashboard 统计 Service 层模块 (仍为 mock)
+- [x] 1.8 更新 Dashboard 统计 Service 层模块 (✅ 2026-08-01 模块分层分布区块)
 
 **验收标准**:
 - Service 层模块可在 UI 中正常显示和配置 — ✅ 通过
@@ -154,6 +154,8 @@
 |---|------|------|------------|
 | P0-1 | **Can/Mcu 生成代码 GCC 编译失败** (2 个集成测试失败) | ✅ 已修复 | 2026-08-01: 中间 static const 变量 → 内联 compound literal (修复 initializer not compile-time constant)；补 DEV_ERROR_DETECT 标准宏别名。全量测试首次全绿 576/576 |
 | P0-2 | **macOS 桌面端无法签名发布** | 🔴 阻塞 | 需 Apple Developer 证书: GitHub Secrets `MAC_CSC_LINK` + `MAC_CSC_KEY_PASSWORD` (build-desktop.yml 已支持)；由老板提供证书 |
+| P0-3 | **本地 vite build 失败** (esbuild destructuring) | ✅ 已修复 | 2026-08-01: vite.config.ts build.target: 'esnext' — 避免 esbuild 将 i18next-browser-languagedetector/@xyflow 降级转换报 "Transforming destructuring not supported"。本地 build 3.4s 通过 |
+| P0-4 | **本地 dev server 崩溃** (Node 24) | 🟡 待处理 | Node 24 + vite optimizeDeps 预构建崩溃 (718 errors, EACCES .vite/.npm root 占用)。CI 用 Node 20 正常；本地开发建议 nvm 切 Node 20，或后续排查 optimizeDeps |
 
 ### P1 — 应尽快处理
 
@@ -161,7 +163,7 @@
 |---|------|------|------|
 | P1-1 | Windows NSIS 安装包构建 | 🟡 待验证 | 已启用 Windows 长路径支持 (commit 52f59b1)，CI 验证 NSIS 是否通过 |
 | P1-2 | IoHwAb schema 空壳 | ✅ 已修复 | 2026-08-01 补齐 IoHwAbGeneral/Channel/Signal/Dio/Adc 5 容器，含通道方向/信号类型枚举 |
-| P1-3 | Dashboard Service 层统计仍为 mock | 🟡 | 1.8 未完成 |
+| P1-3 | Dashboard Service 层统计仍为 mock | ✅ 已修复 | 2026-08-01 新增"模块分层分布"区块：6 层 (MCAL/ECUAL/Service/RTE/OS/ASW) 模块计数 + 占比条，Service 层高亮；zh/en i18n 齐备 |
 | P1-4 | 28/54 schema 缺 CommonPublishedInformation | ✅ 已修复 | 2026-08-01 全量补齐：54/54 schema 含标准 8 字段 CPI (ArRelease×3 + ModuleId + Sw×3 + VendorId)，新增测试断言 (schema-validation 110→165) |
 | P1-5 | 枚举参数规范 | ✅ 已修复 | PortPinDirection 14 处 + GptChannelMode 4 处 enum 化 (AUTOSAR 规范名)，IoHwAb 空壳补齐 (General/Channel/Signal/Dio/Adc 5 容器) |
 

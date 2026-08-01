@@ -57,6 +57,16 @@
     "configCount_one": "{{count}} configuration",
     "configCount_other": "{{count}} configurations",
     "acrossAllConfigs": "Across all configurations",
+    "layerDistribution": "Module Layer Distribution",
+    "layerDistributionHint": "Enabled modules by AUTOSAR layer",
+    "layer": {
+      "MCAL": "MCAL Microcontroller Abstraction",
+      "ECUAL": "ECUAL ECU Abstraction",
+      "Service": "Service Layer",
+      "RTE": "RTE Runtime Environment",
+      "OS": "OS Operating System",
+      "ASW": "ASW Application Layer"
+    },
     "quickActions": "Quick Actions",
     "openExisting": "Open Existing",
     "browseLocalConfigs": "Browse local config files",

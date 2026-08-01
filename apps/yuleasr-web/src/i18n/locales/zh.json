@@ -57,6 +57,16 @@
     "configCount_one": "{{count}} 个配置",
     "configCount_other": "{{count}} 个配置",
     "acrossAllConfigs": "跨所有配置",
+    "layerDistribution": "模块分层分布",
+    "layerDistributionHint": "按 AUTOSAR 层统计已启用模块",
+    "layer": {
+      "MCAL": "MCAL 微控制器抽象层",
+      "ECUAL": "ECUAL 外设抽象层",
+      "Service": "Service 服务层",
+      "RTE": "RTE 运行环境",
+      "OS": "OS 操作系统",
+      "ASW": "ASW 应用层"
+    },
     "quickActions": "快速操作",
     "openExisting": "打开现有配置",
     "browseLocalConfigs": "浏览本地配置文件",
