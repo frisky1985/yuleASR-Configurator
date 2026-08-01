@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 import { app, BrowserWindow, Menu, dialog, ipcMain, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 
-import { isGccAvailable, verifyFiles, saveFilesToDir, getGccVersion } from './desktop-utils.mjs';
+import { isGccAvailable, verifyFiles, saveFilesToDir, getGccVersion, sanitizeFiles } from './desktop-utils.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const isDev = !app.isPackaged;
@@ -91,10 +91,20 @@ ipcMain.handle('gcc:check', () => {
 });
 
 ipcMain.handle('gcc:verify', (_event, files) => {
-  return verifyFiles(files);
+  // Fix 5: IPC 入口校验载荷，非法载荷不进入编译路径
+  const safeFiles = sanitizeFiles(files);
+  if (!safeFiles) return { error: 'Invalid payload' };
+  try {
+    return verifyFiles(safeFiles);
+  } catch (e) {
+    return { error: String(e) };
+  }
 });
 
 ipcMain.handle('files:save', async (_event, files) => {
+  // Fix 5: IPC 入口校验载荷，非法载荷直接拒绝
+  const safeFiles = sanitizeFiles(files);
+  if (!safeFiles) return { success: false, error: 'Invalid payload' };
   const result = await dialog.showOpenDialog(mainWindow, {
     properties: ['openDirectory', 'createDirectory'],
     title: 'Select output directory for generated code',
@@ -102,7 +112,7 @@ ipcMain.handle('files:save', async (_event, files) => {
   if (result.canceled || !result.filePaths[0]) {
     return { success: false, cancelled: true };
   }
-  return saveFilesToDir(result.filePaths[0], files);
+  return saveFilesToDir(result.filePaths[0], safeFiles);
 });
 
 // ── External links ─────────────────────────────────────────
@@ -128,7 +138,20 @@ function createWindow() {
       preload: join(__dirname, 'preload.mjs'),
       contextIsolation: true,
       nodeIntegration: false,
+      // Fix 5: 渲染进程沙箱化（未打包的 preload 也可用）
+      sandbox: true,
     },
+  });
+
+  // Fix 5: 阻止页面导航离开应用（防钓鱼/防加载远程恶意页面）
+  mainWindow.webContents.on('will-navigate', (event) => event.preventDefault());
+
+  // Fix 5: 新窗口一律拒绝，外链交给系统浏览器
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    if (typeof url === 'string' && (url.startsWith('https://') || url.startsWith('http://'))) {
+      shell.openExternal(url);
+    }
+    return { action: 'deny' };
   });
 
   const menuTemplate = [

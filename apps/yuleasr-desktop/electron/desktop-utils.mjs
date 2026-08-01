@@ -3,10 +3,39 @@
  * File I/O, gcc verification, temp directory management
  */
 
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import { mkdtempSync, writeFileSync, rmSync, existsSync, mkdirSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
+
+// ── Fix 5: 渲染进程文件载荷校验（防命令注入 + 路径遍历 + 超大载荷）──
+
+const SAFE_FILENAME_RE = /^[A-Za-z0-9_-]+\.(c|h)$/;
+const MAX_FILES = 100;
+const MAX_FILE_BYTES = 5 * 1024 * 1024;
+
+/** 校验并规范化渲染进程传入的文件；非法返回 null */
+function sanitizeFile(f) {
+  if (!f || typeof f !== 'object') return null;
+  const filename = typeof f.filename === 'string' ? f.filename : '';
+  if (!SAFE_FILENAME_RE.test(filename)) return null;
+  const content = typeof f.content === 'string' ? f.content : '';
+  if (Buffer.byteLength(content, 'utf8') > MAX_FILE_BYTES) return null;
+  return { filename, content, language: f.language === 'h' ? 'h' : 'c' };
+}
+
+function sanitizeFiles(files) {
+  if (!Array.isArray(files) || files.length === 0 || files.length > MAX_FILES) return null;
+  const out = [];
+  for (const f of files) {
+    const safe = sanitizeFile(f);
+    if (!safe) return null;
+    out.push(safe);
+  }
+  return out;
+}
+
+export { sanitizeFiles };
 
 /**
  * Check if gcc (or clang) is available on this system
@@ -63,37 +92,46 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
 #endif
 `);
 
-    // Write all generated files
+    // Write all generated files (Fix 5: 仅接受白名单文件名，拒绝路径遍历/注入载荷)
     for (const f of files) {
-      writeFileSync(join(tmpDir, f.filename), f.content);
+      const safe = sanitizeFile(f);
+      if (!safe) {
+        results.push({ filename: f.filename, status: 'skipped', errors: ['Invalid filename or content'] });
+        continue;
+      }
+      writeFileSync(join(tmpDir, safe.filename), safe.content);
     }
 
-    // Syntax check each file
+    // Syntax check each file (Fix 5: execFileSync 参数数组，不经过 shell，杜绝命令注入)
     for (const f of files) {
-      const filePath = join(tmpDir, f.filename);
+      const safe = sanitizeFile(f);
+      if (!safe) {
+        continue; // already reported above
+      }
+      const filePath = join(tmpDir, safe.filename);
       if (!existsSync(filePath)) {
-        results.push({ filename: f.filename, status: 'skipped', errors: ['File not written'] });
+        results.push({ filename: safe.filename, status: 'skipped', errors: ['File not written'] });
         continue;
       }
 
       try {
-        if (f.language === 'h') {
-          execSync(`gcc -fsyntax-only -x c -I ${tmpDir} ${filePath}`, {
+        if (safe.language === 'h') {
+          execFileSync('gcc', ['-fsyntax-only', '-x', 'c', '-I', tmpDir, filePath], {
             stdio: 'pipe', timeout: 15000,
           });
         } else {
-          execSync(`gcc -fsyntax-only -I ${tmpDir} -include ${tmpDir}/Std_Types.h ${filePath}`, {
+          execFileSync('gcc', ['-fsyntax-only', '-I', tmpDir, '-include', join(tmpDir, 'Std_Types.h'), filePath], {
             stdio: 'pipe', timeout: 15000,
           });
         }
-        results.push({ filename: f.filename, status: 'pass' });
+        results.push({ filename: safe.filename, status: 'pass' });
       } catch (e) {
         const stderr = e.stderr?.toString() || '';
         const errors = stderr
           .split('\n')
           .filter(l => l.includes('error:'))
           .map(l => l.trim());
-        results.push({ filename: f.filename, status: 'fail', errors: errors.length > 0 ? errors : ['Compilation failed'] });
+        results.push({ filename: safe.filename, status: 'fail', errors: errors.length > 0 ? errors : ['Compilation failed'] });
       }
     }
   } finally {
@@ -114,8 +152,13 @@ export function saveFilesToDir(outputDir, files) {
   if (!existsSync(outputDir)) {
     mkdirSync(outputDir, { recursive: true });
   }
+  // Fix 5: 非法文件名/载荷整体拒绝，杜绝越界写盘（../evil.c、绝对路径等）
+  const safeFiles = sanitizeFiles(files);
+  if (!safeFiles) {
+    return { success: false, count: 0, path: outputDir, error: 'Invalid file payload' };
+  }
   let count = 0;
-  for (const f of files) {
+  for (const f of safeFiles) {
     writeFileSync(join(outputDir, f.filename), f.content);
     count++;
   }

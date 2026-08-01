@@ -52,6 +52,9 @@ jobs:
       - name: Build web app (for embedding in desktop)
         run: cd apps/yuleasr-web && npx vite build --base ./
 
+      - name: "Run desktop-utils security unit tests (Fix 5: IPC sanitize)"
+        run: node --test apps/yuleasr-desktop/electron/desktop-utils.test.mjs
+
       - name: Build desktop app for macOS (x64 + arm64, per package.json targets)
         run: |
           cd apps/yuleasr-desktop
@@ -124,6 +127,9 @@ jobs:
 
       - name: Build web app (for embedding in desktop)
         run: cd apps/yuleasr-web && npx vite build --base ./
+
+      - name: "Run desktop-utils security unit tests (Fix 5: IPC sanitize)"
+        run: node --test apps/yuleasr-desktop/electron/desktop-utils.test.mjs
 
       - name: Build desktop app for Linux
         run: |
