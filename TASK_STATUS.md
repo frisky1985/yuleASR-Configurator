@@ -23,8 +23,8 @@
 | Phase 1 | Service 层配置数据 | 🟡 大部分完成 | 54 模块 schema 已就绪，Dashboard 统计仍为 mock |
 | Phase 2 | VS Code 扩展 | ✅ 完成 | 9 命令 + ConfigEditorPanel + ConfigTreeProvider |
 | Phase 3 | UI 组件库 | ❌ 空壳 | `@yuletech/ui` 仅 `export {}`，未开始 |
-| Phase 4 | 单元测试 | 🟡 进行中 | core 570 测试：568 过 / 2 失败 (Can/Mcu GCC) |
-| Phase 5 | C 代码生成 | 🟡 基本完成 | 4 生成器齐备，但 Can/Mcu 生成代码 GCC 编译失败 |
+| Phase 4 | 单元测试 | ✅ 完成 | **576 过 / 0 失败** (2026-08-01 P0-1 修复后全绿) |
+| Phase 5 | C 代码生成 | ✅ 完成 | 4 生成器齐备，Can/Mcu GCC 编译已修复 |
 
 ---
 
@@ -116,7 +116,7 @@
 
 ### Phase 4: 补充单元测试
 
-**状态**: 🟡 进行中 — core 包 570 测试，568 过 / 2 失败
+**状态**: ✅ 完成 — core 包 576 测试，**0 失败** (2026-08-01 P0-1 修复后全绿)
 
 **任务清单**:
 
@@ -133,7 +133,7 @@
 
 ### Phase 5: 完善 C 代码生成
 
-**状态**: 🟡 基本完成 — 4 生成器 + Doxygen/MISRA 支持，Can/Mcu 有编译 bug
+**状态**: ✅ 完成 — 4 生成器 + Doxygen/MISRA 支持，Can/Mcu GCC 编译已修复 (2026-08-01)
 
 **任务清单**:
 
@@ -152,7 +152,7 @@
 
 | # | 事项 | 状态 | 根因 / 方案 |
 |---|------|------|------------|
-| P0-1 | **Can/Mcu 生成代码 GCC 编译失败** (2 个集成测试失败) | 🔴 未修复 | ① 嵌套 struct 用 `const` 变量引用 → "initializer element is not a compile-time constant"，需改 compound literal 内联；② `CAN_DEV_ERROR_DETECT` 宏未定义 — Cfg.h 生成的宏名是 `CAN_CANDEVERRORDETECT`，bridge 引用标准别名，需生成时补标准别名宏。修复脚本已验证思路，待正确落地（勿用嵌套反引号模板转义） |
+| P0-1 | **Can/Mcu 生成代码 GCC 编译失败** (2 个集成测试失败) | ✅ 已修复 | 2026-08-01: 中间 static const 变量 → 内联 compound literal (修复 initializer not compile-time constant)；补 DEV_ERROR_DETECT 标准宏别名。全量测试首次全绿 576/576 |
 | P0-2 | **macOS 桌面端无法签名发布** | 🔴 阻塞 | 需 Apple Developer 证书: GitHub Secrets `MAC_CSC_LINK` + `MAC_CSC_KEY_PASSWORD` (build-desktop.yml 已支持)；由老板提供证书 |
 
 ### P1 — 应尽快处理
@@ -170,8 +170,8 @@
 | # | 事项 | 状态 | 说明 |
 |---|------|------|------|
 | P2-1 | Phase 3 UI 组件库 | ❌ | @yuletech/ui 空壳，未启动 |
-| P2-2 | schema 层跨模块依赖 (crossReferences) | ❌ | 依赖关系仅在 validator 层，schema 层无表达 |
-| P2-3 | AUTOSAR ECUC 元模型补全 | ❌ | 见下方合规性评估 |
+| P2-2 | schema 层跨模块依赖 (crossReferences) | ✅ 部分完成 | 2026-08-01 类型层 (x-multiplicity/x-config-class/crossReferences) + can/cantrcv/pdur 3 模块落地示例；全量 54 模块推广待做 |
+| P2-3 | AUTOSAR ECUC 元模型补全 | ✅ 部分完成 | ReferenceDef/Multiplicity/ConfigurationClass 表达已落地；ChoiceContainerDef 仍缺 |
 
 ---
 
@@ -199,8 +199,8 @@
 
 ### 建议路线
 
-1. **短期 (P1)**: 补齐 CommonPublishedInformation + IoHwAb 参数 + enum 化已知枚举参数
-2. **中期 (P2)**: schema 增加 `x-multiplicity` / `x-config-class` 扩展字段，引入 `crossReferences` 数组表达 ReferenceDef
+1. **短期 (P1)**: ~~补 CPI + IoHwAb + enum 化~~ ✅ 已完成 2026-08-01
+2. **中期 (P2)**: ✅ 类型层已落地 (x-multiplicity/x-config-class/crossReferences) + 3 模块示例；剩余: 54 模块全量标注、ChoiceContainerDef
 3. **长期**: 若需严格 AUTOSAR 工具链互操作，考虑直接生成/消费标准 ECUC ARXML (`EcucModuleDef`)，JSON Schema 作为 UI 编辑中间层
 
 ---
