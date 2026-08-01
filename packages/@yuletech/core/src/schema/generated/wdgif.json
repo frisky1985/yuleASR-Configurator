@@ -93,7 +93,12 @@
           "description": "WdgIfTriggeredMode 参数 - 触发模式"
         }
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "x-choice-container": true,
+      "x-choice-params": [
+        "WdgIfTriggeredMode"
+      ],
+      "x-choice-description": "看门狗接口触发模式二选一 (预触发/无预触发)"
     },
     "WdgIfGeneral": {
       "description": "WdgIfGeneral 配置容器",

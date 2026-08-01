@@ -176,7 +176,7 @@
 |---|------|------|------|
 | P2-1 | Phase 3 UI 组件库 | ✅ 完成 | 2026-08-01: @yuletech/ui 从空壳 → 8 组件 (Button/Input/Select/FormField/Modal/Tooltip/Tree/PropertyPanel) + cn(); CVA+tailwind-merge 风格, tsup 构建 (cjs/esm/dts), 16 测试全过; web 应用已集成 (Dashboard 新建配置按钮) |
 | P2-2 | schema 层跨模块依赖 (crossReferences) | ✅ 完成 | 2026-08-01: loader (loadModuleSchemas 54 JSON→扁平 ModuleSchema) + validator 模块级引用 (sourceParam) + 19 条 AUTOSAR 约束标注 15 模块 (参数存在性全验) + 链路打通 (schemaExtractor 54/plugin fallback/configStore)；593 测试全绿 (新增 17)。修复历史缺陷: 原 can/cantrcv/pdur 标注缺 sourceParam 且 can 关系反了 (greater_than→less_than)，从未生效 |
-| P2-3 | AUTOSAR ECUC 元模型补全 | ✅ 部分完成 | ReferenceDef/Multiplicity/ConfigurationClass 表达已落地；ChoiceContainerDef 仍缺 |
+| P2-3 | AUTOSAR ECUC 元模型补全 | ✅ 完成 | 2026-08-01: ChoiceContainerDef 落地 — x-choice-container/x-choice-params/x-choice-description 类型层 + loader 传递 + ChoiceContainerValidator (互斥参数最多设 1 个, xChoiceParams 优先避免误算 Id) + pipeline 集成 (choiceContainerErrors) + 4 模块真实标注 (wdg/wdgif/spi/cantp)；605 测试全绿 (新增 12)。ReferenceDef/Multiplicity/ConfigurationClass 已在此前落地 |
 
 ---
 
@@ -199,7 +199,7 @@
 | **无 Multiplicity** | AUTOSAR 每个参数/容器有 lower/upperMultiplicity (0..1, 1..*) | 无法表达"至少 1 个"等出现次数约束 |
 | **无 ConfigurationClass** | AUTOSAR 参数分 PREPROCESSOR/POSTBUILD/VARIANT 配置类 | 无法区分编译期/后构建参数 |
 | **枚举覆盖极少** | 仅 3 个 schema 使用 enum (appswc/compswc/os) | AUTOSAR 参数大量是枚举 (如 CanTrcv 唤醒方式)，现多退化为裸 integer |
-| **无 ChoiceContainerDef** | 多选一容器语义缺失 | 无法表达"二选一"配置 |
+| **无 ChoiceContainerDef** | ~~多选一容器语义缺失~~ ✅ 2026-08-01 已落地 (x-choice-container/x-choice-params + ChoiceContainerValidator + wdg/wdgif/spi/cantp 4 模块标注) | "二选一"配置可校验 |
 | **CPI 覆盖不全** | ~~仅 26/54 含 CommonPublishedInformation~~ ✅ 2026-08-01 已补齐 54/54 | 标准发布信息完整 |
 
 ### 建议路线

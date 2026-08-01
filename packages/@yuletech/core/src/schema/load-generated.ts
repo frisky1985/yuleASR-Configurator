@@ -30,6 +30,9 @@ interface JsonProp {
   properties?: Record<string, JsonProp>;
   required?: string[];
   default?: unknown;
+  'x-choice-container'?: boolean;
+  'x-choice-params'?: string[];
+  'x-choice-description'?: string;
 }
 
 interface GeneratedModuleJson {
@@ -134,6 +137,13 @@ function buildContainer(
     description: prop.description || `${name} 配置容器`,
     parameters: paramNames,
     ...(children.length > 0 ? { children } : {}),
+    ...(prop['x-choice-container'] ? { xChoiceContainer: true } : {}),
+    ...(Array.isArray(prop['x-choice-params']) && prop['x-choice-params'].length > 0
+      ? { xChoiceParams: prop['x-choice-params'] }
+      : {}),
+    ...(typeof prop['x-choice-description'] === 'string'
+      ? { xChoiceDescription: prop['x-choice-description'] }
+      : {}),
   };
 
   return { container, flatParams };

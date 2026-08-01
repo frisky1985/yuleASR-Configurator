@@ -8,6 +8,7 @@ import { evaluateCondition } from '../conditions/evaluator';
 import type { ModuleConfig, ModuleSchema, ValidationError } from '../types';
 
 import { createCrossModuleValidator } from './cross-module-validator';
+import { createChoiceContainerValidator } from './choice-container-validator';
 import { YuleasrValidator } from './yuleasr-validator';
 
 // ─── Result type ─────────────────────────────────────────────────────────
@@ -17,6 +18,8 @@ export interface ValidationPipelineResult {
   moduleErrors: ValidationError[];
   /** CrossModuleValidator 跨模块引用验证结果 */
   crossModuleErrors: ValidationError[];
+  /** ChoiceContainerValidator 多选一容器验证结果 (P2-3) */
+  choiceContainerErrors: ValidationError[];
   /** 条件引擎表达式求值错误 */
   conditionErrors: ValidationError[];
   /** 合并去重后的全部错误 */
@@ -70,6 +73,13 @@ export class ValidationPipeline {
       crossModuleErrors.push(...crossValidator.validate(configs));
     }
 
+    // ── 2.5 ChoiceContainerDef 验证 (P2-3) ──
+    const choiceContainerErrors: ValidationError[] = [];
+    if (schemas.length > 0 && configs.length > 0) {
+      const choiceValidator = createChoiceContainerValidator(schemas);
+      choiceContainerErrors.push(...choiceValidator.validate(configs));
+    }
+
     // ── 3. 条件求值 ──
     const conditionErrors: ValidationError[] = [];
     if (conditions) {
@@ -91,6 +101,7 @@ export class ValidationPipeline {
     const allErrors = this.deduplicateErrors([
       ...moduleErrors,
       ...crossModuleErrors,
+      ...choiceContainerErrors,
       ...conditionErrors,
     ]);
 
@@ -99,6 +110,7 @@ export class ValidationPipeline {
     return {
       moduleErrors,
       crossModuleErrors,
+      choiceContainerErrors,
       conditionErrors,
       allErrors,
       warnings,

@@ -111,7 +111,13 @@
           "description": "WdgInterruptSource 参数 - 中断源"
         }
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "x-choice-container": true,
+      "x-choice-params": [
+        "WdgTriggeredMode",
+        "WdgTriggerConditionValue"
+      ],
+      "x-choice-description": "看门狗触发模式与触发条件互斥 (预触发/无预触发 二选一)"
     },
     "WdgGeneral": {
       "description": "WdgGeneral 配置容器",

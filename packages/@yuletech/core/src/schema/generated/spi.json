@@ -364,7 +364,12 @@
           "description": "SpiShiftClockIdleLevel 参数"
         }
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "x-choice-container": true,
+      "x-choice-params": [
+        "SpiChannelType"
+      ],
+      "x-choice-description": "SPI 通道类型互斥 (SPI_MASTER/SPI_SLAVE 二选一)"
     },
     "SpiExternalDevice_FLASH": {
       "description": "SpiExternalDevice_FLASH 配置容器",

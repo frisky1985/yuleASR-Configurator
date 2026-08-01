@@ -283,7 +283,12 @@
           "description": "CanTpTxTaType 参数"
         }
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "x-choice-container": true,
+      "x-choice-params": [
+        "CanTpChannelMode"
+      ],
+      "x-choice-description": "CanTp 通道模式二选一 (标准/扩展寻址)"
     },
     "LHBDCANFDTpChannel_fc1f7a07": {
       "description": "LHBDCANFDTpChannel_fc1f7a07 配置容器",

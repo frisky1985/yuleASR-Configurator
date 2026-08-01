@@ -59,6 +59,12 @@ export interface ContainerSchema {
   minInstances?: number;
   /** 最大实例数 */
   maxInstances?: number;
+  /** AUTOSAR ChoiceContainerDef: 容器内互斥参数组, 实例化时多选一 */
+  xChoiceContainer?: boolean;
+  /** ChoiceContainerDef 互斥参数名列表 (仅这些参数互斥, 非容器全部参数) */
+  xChoiceParams?: string[];
+  /** ChoiceContainerDef 描述 */
+  xChoiceDescription?: string;
 }
 
 /**

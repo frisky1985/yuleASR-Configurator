@@ -142,6 +142,12 @@ export interface JsonSchemaProperty {
   'x-multiplicity'?: string;
   /** AUTOSAR ECUC ConfigurationClass: 配置类 (PREPROCESSOR / POSTBUILD / VARIANT) */
   'x-config-class'?: 'PREPROCESSOR' | 'POSTBUILD' | 'VARIANT';
+  /** AUTOSAR ECUC ChoiceContainerDef: 容器内互斥子项 (多选一) */
+  'x-choice-container'?: boolean;
+  /** ChoiceContainerDef 互斥参数名列表 (仅这些参数互斥) */
+  'x-choice-params'?: string[];
+  /** ChoiceContainerDef 描述 */
+  'x-choice-description'?: string;
 }
 
 /** JSON Schema for a module */

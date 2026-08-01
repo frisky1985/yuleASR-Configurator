@@ -188,4 +188,43 @@ describe('JSON Schema Validation', () => {
     }
     expect(withConfigClass, `含 x-config-class 的 schema: ${withConfigClass.join(', ')}`).not.toHaveLength(0);
   });
+
+  it('至少一个 schema 含 x-choice-container (ChoiceContainerDef 表达, P2-3)', () => {
+    const withChoice: string[] = [];
+    for (const file of files) {
+      const schema = JSON.parse(fs.readFileSync(path.join(GENERATED_DIR, file), 'utf8'));
+      const found = (function scan(node: any): boolean {
+        if (!node || typeof node !== 'object') return false;
+        if (node['x-choice-container'] === true) return true;
+        return Object.values(node).some(v => scan(v));
+      })(schema);
+      if (found) withChoice.push(file);
+    }
+    expect(withChoice, `含 x-choice-container 的 schema: ${withChoice.join(', ')}`).not.toHaveLength(0);
+  });
+
+  it('x-choice-container 容器应含 x-choice-params 且参数真实存在', () => {
+    for (const file of files) {
+      const schema = JSON.parse(fs.readFileSync(path.join(GENERATED_DIR, file), 'utf8'));
+      const walk = (node: any, path: string): void => {
+        if (!node || typeof node !== 'object') return;
+        if (node['x-choice-container'] === true) {
+          expect(
+            Array.isArray(node['x-choice-params']) && node['x-choice-params'].length > 0,
+            `${file} ${path} 应含 x-choice-params`
+          ).toBe(true);
+          for (const p of node['x-choice-params']) {
+            expect(
+              node.properties?.[p],
+              `${file} ${path} 的互斥参数 ${p} 应存在于容器`
+            ).toBeTruthy();
+          }
+        }
+        for (const [k, v] of Object.entries(node)) {
+          if (v && typeof v === 'object') walk(v, `${path}.${k}`);
+        }
+      };
+      walk(schema, '');
+    }
+  });
 });
