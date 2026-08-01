@@ -41,7 +41,7 @@ export interface LicenseState {
 }
 
 interface LicenseActions {
-  /** Load license state from server (via GET /api/license/status) */
+  /** Load license state from server (via GET /v1/api/license/status) */
   loadFromServer: () => Promise<void>;
   /** Activate a license key */
   activateLicense: (key: string) => Promise<void>;
@@ -115,7 +115,7 @@ export const useLicenseStore = create<LicenseState & LicenseActions>()(
             maxProjects: number;
             expiresAt: string | null;
             features: Record<string, boolean | number>;
-          }>('/api/license/status');
+          }>('/v1/api/license/status');
 
           const tier = data.tier === 'pro' ? 'pro' : 'free';
           const newState: LicenseState = {
@@ -161,7 +161,7 @@ export const useLicenseStore = create<LicenseState & LicenseActions>()(
             maxProjects: number;
             expiresAt: string | null;
             features: Record<string, boolean | number>;
-          }>('/api/license/activate', { key });
+          }>('/v1/api/license/activate', { key });
 
           const newState: LicenseState = {
             tier: 'pro',

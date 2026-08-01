@@ -597,7 +597,7 @@ export const useConfigStore = create<ConfigState>()(
 
           if (isAuthenticated()) {
             try {
-              config = await api.get<ConfigFile>(`/api/configs/${configId}`);
+              config = await api.get<ConfigFile>(`/v1/api/configs/${configId}`);
               // Cache in localStorage for offline access
               saveToLocalStorage(config);
             } catch {
@@ -645,7 +645,7 @@ export const useConfigStore = create<ConfigState>()(
         if (!isAuthenticated()) return;
 
         try {
-          await api.put(`/api/configs/${currentConfig.id}`, {
+          await api.put(`/v1/api/configs/${currentConfig.id}`, {
             name: currentConfig.name,
             description: currentConfig.description,
             data: currentConfig,
@@ -654,7 +654,7 @@ export const useConfigStore = create<ConfigState>()(
         } catch (err: any) {
           // If 404, the config doesn't exist on the server yet — create it
           if (err?.status === 404) {
-            const created = await api.post<ConfigFile>('/api/configs', {
+            const created = await api.post<ConfigFile>('/v1/api/configs', {
               name: currentConfig.name,
               description: currentConfig.description,
               data: currentConfig,
@@ -688,7 +688,7 @@ export const useConfigStore = create<ConfigState>()(
         if (!isAuthenticated()) return;
 
         try {
-          const serverList = await api.get<ConfigListItem[]>('/api/configs');
+          const serverList = await api.get<ConfigListItem[]>('/v1/api/configs');
           set({ configList: serverList, isCloudSynced: true });
 
           // Also persist in localStorage for offline fallback
@@ -700,7 +700,7 @@ export const useConfigStore = create<ConfigState>()(
               const existing = localStorage.getItem(`yuleasr_config_${item.id}`);
               if (!existing) {
                 // Only fetch if not already cached locally
-                const detail = await api.get<ConfigFile>(`/api/configs/${item.id}`);
+                const detail = await api.get<ConfigFile>(`/v1/api/configs/${item.id}`);
                 saveToLocalStorage(detail);
               }
             } catch {
@@ -725,7 +725,7 @@ export const useConfigStore = create<ConfigState>()(
 
           if (isAuthenticated()) {
             try {
-              const serverList = await api.get<ConfigListItem[]>('/api/configs');
+              const serverList = await api.get<ConfigListItem[]>('/v1/api/configs');
               const localList = loadConfigListFromLocalStorage();
 
               // Merge: API wins for items with the same id, local items not in API remain
@@ -895,7 +895,7 @@ export const useConfigStore = create<ConfigState>()(
           // If authenticated, also create via API
           if (isAuthenticated()) {
             try {
-              const created = await api.post<ConfigFile>('/api/configs', {
+              const created = await api.post<ConfigFile>('/v1/api/configs', {
                 name: config.name,
                 description: config.description,
                 data: config,
@@ -957,7 +957,7 @@ export const useConfigStore = create<ConfigState>()(
           // If authenticated, also delete from API
           if (isAuthenticated()) {
             try {
-              await api.delete(`/api/configs/${configId}`);
+              await api.delete(`/v1/api/configs/${configId}`);
             } catch (err) {
               console.warn('Failed to delete config from server, local copy removed:', err);
             }
@@ -1005,7 +1005,7 @@ export const useConfigStore = create<ConfigState>()(
         // If authenticated, also push to API
         if (isAuthenticated()) {
           try {
-            await api.put(`/api/configs/${id}`, { data });
+            await api.put(`/v1/api/configs/${id}`, { data });
           } catch (err: any) {
             if (err?.status === 404) {
               // Config doesn't exist on server — create it
@@ -1013,7 +1013,7 @@ export const useConfigStore = create<ConfigState>()(
                 const configStr = localStorage.getItem(`yuleasr_config_${id}`);
                 if (configStr) {
                   const config = JSON.parse(configStr) as ConfigFile;
-                  await api.post('/api/configs', {
+                  await api.post('/v1/api/configs', {
                     name: config.name,
                     description: config.description,
                     data: config,
@@ -1138,7 +1138,7 @@ export const useConfigStore = create<ConfigState>()(
         // If authenticated, also save to API
         if (isAuthenticated()) {
           try {
-            await api.post('/api/configs', {
+            await api.post('/v1/api/configs', {
               name: config.name,
               description: config.description,
               data: config,

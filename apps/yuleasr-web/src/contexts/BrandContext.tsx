@@ -55,7 +55,7 @@ export function BrandProvider({ children }: BrandProviderProps) {
 
     async function loadBrand() {
       try {
-        const data = await api.get<BrandSettings>('/api/branding');
+        const data = await api.get<BrandSettings>('/v1/api/branding');
         if (cancelled) return;
         setBrand(data);
         applyBrandToCSS(data);

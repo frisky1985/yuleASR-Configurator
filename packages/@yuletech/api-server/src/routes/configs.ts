@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 
 import { eq, desc, and, gt } from 'drizzle-orm';
-import { FastifyRequest, FastifyReply } from 'fastify';
+import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
 
 import { db } from '../db/index.js';
@@ -20,7 +20,7 @@ const updateSchema = z.object({
 });
 
 export async function list(request: FastifyRequest, reply: FastifyReply) {
-  const { userId } = request.user as { userId: number };
+  const { id: userId } = request.user as { id: number };
   const list = await db
     .select({
       id: configs.id,
@@ -38,7 +38,7 @@ export async function list(request: FastifyRequest, reply: FastifyReply) {
 }
 
 export async function get(request: FastifyRequest, reply: FastifyReply) {
-  const { userId } = request.user as { userId: number };
+  const { id: userId } = request.user as { id: number };
   const { id } = request.params as { id: string };
   const [config] = await db
     .select()
@@ -52,7 +52,7 @@ export async function get(request: FastifyRequest, reply: FastifyReply) {
 }
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
-  const { userId } = request.user as { userId: number };
+  const { id: userId } = request.user as { id: number };
   const body = createSchema.parse(request.body);
   const [config] = await db
     .insert(configs)
@@ -68,7 +68,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 }
 
 export async function update(request: FastifyRequest, reply: FastifyReply) {
-  const { userId } = request.user as { userId: number };
+  const { id: userId } = request.user as { id: number };
   const { id } = request.params as { id: string };
   const body = updateSchema.parse(request.body);
 
@@ -115,7 +115,7 @@ export async function update(request: FastifyRequest, reply: FastifyReply) {
 }
 
 export async function remove(request: FastifyRequest, reply: FastifyReply) {
-  const { userId } = request.user as { userId: number };
+  const { id: userId } = request.user as { id: number };
   const { id } = request.params as { id: string };
   const [existing] = await db
     .select()
@@ -131,7 +131,7 @@ export async function remove(request: FastifyRequest, reply: FastifyReply) {
 }
 
 export async function getVersions(request: FastifyRequest, reply: FastifyReply) {
-  const { userId } = request.user as { userId: number };
+  const { id: userId } = request.user as { id: number };
   const { id } = request.params as { id: string };
   const [existing] = await db
     .select()
@@ -169,7 +169,7 @@ export async function getByShareToken(request: FastifyRequest, reply: FastifyRep
 const LOCK_DURATION_MS = 30 * 60 * 1000; // 30 minutes
 
 export async function lock(request: FastifyRequest, reply: FastifyReply) {
-  const { userId } = request.user as { userId: number };
+  const { id: userId } = request.user as { id: number };
   const { id } = request.params as { id: string };
   const configId = parseInt(id, 10);
 
@@ -223,7 +223,7 @@ export async function lock(request: FastifyRequest, reply: FastifyReply) {
 }
 
 export async function unlock(request: FastifyRequest, reply: FastifyReply) {
-  const { userId } = request.user as { userId: number };
+  const { id: userId } = request.user as { id: number };
   const { id } = request.params as { id: string };
   const configId = parseInt(id, 10);
 
@@ -261,4 +261,39 @@ export async function getLockStatus(request: FastifyRequest, reply: FastifyReply
     lockedAt: activeLock.lockedAt,
     expiresAt: activeLock.expiresAt,
   });
+}
+
+
+// ── Routes ──────────────────────────────────────────────────────────────
+
+export async function configsRoutes(app: FastifyInstance) {
+  // GET /api/configs — list own configs
+  app.get('/', { onRequest: [(app as any).authenticate] }, list);
+
+  // GET /api/configs/:id — get one config
+  app.get('/:id', { onRequest: [(app as any).authenticate] }, get);
+
+  // POST /api/configs — create
+  app.post('/', { onRequest: [(app as any).authenticate] }, create);
+
+  // PUT /api/configs/:id — update
+  app.put('/:id', { onRequest: [(app as any).authenticate] }, update);
+
+  // DELETE /api/configs/:id — remove
+  app.delete('/:id', { onRequest: [(app as any).authenticate] }, remove);
+
+  // GET /api/configs/:id/versions — version history
+  app.get('/:id/versions', { onRequest: [(app as any).authenticate] }, getVersions);
+
+  // GET /api/configs/shared/:token — public share (no auth)
+  app.get('/shared/:token', getByShareToken);
+
+  // POST /api/configs/:id/lock — acquire/refresh lock
+  app.post('/:id/lock', { onRequest: [(app as any).authenticate] }, lock);
+
+  // POST /api/configs/:id/unlock — release lock
+  app.post('/:id/unlock', { onRequest: [(app as any).authenticate] }, unlock);
+
+  // GET /api/configs/:id/lock-status — check lock
+  app.get('/:id/lock-status', { onRequest: [(app as any).authenticate] }, getLockStatus);
 }

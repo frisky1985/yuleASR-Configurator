@@ -110,13 +110,13 @@ export interface LockStatus {
 export async function lockConfig(
   configId: number
 ): Promise<{ locked: boolean; expiresAt: string }> {
-  return api.post(`/api/configs/${configId}/lock`);
+  return api.post(`/v1/api/configs/${configId}/lock`);
 }
 
 export async function unlockConfig(configId: number): Promise<{ locked: boolean }> {
-  return api.post(`/api/configs/${configId}/unlock`);
+  return api.post(`/v1/api/configs/${configId}/unlock`);
 }
 
 export async function getConfigLockStatus(configId: number): Promise<LockStatus> {
-  return api.get(`/api/configs/${configId}/lock-status`);
+  return api.get(`/v1/api/configs/${configId}/lock-status`);
 }

@@ -10,6 +10,7 @@ import { authRoutes } from './routes/auth.js';
 import { blogRoutes } from './routes/blog.js';
 import { brandingRoutes } from './routes/branding.js';
 import { bswTemplatesRoutes } from './routes/bswTemplates.js';
+import { configsRoutes } from './routes/configs.js';
 import { licenseRoutes } from './routes/license.js';
 import { paymentRoutes } from './routes/payment.js';
 import { pluginRoutes } from './routes/plugins.js';
@@ -67,6 +68,7 @@ await app.register(paymentRoutes, { prefix: '/v1/api/payment' });
 await app.register(bswTemplatesRoutes, { prefix: '/v1/api/bsw-templates' });
 await app.register(templateReviewsRoutes, { prefix: '/v1/api' });
 await app.register(sharedConfigsRoutes, { prefix: '/v1/api/shared-configs' });
+await app.register(configsRoutes, { prefix: '/v1/api/configs' });
 await app.register(qaRoutes, { prefix: '/v1/api' });
 
 // ── Branding (OEM White-Label) ─────────────────────────────────────────
