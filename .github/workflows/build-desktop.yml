@@ -52,11 +52,11 @@ jobs:
       - name: Build web app (for embedding in desktop)
         run: cd apps/yuleasr-web && npx vite build --base ./
 
-      - name: Build desktop app for macOS (universal)
+      - name: Build desktop app for macOS (x64 + arm64, per package.json targets)
         run: |
           cd apps/yuleasr-desktop
           cp -r ../yuleasr-web/dist .
-          npx electron-builder --mac --universal --publish never
+          npx electron-builder --mac --publish never
         env:
           CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.MAC_CSC_KEY_PASSWORD }}
@@ -110,7 +110,7 @@ jobs:
       - name: Install system deps
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
@@ -173,8 +173,8 @@ jobs:
           node-version: '20'
           cache: 'pnpm'
 
-      - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+      - name: Install dependencies (hoisted for NSIS long-path compat)
+        run: pnpm install --no-frozen-lockfile --config.node-linker=hoisted
 
       - name: Enable Windows long paths (fix NSIS MAX_PATH)
         if: runner.os == 'Windows'
