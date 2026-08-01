@@ -112,7 +112,11 @@
           },
           "OsTaskSchedule": {
             "type": "string",
-            "enum": ["FULL", "NON", "MIXED"],
+            "enum": [
+              "FULL",
+              "NON",
+              "MIXED"
+            ],
             "default": "FULL",
             "description": "调度策略: FULL(完全抢占), NON(非抢占), MIXED(混合)"
           },
@@ -132,7 +136,10 @@
           },
           "OsTaskType": {
             "type": "string",
-            "enum": ["BCC", "ECC"],
+            "enum": [
+              "BCC",
+              "ECC"
+            ],
             "default": "BCC",
             "description": "任务类型: BCC(基础任务), ECC(扩展任务-支持事件)"
           },
@@ -186,7 +193,10 @@
           },
           "OsIsrCategory": {
             "type": "integer",
-            "enum": [1, 2],
+            "enum": [
+              1,
+              2
+            ],
             "default": 2,
             "description": "ISR 分类: 1(Category 1 - 不使用OS服务), 2(Category 2 - 可使用OS服务)"
           },
@@ -231,7 +241,11 @@
             "description": "中断处理函数名"
           }
         },
-        "required": ["OsIsrName", "OsIsrCategory", "OsIsrInterruptPriority"],
+        "required": [
+          "OsIsrName",
+          "OsIsrCategory",
+          "OsIsrInterruptPriority"
+        ],
         "additionalProperties": true
       }
     },
@@ -304,7 +318,11 @@
           },
           "OsAlarmActionType": {
             "type": "string",
-            "enum": ["ActivateTask", "SetEvent", "Callback"],
+            "enum": [
+              "ActivateTask",
+              "SetEvent",
+              "Callback"
+            ],
             "default": "ActivateTask",
             "description": "到期动作类型"
           },
@@ -380,7 +398,11 @@
           },
           "OsScheduleTableSyncStrategy": {
             "type": "string",
-            "enum": ["NONE", "SINGLE", "IMPLICIT"],
+            "enum": [
+              "NONE",
+              "SINGLE",
+              "IMPLICIT"
+            ],
             "default": "NONE",
             "description": "同步策略: NONE(无), SINGLE(单次), IMPLICIT(隐式)"
           },
@@ -410,7 +432,11 @@
                 },
                 "ExpiryPointActionType": {
                   "type": "string",
-                  "enum": ["ActivateTask", "SetEvent", "Callback"],
+                  "enum": [
+                    "ActivateTask",
+                    "SetEvent",
+                    "Callback"
+                  ],
                   "default": "ActivateTask",
                   "description": "到期动作类型"
                 },
@@ -429,12 +455,17 @@
                   "description": "事件掩码"
                 }
               },
-              "required": ["ExpiryPointOffset"],
+              "required": [
+                "ExpiryPointOffset"
+              ],
               "additionalProperties": true
             }
           }
         },
-        "required": ["OsScheduleTableName", "OsScheduleTableDuration"],
+        "required": [
+          "OsScheduleTableName",
+          "OsScheduleTableDuration"
+        ],
         "additionalProperties": true
       }
     },
@@ -462,7 +493,11 @@
             "description": "事件掩码 (位掩码, 2^n)"
           }
         },
-        "required": ["OsEventName", "OsEventTaskRef", "OsEventMask"],
+        "required": [
+          "OsEventName",
+          "OsEventTaskRef",
+          "OsEventMask"
+        ],
         "additionalProperties": true
       }
     },
@@ -490,7 +525,10 @@
             "description": "是否内部资源"
           }
         },
-        "required": ["OsResourceName", "OsResourcePriority"],
+        "required": [
+          "OsResourceName",
+          "OsResourcePriority"
+        ],
         "additionalProperties": true
       }
     },
@@ -512,26 +550,40 @@
           },
           "OsApplicationTasks": {
             "type": "array",
-            "items": { "type": "string", "maxLength": 128 },
+            "items": {
+              "type": "string",
+              "maxLength": 128
+            },
             "description": "应用包含的任务引用列表"
           },
           "OsApplicationIsrs": {
             "type": "array",
-            "items": { "type": "string", "maxLength": 128 },
+            "items": {
+              "type": "string",
+              "maxLength": 128
+            },
             "description": "应用包含的 ISR 引用列表"
           },
           "OsApplicationScheduleTables": {
             "type": "array",
-            "items": { "type": "string", "maxLength": 128 },
+            "items": {
+              "type": "string",
+              "maxLength": 128
+            },
             "description": "应用包含的调度表引用列表"
           },
           "OsApplicationHooks": {
             "type": "array",
-            "items": { "type": "string", "maxLength": 256 },
+            "items": {
+              "type": "string",
+              "maxLength": 256
+            },
             "description": "应用关联的 hook 函数列表"
           }
         },
-        "required": ["OsApplicationName"],
+        "required": [
+          "OsApplicationName"
+        ],
         "additionalProperties": true
       }
     },
@@ -591,12 +643,71 @@
             "description": "MPU 类型"
           }
         },
-        "required": ["OsPhysicalCoreId"],
+        "required": [
+          "OsPhysicalCoreId"
+        ],
         "additionalProperties": true
       }
+    },
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
     }
   },
-  "required": ["OsGeneral"],
+  "required": [
+    "OsGeneral"
+  ],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

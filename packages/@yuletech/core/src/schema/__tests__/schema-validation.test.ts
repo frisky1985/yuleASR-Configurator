@@ -41,6 +41,49 @@ describe('JSON Schema Validation', () => {
     expect(['MCAL', 'ECUAL', 'Service', 'RTE', 'OS', 'ASW']).toContain(schema['x-layer']);
   });
 
+  it.each(files)('should include CommonPublishedInformation in %s', file => {
+    const content = fs.readFileSync(path.join(GENERATED_DIR, file), 'utf8');
+    const schema = JSON.parse(content);
+    const cpi = schema.properties?.CommonPublishedInformation;
+    expect(cpi, `${file} 缺 CommonPublishedInformation (AUTOSAR ECUC 标准容器)`).toBeDefined();
+    expect(cpi.type).toBe('object');
+    // AUTOSAR 标准 8 字段
+    const cpiFields = [
+      'ArReleaseMajorVersion', 'ArReleaseMinorVersion', 'ArReleaseRevisionVersion',
+      'ModuleId', 'SwMajorVersion', 'SwMinorVersion', 'SwPatchVersion', 'VendorId',
+    ];
+    for (const f of cpiFields) {
+      expect(cpi.properties?.[f], `${file} CPI 缺字段 ${f}`).toBeDefined();
+      expect(cpi.properties[f].type).toBe('integer');
+    }
+  });
+
+  it('should enum-ify known AUTOSAR enum parameters (PortPinDirection / GptChannelMode)', () => {
+    const port = JSON.parse(fs.readFileSync(path.join(GENERATED_DIR, 'port.json'), 'utf8'));
+    const gpt = JSON.parse(fs.readFileSync(path.join(GENERATED_DIR, 'gpt.json'), 'utf8'));
+
+    function findEnums(node: any, paramName: string, out: any[]) {
+      if (!node || typeof node !== 'object') return;
+      if (node[paramName] && Array.isArray(node[paramName].enum)) out.push(node[paramName].enum);
+      for (const v of Object.values(node)) {
+        if (v && typeof v === 'object') findEnums(v, paramName, out);
+      }
+    }
+    const portDirs: any[] = [];
+    const gptModes: any[] = [];
+    findEnums(port, 'PortPinDirection', portDirs);
+    findEnums(gpt, 'GptChannelMode', gptModes);
+
+    expect(portDirs.length).toBeGreaterThan(0);
+    for (const e of portDirs) {
+      expect(e).toEqual(['PORT_PIN_IN', 'PORT_PIN_OUT']);
+    }
+    expect(gptModes.length).toBeGreaterThan(0);
+    for (const e of gptModes) {
+      expect(e).toEqual(['GPT_CHANNEL_MODE_CONTINUOUS', 'GPT_CHANNEL_MODE_ONESHOT']);
+    }
+  });
+
   it('should cover all expected BSW modules', () => {
     const names = files.map(f => f.replace('.json', ''));
     const expected = [

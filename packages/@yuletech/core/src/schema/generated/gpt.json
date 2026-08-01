@@ -126,7 +126,11 @@
         "GptChannelMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "GptChannelMode 参数"
+          "description": "GptChannelMode 参数",
+          "enum": [
+            "GPT_CHANNEL_MODE_CONTINUOUS",
+            "GPT_CHANNEL_MODE_ONESHOT"
+          ]
         },
         "GptHwChannel": {
           "type": "string",
@@ -212,7 +216,11 @@
         "GptChannelMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "GptChannelMode 参数"
+          "description": "GptChannelMode 参数",
+          "enum": [
+            "GPT_CHANNEL_MODE_CONTINUOUS",
+            "GPT_CHANNEL_MODE_ONESHOT"
+          ]
         },
         "GptHwChannel": {
           "type": "string",
@@ -298,7 +306,11 @@
         "GptChannelMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "GptChannelMode 参数"
+          "description": "GptChannelMode 参数",
+          "enum": [
+            "GPT_CHANNEL_MODE_CONTINUOUS",
+            "GPT_CHANNEL_MODE_ONESHOT"
+          ]
         },
         "GptHwChannel": {
           "type": "string",
@@ -384,7 +396,11 @@
         "GptChannelMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "GptChannelMode 参数"
+          "description": "GptChannelMode 参数",
+          "enum": [
+            "GPT_CHANNEL_MODE_CONTINUOUS",
+            "GPT_CHANNEL_MODE_ONESHOT"
+          ]
         },
         "GptHwChannel": {
           "type": "string",

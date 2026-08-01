@@ -25,7 +25,9 @@
       "items": {
         "type": "object",
         "properties": {
-          "PortInterfaceName": { "type": "string" },
+          "PortInterfaceName": {
+            "type": "string"
+          },
           "PortInterfaceKind": {
             "type": "string",
             "enum": [
@@ -36,17 +38,30 @@
               "NvDataInterface"
             ]
           },
-          "PortInterfaceDescription": { "type": "string" },
-          "PortInterfaceIsService": { "type": "boolean" },
+          "PortInterfaceDescription": {
+            "type": "string"
+          },
+          "PortInterfaceIsService": {
+            "type": "boolean"
+          },
           "DataElements": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "DataElementName": { "type": "string" },
-                "DataElementTypeRef": { "type": "string" },
-                "DataElementQueueLength": { "type": "integer", "minimum": 0 },
-                "DataElementDescription": { "type": "string" }
+                "DataElementName": {
+                  "type": "string"
+                },
+                "DataElementTypeRef": {
+                  "type": "string"
+                },
+                "DataElementQueueLength": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "DataElementDescription": {
+                  "type": "string"
+                }
               }
             }
           },
@@ -55,20 +70,34 @@
             "items": {
               "type": "object",
               "properties": {
-                "OperationName": { "type": "string" },
-                "OperationDescription": { "type": "string" },
+                "OperationName": {
+                  "type": "string"
+                },
+                "OperationDescription": {
+                  "type": "string"
+                },
                 "OperationArguments": {
                   "type": "array",
                   "items": {
                     "type": "object",
                     "properties": {
-                      "ArgName": { "type": "string" },
-                      "ArgTypeRef": { "type": "string" },
+                      "ArgName": {
+                        "type": "string"
+                      },
+                      "ArgTypeRef": {
+                        "type": "string"
+                      },
                       "ArgDirection": {
                         "type": "string",
-                        "enum": ["IN", "OUT", "INOUT"]
+                        "enum": [
+                          "IN",
+                          "OUT",
+                          "INOUT"
+                        ]
                       },
-                      "ArgDescription": { "type": "string" }
+                      "ArgDescription": {
+                        "type": "string"
+                      }
                     }
                   }
                 }
@@ -84,10 +113,23 @@
       "items": {
         "type": "object",
         "properties": {
-          "PortName": { "type": "string" },
-          "PortDirection": { "type": "string", "enum": ["IN", "OUT", "INOUT"] },
-          "PortInterfaceRef": { "type": "string" },
-          "PortDescription": { "type": "string" }
+          "PortName": {
+            "type": "string"
+          },
+          "PortDirection": {
+            "type": "string",
+            "enum": [
+              "IN",
+              "OUT",
+              "INOUT"
+            ]
+          },
+          "PortInterfaceRef": {
+            "type": "string"
+          },
+          "PortDescription": {
+            "type": "string"
+          }
         }
       }
     },
@@ -97,8 +139,12 @@
       "items": {
         "type": "object",
         "properties": {
-          "RunnableName": { "type": "string" },
-          "RunnableSymbol": { "type": "string" },
+          "RunnableName": {
+            "type": "string"
+          },
+          "RunnableSymbol": {
+            "type": "string"
+          },
           "RunnableInvocationType": {
             "type": "string",
             "enum": [
@@ -110,9 +156,16 @@
               "onTransition"
             ]
           },
-          "RunnableInterval": { "type": "number", "minimum": 0 },
-          "RunnableCanBeConcurrent": { "type": "boolean" },
-          "RunnableDescription": { "type": "string" }
+          "RunnableInterval": {
+            "type": "number",
+            "minimum": 0
+          },
+          "RunnableCanBeConcurrent": {
+            "type": "boolean"
+          },
+          "RunnableDescription": {
+            "type": "string"
+          }
         }
       }
     },
@@ -122,10 +175,16 @@
       "items": {
         "type": "object",
         "properties": {
-          "IrvName": { "type": "string" },
-          "IrvTypeRef": { "type": "string" },
+          "IrvName": {
+            "type": "string"
+          },
+          "IrvTypeRef": {
+            "type": "string"
+          },
           "IrvInitValue": {},
-          "IrvDescription": { "type": "string" }
+          "IrvDescription": {
+            "type": "string"
+          }
         }
       }
     },
@@ -135,8 +194,12 @@
       "items": {
         "type": "object",
         "properties": {
-          "MappingApplicationType": { "type": "string" },
-          "MappingImplementationType": { "type": "string" }
+          "MappingApplicationType": {
+            "type": "string"
+          },
+          "MappingImplementationType": {
+            "type": "string"
+          }
         }
       }
     },
@@ -146,11 +209,25 @@
       "items": {
         "type": "object",
         "properties": {
-          "AccessName": { "type": "string" },
-          "AccessRunnableRef": { "type": "string" },
-          "AccessPortRef": { "type": "string" },
-          "AccessDataElementRef": { "type": "string" },
-          "AccessKind": { "type": "string", "enum": ["READ", "WRITE"] }
+          "AccessName": {
+            "type": "string"
+          },
+          "AccessRunnableRef": {
+            "type": "string"
+          },
+          "AccessPortRef": {
+            "type": "string"
+          },
+          "AccessDataElementRef": {
+            "type": "string"
+          },
+          "AccessKind": {
+            "type": "string",
+            "enum": [
+              "READ",
+              "WRITE"
+            ]
+          }
         }
       }
     },
@@ -160,14 +237,82 @@
       "items": {
         "type": "object",
         "properties": {
-          "ScpName": { "type": "string" },
-          "ScpRunnableRef": { "type": "string" },
-          "ScpPortRef": { "type": "string" },
-          "ScpOperationRef": { "type": "string" },
-          "ScpTimeout": { "type": "number", "minimum": 0 }
+          "ScpName": {
+            "type": "string"
+          },
+          "ScpRunnableRef": {
+            "type": "string"
+          },
+          "ScpPortRef": {
+            "type": "string"
+          },
+          "ScpOperationRef": {
+            "type": "string"
+          },
+          "ScpTimeout": {
+            "type": "number",
+            "minimum": 0
+          }
         }
       }
+    },
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
     }
   },
-  "required": ["ComponentName"]
+  "required": [
+    "ComponentName"
+  ]
 }

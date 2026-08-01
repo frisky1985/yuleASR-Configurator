@@ -23,7 +23,7 @@
 | Phase 1 | Service 层配置数据 | 🟡 大部分完成 | 54 模块 schema 已就绪，Dashboard 统计仍为 mock |
 | Phase 2 | VS Code 扩展 | ✅ 完成 | 9 命令 + ConfigEditorPanel + ConfigTreeProvider |
 | Phase 3 | UI 组件库 | ❌ 空壳 | `@yuletech/ui` 仅 `export {}`，未开始 |
-| Phase 4 | 单元测试 | 🟡 进行中 | core 517 测试：515 过 / 2 失败 (Can/Mcu GCC) |
+| Phase 4 | 单元测试 | 🟡 进行中 | core 570 测试：568 过 / 2 失败 (Can/Mcu GCC) |
 | Phase 5 | C 代码生成 | 🟡 基本完成 | 4 生成器齐备，但 Can/Mcu 生成代码 GCC 编译失败 |
 
 ---
@@ -95,7 +95,7 @@
 - [x] 1.1 定义 Service 层模块分类 (MemStack, ComStack, IoHwAb, etc.)
 - [x] 1.2 创建 MemStack 模块 (Fee, Ea, MemIf, Nvm)
 - [x] 1.3 创建 ComStack 模块 (Can, CanIf, CanTp, Com, PduR)
-- [x] 1.4 创建 IoHwAb 模块 (⚠️ 仅空壳: IoHwAbDio/IoHwAbAdc 无参数定义)
+- [x] 1.4 创建 IoHwAb 模块 (✅ 2026-08-01 补齐: General/Channel/Signal/Dio/Adc)
 - [x] 1.5 创建 CryptoServices 模块 (Crypto, Csm, CryIf)
 - [x] 1.6 创建 WdgServices 模块 (Wdg, WdgIf, WdgM)
 - [x] 1.7 更新 ModuleTree 支持 Service 层显示
@@ -116,7 +116,7 @@
 
 ### Phase 4: 补充单元测试
 
-**状态**: 🟡 进行中 — core 包 517 测试，515 过 / 2 失败
+**状态**: 🟡 进行中 — core 包 570 测试，568 过 / 2 失败
 
 **任务清单**:
 
@@ -160,9 +160,10 @@
 | # | 事项 | 状态 | 说明 |
 |---|------|------|------|
 | P1-1 | Windows NSIS 安装包构建 | 🟡 待验证 | 已启用 Windows 长路径支持 (commit 52f59b1)，CI 验证 NSIS 是否通过 |
-| P1-2 | IoHwAb schema 空壳 | 🟡 | `IoHwAbDio`/`IoHwAbAdc` 无参数定义，需按 AUTOSAR IoHwAb 规范补齐 |
+| P1-2 | IoHwAb schema 空壳 | ✅ 已修复 | 2026-08-01 补齐 IoHwAbGeneral/Channel/Signal/Dio/Adc 5 容器，含通道方向/信号类型枚举 |
 | P1-3 | Dashboard Service 层统计仍为 mock | 🟡 | 1.8 未完成 |
-| P1-4 | 28/54 schema 缺 CommonPublishedInformation | 🟡 | 规范要求每个模块含 ModuleId/BswModuleEntry/ArReleaseVersion 等标准字段 |
+| P1-4 | 28/54 schema 缺 CommonPublishedInformation | ✅ 已修复 | 2026-08-01 全量补齐：54/54 schema 含标准 8 字段 CPI (ArRelease×3 + ModuleId + Sw×3 + VendorId)，新增测试断言 (schema-validation 110→165) |
+| P1-5 | 枚举参数规范 | ✅ 已修复 | PortPinDirection 14 处 + GptChannelMode 4 处 enum 化 (AUTOSAR 规范名)，IoHwAb 空壳补齐 (General/Channel/Signal/Dio/Adc 5 容器) |
 
 ### P2 — 后续迭代
 
@@ -194,7 +195,7 @@
 | **无 ConfigurationClass** | AUTOSAR 参数分 PREPROCESSOR/POSTBUILD/VARIANT 配置类 | 无法区分编译期/后构建参数 |
 | **枚举覆盖极少** | 仅 3 个 schema 使用 enum (appswc/compswc/os) | AUTOSAR 参数大量是枚举 (如 CanTrcv 唤醒方式)，现多退化为裸 integer |
 | **无 ChoiceContainerDef** | 多选一容器语义缺失 | 无法表达"二选一"配置 |
-| **CPI 覆盖不全** | 仅 26/54 含 CommonPublishedInformation | 标准发布信息不完整 |
+| **CPI 覆盖不全** | ~~仅 26/54 含 CommonPublishedInformation~~ ✅ 2026-08-01 已补齐 54/54 | 标准发布信息完整 |
 
 ### 建议路线
 

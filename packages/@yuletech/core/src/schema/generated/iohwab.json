@@ -2,21 +2,195 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/iohwab.json",
   "title": "IoHwAb Configuration",
-  "description": "I/O 硬件抽象层",
+  "description": "I/O 硬件抽象层 (AUTOSAR SWS_IoHwAb)",
   "type": "object",
   "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "IoHwAbGeneral": {
+      "description": "IoHwAb 通用配置",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "IoHwAbDevErrorDetect": {
+          "type": "boolean",
+          "default": false,
+          "description": "开发错误检测使能 (DET)"
+        },
+        "IoHwAbVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "版本信息 API 使能"
+        }
+      }
+    },
+    "IoHwAbChannel": {
+      "description": "IoHwAb 通道配置 (映射 Dio/Adc/Pwm 通道)",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "IoHwAbChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "通道 ID"
+        },
+        "IoHwAbChannelDirection": {
+          "type": "string",
+          "enum": [
+            "IOHWAB_CH_IN",
+            "IOHWAB_CH_OUT",
+            "IOHWAB_CH_INOUT"
+          ],
+          "description": "通道方向"
+        },
+        "IoHwAbPortPinRef": {
+          "type": "string",
+          "description": "引用的 Dio/Port 引脚"
+        },
+        "IoHwAbSignalRef": {
+          "type": "string",
+          "description": "关联信号引用"
+        }
+      }
+    },
+    "IoHwAbSignal": {
+      "description": "IoHwAb 信号配置",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "IoHwAbSignalId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "信号 ID"
+        },
+        "IoHwAbSignalDirection": {
+          "type": "string",
+          "enum": [
+            "IOHWAB_SIG_IN",
+            "IOHWAB_SIG_OUT"
+          ],
+          "description": "信号方向"
+        },
+        "IoHwAbSignalType": {
+          "type": "string",
+          "enum": [
+            "IOHWAB_SIG_DIGITAL",
+            "IOHWAB_SIG_ANALOG",
+            "IOHWAB_SIG_PWM"
+          ],
+          "description": "信号类型"
+        }
+      }
+    },
     "IoHwAbDio": {
       "description": "数字 I/O 配置",
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "properties": {
+        "IoHwAbDioChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "数字通道 ID"
+        },
+        "IoHwAbDioPortPin": {
+          "type": "string",
+          "description": "引脚引用 (PortPin)"
+        },
+        "IoHwAbDioDirection": {
+          "type": "string",
+          "enum": [
+            "IOHWAB_DIO_IN",
+            "IOHWAB_DIO_OUT"
+          ],
+          "description": "数字通道方向"
+        }
+      }
     },
     "IoHwAbAdc": {
       "description": "ADC 配置",
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "properties": {
+        "IoHwAbAdcChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ADC 通道 ID"
+        },
+        "IoHwAbAdcResolution": {
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 32,
+          "description": "ADC 分辨率 (bit)"
+        },
+        "IoHwAbAdcRefVoltage": {
+          "type": "number",
+          "description": "参考电压 (mV)"
+        }
+      }
     }
   },
+  "required": [
+    "CommonPublishedInformation"
+  ],
   "additionalProperties": false,
   "x-layer": "ECUAL",
-  "x-version": "4.4.0"
+  "x-version": "4.4.0",
+  "x-source": "ARXML-Extracted"
 }

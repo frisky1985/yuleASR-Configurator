@@ -44,7 +44,11 @@
         "PortPinDirection": {
           "type": "string",
           "maxLength": 255,
-          "description": "PortPinDirection 参数"
+          "description": "PortPinDirection 参数",
+          "enum": [
+            "PORT_PIN_IN",
+            "PORT_PIN_OUT"
+          ]
         },
         "PortPinInitialMode": {
           "type": "string",
@@ -123,7 +127,11 @@
         "PortPinDirection": {
           "type": "string",
           "maxLength": 255,
-          "description": "PortPinDirection 参数"
+          "description": "PortPinDirection 参数",
+          "enum": [
+            "PORT_PIN_IN",
+            "PORT_PIN_OUT"
+          ]
         },
         "PortPinInitialMode": {
           "type": "string",
@@ -202,7 +210,11 @@
         "PortPinDirection": {
           "type": "string",
           "maxLength": 255,
-          "description": "PortPinDirection 参数"
+          "description": "PortPinDirection 参数",
+          "enum": [
+            "PORT_PIN_IN",
+            "PORT_PIN_OUT"
+          ]
         },
         "PortPinInitialMode": {
           "type": "string",
@@ -281,7 +293,11 @@
         "PortPinDirection": {
           "type": "string",
           "maxLength": 255,
-          "description": "PortPinDirection 参数"
+          "description": "PortPinDirection 参数",
+          "enum": [
+            "PORT_PIN_IN",
+            "PORT_PIN_OUT"
+          ]
         },
         "PortPinInitialMode": {
           "type": "string",
@@ -360,7 +376,11 @@
         "PortPinDirection": {
           "type": "string",
           "maxLength": 255,
-          "description": "PortPinDirection 参数"
+          "description": "PortPinDirection 参数",
+          "enum": [
+            "PORT_PIN_IN",
+            "PORT_PIN_OUT"
+          ]
         },
         "PortPinInitialMode": {
           "type": "string",
@@ -494,7 +514,11 @@
         "PortPinDirection": {
           "type": "string",
           "maxLength": 255,
-          "description": "PortPinDirection 参数"
+          "description": "PortPinDirection 参数",
+          "enum": [
+            "PORT_PIN_IN",
+            "PORT_PIN_OUT"
+          ]
         },
         "PortPinInitialMode": {
           "type": "string",
@@ -573,7 +597,11 @@
         "PortPinDirection": {
           "type": "string",
           "maxLength": 255,
-          "description": "PortPinDirection 参数"
+          "description": "PortPinDirection 参数",
+          "enum": [
+            "PORT_PIN_IN",
+            "PORT_PIN_OUT"
+          ]
         },
         "PortPinInitialMode": {
           "type": "string",
@@ -652,7 +680,11 @@
         "PortPinDirection": {
           "type": "string",
           "maxLength": 255,
-          "description": "PortPinDirection 参数"
+          "description": "PortPinDirection 参数",
+          "enum": [
+            "PORT_PIN_IN",
+            "PORT_PIN_OUT"
+          ]
         },
         "PortPinInitialMode": {
           "type": "string",
@@ -731,7 +763,11 @@
         "PortPinDirection": {
           "type": "string",
           "maxLength": 255,
-          "description": "PortPinDirection 参数"
+          "description": "PortPinDirection 参数",
+          "enum": [
+            "PORT_PIN_IN",
+            "PORT_PIN_OUT"
+          ]
         },
         "PortPinInitialMode": {
           "type": "string",
@@ -810,7 +846,11 @@
         "PortPinDirection": {
           "type": "string",
           "maxLength": 255,
-          "description": "PortPinDirection 参数"
+          "description": "PortPinDirection 参数",
+          "enum": [
+            "PORT_PIN_IN",
+            "PORT_PIN_OUT"
+          ]
         },
         "PortPinInitialMode": {
           "type": "string",
@@ -889,7 +929,11 @@
         "PortPinDirection": {
           "type": "string",
           "maxLength": 255,
-          "description": "PortPinDirection 参数"
+          "description": "PortPinDirection 参数",
+          "enum": [
+            "PORT_PIN_IN",
+            "PORT_PIN_OUT"
+          ]
         },
         "PortPinInitialMode": {
           "type": "string",
@@ -968,7 +1012,11 @@
         "PortPinDirection": {
           "type": "string",
           "maxLength": 255,
-          "description": "PortPinDirection 参数"
+          "description": "PortPinDirection 参数",
+          "enum": [
+            "PORT_PIN_IN",
+            "PORT_PIN_OUT"
+          ]
         },
         "PortPinInitialMode": {
           "type": "string",
@@ -1047,7 +1095,11 @@
         "PortPinDirection": {
           "type": "string",
           "maxLength": 255,
-          "description": "PortPinDirection 参数"
+          "description": "PortPinDirection 参数",
+          "enum": [
+            "PORT_PIN_IN",
+            "PORT_PIN_OUT"
+          ]
         },
         "PortPinInitialMode": {
           "type": "string",
@@ -1099,7 +1151,11 @@
         "PortPinDirection": {
           "type": "string",
           "maxLength": 255,
-          "description": "PortPinDirection 参数"
+          "description": "PortPinDirection 参数",
+          "enum": [
+            "PORT_PIN_IN",
+            "PORT_PIN_OUT"
+          ]
         },
         "PortPinLevelValue": {
           "type": "string",
@@ -1135,7 +1191,11 @@
       "additionalProperties": true
     }
   },
-  "required": ["BLE_3V3", "CAN_SPI_CLK", "CAN_SPI_CS"],
+  "required": [
+    "BLE_3V3",
+    "CAN_SPI_CLK",
+    "CAN_SPI_CS"
+  ],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",
