@@ -350,15 +350,29 @@ export function Editor() {
   const selectedInstanceName = selectedPath?.match(/instance:([^/]+)/)?.[1] ?? null;
 
   // When an instance is selected, create a virtual container from the template
+  // Fix C2 回显: 实例参数值优先从 container.instances[].paramValues 读取（用户编辑值），
+  // 否则回退模板默认值。paramValues 的 key 兼容参数 id 与 name（matchesParamKey 契约）。
   const instanceContainer =
     selectedInstanceName && selectedContainer?.multiple && selectedContainer.subContainers?.length
-      ? ({
-          ...selectedContainer.subContainers[0],
-          id: `${selectedContainer.id}_${selectedInstanceName}`,
-          name: selectedInstanceName,
-          displayName: selectedInstanceName,
-          description: `Instance of ${selectedContainer.displayName || selectedContainer.name}`,
-        } as ConfigContainer)
+      ? (() => {
+          const template = selectedContainer.subContainers[0];
+          const instance = selectedContainer.instances?.find(i => i.name === selectedInstanceName);
+          const overrides = instance?.paramValues ?? {};
+          const parameters = template.parameters.map(p => {
+            const hasOverride = p.id in overrides || p.name in overrides;
+            if (!hasOverride) return p;
+            const overrideValue = overrides[p.id] ?? overrides[p.name];
+            return overrideValue === undefined ? p : { ...p, value: overrideValue };
+          });
+          return {
+            ...template,
+            id: `${selectedContainer.id}_${selectedInstanceName}`,
+            name: selectedInstanceName,
+            displayName: selectedInstanceName,
+            description: `Instance of ${selectedContainer.displayName || selectedContainer.name}`,
+            parameters,
+          } as ConfigContainer;
+        })()
       : null;
 
   // Check if OS is selected
