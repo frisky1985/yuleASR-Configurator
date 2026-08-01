@@ -3,6 +3,7 @@
   "version": "0.2.3",
   "description": "yuleASR Configurator — Desktop Application",
   "author": "yuleTech <stefan@yuletech.com>",
+  "homepage": "https://github.com/frisky1985/yuleASR-Configurator",
   "private": true,
   "type": "module",
   "main": "electron/main.mjs",
