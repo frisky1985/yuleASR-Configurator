@@ -140,7 +140,7 @@ jobs:
           name: yuleasr-desktop-linux
           path: |
             apps/yuleasr-desktop/release/yuleASR\ Configurator-*.AppImage
-            apps/yuleasr-desktop/release/yuleASR\ Configurator-*.deb
+            apps/yuleasr-desktop/release/yuleasr-desktop_*.deb
             apps/yuleasr-desktop/release/latest-linux.yml
           retention-days: 90
 
@@ -209,7 +209,7 @@ jobs:
         with:
           name: yuleasr-desktop-win
           path: |
-            apps/yuleasr-desktop/release/yuleASR\ Configurator-*.exe
+            apps/yuleasr-desktop/release/yuleASR\ Configurator\ Setup*.exe
             apps/yuleasr-desktop/release/yuleASR\ Configurator-*.zip
             apps/yuleasr-desktop/release/latest.yml
           retention-days: 90
