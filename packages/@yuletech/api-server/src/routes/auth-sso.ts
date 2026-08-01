@@ -9,6 +9,13 @@ function envStr(key: string, fallback = ''): string {
   return process.env[key] || fallback;
 }
 
+// ── Fix 7: LDAP 过滤器注入防护 ─────────────────────────────────────────
+
+/** RFC 4515 过滤器值转义：\ * ( ) NUL 前置反斜杠 */
+function ldapEscapeFilterValue(input: string): string {
+  return input.replace(/([\\*\(\)\x00])/g, '\\$1');
+}
+
 // ── OIDC Routes ─────────────────────────────────────────────────────────
 
 export async function ssoRoutes(app: FastifyInstance) {
@@ -211,8 +218,8 @@ export async function ssoRoutes(app: FastifyInstance) {
     const hostname = url.hostname;
     const port = parseInt(url.port || (isTls ? '636' : '389'), 10);
 
-    // Construct search filter
-    const filter = searchFilter.replace(/\{\{username\}\}/g, inputUsername);
+    // Construct search filter (Fix 7: 用户名经 RFC 4515 转义后再拼入，杜绝过滤器注入)
+    const filter = searchFilter.replace(/\{\{username\}\}/g, ldapEscapeFilterValue(inputUsername));
 
     // Perform LDAP bind via raw socket (no external dependency)
     try {
@@ -372,16 +379,17 @@ function ldapBuildSearchRequest(baseDn: string, filter: string): Buffer {
 
 function ldapBuildFilter(filterStr: string): Buffer {
   // Parse (attr=value) filters — simplified equalityMatch filter
+  // Fix 7: 解析失败必须抛错拒绝（不得退化为 objectClass present 过滤，
+  //        否则任何畸形/注入过滤器都会匹配所有条目 = 认证绕过）。
   const match = filterStr.match(/^\(([^=]+)=([^)]+)\)$/);
   if (!match) {
-    // Fallback: return a present filter for objectClass
-    const attrBytes = Buffer.from('objectClass', 'utf-8');
-    const attrTag = Buffer.from([0x04, attrBytes.length]);
-    return Buffer.concat([Buffer.from([0x87, attrBytes.length + 2]), attrTag, attrBytes]);
+    throw new Error('LDAP filter parse failed: only simple (attr=value) filters are supported');
   }
 
   const attr = match[1];
-  const value = match[2];
+  // Fix 7: 按 RFC 4515 解码转义值（\2a → '*', \28 → '(', \29 → ')', \5c → '\'）
+  //        转义后的注入载荷在此还原为字面字符，作为普通 value 参与 equalityMatch。
+  const value = ldapUnescapeFilterValue(match[2]);
   const attrBytes = Buffer.from(attr, 'utf-8');
   const valueBytes = Buffer.from(value, 'utf-8');
 
@@ -391,6 +399,13 @@ function ldapBuildFilter(filterStr: string): Buffer {
   const inner = Buffer.concat([attrTag, attrBytes, valueTag, valueBytes]);
 
   return Buffer.concat([Buffer.from([0xa3, inner.length]), inner]);
+}
+
+/** RFC 4515 转义值解码：\\2a \\28 \\29 \\5c \\00（hex 转义）→ 字面字符 */
+function ldapUnescapeFilterValue(value: string): string {
+  return value.replace(/\\([0-9a-fA-F]{2})/g, (_m, hex: string) =>
+    String.fromCharCode(parseInt(hex, 16))
+  );
 }
 
 function ldapParseResult(data: Buffer): LdapEntry | null {
@@ -496,8 +511,10 @@ async function ldapBindAndSearch(
   const net = await import('net');
 
   return new Promise((resolve, reject) => {
+    // Fix 8: 默认校验 TLS 证书（rejectUnauthorized: true），支持 LDAP_CA_CERT 注入自定义 CA
+    const ca = process.env.LDAP_CA_CERT ? [Buffer.from(process.env.LDAP_CA_CERT)] : undefined;
     const socket = isTls
-      ? tls.connect(port, hostname, { rejectUnauthorized: false })
+      ? tls.connect(port, hostname, { rejectUnauthorized: true, ...(ca ? { ca } : {}) })
       : net.connect(port, hostname);
 
     let buf = Buffer.alloc(0);
@@ -562,11 +579,16 @@ async function ldapBindAndSearch(
           const userDn = entry.dn;
           if (userPassword) {
             // Create a new socket for user-verification bind
+            // Fix 8: verifier 同样默认校验 TLS + 10s 超时 + 错误处理（与主 socket 一致）
             const verifier = isTls
-              ? tls.connect(port, hostname, { rejectUnauthorized: false })
+              ? tls.connect(port, hostname, { rejectUnauthorized: true, ...(ca ? { ca } : {}) })
               : net.connect(port, hostname);
 
             let verBuf = Buffer.alloc(0);
+            const verifierTimeout = setTimeout(() => {
+              verifier.destroy();
+              reject(new Error('LDAP user-verification timeout'));
+            }, 10000);
             verifier.on('connect', () => {
               const userBindReq = ldapBuildBindRequest(userDn, userPassword);
               verifier.write(userBindReq);
@@ -574,6 +596,7 @@ async function ldapBindAndSearch(
             verifier.on('data', (d: Buffer) => {
               verBuf = Buffer.concat([verBuf, d]);
               if (verBuf.length >= 20) {
+                clearTimeout(verifierTimeout);
                 const resultCode = verBuf[12];
                 verifier.end();
                 if (resultCode === 0) {
@@ -583,7 +606,10 @@ async function ldapBindAndSearch(
                 }
               }
             });
-            verifier.on('error', (err: Error) => reject(err));
+            verifier.on('error', (err: Error) => {
+              clearTimeout(verifierTimeout);
+              reject(err);
+            });
           } else {
             resolve(entry);
           }
