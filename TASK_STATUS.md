@@ -22,7 +22,7 @@
 | ----- | ---- | ---- | ---- |
 | Phase 1 | Service 层配置数据 | ✅ 完成 | 54 模块 schema + Dashboard 分层统计 (2026-08-01) |
 | Phase 2 | VS Code 扩展 | ✅ 完成 | 9 命令 + ConfigEditorPanel + ConfigTreeProvider |
-| Phase 3 | UI 组件库 | ❌ 空壳 | `@yuletech/ui` 仅 `export {}`，未开始 |
+| Phase 3 | UI 组件库 | ✅ 完成 | 8 组件 + cn(), 16 测试, web 已集成 (2026-08-01) |
 | Phase 4 | 单元测试 | ✅ 完成 | **576 过 / 0 失败** (2026-08-01 P0-1 修复后全绿) |
 | Phase 5 | C 代码生成 | ✅ 完成 | 4 生成器齐备，Can/Mcu GCC 编译已修复 |
 
@@ -112,7 +112,10 @@
 
 ### Phase 3: 构建 UI 组件库
 
-**状态**: ❌ 未开始 — `@yuletech/ui/src/index.ts` 仅 `export {}` 空壳，全部 3.1-3.10 任务待启动
+**状态**: ✅ 完成 (2026-08-01) — 8 组件 + cn() 工具, tsup 构建, 16 测试, web 应用已集成
+
+- [x] 3.1-3.10 提取 Button/Input/Select/FormField/Modal/Tooltip/Tree/PropertyPanel + 构建发布
+- [x] 4.7 组件单元测试 (16 断言全过, 随 Phase 3 一并完成)
 
 ### Phase 4: 补充单元测试
 
@@ -126,10 +129,10 @@
 - [x] 4.4 编写代码生成器测试
 - [x] 4.5 编写 ARXML 解析器测试
 - [x] 4.6 编写配置引擎测试
-- [ ] 4.7 编写组件单元测试 (依赖 Phase 3)
+- [x] 4.7 编写组件单元测试 (✅ 随 Phase 3 完成: @yuletech/ui 16 测试)
 - [x] 4.8 配置 CI 测试流程
 
-**已知失败**: 集成套件 C1 — Can/Mcu 生成代码 GCC 语法检查失败（见 P0 事项）
+**测试基线**: core 576 测试全绿 + @yuletech/ui 16 测试全绿 (2026-08-01)
 
 ### Phase 5: 完善 C 代码生成
 
@@ -171,7 +174,7 @@
 
 | # | 事项 | 状态 | 说明 |
 |---|------|------|------|
-| P2-1 | Phase 3 UI 组件库 | ❌ | @yuletech/ui 空壳，未启动 |
+| P2-1 | Phase 3 UI 组件库 | ✅ 完成 | 2026-08-01: @yuletech/ui 从空壳 → 8 组件 (Button/Input/Select/FormField/Modal/Tooltip/Tree/PropertyPanel) + cn(); CVA+tailwind-merge 风格, tsup 构建 (cjs/esm/dts), 16 测试全过; web 应用已集成 (Dashboard 新建配置按钮) |
 | P2-2 | schema 层跨模块依赖 (crossReferences) | ✅ 部分完成 | 2026-08-01 类型层 (x-multiplicity/x-config-class/crossReferences) + can/cantrcv/pdur 3 模块落地示例；全量 54 模块推广待做 |
 | P2-3 | AUTOSAR ECUC 元模型补全 | ✅ 部分完成 | ReferenceDef/Multiplicity/ConfigurationClass 表达已落地；ChoiceContainerDef 仍缺 |
 

@@ -33,6 +33,8 @@ import type { ModuleConfig, ConfigFile } from '@/types';
 import { PipelinePushButton } from '@/components/PipelinePushButton';
 import { PipelineStatusPanel } from '@/components/PipelineStatusPanel';
 import { listPipelineRuns } from '@/services/yuleoshPipeline';
+// @yuletech/ui 集成示例: 共享组件库 Button (Phase 3)
+import { Button as UiButton } from '@yuletech/ui';
 
 // Lazy load ModuleGraph component
 const ModuleGraph = lazy(() =>
@@ -343,13 +345,13 @@ export function Dashboard() {
           <h1 className="text-2xl font-bold text-primary">{t('dashboard.title')}</h1>
           <p className="text-app-text-secondary mt-1">{t('dashboard.subtitle')}</p>
         </div>
-        <button
+        <UiButton
           onClick={() => setShowCreateModal(true)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all shadow-sm hover:shadow-md active:scale-[0.98]"
+          className="shadow-sm hover:shadow-md"
         >
           <Plus className="w-4 h-4" />
           {t('dashboard.newConfiguration')}
-        </button>
+        </UiButton>
       </div>
 
       {/* Stats Cards */}

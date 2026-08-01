@@ -13,6 +13,7 @@
   "dependencies": {
     "@xyflow/react": "^12.10.2",
     "@yuletech/core": "workspace:*",
+    "@yuletech/ui": "workspace:^",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "fast-xml-parser": "^5.10.0",
