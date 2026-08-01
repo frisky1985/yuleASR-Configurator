@@ -22,7 +22,16 @@ import { templateReviewsRoutes } from './routes/templateReviews.js';
 
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const HOST = process.env.HOST || '0.0.0.0';
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
+// Fix 6: JWT_SECRET 缺失或过短直接拒绝启动（fail-fast），杜绝硬编码默认密钥可伪造管理员令牌
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET || JWT_SECRET.length < 32) {
+  console.error(
+    'FATAL: JWT_SECRET 环境变量未配置或长度不足 32 字符。\n' +
+      '生成方式: openssl rand -hex 32\n' +
+      '示例: JWT_SECRET=<生成的密钥> pnpm dev'
+  );
+  process.exit(1);
+}
 
 const app = Fastify({ logger: true });
 
