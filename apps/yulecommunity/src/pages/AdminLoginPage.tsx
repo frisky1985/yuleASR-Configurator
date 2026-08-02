@@ -18,23 +18,22 @@ export function AdminLoginPage() {
     }
   }, [isAdmin, navigate]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     if (!username.trim() || !password.trim()) {
-      setError('请输入用户名和密码');
+      setError('请输入邮箱和密码');
       return;
     }
     setLoading(true);
-    setTimeout(() => {
-      const success = login(username.trim(), password.trim());
-      setLoading(false);
-      if (success) {
-        navigate('/admin/dashboard', { replace: true });
-      } else {
-        setError('用户名或密码错误');
-      }
-    }, 400);
+    // Fix 11: login 改为服务端校验（async），角色来自服务端响应
+    const result = await login(username.trim(), password.trim());
+    setLoading(false);
+    if (result.success) {
+      navigate('/admin/dashboard', { replace: true });
+    } else {
+      setError(result.message || '登录失败');
+    }
   };
 
   return (

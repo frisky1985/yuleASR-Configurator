@@ -61,11 +61,11 @@ export function useAuth() {
 
   /**
    * 登录 — 调用后端 API
-   * 若后端不可用，降级到本地模拟登录
+   * Fix 11: 后端不可达/失败时直接返回错误，不再降级到本地 mock（mock 登录会掩盖认证故障）
    */
   const login = useCallback(async (email: string, password: string): Promise<{ success: boolean; message: string }> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      const response = await fetch(`${API_BASE_URL}/v1/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -88,25 +88,14 @@ export function useAuth() {
 
       return { success: false, message: result.message || '登录失败' };
     } catch (err) {
-      console.warn('[useAuth] 后端不可用，降级到本地模拟登录', err);
-      // 降级: 接受任何密码，创建本地 mock 用户
-      const mockUser: User = {
-        id: `local-${Date.now()}`,
-        username: email.split('@')[0],
-        email,
-        role: 'user',
-      };
-      const mockToken = `mock-token-${Date.now()}`;
-      safeSessionSet(USER_KEY, JSON.stringify(mockUser));
-      safeSessionSet(TOKEN_KEY, mockToken);
-      setAuth({ user: mockUser, token: mockToken, isAuthenticated: true, isLoading: false });
-      return { success: true, message: '' };
+      console.warn('[useAuth] 后端不可达:', err);
+      return { success: false, message: '服务暂时不可用，请稍后重试' };
     }
   }, []);
 
   /**
    * 注册 — 调用后端 API
-   * 若后端不可用，降级到本地模拟注册
+   * Fix 11: 后端不可达/失败时直接返回错误，不再降级到本地 mock
    */
   const register = useCallback(async (
     username: string,
@@ -114,7 +103,7 @@ export function useAuth() {
     password: string
   ): Promise<{ success: boolean; message: string }> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+      const response = await fetch(`${API_BASE_URL}/v1/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password }),
@@ -132,19 +121,8 @@ export function useAuth() {
 
       return { success: false, message: result.message || '注册失败' };
     } catch (err) {
-      console.warn('[useAuth] 后端不可用，降级到本地模拟注册', err);
-      // 降级: 本地 mock
-      const mockUser: User = {
-        id: `local-${Date.now()}`,
-        username,
-        email,
-        role: 'user',
-      };
-      const mockToken = `mock-token-${Date.now()}`;
-      safeSessionSet(USER_KEY, JSON.stringify(mockUser));
-      safeSessionSet(TOKEN_KEY, mockToken);
-      setAuth({ user: mockUser, token: mockToken, isAuthenticated: true, isLoading: false });
-      return { success: true, message: '' };
+      console.warn('[useAuth] 后端不可达:', err);
+      return { success: false, message: '服务暂时不可用，请稍后重试' };
     }
   }, []);
 

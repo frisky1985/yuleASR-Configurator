@@ -35,25 +35,12 @@ export const Login: React.FC = () => {
       setAuthenticated(true);
       navigate('/admin/dashboard');
     } catch (err) {
-      console.warn('[Login] API login failed, using fallback mock:', err);
-
-      // Fallback: mock authentication if API is unavailable
-      if (email === 'admin@example.com' && password === 'admin123') {
-        setUser({
-          id: '1',
-          username: 'Admin',
-          email: 'admin@example.com',
-          role: 'super_admin',
-        });
-        setToken('mock-jwt-token');
-        setAuthenticated(true);
-        navigate('/admin/dashboard');
+      console.warn('[Login] 管理员登录失败:', err);
+      // Fix 11: 删除本地 mock 降级（admin@example.com/admin123），认证必须来自服务端
+      if (err instanceof ApiClientError) {
+        setError(err.message || '登录失败，请检查邮箱和密码');
       } else {
-        if (err instanceof ApiClientError) {
-          setError(err.message || '登录失败，请检查邮箱和密码');
-        } else {
-          setError('邮箱或密码错误');
-        }
+        setError('服务暂时不可用，请稍后重试');
       }
     } finally {
       setLoading(false);
@@ -142,10 +129,6 @@ export const Login: React.FC = () => {
               )}
             </button>
           </form>
-
-          <div className="mt-6 text-center text-xs text-slate-500">
-            演示账号: admin@example.com / admin123
-          </div>
         </div>
       </div>
     </div>

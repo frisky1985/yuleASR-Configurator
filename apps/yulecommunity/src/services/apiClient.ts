@@ -206,7 +206,9 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
     headers['Authorization'] = `Bearer ${_token}`;
   }
 
-  const response = await fetch(`${BASE_URL}${path}`, {
+  // Fix 11: 统一补 /v1 前缀（服务端路由注册在 /v1/*），兼容已带前缀的调用
+  const url = path.startsWith('/v1') ? `${BASE_URL}${path}` : `${BASE_URL}/v1${path}`;
+  const response = await fetch(url, {
     method,
     headers,
     body: body !== undefined ? JSON.stringify(body) : undefined,

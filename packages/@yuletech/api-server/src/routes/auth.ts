@@ -92,4 +92,25 @@ export async function authRoutes(app: FastifyInstance) {
       ssoBound: !!(user.ssoProvider && user.ssoProvider !== 'email'),
     };
   });
+
+  // Fix 11: 管理员专用登录 — 校验邮箱/密码 + 角色 ∈ admin/super_admin，签发 JWT
+  app.post('/admin/login', async (request, reply) => {
+    const parsed = z
+      .object({ email: z.string().email(), password: z.string().min(6) })
+      .safeParse(request.body);
+    if (!parsed.success) {
+      return reply.status(400).send({ message: 'Invalid input' });
+    }
+    const { email, password } = parsed.data;
+    const { prisma } = await import('../lib/prisma.js');
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user || !(await bcrypt.compare(password, user.password)) || !['admin', 'super_admin'].includes(user.role)) {
+      return reply.status(401).send({ message: 'Invalid credentials or not an admin' });
+    }
+    const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role });
+    return {
+      token,
+      user: { id: user.id, email: user.email, username: user.username, role: user.role },
+    };
+  });
 }
