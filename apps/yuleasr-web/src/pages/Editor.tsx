@@ -18,7 +18,7 @@ import {
   Cloud,
   CloudOff,
 } from 'lucide-react';
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -46,7 +46,7 @@ import { parseArxmlContent, arxmlToConfigModules } from '@/services/arxml-parser
 import { generateAllHeaders } from '@/services/codegen';
 import type { GeneratedFile } from '@/services/codegen';
 import { downloadAuditReport } from '@/services/configReportGenerator';
-import { useConfigStore } from '@/stores/configStore';
+import { useConfigStore, toConditionModuleConfigs } from '@/stores/configStore';
 import type { ValidationResult } from '@/types';
 import type { ConfigContainer } from '@/types/config';
 import { PipelinePushButton } from '@/components/PipelinePushButton';
@@ -381,6 +381,14 @@ export function Editor() {
           } as ConfigContainer;
         })()
       : null;
+
+  // Fix 17: 条件引擎（@yuletech/core/conditions）求值用的 ModuleConfig[]。
+  // 由整个 currentConfig 组装（含 enabled 状态 + 容器参数），使容器 condition /
+  // 参数 visibleWhen 表达式可按 "Module.param" / "Module.Container[idx].param" 寻址。
+  const conditionModuleConfigs = useMemo(
+    () => (currentConfig ? toConditionModuleConfigs(currentConfig) : []),
+    [currentConfig]
+  );
 
   // Check if OS is selected
   const isOSSelected = selectedPath?.includes('layer:OS') || selectedPath?.includes('/os');
@@ -1005,6 +1013,7 @@ export function Editor() {
                   <ContainerParameterList
                     container={instanceContainer || selectedContainer}
                     onParamChange={(name, value) => handleParameterChange(name, value)}
+                    moduleConfigs={conditionModuleConfigs}
                   />
                 )}
               </div>

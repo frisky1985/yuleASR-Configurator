@@ -1,5 +1,8 @@
 import { ChevronRight, ChevronDown } from 'lucide-react';
-import { useState, type ReactNode } from 'react';
+import { useState, useMemo, type ReactNode } from 'react';
+
+import { ConditionEvaluator, parseCondition } from '@yuletech/core/conditions';
+import type { ModuleConfig } from '@yuletech/core/types';
 
 import { ParameterEditor } from '@/components/ParameterEditor';
 import { cn } from '@/lib/utils';
@@ -9,15 +12,45 @@ interface ContainerParameterListProps {
   container: ConfigContainer;
   level?: number;
   onParamChange: (name: string, value: unknown) => void;
+  /** Fix 17: 条件引擎求值用的 ModuleConfig[]（core 约定 module.param 寻址）。缺省时 condition 不生效（向后兼容） */
+  moduleConfigs?: ModuleConfig[];
+}
+
+/** Fix 17: 用 core 条件引擎求值容器 condition，fails-closed（解析失败按隐藏处理）。 */
+function useConditionVisible(
+  condition: string | undefined,
+  moduleConfigs: ModuleConfig[] | undefined
+): boolean {
+  const evaluator = useMemo(() => new ConditionEvaluator(), []);
+  return useMemo(() => {
+    if (!condition) return true;
+    try {
+      const ast = parseCondition(condition);
+      return evaluator.evaluate(ast, moduleConfigs ?? []);
+    } catch (err) {
+      console.warn(
+        `[ContainerParameterList] 条件表达式解析失败，按不可见处理: ${condition}`,
+        err
+      );
+      return false;
+    }
+  }, [condition, moduleConfigs, evaluator]);
 }
 
 export function ContainerParameterList({
   container,
   level = 0,
   onParamChange,
+  moduleConfigs,
 }: ContainerParameterListProps) {
+  const visible = useConditionVisible(container.condition, moduleConfigs);
   const hasSubContainers = (container.subContainers?.length ?? 0) > 0;
   const hasParams = container.parameters.length > 0;
+
+  if (!visible) {
+    // 容器整体隐藏（含直接参数与子容器）
+    return null;
+  }
 
   if (!hasParams && !hasSubContainers) {
     return (
@@ -32,7 +65,11 @@ export function ContainerParameterList({
       {/* Direct parameters of this container */}
       {container.parameters.map(param => (
         <div key={param.id} className="py-1.5">
-          <ParameterEditor parameter={param} onChange={value => onParamChange(param.name, value)} />
+          <ParameterEditor
+            parameter={param}
+            onChange={value => onParamChange(param.name, value)}
+            moduleConfigs={moduleConfigs}
+          />
         </div>
       ))}
 
@@ -43,6 +80,7 @@ export function ContainerParameterList({
           container={sub}
           level={level + 1}
           onParamChange={onParamChange}
+          moduleConfigs={moduleConfigs}
         />
       ))}
     </div>
@@ -53,10 +91,17 @@ interface SubContainerGroupProps {
   container: ConfigContainer;
   level: number;
   onParamChange: (name: string, value: unknown) => void;
+  moduleConfigs?: ModuleConfig[];
 }
 
-function SubContainerGroup({ container, level, onParamChange }: SubContainerGroupProps) {
+function SubContainerGroup({ container, level, onParamChange, moduleConfigs }: SubContainerGroupProps) {
   const [isExpanded, setIsExpanded] = useState(true);
+  const visible = useConditionVisible(container.condition, moduleConfigs);
+
+  if (!visible) {
+    // 子容器整体隐藏（含头部与内容）
+    return null;
+  }
 
   return (
     <div className="mt-2">
@@ -86,6 +131,7 @@ function SubContainerGroup({ container, level, onParamChange }: SubContainerGrou
                 <ParameterEditor
                   parameter={param}
                   onChange={value => onParamChange(param.name, value)}
+                  moduleConfigs={moduleConfigs}
                 />
               </div>
             ))
@@ -100,6 +146,7 @@ function SubContainerGroup({ container, level, onParamChange }: SubContainerGrou
               container={sub}
               level={level + 1}
               onParamChange={onParamChange}
+              moduleConfigs={moduleConfigs}
             />
           ))}
         </div>

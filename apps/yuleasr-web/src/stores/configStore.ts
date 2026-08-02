@@ -5,7 +5,7 @@ import {
   defaultGptSchema,
 } from '@yuletech/core/schema-extractor';
 import { loadModuleSchemas } from '@yuletech/core/schema/load-generated';
-import type { ModuleConfig, ModuleSchema } from '@yuletech/core/types';
+import type { ContainerConfig, ModuleConfig, ModuleSchema } from '@yuletech/core/types';
 import { CrossModuleValidator } from '@yuletech/core/validators';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
@@ -46,6 +46,53 @@ function toModuleConfig(webModule: ConfigModule): ModuleConfig {
  */
 function toModuleConfigs(config: ConfigFile): ModuleConfig[] {
   return config.modules.filter(m => m.enabled).map(toModuleConfig);
+}
+
+/**
+ * Fix 17: 组装条件引擎（@yuletech/core/conditions）求值用的 ModuleConfig[]。
+ *
+ * 与 toModuleConfigs 的区别（toModuleConfigs 只处理模块级参数且过滤未启用模块）：
+ * - 包含所有模块（含 disabled），并把模块 enabled 状态暴露为 parameters.enabled，
+ *   使 "Can.enabled == true" 这类 core 约定表达式可直接求值；
+ * - 递归收集容器（含子容器）参数到 containers[容器名][实例索引].parameters，
+ *   支持 "Module.Container[idx].param" 寻址（evaluator 的 evaluatePath 规则）；
+ * - 未找到的路径在 evaluator 中 fails-closed（返回 false → 隐藏/禁用）。
+ */
+export function toConditionModuleConfigs(config: ConfigFile): ModuleConfig[] {
+  return config.modules.map(module => {
+    // 模块级参数 + enabled 状态（core 约定：enabled 作为参数暴露）
+    const parameters: Record<string, unknown> = { enabled: module.enabled };
+    for (const p of module.parameters) {
+      parameters[p.name] = p.value;
+    }
+
+    // 容器参数：containers[容器名] = 实例数组（static 容器即 1 个实例，idx=0）
+    const containers: Record<string, ContainerConfig[]> = {};
+    const collectContainer = (container: ConfigContainer): void => {
+      const instance: ContainerConfig = {
+        id: container.id,
+        name: container.name,
+        parameters: {},
+      };
+      for (const p of container.parameters) {
+        instance.parameters[p.name] = p.value;
+      }
+      (containers[container.name] ??= []).push(instance);
+      for (const sub of container.subContainers ?? []) {
+        collectContainer(sub);
+      }
+    };
+    for (const container of module.containers) {
+      collectContainer(container);
+    }
+
+    return {
+      module: module.name,
+      version: module.version,
+      parameters,
+      ...(Object.keys(containers).length > 0 ? { containers } : {}),
+    };
+  });
 }
 
 /**

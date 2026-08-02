@@ -14,6 +14,9 @@ import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import type { ConfigParameter, ValidationIssue } from '@/types';
 
+import { ConditionEvaluator, parseCondition } from '@yuletech/core/conditions';
+import type { ModuleConfig } from '@yuletech/core/types';
+
 interface ParameterEditorProps {
   parameter: ConfigParameter;
   error?: ValidationIssue;
@@ -21,6 +24,8 @@ interface ParameterEditorProps {
   onChange: (value: unknown) => void;
   onValidate?: (value: unknown) => ValidationIssue | null;
   compact?: boolean;
+  /** Fix 17: 条件引擎求值用的 ModuleConfig[]（core 约定 module.param 寻址）。缺省时 visibleWhen 不生效（向后兼容） */
+  moduleConfigs?: ModuleConfig[];
 }
 
 export function ParameterEditor({
@@ -30,6 +35,7 @@ export function ParameterEditor({
   onChange,
   onValidate,
   compact = false,
+  moduleConfigs,
 }: ParameterEditorProps) {
   const { type, name, description, min, max, options, defaultValue, itemType, referenceTarget } =
     parameter;
@@ -200,6 +206,24 @@ export function ParameterEditor({
     },
     [value, handleChange]
   );
+
+  // Fix 17: visibleWhen 用 core 条件引擎求值，fails-closed（解析失败按隐藏处理）。
+  // 注意：必须在所有 hooks 之后才能提前 return（React hooks 规则）。
+  const conditionEvaluator = useMemo(() => new ConditionEvaluator(), []);
+  const visibleWhen = parameter.visibleWhen;
+  const visible = useMemo(() => {
+    if (!visibleWhen) return true;
+    try {
+      const ast = parseCondition(visibleWhen);
+      return conditionEvaluator.evaluate(ast, moduleConfigs ?? []);
+    } catch (err) {
+      console.warn(
+        `[ParameterEditor] visibleWhen 表达式解析失败，按隐藏处理: ${visibleWhen}`,
+        err
+      );
+      return false;
+    }
+  }, [visibleWhen, moduleConfigs, conditionEvaluator]);
 
   // Base input class
   const baseInputClass = cn(
@@ -439,6 +463,11 @@ export function ParameterEditor({
 
   const displayError = error?.message || localError;
   const displayWarning = warning?.message;
+
+  // Fix 17: visibleWhen 不满足时隐藏整个参数编辑器（fails-closed）
+  if (!visible) {
+    return null;
+  }
 
   if (compact) {
     return (

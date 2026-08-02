@@ -34,6 +34,10 @@ export interface ConfigParameter {
     operator: 'eq' | 'ne' | 'gt' | 'lt' | 'gte' | 'lte' | 'in';
     value: unknown;
   }>;
+  /** 可见性条件表达式（@yuletech/core/conditions DSL，如 "Can.enabled == true"）。Fix 17: 由 core 条件引擎求值，fails-closed */
+  visibleWhen?: string;
+  /** 可用性条件表达式（同 DSL）。当前引擎已支持，UI 消费方暂未接入 */
+  enabledWhen?: string;
   // For array type
   itemType?: 'string' | 'integer' | 'float';
   // For reference type
