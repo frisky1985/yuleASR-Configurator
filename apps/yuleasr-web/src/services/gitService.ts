@@ -67,39 +67,52 @@ export class GitError extends Error {
   }
 }
 
-// Simple stub implementation for now
+/** Git 功能尚未接入的错误码 */
+export const GIT_NOT_IMPLEMENTED = 'NOT_IMPLEMENTED';
+
+/**
+ * GitService 占位实现（未接入真实 Git 后端）。
+ *
+ * 所有方法一律抛出 GitError('Git 功能尚未接入', 'NOT_IMPLEMENTED')，
+ * 绝不返回假数据或假成功，避免对用户谎报。
+ * 类与类型签名保持不变，保证现有消费者代码可编译通过。
+ */
 export class GitService {
   constructor(_config: GitServiceConfig = {}) {}
 
+  private static notImplemented(method: string): never {
+    throw new GitError(`Git 功能尚未接入（${method}）`, GIT_NOT_IMPLEMENTED);
+  }
+
   async init(): Promise<void> {
-    console.log('GitService init (stub)');
+    GitService.notImplemented('init');
   }
 
   async getCommits(_ref?: string): Promise<CommitInfo[]> {
-    return [];
+    GitService.notImplemented('getCommits');
   }
 
   async getBranches(): Promise<BranchInfo[]> {
-    return [];
+    GitService.notImplemented('getBranches');
   }
 
   async getDiff(_oldOid: string, _newOid: string): Promise<DiffInfo[]> {
-    return [];
+    GitService.notImplemented('getDiff');
   }
 
   async commit(_message: string, _files: string[]): Promise<string> {
-    return 'stub-commit-oid';
+    GitService.notImplemented('commit');
   }
 
-  async createBranch(name: string): Promise<void> {
-    console.log('Create branch (stub):', name);
+  async createBranch(_name: string): Promise<void> {
+    GitService.notImplemented('createBranch');
   }
 
-  async checkoutBranch(name: string): Promise<void> {
-    console.log('Checkout branch (stub):', name);
+  async checkoutBranch(_name: string): Promise<void> {
+    GitService.notImplemented('checkoutBranch');
   }
 
-  async deleteBranch(name: string): Promise<void> {
-    console.log('Delete branch (stub):', name);
+  async deleteBranch(_name: string): Promise<void> {
+    GitService.notImplemented('deleteBranch');
   }
 }

@@ -180,7 +180,8 @@
     "warnings": "Warnings",
     "info": "Info",
     "issues": "Issues",
-    "noIssues": "No validation issues"
+    "noIssues": "No validation issues",
+    "degradedWarning": "Cross-module validation was skipped (schema load failed); results may be incomplete"
   },
   "shortcuts": {
     "title": "Keyboard Shortcuts",

@@ -370,18 +370,6 @@ importers:
         specifier: ^3.2.6
         version: 3.2.7(@types/debug@4.1.13)(@types/node@24.13.3)(jiti@1.21.7)(jsdom@29.1.1(@noble/hashes@2.2.0))(terser@5.49.0)(tsx@4.23.1)(yaml@2.9.0)
 
-  packages/@yuletech/api-client:
-    devDependencies:
-      tsup:
-        specifier: ^8.0.0
-        version: 8.5.1(jiti@2.7.0)(postcss@8.5.23)(tsx@4.23.1)(typescript@5.9.3)(yaml@2.9.0)
-      typescript:
-        specifier: ^5.4.0
-        version: 5.9.3
-      vitest:
-        specifier: ^3.2.6
-        version: 3.2.7(@types/debug@4.1.13)(@types/node@20.19.40)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(terser@5.49.0)(tsx@4.23.1)(yaml@2.9.0)
-
   packages/@yuletech/api-server:
     dependencies:
       '@fastify/cors':
@@ -520,18 +508,6 @@ importers:
         specifier: ^3.2.6
         version: 3.2.7(@types/debug@4.1.13)(@types/node@20.19.40)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(terser@5.49.0)(tsx@4.23.1)(yaml@2.9.0)
 
-  packages/@yuletech/utils:
-    devDependencies:
-      tsup:
-        specifier: ^8.0.0
-        version: 8.5.1(jiti@2.7.0)(postcss@8.5.23)(tsx@4.23.1)(typescript@5.9.3)(yaml@2.9.0)
-      typescript:
-        specifier: ^5.4.0
-        version: 5.9.3
-      vitest:
-        specifier: ^3.2.6
-        version: 3.2.7(@types/debug@4.1.13)(@types/node@20.19.40)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0))(terser@5.49.0)(tsx@4.23.1)(yaml@2.9.0)
-
   packages/yuleasr-editor-core:
     dependencies:
       '@isomorphic-git/lightning-fs':
@@ -540,9 +516,6 @@ importers:
       '@yuletech/core':
         specifier: workspace:*
         version: link:../@yuletech/core
-      '@yuletech/utils':
-        specifier: workspace:*
-        version: link:../@yuletech/utils
       eventemitter3:
         specifier: ^5.0.1
         version: 5.0.4

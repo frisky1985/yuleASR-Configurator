@@ -27,6 +27,8 @@ interface VersionHistoryProps {
   onCompare: (commit1: CommitInfo, commit2: CommitInfo) => void;
   onRefresh: () => void;
   isLoading?: boolean;
+  /** Git 后端尚未接入时为 true，渲染禁用占位而非假数据 */
+  unavailable?: boolean;
 }
 
 export function VersionHistory({
@@ -40,6 +42,7 @@ export function VersionHistory({
   onCompare,
   onRefresh,
   isLoading,
+  unavailable,
 }: VersionHistoryProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [showBranchSelector, setShowBranchSelector] = useState(false);
@@ -121,8 +124,9 @@ export function VersionHistory({
           <div className="flex items-center gap-2">
             <button
               onClick={() => setCompareMode(!compareMode)}
+              disabled={unavailable}
               className={cn(
-                'text-xs px-2 py-1 rounded transition-colors',
+                'text-xs px-2 py-1 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
                 compareMode
                   ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
                   : 'text-app-text-secondary hover:text-app-text-primary'
@@ -133,8 +137,8 @@ export function VersionHistory({
             </button>
             <button
               onClick={onRefresh}
-              disabled={isLoading}
-              className="text-app-text-tertiary hover:text-app-text-secondary transition-colors"
+              disabled={isLoading || unavailable}
+              className="text-app-text-tertiary hover:text-app-text-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <RefreshCw className={cn('w-4 h-4', isLoading && 'animate-spin')} />
             </button>
@@ -145,7 +149,8 @@ export function VersionHistory({
         <div className="relative">
           <button
             onClick={() => setShowBranchSelector(!showBranchSelector)}
-            className="flex items-center gap-2 text-xs text-app-text-secondary hover:text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded px-3 py-1.5 w-full"
+            disabled={unavailable}
+            className="flex items-center gap-2 text-xs text-app-text-secondary hover:text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded px-3 py-1.5 w-full disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <GitBranch className="w-3.5 h-3.5" />
             <span className="flex-1 text-left">{currentBranch}</span>
@@ -190,7 +195,8 @@ export function VersionHistory({
             placeholder="Search commits..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 text-xs border border-app-border-primary rounded bg-app-bg-primary text-app-text-primary focus:outline-none focus:ring-1 focus:ring-primary-500"
+            disabled={unavailable}
+            className="w-full pl-8 pr-3 py-1.5 text-xs border border-app-border-primary rounded bg-app-bg-primary text-app-text-primary focus:outline-none focus:ring-1 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
           />
         </div>
 
@@ -224,7 +230,14 @@ export function VersionHistory({
 
       {/* Commit List */}
       <div className="max-h-[calc(100vh-300px)] overflow-y-auto">
-        {isLoading ? (
+        {unavailable ? (
+          <div className="p-8 text-center">
+            <GitCommit className="w-8 h-8 text-app-text-tertiary mx-auto mb-2" />
+            {/* TODO i18n: 接入 i18n 后替换为 t('git.notImplemented') */}
+            <p className="text-app-text-secondary text-sm">Git 功能尚未接入（计划中）</p>
+            <p className="text-app-text-tertiary text-xs mt-1">暂不显示任何提交历史</p>
+          </div>
+        ) : isLoading ? (
           <div className="p-8 text-center">
             <RefreshCw className="w-6 h-6 animate-spin text-app-text-tertiary mx-auto" />
             <p className="text-app-text-secondary text-sm mt-2">Loading history...</p>
@@ -376,7 +389,10 @@ export function VersionHistory({
 
       {/* Footer Stats */}
       <div className="px-4 py-2 border-t border-app-border-primary bg-app-bg-secondary text-xs text-app-text-secondary">
-        {filteredCommits.length} commit{filteredCommits.length !== 1 ? 's' : ''} on {currentBranch}
+        {unavailable
+          ? // TODO i18n: 接入 i18n 后替换为 t('git.notImplemented')
+            'Git 功能尚未接入（计划中）'
+          : `${filteredCommits.length} commit${filteredCommits.length !== 1 ? 's' : ''} on ${currentBranch}`}
       </div>
     </div>
   );

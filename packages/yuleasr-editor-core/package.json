@@ -43,7 +43,6 @@
   "dependencies": {
     "@isomorphic-git/lightning-fs": "^4.6.2",
     "@yuletech/core": "workspace:*",
-    "@yuletech/utils": "workspace:*",
     "eventemitter3": "^5.0.1",
     "isomorphic-git": "^1.37.6"
   },

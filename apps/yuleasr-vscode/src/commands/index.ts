@@ -178,41 +178,8 @@ async function syncWithYuleASR(_item?: ConfigTreeItem): Promise<void> {
     return;
   }
 
-  // Show progress
-  await vscode.window.withProgress(
-    {
-      location: vscode.ProgressLocation.Notification,
-      title: 'Syncing with yuleASR...',
-      cancellable: true,
-    },
-    async (progress, token) => {
-      // Simulate sync operations
-      progress.report({ increment: 0, message: 'Checking repository...' });
-      await delay(500);
-
-      if (token.isCancellationRequested) {
-        return;
-      }
-
-      progress.report({ increment: 30, message: 'Syncing schemas...' });
-      await delay(500);
-
-      if (token.isCancellationRequested) {
-        return;
-      }
-
-      progress.report({ increment: 40, message: 'Syncing configurations...' });
-      await delay(500);
-
-      if (token.isCancellationRequested) {
-        return;
-      }
-
-      progress.report({ increment: 30, message: 'Complete' });
-    }
-  );
-
-  vscode.window.showInformationMessage('Sync with yuleASR completed successfully');
+  // 同步功能尚未实现：明确警告，不做任何假装成功的模拟操作
+  vscode.window.showWarningMessage('同步 yuleASR 功能尚未实现，请使用 Web 端云同步');
 }
 
 /**
@@ -287,29 +254,9 @@ async function validateAllConfigurations(treeProvider: ConfigTreeProvider): Prom
  * Generate code for a configuration
  */
 async function generateCodeForConfig(filePath: string, moduleName?: string): Promise<void> {
-  const config = vscode.workspace.getConfiguration('yuleasr');
-  const yuleASRPath = config.get<string>('yuleASRPath');
-
-  if (!yuleASRPath) {
-    vscode.window.showErrorMessage('Please configure yuleASR path first');
-    return;
-  }
-
-  await vscode.window.withProgress(
-    {
-      location: vscode.ProgressLocation.Notification,
-      title: `Generating code for ${moduleName || path.basename(filePath)}...`,
-      cancellable: true,
-    },
-    async progress => {
-      progress.report({ increment: 50, message: 'Generating...' });
-      await delay(1000);
-      progress.report({ increment: 50, message: 'Done' });
-    }
-  );
-
-  vscode.window.showInformationMessage(
-    `Code generated for ${moduleName || path.basename(filePath)}`
+  // 代码生成功能尚未实现：明确警告，不假装生成成功
+  vscode.window.showWarningMessage(
+    `代码生成功能尚未实现：${moduleName || path.basename(filePath)}`
   );
 }
 

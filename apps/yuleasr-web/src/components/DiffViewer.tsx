@@ -22,6 +22,8 @@ interface DiffViewerProps {
   newCommit?: { oid: string; message: string };
   onClose?: () => void;
   title?: string;
+  /** Git 后端尚未接入时为 true，渲染禁用占位而非假数据 */
+  unavailable?: boolean;
 }
 
 export function DiffViewer({
@@ -30,6 +32,7 @@ export function DiffViewer({
   newCommit,
   onClose,
   title = 'Changes',
+  unavailable,
 }: DiffViewerProps) {
   const [expandedFiles, setExpandedFiles] = useState<Set<string>>(
     new Set(diffs.map(d => d.newPath))
@@ -180,17 +183,20 @@ export function DiffViewer({
           </div>
           <div className="flex items-center gap-2">
             {/* Stats */}
-            <div className="flex items-center gap-2 text-xs mr-4">
-              <span className="text-green-600 font-medium">+{totalStats.additions}</span>
-              <span className="text-red-600 font-medium">-{totalStats.deletions}</span>
-            </div>
+            {!unavailable && (
+              <div className="flex items-center gap-2 text-xs mr-4">
+                <span className="text-green-600 font-medium">+{totalStats.additions}</span>
+                <span className="text-red-600 font-medium">-{totalStats.deletions}</span>
+              </div>
+            )}
 
             {/* View Mode Toggle */}
             <div className="flex items-center bg-app-bg-primary rounded border border-app-border-primary">
               <button
                 onClick={() => setViewMode('unified')}
+                disabled={unavailable}
                 className={cn(
-                  'px-2 py-1 text-xs font-medium transition-colors',
+                  'px-2 py-1 text-xs font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
                   viewMode === 'unified'
                     ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
                     : 'text-app-text-secondary hover:text-app-text-primary'
@@ -200,8 +206,9 @@ export function DiffViewer({
               </button>
               <button
                 onClick={() => setViewMode('split')}
+                disabled={unavailable}
                 className={cn(
-                  'px-2 py-1 text-xs font-medium transition-colors',
+                  'px-2 py-1 text-xs font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
                   viewMode === 'split'
                     ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
                     : 'text-app-text-secondary hover:text-app-text-primary'
@@ -214,26 +221,30 @@ export function DiffViewer({
             {/* Actions */}
             <button
               onClick={expandAll}
-              className="text-xs text-app-text-secondary hover:text-app-text-primary px-2 py-1"
+              disabled={unavailable}
+              className="text-xs text-app-text-secondary hover:text-app-text-primary px-2 py-1 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Expand All
             </button>
             <button
               onClick={collapseAll}
-              className="text-xs text-app-text-secondary hover:text-app-text-primary px-2 py-1"
+              disabled={unavailable}
+              className="text-xs text-app-text-secondary hover:text-app-text-primary px-2 py-1 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Collapse All
             </button>
             <button
               onClick={downloadDiff}
-              className="p-1.5 text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-tertiary rounded"
+              disabled={unavailable}
+              className="p-1.5 text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-tertiary rounded disabled:opacity-50 disabled:cursor-not-allowed"
               title="Download patch"
             >
               <Download className="w-4 h-4" />
             </button>
             <button
               onClick={() => setShowFullScreen(!showFullScreen)}
-              className="p-1.5 text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-tertiary rounded"
+              disabled={unavailable}
+              className="p-1.5 text-app-text-secondary hover:text-app-text-primary hover:bg-app-bg-tertiary rounded disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {showFullScreen ? (
                 <Minimize2 className="w-4 h-4" />
@@ -257,7 +268,14 @@ export function DiffViewer({
       <div
         className={cn('overflow-auto', showFullScreen ? 'h-[calc(100vh-200px)]' : 'max-h-[600px]')}
       >
-        {diffs.length === 0 ? (
+        {unavailable ? (
+          <div className="p-8 text-center">
+            <GitCompare className="w-12 h-12 text-app-text-tertiary mx-auto mb-3" />
+            {/* TODO i18n: 接入 i18n 后替换为 t('git.notImplemented') */}
+            <p className="text-app-text-secondary">Git 功能尚未接入（计划中）</p>
+            <p className="text-app-text-tertiary text-xs mt-1">暂不显示任何差异数据</p>
+          </div>
+        ) : diffs.length === 0 ? (
           <div className="p-8 text-center">
             <GitCompare className="w-12 h-12 text-app-text-tertiary mx-auto mb-3" />
             <p className="text-app-text-secondary">No changes to display</p>

@@ -23,6 +23,8 @@ interface BranchManagerProps {
   onMergeBranch?: (source: string, target: string) => Promise<void>;
   onRefresh: () => void;
   isLoading?: boolean;
+  /** Git 后端尚未接入时为 true，渲染禁用占位而非假数据 */
+  unavailable?: boolean;
 }
 
 export function BranchManager({
@@ -34,6 +36,7 @@ export function BranchManager({
   onMergeBranch,
   onRefresh,
   isLoading,
+  unavailable,
 }: BranchManagerProps) {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newBranchName, setNewBranchName] = useState('');
@@ -129,15 +132,16 @@ export function BranchManager({
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowCreateForm(!showCreateForm)}
-              className="flex items-center gap-1 text-xs text-primary-600 hover:text-primary-700 font-medium"
+              disabled={unavailable}
+              className="flex items-center gap-1 text-xs text-primary-600 hover:text-primary-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Plus className="w-3.5 h-3.5" />
               New
             </button>
             <button
               onClick={onRefresh}
-              disabled={isLoading}
-              className="text-app-text-tertiary hover:text-app-text-secondary transition-colors"
+              disabled={isLoading || unavailable}
+              className="text-app-text-tertiary hover:text-app-text-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <RefreshCw className={cn('w-4 h-4', isLoading && 'animate-spin')} />
             </button>
@@ -221,7 +225,14 @@ export function BranchManager({
 
       {/* Branch List */}
       <div className="max-h-[300px] overflow-y-auto">
-        {branches.length === 0 ? (
+        {unavailable ? (
+          <div className="p-6 text-center">
+            <GitBranch className="w-8 h-8 text-app-text-tertiary mx-auto mb-2" />
+            {/* TODO i18n: 接入 i18n 后替换为 t('git.notImplemented') */}
+            <p className="text-app-text-secondary text-sm">Git 功能尚未接入（计划中）</p>
+            <p className="text-app-text-tertiary text-xs mt-1">暂不显示任何分支数据</p>
+          </div>
+        ) : branches.length === 0 ? (
           <div className="p-6 text-center">
             <GitBranch className="w-8 h-8 text-app-text-tertiary mx-auto mb-2" />
             <p className="text-app-text-secondary text-sm">No branches found</p>
@@ -359,7 +370,10 @@ export function BranchManager({
 
       {/* Footer Stats */}
       <div className="px-4 py-2 border-t border-app-border-primary bg-app-bg-secondary text-xs text-app-text-secondary">
-        {branches.length} branch{branches.length !== 1 ? 'es' : ''}
+        {unavailable
+          ? // TODO i18n: 接入 i18n 后替换为 t('git.notImplemented')
+            'Git 功能尚未接入（计划中）'
+          : `${branches.length} branch${branches.length !== 1 ? 'es' : ''}`}
       </div>
     </div>
   );

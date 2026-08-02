@@ -180,7 +180,8 @@
     "warnings": "警告",
     "info": "信息",
     "issues": "问题",
-    "noIssues": "无验证问题"
+    "noIssues": "无验证问题",
+    "degradedWarning": "跨模块验证未执行（schema 加载失败），当前结论可能不完整"
   },
   "shortcuts": {
     "title": "键盘快捷键",

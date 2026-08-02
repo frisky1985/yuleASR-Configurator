@@ -19,7 +19,14 @@ import { BranchManager } from '@/components/BranchManager';
 import { DiffViewer } from '@/components/DiffViewer';
 import { VersionHistory } from '@/components/VersionHistory';
 import { cn, formatDate } from '@/lib/utils';
-import { GitService, type CommitInfo, type BranchInfo, type DiffInfo } from '@/services/gitService';
+import {
+  GitService,
+  GitError,
+  GIT_NOT_IMPLEMENTED,
+  type CommitInfo,
+  type BranchInfo,
+  type DiffInfo,
+} from '@/services/gitService';
 
 export function GitSync() {
   const navigate = useNavigate();
@@ -40,6 +47,8 @@ export function GitSync() {
   const [syncStatus, setSyncStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [syncMessage, setSyncMessage] = useState<string>('');
   const [activeTab, setActiveTab] = useState<'history' | 'branches' | 'diff'>('history');
+  // Git 后端尚未接入：为 true 时整个页面渲染禁用占位，绝不展示假数据
+  const [gitUnavailable, setGitUnavailable] = useState(false);
 
   // Load initial data
   const loadData = useCallback(async () => {
@@ -56,9 +65,17 @@ export function GitSync() {
         setCurrentBranch(current.name);
       }
     } catch (err) {
-      console.error('Failed to load git data:', err);
-      setSyncStatus('error');
-      setSyncMessage('Failed to load git data');
+      if (err instanceof GitError && err.code === GIT_NOT_IMPLEMENTED) {
+        // Git 功能尚未接入：明确提示，不渲染假数据
+        setGitUnavailable(true);
+        setSyncStatus('error');
+        // TODO i18n: 接入 i18n 后替换为 t('git.notImplemented')
+        setSyncMessage('Git 功能尚未接入（计划中）');
+      } else {
+        console.error('Failed to load git data:', err);
+        setSyncStatus('error');
+        setSyncMessage('Failed to load git data');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -135,42 +152,19 @@ export function GitSync() {
 
   // Sync operations
   const handlePull = async () => {
-    setIsPulling(true);
-    setSyncStatus('idle');
-    setSyncMessage('');
-
-    try {
-      // Simulate pull operation
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      await loadData();
-      setSyncStatus('success');
-      setSyncMessage('Successfully pulled latest changes');
-    } catch (err) {
-      setSyncStatus('error');
-      setSyncMessage(err instanceof Error ? err.message : 'Pull failed');
-    } finally {
-      setIsPulling(false);
-      setTimeout(() => setSyncStatus('idle'), 3000);
-    }
+    // TODO i18n: 接入 i18n 后替换为 t('git.pullNotImplemented')
+    // Pull 依赖 Git 后端，尚未接入：明确提示未实现，不假装成功
+    setSyncStatus('error');
+    setSyncMessage('Pull 功能尚未接入（计划中）');
+    setTimeout(() => setSyncStatus('idle'), 5000);
   };
 
   const handlePush = async () => {
-    setIsPushing(true);
-    setSyncStatus('idle');
-    setSyncMessage('');
-
-    try {
-      // Simulate push operation
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setSyncStatus('success');
-      setSyncMessage('Successfully pushed changes');
-    } catch (err) {
-      setSyncStatus('error');
-      setSyncMessage(err instanceof Error ? err.message : 'Push failed');
-    } finally {
-      setIsPushing(false);
-      setTimeout(() => setSyncStatus('idle'), 3000);
-    }
+    // TODO i18n: 接入 i18n 后替换为 t('git.pushNotImplemented')
+    // Push 依赖 Git 后端，尚未接入：明确提示未实现，不假装成功
+    setSyncStatus('error');
+    setSyncMessage('Push 功能尚未接入（计划中）');
+    setTimeout(() => setSyncStatus('idle'), 5000);
   };
 
   const handleViewCurrentDiff = async () => {
@@ -237,7 +231,8 @@ export function GitSync() {
           {/* View Current Changes Button */}
           <button
             onClick={handleViewCurrentDiff}
-            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
+            disabled={gitUnavailable}
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <GitCompare className="w-4 h-4" />
             Changes
@@ -246,9 +241,9 @@ export function GitSync() {
           {/* Pull Button */}
           <button
             onClick={handlePull}
-            disabled={isPulling || isPushing}
+            disabled={isPulling || isPushing || gitUnavailable}
             className={cn(
-              'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50',
+              'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
               isPulling
                 ? 'bg-app-bg-tertiary text-app-text-tertiary'
                 : 'bg-app-bg-primary text-app-text-primary border border-app-border-primary hover:bg-app-bg-secondary'
@@ -265,9 +260,9 @@ export function GitSync() {
           {/* Push Button */}
           <button
             onClick={handlePush}
-            disabled={isPulling || isPushing}
+            disabled={isPulling || isPushing || gitUnavailable}
             className={cn(
-              'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50',
+              'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
               isPushing
                 ? 'bg-app-bg-tertiary text-app-text-tertiary'
                 : 'bg-primary-600 text-white hover:bg-primary-700'
@@ -283,6 +278,20 @@ export function GitSync() {
         </div>
       </div>
 
+      {/* Git 未接入横幅：显式告知功能尚未实现，不展示假数据 */}
+      {gitUnavailable && (
+        <div className="flex items-start gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800 dark:bg-amber-950/40 dark:border-amber-800/60 dark:text-amber-300">
+          <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+          <div>
+            {/* TODO i18n: 接入 i18n 后替换为 t('git.notImplementedBanner') */}
+            <p className="font-medium">Git 功能尚未接入（计划中）</p>
+            <p className="text-xs mt-0.5">
+              分支管理、版本历史与差异对比等功能将在后续版本提供，当前不显示任何模拟数据。
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Main Content */}
       <div className="grid grid-cols-12 gap-4">
         {/* Left Sidebar - Branch Manager */}
@@ -295,6 +304,7 @@ export function GitSync() {
             onSwitchBranch={handleSwitchBranch}
             onRefresh={loadData}
             isLoading={isLoading}
+            unavailable={gitUnavailable}
           />
         </div>
 
@@ -348,6 +358,7 @@ export function GitSync() {
               onCompare={handleCompare}
               onRefresh={loadData}
               isLoading={isLoading}
+              unavailable={gitUnavailable}
             />
           )}
 
@@ -403,6 +414,7 @@ export function GitSync() {
                       : undefined
                   }
                   title={selectedCommit ? 'Commit Changes' : 'Current Changes'}
+                  unavailable={gitUnavailable}
                 />
               )}
             </div>

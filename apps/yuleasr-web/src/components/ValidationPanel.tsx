@@ -15,6 +15,8 @@ import { cn } from '@/lib/utils';
 interface ValidationPanelProps {
   modules: ModuleConfig[];
   result?: ValidationResult | null;
+  /** Fix 19: 跨模块验证降级标志（schema 加载失败等）。true 时显示降级警告条。 */
+  degraded?: boolean;
   onNavigate?: (path: string) => void;
   className?: string;
 }
@@ -22,6 +24,7 @@ interface ValidationPanelProps {
 export function ValidationPanel({
   modules,
   result: externalResult,
+  degraded = false,
   onNavigate,
   className,
 }: ValidationPanelProps) {
@@ -136,6 +139,15 @@ export function ValidationPanel({
           Refresh
         </button>
       </div>
+
+      {/* Fix 19: 跨模块验证降级警告条 —— schema 加载失败时验证未完整执行，不得显示"全部通过" */}
+      {/* TODO i18n: 接入 i18n 后替换为 t('validation.degradedWarning') */}
+      {degraded && (
+        <div className="flex items-start gap-2 px-4 py-2.5 bg-yellow-50 border-b border-yellow-200 text-yellow-800 text-xs dark:bg-yellow-950/40 dark:text-yellow-300 dark:border-yellow-800/60">
+          <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+          <span>跨模块验证未执行（schema 加载失败），当前结论可能不完整</span>
+        </div>
+      )}
 
       {/* Content */}
       <div className="max-h-80 overflow-auto">

@@ -99,6 +99,7 @@ export function Editor() {
     selectedPath,
     validationResult,
     validationIssues,
+    validationDegraded,
     isDirty,
     isLoading,
     isCloudSynced,
@@ -868,6 +869,13 @@ export function Editor() {
           {/* Validation Summary */}
           <div className="bg-app-bg-primary border border-app-border-primary rounded-lg p-4">
             <h3 className="text-sm font-semibold text-app-text-primary mb-3">Validation</h3>
+            {/* Fix 19: 跨模块验证降级警告条 —— schema 加载失败时验证未完整执行，不得显示"全部通过" */}
+            {validationDegraded && (
+              <div className="mb-3 flex items-start gap-2 bg-yellow-50 border border-yellow-200 text-yellow-800 text-xs px-3 py-2 rounded dark:bg-yellow-950/40 dark:text-yellow-300 dark:border-yellow-800/60">
+                <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+                <span>{t('validation.degradedWarning')}</span>
+              </div>
+            )}
             {validationResult ? (
               <div className="space-y-2">
                 {validationResult.valid ? (

@@ -51,12 +51,15 @@ function toModuleConfigs(config: ConfigFile): ModuleConfig[] {
 /**
  * 增量跨模块验证：当用户修改某个参数时，
  * 只检查受该变更影响的跨模块引用约束
+ *
+ * Fix 19: 返回 { issues, failed }。跨模块验证失败时不再静默返回空 issues
+ * （假绿灯），而是 failed: true 显式降级，由 UI 展示降级警告条。
  */
 function validateCrossModuleChanges(
   config: ConfigFile,
   changedModuleName: string,
   changedParamName: string
-): ValidationIssue[] {
+): { issues: ValidationIssue[]; failed: boolean } {
   try {
     // P2-2: 使用 54 个 generated JSON schema (crossReferences 链路打通)
     const schemas: ModuleSchema[] = [
@@ -74,15 +77,20 @@ function validateCrossModuleChanges(
       configs
     );
 
-    return errors.map(e => ({
-      id: `cross-${changedModuleName}-${changedParamName}`,
-      path: e.path,
-      message: e.message,
-      severity: e.severity,
-    }));
-  } catch {
-    // 如果跨模块验证失败，静默降级
-    return [];
+    return {
+      issues: errors.map(e => ({
+        id: `cross-${changedModuleName}-${changedParamName}`,
+        path: e.path,
+        message: e.message,
+        severity: e.severity,
+      })),
+      failed: false,
+    };
+  } catch (err) {
+    // Fix 19: 不再静默吞错。显式上报并标记降级，UI 据此显示警告条，
+    // 避免用户看到"无错误"的假绿灯。
+    console.error('[configStore] 跨模块验证失败（schema 加载失败），已降级，当前结论可能不完整:', err);
+    return { issues: [], failed: true };
   }
 }
 
@@ -92,6 +100,8 @@ interface ConfigState {
   selectedPath: string | null;
   validationResult: ValidationResult | null;
   validationIssues: ValidationIssue[];
+  /** Fix 19: 跨模块验证是否降级（schema 加载失败等）。true 时 UI 应显示降级警告条。 */
+  validationDegraded: boolean;
   isDirty: boolean;
   isLoading: boolean;
 
@@ -226,6 +236,7 @@ export const useConfigStore = create<ConfigState>()(
       selectedPath: null,
       validationResult: null,
       validationIssues: [],
+      validationDegraded: false,
       isDirty: false,
       isLoading: false,
       configList: [],
@@ -383,8 +394,8 @@ export const useConfigStore = create<ConfigState>()(
           updatedAt: new Date().toISOString(),
         };
 
-        // 增量跨模块验证：只检查受影响的约束
-        const crossIssues = validateCrossModuleChanges(
+        // 增量跨模块验证：只检查受影响的约束（Fix 19: failed 时显式降级，UI 显示警告条）
+        const cross = validateCrossModuleChanges(
           updatedConfig,
           targetModule.name,
           paramKey
@@ -398,10 +409,11 @@ export const useConfigStore = create<ConfigState>()(
           currentConfig: updatedConfig,
           validationResult: {
             ...result,
-            errors: [...result.errors, ...crossIssues.filter(i => i.severity === 'error')],
-            warnings: [...result.warnings, ...crossIssues.filter(i => i.severity === 'warning')],
+            errors: [...result.errors, ...cross.issues.filter(i => i.severity === 'error')],
+            warnings: [...result.warnings, ...cross.issues.filter(i => i.severity === 'warning')],
           },
-          validationIssues: [...result.errors, ...result.warnings, ...crossIssues],
+          validationIssues: [...result.errors, ...result.warnings, ...cross.issues],
+          validationDegraded: cross.failed,
           isDirty: true,
         });
       },
