@@ -88,6 +88,27 @@ describe('evaluateExpression', () => {
     const result = evaluateExpression('{source} * 2', undefined);
     expect(Number.isNaN(result)).toBe(true);
   });
+
+  it('throws instead of falling back when the expression is malformed (Fix 20)', () => {
+    expect(() => evaluateExpression('{source} *', 500)).toThrow(/Failed to evaluate/);
+    expect(() => evaluateExpression('1 +', 0)).toThrow(/Failed to evaluate/);
+  });
+
+  it('throws instead of returning the raw input string for non-expression text', () => {
+    expect(() => evaluateExpression('abc', 0)).toThrow();
+  });
+
+  it('includes the offending expression in the error message', () => {
+    try {
+      evaluateExpression('{source} **', 2);
+      expect.unreachable('expected evaluateExpression to throw');
+    } catch (err) {
+      expect(err).toBeInstanceOf(Error);
+      // {source} is substituted with the source value before evaluation
+      expect((err as Error).message).toContain('Failed to evaluate');
+      expect((err as Error).message).toContain('**');
+    }
+  });
 });
 
 // ─── DependencyGraph ─────────────────────────────────────────────

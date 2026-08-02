@@ -68,7 +68,8 @@ export class ChoiceContainerValidator {
     if (containerDef.xChoiceParams && containerDef.xChoiceParams.length > 0) {
       // 仅检查指定的互斥参数
       for (const paramName of containerDef.xChoiceParams) {
-        const value = instance.parameters[paramName];
+        // Fix 21 (K8): instance.parameters 运行时可能缺失，防御性兜底
+        const value = (instance.parameters ?? {})[paramName];
         if (value !== undefined && value !== null) count++;
       }
       return count;
@@ -76,7 +77,7 @@ export class ChoiceContainerValidator {
 
     // 直接参数: 已设置 (非 undefined/null) 即计入
     for (const paramName of containerDef.parameters || []) {
-      const value = instance.parameters[paramName];
+      const value = (instance.parameters ?? {})[paramName];
       if (value !== undefined && value !== null) count++;
     }
 

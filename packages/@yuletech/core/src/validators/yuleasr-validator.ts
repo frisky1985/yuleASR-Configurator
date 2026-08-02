@@ -11,6 +11,10 @@ import { CrossModuleValidator } from './cross-module-validator';
 interface YuleasrValidationRule {
   type: 'required' | 'range' | 'dependency' | 'custom';
   message: string;
+  /** range 规则的最小值（含） */
+  min?: number;
+  /** range 规则的最大值（含） */
+  max?: number;
   condition?: (config: ModuleConfig) => boolean;
 }
 
@@ -87,6 +91,21 @@ export class YuleasrValidator {
               message: `${paramName} must be a number`,
               severity: 'error',
             });
+          } else {
+            if (rule.min !== undefined && numValue < rule.min) {
+              errors.push({
+                path: `${config.module}.${paramName}`,
+                message: `${paramName} must be >= ${rule.min}`,
+                severity: 'error',
+              });
+            }
+            if (rule.max !== undefined && numValue > rule.max) {
+              errors.push({
+                path: `${config.module}.${paramName}`,
+                message: `${paramName} must be <= ${rule.max}`,
+                severity: 'error',
+              });
+            }
           }
         }
       }
@@ -308,10 +327,19 @@ export const yuleasrValidator = new YuleasrValidator();
 yuleasrValidator.registerModuleRules({
   module: 'Mcu',
   rules: [
+    // Fix 21 (K3): 原单条 custom 规则把「Mcu 必须启用」与「启用后缺 clock_frequency」
+    // 混为一条，消息错位。拆成两条，语义分别对应启用态与参数完整性。
     {
       type: 'custom',
-      message: 'Mcu must be enabled for all configurations',
-      condition: config => config.parameters.clock_frequency !== undefined,
+      message: 'Mcu must be enabled',
+      condition: config => config.parameters.enabled !== false,
+    },
+    {
+      type: 'custom',
+      message: 'Mcu is enabled but clock_frequency is missing',
+      // condition 返回 true 表示有效：模块已禁用（无需 clock）或已提供 clock_frequency
+      condition: config =>
+        config.parameters.enabled === false || config.parameters.clock_frequency !== undefined,
     },
   ],
   parameterRules: {

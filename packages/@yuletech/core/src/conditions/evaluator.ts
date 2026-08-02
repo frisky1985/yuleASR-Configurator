@@ -68,7 +68,8 @@ export class ConditionEvaluator {
       const config = configs.find(c => c.module === moduleName);
       if (!config) return undefined;
       // Return raw value (null, undefined, number, string, boolean, etc.)
-      if (paramName in config.parameters) return config.parameters[paramName];
+      const params = config.parameters ?? {};
+      if (Object.prototype.hasOwnProperty.call(params, paramName)) return params[paramName];
       return undefined;
     }
 
@@ -81,7 +82,8 @@ export class ConditionEvaluator {
       if (!container) return undefined;
       const instance = container[index];
       if (!instance) return undefined;
-      if (paramName in instance.parameters) return instance.parameters[paramName];
+      const params = instance.parameters ?? {};
+      if (Object.prototype.hasOwnProperty.call(params, paramName)) return params[paramName];
       return undefined;
     }
 
@@ -91,7 +93,8 @@ export class ConditionEvaluator {
     const config = configs.find(c => c.module === moduleName);
     if (!config || rest.length === 0) return undefined;
     const paramName = rest.join('.');
-    if (paramName in config.parameters) return config.parameters[paramName];
+    const params = config.parameters ?? {};
+    if (Object.prototype.hasOwnProperty.call(params, paramName)) return params[paramName];
     return undefined;
   }
 

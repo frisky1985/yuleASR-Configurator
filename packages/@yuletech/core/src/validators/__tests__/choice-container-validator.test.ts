@@ -167,4 +167,36 @@ describe('ChoiceContainerValidator (P2-3)', () => {
     ]);
     expect(ok).toHaveLength(0);
   });
+
+  describe('defensive: instance without parameters (Fix 21 K8)', () => {
+    it('should not crash when instance lacks the parameters field (fallback branch)', () => {
+      const validator = createChoiceContainerValidator([schema]);
+      const errors = validator.validate([
+        makeConfig('CanTp', {
+          CanTpChannel: [{ id: 'ch1' }], // 无 parameters 字段
+        }),
+      ]);
+      expect(errors).toHaveLength(0);
+    });
+
+    it('should not crash when instance lacks parameters with xChoiceParams branch', () => {
+      const schemaWithX = makeSchema('WdgIf', {
+        containers: [
+          {
+            name: 'WdgIfDevice',
+            label: 'WdgIfDevice',
+            description: '设备配置',
+            xChoiceContainer: true,
+            xChoiceParams: ['WdgIfTriggeredMode'],
+            parameters: ['WdgIfDeviceId', 'WdgIfTriggeredMode'],
+          },
+        ],
+      });
+      const validator = createChoiceContainerValidator([schemaWithX]);
+      const errors = validator.validate([
+        makeConfig('WdgIf', { WdgIfDevice: [{ id: 'd1' }] }),
+      ]);
+      expect(errors).toHaveLength(0);
+    });
+  });
 });

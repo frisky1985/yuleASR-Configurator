@@ -317,18 +317,12 @@ function evaluateMathExpr(input: string): unknown {
     const result = parseExpr();
     expect('EOF');
     return result;
-  } catch {
-    // Fallback: if parsing fails, try safe eval
-    try {
-      const sanitized = input
-        .replace(/NaN/g, 'NaN') // keep NaN
-        .replace(/[^0-9+\-*/.()?:<>!= ]/g, '');
-      if (!sanitized.trim()) return input;
-
-      return new Function(`"use strict"; return (${sanitized})`)();
-    } catch {
-      return input;
-    }
+  } catch (err) {
+    throw new Error(
+      `Failed to evaluate constraint expression "${input}": ${
+        err instanceof Error ? err.message : String(err)
+      }`
+    );
   }
 }
 

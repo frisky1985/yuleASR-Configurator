@@ -127,33 +127,47 @@ export class CrossModuleValidator {
     targetConfig: ModuleConfig,
     _sourceSchema?: ModuleSchema
   ): ValidationError | null {
-    // Resolve target value
-    let targetValue: unknown;
-    if (ref.container) {
-      const instances = targetConfig.containers?.[ref.container];
-      if (Array.isArray(instances) && instances.length > 0) {
-        targetValue = instances[0].parameters[ref.param];
-      }
-    } else {
-      targetValue = targetConfig.parameters[ref.param];
-    }
-
     // For in_range/in_enum we need schema-level constraints
     let targetSchema: ModuleSchema | undefined;
     if (ref.relation === 'in_range' || ref.relation === 'in_enum') {
       targetSchema = this.schemas.get(ref.module);
     }
 
-    const msg = this.evaluateRelation(actualValue, targetValue, ref.relation, targetSchema, ref);
+    // Resolve target value
+    if (ref.container) {
+      // Fix 21 (K9): 遍历容器全部实例，而不是只看第一个实例
+      const instances = targetConfig.containers?.[ref.container];
+      if (Array.isArray(instances) && instances.length > 0) {
+        for (const inst of instances) {
+          const v = inst?.parameters?.[ref.param];
+          if (v === undefined) continue;
+          const r = this.evaluateRelation(actualValue, v, ref.relation, targetSchema, ref);
+          if (r) {
+            return {
+              path: `${targetConfig.module}.${ref.container}[${instances.indexOf(inst)}].${ref.param}`,
+              message: r,
+              severity: ref.severity,
+              code: `CROSS_REF_${ref.relation.toUpperCase()}`,
+            };
+          }
+        }
+        return null;
+      }
+    } else {
+      const targetValue = targetConfig.parameters[ref.param];
+      const msg = this.evaluateRelation(actualValue, targetValue, ref.relation, targetSchema, ref);
 
-    if (!msg) return null;
+      if (!msg) return null;
 
-    return {
-      path: `${targetConfig.module}.${ref.param}`,
-      message: msg,
-      severity: ref.severity,
-      code: `CROSS_REF_${ref.relation.toUpperCase()}`,
-    };
+      return {
+        path: `${targetConfig.module}.${ref.param}`,
+        message: msg,
+        severity: ref.severity,
+        code: `CROSS_REF_${ref.relation.toUpperCase()}`,
+      };
+    }
+
+    return null;
   }
 
   /**
@@ -246,7 +260,23 @@ export class CrossModuleValidator {
           const targetConfig = configMap.get(ref.module);
           if (!targetConfig) continue;
 
-          const actualValue = changedConfig.parameters[changedParam];
+          // Fix 21 (K10): 容器实例参数也能定位（changedParam 可能位于某容器实例的 parameters 中）
+          let actualValue = changedConfig.parameters[changedParam];
+          if (actualValue === undefined && changedConfig.containers) {
+            outer: for (const instances of Object.values(changedConfig.containers)) {
+              if (!Array.isArray(instances)) continue;
+              for (const inst of instances) {
+                if (
+                  inst &&
+                  inst.parameters &&
+                  Object.prototype.hasOwnProperty.call(inst.parameters, changedParam)
+                ) {
+                  actualValue = inst.parameters[changedParam];
+                  break outer;
+                }
+              }
+            }
+          }
           if (actualValue === undefined || actualValue === null) continue;
 
           const r = this.checkReference(changedParam, actualValue, ref, targetConfig, schema);
@@ -261,7 +291,23 @@ export class CrossModuleValidator {
           const targetConfig = configMap.get(ref.module);
           if (!targetConfig) continue;
 
-          const actualValue = changedConfig.parameters[changedParam];
+          // Fix 21 (K10): 容器实例参数也能定位（changedParam 可能位于某容器实例的 parameters 中）
+          let actualValue = changedConfig.parameters[changedParam];
+          if (actualValue === undefined && changedConfig.containers) {
+            outer: for (const instances of Object.values(changedConfig.containers)) {
+              if (!Array.isArray(instances)) continue;
+              for (const inst of instances) {
+                if (
+                  inst &&
+                  inst.parameters &&
+                  Object.prototype.hasOwnProperty.call(inst.parameters, changedParam)
+                ) {
+                  actualValue = inst.parameters[changedParam];
+                  break outer;
+                }
+              }
+            }
+          }
           if (actualValue === undefined || actualValue === null) continue;
 
           const r = this.checkReference(changedParam, actualValue, ref, targetConfig, schema);

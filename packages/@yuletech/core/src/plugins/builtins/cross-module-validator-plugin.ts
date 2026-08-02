@@ -25,6 +25,11 @@ const crossModuleValidatorPlugin: YulePlugin = {
   author: 'YuleTech',
 
   async activate(context: PluginContext): Promise<void> {
+    // Fix 21 (K1): 与 schema-validator-plugin 一致，activate 时填充全局 schemaCache
+    for (const schema of loadModuleSchemas()) {
+      schemaCache.set(schema.name, schema as unknown as Record<string, unknown>);
+    }
+
     context.registerValidator({
       name: 'CrossModuleValidator',
       description: 'Cross-module reference constraint validation',

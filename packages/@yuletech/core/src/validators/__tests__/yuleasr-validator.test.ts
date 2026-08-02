@@ -220,3 +220,69 @@ describe('Default yuleasrValidator instance', () => {
     }
   });
 });
+
+describe('range rules (Fix 21 K3: 空壳实现)', () => {
+  it('should report min/max violations for range rules', () => {
+    const v = new YuleasrValidator();
+    v.registerModuleRules({
+      module: 'Gpt',
+      rules: [],
+      parameterRules: {
+        tickFrequency: [{ type: 'range', message: 'must be in [1, 1000]', min: 1, max: 1000 }],
+      },
+    });
+
+    // 低于 min
+    let errors = v.validateModule(makeConfig('Gpt', { tickFrequency: 0 }));
+    expect(errors.some(e => e.message === 'tickFrequency must be >= 1')).toBe(true);
+
+    // 高于 max
+    errors = v.validateModule(makeConfig('Gpt', { tickFrequency: 2000 }));
+    expect(errors.some(e => e.message === 'tickFrequency must be <= 1000')).toBe(true);
+
+    // 范围内 → 通过
+    errors = v.validateModule(makeConfig('Gpt', { tickFrequency: 500 }));
+    expect(errors).toHaveLength(0);
+
+    // 非数字 → must be a number
+    errors = v.validateModule(makeConfig('Gpt', { tickFrequency: 'fast' }));
+    expect(errors.some(e => e.message === 'tickFrequency must be a number')).toBe(true);
+  });
+
+  it('should pass range rules without min/max (仅数字校验)', () => {
+    const v = new YuleasrValidator();
+    v.registerModuleRules({
+      module: 'Mcu',
+      rules: [],
+      parameterRules: {
+        clock_frequency: [{ type: 'range', message: 'Clock frequency must be positive' }],
+      },
+    });
+
+    const errors = v.validateModule(makeConfig('Mcu', { clock_frequency: 160000000 }));
+    expect(errors).toHaveLength(0);
+  });
+});
+
+describe('Default Mcu rules (Fix 21 K3: 消息错位)', () => {
+  it('reports distinct messages for disabled vs enabled-but-missing clock_frequency', () => {
+    // 启用（未显式禁用）但缺 clock_frequency → 第二条
+    const enabledMissing = yuleasrValidator.validateModule(makeConfig('Mcu', {}));
+    expect(
+      enabledMissing.some(e => e.message === 'Mcu is enabled but clock_frequency is missing')
+    ).toBe(true);
+    expect(enabledMissing.some(e => e.message === 'Mcu must be enabled')).toBe(false);
+
+    // 显式禁用 → 第一条
+    const disabled = yuleasrValidator.validateModule(makeConfig('Mcu', { enabled: false }));
+    expect(disabled.some(e => e.message === 'Mcu must be enabled')).toBe(true);
+    expect(disabled.some(e => e.message === 'Mcu is enabled but clock_frequency is missing')).toBe(
+      false
+    );
+
+    // 启用且提供 clock_frequency → 两条都不报
+    const ok = yuleasrValidator.validateModule(makeConfig('Mcu', { clock_frequency: 160000000 }));
+    expect(ok.some(e => e.message === 'Mcu must be enabled')).toBe(false);
+    expect(ok.some(e => e.message === 'Mcu is enabled but clock_frequency is missing')).toBe(false);
+  });
+});

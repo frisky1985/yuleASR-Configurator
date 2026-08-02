@@ -58,6 +58,9 @@ interface Token {
  * Throws on syntax errors with position info.
  */
 export function parseCondition(input: string): ConditionExpr {
+  if (input.length > 4096) {
+    throw new SyntaxError('Condition expression too long (max 4096 chars)');
+  }
   const tokens = lex(input);
   const parser = new Parser(tokens);
   const result = parser.parseExpr();
@@ -123,7 +126,13 @@ function lex(input: string): Token[] {
 
     // Numbers
     if (/[0-9]/.test(input[i])) {
-      while (i < input.length && /[0-9.]/.test(input[i])) i++;
+      let dots = 0;
+      while (i < input.length && /[0-9.]/.test(input[i])) {
+        if (input[i] === '.') {
+          if (++dots > 1) throw new SyntaxError(`Invalid number literal at position ${start}`);
+        }
+        i++;
+      }
       tokens.push({ type: 'NUMBER', value: input.slice(start, i), pos: start });
       continue;
     }
@@ -217,6 +226,8 @@ function lex(input: string): Token[] {
 
 class Parser {
   private pos = 0;
+  /** Current recursion depth — bounded to prevent stack overflow on pathological input. */
+  private depth = 0;
 
   constructor(private tokens: Token[]) {}
 
@@ -238,9 +249,22 @@ class Parser {
     return this.advance();
   }
 
+  /** Guard recursive descent against unbounded nesting (deep '!'/'-' chains, nested parens). */
+  private enter(): void {
+    if (++this.depth > 200) {
+      this.depth = 0;
+      throw new SyntaxError('Condition expression too deeply nested');
+    }
+  }
+
   /** expr → or_expr */
   parseExpr(): ConditionExpr {
-    return this.parseOr();
+    this.enter();
+    try {
+      return this.parseOr();
+    } finally {
+      this.depth--;
+    }
   }
 
   /** or_expr → and_expr ( '||' and_expr )* */
@@ -269,13 +293,18 @@ class Parser {
 
   /** not_expr → '!' not_expr | compare_expr */
   private parseNot(): ConditionExpr {
-    if (this.current().type === 'NOT') {
-      this.advance();
-      const operand = this.parseNot();
-      const node: UnaryOpExpr = { type: 'unary_op', operator: '!', operand };
-      return node;
+    this.enter();
+    try {
+      if (this.current().type === 'NOT') {
+        this.advance();
+        const operand = this.parseNot();
+        const node: UnaryOpExpr = { type: 'unary_op', operator: '!', operand };
+        return node;
+      }
+      return this.parseCompare();
+    } finally {
+      this.depth--;
     }
-    return this.parseCompare();
   }
 
   /** compare → unary ( '==' | '!=' | '<' | '>' | '<=' | '>=' ) unary */
@@ -308,13 +337,18 @@ class Parser {
 
   /** unary → '-' unary | primary */
   private parseUnary(): ConditionExpr {
-    if (this.current().type === 'MINUS') {
-      this.advance();
-      const operand = this.parseUnary();
-      const node: UnaryOpExpr = { type: 'unary_op', operator: '-', operand };
-      return node;
+    this.enter();
+    try {
+      if (this.current().type === 'MINUS') {
+        this.advance();
+        const operand = this.parseUnary();
+        const node: UnaryOpExpr = { type: 'unary_op', operator: '-', operand };
+        return node;
+      }
+      return this.parsePrimary();
+    } finally {
+      this.depth--;
     }
-    return this.parsePrimary();
   }
 
   /** primary → NUMBER | STRING | BOOLEAN | 'null' | path | '(' expr ')' */

@@ -731,4 +731,173 @@ describe('CrossModuleValidator', () => {
       expect(errors.some(e => e.message.includes('forward'))).toBe(true);
     });
   });
+
+  describe('container reference — multiple instances (Fix 21 K9: 只看首实例)', () => {
+    const schemas = [
+      makeSchema('Can', {
+        parameters: [
+          {
+            name: 'refBaudrate',
+            type: 'integer',
+            crossReferences: [
+              {
+                module: 'CanTrcv',
+                container: 'TrcvConfig',
+                param: 'maxBaudrate',
+                relation: 'less_than',
+                severity: 'error',
+                description: '',
+              },
+            ],
+          },
+        ],
+      }),
+      makeSchema('CanTrcv', { parameters: [{ name: 'maxBaudrate', type: 'integer' }] }),
+    ];
+
+    it('should flag a violation on the second instance, not just the first', () => {
+      const configs: ModuleConfig[] = [
+        makeConfig('Can', { refBaudrate: 2000000 }),
+        {
+          module: 'CanTrcv',
+          version: '4.4.0',
+          parameters: {},
+          containers: {
+            TrcvConfig: [
+              { id: 't0', parameters: { maxBaudrate: 3000000 } }, // OK: 2000000 < 3000000
+              { id: 't1', parameters: { maxBaudrate: 1000000 } }, // 违反: 2000000 < 1000000
+            ],
+          },
+        },
+      ];
+      const validator = createCrossModuleValidator(schemas);
+      const errors = validator.validate(configs);
+      expect(errors).toHaveLength(1);
+      expect(errors[0].code).toBe('CROSS_REF_LESS_THAN');
+      // 错误应指向第二个实例
+      expect(errors[0].path).toBe('CanTrcv.TrcvConfig[1].maxBaudrate');
+    });
+
+    it('should pass when all instances satisfy the relation', () => {
+      const configs: ModuleConfig[] = [
+        makeConfig('Can', { refBaudrate: 500000 }),
+        {
+          module: 'CanTrcv',
+          version: '4.4.0',
+          parameters: {},
+          containers: {
+            TrcvConfig: [
+              { id: 't0', parameters: { maxBaudrate: 1000000 } },
+              { id: 't1', parameters: { maxBaudrate: 2000000 } },
+            ],
+          },
+        },
+      ];
+      const validator = createCrossModuleValidator(schemas);
+      expect(validator.validate(configs)).toHaveLength(0);
+    });
+
+    it('should skip instances where the target param is not set', () => {
+      const configs: ModuleConfig[] = [
+        makeConfig('Can', { refBaudrate: 2000000 }),
+        {
+          module: 'CanTrcv',
+          version: '4.4.0',
+          parameters: {},
+          containers: {
+            TrcvConfig: [
+              { id: 't0', parameters: { other: 1 } }, // maxBaudrate 未设置 → 跳过
+              { id: 't1', parameters: { maxBaudrate: 3000000 } }, // 满足
+            ],
+          },
+        },
+      ];
+      const validator = createCrossModuleValidator(schemas);
+      expect(validator.validate(configs)).toHaveLength(0);
+    });
+  });
+
+  describe('validateAffectedBy container params (Fix 21 K10: 容器参数增量空转)', () => {
+    it('should trigger reverse incremental validation when a container param changed', () => {
+      const schemas = [
+        makeSchema('Can', {
+          parameters: [
+            {
+              name: 'refBaudrate',
+              type: 'integer',
+              crossReferences: [
+                {
+                  module: 'CanTrcv',
+                  container: 'TrcvConfig',
+                  param: 'maxBaudrate',
+                  relation: 'less_than',
+                  severity: 'error',
+                  description: '',
+                },
+              ],
+            },
+          ],
+        }),
+        makeSchema('CanTrcv', { parameters: [{ name: 'maxBaudrate', type: 'integer' }] }),
+      ];
+      const configs: ModuleConfig[] = [
+        makeConfig('Can', { refBaudrate: 2000000 }),
+        {
+          module: 'CanTrcv',
+          version: '4.4.0',
+          parameters: {},
+          containers: { TrcvConfig: [{ id: 't0', parameters: { maxBaudrate: 1000000 } }] },
+        },
+      ];
+      const validator = createCrossModuleValidator(schemas);
+
+      // 修改的是容器实例参数 maxBaudrate（不在顶层 parameters 中）→ 增量验证应能定位到
+      const errors = validator.validateAffectedBy(
+        [{ module: 'CanTrcv', param: 'maxBaudrate' }],
+        configs
+      );
+      expect(errors).toHaveLength(1);
+      expect(errors[0].code).toBe('CROSS_REF_LESS_THAN');
+      expect(errors[0].path).toBe('CanTrcv.TrcvConfig[0].maxBaudrate');
+    });
+
+    it('should pass when the container param change satisfies the relation', () => {
+      const schemas = [
+        makeSchema('Can', {
+          parameters: [
+            {
+              name: 'refBaudrate',
+              type: 'integer',
+              crossReferences: [
+                {
+                  module: 'CanTrcv',
+                  container: 'TrcvConfig',
+                  param: 'maxBaudrate',
+                  relation: 'less_than',
+                  severity: 'error',
+                  description: '',
+                },
+              ],
+            },
+          ],
+        }),
+        makeSchema('CanTrcv', { parameters: [{ name: 'maxBaudrate', type: 'integer' }] }),
+      ];
+      const configs: ModuleConfig[] = [
+        makeConfig('Can', { refBaudrate: 500000 }),
+        {
+          module: 'CanTrcv',
+          version: '4.4.0',
+          parameters: {},
+          containers: { TrcvConfig: [{ id: 't0', parameters: { maxBaudrate: 1000000 } }] },
+        },
+      ];
+      const validator = createCrossModuleValidator(schemas);
+      const errors = validator.validateAffectedBy(
+        [{ module: 'CanTrcv', param: 'maxBaudrate' }],
+        configs
+      );
+      expect(errors).toHaveLength(0);
+    });
+  });
 });

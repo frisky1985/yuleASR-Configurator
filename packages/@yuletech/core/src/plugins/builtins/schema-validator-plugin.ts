@@ -16,6 +16,12 @@ const schemaValidatorPlugin: YulePlugin = {
   author: 'YuleTech',
 
   async activate(context: PluginContext): Promise<void> {
+    // Fix 21 (K1): activate 时填充全局 schemaCache，避免 validate 空转（永远 info）
+    const { loadModuleSchemas } = await import('../../schema/load-generated');
+    for (const schema of loadModuleSchemas()) {
+      schemaCache.set(schema.name, schema as unknown as Record<string, unknown>);
+    }
+
     context.registerValidator({
       name: 'SchemaValidator',
       description: 'AUTOSAR schema compliance validation',

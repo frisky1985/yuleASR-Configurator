@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 
 import type { ModuleConfig } from '../../types';
 import { ConditionEvaluator, evaluateCondition } from '../evaluator';
-import { parseCondition } from '../parser';
+import { parseCondition, SyntaxError } from '../parser';
 
 /**
  * Helper: create a minimal ModuleConfig for testing.
@@ -234,5 +234,132 @@ describe('evaluateCondition convenience function', () => {
   it('throws SyntaxError on invalid expressions', () => {
     const configs = [makeConfig('Can', { baudrate: 500 })];
     expect(() => evaluateCondition('Can.baudrate ==', configs)).toThrow();
+  });
+});
+
+// ─── Parser robustness (Fix 20) ────────────────────────────────────
+
+describe('parser robustness — depth/length limits', () => {
+  it("rejects '!'.repeat(1e6) with SyntaxError instead of stack overflow", () => {
+    expect(() => parseCondition('!'.repeat(1e6))).toThrow(SyntaxError);
+  });
+
+  it('rejects 100k nested parentheses with SyntaxError instead of stack overflow', () => {
+    const input = '('.repeat(100000) + 'true' + ')'.repeat(100000);
+    expect(() => parseCondition(input)).toThrow(SyntaxError);
+  });
+
+  it('rejects expressions longer than 4096 chars', () => {
+    const input = 'a && '.repeat(1100); // 5500 chars
+    expect(() => parseCondition(input)).toThrow(SyntaxError);
+    expect(() => parseCondition(input)).toThrow(/too long/);
+  });
+
+  it('accepts exactly 4096 chars', () => {
+    // '&&' chains are parsed iteratively (no recursion), so a long flat
+    // expression at the length limit must still parse: 1 + 1365 * 3 = 4096
+    const input = 'x' + '&&x'.repeat(1365);
+    expect(input).toHaveLength(4096);
+    expect(() => parseCondition(input)).not.toThrow();
+  });
+
+  it('rejects deeply nested parens (depth > 200) with SyntaxError', () => {
+    const input = '('.repeat(250) + 'true' + ')'.repeat(250);
+    expect(() => parseCondition(input)).toThrow(SyntaxError);
+    expect(() => parseCondition(input)).toThrow(/too deeply nested/);
+  });
+
+  it("rejects a '!' chain deeper than 200 with SyntaxError", () => {
+    expect(() => parseCondition('!'.repeat(500) + 'true')).toThrow(SyntaxError);
+    expect(() => parseCondition('!'.repeat(500) + 'true')).toThrow(/too deeply nested/);
+  });
+
+  it("rejects a '-' chain deeper than 200 with SyntaxError", () => {
+    expect(() => parseCondition('-'.repeat(500) + '1')).toThrow(SyntaxError);
+  });
+
+  it('still accepts moderately nested expressions (≤ 200 levels)', () => {
+    // Keep under the evaluator's own MAX_DEPTH (50) as well
+    expect(evalExpr('!'.repeat(20) + 'true', [])).toBe(true);
+    expect(evalExpr('('.repeat(20) + 'true' + ')'.repeat(20), [])).toBe(true);
+  });
+});
+
+describe('parser robustness — malformed numbers', () => {
+  it('rejects 1.2.3 as an invalid number literal', () => {
+    expect(() => parseCondition('1.2.3')).toThrow(SyntaxError);
+    expect(() => parseCondition('1.2.3')).toThrow(/Invalid number literal/);
+  });
+
+  it('rejects a literal with three dots', () => {
+    expect(() => parseCondition('Can.baudrate == 1.2.3.4')).toThrow(SyntaxError);
+  });
+
+  it('still accepts valid floats and integers', () => {
+    expect(evalExpr('Can.baudrate == 1.5', [makeConfig('Can', { baudrate: 1.5 })])).toBe(true);
+    expect(evalExpr('Can.baudrate == 500', [makeConfig('Can', { baudrate: 500 })])).toBe(true);
+  });
+
+  it('still accepts container index numbers (path lexing unaffected)', () => {
+    const configs = [
+      makeConfig('Port', {
+        _containers: { containers: [{ id: '0', parameters: { direction: 'DIO' } }] },
+      }),
+    ];
+    expect(evalExpr('Port.containers[0].direction == "DIO"', configs)).toBe(true);
+  });
+});
+
+// ─── Prototype chain / missing-parameter defense (Fix 20) ──────────
+
+describe('prototype chain defense', () => {
+  it('Mod.__proto__ evaluates to false instead of leaking the prototype object', () => {
+    const configs = [makeConfig('Mod', {})];
+    expect(evalExpr('Mod.__proto__', configs)).toBe(false);
+  });
+
+  it('Mod.constructor evaluates to false instead of leaking the constructor', () => {
+    const configs = [makeConfig('Mod', {})];
+    expect(evalExpr('Mod.constructor', configs)).toBe(false);
+  });
+
+  it('container instance __proto__ path evaluates to false', () => {
+    const configs = [
+      makeConfig('Port', {
+        _containers: { containers: [{ id: '0', parameters: {} }] },
+      }),
+    ];
+    expect(evalExpr('Port.containers[0].__proto__', configs)).toBe(false);
+  });
+
+  it('long-path fallback also blocks __proto__', () => {
+    const configs = [makeConfig('Mod', {})];
+    expect(evalExpr('Mod.a.b.__proto__', configs)).toBe(false);
+  });
+
+  it('still resolves a genuine own __proto__ parameter via hasOwnProperty', () => {
+    // JSON.parse creates an own data property named '__proto__' (unlike object literals)
+    const ownProto = JSON.parse('{"__proto__": 42}') as Record<string, unknown>;
+    const configs = [makeConfig('Mod', ownProto)];
+    expect(evalExpr('Mod.__proto__ == 42', configs)).toBe(true);
+  });
+
+  it('still resolves regular own parameters', () => {
+    const configs = [makeConfig('Mod', { value: 7 })];
+    expect(evalExpr('Mod.value == 7', configs)).toBe(true);
+  });
+
+  it('handles configs with a missing parameters object (undefined → {})', () => {
+    const config = { module: 'Mod', version: '4.4.0' } as unknown as ModuleConfig;
+    expect(evalExpr('Mod.anyParam == 1', [config])).toBe(false);
+  });
+
+  it('handles container instances with a missing parameters object', () => {
+    const configs = [
+      makeConfig('Port', {
+        _containers: { containers: [{ id: '0' }] },
+      }) as unknown as ModuleConfig,
+    ];
+    expect(evalExpr('Port.containers[0].direction == "DIO"', configs)).toBe(false);
   });
 });
