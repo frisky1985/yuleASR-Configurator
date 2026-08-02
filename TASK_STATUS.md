@@ -1,6 +1,6 @@
 # yuleASR-Configurator 开发任务状态
 
-> 最后更新: 2026-08-01 当前阶段: Phase 4-5 收尾 — 测试基线与代码生成质量
+> 最后更新: 2026-08-01 当前阶段: Phase 4-5 收尾 — 测试基线与代码生成质量（安全/架构 Batch B+C 已收官）
 
 ---
 
@@ -177,6 +177,31 @@
 | P2-1 | Phase 3 UI 组件库 | ✅ 完成 | 2026-08-01: @yuletech/ui 从空壳 → 8 组件 (Button/Input/Select/FormField/Modal/Tooltip/Tree/PropertyPanel) + cn(); CVA+tailwind-merge 风格, tsup 构建 (cjs/esm/dts), 16 测试全过; web 应用已集成 (Dashboard 新建配置按钮) |
 | P2-2 | schema 层跨模块依赖 (crossReferences) | ✅ 完成 | 2026-08-01: loader (loadModuleSchemas 54 JSON→扁平 ModuleSchema) + validator 模块级引用 (sourceParam) + 19 条 AUTOSAR 约束标注 15 模块 (参数存在性全验) + 链路打通 (schemaExtractor 54/plugin fallback/configStore)；593 测试全绿 (新增 17)。修复历史缺陷: 原 can/cantrcv/pdur 标注缺 sourceParam 且 can 关系反了 (greater_than→less_than)，从未生效 |
 | P2-3 | AUTOSAR ECUC 元模型补全 | ✅ 完成 | 2026-08-01: ChoiceContainerDef 落地 — x-choice-container/x-choice-params/x-choice-description 类型层 + loader 传递 + ChoiceContainerValidator (互斥参数最多设 1 个, xChoiceParams 优先避免误算 Id) + pipeline 集成 (choiceContainerErrors) + 4 模块真实标注 (wdg/wdgif/spi/cantp)；605 测试全绿 (新增 12)。ReferenceDef/Multiplicity/ConfigurationClass 已在此前落地 |
+
+### 安全修复 (Batch B) — 2026-08-01 全部完成 ✅
+
+| Fix | 内容 | 提交 |
+|-----|------|------|
+| F5 | Electron IPC 注入/路径遍历 → sanitize + execFileSync + 窗口加固 | `fdc01b5e` |
+| F6 | JWT 默认密钥 → 启动 fail-fast | `5aa3b16c` |
+| F7+8 | LDAP 过滤器注入 + TLS 降级 → RFC 4515 转义 + 拒绝 fallback | `ef7a7b94` |
+| F9+10 | Webhook 签名校验 + mock-success 白嫖 → 503/401/422 + 开关 | `99a4ab87` |
+| F11 | 社区端认证形同虚设 → 删硬编码口令/mock 降级 + 服务端 admin 登录 | `cb563ebf` |
+| F12 | 插件 REST 无鉴权 → authenticate + requireAdmin + 外部加载开关 | `7b353d6f` |
+| F13 | community 认证契约对齐 (useAuth 解包 + 角色服务端) + no-empty-object-type 护栏 | `6e4791d0` |
+
+### 架构收敛 (Batch C) — 2026-08-01 全部完成 ✅
+
+| Fix | 内容 | 提交 |
+|-----|------|------|
+| F14 | 双 ORM 收敛 → 统一 Drizzle 删除 Prisma (schema 14 表补齐 + 12 路由迁移) | `31b49734` |
+| F15 | Git/generate 假实现 → 显式"未接入" (web GitService NOT_IMPLEMENTED + vscode warning) | `ed5fde41` |
+| F16 | 删空包 @yuletech/utils + @yuletech/api-client | `ed5fde41` |
+| F17 | core 条件引擎接入 web (容器 condition + 参数 visibleWhen, fails-closed) | `0947d8c1` |
+| F18 | ARXML 双解析器收敛 → core 唯一出口 + escapeCString 单一实现 | `d27e6a8b` |
+| F19 | 验证静默吞错 → 显式降级警告条 (validationDegraded) | `ed5fde41` |
+
+> 下一批: **Batch D (Fix 20-32 warnings) + Suggestions** — 见 `reviews/ultra-full-2026-08-01/implementation-plan.md`。含 Fix 20 条件引擎健壮性、Fix 21 core 验证器缺陷、Fix 22 escapeCString 剩余、CI 接入 (Fix 31/32)、Git 真实接入 (Fix 15 后续)。
 
 ---
 
