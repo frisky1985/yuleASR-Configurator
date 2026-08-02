@@ -223,6 +223,14 @@ class PluginManagerImpl {
    * or have a `createPlugin` / `plugin` named export.
    */
   async loadExternalPlugins(): Promise<PluginMeta[]> {
+    // Fix 12: 外部插件动态加载无沙箱 = RCE 面。默认禁用，
+    // 仅 PLUGIN_EXTERNAL_ENABLED=true 时加载（沙箱落地前禁止在生产使用）。
+    if (process.env.PLUGIN_EXTERNAL_ENABLED !== 'true') {
+      console.warn(
+        '[plugin-manager] External plugin loading disabled (set PLUGIN_EXTERNAL_ENABLED=true only with sandboxing in place)'
+      );
+      return [];
+    }
     if (!this.externalPluginDir) {
       console.warn('[plugin-manager] No external plugin dir configured');
       return [];

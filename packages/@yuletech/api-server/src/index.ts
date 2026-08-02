@@ -56,6 +56,14 @@ app.decorate('authenticate', async function (request: any, reply: any) {
   }
 });
 
+// Fix 12: 管理操作要求 admin/super_admin 角色（依赖 Fix 6 JWT 可信载荷）
+app.decorate('requireAdmin', async function (request: any, reply: any) {
+  const user = request.user as { role?: string } | undefined;
+  if (!user || !['admin', 'super_admin'].includes(user.role ?? '')) {
+    reply.status(403).send({ message: 'Forbidden: admin role required' });
+  }
+});
+
 // ── Register built-in AUTOSAR plugins ───────────────────────────────────
 try {
   const { registerBuiltinPlugins } = await import('@yuletech/core/plugins');
