@@ -44,7 +44,7 @@ export const Login: React.FC = () => {
       navigate('/admin/dashboard');
     } catch (err) {
       console.warn('[Login] 管理员登录失败:', err);
-      // Fix 11: 删除本地 mock 降级（admin@example.com/admin123），认证必须来自服务端
+      // Fix 11: 删除本地 mock 降级（内置演示账号口令），认证必须来自服务端
       if (err instanceof ApiClientError) {
         setError(err.message || '登录失败，请检查邮箱和密码');
       } else {

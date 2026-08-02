@@ -268,32 +268,32 @@ export async function getLockStatus(request: FastifyRequest, reply: FastifyReply
 
 export async function configsRoutes(app: FastifyInstance) {
   // GET /api/configs — list own configs
-  app.get('/', { onRequest: [(app as any).authenticate] }, list);
+  app.get('/', { onRequest: [app.authenticate] }, list);
 
   // GET /api/configs/:id — get one config
-  app.get('/:id', { onRequest: [(app as any).authenticate] }, get);
+  app.get('/:id', { onRequest: [app.authenticate] }, get);
 
   // POST /api/configs — create
-  app.post('/', { onRequest: [(app as any).authenticate] }, create);
+  app.post('/', { onRequest: [app.authenticate] }, create);
 
   // PUT /api/configs/:id — update
-  app.put('/:id', { onRequest: [(app as any).authenticate] }, update);
+  app.put('/:id', { onRequest: [app.authenticate] }, update);
 
   // DELETE /api/configs/:id — remove
-  app.delete('/:id', { onRequest: [(app as any).authenticate] }, remove);
+  app.delete('/:id', { onRequest: [app.authenticate] }, remove);
 
   // GET /api/configs/:id/versions — version history
-  app.get('/:id/versions', { onRequest: [(app as any).authenticate] }, getVersions);
+  app.get('/:id/versions', { onRequest: [app.authenticate] }, getVersions);
 
   // GET /api/configs/shared/:token — public share (no auth)
   app.get('/shared/:token', getByShareToken);
 
   // POST /api/configs/:id/lock — acquire/refresh lock
-  app.post('/:id/lock', { onRequest: [(app as any).authenticate] }, lock);
+  app.post('/:id/lock', { onRequest: [app.authenticate] }, lock);
 
   // POST /api/configs/:id/unlock — release lock
-  app.post('/:id/unlock', { onRequest: [(app as any).authenticate] }, unlock);
+  app.post('/:id/unlock', { onRequest: [app.authenticate] }, unlock);
 
   // GET /api/configs/:id/lock-status — check lock
-  app.get('/:id/lock-status', { onRequest: [(app as any).authenticate] }, getLockStatus);
+  app.get('/:id/lock-status', { onRequest: [app.authenticate] }, getLockStatus);
 }

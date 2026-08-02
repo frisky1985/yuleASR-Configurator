@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import type { AutosarApi } from '../../data/autosar/types';
 import { LAYERS } from '../../data/autosar/spec-index';
-import { useBookmarks } from '../../hooks/autosar/useBookmarks';
+import { useLocalBookmarks } from '../../hooks/autosar/useLocalBookmarks';
 
 const CodeBlock = lazy(() => import('./CodeBlock'));
 
@@ -33,7 +33,7 @@ export function ApiCard({ api }: ApiCardProps) {
   const [copied, setCopied] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
   const layerInfo = LAYERS.find(l => l.id === api.layerId);
-  const { toggleBookmark, isBookmarked } = useBookmarks();
+  const { toggleBookmark, isBookmarked } = useLocalBookmarks();
 
   const copyExample = () => {
     navigator.clipboard.writeText(api.example);

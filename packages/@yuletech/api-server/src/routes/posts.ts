@@ -157,7 +157,7 @@ export async function postsRoutes(app: FastifyInstance) {
   });
 
   // POST /posts — create post
-  app.post('/', { onRequest: [(app as any).authenticate] }, async request => {
+  app.post('/', { onRequest: [app.authenticate] }, async request => {
     const parsed = createPostSchema.safeParse(request.body);
     if (!parsed.success) {
       throw { statusCode: 400, message: 'Invalid input' };
@@ -210,7 +210,7 @@ export async function postsRoutes(app: FastifyInstance) {
   });
 
   // PUT /posts/:id — update post
-  app.put('/:id', { onRequest: [(app as any).authenticate] }, async request => {
+  app.put('/:id', { onRequest: [app.authenticate] }, async request => {
     const parsed = updatePostSchema.safeParse(request.body);
     if (!parsed.success) {
       throw { statusCode: 400, message: 'Invalid input' };
@@ -256,7 +256,7 @@ export async function postsRoutes(app: FastifyInstance) {
   });
 
   // DELETE /posts/:id — delete post
-  app.delete('/:id', { onRequest: [(app as any).authenticate] }, async request => {
+  app.delete('/:id', { onRequest: [app.authenticate] }, async request => {
     const { id } = request.params as { id: string };
     const postId = parseInt(id, 10);
     const authUser = request.user as { id: number };

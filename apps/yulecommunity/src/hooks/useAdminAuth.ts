@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 /**
  * 管理端认证 Hook
- * Fix 11: 删除硬编码口令（admin/yuletech2026），改为服务端校验。
+ * Fix 11: 删除硬编码口令（内置 admin 演示账号），改为服务端校验。
  * 登录走 POST /v1/auth/admin/login，仅当服务端返回 role ∈ admin/super_admin 才写入会话。
  */
 

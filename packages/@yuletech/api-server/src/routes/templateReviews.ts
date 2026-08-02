@@ -44,7 +44,7 @@ export async function templateReviewsRoutes(app: FastifyInstance) {
   // ── POST /api/bsw-templates/:templateId/reviews — add review ──────────
   app.post(
     '/bsw-templates/:templateId/reviews',
-    { onRequest: [(app as any).authenticate] },
+    { onRequest: [app.authenticate] },
     async (request, reply) => {
       const parsed = createReviewSchema.safeParse(request.body);
       if (!parsed.success) {
@@ -101,7 +101,7 @@ export async function templateReviewsRoutes(app: FastifyInstance) {
   // ── PUT /api/template-reviews/:id — edit own review ───────────────────
   app.put(
     '/template-reviews/:id',
-    { onRequest: [(app as any).authenticate] },
+    { onRequest: [app.authenticate] },
     async (request, reply) => {
       const parsed = updateReviewSchema.safeParse(request.body);
       if (!parsed.success) {
@@ -149,7 +149,7 @@ export async function templateReviewsRoutes(app: FastifyInstance) {
   );
 
   // ── DELETE /api/template-reviews/:id — delete own review ──────────────
-  app.delete('/template-reviews/:id', { onRequest: [(app as any).authenticate] }, async request => {
+  app.delete('/template-reviews/:id', { onRequest: [app.authenticate] }, async request => {
     const { id } = request.params as { id: string };
     const reviewId = parseInt(id, 10);
     if (isNaN(reviewId)) {

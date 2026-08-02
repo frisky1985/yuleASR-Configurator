@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronRight, Search, Star } from 'lucide-react';
 import { getLayers, buildSearchIndex, findApiById } from '../../data/autosar/spec-index';
-import { useBookmarks } from '../../hooks/autosar/useBookmarks';
+import { useLocalBookmarks } from '../../hooks/autosar/useLocalBookmarks';
 
 const layerColors: Record<string, string> = {
   MCAL: 'text-blue-500', ECUAL: 'text-cyan-500', Service: 'text-teal-500', RTE_ASW: 'text-emerald-500',
@@ -19,7 +19,7 @@ export function SpecTreeNav({ selectedApi, onSelectApi }: SpecTreeNavProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
   const searchIndex = buildSearchIndex();
-  const { bookmarks, isBookmarked } = useBookmarks();
+  const { bookmarks, isBookmarked } = useLocalBookmarks();
 
   const toggleLayer = (layerId: string) => {
     setExpandedLayers(prev => {

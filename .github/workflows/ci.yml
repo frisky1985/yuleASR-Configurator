@@ -260,3 +260,40 @@ jobs:
           name: vscode-extension
           path: apps/yuleasr-vscode/*.vsix
           retention-days: 7
+
+  security-gate:
+    name: Security Gate (audit + secret scan)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Audit dependencies (critical blocks merge)
+        run: pnpm audit --audit-level=critical --registry=https://registry.npmjs.org
+
+      - name: Secret scan (no default JWT / demo credentials in source)
+        run: |
+          set +e
+          # 只扫源码目录（排除构建产物 dist/media/out —— 产物在 build 时重新生成，
+          # 且历史产物可能含已修复的旧字符串）
+          HITS=$(git grep -nE "dev-secret-change-in-production|yuletech2026|admin123|stub-commit-oid" -- apps packages ':(exclude)apps/yuleasr-vscode/media' ':(exclude)apps/yuleasr-vscode/out' ':(exclude)apps/yuleasr-web/dist-vscode' ':(exclude)**/dist' ':(exclude)**/node_modules' || true)
+          if [ -n "$HITS" ]; then
+            echo "❌ Secret scan failed — forbidden strings found:"
+            echo "$HITS"
+            exit 1
+          fi
+          echo "✅ Secret scan passed — no forbidden strings in source"

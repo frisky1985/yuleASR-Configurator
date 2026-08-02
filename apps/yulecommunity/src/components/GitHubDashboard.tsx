@@ -27,7 +27,7 @@ import {
   generateMockContributions,
   getModuleProgress,
   type RepoStats,
-} from '../services/githubApi';
+} from '../services/github';
 
 export function GitHubDashboard() {
   const [stats, setStats] = useState<RepoStats[]>([]);

@@ -16,9 +16,12 @@ function envStr(key: string, fallback = ''): string {
 
 // ── Fix 7: LDAP 过滤器注入防护 ─────────────────────────────────────────
 
-/** RFC 4515 过滤器值转义：\ * ( ) NUL 前置反斜杠 */
-function ldapEscapeFilterValue(input: string): string {
-  return input.replace(/([\\*\(\)\x00])/g, '\\$1');
+/** Fix 8: LDAP 连接/用户校验超时（毫秒）。主 socket 与 verifier 共用，防止挂死。 */
+export const LDAP_TIMEOUT_MS = 10_000;
+
+/** RFC 4515 过滤器值转义：\ * ( ) NUL 前置反斜杠（Fix 7，导出以便单测） */
+export function ldapEscapeFilterValue(input: string): string {
+  return input.replace(/([\\*\\(\\)\x00])/g, '\\$1');
 }
 
 // ── OIDC Routes ─────────────────────────────────────────────────────────
@@ -196,7 +199,7 @@ export async function ssoRoutes(app: FastifyInstance) {
       user = created;
     }
 
-    const token = (app as any).jwt.sign({ id: user.id, email: user.email, role: user.role });
+    const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role });
     // Fix 30: token 放 URL fragment（#token=...），避免 token 进入浏览器历史/日志；
     // 前端从 location.hash 读取（配合 helmet Referrer-Policy: no-referrer 防 Referer 泄露）
     return reply.redirect(`/#token=${token}`);
@@ -309,7 +312,7 @@ export async function ssoRoutes(app: FastifyInstance) {
         user = created;
       }
 
-      const token = (app as any).jwt.sign({ id: user.id, email: user.email, role: user.role });
+      const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role });
       return {
         token,
         provider: 'ldap',
@@ -422,7 +425,8 @@ function ldapBuildSearchRequest(baseDn: string, filter: string): Buffer {
   return Buffer.concat([seq, ldapMessage]);
 }
 
-function ldapBuildFilter(filterStr: string): Buffer {
+/** 解析 (attr=value) 过滤器并编码为 LDAP equalityMatch DER（导出以便单测） */
+export function ldapBuildFilter(filterStr: string): Buffer {
   // Parse (attr=value) filters — simplified equalityMatch filter
   // Fix 7: 解析失败必须抛错拒绝（不得退化为 objectClass present 过滤，
   //        否则任何畸形/注入过滤器都会匹配所有条目 = 认证绕过）。
@@ -446,8 +450,8 @@ function ldapBuildFilter(filterStr: string): Buffer {
   return Buffer.concat([Buffer.from([0xa3, inner.length]), inner]);
 }
 
-/** RFC 4515 转义值解码：\\2a \\28 \\29 \\5c \\00（hex 转义）→ 字面字符 */
-function ldapUnescapeFilterValue(value: string): string {
+/** RFC 4515 转义值解码：\\2a \\28 \\29 \\5c \\00（hex 转义）→ 字面字符（导出以便单测） */
+export function ldapUnescapeFilterValue(value: string): string {
   return value.replace(/\\([0-9a-fA-F]{2})/g, (_m, hex: string) =>
     String.fromCharCode(parseInt(hex, 16))
   );
@@ -566,7 +570,7 @@ async function ldapBindAndSearch(
     const timeout = setTimeout(() => {
       socket.destroy();
       reject(new Error('LDAP connection timeout'));
-    }, 10000);
+    }, LDAP_TIMEOUT_MS);
 
     socket.on('connect', () => {
       // Step 1: Bind with service account
@@ -633,7 +637,7 @@ async function ldapBindAndSearch(
             const verifierTimeout = setTimeout(() => {
               verifier.destroy();
               reject(new Error('LDAP user-verification timeout'));
-            }, 10000);
+            }, LDAP_TIMEOUT_MS);
             verifier.on('connect', () => {
               const userBindReq = ldapBuildBindRequest(userDn, userPassword);
               verifier.write(userBindReq);

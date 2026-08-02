@@ -2,61 +2,78 @@
   "name": "@yuletech/core",
   "version": "0.1.0",
   "description": "Core types, schemas, and validators for yuleASR configurator",
-  "main": "./src/index.ts",
-  "module": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./src/index.ts",
-      "require": "./src/index.ts"
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
     },
     "./plugins": {
-      "import": "./src/plugins/index.ts",
-      "require": "./src/plugins/index.ts"
+      "types": "./dist/plugins/index.d.ts",
+      "import": "./dist/plugins/index.mjs",
+      "require": "./dist/plugins/index.js"
     },
     "./schema": {
-      "import": "./src/schema/index.ts",
-      "require": "./src/schema/index.ts"
+      "types": "./dist/schema/index.d.ts",
+      "import": "./dist/schema/index.mjs",
+      "require": "./dist/schema/index.js"
     },
     "./schema/generated": {
-      "import": "./src/schema/generated/index.ts",
-      "require": "./src/schema/generated/index.ts"
+      "types": "./dist/schema/generated/index.d.ts",
+      "import": "./dist/schema/generated/index.mjs",
+      "require": "./dist/schema/generated/index.js"
     },
     "./schema/load-generated": {
-      "import": "./src/schema/load-generated.ts",
-      "require": "./src/schema/load-generated.ts"
+      "types": "./dist/schema/load-generated.d.ts",
+      "import": "./dist/schema/load-generated.mjs",
+      "require": "./dist/schema/load-generated.js"
     },
     "./types": {
-      "import": "./src/types/index.ts",
-      "require": "./src/types/index.ts"
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/types/index.mjs",
+      "require": "./dist/types/index.js"
     },
     "./validator": {
-      "import": "./src/validator/index.ts",
-      "require": "./src/validator/index.ts"
+      "types": "./dist/validator/index.d.ts",
+      "import": "./dist/validator/index.mjs",
+      "require": "./dist/validator/index.js"
     },
     "./generator": {
-      "import": "./src/generator/index.ts",
-      "require": "./src/generator/index.ts"
+      "types": "./dist/generator/index.d.ts",
+      "import": "./dist/generator/index.mjs",
+      "require": "./dist/generator/index.js"
     },
     "./schema-extractor": {
-      "import": "./src/schema-extractor/index.ts",
-      "require": "./src/schema-extractor/index.ts"
+      "types": "./dist/schema-extractor/index.d.ts",
+      "import": "./dist/schema-extractor/index.mjs",
+      "require": "./dist/schema-extractor/index.js"
     },
     "./validators": {
-      "import": "./src/validators/index.ts",
-      "require": "./src/validators/index.ts"
+      "types": "./dist/validators/index.d.ts",
+      "import": "./dist/validators/index.mjs",
+      "require": "./dist/validators/index.js"
     },
     "./adapters/arxml-parser": {
-      "import": "./src/adapters/arxml-parser.ts",
-      "require": "./src/adapters/arxml-parser.ts"
+      "types": "./dist/adapters/arxml-parser.d.ts",
+      "import": "./dist/adapters/arxml-parser.mjs",
+      "require": "./dist/adapters/arxml-parser.js"
     },
     "./conditions": {
-      "import": "./src/conditions/index.ts",
-      "require": "./src/conditions/index.ts"
+      "types": "./dist/conditions/index.d.ts",
+      "import": "./dist/conditions/index.mjs",
+      "require": "./dist/conditions/index.js"
     }
   },
   "scripts": {
-    "build": "tsup && rm -f tsconfig.tsbuildinfo && tsc --emitDeclarationOnly --outDir dist",
+    "build": "tsup && rm -f tsconfig.tsbuildinfo && tsc --emitDeclarationOnly --outDir dist && cp dist/index.d.ts dist/index.d.mts",
     "dev": "tsup --watch",
     "test": "vitest run",
     "test:watch": "vitest",

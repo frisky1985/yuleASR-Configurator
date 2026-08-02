@@ -225,7 +225,7 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
   });
 
   // ── GET /api/bsw-templates/my — current user's templates ────────────────
-  app.get('/my', { onRequest: [(app as any).authenticate] }, async request => {
+  app.get('/my', { onRequest: [app.authenticate] }, async request => {
     const user = request.user as { id: number };
     const rows = await db
       .select({
@@ -246,7 +246,7 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
   });
 
   // ── GET /api/bsw-templates/admin/list — admin view all templates ────────
-  app.get('/admin/list', { onRequest: [(app as any).authenticate] }, async request => {
+  app.get('/admin/list', { onRequest: [app.authenticate] }, async request => {
     const user = request.user as { id: number; role: string };
     if (user.role !== 'admin' && user.role !== 'super_admin') {
       throw { statusCode: 403, message: 'Forbidden: admin only' };
@@ -381,7 +381,7 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
   });
 
   // ── POST /api/bsw-templates — create template (Pro required) ────────────
-  app.post('/', { onRequest: [(app as any).authenticate] }, async (request, reply) => {
+  app.post('/', { onRequest: [app.authenticate] }, async (request, reply) => {
     const parsed = createTemplateSchema.safeParse(request.body);
     if (!parsed.success) {
       return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
@@ -447,7 +447,7 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
   });
 
   // ── PUT /api/bsw-templates/:id — update template (author/admin only) ────
-  app.put('/:id', { onRequest: [(app as any).authenticate] }, async (request, reply) => {
+  app.put('/:id', { onRequest: [app.authenticate] }, async (request, reply) => {
     const parsed = updateTemplateSchema.safeParse(request.body);
     if (!parsed.success) {
       return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
@@ -500,7 +500,7 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
   });
 
   // ── DELETE /api/bsw-templates/:id — delete template (author/admin) ──────
-  app.delete('/:id', { onRequest: [(app as any).authenticate] }, async request => {
+  app.delete('/:id', { onRequest: [app.authenticate] }, async request => {
     const { id } = request.params as { id: string };
     const templateId = parseInt(id, 10);
     const user = request.user as { id: number; role: string };
@@ -516,7 +516,7 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
   });
 
   // ── POST /api/bsw-templates/:id/versions — new version ──────────────────
-  app.post('/:id/versions', { onRequest: [(app as any).authenticate] }, async (request, reply) => {
+  app.post('/:id/versions', { onRequest: [app.authenticate] }, async (request, reply) => {
     const parsed = createVersionSchema.safeParse(request.body);
     if (!parsed.success) {
       return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
@@ -636,7 +636,7 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
   });
 
   // ── PUT /api/bsw-templates/:id/status — admin review/status change ──────
-  app.put('/:id/status', { onRequest: [(app as any).authenticate] }, async (request, reply) => {
+  app.put('/:id/status', { onRequest: [app.authenticate] }, async (request, reply) => {
     const parsed = statusUpdateSchema.safeParse(request.body);
     if (!parsed.success) {
       return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });

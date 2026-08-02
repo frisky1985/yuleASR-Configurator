@@ -122,8 +122,9 @@ async function createLemonCheckout(params: {
  * Verify LemonSqueezy webhook signature.
  * The signature is HMAC-SHA256 of the raw body, signed with the webhook secret.
  * Fix 9: 未配置 secret 直接返回 false（不跳过校验）；支持官方 `v1=` 前缀格式。
+ * 导出以便单测：verifyLemonSignature(v1= 前缀/裸 hex/错误签名/未配置 secret)。
  */
-function verifyLemonSignature(rawBody: string, signature: string): boolean {
+export function verifyLemonSignature(rawBody: string, signature: string): boolean {
   if (!LEMONSQUEEZY_WEBHOOK_SECRET) return false;
   const expected = crypto
     .createHmac('sha256', LEMONSQUEEZY_WEBHOOK_SECRET)
@@ -152,7 +153,7 @@ export async function paymentRoutes(app: FastifyInstance) {
    */
   app.post(
     '/create-checkout',
-    { onRequest: [(app as any).authenticate] },
+    { onRequest: [app.authenticate] },
     async (request, reply) => {
       const parsed = createCheckoutSchema.safeParse(request.body);
       if (!parsed.success) {
@@ -211,7 +212,7 @@ export async function paymentRoutes(app: FastifyInstance) {
    * Fix 10: 仅 ENABLE_MOCK_PAYMENT=true 时注册，生产默认 404，杜绝白嫖 Pro。
    */
   if (ENABLE_MOCK_PAYMENT) {
-    app.post('/mock-success', { onRequest: [(app as any).authenticate] }, async (request, reply) => {
+    app.post('/mock-success', { onRequest: [app.authenticate] }, async (request, reply) => {
     const parsed = z
       .object({
         priceId: z.enum(['pro_monthly', 'pro_yearly']),

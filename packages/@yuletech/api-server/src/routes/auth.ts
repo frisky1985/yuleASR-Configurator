@@ -74,7 +74,7 @@ export async function authRoutes(app: FastifyInstance) {
     };
   });
 
-  app.get('/me', { onRequest: [(app as any).authenticate] }, async request => {
+  app.get('/me', { onRequest: [app.authenticate] }, async request => {
     const { id } = request.user as { id: number };
     const [user] = await db
       .select({

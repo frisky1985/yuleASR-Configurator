@@ -169,7 +169,7 @@ export async function qaRoutes(app: FastifyInstance) {
   });
 
   // POST /api/questions — ask a question
-  app.post('/questions', { onRequest: [(app as any).authenticate] }, async request => {
+  app.post('/questions', { onRequest: [app.authenticate] }, async request => {
     const parsed = createQuestionSchema.safeParse(request.body);
     if (!parsed.success) {
       throw { statusCode: 400, message: 'Invalid input' };
@@ -199,7 +199,7 @@ export async function qaRoutes(app: FastifyInstance) {
   });
 
   // PUT /api/questions/:id — edit question
-  app.put('/questions/:id', { onRequest: [(app as any).authenticate] }, async request => {
+  app.put('/questions/:id', { onRequest: [app.authenticate] }, async request => {
     const parsed = updateQuestionSchema.safeParse(request.body);
     if (!parsed.success) {
       throw { statusCode: 400, message: 'Invalid input' };
@@ -231,7 +231,7 @@ export async function qaRoutes(app: FastifyInstance) {
   });
 
   // DELETE /api/questions/:id — delete question
-  app.delete('/questions/:id', { onRequest: [(app as any).authenticate] }, async request => {
+  app.delete('/questions/:id', { onRequest: [app.authenticate] }, async request => {
     const { id } = request.params as { id: string };
     const questionId = parseInt(id, 10);
     const user = request.user as { id: number };
@@ -245,7 +245,7 @@ export async function qaRoutes(app: FastifyInstance) {
   });
 
   // POST /api/questions/:id/answers — answer a question
-  app.post('/questions/:id/answers', { onRequest: [(app as any).authenticate] }, async request => {
+  app.post('/questions/:id/answers', { onRequest: [app.authenticate] }, async request => {
     const parsed = createAnswerSchema.safeParse(request.body);
     if (!parsed.success) {
       throw { statusCode: 400, message: 'Invalid input' };
@@ -282,7 +282,7 @@ export async function qaRoutes(app: FastifyInstance) {
   });
 
   // PUT /api/answers/:id — edit answer
-  app.put('/answers/:id', { onRequest: [(app as any).authenticate] }, async request => {
+  app.put('/answers/:id', { onRequest: [app.authenticate] }, async request => {
     const parsed = updateAnswerSchema.safeParse(request.body);
     if (!parsed.success) {
       throw { statusCode: 400, message: 'Invalid input' };
@@ -311,7 +311,7 @@ export async function qaRoutes(app: FastifyInstance) {
   });
 
   // POST /api/answers/:id/accept — accept answer (question author only)
-  app.post('/answers/:id/accept', { onRequest: [(app as any).authenticate] }, async request => {
+  app.post('/answers/:id/accept', { onRequest: [app.authenticate] }, async request => {
     const { id } = request.params as { id: string };
     const answerId = parseInt(id, 10);
     const user = request.user as { id: number };
@@ -351,7 +351,7 @@ export async function qaRoutes(app: FastifyInstance) {
   });
 
   // POST /api/vote — vote on a question or answer
-  app.post('/vote', { onRequest: [(app as any).authenticate] }, async request => {
+  app.post('/vote', { onRequest: [app.authenticate] }, async request => {
     const parsed = voteSchema.safeParse(request.body);
     if (!parsed.success) {
       throw { statusCode: 400, message: 'Invalid input' };

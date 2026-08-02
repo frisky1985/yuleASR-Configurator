@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Bookmark, Trash2, Tag, Folder, AlertCircle, Cloud, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useBookmarks } from '@/hooks/useBookmarks';
+import { useCloudBookmarks } from '@/hooks/useCloudBookmarks';
 
 interface BookmarksListProps {
   /** 是否显示标题和清空按钮 */
@@ -33,7 +33,7 @@ export function BookmarksList({ showHeader = false, emptyAction }: BookmarksList
     isAuthenticated,
     syncStatus,
     syncBookmarks,
-  } = useBookmarks();
+  } = useCloudBookmarks();
 
   // 打开文章
   const handleArticleClick = useCallback(

@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Bookmark, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useBookmarks } from '@/hooks/useBookmarks';
+import { useCloudBookmarks } from '@/hooks/useCloudBookmarks';
 import { HomeSEOWrapper } from '@/components/seo';
 import { BookmarksList } from '@/components/profile/BookmarksList';
 
@@ -17,7 +17,7 @@ import { BookmarksList } from '@/components/profile/BookmarksList';
  */
 export function BookmarksPage() {
   const navigate = useNavigate();
-  const { count } = useBookmarks();
+  const { count } = useCloudBookmarks();
 
   // 返回上一页
   const handleBack = useCallback(() => {

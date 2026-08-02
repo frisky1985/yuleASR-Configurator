@@ -9,16 +9,14 @@
   "main": "electron/main.mjs",
   "scripts": {
     "dev": "vite",
-    "build": "cd ../yuleasr-web && npx vite build --base ./ && cd ../yuleasr-desktop && cp -r ../yuleasr-web/dist . && electron-builder",
+    "build": "pnpm --filter yuleasr-web build && vite build && electron-builder",
     "preview": "vite preview",
     "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
     "electron:build": "vite build && electron-builder",
     "publish": "electron-builder --publish always"
   },
   "dependencies": {
-    "@yuletech/core": "workspace:*",
-    "electron-updater": "^6.3.0",
-    "yuleasr-editor-core": "workspace:*"
+    "electron-updater": "^6.3.0"
   },
   "devDependencies": {
     "@rollup/rollup-darwin-arm64": "^4.40.1",

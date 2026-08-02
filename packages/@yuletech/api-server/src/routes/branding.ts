@@ -91,7 +91,7 @@ export async function brandingRoutes(app: FastifyInstance) {
    * PUT /api/branding — Admin only
    * Updates brand settings
    */
-  app.put('/', { onRequest: [(app as any).authenticate] }, async (request, reply) => {
+  app.put('/', { onRequest: [app.authenticate] }, async (request, reply) => {
     // Check admin role — need to fetch user from DB (where roles live)
     const userData = (request as any).user as { id: number };
     const [user] = await db.select().from(users).where(eq(users.id, userData.id)).limit(1);

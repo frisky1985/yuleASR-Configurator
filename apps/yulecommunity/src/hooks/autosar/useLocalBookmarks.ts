@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 
 const STORAGE_KEY = 'autosar-bookmarks';
 
-export function useBookmarks() {
+export function useLocalBookmarks() {
   const [bookmarks, setBookmarks] = useState<string[]>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);

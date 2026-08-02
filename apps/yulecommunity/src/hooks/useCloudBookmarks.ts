@@ -32,7 +32,7 @@ type SyncStatus = 'idle' | 'syncing' | 'error';
 /**
  * 收藏管理 Hook - 支持本地存储和云端同步
  */
-export function useBookmarks() {
+export function useCloudBookmarks() {
   const { isAuthenticated, token } = useAuth();
   const [localBookmarks, setLocalBookmarks] = useLocalStorage<BookmarkedArticle[]>(
     BOOKMARKS_KEY,
@@ -287,4 +287,4 @@ export function useBookmarks() {
   };
 }
 
-export default useBookmarks;
+export default useCloudBookmarks;

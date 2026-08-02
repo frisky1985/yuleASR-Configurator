@@ -27,14 +27,14 @@ export async function pluginRoutes(app: FastifyInstance): Promise<void> {
   const { pluginManager } = await import('@yuletech/core');
 
   // GET /v1/api/plugins — List all installed plugins (Fix 12: 需登录)
-  app.get('/', { onRequest: [(app as any).authenticate] }, async (_request, reply) => {
+  app.get('/', { onRequest: [app.authenticate] }, async (_request, reply) => {
     return reply.send(pluginManager.listPlugins());
   });
 
   // GET /v1/api/plugins/:id — Get plugin details (Fix 12: 需登录)
   app.get<{ Params: { id: string } }>(
     '/:id',
-    { onRequest: [(app as any).authenticate] },
+    { onRequest: [app.authenticate] },
     async (request, reply) => {
       const { id } = request.params;
       const meta = pluginManager.getPluginMeta(id);
@@ -48,7 +48,7 @@ export async function pluginRoutes(app: FastifyInstance): Promise<void> {
   // PUT /v1/api/plugins/:id/config — Update plugin configuration (Fix 12: 需 admin)
   app.put<{ Params: { id: string } }>(
     '/:id/config',
-    { onRequest: [(app as any).authenticate, (app as any).requireAdmin] },
+    { onRequest: [app.authenticate, app.requireAdmin] },
     async (request, reply) => {
       const { id } = request.params;
 
@@ -71,7 +71,7 @@ export async function pluginRoutes(app: FastifyInstance): Promise<void> {
   // POST /v1/api/plugins/:id/toggle — Enable / disable a plugin (Fix 12: 需 admin)
   app.post<{ Params: { id: string } }>(
     '/:id/toggle',
-    { onRequest: [(app as any).authenticate, (app as any).requireAdmin] },
+    { onRequest: [app.authenticate, app.requireAdmin] },
     async (request, reply) => {
       const { id } = request.params;
 

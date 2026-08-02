@@ -87,7 +87,7 @@ export async function licenseRoutes(app: FastifyInstance) {
    * POST /api/license/activate
    * Activate a license key and bind it to the currently authenticated user.
    */
-  app.post('/activate', { onRequest: [(app as any).authenticate] }, async (request, reply) => {
+  app.post('/activate', { onRequest: [app.authenticate] }, async (request, reply) => {
     const parsed = activateSchema.safeParse(request.body);
     if (!parsed.success) {
       return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
@@ -134,7 +134,7 @@ export async function licenseRoutes(app: FastifyInstance) {
    * GET /api/license/status
    * Get the current user's active license status (from their bound key or default free).
    */
-  app.get('/status', { onRequest: [(app as any).authenticate] }, async request => {
+  app.get('/status', { onRequest: [app.authenticate] }, async request => {
     const userId = (request.user as { id: number }).id;
 
     const [license] = await db

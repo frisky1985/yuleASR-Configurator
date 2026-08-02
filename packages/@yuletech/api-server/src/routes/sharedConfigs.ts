@@ -159,7 +159,7 @@ export async function sharedConfigsRoutes(app: FastifyInstance) {
   });
 
   // ── POST /api/shared-configs — share a config (auth required) ────────
-  app.post('/', { onRequest: [(app as any).authenticate] }, async (request, reply) => {
+  app.post('/', { onRequest: [app.authenticate] }, async (request, reply) => {
     const parsed = createSharedConfigSchema.safeParse(request.body);
     if (!parsed.success) {
       return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
@@ -198,7 +198,7 @@ export async function sharedConfigsRoutes(app: FastifyInstance) {
   });
 
   // ── DELETE /api/shared-configs/:id — delete (author/admin only) ───────
-  app.delete('/:id', { onRequest: [(app as any).authenticate] }, async request => {
+  app.delete('/:id', { onRequest: [app.authenticate] }, async request => {
     const { id } = request.params as { id: string };
     const configId = parseInt(id, 10);
     const user = request.user as { id: number; role: string };
@@ -216,7 +216,7 @@ export async function sharedConfigsRoutes(app: FastifyInstance) {
   });
 
   // ── POST /api/shared-configs/:id/like — toggle like（Fix 30: 幂等 + 事务）──
-  app.post('/:id/like', { onRequest: [(app as any).authenticate] }, async request => {
+  app.post('/:id/like', { onRequest: [app.authenticate] }, async request => {
     const { id } = request.params as { id: string };
     const configId = parseInt(id, 10);
     const user = request.user as { id: number };

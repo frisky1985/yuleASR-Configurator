@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Bookmark, BookmarkCheck, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { useBookmarks } from '@/hooks/useBookmarks';
+import { useCloudBookmarks } from '@/hooks/useCloudBookmarks';
 import type { BlogArticle } from '@/types/blog';
 
 interface BookmarkButtonProps {
@@ -34,7 +34,7 @@ export function BookmarkButton({
   className,
   onBookmark,
 }: BookmarkButtonProps) {
-  const { isBookmarked, toggleBookmark, count, isLoading } = useBookmarks();
+  const { isBookmarked, toggleBookmark, count, isLoading } = useCloudBookmarks();
   const [isProcessing, setIsProcessing] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
