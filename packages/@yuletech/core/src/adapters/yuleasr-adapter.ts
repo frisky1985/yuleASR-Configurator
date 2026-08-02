@@ -164,6 +164,9 @@ export class YuleasrAdapter {
 
   /**
    * 从 ARXML 导入配置
+   *
+   * Fix 18: core 解析器统一为 fast-xml-parser 版（parseArxml 返回 ParsedModuleDef[]），
+   * 这里把结构化解析结果转换为内部 ModuleConfig[]（扁平 parameters，保持旧 DOMParser 版语义）。
    */
   importFromArxml(arxmlContent: string): ModuleConfig[] {
     const result = parseArxml(arxmlContent);
@@ -172,7 +175,11 @@ export class YuleasrAdapter {
       throw new Error(`ARXML parse failed: ${result.errors.join(', ')}`);
     }
 
-    return result.modules;
+    return result.modules.map(mod => ({
+      module: mod.shortName,
+      version: extractVersion(mod.definitionRef) || '4.4.0',
+      parameters: flattenModuleParams(mod),
+    }));
   }
 
   /**
@@ -185,5 +192,59 @@ export class YuleasrAdapter {
 
 // 导出适配器实例
 export const yuleasrAdapter = new YuleasrAdapter();
+
+/**
+ * 从模块 DEFINITION-REF 提取版本号 (e.g. "/Ep/4.4.0/Mcu" → "4.4.0")。
+ * Fix 18: 保持旧 DOMParser 版语义。
+ */
+function extractVersion(defRef: string): string | null {
+  const match = defRef.match(/\/Ep\/([^/]+)/);
+  return match ? match[1] : null;
+}
+
+/**
+ * 把 ParsedModuleDef 的参数扁平化为 Record<string, unknown>（模块级 + 容器级递归），
+ * 值做 JS 类型强转（true/false/number/string）。Fix 18: 保持旧 DOMParser 版语义。
+ */
+function flattenModuleParams(mod: {
+  shortName: string;
+  parameters: Array<{ shortName: string; definitionRef: string; value: string }>;
+  containers: Array<{
+    parameters: Array<{ shortName: string; definitionRef: string; value: string }>;
+    subContainers: Array<{
+      parameters: Array<{ shortName: string; definitionRef: string; value: string }>;
+      subContainers: unknown[];
+    }>;
+  }>;
+}): Record<string, unknown> {
+  const record: Record<string, unknown> = {};
+
+  const collect = (
+    params: Array<{ shortName: string; definitionRef: string; value: string }>
+  ): void => {
+    for (const p of params) {
+      const key = p.shortName || p.definitionRef.split('/').pop() || p.definitionRef;
+      let value: unknown = p.value;
+      if (p.value === 'true') value = true;
+      else if (p.value === 'false') value = false;
+      else if (p.value !== '' && !isNaN(Number(p.value))) value = Number(p.value);
+      record[key] = value;
+    }
+  };
+
+  const walkContainers = (containers: unknown[]): void => {
+    for (const c of containers as Array<{
+      parameters: Array<{ shortName: string; definitionRef: string; value: string }>;
+      subContainers: unknown[];
+    }>) {
+      collect(c.parameters);
+      walkContainers(c.subContainers);
+    }
+  };
+
+  collect(mod.parameters);
+  walkContainers(mod.containers);
+  return record;
+}
 
 export default YuleasrAdapter;

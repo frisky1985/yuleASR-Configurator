@@ -26,13 +26,24 @@ export {
   type ModuleValidationRules,
 } from './validators/yuleasr-validator';
 
-// 导出 ARXML 解析器
+// 导出 ARXML 解析器 (fast-xml-parser 版, Fix 18 统一出口)
 export {
   parseArxml,
+  parseArxmlContent,
   validateArxml,
   convertArxmlToYuleasr,
   type ArxmlParseResult,
+  type ParsedModuleDef,
+  type ParsedContainerValue,
+  type ParsedParamValue,
 } from './adapters/arxml-parser';
+
+// 导出 C 代码生成共享工具 (escapeCString 等, Fix 18/22 单一实现)
+export {
+  escapeCString,
+  C_IDENTIFIER_RE,
+  assertCIdentifier,
+} from './generator/autosar-format';
 
 // 导出插件系统
 export { pluginRegistry, pluginManager } from './plugins';

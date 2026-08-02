@@ -46,6 +46,10 @@
       "import": "./src/validators/index.ts",
       "require": "./src/validators/index.ts"
     },
+    "./adapters/arxml-parser": {
+      "import": "./src/adapters/arxml-parser.ts",
+      "require": "./src/adapters/arxml-parser.ts"
+    },
     "./conditions": {
       "import": "./src/conditions/index.ts",
       "require": "./src/conditions/index.ts"
@@ -62,7 +66,8 @@
   "dependencies": {
     "@yuletech/plugin-sdk": "workspace:*",
     "ajv": "^8.12.0",
-    "ajv-formats": "^3.0.0"
+    "ajv-formats": "^3.0.0",
+    "fast-xml-parser": "^5.10.0"
   },
   "devDependencies": {
     "@rollup/rollup-darwin-arm64": "^4.62.2",

@@ -2,6 +2,11 @@
  * @yuletech/core - Ecuc Code Generator
  * AutoSAR Ecuc 配置 C 代码生成器
  *
+ * @experimental  (Fix 18 标注)
+ * 本生成器当前仅测试引用（无发布路径使用；Editor 实际使用 web 层宏头生成器
+ * apps/yuleasr-web/src/services/codegen.ts）。API 可能随 Batch D 调整，
+ * 请勿在发布路径中直接依赖。
+ *
  * 生成 Ecuc_<Module>.c 和 Ecuc_<Module>.h 文件
  * 遵循 AutoSAR Ecuc 规范标准 4.4
  *

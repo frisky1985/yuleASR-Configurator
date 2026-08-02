@@ -20,6 +20,35 @@ export function toDefineName(name: string): string {
     .toUpperCase();
 }
 
+// =========================================================================
+// C 字符串转义 / 标识符校验 (Fix 18/22 共享工具, 单一实现)
+// =========================================================================
+
+/** C 标识符正则: [A-Za-z_][A-Za-z0-9_]* */
+export const C_IDENTIFIER_RE = /^[A-Za-z_][A-Za-z0-9_]*$/;
+
+/**
+ * 校验 name 是否为合法 C 标识符，否则抛错（防止宏名/引用拼接注入）。
+ */
+export function assertCIdentifier(name: string, what: string): void {
+  if (!C_IDENTIFIER_RE.test(name)) {
+    throw new Error(`Invalid C identifier for ${what}: "${name}"`);
+  }
+}
+
+/**
+ * 转义 C 字符串字面量内容（反斜杠、双引号、换行、回车、制表符）。
+ * Fix W5/22: 防止字符串参数把裸引号/换行注入生成的 .h/.c 文件（C 代码注入）。
+ */
+export function escapeCString(value: unknown): string {
+  return String(value)
+    .replace(/\\/g, '\\\\')
+    .replace(/"/g, '\\"')
+    .replace(/\n/g, '\\n')
+    .replace(/\r/g, '\\r')
+    .replace(/\t/g, '\\t');
+}
+
 /** Format a JavaScript value as an AUTOSAR C literal */
 export function formatCValue(value: unknown, type?: string): string {
   switch (type) {
@@ -38,7 +67,7 @@ export function formatCValue(value: unknown, type?: string): string {
       return Number.isInteger(n) ? `${n}.0f` : `${n}f`;
     }
     case 'string':
-      return `"${value}"`;
+      return `"${escapeCString(value)}"`;
     case 'enum':
       return String(value);
     case 'array':
@@ -58,7 +87,7 @@ export function formatCValue(value: unknown, type?: string): string {
 export function formatPrimitiveValue(value: unknown): string {
   if (typeof value === 'boolean') return value ? 'TRUE' : 'FALSE';
   if (typeof value === 'number') return Number.isInteger(value) ? `${value}` : `${value}f`;
-  if (typeof value === 'string') return `"${value}"`;
+  if (typeof value === 'string') return `"${escapeCString(value)}"`;
   return String(value);
 }
 

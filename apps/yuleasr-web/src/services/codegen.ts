@@ -12,6 +12,9 @@
  * by the EcucCodeGenerator in @yuletech/core.
  */
 
+// Fix 18/22: escapeCString / C_IDENTIFIER_RE 从 core 导出，单一实现（避免 web 私有转义分叉）
+import { escapeCString, C_IDENTIFIER_RE } from '@yuletech/core';
+
 export interface GeneratedFile {
   filename: string;
   content: string;
@@ -110,7 +113,10 @@ function formatMacroValue(value: unknown): string {
     }
     return `${value}f`;
   }
-  if (typeof value === 'string') return value;
+  // Fix 18/22 (W5): 枚举标识符原样输出；自由文本加引号并转义，防止裸引号/换行注入 .h 文件
+  if (typeof value === 'string') {
+    return C_IDENTIFIER_RE.test(value) ? value : `"${escapeCString(value)}"`;
+  }
   return String(value);
 }
 
