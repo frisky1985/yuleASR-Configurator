@@ -19,17 +19,25 @@ export const Login: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await apiClient.login({ email, password });
+      // Fix 11/13: 管理员登录走专用端点，角色必须来自服务端（禁止硬编码 super_admin）
+      const response = await apiClient.adminLogin({ email, password });
 
       // Set API token for subsequent requests
       setApiToken(response.token);
+
+      // Fix 13: 角色来自服务端响应；仅接受 admin/super_admin
+      const role = response.user.role || 'user';
+      if (!['admin', 'super_admin'].includes(role)) {
+        setError('无管理员权限');
+        return;
+      }
 
       // Map API response to admin store (id comes as number, convert to string)
       setUser({
         id: String(response.user.id),
         username: response.user.username,
         email: response.user.email,
-        role: 'super_admin',
+        role: role as 'admin' | 'super_admin',
       });
       setToken(response.token);
       setAuthenticated(true);

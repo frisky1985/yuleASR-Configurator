@@ -77,8 +77,9 @@ export function useAuth() {
       }
 
       const result = await response.json();
-      if (result.success && result.data) {
-        const { user, token } = result.data;
+      // Fix 13: 服务端 /v1/auth/login 返回 { token, user }（无 success/data 信封）
+      if (response.ok && result.token && result.user) {
+        const { user, token } = result;
         safeSessionSet(USER_KEY, JSON.stringify(user));
         safeSessionSet(TOKEN_KEY, token);
         userApi.setToken(token);
@@ -110,8 +111,9 @@ export function useAuth() {
       });
 
       const result = await response.json();
-      if (response.ok && result.success && result.data) {
-        const { user, token } = result.data;
+      // Fix 13: 服务端 /v1/auth/register 返回 { token, user }（无 success/data 信封）
+      if (response.ok && result.token && result.user) {
+        const { user, token } = result;
         safeSessionSet(USER_KEY, JSON.stringify(user));
         safeSessionSet(TOKEN_KEY, token);
         userApi.setToken(token);

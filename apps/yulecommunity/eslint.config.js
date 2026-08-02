@@ -19,5 +19,9 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // Fix 13: 禁止空接口/空对象类型（类型形同虚设的护栏；v8 起用 no-empty-object-type 替代已废弃的 no-empty-interface）
+      '@typescript-eslint/no-empty-object-type': ['error', { allowInterfaces: 'never', allowObjectTypes: 'never' }],
+    },
   },
 ])

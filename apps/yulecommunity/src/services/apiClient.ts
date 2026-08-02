@@ -14,11 +14,12 @@ const BASE_URL =
 // Types — aligned with existing data types in @/types/blog and the API server
 // ---------------------------------------------------------------------------
 
-/** Minimal user returned by auth endpoints */
+/** Minimal user returned by auth endpoints (Fix 13: 对齐服务端响应，含 role) */
 export interface AuthUser {
   id: number;
   email: string;
   username: string;
+  role?: string;
 }
 
 export interface AuthResponse {
@@ -251,6 +252,11 @@ export const apiClient = {
 
   login(data: LoginRequest): Promise<AuthResponse> {
     return request<AuthResponse>('POST', '/auth/login', data);
+  },
+
+  /** Fix 11: 管理员专用登录（服务端校验角色 ∈ admin/super_admin） */
+  adminLogin(data: LoginRequest): Promise<AuthResponse> {
+    return request<AuthResponse>('POST', '/auth/admin/login', data);
   },
 
   register(data: RegisterRequest): Promise<AuthResponse> {
