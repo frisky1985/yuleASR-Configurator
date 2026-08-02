@@ -56,7 +56,10 @@ export function formatCValue(value: unknown, type?: string): string {
       return value === true ? 'STD_ON' : 'STD_OFF';
     case 'integer':
       if (typeof value === 'number') {
-        if (value >= 0 && value <= 0xffff) {
+        if (value < 0) {
+          return `((sint32)${value})`;
+        }
+        if (value <= 0xffff) {
           return `((uint16)${value}U)`;
         }
         return `((uint32)${value}U)`;

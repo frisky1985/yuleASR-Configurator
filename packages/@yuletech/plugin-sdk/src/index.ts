@@ -181,6 +181,14 @@ export interface YulePlugin {
   author: string;
 
   /**
+   * Whether the plugin instance is currently activated.
+   * Managed by the plugin manager: set to `true` after `activate()`,
+   * set to `false` after `deactivate()` (e.g. on disable).
+   * Optional — plugins do not need to set it themselves.
+   */
+  active?: boolean;
+
+  /**
    * Called when the plugin is activated (loaded).
    * Use the context to register generators, validators, etc.
    */

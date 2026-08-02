@@ -158,15 +158,20 @@ class PluginManagerImpl {
 
   /**
    * Enable a plugin (set enabled=true in meta).
-   * If the plugin is not currently activated, re-activate it.
+   * If the plugin instance is currently inactive (disabled), re-activate it
+   * so its registered capabilities (validators, generators, exporters) are
+   * restored. Fix 23 (K12).
    */
   async enable(id: string): Promise<boolean> {
     const existing = pluginRegistry.get(id);
-    if (existing) {
-      existing.meta.enabled = true;
-      return true;
+    if (!existing) return false;
+    existing.meta.enabled = true;
+    if (existing.instance.active === false) {
+      const context = this.buildContext(existing.instance.id, existing.meta.config);
+      await existing.instance.activate(context);
+      existing.instance.active = true;
     }
-    return false;
+    return true;
   }
 
   /**
@@ -181,6 +186,8 @@ class PluginManagerImpl {
     if (existing.instance.deactivate) {
       await existing.instance.deactivate();
     }
+    // Mark the instance as inactive so enable() knows to re-activate it (Fix 23 / K12)
+    existing.instance.active = false;
 
     existing.meta.enabled = false;
     // Remove owned generators & validators & exporters

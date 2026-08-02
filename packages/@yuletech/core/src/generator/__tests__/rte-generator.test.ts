@@ -131,4 +131,52 @@ describe('RteCodeGenerator', () => {
     expect(cfg).toBeDefined();
     expect(cfg.length).toBeGreaterThan(0);
   });
+
+  describe('Fix 22: RTE 宏名标识符校验（防代码注入）', () => {
+    it('should fail generation when a task name is not a valid C identifier', async () => {
+      const config: ModuleConfig = {
+        module: 'Rte',
+        version: '1.0.0',
+        parameters: {
+          RteTasks: [
+            {
+              name: 'my-task',
+              priority: 5,
+              periodMs: 10,
+              activationType: 'cyclic',
+              runnableList: ['Runnable_A'],
+            },
+          ],
+        },
+        containers: {},
+      };
+      const result = await generator.generate(config, mockSchema, {
+        outputDir: './out',
+      });
+      expect(result.success).toBe(false);
+      expect(result.errors).toBeDefined();
+      expect(result.errors![0]).toContain('Invalid C identifier for task');
+      // 非法宏名不应出现在任何输出文件中
+      const allContent = result.files.map(f => f.content).join('\n');
+      expect(allContent).not.toContain('RTE_TASK_MY-TASK');
+    });
+
+    it('should fail generation when an interface name is not a valid C identifier', async () => {
+      const config: ModuleConfig = {
+        module: 'Rte',
+        version: '1.0.0',
+        parameters: {
+          RteInterfaces: [
+            { name: 'evil"; #include "x', type: 'SenderReceiver', dataType: 'uint8' },
+          ],
+        },
+        containers: {},
+      };
+      const result = await generator.generate(config, mockSchema, {
+        outputDir: './out',
+      });
+      expect(result.success).toBe(false);
+      expect(result.errors![0]).toContain('Invalid C identifier for interface');
+    });
+  });
 });

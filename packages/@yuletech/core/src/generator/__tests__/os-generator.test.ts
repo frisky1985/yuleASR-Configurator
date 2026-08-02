@@ -277,6 +277,14 @@ describe('OsCodeGenerator', () => {
             OsCounterMinCycle: 1,
           },
         ],
+        OsTask: [
+          {
+            OsTaskName: 'ControlTask',
+            OsTaskPriority: 1,
+            OsTaskActivation: 1,
+            OsTaskAutostart: false,
+          },
+        ],
         OsAlarm: [
           {
             OsAlarmName: 'TickAlarm',
@@ -338,6 +346,14 @@ describe('OsCodeGenerator', () => {
       module: 'Os',
       version: '4.4.0',
       parameters: {
+        OsTask: [
+          {
+            OsTaskName: 'WorkerTask',
+            OsTaskPriority: 1,
+            OsTaskActivation: 1,
+            OsTaskAutostart: false,
+          },
+        ],
         OsEvent: [
           {
             OsEventName: 'DataReady',
@@ -742,5 +758,134 @@ describe('OsCodeGenerator - Edge Cases', () => {
     expect(cfgHeader).toContain('OS_STACK_MONITORING');
     expect(cfgHeader).toContain('OS_TIME_PROTECTION');
     expect(cfgHeader).toContain('STD_OFF');
+  });
+
+  describe('Fix 22: reference integrity validation', () => {
+    it('should return error and skip alarm when OsAlarmCounterRef references a non-existent Counter', async () => {
+      const config: ModuleConfig = {
+        module: 'Os',
+        version: '4.4.0',
+        parameters: {
+          OsMaxTasks: 8,
+          OsCounter: [
+            {
+              OsCounterName: 'SystemTimer',
+              OsCounterTicksPerBase: 1000,
+              OsCounterMaxAllowedValue: 65535,
+              OsCounterMinCycle: 1,
+            },
+          ],
+          OsTask: [
+            {
+              OsTaskName: 'Task1',
+              OsTaskPriority: 10,
+              OsTaskSchedule: 'FULL',
+              OsTaskStackSize: 1024,
+              OsTaskActivationLimit: 1,
+              OsTaskType: 'BCC',
+              OsTaskAutostart: true,
+            },
+          ],
+          OsAlarm: [
+            {
+              OsAlarmName: 'BadAlarm',
+              // 引用不存在的 Counter → 应被校验拦截并跳过
+              OsAlarmCounterRef: 'NonexistentCounter',
+              OsAlarmActionType: 'ActivateTask',
+              OsAlarmActionTaskRef: 'Task1',
+              OsAlarmStartValue: 100,
+              OsAlarmCycleValue: 1000,
+              OsAlarmAutostart: true,
+            },
+          ],
+        },
+        containers: {},
+      };
+
+      const result = await generator.generate(config, baseSchema, {
+        outputDir: './out',
+      });
+
+      expect(result.success).toBe(false);
+      expect(result.errors).toBeDefined();
+      expect(result.errors!.join('\n')).toContain('references unknown counter');
+
+      // 被跳过的 Alarm 不应生成悬空宏
+      const allContent = result.files.map(f => f.content).join('\n');
+      expect(allContent).not.toContain('OS_COUNTER_ID_NONEXISTENTCOUNTER');
+      expect(allContent).not.toContain('OS_ALARM_ID_BADALARM');
+      expect(allContent).not.toContain('OS_ALARM_COUNT');
+
+      // 合法 Counter 的宏仍应正常生成
+      expect(allContent).toContain('OS_COUNTER_ID_SYSTEMTIMER');
+    });
+
+    it('should return error and skip event when OsEventTaskRef references a non-existent Task', async () => {
+      const config: ModuleConfig = {
+        module: 'Os',
+        version: '4.4.0',
+        parameters: {
+          OsTask: [
+            {
+              OsTaskName: 'Task1',
+              OsTaskPriority: 10,
+              OsTaskSchedule: 'FULL',
+              OsTaskStackSize: 1024,
+              OsTaskActivationLimit: 1,
+              OsTaskType: 'BCC',
+              OsTaskAutostart: true,
+            },
+          ],
+          OsEvent: [
+            {
+              OsEventName: 'Evt1',
+              OsEventTaskRef: 'GhostTask',
+              OsEventMask: 1,
+            },
+          ],
+        },
+        containers: {},
+      };
+
+      const result = await generator.generate(config, baseSchema, {
+        outputDir: './out',
+      });
+
+      expect(result.success).toBe(false);
+      expect(result.errors!.join('\n')).toContain('references unknown task');
+      const allContent = result.files.map(f => f.content).join('\n');
+      expect(allContent).not.toContain('OS_TASK_ID_GHOSTTASK');
+      expect(allContent).not.toContain('OS_EVENT_ID_EVT1');
+    });
+
+    it('should record error when object names are not valid C identifiers (injection guard)', async () => {
+      const config: ModuleConfig = {
+        module: 'Os',
+        version: '4.4.0',
+        parameters: {
+          OsCounter: [
+            {
+              OsCounterName: 'SystemTimer',
+              OsCounterTicksPerBase: 1000,
+            },
+          ],
+          OsAlarm: [
+            {
+              OsAlarmName: 'x"; #include "evil.h',
+              OsAlarmCounterRef: 'SystemTimer',
+              OsAlarmActionType: 'ActivateTask',
+            },
+          ],
+        },
+        containers: {},
+      };
+
+      const result = await generator.generate(config, baseSchema, {
+        outputDir: './out',
+      });
+
+      expect(result.success).toBe(false);
+      expect(result.errors!.join('\n')).toContain('Invalid C identifier');
+    });
   });
 });

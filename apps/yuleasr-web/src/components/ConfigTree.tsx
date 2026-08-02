@@ -534,6 +534,14 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
           return instPath === renamingPath;
         });
         if (entry) {
+          // Fix 24: 同一容器下实例重名检测，重名时保持编辑状态并提示
+          const exists = dynamicInstances[containerPath]?.some(
+            e => e.name === renameValue.trim() && e.name !== entry.name
+          );
+          if (exists) {
+            alert('同一容器下已存在同名实例');
+            return;
+          }
           renameInstance(containerPath, entry.name, renameValue.trim());
         }
       }

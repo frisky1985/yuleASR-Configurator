@@ -27,6 +27,7 @@ import {
   generateAutosarFileHeader,
   getCompilerAbstraction,
   CompilerAbstraction,
+  assertCIdentifier,
 } from './autosar-format';
 
 import { pluginRegistry } from '../plugins/plugin-registry';
@@ -91,6 +92,11 @@ export class OsCodeGenerator implements CodeGenerator {
       const resources = this.extractResourceConfigs(config);
       const applications = this.extractApplicationConfigs(config);
       const cores = this.extractPhysicalCoreConfigs(config);
+
+      // Fix 22: 引用完整性校验 — 收集阶段后、生成阶段前。
+      // 校验 counterRef/taskRef 引用目标存在（knownCounters/knownTasks），
+      // 非法引用记录 error 并跳过该条目；同时 assertCIdentifier 防止宏名拼接注入。
+      this.validateOsReferences(counters, tasks, alarms, events, scheduleTables, errors);
 
       // Generate Os_Types.h
       const typesHeader = this.generateOsTypesHeader(
@@ -163,6 +169,115 @@ export class OsCodeGenerator implements CodeGenerator {
   }
 
   // ======================== Config Extractors ========================
+
+  /**
+   * Fix 22: 校验 OS 配置引用完整性（收集阶段后、生成阶段前调用）。
+   * - 参与宏名拼接的标识符（对象名/counterRef/taskRef）必须是合法 C 标识符
+   *   （assertCIdentifier，防止宏名拼接注入）；
+   * - counterRef/taskRef 必须指向已定义对象（knownCounters/knownTasks），
+   *   非法引用 errors.push 记录错误并从集合中删除该条目（跳过生成，
+   *   避免输出 OS_COUNTER_ID_XXX / OS_TASK_ID_XXX 悬空宏）。
+   */
+  private validateOsReferences(
+    counters: Record<string, Record<string, unknown>>,
+    tasks: Record<string, Record<string, unknown>>,
+    alarms: Record<string, Record<string, unknown>>,
+    events: Record<string, Record<string, unknown>>,
+    scheduleTables: Record<string, Record<string, unknown>>,
+    errors: string[]
+  ): void {
+    const knownCounters = new Set(Object.keys(counters));
+    const knownTasks = new Set(Object.keys(tasks));
+
+    // 条目自身名字参与宏名拼接（OS_COUNTER_ID_${name} 等），必须为合法 C 标识符
+    for (const name of [
+      ...Object.keys(counters),
+      ...Object.keys(tasks),
+      ...Object.keys(alarms),
+      ...Object.keys(events),
+      ...Object.keys(scheduleTables),
+    ]) {
+      try {
+        assertCIdentifier(name, 'os object name');
+      } catch (error) {
+        errors.push(error instanceof Error ? error.message : String(error));
+      }
+    }
+
+    // Alarm: OsAlarmCounterRef / OsAlarmActionTaskRef
+    for (const [name, alarm] of Object.entries(alarms)) {
+      const counterRef = String(alarm['OsAlarmCounterRef'] ?? '');
+      const taskRef = String(alarm['OsAlarmActionTaskRef'] ?? '');
+      if (!counterRef) {
+        errors.push(`[os-generator] Alarm "${name}" has empty OsAlarmCounterRef`);
+        delete alarms[name];
+        continue;
+      }
+      if (!knownCounters.has(counterRef)) {
+        errors.push(`[os-generator] Alarm "${name}" references unknown counter "${counterRef}"`);
+        delete alarms[name];
+        continue;
+      }
+      if (taskRef && !knownTasks.has(taskRef)) {
+        errors.push(`[os-generator] Alarm "${name}" references unknown task "${taskRef}"`);
+        delete alarms[name];
+        continue;
+      }
+      try {
+        assertCIdentifier(counterRef, 'counter ref');
+        if (taskRef) assertCIdentifier(taskRef, 'task ref');
+      } catch (error) {
+        errors.push(error instanceof Error ? error.message : String(error));
+        delete alarms[name];
+      }
+    }
+
+    // Event: OsEventTaskRef
+    for (const [name, ev] of Object.entries(events)) {
+      const taskRef = String(ev['OsEventTaskRef'] ?? '');
+      if (!taskRef || !knownTasks.has(taskRef)) {
+        errors.push(
+          `[os-generator] Event "${name}" references unknown task "${taskRef || '(empty)'}"`
+        );
+        delete events[name];
+        continue;
+      }
+      try {
+        assertCIdentifier(taskRef, 'task ref');
+      } catch (error) {
+        errors.push(error instanceof Error ? error.message : String(error));
+        delete events[name];
+      }
+    }
+
+    // ScheduleTable expiry points: ExpiryPointTaskRef
+    for (const [name, st] of Object.entries(scheduleTables)) {
+      const expiryPoints = st['OsScheduleTableExpiryPoints'] as
+        | Array<Record<string, unknown>>
+        | undefined;
+      if (expiryPoints && Array.isArray(expiryPoints)) {
+        for (const ep of expiryPoints) {
+          const epTaskRef = String(ep['ExpiryPointTaskRef'] ?? '');
+          if (epTaskRef && !knownTasks.has(epTaskRef)) {
+            errors.push(
+              `[os-generator] ScheduleTable "${name}" expiry point references unknown task "${epTaskRef}"`
+            );
+            delete scheduleTables[name];
+            break;
+          }
+          if (epTaskRef) {
+            try {
+              assertCIdentifier(epTaskRef, 'task ref');
+            } catch (error) {
+              errors.push(error instanceof Error ? error.message : String(error));
+              delete scheduleTables[name];
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
 
   private extractTaskConfigs(config: ModuleConfig): Record<string, Record<string, unknown>> {
     const tasks: Record<string, Record<string, unknown>> = {};

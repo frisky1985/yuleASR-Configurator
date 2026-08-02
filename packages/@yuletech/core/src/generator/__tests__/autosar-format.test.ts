@@ -11,6 +11,9 @@ import {
   AUTOSAR_MODULE_IDS,
   getModuleId,
   getModuleHeaderName,
+  escapeCString,
+  assertCIdentifier,
+  C_IDENTIFIER_RE,
 } from '../autosar-format';
 
 describe('autosar-format', () => {
@@ -49,6 +52,12 @@ describe('autosar-format', () => {
       expect(formatCValue(42, 'integer')).toBe('((uint16)42U)');
       expect(formatCValue(500000, 'integer')).toBe('((uint32)500000U)');
       expect(formatCValue(0, 'integer')).toBe('((uint16)0U)');
+    });
+
+    it('should format negative integers as signed sint32 (Fix 22)', () => {
+      expect(formatCValue(-5, 'integer')).toBe('((sint32)-5)');
+      expect(formatCValue(-1, 'integer')).toBe('((sint32)-1)');
+      expect(formatCValue(-65536, 'integer')).toBe('((sint32)-65536)');
     });
 
     it('should format floats', () => {
@@ -174,6 +183,49 @@ describe('autosar-format', () => {
 
     it('should fallback to pattern for unknown modules', () => {
       expect(getModuleHeaderName('Unknown')).toBe('Ecuc_Unknown_Cfg.h');
+    });
+  });
+
+  describe('escapeCString (Fix 18/22: W5 C 代码注入防护)', () => {
+    it('should escape quotes, backslashes and control characters', () => {
+      expect(escapeCString('x"\n#include "evil.h"')).toBe(
+        'x\\"\\n#include \\"evil.h\\"'
+      );
+    });
+
+    it('should not emit raw quotes or newlines in output', () => {
+      const out = escapeCString('x"\n#include "evil.h"');
+      // 转义后的反斜杠序列（\"）是允许的；断言不含裸引号（前面无反斜杠）与真实换行
+      expect(out).not.toMatch(/(?<!\\)"/);
+      expect(out).not.toContain('\n');
+      expect(out).not.toContain('\r');
+    });
+
+    it('should escape tabs and backslashes', () => {
+      expect(escapeCString('a\tb\\c')).toBe('a\\tb\\\\c');
+    });
+
+    it('should keep ordinary strings unchanged', () => {
+      expect(escapeCString('hello world')).toBe('hello world');
+    });
+  });
+
+  describe('assertCIdentifier (Fix 22: 宏名拼接注入防护)', () => {
+    it('should accept valid C identifiers', () => {
+      expect(() => assertCIdentifier('Task1', 'task')).not.toThrow();
+      expect(() => assertCIdentifier('_private', 'object')).not.toThrow();
+      expect(C_IDENTIFIER_RE.test('SpeedSignal_10ms')).toBe(true);
+    });
+
+    it('should reject names with hyphens, spaces or quotes', () => {
+      expect(() => assertCIdentifier('my-task', 'task')).toThrow(/Invalid C identifier/);
+      expect(() => assertCIdentifier('evil name', 'interface')).toThrow(
+        /Invalid C identifier/
+      );
+      expect(() => assertCIdentifier('x"; #include "evil.h', 'object')).toThrow(
+        /Invalid C identifier/
+      );
+      expect(C_IDENTIFIER_RE.test('my-task')).toBe(false);
     });
   });
 });

@@ -19,6 +19,7 @@ import {
   toHex,
   getCompilerAbstraction,
   CompilerAbstraction,
+  assertCIdentifier,
 } from './autosar-format';
 
 import { pluginRegistry } from '../plugins/plugin-registry';
@@ -737,6 +738,8 @@ extern void Rte_${conn.portName}_Callback(void);
 
     for (let i = 0; i < rteConfig.tasks.length; i++) {
       const task = rteConfig.tasks[i];
+      // Fix 22: 任务名参与 RTE_TASK_${name} 宏名拼接，必须为合法 C 标识符
+      assertCIdentifier(task.name, 'task');
       content += `/* ${task.name} Configuration */\n`;
       content += `#define RTE_TASK_${task.name.toUpperCase()}_ID        ${i}U\n`;
       content += `#define RTE_TASK_${task.name.toUpperCase()}_PRIORITY  ${task.priority}U\n`;
@@ -749,6 +752,8 @@ extern void Rte_${conn.portName}_Callback(void);
 
     for (let i = 0; i < rteConfig.interfaces.length; i++) {
       const iface = rteConfig.interfaces[i];
+      // Fix 22: 接口名参与 RTE_INTERFACE_${name} 宏名拼接，必须为合法 C 标识符
+      assertCIdentifier(iface.name, 'interface');
       content += `/* ${iface.name} Configuration */\n`;
       content += `#define RTE_INTERFACE_${iface.name.toUpperCase()}_ID        ${i}U\n`;
       content += `#define RTE_INTERFACE_${iface.name.toUpperCase()}_TYPE      ${this.mapInterfaceType(iface.type)}\n`;

@@ -48,7 +48,7 @@ import type { GeneratedFile } from '@/services/codegen';
 import { downloadAuditReport } from '@/services/configReportGenerator';
 import { useConfigStore, toConditionModuleConfigs } from '@/stores/configStore';
 import type { ValidationResult } from '@/types';
-import type { ConfigContainer } from '@/types/config';
+import type { ConfigContainer, ConfigFile } from '@/types/config';
 import { PipelinePushButton } from '@/components/PipelinePushButton';
 import { PipelineStatusPanel } from '@/components/PipelineStatusPanel';
 import { triggerPipeline } from '@/services/yuleoshPipeline';
@@ -64,6 +64,8 @@ export function Editor() {
   const [isValidating, setIsValidating] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [activePipelineJobId, setActivePipelineJobId] = useState<string | null>(null);
+  // Fix 24: pipeline 完成后的隐藏 timer 用 ref 保存，卸载/新 job 时清理，防止泄漏
+  const pipelineHideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const configTreeRef = useRef<ConfigTreeHandle>(null);
   const { toggleTheme } = useTheme();
   const { t } = useTranslation();
@@ -117,6 +119,16 @@ export function Editor() {
       loadConfig(configId);
     }
   }, [configId, loadConfig]);
+
+  // Fix 24: 组件卸载时清理 pipeline 隐藏 timer，防止泄漏
+  useEffect(() => {
+    return () => {
+      if (pipelineHideTimerRef.current) {
+        clearTimeout(pipelineHideTimerRef.current);
+        pipelineHideTimerRef.current = null;
+      }
+    };
+  }, []);
 
   // Close dropdown menus on click outside
   useEffect(() => {
@@ -261,8 +273,12 @@ export function Editor() {
     reader.onload = () => {
       try {
         const config = JSON.parse(reader.result as string);
+        // Fix 24: 导入 JSON 结构校验（缺少 modules 字段直接拒绝）
+        if (!config || typeof config !== 'object' || !Array.isArray((config as { modules?: unknown }).modules)) {
+          throw new Error('配置文件缺少 modules 字段');
+        }
         setSelectedPath('');
-        useConfigStore.setState({ currentConfig: config, isDirty: false });
+        useConfigStore.setState({ currentConfig: config as ConfigFile, isDirty: false });
         localStorage.setItem('yuleasr_config', JSON.stringify(config));
       } catch (err) {
         alert('导入失败：无效的配置文件');
@@ -329,8 +345,9 @@ export function Editor() {
   };
 
   // Get selected module from path
+  // Fix 24: 精确匹配 module:<id> 段，避免选中 Cantp 时 substring 误匹配 Can 模块
   const selectedModule = selectedPath
-    ? currentConfig?.modules.find(m => selectedPath.includes(m.id))
+    ? currentConfig?.modules.find(m => new RegExp(`module:${m.id}(/|$)`).test(selectedPath))
     : null;
 
   // Extract selected container id from path (e.g. "layer:MCAL/module:adc/container:AdcConfigSet")
@@ -781,6 +798,11 @@ export function Editor() {
                     type: 'full',
                   });
                   if (triggerResult.ok && triggerResult.job_id) {
+                    // Fix 24: 触发新 job 前清理旧隐藏 timer
+                    if (pipelineHideTimerRef.current) {
+                      clearTimeout(pipelineHideTimerRef.current);
+                      pipelineHideTimerRef.current = null;
+                    }
                     setActivePipelineJobId(triggerResult.job_id);
                     console.log('Pipeline auto-triggered:', triggerResult.job_id);
                   }
@@ -847,8 +869,14 @@ export function Editor() {
           autoPoll={true}
           pollInterval={3000}
           onComplete={(job) => {
-            // Keep showing for 10 seconds after completion
-            setTimeout(() => setActivePipelineJobId(null), 10000);
+            // Keep showing for 10 seconds after completion (Fix 24: timer 存入 ref，避免泄漏)
+            if (pipelineHideTimerRef.current) {
+              clearTimeout(pipelineHideTimerRef.current);
+            }
+            pipelineHideTimerRef.current = setTimeout(() => {
+              pipelineHideTimerRef.current = null;
+              setActivePipelineJobId(null);
+            }, 10000);
           }}
           onError={() => {
             // Keep showing on error

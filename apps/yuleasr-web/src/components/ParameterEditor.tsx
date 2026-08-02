@@ -145,19 +145,14 @@ export function ParameterEditor({
   );
 
   // Handle value change with validation
+  // Fix 24: 先校验后 setValue，校验失败时 UI 保持旧值并标红，避免 UI 与 store 分叉
   const handleChange = useCallback(
     (newValue: unknown) => {
-      setValue(newValue);
-      setIsDirty(true);
-      setIsValidating(true);
-
-      // Debounced validation
       const validationError = validateValue(newValue);
       setLocalError(validationError);
-      setIsValidating(false);
-
-      // Only propagate if valid or empty
       if (!validationError || newValue === '') {
+        setValue(newValue);
+        setIsDirty(true);
         onChange(newValue);
       }
     },
