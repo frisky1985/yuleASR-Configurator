@@ -117,19 +117,25 @@ async function createLemonCheckout(params: {
 /**
  * Verify LemonSqueezy webhook signature.
  * The signature is HMAC-SHA256 of the raw body, signed with the webhook secret.
+ * Fix 9: 未配置 secret 直接返回 false（不跳过校验）；支持官方 `v1=` 前缀格式。
  */
 function verifyLemonSignature(rawBody: string, signature: string): boolean {
   if (!LEMONSQUEEZY_WEBHOOK_SECRET) return false;
-  const hmac = crypto.createHmac('sha256', LEMONSQUEEZY_WEBHOOK_SECRET);
-  hmac.update(rawBody);
-  const digest = hmac.digest('hex');
-  // Use timing-safe comparison
+  const expected = crypto
+    .createHmac('sha256', LEMONSQUEEZY_WEBHOOK_SECRET)
+    .update(rawBody)
+    .digest('hex');
+  // LemonSqueezy 签名格式为 "v1=<hmac hex>"；兼容裸 hex 输入
+  const provided = signature.startsWith('v1=') ? signature.slice(3) : signature;
   try {
-    return crypto.timingSafeEqual(Buffer.from(digest), Buffer.from(signature));
+    return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(provided));
   } catch {
     return false;
   }
 }
+
+// Fix 10: mock-success 端点仅在显式开启时注册（生产默认不注册，杜绝白嫖 Pro）
+const ENABLE_MOCK_PAYMENT = process.env.ENABLE_MOCK_PAYMENT === 'true';
 
 // ── Routes ────────────────────────────────────────────────────────────────
 
@@ -198,8 +204,10 @@ export async function paymentRoutes(app: FastifyInstance) {
    * POST /api/payment/mock-success
    * Simulates a successful payment (for development/testing).
    * Creates a Pro LicenseKey bound to the current user.
+   * Fix 10: 仅 ENABLE_MOCK_PAYMENT=true 时注册，生产默认 404，杜绝白嫖 Pro。
    */
-  app.post('/mock-success', { onRequest: [(app as any).authenticate] }, async (request, reply) => {
+  if (ENABLE_MOCK_PAYMENT) {
+    app.post('/mock-success', { onRequest: [(app as any).authenticate] }, async (request, reply) => {
     const parsed = z
       .object({
         priceId: z.enum(['pro_monthly', 'pro_yearly']),
@@ -247,7 +255,8 @@ export async function paymentRoutes(app: FastifyInstance) {
         expiresAt: license.expiresAt,
       },
     };
-  });
+    });
+  }
 
   /**
    * POST /api/payment/webhook
@@ -267,17 +276,34 @@ export async function paymentRoutes(app: FastifyInstance) {
     const body: any = typeof request.body === 'string' ? JSON.parse(request.body) : request.body;
 
     // ── LemonSqueezy signature verification ────────────────────────────
-    if (LEMON_ENABLED && LEMONSQUEEZY_WEBHOOK_SECRET) {
-      const signature = (request.headers['x-signature'] as string) || '';
-      if (!signature || !verifyLemonSignature(rawBody, signature)) {
-        return reply.status(401).send({ message: 'Invalid webhook signature' });
-      }
+    // Fix 9: 未配置 WEBHOOK_SECRET 时一律 503 拒绝（不再"跳过校验处理"）
+    if (!LEMONSQUEEZY_WEBHOOK_SECRET) {
+      return reply.status(503).send({ message: 'Webhook not configured' });
+    }
+    const signature = (request.headers['x-signature'] as string) || '';
+    if (!signature || !verifyLemonSignature(rawBody, signature)) {
+      return reply.status(401).send({ message: 'Invalid webhook signature' });
     }
 
     // ── Extract event info ──────────────────────────────────────────────
     // LemonSqueezy format: { data: { attributes: { ... } }, meta: { event_name: "order_created" } }
     const eventName = body?.meta?.event_name || body?.type || 'unknown';
-    const eventId = body?.meta?.custom_data?.event_id || body?.id || `evt_${Date.now()}`;
+    // Fix 9: eventId 绑定服务端可控的订单号（body.data.id），拒绝客户端伪造的 id/时间戳
+    const lemonOrderIdRaw = String(body?.data?.id || '');
+    const eventId = lemonOrderIdRaw ? `evt_${lemonOrderIdRaw}` : '';
+
+    // ── Handle supported events (pre-check) ────────────────────────────
+    const shouldActivate =
+      eventName === 'order_created' ||
+      eventName === 'subscription_created' ||
+      eventName === 'payment.success' ||
+      eventName === 'checkout.session.completed';
+
+    // Fix 9: 激活类事件必须携带真实订单号（服务端可控数据），否则拒绝
+    // 防止伪造无订单号的"激活类"事件绕过校验后签发 license
+    if (shouldActivate && !lemonOrderIdRaw) {
+      return reply.status(422).send({ received: true, ignored: 'missing order id' });
+    }
 
     // ── Deduplication ───────────────────────────────────────────────────
     const existing = await prisma.paymentEvent.findUnique({ where: { eventId } });
@@ -324,12 +350,7 @@ export async function paymentRoutes(app: FastifyInstance) {
     // ── Handle supported events ─────────────────────────────────────────
     // order_created → one-time payment; activate license
     // subscription_created → subscription started; activate license
-    const shouldActivate =
-      isOrder ||
-      eventName === 'subscription_created' ||
-      eventName === 'payment.success' ||
-      eventName === 'checkout.session.completed';
-
+    // (shouldActivate 已在上面预计算；此处直接复用)
     if (shouldActivate && (email || userId || lemonOrderId)) {
       // Deactivate old licenses
       if (userId) {
