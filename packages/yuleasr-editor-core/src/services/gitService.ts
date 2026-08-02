@@ -277,23 +277,57 @@ export class GitService {
         dir: this.config.dir,
       });
 
-      return matrix.map(([path, head, workdir, stage]) => {
+      const statuses: FileStatus[] = [];
+      const addedIndexes: number[] = [];
+      const deletedIndexes: number[] = [];
+
+      for (const [path, head, workdir, stage] of matrix) {
         let status: FileStatus['status'] = 'unmodified';
 
-        if (head === 0 && workdir === 1) {
+        if (head === 0 && workdir !== 0) {
           status = 'added';
+          addedIndexes.push(statuses.length);
         } else if (head === 1 && workdir === 0) {
           status = 'deleted';
+          deletedIndexes.push(statuses.length);
         } else if (head === 1 && workdir === 2) {
           status = 'modified';
         }
 
-        return {
+        statuses.push({
           path,
           status,
           staged: stage !== head,
-        };
-      });
+        });
+      }
+
+      // renamed 检测：statusMatrix 无法直接区分「重命名」与「删除+新增」，
+      // 对 deleted + added 配对做内容比对（HEAD 旧路径 vs 工作区新路径），
+      // 内容一致即视为重命名：新路径标记为 renamed，旧路径条目被合并移除。
+      const removedPaths = new Set<string>();
+      for (const addedIdx of addedIndexes) {
+        const added = statuses[addedIdx];
+        if (added.status !== 'added') continue;
+
+        for (const deletedIdx of deletedIndexes) {
+          const deleted = statuses[deletedIdx];
+          if (deleted.status !== 'deleted') continue;
+          if (deleted.path === added.path) continue;
+
+          const [headContent, workContent] = await Promise.all([
+            this.readHeadFile(deleted.path),
+            this.readWorkingFile(added.path),
+          ]);
+
+          if (headContent === workContent) {
+            added.status = 'renamed';
+            removedPaths.add(deleted.path);
+            break;
+          }
+        }
+      }
+
+      return statuses.filter(status => !removedPaths.has(status.path));
     } catch (error) {
       throw new GitError('Failed to get file status', error);
     }

@@ -12,6 +12,8 @@ interface LicenseBadgeProps {
 export function LicenseBadge({ className }: LicenseBadgeProps) {
   const tier = useLicenseStore(s => s.tier);
   const expiresAt = useLicenseStore(s => s.expiresAt);
+  // Fix 26: 服务端不可达时弱降级为「离线试用」—— 必须显式标注，不再静默视为 Pro。
+  const offlineTrial = useLicenseStore(s => s.offlineTrial);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
 
   const isExpired = expiresAt && new Date(expiresAt) < new Date();
@@ -20,6 +22,28 @@ export function LicenseBadge({ className }: LicenseBadgeProps) {
   const handleClick = () => {
     setUpgradeOpen(true);
   };
+
+  // Fix 26: 离线试用标识（弱降级，不授予缓存 Pro 能力，见 licenseStore）
+  if (offlineTrial) {
+    return (
+      <button
+        onClick={handleClick}
+        className={cn(
+          'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium',
+          'bg-slate-100 text-slate-600 border border-dashed border-slate-300',
+          'dark:bg-slate-800/60 dark:text-slate-400 dark:border-slate-600',
+          'hover:bg-primary-50 hover:text-primary-700 hover:border-primary-300',
+          'dark:hover:bg-primary-900/20 dark:hover:text-primary-400',
+          'transition-all',
+          className
+        )}
+        title="服务端不可达，当前为离线试用（本地缓存仅作弱降级，不授予 Pro 能力）"
+      >
+        <Sparkles className="w-3 h-3" />
+        <span>离线试用</span>
+      </button>
+    );
+  }
 
   if (displayTier === 'pro') {
     const daysLeft = expiresAt

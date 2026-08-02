@@ -268,17 +268,17 @@ export class ConfigEngine extends EventEmitter<EngineEvents> {
 
   /**
    * 批量设置值
+   * 先应用成功再记录历史：模块/参数不存在的项直接返回 false，不再假成功
    */
   setValues(changes: Array<{ path: string; value: ParameterValue }>): boolean[] {
-    const entries: HistoryEntry[] = [];
     const results: boolean[] = [];
+    const entries: HistoryEntry[] = [];
     const config = this.getCurrentConfig();
 
     if (!config) {
       return changes.map(() => false);
     }
 
-    // 收集历史记录
     for (const { path, value } of changes) {
       const parts = path.split('.');
       if (parts.length < 2) {
@@ -287,55 +287,47 @@ export class ConfigEngine extends EventEmitter<EngineEvents> {
       }
 
       const [moduleName, ...paramParts] = parts;
+      const paramName = paramParts.join('.');
       const module = config.modules.get(moduleName);
       if (!module) {
         results.push(false);
         continue;
       }
 
-      const paramName = paramParts.join('.');
       const oldParam = module.parameters.get(paramName);
+      if (!oldParam) {
+        // 参数不存在即失败，不再记录历史/发送变更事件
+        results.push(false);
+        continue;
+      }
 
-      entries.push({
-        type: 'set',
-        path,
-        oldValue: oldParam?.value,
-        newValue: value,
-        module: moduleName,
-        parameter: paramName,
-        timestamp: Date.now(),
-      });
+      if (this.project.setParameterValue(config.id, moduleName, paramName, value)) {
+        entries.push({
+          type: 'set',
+          path,
+          oldValue: oldParam.value,
+          newValue: value,
+          module: moduleName,
+          parameter: paramName,
+          timestamp: Date.now(),
+        });
+        results.push(true);
 
-      results.push(true);
-    }
-
-    // 应用变更
-    let successCount = 0;
-    for (let i = 0; i < changes.length; i++) {
-      if (results[i]) {
-        const { path, value } = changes[i];
-        const parts = path.split('.');
-        const [moduleName, ...paramParts] = parts;
-        const paramName = paramParts.join('.');
-
-        if (this.project.setParameterValue(config.id, moduleName, paramName, value)) {
-          successCount++;
-
-          // 发送变更事件
-          const event: ConfigChangeEvent = {
-            type: 'update',
-            path,
-            newValue: value,
-            module: moduleName,
-            parameter: paramName,
-            timestamp: new Date(),
-          };
-          this.emit('change', event);
-        }
+        // 发送变更事件
+        this.emit('change', {
+          type: 'update',
+          path,
+          newValue: value,
+          module: moduleName,
+          parameter: paramName,
+          timestamp: new Date(),
+        });
+      } else {
+        results.push(false);
       }
     }
 
-    // 添加批量历史记录
+    // 仅成功的变更写入批量历史记录
     if (entries.length > 0) {
       this.history.pushBatch(entries, `Batch update of ${entries.length} values`);
     }
@@ -401,9 +393,9 @@ export class ConfigEngine extends EventEmitter<EngineEvents> {
     if (!config) return false;
 
     if (entry.type === 'batch' && 'entries' in entry) {
-      // 批量撤销
+      // 批量撤销：使用副本逆序，避免就地 reverse 破坏历史记录顺序
       const batchEntry = entry as BatchHistoryEntry;
-      for (const subEntry of batchEntry.entries.reverse()) {
+      for (const subEntry of [...batchEntry.entries].reverse()) {
         this.applyUndoEntry(subEntry, config);
       }
     } else {
@@ -487,13 +479,13 @@ export class ConfigEngine extends EventEmitter<EngineEvents> {
   private applyRedoEntry(entry: HistoryEntry, config: ConfigModel): void {
     if (entry.module && entry.parameter) {
       if (entry.type === 'delete') {
-        // 重新删除
-        this.project.setParameterValue(
-          config.id,
-          entry.module,
-          entry.parameter,
-          undefined as unknown as ParameterValue
-        );
+        // 真正从 Map 删除，而非 setParameterValue(undefined) 强转
+        const module = config.modules.get(entry.module);
+        if (module?.parameters.has(entry.parameter)) {
+          module.parameters.delete(entry.parameter);
+          module.modified = true;
+          config.modified = true;
+        }
       } else if (entry.type === 'set' && entry.newValue !== undefined) {
         // 重新应用新值
         this.project.setParameterValue(config.id, entry.module, entry.parameter, entry.newValue);
@@ -577,11 +569,29 @@ export class ConfigEngine extends EventEmitter<EngineEvents> {
       }
     }
 
+    // 引擎当前未接入 schema 校验能力（完整接入 core validateAll 见 Fix 19），
+    // 仅转译外部塞入的 param.errors。若没有任何外部 errors，则本次验证
+    // 实际什么都没校验 —— 不能谎报 valid=true，标记 degraded 由调用方
+    // 展示为「校验未执行」。
+    const schemaValidationRan = false;
+    const hasExternalErrors = errors.length > 0;
+    const degraded = !schemaValidationRan && !hasExternalErrors;
+
     const result: ValidationResult = {
-      valid: errors.length === 0,
+      valid: hasExternalErrors ? false : schemaValidationRan,
       errors,
       warnings,
+      degraded,
     };
+
+    if (degraded) {
+      result.errors.push({
+        severity: 'error',
+        code: 'VALIDATION_NOT_RUN',
+        message: 'schema 校验未执行：引擎未接入 schema 校验能力，配置未被完整验证',
+        path: '',
+      });
+    }
 
     this.validationResults.set(config.id, result);
     this.emit('validate', result);
@@ -613,12 +623,11 @@ export class ConfigEngine extends EventEmitter<EngineEvents> {
    */
   import(data: Record<string, unknown>, configId?: string): boolean {
     try {
-      const config = this.project.importConfig(data);
-      if (configId) {
-        this.setCurrentConfig(configId);
-      } else {
-        this.currentConfigId = config.id;
-      }
+      const imported = this.project.importConfig(data);
+      // 校验调用方传入的 configId 是否存在，避免设置悬空 currentConfigId；
+      // 不存在时回退到导入返回的 config.id
+      const targetId = configId && this.project.getConfig(configId) ? configId : imported.id;
+      this.setCurrentConfig(targetId);
       return true;
     } catch (error) {
       this.emit('error', error as Error);

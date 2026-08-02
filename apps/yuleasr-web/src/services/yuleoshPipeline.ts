@@ -4,8 +4,17 @@
  * Connects yuleASR-Configurator to yuleOSH for pipeline trigger + status polling.
  */
 
-// yuleOSH API base URL — configurable via env or default to localhost:8080
-const YULEOSH_API_BASE = import.meta.env.VITE_YULEOSH_API_URL ?? 'http://127.0.0.1:8080';
+// Fix 26: yuleOSH 默认地址仅 dev 生效 —— 生产环境未配置 VITE_YULEOSH_API_URL
+// 时不再裸调 localhost（localhost CSRF/DNS rebinding 风险），直接提示未配置。
+const DEFAULT_YULEOSH_URL = import.meta.env.DEV ? 'http://127.0.0.1:8080' : '';
+const YULEOSH_API_BASE = import.meta.env.VITE_YULEOSH_API_URL ?? DEFAULT_YULEOSH_URL;
+
+function requireYuleoshBase(): string {
+  if (!YULEOSH_API_BASE) {
+    throw new Error('yuleOSH 服务未配置：请设置 VITE_YULEOSH_API_URL 环境变量');
+  }
+  return YULEOSH_API_BASE;
+}
 
 /** Pipeline job status type matching yuleOSH backend */
 export interface PipelineJob {
@@ -74,7 +83,7 @@ export interface PipelineRunsResponse {
 export async function triggerPipeline(
   payload: PipelineTriggerRequest
 ): Promise<PipelineTriggerResponse> {
-  const response = await fetch(`${YULEOSH_API_BASE}/api/v1/pipeline/trigger`, {
+  const response = await fetch(`${requireYuleoshBase()}/api/v1/pipeline/trigger`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -93,7 +102,7 @@ export async function triggerPipeline(
  */
 export async function getPipelineStatus(jobId: string): Promise<PipelineStatusResponse> {
   const response = await fetch(
-    `${YULEOSH_API_BASE}/api/v1/pipeline/status/${jobId}`,
+    `${requireYuleoshBase()}/api/v1/pipeline/status/${jobId}`,
     { method: 'GET' }
   );
 
@@ -110,7 +119,7 @@ export async function getPipelineStatus(jobId: string): Promise<PipelineStatusRe
  */
 export async function listPipelineRuns(): Promise<PipelineRunsResponse> {
   const response = await fetch(
-    `${YULEOSH_API_BASE}/api/v1/pipeline/runs`,
+    `${requireYuleoshBase()}/api/v1/pipeline/runs`,
     { method: 'GET' }
   );
 

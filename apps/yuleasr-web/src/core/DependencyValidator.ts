@@ -193,8 +193,11 @@ export class DependencyValidator {
       ? `${moduleName}.${containerPath}.${param.name}`
       : `${moduleName}.${param.name}`;
 
-    // Check required
-    if (param.validation?.required && (param.value === undefined || param.value === '')) {
+    // Check required (Fix 25: null 也视为缺失)
+    if (
+      param.validation?.required &&
+      (param.value === undefined || param.value === null || param.value === '')
+    ) {
       this.addIssue({
         path,
         message: `Parameter "${param.name}" is required`,
@@ -341,13 +344,80 @@ export class DependencyValidator {
    * Validate RTE consistency
    * - Sender-Receiver interfaces
    * - Client-Server interfaces
+   *
+   * Fix 25: 最小实现 — 遍历 RTE 模块的 interfaces/ports 相关容器，
+   * 校验 ports 引用的 interface 存在，返回结构性错误。
    */
   private validateRTEConsistency(): void {
-    const rteModule = this.config.modules.find(m => m.layer === 'RTE');
+    const rteModule = this.config.modules.find(
+      m => m.layer === 'RTE' || /rte/i.test(m.name)
+    );
     if (!rteModule || !rteModule.enabled) return;
 
-    // Validate that all referenced interfaces exist
-    // Validate port connections
+    // 收集所有已定义的 interface 名（容器名含 "interface"）
+    const interfaceNames = new Set<string>();
+    const interfaceContainers: string[] = [];
+
+    const collectInterfaces = (containers: any[], parentPath: string) => {
+      for (const container of containers || []) {
+        const cPath = parentPath ? `${parentPath}.${container.name}` : container.name;
+        if (/interface/i.test(container.name)) {
+          interfaceContainers.push(cPath);
+          for (const param of container.parameters || []) {
+            // interface 定义：参数名即接口名（如 SenderReceiverInterface 容器下每个参数）
+            if (typeof param.name === 'string' && param.name.trim()) {
+              interfaceNames.add(param.name.trim());
+            }
+            if (typeof param.value === 'string' && param.value.trim()) {
+              interfaceNames.add(param.value.trim());
+            }
+          }
+        }
+        collectInterfaces(container.subContainers || [], cPath);
+      }
+    };
+    collectInterfaces(rteModule.containers, '');
+
+    // 遍历 ports 容器，校验引用的 interface 存在
+    const validatePorts = (containers: any[], parentPath: string) => {
+      for (const container of containers || []) {
+        const cPath = parentPath ? `${parentPath}.${container.name}` : container.name;
+        if (/port/i.test(container.name)) {
+          for (const param of container.parameters || []) {
+            // 仅校验引用型参数（reference 类型或值形如 "interface 名"）
+            const refValue =
+              param.type === 'reference'
+                ? String(param.value ?? '').trim()
+                : '';
+            if (!refValue) continue;
+
+            if (!interfaceNames.has(refValue)) {
+              this.addIssue({
+                path: `${rteModule.name}.${cPath}.${param.name}`,
+                message: `RTE port "${param.name}" references non-existent interface "${refValue}"`,
+                severity: 'error',
+                module: rteModule.name,
+                parameter: param.name,
+                suggestion: `Create interface "${refValue}" or fix the port reference`,
+              });
+            }
+          }
+        }
+        validatePorts(container.subContainers || [], cPath);
+      }
+    };
+    validatePorts(rteModule.containers, '');
+
+    // 结构性检查：存在 ports 但没有任何 interface 定义
+    if (interfaceContainers.length === 0 && rteModule.containers.some(c => /port/i.test(c.name))) {
+      this.addIssue({
+        path: `${rteModule.name}.Ports`,
+        message: `RTE module "${rteModule.name}" defines ports but no interface containers`,
+        severity: 'error',
+        module: rteModule.name,
+        suggestion: 'Add an Interfaces container defining all referenced interfaces',
+      });
+    }
   }
 
   /**

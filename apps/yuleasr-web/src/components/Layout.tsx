@@ -25,6 +25,7 @@ import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp';
 import { LicenseBadge } from '@/components/LicenseBadge';
 import { useTheme } from '@/components/ThemeProvider';
 import { cn } from '@/lib/utils';
+import { UNAUTHORIZED_EVENT } from '@/services/api';
 import { useAuthStore } from '@/stores/authStore';
 
 interface LayoutProps {
@@ -41,6 +42,18 @@ export function Layout({ children }: LayoutProps) {
   const [enabledPlugins, setEnabledPlugins] = useState<
     { id: string; name: string; type: string }[]
   >([]);
+
+  // Fix 26: 路由层统一处理 401 —— api.ts 不再整页跳转，而是派发
+  // UNAUTHORIZED_EVENT；这里监听后用 `${BASE_URL}login` 跳转（适配
+  // /configurator/ 这类带 base 的部署，不再写死裸 '/login'）。
+  useEffect(() => {
+    const onUnauthorized = () => {
+      if (window.location.pathname.endsWith('/login')) return; // 已在登录页则跳过
+      window.location.assign(`${import.meta.env.BASE_URL}login`);
+    };
+    window.addEventListener(UNAUTHORIZED_EVENT, onUnauthorized);
+    return () => window.removeEventListener(UNAUTHORIZED_EVENT, onUnauthorized);
+  }, []);
 
   // Poll plugin status periodically
   useEffect(() => {

@@ -91,9 +91,8 @@ function generateHtmlReport(result: ComparisonResult): string {
         `<tr class="${containerRowClass} container-row"><td class="name">  ${cd.containerName}</td><td>${valueA}</td><td>${valueB}</td><td><span class="badge badge-${containerRowClass}">${containerStatusLabel}</span></td><td>Container</td></tr>`
       );
 
-      const containerPath = cd.containerName.includes('.')
-        ? cd.containerName
-        : `${md.moduleName}.${cd.containerName}`;
+      // Fix 25: 使用与 paramDiffs 一致的 containerPath 统一键
+      const containerPath = cd.containerPath;
       const containerParams = result.paramDiffs.filter(
         p => p.moduleName === md.moduleName && p.containerPath === containerPath
       );

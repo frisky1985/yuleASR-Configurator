@@ -1,8 +1,15 @@
 /**
- * API client with automatic JWT token attachment and 401 redirect.
+ * API client with automatic JWT token attachment.
+ *
+ * Fix 26: 401 不再在 api 层整页跳转 —— 改为抛出带 `unauthorized` 标记的错误并
+ * 派发 `yuleasr:unauthorized` 窗口事件，由路由层（Layout）统一决定跳转，
+ * 以适配 /configurator/ 这类带 base 的部署（不再写死裸 '/login'）。
  */
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? '';
+
+/** Fix 26: 401 事件名 —— 路由层（Layout）监听后跳转登录页。 */
+export const UNAUTHORIZED_EVENT = 'yuleasr:unauthorized';
 
 interface ApiResponse<T = unknown> {
   data: T;
@@ -12,6 +19,8 @@ interface ApiResponse<T = unknown> {
 class ApiError extends Error {
   status: number;
   body: unknown;
+  /** Fix 26: 401 标记 —— 由调用方/路由层决定跳转，不再由 api 层整页跳转。 */
+  unauthorized?: boolean;
 
   constructor(status: number, body: unknown) {
     super(
@@ -42,12 +51,15 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
     body: body !== undefined ? JSON.stringify(body) : undefined,
   });
 
-  // Handle 401 — redirect to login
+  // Fix 26: 401 不再整页跳转 —— 清理会话后抛带标记错误 + 派发事件，
+  // 由路由层（Layout）监听 UNAUTHORIZED_EVENT 后跳 `${BASE_URL}login`。
   if (response.status === 401) {
     localStorage.removeItem('yuleasr_token');
     localStorage.removeItem('yuleasr_user');
-    window.location.href = '/login';
-    throw new ApiError(401, { message: 'Unauthorized' });
+    const err = new ApiError(401, { message: 'Unauthorized' });
+    err.unauthorized = true;
+    window.dispatchEvent(new CustomEvent(UNAUTHORIZED_EVENT));
+    throw err;
   }
 
   let parsed: unknown;

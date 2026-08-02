@@ -96,6 +96,27 @@ export function toConditionModuleConfigs(config: ConfigFile): ModuleConfig[] {
 }
 
 /**
+ * Fix 26: schema 集合模块级缓存。
+ *
+ * validateCrossModuleChanges 位于热路径（逐键输入都会触发），原实现每次调用都
+ * 重新装配 schema（loadModuleSchemas() 等有装配副作用且昂贵），造成重复装配。
+ * 改为模块级缓存：首次访问时装配一次，之后直接复用。
+ */
+let cachedModuleSchemas: ModuleSchema[] | null = null;
+function getModuleSchemas(): ModuleSchema[] {
+  if (!cachedModuleSchemas) {
+    cachedModuleSchemas = [
+      defaultMcuSchema,
+      defaultCanSchema,
+      defaultGptSchema,
+      ...schemaExtractor.getAllSchemas(),
+      ...loadModuleSchemas(),
+    ];
+  }
+  return cachedModuleSchemas;
+}
+
+/**
  * 增量跨模块验证：当用户修改某个参数时，
  * 只检查受该变更影响的跨模块引用约束
  *
@@ -109,13 +130,8 @@ function validateCrossModuleChanges(
 ): { issues: ValidationIssue[]; failed: boolean } {
   try {
     // P2-2: 使用 54 个 generated JSON schema (crossReferences 链路打通)
-    const schemas: ModuleSchema[] = [
-      defaultMcuSchema,
-      defaultCanSchema,
-      defaultGptSchema,
-      ...schemaExtractor.getAllSchemas(),
-      ...loadModuleSchemas(),
-    ];
+    // Fix 26: 使用模块级缓存，避免热路径每次重新装配
+    const schemas: ModuleSchema[] = getModuleSchemas();
     const validator = new CrossModuleValidator(new Map(schemas.map(s => [s.name, s])));
     const configs = toModuleConfigs(config);
 
@@ -765,18 +781,23 @@ export const useConfigStore = create<ConfigState>()(
           // Also persist in localStorage for offline fallback
           saveConfigListToLocalStorage(serverList);
 
-          // Optionally cache each config that's in the list
-          for (const item of serverList) {
-            try {
-              const existing = localStorage.getItem(`yuleasr_config_${item.id}`);
-              if (!existing) {
-                // Only fetch if not already cached locally
-                const detail = await api.get<ConfigFile>(`/v1/api/configs/${item.id}`);
-                saveToLocalStorage(detail);
-              }
-            } catch {
-              // Silently skip individual fetch failures
-            }
+          // 缓存每个配置详情到 localStorage —— Fix 26: 并发批次拉取（上限 5），
+          // 避免 N+1 顺序请求拖慢登录后的云同步；单个失败静默跳过
+          const uncached = serverList.filter(
+            item => !localStorage.getItem(`yuleasr_config_${item.id}`)
+          );
+          const BATCH = 5;
+          for (let i = 0; i < uncached.length; i += BATCH) {
+            await Promise.all(
+              uncached.slice(i, i + BATCH).map(async item => {
+                try {
+                  const detail = await api.get<ConfigFile>(`/v1/api/configs/${item.id}`);
+                  saveToLocalStorage(detail);
+                } catch {
+                  /* 单个失败跳过 */
+                }
+              })
+            );
           }
         } catch (err) {
           console.warn('Failed to fetch configs from API, using local cache:', err);

@@ -8,7 +8,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 
 import { cn } from '@/lib/utils';
 import { useConfigStore } from '@/stores/configStore';
-import type { ConfigParameter } from '@/types';
+import type { ConfigFile, ConfigModule, ConfigContainer, ConfigParameter } from '@/types';
 
 interface SearchResult {
   id: string;
@@ -18,6 +18,151 @@ interface SearchResult {
   path: string;
   icon: React.ReactNode;
   matchedText: string;
+}
+
+/**
+ * 倒排索引条目（Fix 25: 模块级倒排索引，避免每次击键全量扫描 config）
+ */
+interface SearchIndexEntry {
+  id: string;
+  type: 'module' | 'container' | 'parameter';
+  title: string;
+  subtitle: string;
+  path: string;
+  icon: React.ReactNode;
+  /** 有序搜索候选（小写），按 name → displayName → description → value 优先级排列 */
+  candidates: string[];
+  /** 与 candidates 对齐的原文，用于 matchedText */
+  rawCandidates: string[];
+  /** module/container 固定的 matchedText（原逻辑固定为 name） */
+  matchedText?: string;
+}
+
+function getParameterIcon(type: string): React.ReactNode {
+  switch (type) {
+    case 'boolean':
+      return <ToggleLeft className="w-4 h-4 text-green-500" />;
+    case 'number':
+    case 'integer':
+    case 'float':
+      return <Hash className="w-4 h-4 text-blue-500" />;
+    case 'enum':
+    case 'reference':
+      return <FileJson className="w-4 h-4 text-purple-500" />;
+    default:
+      return <Type className="w-4 h-4 text-app-text-secondary" />;
+  }
+}
+
+/**
+ * 构建模块级倒排索引：把 config 展平为可搜索条目数组。
+ * 在 config 变化时通过 useMemo 缓存，搜索时只过滤索引。
+ */
+function buildSearchIndex(config: ConfigFile): SearchIndexEntry[] {
+  const entries: SearchIndexEntry[] = [];
+
+  config.modules.forEach(module => {
+    // Module entries
+    entries.push({
+      id: `module-${module.id}`,
+      type: 'module',
+      title: module.displayName || module.name,
+      subtitle: `${module.layer} Module`,
+      path: `layer:${module.layer}/module:${module.id}`,
+      icon: <Folder className="w-4 h-4 text-blue-500" />,
+      candidates: [module.name.toLowerCase(), (module.displayName || '').toLowerCase()],
+      rawCandidates: [module.name, module.displayName || ''],
+      matchedText: module.name,
+    });
+
+    // Container entries + their parameters
+    module.containers.forEach(container => {
+      entries.push({
+        id: `container-${container.id}`,
+        type: 'container',
+        title: container.displayName || container.name,
+        subtitle: `${module.displayName || module.name} › Container`,
+        path: `layer:${module.layer}/module:${module.id}/container:${container.id}`,
+        icon: <Folder className="w-4 h-4 text-amber-500" />,
+        candidates: [container.name.toLowerCase(), (container.displayName || '').toLowerCase()],
+        rawCandidates: [container.name, container.displayName || ''],
+        matchedText: container.name,
+      });
+
+      // Container-level parameters
+      container.parameters.forEach((param: ConfigParameter) => {
+        entries.push(buildParameterEntry(param, `param-${param.id}`, module, container));
+      });
+    });
+
+    // Module-level parameters
+    module.parameters.forEach((param: ConfigParameter) => {
+      entries.push(buildParameterEntry(param, `param-module-${param.id}`, module, undefined));
+    });
+  });
+
+  // OS configuration entries
+  if (config.os) {
+    const os = config.os;
+    const osEntries: Array<{ id: string; name: string; subtitle: string }> = [
+      ...(os.tasks?.map(t => ({ id: `os-task-${t.id}`, name: t.name, subtitle: 'OS › Task' })) || []),
+      ...(os.events?.map(e => ({ id: `os-event-${e.id}`, name: e.name, subtitle: 'OS › Event' })) || []),
+      ...(os.alarms?.map(a => ({ id: `os-alarm-${a.id}`, name: a.name, subtitle: 'OS › Alarm' })) || []),
+    ];
+    for (const oe of osEntries) {
+      entries.push({
+        id: oe.id,
+        type: 'parameter',
+        title: oe.name,
+        subtitle: oe.subtitle,
+        path: 'layer:OS/os:os',
+        icon: <FileJson className="w-4 h-4 text-purple-500" />,
+        candidates: [oe.name.toLowerCase()],
+        rawCandidates: [oe.name],
+        matchedText: oe.name,
+      });
+    }
+  }
+
+  return entries;
+}
+
+function buildParameterEntry(
+  param: ConfigParameter,
+  id: string,
+  module: ConfigModule,
+  container?: ConfigContainer
+): SearchIndexEntry {
+  const subtitle = container
+    ? `${module.displayName || module.name} › ${container.displayName || container.name} › Parameter`
+    : `${module.displayName || module.name} › Parameter`;
+  const path = container
+    ? `layer:${module.layer}/module:${module.id}/container:${container.id}/param:${param.id}`
+    : `layer:${module.layer}/module:${module.id}/param:${param.id}`;
+
+  const candidates: string[] = [];
+  const rawCandidates: string[] = [];
+  const pushCandidate = (text: string | undefined) => {
+    if (text && text.trim()) {
+      candidates.push(text.toLowerCase());
+      rawCandidates.push(text);
+    }
+  };
+  pushCandidate(param.name);
+  pushCandidate(param.displayName);
+  pushCandidate(param.description);
+  if (typeof param.value === 'string') pushCandidate(param.value);
+
+  return {
+    id,
+    type: 'parameter',
+    title: param.displayName || param.name,
+    subtitle,
+    path,
+    icon: getParameterIcon(param.type),
+    candidates,
+    rawCandidates,
+  };
 }
 
 interface GlobalSearchProps {
@@ -32,167 +177,49 @@ export function GlobalSearch({ isOpen, onClose, onSelectResult }: GlobalSearchPr
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { currentConfig } = useConfigStore();
 
-  const performSearch = useCallback(
-    (searchQuery: string): SearchResult[] => {
-      if (!currentConfig || !searchQuery.trim()) return [];
-
-      const searchResults: SearchResult[] = [];
-      const lowerQuery = searchQuery.toLowerCase();
-
-      // Search through modules
-      currentConfig.modules.forEach(module => {
-        // Check module name
-        if (
-          module.name.toLowerCase().includes(lowerQuery) ||
-          (module.displayName && module.displayName.toLowerCase().includes(lowerQuery))
-        ) {
-          searchResults.push({
-            id: `module-${module.id}`,
-            type: 'module',
-            title: module.displayName || module.name,
-            subtitle: `${module.layer} Module`,
-            path: `layer:${module.layer}/module:${module.id}`,
-            icon: <Folder className="w-4 h-4 text-blue-500" />,
-            matchedText: module.name,
-          });
-        }
-
-        // Search through containers
-        module.containers.forEach(container => {
-          if (
-            container.name.toLowerCase().includes(lowerQuery) ||
-            (container.displayName && container.displayName.toLowerCase().includes(lowerQuery))
-          ) {
-            searchResults.push({
-              id: `container-${container.id}`,
-              type: 'container',
-              title: container.displayName || container.name,
-              subtitle: `${module.displayName || module.name} › Container`,
-              path: `layer:${module.layer}/module:${module.id}/container:${container.id}`,
-              icon: <Folder className="w-4 h-4 text-amber-500" />,
-              matchedText: container.name,
-            });
-          }
-
-          // Search through container parameters
-          container.parameters.forEach((param: ConfigParameter) => {
-            if (paramMatches(param, lowerQuery)) {
-              searchResults.push({
-                id: `param-${param.id}`,
-                type: 'parameter',
-                title: param.displayName || param.name,
-                subtitle: `${module.displayName || module.name} › ${container.displayName || container.name} › Parameter`,
-                path: `layer:${module.layer}/module:${module.id}/container:${container.id}/param:${param.id}`,
-                icon: getParameterIcon(param.type),
-                matchedText: paramMatchesText(param, lowerQuery),
-              });
-            }
-          });
-        });
-
-        // Search through module-level parameters
-        module.parameters.forEach((param: ConfigParameter) => {
-          if (paramMatches(param, lowerQuery)) {
-            searchResults.push({
-              id: `param-module-${param.id}`,
-              type: 'parameter',
-              title: param.displayName || param.name,
-              subtitle: `${module.displayName || module.name} › Parameter`,
-              path: `layer:${module.layer}/module:${module.id}/param:${param.id}`,
-              icon: getParameterIcon(param.type),
-              matchedText: paramMatchesText(param, lowerQuery),
-            });
-          }
-        });
-      });
-
-      // Search OS configuration
-      if (currentConfig.os) {
-        const os = currentConfig.os;
-
-        // Search tasks
-        os.tasks?.forEach(task => {
-          if (task.name.toLowerCase().includes(lowerQuery)) {
-            searchResults.push({
-              id: `os-task-${task.id}`,
-              type: 'parameter',
-              title: task.name,
-              subtitle: 'OS › Task',
-              path: 'layer:OS/os:os',
-              icon: <FileJson className="w-4 h-4 text-purple-500" />,
-              matchedText: task.name,
-            });
-          }
-        });
-
-        // Search events
-        os.events?.forEach(event => {
-          if (event.name.toLowerCase().includes(lowerQuery)) {
-            searchResults.push({
-              id: `os-event-${event.id}`,
-              type: 'parameter',
-              title: event.name,
-              subtitle: 'OS › Event',
-              path: 'layer:OS/os:os',
-              icon: <FileJson className="w-4 h-4 text-purple-500" />,
-              matchedText: event.name,
-            });
-          }
-        });
-
-        // Search alarms
-        os.alarms?.forEach(alarm => {
-          if (alarm.name.toLowerCase().includes(lowerQuery)) {
-            searchResults.push({
-              id: `os-alarm-${alarm.id}`,
-              type: 'parameter',
-              title: alarm.name,
-              subtitle: 'OS › Alarm',
-              path: 'layer:OS/os:os',
-              icon: <FileJson className="w-4 h-4 text-purple-500" />,
-              matchedText: alarm.name,
-            });
-          }
-        });
-      }
-
-      return searchResults.slice(0, 50); // Limit to 50 results
-    },
+  // Fix 25: 模块级倒排索引 — config 变化时重建一次，搜索时只过滤索引
+  const index = useMemo(
+    () => (currentConfig ? buildSearchIndex(currentConfig) : []),
     [currentConfig]
   );
 
-  const paramMatches = (param: ConfigParameter, query: string): boolean => {
-    if (param.name.toLowerCase().includes(query)) return true;
-    if (param.displayName?.toLowerCase().includes(query)) return true;
-    if (param.description?.toLowerCase().includes(query)) return true;
-    if (typeof param.value === 'string' && param.value.toLowerCase().includes(query)) return true;
-    return false;
-  };
+  const performSearch = useCallback(
+    (searchQuery: string): SearchResult[] => {
+      if (!searchQuery.trim()) return [];
 
-  const paramMatchesText = (param: ConfigParameter, query: string): string => {
-    if (param.name.toLowerCase().includes(query)) return param.name;
-    if (param.displayName?.toLowerCase().includes(query)) return param.displayName;
-    if (param.description?.toLowerCase().includes(query)) return param.description || '';
-    if (typeof param.value === 'string' && param.value.toLowerCase().includes(query))
-      return String(param.value);
-    return param.name;
-  };
+      const lowerQuery = searchQuery.toLowerCase();
+      const searchResults: SearchResult[] = [];
 
-  const getParameterIcon = (type: string): React.ReactNode => {
-    switch (type) {
-      case 'boolean':
-        return <ToggleLeft className="w-4 h-4 text-green-500" />;
-      case 'number':
-      case 'integer':
-      case 'float':
-        return <Hash className="w-4 h-4 text-blue-500" />;
-      case 'enum':
-      case 'reference':
-        return <FileJson className="w-4 h-4 text-purple-500" />;
-      default:
-        return <Type className="w-4 h-4 text-app-text-secondary" />;
-    }
-  };
+      for (const entry of index) {
+        let matchIdx = -1;
+        for (let i = 0; i < entry.candidates.length; i++) {
+          if (entry.candidates[i].includes(lowerQuery)) {
+            matchIdx = i;
+            break;
+          }
+        }
+        if (matchIdx === -1) continue;
+
+        searchResults.push({
+          id: entry.id,
+          type: entry.type,
+          title: entry.title,
+          subtitle: entry.subtitle,
+          path: entry.path,
+          icon: entry.icon,
+          matchedText:
+            entry.type === 'parameter'
+              ? entry.rawCandidates[matchIdx]
+              : entry.matchedText ?? entry.title,
+        });
+
+        if (searchResults.length >= 50) break; // Limit to 50 results
+      }
+
+      return searchResults;
+    },
+    [index]
+  );
 
   useEffect(() => {
     if (!isOpen) {

@@ -38,6 +38,10 @@ export interface LicenseState {
   loading: boolean;
   /** Error message */
   error: string | null;
+  /** Fix 26: 最近一次服务端确认的 tier（serverTier 优先，本地缓存仅作弱降级） */
+  serverTier: 'free' | 'pro' | null;
+  /** Fix 26: 服务端不可达时的「离线试用」标记 —— UI 必须标注，不再静默视为 Pro */
+  offlineTrial: boolean;
 }
 
 interface LicenseActions {
@@ -66,6 +70,8 @@ const DEFAULT_FREE_STATE: LicenseState = {
   initialized: false,
   loading: false,
   error: null,
+  serverTier: null,
+  offlineTrial: false,
 };
 
 // ── localStorage helpers ──────────────────────────────────────────────────
@@ -109,7 +115,9 @@ export const useLicenseStore = create<LicenseState & LicenseActions>()(
       loadFromServer: async () => {
         set({ loading: true, error: null });
         try {
-          const data = await api.post<{
+          // Fix 26: GET（服务端路由为 GET /v1/api/license/status），此前误用 POST 导致
+          // serverTier 永远拿不到 —— serverTier 优先，本地缓存仅作弱降级。
+          const data = await api.get<{
             tier: string;
             maxModules: number;
             maxProjects: number;
@@ -128,11 +136,15 @@ export const useLicenseStore = create<LicenseState & LicenseActions>()(
             initialized: true,
             loading: false,
             error: null,
+            serverTier: tier,
+            offlineTrial: false,
           };
           saveToStorage(newState);
           set(newState);
         } catch {
-          // Fall back to localStorage
+          // Fix 26: 服务端不可达 → 弱降级为「离线试用」。缓存仍可展示，但
+          // hasFeature/getFeatureLimit 不再信任（可被篡改的）本地 features，
+          // 按 free 定义判定；UI（LicenseBadge）必须标注「离线试用」。
           const cached = loadFromStorage();
           if (cached) {
             set({
@@ -140,6 +152,8 @@ export const useLicenseStore = create<LicenseState & LicenseActions>()(
               initialized: true,
               loading: false,
               error: null,
+              serverTier: null,
+              offlineTrial: true,
             } as LicenseState);
           } else {
             set({
@@ -147,6 +161,8 @@ export const useLicenseStore = create<LicenseState & LicenseActions>()(
               initialized: true,
               loading: false,
               error: null,
+              serverTier: null,
+              offlineTrial: true,
             });
           }
         }
@@ -173,6 +189,8 @@ export const useLicenseStore = create<LicenseState & LicenseActions>()(
             initialized: true,
             loading: false,
             error: null,
+            serverTier: 'pro',
+            offlineTrial: false,
           };
           saveToStorage(newState);
           set(newState);
@@ -185,6 +203,13 @@ export const useLicenseStore = create<LicenseState & LicenseActions>()(
 
       hasFeature: (featureName: FeatureName): boolean => {
         const state = get();
+        // Fix 26: 离线试用时不信任（可被篡改的）本地缓存 features，按 free 定义判定；
+        // serverTier 优先 —— 在线时 features 由服务端响应填充，本地缓存仅作弱降级。
+        if (state.offlineTrial) {
+          const def = FEATURES.find(f => f.name === featureName);
+          const v = def ? def.free : false;
+          return typeof v === 'number' ? v > 0 : !!v;
+        }
         const val = state.features[featureName];
         if (typeof val === 'number') {
           return val > 0;
@@ -194,6 +219,12 @@ export const useLicenseStore = create<LicenseState & LicenseActions>()(
 
       getFeatureLimit: (featureName: FeatureName): number => {
         const state = get();
+        // Fix 26: 同上 —— 离线试用按 free 定义返回上限，不再静默视为 Pro。
+        if (state.offlineTrial) {
+          const def = FEATURES.find(f => f.name === featureName);
+          const v = def ? def.free : 0;
+          return typeof v === 'number' ? v : v ? 9999 : 0;
+        }
         const val = state.features[featureName];
         if (typeof val === 'number') return val;
         return val ? 9999 : 0;

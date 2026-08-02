@@ -22,6 +22,11 @@ export interface ContainerDiff {
   moduleName: string;
   containerName: string;
   containerId: string;
+  /**
+   * 完整规范化路径键，与 paramDiffs.containerPath 一致（module.父容器.子容器）。
+   * Fix 25: 统一 buildDiffTree 中容器节点 path 与参数 diff 的关联键，修复子容器 diff 丢失。
+   */
+  containerPath: string;
   status: CompareStatus;
   instanceCountA?: number;
   instanceCountB?: number;
@@ -108,7 +113,8 @@ function compareModules(
 function compareContainers(
   containersA: ConfigContainer[],
   containersB: ConfigContainer[],
-  moduleName: string
+  moduleName: string,
+  parentPath?: string
 ): ContainerDiff[] {
   const diffs: ContainerDiff[] = [];
   const allIds = new Set([...containersA.map(c => c.id), ...containersB.map(c => c.id)]);
@@ -116,6 +122,12 @@ function compareContainers(
   for (const id of Array.from(allIds)) {
     const containerA = containersA.find(c => c.id === id);
     const containerB = containersB.find(c => c.id === id);
+    const containerName = containerA?.name || containerB?.name || id;
+    // Fix 25: 与 paramDiffs.containerPath 使用同一 buildContainerPath 规则
+    const containerPath = buildContainerPath(
+      moduleName,
+      parentPath ? `${parentPath}.${containerName}` : containerName
+    );
 
     if (containerA && containerB) {
       // Check instance count difference for multiple containers
@@ -128,6 +140,7 @@ function compareContainers(
         moduleName,
         containerName: containerA.name,
         containerId: containerA.id,
+        containerPath,
         status: sameInstances ? 'same' : 'different',
         instanceCountA,
         instanceCountB,
@@ -138,6 +151,7 @@ function compareContainers(
         moduleName,
         containerName: containerA.name,
         containerId: containerA.id,
+        containerPath,
         status: 'only_a',
         instanceCountA: containerA.multiple ? (containerA.index ?? 0) + 1 : 1,
         multiple: containerA.multiple,
@@ -147,6 +161,7 @@ function compareContainers(
         moduleName,
         containerName: containerB.name,
         containerId: containerB.id,
+        containerPath,
         status: 'only_b',
         instanceCountB: containerB.multiple ? (containerB.index ?? 0) + 1 : 1,
         multiple: containerB.multiple,
@@ -279,7 +294,8 @@ class ConfigComparer {
               const subContainerDiffs = compareContainers(
                 containerA.subContainers || [],
                 containerB.subContainers || [],
-                moduleA.name
+                moduleA.name,
+                containerA.name
               );
               containerDiffs.push(...subContainerDiffs);
 
@@ -315,6 +331,7 @@ class ConfigComparer {
             moduleName: moduleA.name,
             containerName: container.name,
             containerId: container.id,
+            containerPath: buildContainerPath(moduleA.name, container.name),
             status: 'only_a',
             instanceCountA: container.multiple ? (container.index ?? 0) + 1 : 1,
             multiple: container.multiple,
@@ -325,6 +342,10 @@ class ConfigComparer {
               moduleName: moduleA.name,
               containerName: sub.name,
               containerId: sub.id,
+              containerPath: buildContainerPath(
+                moduleA.name,
+                `${container.name}.${sub.name}`
+              ),
               status: 'only_a',
               instanceCountA: sub.multiple ? (sub.index ?? 0) + 1 : 1,
               multiple: sub.multiple,
@@ -371,6 +392,7 @@ class ConfigComparer {
             moduleName: moduleB.name,
             containerName: container.name,
             containerId: container.id,
+            containerPath: buildContainerPath(moduleB.name, container.name),
             status: 'only_b',
             instanceCountB: container.multiple ? (container.index ?? 0) + 1 : 1,
             multiple: container.multiple,
@@ -380,6 +402,10 @@ class ConfigComparer {
               moduleName: moduleB.name,
               containerName: sub.name,
               containerId: sub.id,
+              containerPath: buildContainerPath(
+                moduleB.name,
+                `${container.name}.${sub.name}`
+              ),
               status: 'only_b',
               instanceCountB: sub.multiple ? (sub.index ?? 0) + 1 : 1,
               multiple: sub.multiple,
@@ -468,24 +494,43 @@ class ConfigComparer {
       };
 
       // Add container diffs for this module
+      // Fix 25: 容器节点按 containerPath 层级组织 — 子容器挂到父容器 children 下，
+      // 顶层容器（path 只有 module.container 两段）挂到 module children。
       const moduleContainers = result.containerDiffs.filter(c => c.moduleName === md.moduleName);
+      const containerNodes: ConfigDiff[] = [];
+      const containerNodeByPath = new Map<string, ConfigDiff>();
+
       for (const cd of moduleContainers) {
         if (filter === 'diff_only' && cd.status === 'same') continue;
 
         const containerNode: ConfigDiff = {
           type: 'container',
-          path: `${md.moduleName}.${cd.containerName}`,
+          path: cd.containerPath,
           name: cd.containerName,
           status: cd.status,
           oldValue: cd.instanceCountA,
           newValue: cd.instanceCountB,
           children: [],
         };
+        containerNodes.push(containerNode);
+        containerNodeByPath.set(cd.containerPath, containerNode);
+      }
 
-        // Add param diffs for this container
-        const containerPath = cd.containerName.includes('.')
-          ? cd.containerName
-          : `${md.moduleName}.${cd.containerName}`;
+      // 按 containerPath 前缀挂载: 子容器 (module.parent.child) 挂到父容器 (module.parent) children
+      const topLevelContainers: ConfigDiff[] = [];
+      for (const node of containerNodes) {
+        const parentPath = node.path.split('.').slice(0, -1).join('.');
+        const parentNode = containerNodeByPath.get(parentPath);
+        if (parentNode && parentPath !== md.moduleName) {
+          parentNode.children!.push(node);
+        } else {
+          topLevelContainers.push(node);
+        }
+      }
+
+      // 参数挂载: 对所有容器节点（含子容器）按 containerPath 匹配参数 diff
+      for (const containerNode of containerNodes) {
+        const containerPath = containerNode.path;
 
         const moduleParams = result.paramDiffs.filter(
           p => p.moduleName === md.moduleName && p.containerPath === containerPath
@@ -521,7 +566,10 @@ class ConfigComparer {
             });
           }
         }
+      }
 
+      // 顶层容器挂到 module children
+      for (const containerNode of topLevelContainers) {
         if (containerNode.children!.length > 0 || filter === 'all') {
           moduleNode.children!.push(containerNode);
         }

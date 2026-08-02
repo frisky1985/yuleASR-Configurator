@@ -9,13 +9,25 @@ import { formatDate } from '@/lib/utils';
 import type { ConfigFile, ConfigModule, ConfigContainer, ConfigParameter } from '@/types/config';
 
 /**
+ * Escape user-controlled strings for safe HTML embedding (Fix 25: XSS 防护)
+ */
+function escapeHtml(s: unknown): string {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/**
  * Format a parameter value for display in HTML
  */
 function formatParamValue(value: unknown): string {
   if (value === undefined || value === null) return '<span class="val-null">—</span>';
   if (typeof value === 'boolean') return value ? 'true' : 'false';
-  if (Array.isArray(value)) return `[${value.map(v => String(v)).join(', ')}]`;
-  return String(value);
+  if (Array.isArray(value)) return `[${value.map(v => escapeHtml(String(v))).join(', ')}]`;
+  return escapeHtml(String(value));
 }
 
 /**
@@ -40,14 +52,16 @@ function renderParameterRows(parameters: ConfigParameter[], indent = ''): string
     .filter(p => !p.hidden)
     .map(p => {
       const depInfo = p.dependencies?.length
-        ? `<span class="dep-badge">depends: ${p.dependencies.map(d => `${d.parameter} ${d.operator} ${d.value}`).join(', ')}</span>`
+        ? `<span class="dep-badge">depends: ${p.dependencies
+            .map(d => `${escapeHtml(d.parameter)} ${escapeHtml(d.operator)} ${escapeHtml(d.value)}`)
+            .join(', ')}</span>`
         : '';
       return `<tr>
-        <td class="param-name">${indent}${p.displayName || p.name}</td>
-        <td>${p.type}</td>
+        <td class="param-name">${indent}${escapeHtml(p.displayName || p.name)}</td>
+        <td>${escapeHtml(p.type)}</td>
         <td>${formatParamValue(p.value)}</td>
         <td>${p.defaultValue !== undefined ? formatParamValue(p.defaultValue) : '—'}</td>
-        <td>${p.unit || '—'}</td>
+        <td>${escapeHtml(p.unit || '—')}</td>
         <td>${depInfo}</td>
       </tr>`;
     })
@@ -64,9 +78,9 @@ function renderContainer(container: ConfigContainer, depth = 1): string {
 
   let html = '';
   if (hasParams) {
-    html += `<h${Math.min(depth + 2, 4)} style="margin:${depth > 1 ? '12px 0 6px' : '16px 0 8px'};color:#374151;">${container.displayName || container.name}</h${Math.min(depth + 2, 4)}>\n`;
+    html += `<h${Math.min(depth + 2, 4)} style="margin:${depth > 1 ? '12px 0 6px' : '16px 0 8px'};color:#374151;">${escapeHtml(container.displayName || container.name)}</h${Math.min(depth + 2, 4)}>\n`;
     if (container.description) {
-      html += `<p style="font-size:0.875rem;color:#6b7280;margin-bottom:8px;">${container.description}</p>\n`;
+      html += `<p style="font-size:0.875rem;color:#6b7280;margin-bottom:8px;">${escapeHtml(container.description)}</p>\n`;
     }
     html += `<table class="params-table">\n`;
     html += `<thead><tr><th>Parameter</th><th>Type</th><th>Value</th><th>Default</th><th>Unit</th><th>Dependencies</th></tr></thead>\n`;
@@ -100,8 +114,8 @@ function renderModule(module: ConfigModule): string {
   let html = `<div class="module-card">\n`;
   html += `<div class="module-header">\n`;
   html += `<div class="module-info">\n`;
-  html += `<h3>${module.displayName || module.name}</h3>\n`;
-  html += `<span class="module-meta">${module.vendor ? `${module.vendor} | ` : ''}v${module.version} | ${module.layer}</span>\n`;
+  html += `<h3>${escapeHtml(module.displayName || module.name)}</h3>\n`;
+  html += `<span class="module-meta">${module.vendor ? `${escapeHtml(module.vendor)} | ` : ''}v${escapeHtml(module.version)} | ${escapeHtml(module.layer)}</span>\n`;
   html += `</div>\n`;
   html += `<div class="module-status">\n`;
   html += moduleStatusBadge(module.configStatus);
@@ -110,7 +124,7 @@ function renderModule(module: ConfigModule): string {
   html += `</div>\n`;
 
   if (module.description) {
-    html += `<p class="module-desc">${module.description}</p>\n`;
+    html += `<p class="module-desc">${escapeHtml(module.description)}</p>\n`;
   }
 
   // Module-level parameters
@@ -138,7 +152,7 @@ function renderModule(module: ConfigModule): string {
     html += `<h4 style="margin:12px 0 4px;color:#6b7280;font-size:0.8rem;text-transform:uppercase;">Dependencies</h4>\n`;
     html += `<div class="deps-list">\n`;
     for (const dep of module.dependencies) {
-      html += `<span class="dep-tag ${dep.required ? 'required' : 'optional'}">${dep.module}${dep.required ? ' (required)' : ''}</span>\n`;
+      html += `<span class="dep-tag ${dep.required ? 'required' : 'optional'}">${escapeHtml(dep.module)}${dep.required ? ' (required)' : ''}</span>\n`;
     }
     html += `</div>\n`;
     html += `</div>\n`;
@@ -150,7 +164,7 @@ function renderModule(module: ConfigModule): string {
     html += `<h4 style="margin:12px 0 4px;color:#dc2626;font-size:0.8rem;text-transform:uppercase;">Validation Issues</h4>\n`;
     html += `<ul>\n`;
     for (const err of module.validationErrors) {
-      html += `<li>${err}</li>\n`;
+      html += `<li>${escapeHtml(err)}</li>\n`;
     }
     html += `</ul>\n`;
     html += `</div>\n`;
@@ -185,7 +199,7 @@ export function generateAuditReport(config: ConfigFile): string {
   for (const layer of layers) {
     const layerModules = config.modules.filter(m => m.layer === layer && m.enabled);
     if (layerModules.length === 0) continue;
-    moduleHtml += `<h2 class="layer-header">${layer} (${layerModules.length})</h2>\n`;
+    moduleHtml += `<h2 class="layer-header">${escapeHtml(layer)} (${layerModules.length})</h2>\n`;
     for (const mod of layerModules) {
       moduleHtml += renderModule(mod);
     }
@@ -198,8 +212,8 @@ export function generateAuditReport(config: ConfigFile): string {
       moduleHtml += `<div class="module-card disabled">\n`;
       moduleHtml += `<div class="module-header">\n`;
       moduleHtml += `<div class="module-info">\n`;
-      moduleHtml += `<h3 style="color:#9ca3af;">${mod.displayName || mod.name}</h3>\n`;
-      moduleHtml += `<span class="module-meta">v${mod.version} | ${mod.layer}</span>\n`;
+      moduleHtml += `<h3 style="color:#9ca3af;">${escapeHtml(mod.displayName || mod.name)}</h3>\n`;
+      moduleHtml += `<span class="module-meta">v${escapeHtml(mod.version)} | ${escapeHtml(mod.layer)}</span>\n`;
       moduleHtml += `</div>\n`;
       moduleHtml += `<span class="status-indicator disabled">Disabled</span>\n`;
       moduleHtml += `</div>\n`;
@@ -213,7 +227,7 @@ export function generateAuditReport(config: ConfigFile): string {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Configuration Audit Report - ${config.name}</title>
+<title>Configuration Audit Report - ${escapeHtml(config.name)}</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif; color: #1f2937; background: #f3f4f6; padding: 2rem; line-height: 1.6; }
@@ -309,9 +323,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helv
 <div class="report-header">
 <h1>Configuration Audit Report</h1>
 <div class="meta">
-<span>📋 ${config.name}</span>
-<span>🎯 ${config.targetChip || 'N/A'}</span>
-<span>🧩 ${config.compiler || 'N/A'}</span>
+<span>📋 ${escapeHtml(config.name)}</span>
+<span>🎯 ${escapeHtml(config.targetChip || 'N/A')}</span>
+<span>🧩 ${escapeHtml(config.compiler || 'N/A')}</span>
 <span>📅 ${now}</span>
 </div>
 </div>
@@ -347,7 +361,7 @@ ${Object.entries(layerSummary)
     const color = pct >= 80 ? '#22c55e' : pct >= 40 ? '#f59e0b' : '#ef4444';
     return `<div class="summary-card" style="border-top:3px solid ${color};">
     <div class="count" style="color:${color};">${st.configured}/${st.total}</div>
-    <div class="label">${layer}</div>
+    <div class="label">${escapeHtml(layer)}</div>
   </div>`;
   })
   .join('\n')}
@@ -355,13 +369,13 @@ ${Object.entries(layerSummary)
 
 <!-- Config Info -->
 <div style="background:white;border:1px solid #e5e7eb;border-radius:0.5rem;padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;flex-wrap:wrap;gap:1.5rem;font-size:0.875rem;">
-<div><strong>Name:</strong> ${config.name}</div>
-<div><strong>ID:</strong> <code style="font-size:0.75rem;color:#6b7280;">${config.id}</code></div>
-<div><strong>Version:</strong> ${config.version || '—'}</div>
-<div><strong>Target:</strong> ${config.targetPlatform || '—'} / ${config.targetChip || '—'}</div>
-<div><strong>Compiler:</strong> ${config.compiler || '—'}</div>
-<div><strong>Created:</strong> ${config.createdAt ? formatDate(config.createdAt) : '—'}</div>
-<div><strong>Updated:</strong> ${config.updatedAt ? formatDate(config.updatedAt) : '—'}</div>
+<div><strong>Name:</strong> ${escapeHtml(config.name)}</div>
+<div><strong>ID:</strong> <code style="font-size:0.75rem;color:#6b7280;">${escapeHtml(config.id)}</code></div>
+<div><strong>Version:</strong> ${escapeHtml(config.version || '—')}</div>
+<div><strong>Target:</strong> ${escapeHtml(config.targetPlatform || '—')} / ${escapeHtml(config.targetChip || '—')}</div>
+<div><strong>Compiler:</strong> ${escapeHtml(config.compiler || '—')}</div>
+<div><strong>Created:</strong> ${config.createdAt ? escapeHtml(formatDate(config.createdAt)) : '—'}</div>
+<div><strong>Updated:</strong> ${config.updatedAt ? escapeHtml(formatDate(config.updatedAt)) : '—'}</div>
 </div>
 
 <!-- Validation Status -->
@@ -384,7 +398,7 @@ ${
     <div class="label">Warnings</div>
   </div>
   <div class="summary-card" style="border-top:3px solid #6b7280;">
-    <div class="count" style="color:#6b7280;">${formatDate(config.lastValidation.timestamp)}</div>
+    <div class="count" style="color:#6b7280;">${escapeHtml(formatDate(config.lastValidation.timestamp))}</div>
     <div class="label">Last Checked</div>
   </div>
 </div>
@@ -400,8 +414,8 @@ ${
 <div style="background:white;border:1px solid #e5e7eb;border-radius:0.5rem;padding:1rem 1.25rem;margin-bottom:1.5rem;">
 <h3 style="font-size:0.95rem;margin-bottom:0.5rem;">OS Configuration</h3>
 <div style="display:flex;flex-wrap:wrap;gap:1rem;font-size:0.875rem;">
-  <div><strong>Version:</strong> ${config.os.version}</div>
-  <div><strong>Scalability:</strong> ${config.os.scalabilityClass || '—'}</div>
+  <div><strong>Version:</strong> ${escapeHtml(config.os.version)}</div>
+  <div><strong>Scalability:</strong> ${escapeHtml(config.os.scalabilityClass || '—')}</div>
   <div><strong>Tasks:</strong> ${config.os.tasks?.length || 0}</div>
   <div><strong>Events:</strong> ${config.os.events?.length || 0}</div>
   <div><strong>Alarms:</strong> ${config.os.alarms?.length || 0}</div>
