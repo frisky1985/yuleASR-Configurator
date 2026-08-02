@@ -5,20 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "prebuild": "pnpm --filter @yuletech/core build && prisma generate",
+    "prebuild": "pnpm --filter @yuletech/core build",
     "build": "tsc",
     "start": "node dist/index.js",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev",
-    "db:seed": "tsx prisma/seed.ts"
+    "db:push": "drizzle-kit push",
+    "db:migrate": "drizzle-kit migrate",
+    "db:seed": "tsx scripts/seed.ts"
   },
   "dependencies": {
     "@fastify/cors": "^10.0.0",
     "@fastify/jwt": "^9.0.0",
     "@fastify/swagger": "^9.0.0",
     "@fastify/swagger-ui": "^5.0.0",
-    "@prisma/client": "^6.0.0",
     "bcryptjs": "^2.4.3",
     "drizzle-orm": "^0.45.2",
     "fastify": "^5.0.0",
@@ -30,8 +28,8 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.0.0",
-    "prisma": "^6.0.0",
     "tsx": "^4.19.0",
-    "typescript": "^5.6.0"
+    "typescript": "^5.6.0",
+    "drizzle-kit": "^0.31.0"
   }
 }

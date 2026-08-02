@@ -2,6 +2,11 @@ import bcrypt from 'bcryptjs';
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 
+import { eq, or } from 'drizzle-orm';
+
+import { db } from '../db/index.js';
+import { users } from '../db/schema.js';
+
 const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
@@ -21,10 +26,9 @@ export async function authRoutes(app: FastifyInstance) {
     }
 
     const { email, password } = parsed.data;
-    const { prisma } = await import('../lib/prisma.js');
 
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    const [user] = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
       return reply.status(401).send({ message: 'Invalid email or password' });
     }
 
@@ -43,11 +47,12 @@ export async function authRoutes(app: FastifyInstance) {
     }
 
     const { email, username, password } = parsed.data;
-    const { prisma } = await import('../lib/prisma.js');
 
-    const existing = await prisma.user.findFirst({
-      where: { OR: [{ email }, { username }] },
-    });
+    const [existing] = await db
+      .select()
+      .from(users)
+      .where(or(eq(users.email, email), eq(users.username, username)))
+      .limit(1);
     if (existing) {
       return reply.status(409).send({
         message: existing.email === email ? 'Email already registered' : 'Username already taken',
@@ -55,9 +60,10 @@ export async function authRoutes(app: FastifyInstance) {
     }
 
     const hashed = await bcrypt.hash(password, 10);
-    const user = await prisma.user.create({
-      data: { email, username, password: hashed },
-    });
+    const [user] = await db
+      .insert(users)
+      .values({ email, username, passwordHash: hashed })
+      .returning();
 
     const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role });
     return {
@@ -69,21 +75,21 @@ export async function authRoutes(app: FastifyInstance) {
 
   app.get('/me', { onRequest: [(app as any).authenticate] }, async request => {
     const { id } = request.user as { id: number };
-    const { prisma } = await import('../lib/prisma.js');
-    const user = await prisma.user.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        email: true,
-        username: true,
-        avatar: true,
-        role: true,
-        score: true,
-        ssoProvider: true,
-        ssoId: true,
-        createdAt: true,
-      },
-    });
+    const [user] = await db
+      .select({
+        id: users.id,
+        email: users.email,
+        username: users.username,
+        avatar: users.avatar,
+        role: users.role,
+        score: users.score,
+        ssoProvider: users.ssoProvider,
+        ssoId: users.ssoId,
+        createdAt: users.createdAt,
+      })
+      .from(users)
+      .where(eq(users.id, id))
+      .limit(1);
     if (!user) {
       throw { statusCode: 404, message: 'User not found' };
     }
@@ -102,9 +108,8 @@ export async function authRoutes(app: FastifyInstance) {
       return reply.status(400).send({ message: 'Invalid input' });
     }
     const { email, password } = parsed.data;
-    const { prisma } = await import('../lib/prisma.js');
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user || !(await bcrypt.compare(password, user.password)) || !['admin', 'super_admin'].includes(user.role)) {
+    const [user] = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    if (!user || !(await bcrypt.compare(password, user.passwordHash)) || !['admin', 'super_admin'].includes(user.role)) {
       return reply.status(401).send({ message: 'Invalid credentials or not an admin' });
     }
     const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role });

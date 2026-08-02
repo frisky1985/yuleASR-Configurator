@@ -1,10 +1,11 @@
 /**
  * Seed script for BSW Templates — adds sample template data.
- * Run: npx tsx prisma/seed.ts
+ * Run: pnpm db:seed
  */
-import { PrismaClient } from '@prisma/client';
+import { eq } from 'drizzle-orm';
 
-const prisma = new PrismaClient();
+import { db } from '../src/db/index.js';
+import { bswTemplateVersions, bswTemplates, users } from '../src/db/schema.js';
 
 const sampleTemplates = [
   {
@@ -113,9 +114,9 @@ const sampleTemplates = [
 
 async function main() {
   // Find or create a system user for official templates
-  let systemUser = await prisma.user.findFirst({ where: { role: 'admin' } });
+  let [systemUser] = await db.select().from(users).where(eq(users.role, 'admin')).limit(1);
   if (!systemUser) {
-    systemUser = await prisma.user.findFirst();
+    [systemUser] = await db.select().from(users).limit(1);
   }
   if (!systemUser) {
     console.error('No user found. Please run auth seed first.');
@@ -125,20 +126,21 @@ async function main() {
   console.log(`Using user: ${systemUser.username} (id: ${systemUser.id})`);
 
   for (const tpl of sampleTemplates) {
-    const existing = await prisma.bSWTemplate.findFirst({ where: { name: tpl.name } });
+    const [existing] = await db.select().from(bswTemplates).where(eq(bswTemplates.name, tpl.name)).limit(1);
     if (existing) {
       console.log(`  Skipping existing template: ${tpl.name}`);
       continue;
     }
 
-    const template = await prisma.bSWTemplate.create({
-      data: {
+    const [template] = await db
+      .insert(bswTemplates)
+      .values({
         name: tpl.name,
         description: tpl.description,
         category: tpl.category,
-        tags: JSON.stringify(tpl.tags),
+        tags: tpl.tags,
         moduleType: tpl.moduleType,
-        modules: JSON.stringify(tpl.modules),
+        modules: tpl.modules,
         isPublic: true,
         isOfficial: tpl.isOfficial,
         status: 'published',
@@ -148,18 +150,16 @@ async function main() {
         version: 1,
         downloadCount: Math.floor(Math.random() * 100),
         viewCount: Math.floor(Math.random() * 500),
-      },
-    });
+      })
+      .returning();
 
-    await prisma.bSWTemplateVersion.create({
-      data: {
-        templateId: template.id,
-        version: 1,
-        name: tpl.name,
-        description: tpl.description,
-        modules: JSON.stringify(tpl.modules),
-        changelog: 'Initial version',
-      },
+    await db.insert(bswTemplateVersions).values({
+      templateId: template.id,
+      version: 1,
+      name: tpl.name,
+      description: tpl.description,
+      modules: tpl.modules,
+      changelog: 'Initial version',
     });
 
     console.log(`  Created template: ${tpl.name}`);
@@ -174,5 +174,5 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    process.exit(0);
   });

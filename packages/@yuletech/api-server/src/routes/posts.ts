@@ -1,6 +1,11 @@
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 
+import { eq, desc, sql, inArray } from 'drizzle-orm';
+
+import { db } from '../db/index.js';
+import { posts, comments, users, tags } from '../db/schema.js';
+
 const createPostSchema = z.object({
   title: z.string().min(1).max(200),
   content: z.string().min(1),
@@ -19,57 +24,117 @@ const updatePostSchema = z.object({
 export async function postsRoutes(app: FastifyInstance) {
   // GET /posts — list all published posts
   app.get('/', async request => {
-    const { prisma } = await import('../lib/prisma.js');
     const query = request.query as { tag?: string };
 
-    const posts = await prisma.forumPost.findMany({
-      where: { status: 'published' },
-      include: {
-        user: { select: { id: true, username: true, avatar: true } },
-        _count: { select: { comments: true } },
-      },
-      orderBy: { createdAt: 'desc' },
-    });
+    const postList = await db
+      .select({
+        id: posts.id,
+        userId: posts.userId,
+        configId: posts.configId,
+        title: posts.title,
+        content: posts.content,
+        tags: posts.tags,
+        status: posts.status,
+        createdAt: posts.createdAt,
+        updatedAt: posts.updatedAt,
+        username: users.username,
+        avatar: users.avatar,
+      })
+      .from(posts)
+      .leftJoin(users, eq(posts.userId, users.id))
+      .where(eq(posts.status, 'published'))
+      .orderBy(desc(posts.createdAt));
 
-    // Filter by tag in JS (SQLite doesn't support array contains)
-    let result = posts;
+    // Comment counts (one grouped query instead of N+1)
+    const ids = postList.map(p => p.id);
+    const countRows =
+      ids.length > 0
+        ? await db
+            .select({ postId: comments.postId, count: sql<number>`count(*)` })
+            .from(comments)
+            .where(inArray(comments.postId, ids))
+            .groupBy(comments.postId)
+        : [];
+    const countMap = new Map(countRows.map(r => [r.postId, r.count]));
+
+    let result = postList.map(p => ({
+      id: p.id,
+      userId: p.userId,
+      configId: p.configId,
+      title: p.title,
+      content: p.content,
+      tags: p.tags ?? [],
+      status: p.status,
+      createdAt: p.createdAt,
+      updatedAt: p.updatedAt,
+      user: { id: p.userId, username: p.username, avatar: p.avatar },
+      _count: { comments: countMap.get(p.id) ?? 0 },
+    }));
+
+    // Filter by tag in JS (array column, kept compatible with previous behavior)
     if (query.tag) {
-      result = posts.filter((p: any) => {
-        const tags: string[] = JSON.parse(p.tags);
-        return tags.includes(query.tag!);
-      });
+      result = result.filter(p => p.tags.includes(query.tag!));
     }
 
-    return result.map((p: any) => ({
-      ...p,
-      tags: JSON.parse(p.tags),
-    }));
+    return result;
   });
 
   // GET /posts/:id — single post with comments
   app.get('/:id', async request => {
-    const { prisma } = await import('../lib/prisma.js');
     const { id } = request.params as { id: string };
     const postId = parseInt(id, 10);
     if (isNaN(postId)) {
       throw { statusCode: 400, message: 'Invalid post ID' };
     }
-    const post = await prisma.forumPost.findUnique({
-      where: { id: postId },
-      include: {
-        user: { select: { id: true, username: true, avatar: true } },
-        comments: {
-          include: { user: { select: { id: true, username: true, avatar: true } } },
-          orderBy: { createdAt: 'asc' },
-        },
-      },
-    });
+    const [post] = await db
+      .select({
+        id: posts.id,
+        userId: posts.userId,
+        configId: posts.configId,
+        title: posts.title,
+        content: posts.content,
+        tags: posts.tags,
+        status: posts.status,
+        createdAt: posts.createdAt,
+        updatedAt: posts.updatedAt,
+        username: users.username,
+        avatar: users.avatar,
+      })
+      .from(posts)
+      .leftJoin(users, eq(posts.userId, users.id))
+      .where(eq(posts.id, postId))
+      .limit(1);
     if (!post) {
       throw { statusCode: 404, message: 'Post not found' };
     }
+
+    const postComments = await db
+      .select({
+        id: comments.id,
+        postId: comments.postId,
+        userId: comments.userId,
+        content: comments.content,
+        createdAt: comments.createdAt,
+        username: users.username,
+        avatar: users.avatar,
+      })
+      .from(comments)
+      .leftJoin(users, eq(comments.userId, users.id))
+      .where(eq(comments.postId, postId))
+      .orderBy(comments.createdAt);
+
     return {
-      ...post,
-      tags: JSON.parse(post.tags),
+      id: post.id,
+      userId: post.userId,
+      configId: post.configId,
+      title: post.title,
+      content: post.content,
+      tags: post.tags ?? [],
+      status: post.status,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
+      user: { id: post.userId, username: post.username, avatar: post.avatar },
+      comments: postComments,
     };
   });
 
@@ -79,30 +144,51 @@ export async function postsRoutes(app: FastifyInstance) {
     if (!parsed.success) {
       throw { statusCode: 400, message: 'Invalid input' };
     }
-    const { prisma } = await import('../lib/prisma.js');
-    const user = request.user as { id: number };
+    const authUser = request.user as { id: number };
 
-    const post = await prisma.forumPost.create({
-      data: {
-        ...parsed.data,
-        tags: JSON.stringify(parsed.data.tags),
-        userId: user.id,
-      },
-      include: {
-        user: { select: { id: true, username: true, avatar: true } },
-      },
-    });
+    const [post] = await db
+      .insert(posts)
+      .values({
+        title: parsed.data.title,
+        content: parsed.data.content,
+        tags: parsed.data.tags,
+        status: parsed.data.status,
+        configId: parsed.data.configId ?? null,
+        userId: authUser.id,
+      })
+      .returning();
 
     // Update tag counts
     for (const tagName of parsed.data.tags ?? []) {
-      await prisma.tag.upsert({
-        where: { name: tagName },
-        update: { postCount: { increment: 1 } },
-        create: { name: tagName, postCount: 1 },
-      });
+      const [existingTag] = await db.select().from(tags).where(eq(tags.name, tagName)).limit(1);
+      if (existingTag) {
+        await db
+          .update(tags)
+          .set({ postCount: sql`${tags.postCount} + 1` })
+          .where(eq(tags.id, existingTag.id));
+      } else {
+        await db.insert(tags).values({ name: tagName, postCount: 1 });
+      }
     }
 
-    return { ...post, tags: parsed.data.tags };
+    const [author] = await db
+      .select({ id: users.id, username: users.username, avatar: users.avatar })
+      .from(users)
+      .where(eq(users.id, authUser.id))
+      .limit(1);
+
+    return {
+      id: post.id,
+      userId: post.userId,
+      configId: post.configId,
+      title: post.title,
+      content: post.content,
+      tags: parsed.data.tags,
+      status: post.status,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
+      user: author!,
+    };
   });
 
   // PUT /posts/:id — update post
@@ -111,40 +197,59 @@ export async function postsRoutes(app: FastifyInstance) {
     if (!parsed.success) {
       throw { statusCode: 400, message: 'Invalid input' };
     }
-    const { prisma } = await import('../lib/prisma.js');
     const { id } = request.params as { id: string };
     const postId = parseInt(id, 10);
-    const user = request.user as { id: number };
+    const authUser = request.user as { id: number };
 
-    const existing = await prisma.forumPost.findUnique({ where: { id: postId } });
+    const [existing] = await db.select().from(posts).where(eq(posts.id, postId)).limit(1);
     if (!existing) throw { statusCode: 404, message: 'Post not found' };
-    if (existing.userId !== user.id) throw { statusCode: 403, message: 'Forbidden' };
+    if (existing.userId !== authUser.id) throw { statusCode: 403, message: 'Forbidden' };
 
-    const data: any = { ...parsed.data };
-    if (data.tags) data.tags = JSON.stringify(data.tags);
+    const [post] = await db
+      .update(posts)
+      .set({
+        ...(parsed.data.title !== undefined && { title: parsed.data.title }),
+        ...(parsed.data.content !== undefined && { content: parsed.data.content }),
+        ...(parsed.data.tags !== undefined && { tags: parsed.data.tags }),
+        ...(parsed.data.status !== undefined && { status: parsed.data.status }),
+        updatedAt: new Date(),
+      })
+      .where(eq(posts.id, postId))
+      .returning();
 
-    const post = await prisma.forumPost.update({
-      where: { id: postId },
-      data,
-      include: {
-        user: { select: { id: true, username: true, avatar: true } },
-      },
-    });
-    return { ...post, tags: JSON.parse(post.tags) };
+    const [author] = await db
+      .select({ id: users.id, username: users.username, avatar: users.avatar })
+      .from(users)
+      .where(eq(users.id, authUser.id))
+      .limit(1);
+
+    return {
+      id: post.id,
+      userId: post.userId,
+      configId: post.configId,
+      title: post.title,
+      content: post.content,
+      tags: post.tags ?? [],
+      status: post.status,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
+      user: author!,
+    };
   });
 
   // DELETE /posts/:id — delete post
   app.delete('/:id', { onRequest: [(app as any).authenticate] }, async request => {
-    const { prisma } = await import('../lib/prisma.js');
     const { id } = request.params as { id: string };
     const postId = parseInt(id, 10);
-    const user = request.user as { id: number };
+    const authUser = request.user as { id: number };
 
-    const existing = await prisma.forumPost.findUnique({ where: { id: postId } });
+    const [existing] = await db.select().from(posts).where(eq(posts.id, postId)).limit(1);
     if (!existing) throw { statusCode: 404, message: 'Post not found' };
-    if (existing.userId !== user.id) throw { statusCode: 403, message: 'Forbidden' };
+    if (existing.userId !== authUser.id) throw { statusCode: 403, message: 'Forbidden' };
 
-    await prisma.forumPost.delete({ where: { id: postId } });
+    // Delete comments first (postgres FK: no cascade on comments.postId)
+    await db.delete(comments).where(eq(comments.postId, postId));
+    await db.delete(posts).where(eq(posts.id, postId));
     return { message: 'Post deleted' };
   });
 }

@@ -1,5 +1,15 @@
+import { and, asc, desc, eq, ilike, inArray, or, sql } from 'drizzle-orm';
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
+
+import { db } from '../db/index.js';
+import {
+  bswTemplateReviews,
+  bswTemplates,
+  bswTemplateVersions,
+  licenseKeys,
+  users,
+} from '../db/schema.js';
 
 // ── Zod Schemas ──────────────────────────────────────────────────────────────
 
@@ -71,22 +81,9 @@ const statusUpdateSchema = z.object({
   reviewNote: z.string().optional(),
 });
 
-// ── Helper ────────────────────────────────────────────────────────────────────
-
-function jsonParseSafe(val: string | null | undefined, fallback: any = null): any {
-  if (!val) return fallback;
-  try {
-    return JSON.parse(val);
-  } catch {
-    return fallback;
-  }
-}
-
 // ── Routes ────────────────────────────────────────────────────────────────────
 
 export async function bswTemplatesRoutes(app: FastifyInstance) {
-  const { prisma } = await import('../lib/prisma.js');
-
   // ── GET /api/bsw-templates — list public templates ───────────────────────
   app.get('/', async request => {
     const query = request.query as {
@@ -106,52 +103,76 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const sortBy = query.sortBy || 'createdAt';
     const sortOrder = query.sortOrder === 'asc' ? 'asc' : 'desc';
 
-    const where: any = {
-      status: query.status || 'published',
-    };
+    const conditions: any[] = [eq(bswTemplates.status, query.status || 'published')];
 
     // If not admin filtering, only show public templates
     if (!query.status) {
-      where.isPublic = true;
-      where.visibility = 'public';
+      conditions.push(eq(bswTemplates.isPublic, true), eq(bswTemplates.visibility, 'public'));
     }
 
     if (query.category) {
-      where.category = query.category;
-    }
-
-    if (query.tag) {
-      // For SQLite, filter in JS after fetching
+      conditions.push(eq(bswTemplates.category, query.category));
     }
 
     if (query.authorId) {
-      where.authorId = parseInt(query.authorId, 10);
+      conditions.push(eq(bswTemplates.authorId, parseInt(query.authorId, 10)));
     }
 
     if (query.search) {
-      where.OR = [
-        { name: { contains: query.search } },
-        { description: { contains: query.search } },
-      ];
+      conditions.push(
+        or(
+          ilike(bswTemplates.name, `%${query.search}%`),
+          ilike(bswTemplates.description, `%${query.search}%`)
+        )
+      );
     }
 
-    const [total, raw] = await Promise.all([
-      prisma.bSWTemplate.count({ where }),
-      prisma.bSWTemplate.findMany({
-        where,
-        include: {
-          author: { select: { id: true, username: true, avatar: true } },
-        },
-        orderBy: { [sortBy]: sortOrder },
-        skip: (page - 1) * pageSize,
-        take: pageSize,
-      }),
+    const where = and(...conditions);
+
+    const sortColMap: Record<string, any> = {
+      id: bswTemplates.id,
+      name: bswTemplates.name,
+      category: bswTemplates.category,
+      moduleType: bswTemplates.moduleType,
+      version: bswTemplates.version,
+      downloads: bswTemplates.downloads,
+      rating: bswTemplates.rating,
+      isPublic: bswTemplates.isPublic,
+      status: bswTemplates.status,
+      visibility: bswTemplates.visibility,
+      minTier: bswTemplates.minTier,
+      authorId: bswTemplates.authorId,
+      downloadCount: bswTemplates.downloadCount,
+      viewCount: bswTemplates.viewCount,
+      favoriteCount: bswTemplates.favoriteCount,
+      createdAt: bswTemplates.createdAt,
+      updatedAt: bswTemplates.updatedAt,
+    };
+    const sortCol = sortColMap[sortBy] || bswTemplates.createdAt;
+    const orderByExpr = sortOrder === 'asc' ? asc(sortCol) : desc(sortCol);
+
+    const [totalRow, rows] = await Promise.all([
+      db.select({ count: sql<number>`count(*)::int` }).from(bswTemplates).where(where),
+      db
+        .select({
+          template: bswTemplates,
+          author: { id: users.id, username: users.username, avatar: users.avatar },
+        })
+        .from(bswTemplates)
+        .leftJoin(users, eq(bswTemplates.authorId, users.id))
+        .where(where)
+        .orderBy(orderByExpr)
+        .limit(pageSize)
+        .offset((page - 1) * pageSize),
     ]);
 
-    let templates = raw.map((t: any) => ({
-      ...t,
-      tags: jsonParseSafe(t.tags, []),
-      modules: jsonParseSafe(t.modules, []),
+    const total = totalRow?.[0]?.count ?? 0;
+
+    let templates = rows.map((r: any) => ({
+      ...r.template,
+      author: r.author,
+      tags: r.template.tags ?? [],
+      modules: r.template.modules ?? [],
     }));
 
     // Post-filter by tag if needed (SQLite compat)
@@ -171,18 +192,21 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
   // ── GET /api/bsw-templates/my — current user's templates ────────────────
   app.get('/my', { onRequest: [(app as any).authenticate] }, async request => {
     const user = request.user as { id: number };
-    const templates = await prisma.bSWTemplate.findMany({
-      where: { authorId: user.id },
-      include: {
-        author: { select: { id: true, username: true, avatar: true } },
-      },
-      orderBy: { updatedAt: 'desc' },
-    });
+    const rows = await db
+      .select({
+        template: bswTemplates,
+        author: { id: users.id, username: users.username, avatar: users.avatar },
+      })
+      .from(bswTemplates)
+      .leftJoin(users, eq(bswTemplates.authorId, users.id))
+      .where(eq(bswTemplates.authorId, user.id))
+      .orderBy(desc(bswTemplates.updatedAt));
 
-    return templates.map((t: any) => ({
-      ...t,
-      tags: jsonParseSafe(t.tags, []),
-      modules: jsonParseSafe(t.modules, []),
+    return rows.map((r: any) => ({
+      ...r.template,
+      author: r.author,
+      tags: r.template.tags ?? [],
+      modules: r.template.modules ?? [],
     }));
   });
 
@@ -197,28 +221,50 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const page = Math.max(1, parseInt(query.page || '1', 10) || 1);
     const pageSize = Math.min(50, Math.max(1, parseInt(query.pageSize || '20', 10) || 20));
 
-    const where: any = {};
-    if (query.status) where.status = query.status;
+    const conditions: any[] = [];
+    if (query.status) conditions.push(eq(bswTemplates.status, query.status));
+    const where = conditions.length ? and(...conditions) : undefined;
 
-    const [total, templates] = await Promise.all([
-      prisma.bSWTemplate.count({ where }),
-      prisma.bSWTemplate.findMany({
-        where,
-        include: {
-          author: { select: { id: true, username: true, avatar: true } },
-          reviewedBy: { select: { id: true, username: true } },
-        },
-        orderBy: { updatedAt: 'desc' },
-        skip: (page - 1) * pageSize,
-        take: pageSize,
-      }),
+    const [totalRow, rows] = await Promise.all([
+      db.select({ count: sql<number>`count(*)::int` }).from(bswTemplates).where(where),
+      db
+        .select({
+          template: bswTemplates,
+          author: { id: users.id, username: users.username, avatar: users.avatar },
+        })
+        .from(bswTemplates)
+        .leftJoin(users, eq(bswTemplates.authorId, users.id))
+        .where(where)
+        .orderBy(desc(bswTemplates.updatedAt))
+        .limit(pageSize)
+        .offset((page - 1) * pageSize),
     ]);
 
+    const total = totalRow?.[0]?.count ?? 0;
+
+    // Fetch reviewers (replaces Prisma include reviewedBy)
+    const reviewerIds = [
+      ...new Set(rows.map(r => (r as any).template.reviewedById).filter((x: any) => x != null)),
+    ];
+    let reviewerMap = new Map<number, { id: number; username: string }>();
+    if (reviewerIds.length) {
+      const reviewers = await db
+        .select({ id: users.id, username: users.username })
+        .from(users)
+        .where(inArray(users.id, reviewerIds));
+      reviewerMap = new Map(reviewers.map(u => [u.id, u]));
+    }
+
     return {
-      data: templates.map((t: any) => ({
-        ...t,
-        tags: jsonParseSafe(t.tags, []),
-        modules: jsonParseSafe(t.modules, []),
+      data: rows.map((r: any) => ({
+        ...r.template,
+        author: r.author,
+        reviewedBy:
+          r.template.reviewedById != null
+            ? reviewerMap.get(r.template.reviewedById) ?? null
+            : null,
+        tags: r.template.tags ?? [],
+        modules: r.template.modules ?? [],
       })),
       total,
       page,
@@ -235,23 +281,36 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
       throw { statusCode: 400, message: 'Invalid template ID' };
     }
 
-    const template = await prisma.bSWTemplate.findUnique({
-      where: { id: templateId },
-      include: {
-        author: { select: { id: true, username: true, avatar: true } },
-        versions: { orderBy: { version: 'desc' } },
-        reviews: {
-          select: { rating: true },
-        },
-      },
-    });
+    const [row] = await db
+      .select({
+        template: bswTemplates,
+        author: { id: users.id, username: users.username, avatar: users.avatar },
+      })
+      .from(bswTemplates)
+      .leftJoin(users, eq(bswTemplates.authorId, users.id))
+      .where(eq(bswTemplates.id, templateId))
+      .limit(1);
 
-    if (!template) {
+    if (!row) {
       throw { statusCode: 404, message: 'Template not found' };
     }
 
+    const template = row.template;
+
+    // Fetch versions (replaces Prisma include versions)
+    const versions = await db
+      .select()
+      .from(bswTemplateVersions)
+      .where(eq(bswTemplateVersions.templateId, templateId))
+      .orderBy(desc(bswTemplateVersions.version));
+
+    // Fetch reviews (replaces Prisma include reviews: { select: { rating: true } })
+    const reviews = await db
+      .select({ rating: bswTemplateReviews.rating })
+      .from(bswTemplateReviews)
+      .where(eq(bswTemplateReviews.templateId, templateId));
+
     // Calculate avgRating and reviewCount
-    const reviews = template.reviews || [];
     const reviewCount = reviews.length;
     const avgRating =
       reviewCount > 0
@@ -261,22 +320,19 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
         : 0;
 
     // Increment view count (fire and forget)
-    prisma.bSWTemplate
-      .update({
-        where: { id: templateId },
-        data: { viewCount: { increment: 1 } },
-      })
+    db.update(bswTemplates)
+      .set({ viewCount: sql`${bswTemplates.viewCount} + 1` })
+      .where(eq(bswTemplates.id, templateId))
       .catch(() => {});
 
-    const { reviews: _, ...templateWithoutReviews } = template;
-
     return {
-      ...templateWithoutReviews,
-      tags: jsonParseSafe(template.tags, []),
-      modules: jsonParseSafe(template.modules, []),
-      versions: template.versions.map((v: any) => ({
+      ...template,
+      author: row.author,
+      tags: template.tags ?? [],
+      modules: template.modules ?? [],
+      versions: versions.map((v: any) => ({
         ...v,
-        modules: jsonParseSafe(v.modules, []),
+        modules: v.modules ?? [],
       })),
       avgRating,
       reviewCount,
@@ -293,50 +349,56 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const user = request.user as { id: number };
 
     // Check license — must be Pro to upload
-    const license = await prisma.licenseKey.findFirst({
-      where: { userId: user.id, active: true },
-    });
+    const [license] = await db
+      .select()
+      .from(licenseKeys)
+      .where(and(eq(licenseKeys.userId, user.id), eq(licenseKeys.active, true)))
+      .limit(1);
     const isPro = license?.tier === 'pro';
     if (!isPro) {
       throw { statusCode: 403, message: 'Pro license required to upload templates' };
     }
 
     const data = parsed.data;
-    const template = await prisma.bSWTemplate.create({
-      data: {
+    const [template] = await db
+      .insert(bswTemplates)
+      .values({
         name: data.name,
         description: data.description,
         category: data.category,
-        tags: JSON.stringify(data.tags),
+        tags: data.tags,
         moduleType: data.moduleType || null,
-        modules: JSON.stringify(data.modules),
+        modules: data.modules,
         configData: data.configData ? JSON.stringify(data.configData) : null,
         isPublic: data.isPublic,
         visibility: data.visibility,
         minTier: data.minTier,
         authorId: user.id,
         version: 1,
-      },
-      include: {
-        author: { select: { id: true, username: true, avatar: true } },
-      },
-    });
+      })
+      .returning();
 
     // Create initial version
-    await prisma.bSWTemplateVersion.create({
-      data: {
-        templateId: template.id,
-        version: 1,
-        name: data.name,
-        description: data.description,
-        modules: JSON.stringify(data.modules),
-        configData: data.configData ? JSON.stringify(data.configData) : null,
-        changelog: 'Initial version',
-      },
+    await db.insert(bswTemplateVersions).values({
+      templateId: template.id,
+      version: 1,
+      name: data.name,
+      description: data.description,
+      modules: data.modules,
+      configData: data.configData ? JSON.stringify(data.configData) : null,
+      changelog: 'Initial version',
     });
+
+    // Fetch author (replaces Prisma include author)
+    const [authorRow] = await db
+      .select({ id: users.id, username: users.username, avatar: users.avatar })
+      .from(users)
+      .where(eq(users.id, user.id))
+      .limit(1);
 
     return {
       ...template,
+      author: authorRow ?? null,
       tags: data.tags,
       modules: data.modules,
       configData: data.configData,
@@ -354,29 +416,45 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const templateId = parseInt(id, 10);
     const user = request.user as { id: number; role: string };
 
-    const existing = await prisma.bSWTemplate.findUnique({ where: { id: templateId } });
+    const [existing] = await db.select().from(bswTemplates).where(eq(bswTemplates.id, templateId)).limit(1);
     if (!existing) throw { statusCode: 404, message: 'Template not found' };
     if (existing.authorId !== user.id && user.role !== 'admin' && user.role !== 'super_admin') {
       throw { statusCode: 403, message: 'Forbidden' };
     }
 
     const data = parsed.data as any;
-    if (data.tags) data.tags = JSON.stringify(data.tags);
-    if (data.modules) data.modules = JSON.stringify(data.modules);
-    if (data.configData) data.configData = JSON.stringify(data.configData);
+    // tags/modules are jsonb arrays now (pass through); configData stays text (JSON string)
+    const setData: any = {};
+    if (data.name !== undefined) setData.name = data.name;
+    if (data.description !== undefined) setData.description = data.description;
+    if (data.category !== undefined) setData.category = data.category;
+    if (data.tags !== undefined) setData.tags = data.tags;
+    if (data.moduleType !== undefined) setData.moduleType = data.moduleType;
+    if (data.modules !== undefined) setData.modules = data.modules;
+    if (data.configData !== undefined) {
+      setData.configData = data.configData ? JSON.stringify(data.configData) : data.configData;
+    }
+    if (data.isPublic !== undefined) setData.isPublic = data.isPublic;
+    if (data.visibility !== undefined) setData.visibility = data.visibility;
+    if (data.minTier !== undefined) setData.minTier = data.minTier;
 
-    const updated = await prisma.bSWTemplate.update({
-      where: { id: templateId },
-      data,
-      include: {
-        author: { select: { id: true, username: true, avatar: true } },
-      },
-    });
+    const [updated] = await db
+      .update(bswTemplates)
+      .set(setData)
+      .where(eq(bswTemplates.id, templateId))
+      .returning();
+
+    const [authorRow] = await db
+      .select({ id: users.id, username: users.username, avatar: users.avatar })
+      .from(users)
+      .where(eq(users.id, updated.authorId))
+      .limit(1);
 
     return {
       ...updated,
-      tags: jsonParseSafe(updated.tags, []),
-      modules: jsonParseSafe(updated.modules, []),
+      author: authorRow ?? null,
+      tags: updated.tags ?? [],
+      modules: updated.modules ?? [],
     };
   });
 
@@ -386,13 +464,13 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const templateId = parseInt(id, 10);
     const user = request.user as { id: number; role: string };
 
-    const existing = await prisma.bSWTemplate.findUnique({ where: { id: templateId } });
+    const [existing] = await db.select().from(bswTemplates).where(eq(bswTemplates.id, templateId)).limit(1);
     if (!existing) throw { statusCode: 404, message: 'Template not found' };
     if (existing.authorId !== user.id && user.role !== 'admin' && user.role !== 'super_admin') {
       throw { statusCode: 403, message: 'Forbidden' };
     }
 
-    await prisma.bSWTemplate.delete({ where: { id: templateId } });
+    await db.delete(bswTemplates).where(eq(bswTemplates.id, templateId));
     return { message: 'Template deleted' };
   });
 
@@ -407,7 +485,7 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const templateId = parseInt(id, 10);
     const user = request.user as { id: number; role: string };
 
-    const existing = await prisma.bSWTemplate.findUnique({ where: { id: templateId } });
+    const [existing] = await db.select().from(bswTemplates).where(eq(bswTemplates.id, templateId)).limit(1);
     if (!existing) throw { statusCode: 404, message: 'Template not found' };
     if (existing.authorId !== user.id && user.role !== 'admin' && user.role !== 'super_admin') {
       throw { statusCode: 403, message: 'Forbidden' };
@@ -416,27 +494,28 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const data = parsed.data;
     const newVersion = existing.version + 1;
 
-    const version = await prisma.bSWTemplateVersion.create({
-      data: {
+    const [version] = await db
+      .insert(bswTemplateVersions)
+      .values({
         templateId,
         version: newVersion,
         name: data.name || existing.name,
         description: data.description || existing.description,
-        modules: JSON.stringify(data.modules),
+        modules: data.modules,
         configData: data.configData ? JSON.stringify(data.configData) : existing.configData,
         changelog: data.changelog || null,
-      },
-    });
+      })
+      .returning();
 
     // Update template's current version number
-    await prisma.bSWTemplate.update({
-      where: { id: templateId },
-      data: {
+    await db
+      .update(bswTemplates)
+      .set({
         version: newVersion,
-        modules: JSON.stringify(data.modules),
+        modules: data.modules,
         configData: data.configData ? JSON.stringify(data.configData) : existing.configData,
-      },
-    });
+      })
+      .where(eq(bswTemplates.id, templateId));
 
     return {
       ...version,
@@ -449,14 +528,15 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const { id } = request.params as { id: string };
     const templateId = parseInt(id, 10);
 
-    const versions = await prisma.bSWTemplateVersion.findMany({
-      where: { templateId },
-      orderBy: { version: 'desc' },
-    });
+    const versions = await db
+      .select()
+      .from(bswTemplateVersions)
+      .where(eq(bswTemplateVersions.templateId, templateId))
+      .orderBy(desc(bswTemplateVersions.version));
 
     return versions.map((v: any) => ({
       ...v,
-      modules: jsonParseSafe(v.modules, []),
+      modules: v.modules ?? [],
     }));
   });
 
@@ -466,14 +546,16 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const templateId = parseInt(id, 10);
     const vId = parseInt(versionId, 10);
 
-    const version = await prisma.bSWTemplateVersion.findFirst({
-      where: { id: vId, templateId },
-    });
+    const [version] = await db
+      .select()
+      .from(bswTemplateVersions)
+      .where(and(eq(bswTemplateVersions.id, vId), eq(bswTemplateVersions.templateId, templateId)))
+      .limit(1);
     if (!version) throw { statusCode: 404, message: 'Version not found' };
 
     return {
       ...version,
-      modules: jsonParseSafe(version.modules, []),
+      modules: version.modules ?? [],
     };
   });
 
@@ -482,10 +564,11 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const { id } = request.params as { id: string };
     const templateId = parseInt(id, 10);
 
-    const updated = await prisma.bSWTemplate.update({
-      where: { id: templateId },
-      data: { downloadCount: { increment: 1 } },
-    });
+    const [updated] = await db
+      .update(bswTemplates)
+      .set({ downloadCount: sql`${bswTemplates.downloadCount} + 1` })
+      .where(eq(bswTemplates.id, templateId))
+      .returning();
 
     return { downloadCount: updated.downloadCount };
   });
@@ -505,25 +588,40 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
       throw { statusCode: 403, message: 'Forbidden: admin only' };
     }
 
-    const existing = await prisma.bSWTemplate.findUnique({ where: { id: templateId } });
+    const [existing] = await db.select().from(bswTemplates).where(eq(bswTemplates.id, templateId)).limit(1);
     if (!existing) throw { statusCode: 404, message: 'Template not found' };
 
-    const updated = await prisma.bSWTemplate.update({
-      where: { id: templateId },
-      data: {
+    const [updated] = await db
+      .update(bswTemplates)
+      .set({
         status: parsed.data.status,
         reviewedById: user.id,
-      },
-      include: {
-        author: { select: { id: true, username: true, avatar: true } },
-        reviewedBy: { select: { id: true, username: true } },
-      },
-    });
+      })
+      .where(eq(bswTemplates.id, templateId))
+      .returning();
+
+    const [authorRow] = await db
+      .select({ id: users.id, username: users.username, avatar: users.avatar })
+      .from(users)
+      .where(eq(users.id, updated.authorId))
+      .limit(1);
+
+    let reviewerRow: { id: number; username: string } | null = null;
+    if (updated.reviewedById != null) {
+      const [row] = await db
+        .select({ id: users.id, username: users.username })
+        .from(users)
+        .where(eq(users.id, updated.reviewedById))
+        .limit(1);
+      reviewerRow = row ?? null;
+    }
 
     return {
       ...updated,
-      tags: jsonParseSafe(updated.tags, []),
-      modules: jsonParseSafe(updated.modules, []),
+      author: authorRow ?? null,
+      reviewedBy: reviewerRow,
+      tags: updated.tags ?? [],
+      modules: updated.modules ?? [],
     };
   });
 }

@@ -1,7 +1,11 @@
 import * as crypto from 'node:crypto';
 
+import { and, desc, eq } from 'drizzle-orm';
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
+
+import { db } from '../db/index.js';
+import { licenseKeys } from '../db/schema.js';
 
 // ── Validation Schemas ────────────────────────────────────────────────────
 
@@ -56,9 +60,8 @@ export async function licenseRoutes(app: FastifyInstance) {
     }
 
     const { key } = parsed.data;
-    const { prisma } = await import('../lib/prisma.js');
 
-    const license = await prisma.licenseKey.findUnique({ where: { key } });
+    const [license] = await db.select().from(licenseKeys).where(eq(licenseKeys.key, key)).limit(1);
     if (!license) {
       return reply.status(404).send({ message: 'License key not found' });
     }
@@ -92,9 +95,8 @@ export async function licenseRoutes(app: FastifyInstance) {
 
     const { key } = parsed.data;
     const userId = (request.user as { id: number }).id;
-    const { prisma } = await import('../lib/prisma.js');
 
-    const license = await prisma.licenseKey.findUnique({ where: { key } });
+    const [license] = await db.select().from(licenseKeys).where(eq(licenseKeys.key, key)).limit(1);
     if (!license) {
       return reply.status(404).send({ message: 'License key not found' });
     }
@@ -112,10 +114,11 @@ export async function licenseRoutes(app: FastifyInstance) {
     }
 
     // Bind the license to the current user
-    const updated = await prisma.licenseKey.update({
-      where: { id: license.id },
-      data: { userId },
-    });
+    const [updated] = await db
+      .update(licenseKeys)
+      .set({ userId })
+      .where(eq(licenseKeys.id, license.id))
+      .returning();
 
     return {
       message: 'License activated successfully',
@@ -133,12 +136,13 @@ export async function licenseRoutes(app: FastifyInstance) {
    */
   app.get('/status', { onRequest: [(app as any).authenticate] }, async request => {
     const userId = (request.user as { id: number }).id;
-    const { prisma } = await import('../lib/prisma.js');
 
-    const license = await prisma.licenseKey.findFirst({
-      where: { userId, active: true },
-      orderBy: { createdAt: 'desc' },
-    });
+    const [license] = await db
+      .select()
+      .from(licenseKeys)
+      .where(and(eq(licenseKeys.userId, userId), eq(licenseKeys.active, true)))
+      .orderBy(desc(licenseKeys.createdAt))
+      .limit(1);
 
     if (!license) {
       return {

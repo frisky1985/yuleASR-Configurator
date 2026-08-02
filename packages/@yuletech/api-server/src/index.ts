@@ -4,7 +4,9 @@ import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import Fastify from 'fastify';
 
-import { prisma } from './lib/prisma.js';
+import { sql } from 'drizzle-orm';
+
+import { db } from './db/index.js';
 import { ssoRoutes } from './routes/auth-sso.js';
 import { authRoutes } from './routes/auth.js';
 import { blogRoutes } from './routes/blog.js';
@@ -98,7 +100,7 @@ await app.register(pluginRoutes, { prefix: '/v1/api/plugins' });
 app.get('/health', async () => {
   let dbStatus = 'ok';
   try {
-    await prisma.$queryRaw`SELECT 1`;
+    await db.execute(sql`SELECT 1`);
   } catch {
     dbStatus = 'error';
   }
@@ -118,14 +120,12 @@ try {
   console.log(`📚 API docs at http://${HOST}:${PORT}/docs`);
 } catch (err) {
   app.log.error(err);
-  await prisma.$disconnect();
   process.exit(1);
 }
 
 // Graceful shutdown
 const shutdown = async () => {
   await app.close();
-  await prisma.$disconnect();
   process.exit(0);
 };
 process.on('SIGINT', shutdown);

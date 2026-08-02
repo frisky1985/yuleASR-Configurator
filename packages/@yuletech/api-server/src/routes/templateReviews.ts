@@ -1,5 +1,9 @@
+import { and, desc, eq } from 'drizzle-orm';
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
+
+import { db } from '../db/index.js';
+import { bswTemplateReviews, bswTemplates, users } from '../db/schema.js';
 
 // ── Zod Schemas ──────────────────────────────────────────────────────────────
 
@@ -16,8 +20,6 @@ const updateReviewSchema = z.object({
 // ── Routes ────────────────────────────────────────────────────────────────────
 
 export async function templateReviewsRoutes(app: FastifyInstance) {
-  const { prisma } = await import('../lib/prisma.js');
-
   // ── GET /api/bsw-templates/:templateId/reviews — list reviews ──────────
   app.get('/bsw-templates/:templateId/reviews', async request => {
     const { templateId } = request.params as { templateId: string };
@@ -26,15 +28,17 @@ export async function templateReviewsRoutes(app: FastifyInstance) {
       throw { statusCode: 400, message: 'Invalid template ID' };
     }
 
-    const reviews = await prisma.bSWTemplateReview.findMany({
-      where: { templateId: tid },
-      include: {
-        user: { select: { id: true, username: true, avatar: true } },
-      },
-      orderBy: { createdAt: 'desc' },
-    });
+    const rows = await db
+      .select({
+        review: bswTemplateReviews,
+        user: { id: users.id, username: users.username, avatar: users.avatar },
+      })
+      .from(bswTemplateReviews)
+      .leftJoin(users, eq(bswTemplateReviews.userId, users.id))
+      .where(eq(bswTemplateReviews.templateId, tid))
+      .orderBy(desc(bswTemplateReviews.createdAt));
 
-    return reviews;
+    return rows.map(r => ({ ...r.review, user: r.user }));
   });
 
   // ── POST /api/bsw-templates/:templateId/reviews — add review ──────────
@@ -56,15 +60,17 @@ export async function templateReviewsRoutes(app: FastifyInstance) {
       const user = request.user as { id: number };
 
       // Verify template exists
-      const template = await prisma.bSWTemplate.findUnique({ where: { id: tid } });
+      const [template] = await db.select().from(bswTemplates).where(eq(bswTemplates.id, tid)).limit(1);
       if (!template) {
         throw { statusCode: 404, message: 'Template not found' };
       }
 
       // Check if user already reviewed this template
-      const existing = await prisma.bSWTemplateReview.findUnique({
-        where: { templateId_userId: { templateId: tid, userId: user.id } },
-      });
+      const [existing] = await db
+        .select()
+        .from(bswTemplateReviews)
+        .where(and(eq(bswTemplateReviews.templateId, tid), eq(bswTemplateReviews.userId, user.id)))
+        .limit(1);
       if (existing) {
         throw {
           statusCode: 409,
@@ -72,19 +78,23 @@ export async function templateReviewsRoutes(app: FastifyInstance) {
         };
       }
 
-      const review = await prisma.bSWTemplateReview.create({
-        data: {
+      const [review] = await db
+        .insert(bswTemplateReviews)
+        .values({
           templateId: tid,
           userId: user.id,
           rating: parsed.data.rating,
           content: parsed.data.content || null,
-        },
-        include: {
-          user: { select: { id: true, username: true, avatar: true } },
-        },
-      });
+        })
+        .returning();
 
-      return review;
+      const [reviewer] = await db
+        .select({ id: users.id, username: users.username, avatar: users.avatar })
+        .from(users)
+        .where(eq(users.id, user.id))
+        .limit(1);
+
+      return { ...review, user: reviewer ?? null };
     }
   );
 
@@ -106,7 +116,11 @@ export async function templateReviewsRoutes(app: FastifyInstance) {
 
       const user = request.user as { id: number };
 
-      const existing = await prisma.bSWTemplateReview.findUnique({ where: { id: reviewId } });
+      const [existing] = await db
+        .select()
+        .from(bswTemplateReviews)
+        .where(eq(bswTemplateReviews.id, reviewId))
+        .limit(1);
       if (!existing) {
         throw { statusCode: 404, message: 'Review not found' };
       }
@@ -118,15 +132,19 @@ export async function templateReviewsRoutes(app: FastifyInstance) {
       if (parsed.data.rating !== undefined) data.rating = parsed.data.rating;
       if (parsed.data.content !== undefined) data.content = parsed.data.content;
 
-      const updated = await prisma.bSWTemplateReview.update({
-        where: { id: reviewId },
-        data,
-        include: {
-          user: { select: { id: true, username: true, avatar: true } },
-        },
-      });
+      const [updated] = await db
+        .update(bswTemplateReviews)
+        .set(data)
+        .where(eq(bswTemplateReviews.id, reviewId))
+        .returning();
 
-      return updated;
+      const [reviewer] = await db
+        .select({ id: users.id, username: users.username, avatar: users.avatar })
+        .from(users)
+        .where(eq(users.id, updated.userId))
+        .limit(1);
+
+      return { ...updated, user: reviewer ?? null };
     }
   );
 
@@ -140,7 +158,11 @@ export async function templateReviewsRoutes(app: FastifyInstance) {
 
     const user = request.user as { id: number; role: string };
 
-    const existing = await prisma.bSWTemplateReview.findUnique({ where: { id: reviewId } });
+    const [existing] = await db
+      .select()
+      .from(bswTemplateReviews)
+      .where(eq(bswTemplateReviews.id, reviewId))
+      .limit(1);
     if (!existing) {
       throw { statusCode: 404, message: 'Review not found' };
     }
@@ -148,7 +170,7 @@ export async function templateReviewsRoutes(app: FastifyInstance) {
       throw { statusCode: 403, message: 'Forbidden' };
     }
 
-    await prisma.bSWTemplateReview.delete({ where: { id: reviewId } });
+    await db.delete(bswTemplateReviews).where(eq(bswTemplateReviews.id, reviewId));
     return { message: 'Review deleted' };
   });
 }

@@ -1,5 +1,9 @@
+import { eq, isNotNull, sql } from 'drizzle-orm';
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
+
+import { db } from '../db/index.js';
+import { blogPosts, users } from '../db/schema.js';
 
 const querySchema = z.object({
   category: z.string().optional(),
@@ -14,20 +18,23 @@ const querySchema = z.object({
 export async function blogRoutes(app: FastifyInstance) {
   // GET /blog/posts — paginated list
   app.get('/posts', async request => {
-    const { prisma } = await import('../lib/prisma.js');
     const parsed = querySchema.safeParse(request.query);
     if (!parsed.success) {
       throw { statusCode: 400, message: 'Invalid query params' };
     }
     const { category, tag, search, page, pageSize, sortBy, sortOrder } = parsed.data;
 
-    // Fetch all published posts (SQLite can't do some filters natively)
-    let allPosts = await prisma.blogPost.findMany({
-      where: { publishedAt: { not: null } },
-      include: {
-        author: { select: { id: true, username: true, avatar: true } },
-      },
-    });
+    // Fetch all published posts (JS-side filters for tags/search compatibility)
+    const rows = await db
+      .select({
+        post: blogPosts,
+        author: { id: users.id, username: users.username, avatar: users.avatar },
+      })
+      .from(blogPosts)
+      .leftJoin(users, eq(blogPosts.authorId, users.id))
+      .where(isNotNull(blogPosts.publishedAt));
+
+    let allPosts: any[] = rows.map(r => ({ ...r.post, author: r.author }));
 
     // Category filter
     if (category && category !== '全部') {
@@ -37,7 +44,7 @@ export async function blogRoutes(app: FastifyInstance) {
     // Tag filter
     if (tag) {
       allPosts = allPosts.filter((p: any) => {
-        const tags: string[] = JSON.parse(p.tags);
+        const tags: string[] = p.tags ?? [];
         return tags.includes(tag!);
       });
     }
@@ -63,7 +70,7 @@ export async function blogRoutes(app: FastifyInstance) {
     const start = (page - 1) * pageSize;
     const data = allPosts.slice(start, start + pageSize).map((p: any) => ({
       ...p,
-      tags: JSON.parse(p.tags),
+      tags: p.tags ?? [],
     }));
 
     return {
@@ -77,42 +84,42 @@ export async function blogRoutes(app: FastifyInstance) {
 
   // GET /blog/posts/:slug — single post
   app.get('/posts/:slug', async request => {
-    const { prisma } = await import('../lib/prisma.js');
     const { slug } = request.params as { slug: string };
 
-    const post = await prisma.blogPost.findUnique({
-      where: { slug },
-      include: {
-        author: { select: { id: true, username: true, avatar: true, role: true } },
-      },
-    });
+    const [post] = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug)).limit(1);
     if (!post) {
       throw { statusCode: 404, message: 'Post not found' };
     }
 
+    const [author] = await db
+      .select({ id: users.id, username: users.username, avatar: users.avatar, role: users.role })
+      .from(users)
+      .where(eq(users.id, post.authorId))
+      .limit(1);
+
     // Increment view count
-    await prisma.blogPost.update({
-      where: { id: post.id },
-      data: { viewCount: { increment: 1 } },
-    });
+    await db
+      .update(blogPosts)
+      .set({ viewCount: sql`${blogPosts.viewCount} + 1` })
+      .where(eq(blogPosts.id, post.id));
 
     return {
       ...post,
-      tags: JSON.parse(post.tags),
+      author: author ?? null,
+      tags: post.tags ?? [],
       viewCount: post.viewCount + 1,
     };
   });
 
   // GET /blog/tags — all blog tags with counts
   app.get('/tags', async () => {
-    const { prisma } = await import('../lib/prisma.js');
-    const posts = await prisma.blogPost.findMany({
-      where: { publishedAt: { not: null } },
-      select: { tags: true },
-    });
+    const tagRows = await db
+      .select({ tags: blogPosts.tags })
+      .from(blogPosts)
+      .where(isNotNull(blogPosts.publishedAt));
     const tagMap = new Map<string, number>();
-    for (const p of posts) {
-      const tags: string[] = JSON.parse(p.tags);
+    for (const p of tagRows) {
+      const tags: string[] = (p.tags ?? []) as string[];
       for (const tag of tags) {
         tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
       }

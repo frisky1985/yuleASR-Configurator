@@ -1,7 +1,11 @@
 import crypto from 'node:crypto';
 
+import { and, eq } from 'drizzle-orm';
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
+
+import { db } from '../db/index.js';
+import { licenseKeys, paymentEvents } from '../db/schema.js';
 
 // ── Environment ───────────────────────────────────────────────────────────
 
@@ -220,30 +224,30 @@ export async function paymentRoutes(app: FastifyInstance) {
 
     const { priceId } = parsed.data;
     const userId = (request.user as { id: number }).id;
-    const { prisma } = await import('../lib/prisma.js');
 
     // Deactivate any existing active Pro license for this user
-    await prisma.licenseKey.updateMany({
-      where: { userId, tier: 'pro', active: true },
-      data: { active: false },
-    });
+    await db
+      .update(licenseKeys)
+      .set({ active: false })
+      .where(and(eq(licenseKeys.userId, userId), eq(licenseKeys.tier, 'pro'), eq(licenseKeys.active, true)));
 
     // Calculate expiry — monthly = 30 days, yearly = 365 days
     const days = priceId === 'pro_yearly' ? 365 : 30;
     const expiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
 
-    const license = await prisma.licenseKey.create({
-      data: {
+    const [license] = await db
+      .insert(licenseKeys)
+      .values({
         key: generateLicenseKey(),
         tier: 'pro',
         maxModules: 9999,
         maxProjects: 9999,
         expiresAt,
-        customerEmail: (request.user as any).email,
+        customerEmail: (request.user as any).email ?? null,
         userId,
         active: true,
-      },
-    });
+      })
+      .returning();
 
     return {
       message: 'Payment simulated successfully. Pro license activated.',
@@ -268,8 +272,6 @@ export async function paymentRoutes(app: FastifyInstance) {
    * We handle: order_created → activate license
    */
   app.post('/webhook', async (request, reply) => {
-    const { prisma } = await import('../lib/prisma.js');
-
     // ── Get raw body for signature verification ─────────────────────────
     const rawBody = typeof request.body === 'string' ? request.body : JSON.stringify(request.body);
 
@@ -306,7 +308,7 @@ export async function paymentRoutes(app: FastifyInstance) {
     }
 
     // ── Deduplication ───────────────────────────────────────────────────
-    const existing = await prisma.paymentEvent.findUnique({ where: { eventId } });
+    const [existing] = await db.select().from(paymentEvents).where(eq(paymentEvents.eventId, eventId)).limit(1);
     if (existing) {
       return reply.status(200).send({ received: true, duplicate: true });
     }
@@ -331,20 +333,18 @@ export async function paymentRoutes(app: FastifyInstance) {
     const isOrder = eventName === 'order_created';
 
     // ── Record the incoming event ────────────────────────────────────────
-    await prisma.paymentEvent.create({
-      data: {
-        eventId,
-        type: eventName,
-        email,
-        licenseKey: null, // will be set after license creation
-        tier: 'pro',
-        rawBody,
-        processed: false,
-        lemonOrderId,
-        lemonCustomerId,
-        lemonProductId,
-        lemonVariantId,
-      },
+    await db.insert(paymentEvents).values({
+      eventId,
+      type: eventName,
+      email,
+      licenseKey: null, // will be set after license creation
+      tier: 'pro',
+      rawBody,
+      processed: false,
+      lemonOrderId,
+      lemonCustomerId,
+      lemonProductId,
+      lemonVariantId,
     });
 
     // ── Handle supported events ─────────────────────────────────────────
@@ -354,17 +354,18 @@ export async function paymentRoutes(app: FastifyInstance) {
     if (shouldActivate && (email || userId || lemonOrderId)) {
       // Deactivate old licenses
       if (userId) {
-        await prisma.licenseKey.updateMany({
-          where: { userId, active: true },
-          data: { active: false },
-        });
+        await db
+          .update(licenseKeys)
+          .set({ active: false })
+          .where(and(eq(licenseKeys.userId, userId), eq(licenseKeys.active, true)));
       }
 
       const days = isYearly ? 365 : 30;
       const expiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
 
-      const license = await prisma.licenseKey.create({
-        data: {
+      const [license] = await db
+        .insert(licenseKeys)
+        .values({
           key: generateLicenseKey(),
           tier: 'pro',
           maxModules: 9999,
@@ -375,14 +376,14 @@ export async function paymentRoutes(app: FastifyInstance) {
           active: true,
           lemonOrderId: lemonOrderId || null,
           lemonCustomerId: lemonCustomerId || null,
-        },
-      });
+        })
+        .returning();
 
       // Update the payment event with the generated license key
-      await prisma.paymentEvent.update({
-        where: { eventId },
-        data: { processed: true, licenseKey: license.key },
-      });
+      await db
+        .update(paymentEvents)
+        .set({ processed: true, licenseKey: license.key })
+        .where(eq(paymentEvents.eventId, eventId));
     }
 
     return reply.status(200).send({ received: true });

@@ -3,8 +3,7 @@ import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 
 import { db } from '../db/index.js';
-import { brandSettings } from '../db/schema.js';
-import { prisma } from '../lib/prisma.js';
+import { brandSettings, users } from '../db/schema.js';
 
 // ── Validation Schema ───────────────────────────────────────────────────
 
@@ -87,9 +86,9 @@ export async function brandingRoutes(app: FastifyInstance) {
    * Updates brand settings
    */
   app.put('/', { onRequest: [(app as any).authenticate] }, async (request, reply) => {
-    // Check admin role — need to fetch user from Prisma (where roles live)
+    // Check admin role — need to fetch user from DB (where roles live)
     const userData = (request as any).user as { id: number };
-    const user = await prisma.user.findUnique({ where: { id: userData.id } });
+    const [user] = await db.select().from(users).where(eq(users.id, userData.id)).limit(1);
     if (!user || user.role !== 'admin') {
       return reply.status(403).send({ message: 'Forbidden: admin access required' });
     }

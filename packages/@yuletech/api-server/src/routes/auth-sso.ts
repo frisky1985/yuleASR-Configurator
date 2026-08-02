@@ -3,6 +3,11 @@ import type { FastifyInstance } from 'fastify';
 import * as jose from 'jose';
 import { z } from 'zod';
 
+import { eq, and, or } from 'drizzle-orm';
+
+import { db } from '../db/index.js';
+import { users } from '../db/schema.js';
+
 // ── Environment helpers ─────────────────────────────────────────────────
 
 function envStr(key: string, fallback = ''): string {
@@ -132,40 +137,44 @@ export async function ssoRoutes(app: FastifyInstance) {
     const email = (payload.email || `${ssoId}@oidc.local`) as string;
     const username = (payload.preferred_username || payload.name || email.split('@')[0]) as string;
 
-    const { prisma } = await import('../lib/prisma.js');
-
     // Find or create user by ssoId (or email fallback)
-    let user = await prisma.user.findFirst({
-      where: {
-        OR: [{ ssoProvider: 'oidc', ssoId }, { email }],
-      },
-    });
+    const [found] = await db
+      .select()
+      .from(users)
+      .where(or(and(eq(users.ssoProvider, 'oidc'), eq(users.ssoId, ssoId)), eq(users.email, email)))
+      .limit(1);
+
+    let user = found;
 
     if (user) {
       // Update existing user's SSO info
-      user = await prisma.user.update({
-        where: { id: user.id },
-        data: {
+      const [updated] = await db
+        .update(users)
+        .set({
           ssoProvider: 'oidc',
           ssoId,
           ssoMetadata: JSON.stringify(payload),
           ...(user.email === email ? {} : { email }), // update email if changed
-        },
-      });
+        })
+        .where(eq(users.id, user.id))
+        .returning();
+      user = updated;
     } else {
       // Create new user
       const randomPassword = crypto.randomUUID();
       const hashed = await bcrypt.hash(randomPassword, 10);
-      user = await prisma.user.create({
-        data: {
+      const [created] = await db
+        .insert(users)
+        .values({
           email,
-          username: await uniqueUsername(prisma, username),
-          password: hashed,
+          username: await uniqueUsername(username),
+          passwordHash: hashed,
           ssoProvider: 'oidc',
           ssoId,
           ssoMetadata: JSON.stringify(payload),
-        },
-      });
+        })
+        .returning();
+      user = created;
     }
 
     const token = (app as any).jwt.sign({ id: user.id, email: user.email, role: user.role });
@@ -241,37 +250,41 @@ export async function ssoRoutes(app: FastifyInstance) {
       const displayName = ldapEntry.displayName || ldapEntry.cn || ldapEntry.name || inputUsername;
       const ssoId = ldapEntry.dn || ldapEntry.uid || inputUsername;
 
-      const { prisma } = await import('../lib/prisma.js');
-
       // Find or create user
-      let user = await prisma.user.findFirst({
-        where: {
-          OR: [{ ssoProvider: 'ldap', ssoId }, { email }],
-        },
-      });
+      const [found] = await db
+        .select()
+        .from(users)
+        .where(or(and(eq(users.ssoProvider, 'ldap'), eq(users.ssoId, ssoId)), eq(users.email, email)))
+        .limit(1);
+
+      let user = found;
 
       if (user) {
-        user = await prisma.user.update({
-          where: { id: user.id },
-          data: {
+        const [updated] = await db
+          .update(users)
+          .set({
             ssoProvider: 'ldap',
             ssoId,
             ssoMetadata: JSON.stringify(ldapEntry),
-          },
-        });
+          })
+          .where(eq(users.id, user.id))
+          .returning();
+        user = updated;
       } else {
         const randomPassword = crypto.randomUUID();
         const hashed = await bcrypt.hash(randomPassword, 10);
-        user = await prisma.user.create({
-          data: {
+        const [created] = await db
+          .insert(users)
+          .values({
             email,
-            username: await uniqueUsername(prisma, displayName),
-            password: hashed,
+            username: await uniqueUsername(displayName),
+            passwordHash: hashed,
             ssoProvider: 'ldap',
             ssoId,
             ssoMetadata: JSON.stringify(ldapEntry),
-          },
-        });
+          })
+          .returning();
+        user = created;
       }
 
       const token = (app as any).jwt.sign({ id: user.id, email: user.email, role: user.role });
@@ -292,14 +305,14 @@ const oidcStateStore = new Map<string, { nonce: string; createdAt: number }>();
 
 // ── Helper: Ensure unique username ──────────────────────────────────────
 
-async function uniqueUsername(prisma: any, baseName: string): Promise<string> {
+async function uniqueUsername(baseName: string): Promise<string> {
   let name = baseName.replace(/[^a-zA-Z0-9_-]/g, '_').substring(0, 32) || 'user';
-  let exists = await prisma.user.findUnique({ where: { username: name } });
+  let [exists] = await db.select().from(users).where(eq(users.username, name)).limit(1);
   let i = 1;
   while (exists) {
     const suffix = `_${i}`;
     name = `${name.substring(0, 32 - suffix.length)}${suffix}`;
-    exists = await prisma.user.findUnique({ where: { username: name } });
+    [exists] = await db.select().from(users).where(eq(users.username, name)).limit(1);
     i++;
   }
   return name;

@@ -1,5 +1,9 @@
+import { and, asc, desc, eq, ilike, or, sql } from 'drizzle-orm';
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
+
+import { db } from '../db/index.js';
+import { sharedConfigs, users } from '../db/schema.js';
 
 // ── Zod Schemas ──────────────────────────────────────────────────────────────
 
@@ -37,8 +41,6 @@ function jsonParseSafe(val: string | null | undefined, fallback: any = null): an
 // ── Routes ────────────────────────────────────────────────────────────────────
 
 export async function sharedConfigsRoutes(app: FastifyInstance) {
-  const { prisma } = await import('../lib/prisma.js');
-
   // ── GET /api/shared-configs — list public shared configs ──────────────
   app.get('/', async request => {
     const parsed = querySchema.safeParse(request.query);
@@ -48,33 +50,61 @@ export async function sharedConfigsRoutes(app: FastifyInstance) {
 
     const { search, tag, mcuType, sortBy, sortOrder, page, pageSize } = parsed.data;
 
-    const where: any = {};
+    const conditions: any[] = [];
 
     if (search) {
-      where.OR = [{ name: { contains: search } }, { description: { contains: search } }];
+      conditions.push(
+        or(
+          ilike(sharedConfigs.name, `%${search}%`),
+          ilike(sharedConfigs.description, `%${search}%`)
+        )
+      );
     }
 
     if (mcuType) {
-      where.mcuType = mcuType;
+      conditions.push(eq(sharedConfigs.mcuType, mcuType));
     }
 
-    const [total, raw] = await Promise.all([
-      prisma.sharedConfig.count({ where }),
-      prisma.sharedConfig.findMany({
-        where,
-        include: {
-          author: { select: { id: true, username: true, avatar: true } },
-        },
-        orderBy: { [sortBy]: sortOrder },
-        skip: (page - 1) * pageSize,
-        take: pageSize,
-      }),
+    const where = conditions.length ? and(...conditions) : undefined;
+
+    const orderByExpr =
+      sortBy === 'likeCount'
+        ? sortOrder === 'asc'
+          ? asc(sharedConfigs.likeCount)
+          : desc(sharedConfigs.likeCount)
+        : sortBy === 'viewCount'
+          ? sortOrder === 'asc'
+            ? asc(sharedConfigs.viewCount)
+            : desc(sharedConfigs.viewCount)
+          : sortOrder === 'asc'
+            ? asc(sharedConfigs.createdAt)
+            : desc(sharedConfigs.createdAt);
+
+    const [totalRow, rows] = await Promise.all([
+      db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(sharedConfigs)
+        .where(where),
+      db
+        .select({
+          config: sharedConfigs,
+          author: { id: users.id, username: users.username, avatar: users.avatar },
+        })
+        .from(sharedConfigs)
+        .leftJoin(users, eq(sharedConfigs.authorId, users.id))
+        .where(where)
+        .orderBy(orderByExpr)
+        .limit(pageSize)
+        .offset((page - 1) * pageSize),
     ]);
 
-    let configs = raw.map((c: any) => ({
-      ...c,
-      modules: jsonParseSafe(c.modules, []),
-      tags: jsonParseSafe(c.tags, []),
+    const total = totalRow?.[0]?.count ?? 0;
+
+    let configs = rows.map((r: any) => ({
+      ...r.config,
+      author: r.author,
+      modules: r.config.modules ?? [],
+      tags: r.config.tags ?? [],
     }));
 
     // Post-filter by tag if needed (SQLite compat)
@@ -99,30 +129,32 @@ export async function sharedConfigsRoutes(app: FastifyInstance) {
       throw { statusCode: 400, message: 'Invalid config ID' };
     }
 
-    const config = await prisma.sharedConfig.findUnique({
-      where: { id: configId },
-      include: {
-        author: { select: { id: true, username: true, avatar: true } },
-      },
-    });
+    const [row] = await db
+      .select({
+        config: sharedConfigs,
+        author: { id: users.id, username: users.username, avatar: users.avatar },
+      })
+      .from(sharedConfigs)
+      .leftJoin(users, eq(sharedConfigs.authorId, users.id))
+      .where(eq(sharedConfigs.id, configId))
+      .limit(1);
 
-    if (!config) {
+    if (!row) {
       throw { statusCode: 404, message: 'Shared config not found' };
     }
 
     // Increment view count (fire and forget)
-    prisma.sharedConfig
-      .update({
-        where: { id: configId },
-        data: { viewCount: { increment: 1 } },
-      })
+    db.update(sharedConfigs)
+      .set({ viewCount: sql`${sharedConfigs.viewCount} + 1` })
+      .where(eq(sharedConfigs.id, configId))
       .catch(() => {});
 
     return {
-      ...config,
-      modules: jsonParseSafe(config.modules, []),
-      configData: jsonParseSafe(config.configData, null),
-      tags: jsonParseSafe(config.tags, []),
+      ...row.config,
+      author: row.author,
+      modules: row.config.modules ?? [],
+      configData: jsonParseSafe(row.config.configData, null),
+      tags: row.config.tags ?? [],
     };
   });
 
@@ -136,24 +168,29 @@ export async function sharedConfigsRoutes(app: FastifyInstance) {
     const user = request.user as { id: number };
     const data = parsed.data;
 
-    const config = await prisma.sharedConfig.create({
-      data: {
+    const [config] = await db
+      .insert(sharedConfigs)
+      .values({
         name: data.name,
         description: data.description,
         mcuType: data.mcuType || null,
-        modules: JSON.stringify(data.modules),
+        modules: data.modules,
         configData: data.configData ? JSON.stringify(data.configData) : null,
         screenshotUrl: data.screenshotUrl || null,
-        tags: JSON.stringify(data.tags),
+        tags: data.tags,
         authorId: user.id,
-      },
-      include: {
-        author: { select: { id: true, username: true, avatar: true } },
-      },
-    });
+      })
+      .returning();
+
+    const [authorRow] = await db
+      .select({ id: users.id, username: users.username, avatar: users.avatar })
+      .from(users)
+      .where(eq(users.id, user.id))
+      .limit(1);
 
     return {
       ...config,
+      author: authorRow ?? null,
       modules: data.modules,
       tags: data.tags,
       configData: data.configData || null,
@@ -166,7 +203,7 @@ export async function sharedConfigsRoutes(app: FastifyInstance) {
     const configId = parseInt(id, 10);
     const user = request.user as { id: number; role: string };
 
-    const existing = await prisma.sharedConfig.findUnique({ where: { id: configId } });
+    const [existing] = await db.select().from(sharedConfigs).where(eq(sharedConfigs.id, configId)).limit(1);
     if (!existing) {
       throw { statusCode: 404, message: 'Shared config not found' };
     }
@@ -174,7 +211,7 @@ export async function sharedConfigsRoutes(app: FastifyInstance) {
       throw { statusCode: 403, message: 'Forbidden' };
     }
 
-    await prisma.sharedConfig.delete({ where: { id: configId } });
+    await db.delete(sharedConfigs).where(eq(sharedConfigs.id, configId));
     return { message: 'Shared config deleted' };
   });
 
@@ -183,15 +220,16 @@ export async function sharedConfigsRoutes(app: FastifyInstance) {
     const { id } = request.params as { id: string };
     const configId = parseInt(id, 10);
 
-    const config = await prisma.sharedConfig.findUnique({ where: { id: configId } });
+    const [config] = await db.select().from(sharedConfigs).where(eq(sharedConfigs.id, configId)).limit(1);
     if (!config) {
       throw { statusCode: 404, message: 'Shared config not found' };
     }
 
-    const updated = await prisma.sharedConfig.update({
-      where: { id: configId },
-      data: { likeCount: { increment: 1 } },
-    });
+    const [updated] = await db
+      .update(sharedConfigs)
+      .set({ likeCount: sql`${sharedConfigs.likeCount} + 1` })
+      .where(eq(sharedConfigs.id, configId))
+      .returning();
 
     return { likeCount: updated.likeCount };
   });
