@@ -15,6 +15,7 @@ export type PointsAction =
   | 'article.share'
   | 'article.comment'
   | 'article.publish'
+  | 'qa.answer'
   | 'build.success'
   | 'build.share'
   | 'pr.merged'
@@ -38,6 +39,36 @@ interface LocalPointsState {
 }
 
 const POINTS_KEY = 'yuletech:points';
+
+// Fix 29: 积分动作白名单（前端仅允许这些动作触发积分，值为服务端规则的客户端镜像）
+// 服务端仍为最终裁决，前端白名单用于拒绝未知/越权动作，防止刷分
+const ALLOWED_ACTIONS: Record<string, number> = {
+  'article.read': 1,
+  'article.like': 2,
+  'article.bookmark': 3,
+  'article.share': 5,
+  'article.comment': 5,
+  'article.publish': 50,
+  'qa.answer': 10,
+  'build.success': 10,
+  'build.share': 5,
+  'pr.merged': 50,
+  'issue.created': 5,
+  'issue.resolved': 20,
+  'module.published': 100,
+  'daily.login': 5,
+  'profile.complete': 20,
+  'invite.user': 30,
+};
+
+// Fix 29: 客户端频率限制 — 同一动作最小触发间隔（毫秒）
+const ACTION_MIN_INTERVAL_MS = 10 * 1000;
+
+// Fix 29: 客户端每日上限（配合云端 today.actions 计数），服务端仍为最终裁决
+const ACTION_DAILY_LIMIT: Record<string, number> = {
+  'daily.login': 1,
+  'article.read': 30,
+};
 
 interface LevelInfo {
   level: number;
@@ -79,6 +110,8 @@ export function usePoints() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const initialSyncDone = useRef(false);
+  // Fix 29: 记录每个动作最近一次触发时间，用于客户端频率限制
+  const lastActionAt = useRef<Record<string, number>>({});
 
   // 设置 API token
   useEffect(() => {
@@ -148,39 +181,63 @@ export function usePoints() {
       description?: string,
       reference?: { type: string; id: string; title: string }
     ) => {
-      // 更新本地
-      const pointsChange = getPointsForAction(action);
-      const historyItem = {
-        id: `pts_${Date.now()}`,
-        action,
-        description: description || getDefaultDescription(action),
-        points: pointsChange,
-        timestamp: new Date().toISOString(),
-      };
+      // Fix 29: 白名单校验 — 不在白名单内的动作直接拒绝（防刷分/未知动作）
+      if (!(action in ALLOWED_ACTIONS)) {
+        console.warn(`[usePoints] 拒绝未知积分动作: ${action}`);
+        return;
+      }
 
-      setLocalState(prev => ({
-        points: prev.points + pointsChange,
-        history: [historyItem, ...prev.history].slice(0, 100),
-        lastSyncAt: prev.lastSyncAt,
-      }));
+      // Fix 29: 频率限制 — 同一动作触发间隔过短直接拒绝
+      const now = Date.now();
+      const last = lastActionAt.current[action] || 0;
+      if (now - last < ACTION_MIN_INTERVAL_MS) {
+        console.warn(`[usePoints] 积分动作 ${action} 触发过于频繁，已忽略`);
+        return;
+      }
 
-      // 如果已登录，同步到云端
-      if (isAuthenticated) {
-        try {
-          const result = await userApi.earnPoints(action, reference);
-          if (result.success) {
-            // 刷新云端积分信息
-            const pointsResponse = await userApi.getPoints();
-            if (pointsResponse.success) {
-              setCloudInfo(pointsResponse.data);
-            }
-          }
-        } catch (err) {
-          console.error('同步积分到云端失败:', err);
+      // Fix 29: 每日上限 — 基于服务端今日计数（today.actions）
+      const dailyLimit = ACTION_DAILY_LIMIT[action];
+      if (dailyLimit) {
+        const todayCount = cloudInfo?.today?.actions?.[action] || 0;
+        if (todayCount >= dailyLimit) {
+          console.warn(`[usePoints] 积分动作 ${action} 已达今日上限，已忽略`);
+          return;
         }
       }
+      lastActionAt.current[action] = now;
+
+      // 未登录：仅本地演示（不产生真实积分）
+      if (!isAuthenticated) {
+        const pointsChange = ALLOWED_ACTIONS[action];
+        const historyItem = {
+          id: `pts_${Date.now()}`,
+          action,
+          description: description || getDefaultDescription(action),
+          points: pointsChange,
+          timestamp: new Date().toISOString(),
+        };
+        setLocalState(prev => ({
+          points: prev.points + pointsChange,
+          history: [historyItem, ...prev.history].slice(0, 100),
+          lastSyncAt: prev.lastSyncAt,
+        }));
+        return;
+      }
+
+      // 已登录：客户端不乐观加分，只展示服务端返回值（服务端为最终裁决）
+      try {
+        const result = await userApi.earnPoints(action, reference);
+        if (result.success) {
+          const pointsResponse = await userApi.getPoints();
+          if (pointsResponse.success) {
+            setCloudInfo(pointsResponse.data);
+          }
+        }
+      } catch (err) {
+        console.error('同步积分到云端失败:', err);
+      }
     },
-    [isAuthenticated, setLocalState]
+    [isAuthenticated, cloudInfo, setLocalState]
   );
 
   /**
@@ -233,28 +290,6 @@ export function usePoints() {
   };
 }
 
-// 获取动作默认积分
-function getPointsForAction(action: PointsAction): number {
-  const pointsMap: Record<PointsAction, number> = {
-    'article.read': 1,
-    'article.like': 2,
-    'article.bookmark': 3,
-    'article.share': 5,
-    'article.comment': 5,
-    'article.publish': 50,
-    'build.success': 10,
-    'build.share': 5,
-    'pr.merged': 50,
-    'issue.created': 5,
-    'issue.resolved': 20,
-    'module.published': 100,
-    'daily.login': 5,
-    'profile.complete': 20,
-    'invite.user': 30,
-  };
-  return pointsMap[action] || 0;
-}
-
 // 获取默认描述
 function getDefaultDescription(action: PointsAction): string {
   const descriptions: Record<PointsAction, string> = {
@@ -264,6 +299,7 @@ function getDefaultDescription(action: PointsAction): string {
     'article.share': '分享文章',
     'article.comment': '评论文章',
     'article.publish': '发布文章',
+    'qa.answer': '回答问题',
     'build.success': '构建成功',
     'build.share': '分享构建',
     'pr.merged': 'PR 合并',

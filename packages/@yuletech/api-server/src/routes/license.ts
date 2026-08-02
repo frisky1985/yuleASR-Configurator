@@ -53,7 +53,7 @@ export async function licenseRoutes(app: FastifyInstance) {
    * POST /api/license/validate
    * Validate a license key and return tier + feature permissions.
    */
-  app.post('/validate', async (request, reply) => {
+  app.post('/validate', { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (request, reply) => {
     const parsed = validateSchema.safeParse(request.body);
     if (!parsed.success) {
       return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });

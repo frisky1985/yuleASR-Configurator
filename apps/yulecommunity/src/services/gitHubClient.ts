@@ -3,9 +3,6 @@
  * 提供共享的 fetch 封装、缓存系统和可选的 Token 认证
  */
 
-import { safeGet, safeSet, safeRemove } from '../lib/utils';
-
-const TOKEN_KEY = 'yuletech_github_token';
 const CACHE_TTL = 5 * 60 * 1000; // 5 分钟
 
 // 通用缓存条目
@@ -16,26 +13,24 @@ interface CacheEntry<T> {
 
 const memoryCache = new Map<string, CacheEntry<unknown>>();
 
-// 缓存 token 到模块变量，避免每次请求读 localStorage
-let cachedToken: string | null | undefined; // undefined = uninitialized, null = set to null
+// Fix 29: Token 仅保存在内存态（模块变量），不写入 localStorage
+// 持久化与安全使用交由服务端代理完成，前端不落盘明文 token
+let cachedToken: string | null = null;
 
 /**
- * 获取可选的 GitHub Token（用户可在 localStorage 中设置）
+ * 获取当前 GitHub Token（仅内存态）
  * 无 token 时自动降级为未认证请求（限流 60次/小时）
  */
 function getToken(): string | null {
-  if (cachedToken !== undefined) return cachedToken;
-  cachedToken = safeGet(TOKEN_KEY);
   return cachedToken;
 }
 
 /**
- * 设置 GitHub Token（写入 localStorage + 模块缓存）
+ * 设置 GitHub Token（仅内存态，不写入 localStorage）
+ * 服务端代理负责 token 的持久化存储与安全使用
  */
 export function setToken(token: string | null): void {
   cachedToken = token;
-  if (token) safeSet(TOKEN_KEY, token);
-  else safeRemove(TOKEN_KEY);
 }
 
 /**
@@ -56,13 +51,8 @@ export async function githubFetch(url: string): Promise<Response> {
   const response = await fetch(url, { headers });
 
   if (!response.ok) {
-    // 429 = rate limited, suggest adding a token
-    if (response.status === 429) {
-      console.warn(
-        '[GitHub API] Rate limited. Set a GitHub token in localStorage via:\n' +
-        `  localStorage.setItem('${TOKEN_KEY}', 'ghp_xxx');`
-      );
-    }
+    // Fix 29: 429 = rate limited，不再引导用户在前端 localStorage 明文存储 token，
+    // 请通过服务端代理配置 GitHub Token
     throw new Error(`GitHub API error: ${response.status}`);
   }
 

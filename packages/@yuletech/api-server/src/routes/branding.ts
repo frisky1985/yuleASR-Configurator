@@ -52,6 +52,12 @@ async function getOrCreateBrandSettings() {
   return created;
 }
 
+// ── Fix 30: CSS 注入转义（/preview 输出的自定义属性会被注入到 <style>）──
+// 剔除 CSS 语法字符：\ ( ) " ' ; 换行，防止 ");background:red 之类的注入载荷
+function cssEscape(s: unknown): string {
+  return String(s ?? '').replace(/[\\(\)"';\n\\]/g, '');
+}
+
 // ── Routes ──────────────────────────────────────────────────────────────
 
 export async function brandingRoutes(app: FastifyInstance) {
@@ -160,8 +166,9 @@ export async function brandingRoutes(app: FastifyInstance) {
         '--brand-primary': settings.primaryColor || '#2563EB',
         '--brand-secondary': settings.secondaryColor || '#6366F1',
         '--brand-accent': settings.accentColor || '#06B6D4',
-        '--brand-logo-url': settings.logoUrl ? `url(${settings.logoUrl})` : 'none',
-        '--brand-company-name': `"${settings.companyName || settings.name}"`,
+        // Fix 30: 输出前 CSS 转义，防注入
+        '--brand-logo-url': settings.logoUrl ? `url(${cssEscape(settings.logoUrl)})` : 'none',
+        '--brand-company-name': `"${cssEscape(settings.companyName || settings.name)}"`,
       },
       settings: {
         name: settings.name,

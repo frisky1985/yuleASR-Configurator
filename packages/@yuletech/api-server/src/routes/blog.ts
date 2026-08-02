@@ -1,4 +1,4 @@
-import { eq, isNotNull, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, ilike, isNotNull, or, sql } from 'drizzle-orm';
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 
@@ -24,57 +24,57 @@ export async function blogRoutes(app: FastifyInstance) {
     }
     const { category, tag, search, page, pageSize, sortBy, sortOrder } = parsed.data;
 
-    // Fetch all published posts (JS-side filters for tags/search compatibility)
-    const rows = await db
-      .select({
-        post: blogPosts,
-        author: { id: users.id, username: users.username, avatar: users.avatar },
-      })
-      .from(blogPosts)
-      .leftJoin(users, eq(blogPosts.authorId, users.id))
-      .where(isNotNull(blogPosts.publishedAt));
-
-    let allPosts: any[] = rows.map(r => ({ ...r.post, author: r.author }));
-
-    // Category filter
+    // Fix 30: category/tag/search 全部下推 SQL，分页下沉 limit/offset（原实现全表拉取后 JS 过滤/排序）
+    const conditions: any[] = [isNotNull(blogPosts.publishedAt)];
     if (category && category !== '全部') {
-      allPosts = allPosts.filter((p: any) => p.category === category);
+      conditions.push(eq(blogPosts.category, category));
     }
-
-    // Tag filter
     if (tag) {
-      allPosts = allPosts.filter((p: any) => {
-        const tags: string[] = p.tags ?? [];
-        return tags.includes(tag!);
-      });
+      // tags 为 jsonb 数组，@> 下推（参数绑定，防注入）
+      conditions.push(sql`${blogPosts.tags} @> ${JSON.stringify([tag])}::jsonb`);
     }
-
-    // Search filter
     if (search) {
-      const q = search.toLowerCase();
-      allPosts = allPosts.filter(
-        (p: any) => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q)
-      );
+      const q = `%${search}%`;
+      conditions.push(or(ilike(blogPosts.title, q), ilike(blogPosts.description, q)));
     }
+    const where = and(...conditions);
 
-    // Sort
-    const sortMap = {
-      date: (a: any, b: any) => (a.publishedAt?.getTime() || 0) - (b.publishedAt?.getTime() || 0),
-      views: (a: any, b: any) => a.viewCount - b.viewCount,
-      likes: (a: any, b: any) => a.likeCount - b.likeCount,
-    };
-    allPosts.sort(sortMap[sortBy]);
-    if (sortOrder === 'desc') allPosts.reverse();
+    const orderByExpr =
+      sortBy === 'views'
+        ? sortOrder === 'asc'
+          ? asc(blogPosts.viewCount)
+          : desc(blogPosts.viewCount)
+        : sortBy === 'likes'
+          ? sortOrder === 'asc'
+            ? asc(blogPosts.likeCount)
+            : desc(blogPosts.likeCount)
+          : sortOrder === 'asc'
+            ? asc(blogPosts.publishedAt)
+            : desc(blogPosts.publishedAt);
 
-    const total = allPosts.length;
-    const start = (page - 1) * pageSize;
-    const data = allPosts.slice(start, start + pageSize).map((p: any) => ({
-      ...p,
-      tags: p.tags ?? [],
-    }));
+    const [totalRow, rows] = await Promise.all([
+      db.select({ count: sql<number>`count(*)::int` }).from(blogPosts).where(where),
+      db
+        .select({
+          post: blogPosts,
+          author: { id: users.id, username: users.username, avatar: users.avatar },
+        })
+        .from(blogPosts)
+        .leftJoin(users, eq(blogPosts.authorId, users.id))
+        .where(where)
+        .orderBy(orderByExpr)
+        .limit(pageSize)
+        .offset((page - 1) * pageSize),
+    ]);
+
+    const total = totalRow?.[0]?.count ?? 0;
 
     return {
-      data,
+      data: rows.map(r => ({
+        ...r.post,
+        author: r.author,
+        tags: r.post.tags ?? [],
+      })),
       total,
       page,
       pageSize,

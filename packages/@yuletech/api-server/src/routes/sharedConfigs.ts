@@ -3,7 +3,7 @@ import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 
 import { db } from '../db/index.js';
-import { sharedConfigs, users } from '../db/schema.js';
+import { sharedConfigLikes, sharedConfigs, users } from '../db/schema.js';
 
 // ── Zod Schemas ──────────────────────────────────────────────────────────────
 
@@ -215,22 +215,42 @@ export async function sharedConfigsRoutes(app: FastifyInstance) {
     return { message: 'Shared config deleted' };
   });
 
-  // ── POST /api/shared-configs/:id/like — toggle like ──────────────────
+  // ── POST /api/shared-configs/:id/like — toggle like（Fix 30: 幂等 + 事务）──
   app.post('/:id/like', { onRequest: [(app as any).authenticate] }, async request => {
     const { id } = request.params as { id: string };
     const configId = parseInt(id, 10);
+    const user = request.user as { id: number };
 
     const [config] = await db.select().from(sharedConfigs).where(eq(sharedConfigs.id, configId)).limit(1);
     if (!config) {
       throw { statusCode: 404, message: 'Shared config not found' };
     }
 
-    const [updated] = await db
-      .update(sharedConfigs)
-      .set({ likeCount: sql`${sharedConfigs.likeCount} + 1` })
-      .where(eq(sharedConfigs.id, configId))
-      .returning();
+    // 事务包裹：插入点赞记录（(configId, userId) 唯一约束，onConflictDoNothing 幂等），
+    // 已存在则视为取消赞（删除 + 计数 -1），不存在则点赞（插入 + 计数 +1）。
+    // 并发下 onConflictDoNothing 保证不会重复 +1，而是安全退化为 toggle 取消。
+    return db.transaction(async tx => {
+      const inserted = await tx
+        .insert(sharedConfigLikes)
+        .values({ configId, userId: user.id })
+        .onConflictDoNothing()
+        .returning({ id: sharedConfigLikes.id });
 
-    return { likeCount: updated.likeCount };
+      if (inserted.length > 0) {
+        const [updated] = await tx
+          .update(sharedConfigs)
+          .set({ likeCount: sql`${sharedConfigs.likeCount} + 1` })
+          .where(eq(sharedConfigs.id, configId))
+          .returning({ likeCount: sharedConfigs.likeCount });
+        return { likeCount: updated.likeCount, liked: true };
+      }
+
+      const [updated] = await tx
+        .update(sharedConfigs)
+        .set({ likeCount: sql`GREATEST(${sharedConfigs.likeCount} - 1, 0)` })
+        .where(eq(sharedConfigs.id, configId))
+        .returning({ likeCount: sharedConfigs.likeCount });
+      return { likeCount: updated.likeCount, liked: false };
+    });
   });
 }

@@ -2,13 +2,17 @@
  * QA API client for yuleCommunity Q&A system.
  */
 
+import { userApi } from './userApi';
+
 const BASE_URL =
   (typeof import.meta !== 'undefined' &&
     (import.meta as Record<string, any>).env?.VITE_API_BASE_URL) ||
   'http://localhost:3002';
 
 async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
-  const token = localStorage.getItem('yulecommunity_token') || localStorage.getItem('token');
+  // Fix 29: 统一走 userApi.setToken 单例（与 useAuth 写入一致），
+  // 不再读取 localStorage 中的旧 key（'yulecommunity_token'/'token'）
+  const token = userApi.getToken();
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
   if (token) headers['Authorization'] = `Bearer ${token}`;
 

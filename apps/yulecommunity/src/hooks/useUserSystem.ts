@@ -97,7 +97,12 @@ export function useUserSystem() {
   const addPoints = useCallback(
     (action: PointsAction, description?: string) => {
       const actionPoints = getActionPoints();
-      const points = actionPoints[action];
+      // Fix 29: 白名单校验 — 不在规则表内的动作直接拒绝（防刷分）
+      if (!(action in actionPoints)) {
+        console.warn(`[useUserSystem] 拒绝未知积分动作: ${action}`);
+        return;
+      }
+      const points = actionPoints[action] ?? 0;
       const item: PointsHistoryItem = {
         id: generateId('pts'),
         action,

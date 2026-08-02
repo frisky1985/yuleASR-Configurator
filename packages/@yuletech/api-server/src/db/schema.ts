@@ -23,6 +23,9 @@ export const users = pgTable('users', {
   avatar: text('avatar'),
   role: varchar('role', { length: 32 }).default('user').notNull(),
   score: integer('score').default(0).notNull(),
+  // Fix 30: SSO 兜底邮箱（*@oidc.local / *@ldap.local）标记 emailVerified=false，
+  // 关键操作（密码重置/绑定）应拒绝未验证邮箱用户
+  emailVerified: boolean('email_verified').default(true).notNull(),
   ssoProvider: varchar('sso_provider', { length: 32 }),
   ssoId: varchar('sso_id', { length: 255 }),
   ssoMetadata: text('sso_metadata'),
@@ -279,6 +282,22 @@ export const sharedConfigs = pgTable('shared_configs', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
+
+// ── Fix 30: 共享配置点赞表（(configId, userId) 唯一约束 → 幂等 toggle）──
+export const sharedConfigLikes = pgTable(
+  'shared_config_likes',
+  {
+    id: serial('id').primaryKey(),
+    configId: integer('config_id')
+      .references(() => sharedConfigs.id, { onDelete: 'cascade' })
+      .notNull(),
+    userId: integer('user_id')
+      .references(() => users.id)
+      .notNull(),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+  },
+  table => [uniqueIndex('shared_config_likes_config_user_unique').on(table.configId, table.userId)]
+);
 
 export const configLocks = pgTable('config_locks', {
   id: serial('id').primaryKey(),

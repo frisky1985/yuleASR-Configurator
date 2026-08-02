@@ -121,9 +121,24 @@ export class ConfigEditorPanel {
             this.sendConfigToWebview();
             break;
 
-          case 'save':
-            await this.saveConfig(message.data);
+          case 'save': {
+            // Fix 28: 结构与大小限制 —— 拒绝非对象/无 modules 数组/超 10MB 的 payload
+            const saveData = message?.data;
+            if (
+              typeof saveData !== 'object' ||
+              saveData === null ||
+              !Array.isArray(saveData.modules)
+            ) {
+              console.warn('Rejected save: invalid payload structure');
+              return;
+            }
+            if (JSON.stringify(saveData).length > 10 * 1024 * 1024) {
+              console.warn('Rejected save: payload exceeds 10MB limit');
+              return;
+            }
+            await this.saveConfig(saveData);
             break;
+          }
 
           case 'cancel':
             this.loadConfig(this._configFilePath);
@@ -352,7 +367,7 @@ export class ConfigEditorPanel {
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'none';
         style-src ${webview.cspSource} 'unsafe-inline';
-        script-src 'nonce-${nonce}' 'unsafe-inline' 'unsafe-eval';
+        script-src 'nonce-${nonce}';
         frame-src http://localhost:3000;
         connect-src http://localhost:3000 http://localhost:3002;
         img-src http://localhost:3000 data:;
@@ -424,17 +439,24 @@ export class ConfigEditorPanel {
 
         // Relay VS Code API into the iframe
         const vscodeApi = acquireVsCodeApi();
+        // Fix 28: 只信任 dev server 与 webview 自身来源，并校验消息结构后再转发
+        const allowedOrigins = ['http://localhost:3000', 'http://localhost:5173', window.origin];
+        const isStructuredMessage = (msg) =>
+            msg && typeof msg === 'object' && typeof msg.type === 'string';
+        // iframe → VS Code: 校验 source / origin / 结构后再转发
         window.addEventListener('message', (event) => {
-            if (event.source === iframe.contentWindow) {
-                // Forward messages from webview app to VS Code
-                vscodeApi.postMessage(event.data);
-            }
+            if (event.source !== iframe.contentWindow) return;
+            if (!allowedOrigins.includes(event.origin)) return;
+            const msg = event.data;
+            if (!isStructuredMessage(msg)) return;
+            vscodeApi.postMessage(msg);
         });
-        // Listen for VS Code → iframe messages
+        // VS Code → iframe: 校验结构后再转发（消息来自 webview 自身 window）
         window.addEventListener('message', (event) => {
-            if (event.source === window && event.data) {
-                iframe.contentWindow.postMessage(event.data, '*');
-            }
+            if (event.source !== window) return;
+            const msg = event.data;
+            if (!isStructuredMessage(msg)) return;
+            iframe.contentWindow.postMessage(msg, '*');
         });
     </script>
 </body>
@@ -463,7 +485,7 @@ export class ConfigEditorPanel {
       const cspMeta = `<meta http-equiv="Content-Security-Policy" content="
                 default-src 'none';
                 style-src ${webview.cspSource} 'unsafe-inline';
-                script-src 'nonce-${nonce}' 'unsafe-inline' 'unsafe-eval';
+                script-src 'nonce-${nonce}';
                 connect-src ${webview.cspSource} http://localhost:3002 https:;
                 img-src ${webview.cspSource} data:;
                 font-src ${webview.cspSource} data:;

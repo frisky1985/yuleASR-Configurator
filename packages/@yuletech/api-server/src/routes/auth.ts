@@ -19,7 +19,8 @@ const registerSchema = z.object({
 });
 
 export async function authRoutes(app: FastifyInstance) {
-  app.post('/login', async (request, reply) => {
+  // Fix 30: 敏感端点单独配额（10 次/分钟，配合全局限流 100 次/分钟）
+  app.post('/login', { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (request, reply) => {
     const parsed = loginSchema.safeParse(request.body);
     if (!parsed.success) {
       return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
@@ -40,7 +41,7 @@ export async function authRoutes(app: FastifyInstance) {
     };
   });
 
-  app.post('/register', async (request, reply) => {
+  app.post('/register', { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (request, reply) => {
     const parsed = registerSchema.safeParse(request.body);
     if (!parsed.success) {
       return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });

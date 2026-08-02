@@ -3,6 +3,9 @@ import * as path from 'path';
 
 import * as vscode from 'vscode';
 
+// Fix 28: 接入 core 统一验证管道，替换原「只查 moduleName」的假校验
+import { validateAll } from '@yuletech/core/validators';
+
 import { ConfigEditorPanel } from '../panels/ConfigEditorPanel';
 import { ConfigTreeProvider, ConfigTreeItem } from '../providers/ConfigTreeProvider';
 
@@ -184,6 +187,9 @@ async function syncWithYuleASR(_item?: ConfigTreeItem): Promise<void> {
 
 /**
  * Validate a configuration file
+ * Fix 28: 接入 core 统一验证管道（validateAll），
+ * 由 result.allErrors / result.warnings 生成 diagnostics，
+ * 不再只检查 data.moduleName。
  */
 async function validateConfiguration(
   filePath: string,
@@ -193,19 +199,53 @@ async function validateConfiguration(
     const content = fs.readFileSync(filePath, 'utf8');
     const data = JSON.parse(content);
 
-    // Basic validation
     const diagnostics: vscode.Diagnostic[] = [];
-    let isValid = true;
 
-    if (!data.moduleName) {
-      isValid = false;
-      const range = new vscode.Range(0, 0, 0, 0);
-      const diagnostic = new vscode.Diagnostic(
-        range,
-        'Missing required field: moduleName',
-        vscode.DiagnosticSeverity.Error
+    // 结构校验：配置必须是 JSON 对象
+    if (!data || typeof data !== 'object' || Array.isArray(data)) {
+      diagnostics.push(
+        new vscode.Diagnostic(
+          new vscode.Range(0, 0, 0, 0),
+          'Configuration must be a JSON object',
+          vscode.DiagnosticSeverity.Error
+        )
       );
-      diagnostics.push(diagnostic);
+      if (diagnosticCollection) {
+        diagnosticCollection.set(vscode.Uri.file(filePath), diagnostics);
+      }
+      vscode.window.showWarningMessage(`Configuration has errors: ${path.basename(filePath)}`);
+      return false;
+    }
+
+    // 接入 core 统一验证管道（模块级 + 依赖规则；无 schema 时跳过跨模块/多选一校验）
+    const result = validateAll([toCoreModuleConfig(data as Record<string, unknown>)], []);
+
+    // 将 core 校验结果映射为 VS Code diagnostics
+    for (const err of result.allErrors) {
+      const severity =
+        err.severity === 'error'
+          ? vscode.DiagnosticSeverity.Error
+          : err.severity === 'warning'
+            ? vscode.DiagnosticSeverity.Warning
+            : vscode.DiagnosticSeverity.Information;
+      diagnostics.push(
+        new vscode.Diagnostic(
+          new vscode.Range(0, 0, 0, 0),
+          `[${err.path || 'config'}] ${err.message}`,
+          severity
+        )
+      );
+    }
+
+    // warnings（字符串数组）同样映射为 Warning 诊断
+    for (const warning of result.warnings) {
+      diagnostics.push(
+        new vscode.Diagnostic(
+          new vscode.Range(0, 0, 0, 0),
+          warning,
+          vscode.DiagnosticSeverity.Warning
+        )
+      );
     }
 
     if (diagnosticCollection) {
@@ -213,17 +253,51 @@ async function validateConfiguration(
       diagnosticCollection.set(uri, diagnostics);
     }
 
-    if (isValid) {
-      vscode.window.showInformationMessage(`Configuration is valid: ${path.basename(filePath)}`);
+    if (result.isValid) {
+      vscode.window.showInformationMessage(
+        `Configuration is valid: ${path.basename(filePath)} (${result.moduleCount} module(s))`
+      );
     } else {
-      vscode.window.showWarningMessage(`Configuration has errors: ${path.basename(filePath)}`);
+      vscode.window.showWarningMessage(
+        `Configuration has errors: ${path.basename(filePath)} (${result.allErrors.length} issue(s))`
+      );
     }
 
-    return isValid;
+    return result.isValid;
   } catch (error) {
     vscode.window.showErrorMessage(`Validation failed: ${error}`);
     return false;
   }
+}
+
+/**
+ * 将 vscode 配置文件的扁平格式（moduleName / layer / 其余参数）
+ * 转换为 core 的 ModuleConfig 结构（module / version / parameters）。
+ */
+function toCoreModuleConfig(data: Record<string, unknown>): {
+  module: string;
+  version: string;
+  parameters: Record<string, unknown>;
+} {
+  const moduleName =
+    (typeof data.moduleName === 'string' && data.moduleName) ||
+    (typeof data.module === 'string' && data.module) ||
+    '';
+
+  const parameters: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(data)) {
+    // moduleName / module / version / metadata 为 ModuleConfig 标准字段，不并入 parameters
+    if (key === 'moduleName' || key === 'module' || key === 'version' || key === 'metadata') {
+      continue;
+    }
+    parameters[key] = value;
+  }
+
+  return {
+    module: moduleName,
+    version: typeof data.version === 'string' ? data.version : '1.0.0',
+    parameters,
+  };
 }
 
 /**
@@ -412,6 +486,10 @@ async function renameModule(item: ConfigTreeItem, treeProvider: ConfigTreeProvid
     validateInput: value => {
       if (!value || value.trim().length === 0) {
         return 'Module name is required';
+      }
+      // Fix 28: 名称白名单，防止路径穿越（../、/ 等字符）
+      if (!/^[A-Za-z0-9_-]+$/.test(value)) {
+        return '仅允许字母、数字、下划线、连字符';
       }
       return null;
     },

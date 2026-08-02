@@ -12,6 +12,12 @@ import { CodeBlock } from './CodeBlock';
 import { ImageLightbox } from './ImageLightbox';
 import type { TocItem } from '@/types/blog';
 
+/**
+ * Fix 29: 安全 URL 协议白名单
+ * 仅允许 http/https/mailto/tel，阻止 javascript:/data:/vbscript: 等 XSS 向量
+ */
+const SAFE_URL_RE = /^(https?:|mailto:|tel:)/i;
+
 export interface MarkdownRendererProps {
   /** Markdown 内容 */
   content: string;
@@ -206,10 +212,10 @@ export function MarkdownRenderer({
         <td className="border border-border px-4 py-2">{children}</td>
       ),
 
-      // 链接
+      // 链接 - Fix 29: 协议白名单校验，非法协议（javascript: 等）降级为无 href
       a: ({ children, href }: { children?: React.ReactNode; href?: string }) => (
         <a
-          href={href}
+          href={href && SAFE_URL_RE.test(href) ? href : undefined}
           className="text-[hsl(var(--accent))] hover:underline font-medium"
           target="_blank"
           rel="noopener noreferrer"
@@ -224,6 +230,8 @@ export function MarkdownRenderer({
       // 图片 - 增强版本支持灯箱
       img: ({ src, alt }: { src?: string; alt?: string }) => {
         const [isHovered, setIsHovered] = useState(false);
+        // Fix 29: 协议白名单校验，非法协议不渲染 src
+        const safeSrc = src && SAFE_URL_RE.test(src) ? src : undefined;
 
         return (
           <>
@@ -233,11 +241,11 @@ export function MarkdownRenderer({
               onMouseLeave={() => setIsHovered(false)}
             >
               <img
-                src={src}
+                src={safeSrc}
                 alt={alt}
                 className="max-w-full h-auto rounded-lg my-4 cursor-zoom-in transition-all duration-200"
                 loading="lazy"
-                onClick={() => src && openLightbox(src, alt)}
+                onClick={() => safeSrc && openLightbox(safeSrc, alt)}
               />
               {isHovered && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-lg pointer-events-none transition-opacity duration-200">
@@ -266,7 +274,10 @@ export function MarkdownRenderer({
     []
   );
 
-  // 使用 DOMPurify 清理内容，防止 XSS
+  // Fix 29: 第一层防护 — DOMPurify 清理原始内容中的内联 HTML（如 <a href="javascript:...">）
+  // 并限定 URL 协议白名单；第二层防护见上方 a/img 组件的 SAFE_URL_RE 校验。
+  // （ReactMarkdown 将解析结果渲染为 React 元素而非 HTML 字符串，故在组件层拦截
+  //   markdown 语法注入的 URL，如 [x](javascript:alert(1))）
   const sanitizedContent = useMemo(() => {
     return DOMPurify.sanitize(content, {
       ALLOWED_TAGS: [
@@ -303,6 +314,8 @@ export function MarkdownRenderer({
         'sub',
       ],
       ALLOWED_ATTR: ['href', 'title', 'target', 'rel', 'src', 'alt', 'loading', 'class', 'id'],
+      // 仅允许 http/https/mailto/tel 协议的 URL（javascript:/data: 等一律剥离）
+      ALLOWED_URI_REGEXP: /^(https?:|mailto:|tel:)/i,
     });
   }, [content]);
 

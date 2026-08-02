@@ -81,6 +81,38 @@ const statusUpdateSchema = z.object({
   reviewNote: z.string().optional(),
 });
 
+// ── Fix 30: IDOR 防护辅助 ────────────────────────────────────────────────────
+
+/** 尝试可选认证：带合法 JWT 则返回 user，否则 undefined（不抛错） */
+async function tryGetUser(request: any): Promise<{ id?: number; role?: string } | undefined> {
+  try {
+    await request.jwtVerify();
+    return request.user as { id?: number; role?: string };
+  } catch {
+    return undefined;
+  }
+}
+
+function isAdminUser(user: { role?: string } | undefined): boolean {
+  return !!user && ['admin', 'super_admin'].includes(user.role ?? '');
+}
+
+/** 模板是否公开可见（published + isPublic + visibility=public） */
+function templateIsPublic(t: { status: string; isPublic: boolean; visibility: string }): boolean {
+  return t.status === 'published' && t.isPublic === true && t.visibility === 'public';
+}
+
+/** 非公开模板仅作者/admin 可读，其余 404（IDOR 修复） */
+function canViewTemplate(
+  t: { authorId: number; status: string; isPublic: boolean; visibility: string },
+  user: { id?: number; role?: string } | undefined
+): boolean {
+  if (templateIsPublic(t)) return true;
+  if (!user) return false;
+  if (isAdminUser(user)) return true;
+  return user.id === t.authorId;
+}
+
 // ── Routes ────────────────────────────────────────────────────────────────────
 
 export async function bswTemplatesRoutes(app: FastifyInstance) {
@@ -103,10 +135,13 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const sortBy = query.sortBy || 'createdAt';
     const sortOrder = query.sortOrder === 'asc' ? 'asc' : 'desc';
 
-    const conditions: any[] = [eq(bswTemplates.status, query.status || 'published')];
+    // Fix 30: 非 published 查询必须 admin 认证；否则强制 'published' + isPublic 过滤
+    const user = await tryGetUser(request);
+    const userIsAdmin = isAdminUser(user);
+    const conditions: any[] = [eq(bswTemplates.status, userIsAdmin && query.status ? query.status : 'published')];
 
-    // If not admin filtering, only show public templates
-    if (!query.status) {
+    // 匿名/非 admin：只显示公开模板；admin 无 status 参数时也保持公开过滤
+    if (!query.status || !userIsAdmin) {
       conditions.push(eq(bswTemplates.isPublic, true), eq(bswTemplates.visibility, 'public'));
     }
 
@@ -296,6 +331,12 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     }
 
     const template = row.template;
+
+    // Fix 30: 非公开模板仅作者/admin 可读，其余 404（IDOR）
+    const user = await tryGetUser(request);
+    if (!canViewTemplate(template, user)) {
+      throw { statusCode: 404, message: 'Template not found' };
+    }
 
     // Fetch versions (replaces Prisma include versions)
     const versions = await db
@@ -528,6 +569,13 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const { id } = request.params as { id: string };
     const templateId = parseInt(id, 10);
 
+    // Fix 30: IDOR —— 非公开模板的版本列表同样仅作者/admin 可见
+    const [tpl] = await db.select().from(bswTemplates).where(eq(bswTemplates.id, templateId)).limit(1);
+    if (!tpl) throw { statusCode: 404, message: 'Template not found' };
+    if (!canViewTemplate(tpl, await tryGetUser(request))) {
+      throw { statusCode: 404, message: 'Template not found' };
+    }
+
     const versions = await db
       .select()
       .from(bswTemplateVersions)
@@ -546,6 +594,13 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const templateId = parseInt(id, 10);
     const vId = parseInt(versionId, 10);
 
+    // Fix 30: IDOR —— 非公开模板的版本详情同样仅作者/admin 可见
+    const [tpl] = await db.select().from(bswTemplates).where(eq(bswTemplates.id, templateId)).limit(1);
+    if (!tpl) throw { statusCode: 404, message: 'Template not found' };
+    if (!canViewTemplate(tpl, await tryGetUser(request))) {
+      throw { statusCode: 404, message: 'Template not found' };
+    }
+
     const [version] = await db
       .select()
       .from(bswTemplateVersions)
@@ -563,6 +618,13 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
   app.post('/:id/download', async request => {
     const { id } = request.params as { id: string };
     const templateId = parseInt(id, 10);
+
+    // Fix 30: IDOR —— 下载计数同样禁止私有模板
+    const [tpl] = await db.select().from(bswTemplates).where(eq(bswTemplates.id, templateId)).limit(1);
+    if (!tpl) throw { statusCode: 404, message: 'Template not found' };
+    if (!canViewTemplate(tpl, await tryGetUser(request))) {
+      throw { statusCode: 404, message: 'Template not found' };
+    }
 
     const [updated] = await db
       .update(bswTemplates)

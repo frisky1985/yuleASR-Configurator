@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 
-import { eq, desc, sql, inArray } from 'drizzle-orm';
+import { and, desc, eq, inArray, sql } from 'drizzle-orm';
 
 import { db } from '../db/index.js';
 import { posts, comments, users, tags } from '../db/schema.js';
@@ -23,29 +23,46 @@ const updatePostSchema = z.object({
 
 export async function postsRoutes(app: FastifyInstance) {
   // GET /posts — list all published posts
+  // Fix 30: 分页下沉 SQL（limit/offset + count 查询），返回 { data, total }
   app.get('/', async request => {
-    const query = request.query as { tag?: string };
+    const query = request.query as { tag?: string; page?: string; pageSize?: string };
+    const page = Math.max(1, parseInt(query.page || '1', 10) || 1);
+    const pageSize = Math.min(50, Math.max(1, parseInt(query.pageSize || '20', 10) || 20));
 
-    const postList = await db
-      .select({
-        id: posts.id,
-        userId: posts.userId,
-        configId: posts.configId,
-        title: posts.title,
-        content: posts.content,
-        tags: posts.tags,
-        status: posts.status,
-        createdAt: posts.createdAt,
-        updatedAt: posts.updatedAt,
-        username: users.username,
-        avatar: users.avatar,
-      })
-      .from(posts)
-      .leftJoin(users, eq(posts.userId, users.id))
-      .where(eq(posts.status, 'published'))
-      .orderBy(desc(posts.createdAt));
+    const conditions = [eq(posts.status, 'published')];
+    if (query.tag) {
+      // tag 为 text[] 数组列，用 ANY 下推到 SQL（替代 JS 过滤）
+      conditions.push(sql`${query.tag} = ANY(${posts.tags})`);
+    }
+    const where = and(...conditions);
 
-    // Comment counts (one grouped query instead of N+1)
+    const [totalRow, postList] = await Promise.all([
+      db.select({ count: sql<number>`count(*)::int` }).from(posts).where(where),
+      db
+        .select({
+          id: posts.id,
+          userId: posts.userId,
+          configId: posts.configId,
+          title: posts.title,
+          content: posts.content,
+          tags: posts.tags,
+          status: posts.status,
+          createdAt: posts.createdAt,
+          updatedAt: posts.updatedAt,
+          username: users.username,
+          avatar: users.avatar,
+        })
+        .from(posts)
+        .leftJoin(users, eq(posts.userId, users.id))
+        .where(where)
+        .orderBy(desc(posts.createdAt))
+        .limit(pageSize)
+        .offset((page - 1) * pageSize),
+    ]);
+
+    const total = totalRow?.[0]?.count ?? 0;
+
+    // Comment counts (one grouped query instead of N+1) — 仅当前页
     const ids = postList.map(p => p.id);
     const countRows =
       ids.length > 0
@@ -57,7 +74,7 @@ export async function postsRoutes(app: FastifyInstance) {
         : [];
     const countMap = new Map(countRows.map(r => [r.postId, r.count]));
 
-    let result = postList.map(p => ({
+    const result = postList.map(p => ({
       id: p.id,
       userId: p.userId,
       configId: p.configId,
@@ -71,12 +88,13 @@ export async function postsRoutes(app: FastifyInstance) {
       _count: { comments: countMap.get(p.id) ?? 0 },
     }));
 
-    // Filter by tag in JS (array column, kept compatible with previous behavior)
-    if (query.tag) {
-      result = result.filter(p => p.tags.includes(query.tag!));
-    }
-
-    return result;
+    return {
+      data: result,
+      total,
+      page,
+      pageSize,
+      totalPages: Math.ceil(total / pageSize),
+    };
   });
 
   // GET /posts/:id — single post with comments

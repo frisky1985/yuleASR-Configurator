@@ -79,6 +79,11 @@ class UserApiService {
     this.token = token;
   }
 
+  /** Fix 29: 读取当前 token（单例内存态，供各 API 客户端统一使用） */
+  getToken(): string | null {
+    return this.token;
+  }
+
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const url = `${API_BASE_URL}/api${endpoint}`;
 

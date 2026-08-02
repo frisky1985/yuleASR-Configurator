@@ -1,5 +1,7 @@
 import cors from '@fastify/cors';
+import helmet from '@fastify/helmet';
 import jwt from '@fastify/jwt';
+import rateLimit from '@fastify/rate-limit';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import Fastify from 'fastify';
@@ -23,7 +25,8 @@ import { tagsRoutes } from './routes/tags.js';
 import { templateReviewsRoutes } from './routes/templateReviews.js';
 
 const PORT = parseInt(process.env.PORT || '3000', 10);
-const HOST = process.env.HOST || '0.0.0.0';
+// Fix 30: 默认仅监听 loopback（避免无鉴权服务暴露到局域网），生产经 HOST 显式放开
+const HOST = process.env.HOST || '127.0.0.1';
 // Fix 6: JWT_SECRET 缺失或过短直接拒绝启动（fail-fast），杜绝硬编码默认密钥可伪造管理员令牌
 const JWT_SECRET = process.env.JWT_SECRET;
 if (!JWT_SECRET || JWT_SECRET.length < 32) {
@@ -39,14 +42,38 @@ const app = Fastify({ logger: true });
 
 // ── Plugins ──────────────────────────────────────────────────────────────
 
-await app.register(cors, { origin: true });
-await app.register(jwt, { secret: JWT_SECRET });
-await app.register(swagger, {
-  openapi: {
-    info: { title: 'yuleCommunity API', version: '0.1.0' },
-  },
+// Fix 30: CORS 白名单（替换原 origin: true 全放开；生产经 CORS_ORIGINS 显式配置）
+const CORS_ORIGINS = (process.env.CORS_ORIGINS || 'http://localhost:3000,http://localhost:5173')
+  .split(',')
+  .map(s => s.trim())
+  .filter(Boolean);
+
+await app.register(cors, { origin: CORS_ORIGINS });
+
+// Fix 30: helmet 安全头（frameguard/noSniff/referrerPolicy 等）。
+// 开发环境关闭 CSP，避免破坏 /docs（swagger-ui 内联样式/脚本）；
+// 生产环境启用完整 CSP。referrerPolicy no-referrer 配合 OIDC fragment token 防泄露。
+await app.register(helmet, {
+  contentSecurityPolicy: process.env.NODE_ENV === 'production' ? undefined : false,
+  referrerPolicy: { policy: 'no-referrer' },
 });
-await app.register(swaggerUi, { routePrefix: '/docs' });
+
+await app.register(jwt, { secret: JWT_SECRET });
+
+// Fix 30: 全局限流（默认 100 请求/分钟/IP）；
+// 敏感端点（auth/login、auth/register、license/validate、auth-sso/*）在各自路由注册处
+// 用 per-route config.rateLimit 单独收紧为 10 请求/分钟。
+await app.register(rateLimit, { max: 100, timeWindow: '1 minute' });
+
+// Fix 30: swagger /docs 仅在非生产环境注册（生产不暴露接口文档）
+if (process.env.NODE_ENV !== 'production') {
+  await app.register(swagger, {
+    openapi: {
+      info: { title: 'yuleCommunity API', version: '0.1.0' },
+    },
+  });
+  await app.register(swaggerUi, { routePrefix: '/docs' });
+}
 
 // ── Decorate request with authenticate ──────────────────────────────────
 
@@ -117,7 +144,9 @@ app.get('/health', async () => {
 try {
   await app.listen({ port: PORT, host: HOST });
   console.log(`🚀 yuleCommunity API running at http://${HOST}:${PORT}`);
-  console.log(`📚 API docs at http://${HOST}:${PORT}/docs`);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`📚 API docs at http://${HOST}:${PORT}/docs`);
+  }
 } catch (err) {
   app.log.error(err);
   process.exit(1);

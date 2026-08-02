@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, ilike, inArray, or, sql } from 'drizzle-orm';
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 
@@ -55,10 +55,20 @@ export async function qaRoutes(app: FastifyInstance) {
     const pageSize = Math.min(50, Math.max(1, parseInt(query.pageSize || '20', 10) || 20));
     const skip = (page - 1) * pageSize;
 
+    // Fix 30: search/tag/status 全部下推 SQL，分页下沉 limit/offset（原实现全表拉取后 JS 过滤）
     const conditions: any[] = [];
     if (query.status && ['open', 'resolved', 'closed'].includes(query.status)) {
       conditions.push(eq(questions.status, query.status));
     }
+    if (query.search) {
+      const q = `%${query.search}%`;
+      conditions.push(or(ilike(questions.title, q), ilike(questions.content, q)));
+    }
+    if (query.tag) {
+      // tags 为 jsonb 数组，@> 下推（参数绑定，防注入）
+      conditions.push(sql`${questions.tags} @> ${JSON.stringify([query.tag])}::jsonb`);
+    }
+    const where = conditions.length ? and(...conditions) : undefined;
 
     const orderByExpr =
       query.sort === 'views'
@@ -69,49 +79,41 @@ export async function qaRoutes(app: FastifyInstance) {
             ? desc(questions.answerCount)
             : desc(questions.createdAt);
 
-    const rows = await db
-      .select({
-        question: questions,
-        author: { id: users.id, username: users.username, avatar: users.avatar },
-      })
-      .from(questions)
-      .leftJoin(users, eq(questions.authorId, users.id))
-      .where(conditions.length ? and(...conditions) : undefined)
-      .orderBy(orderByExpr);
+    const [totalRow, rows] = await Promise.all([
+      db.select({ count: sql<number>`count(*)::int` }).from(questions).where(where),
+      db
+        .select({
+          question: questions,
+          author: { id: users.id, username: users.username, avatar: users.avatar },
+        })
+        .from(questions)
+        .leftJoin(users, eq(questions.authorId, users.id))
+        .where(where)
+        .orderBy(orderByExpr)
+        .limit(pageSize)
+        .offset(skip),
+    ]);
 
-    let allQuestions: any[] = rows.map(r => ({ ...r.question, author: r.author }));
+    const total = totalRow?.[0]?.count ?? 0;
 
-    // Answer counts per question (replaces Prisma _count.answers)
-    const countRows = await db
-      .select({ questionId: answers.questionId, count: sql<number>`count(*)::int` })
-      .from(answers)
-      .groupBy(answers.questionId);
+    // Answer counts per question — 仅当前页（原实现全表 groupBy）
+    const ids = rows.map(r => r.question.id);
+    const countRows =
+      ids.length > 0
+        ? await db
+            .select({ questionId: answers.questionId, count: sql<number>`count(*)::int` })
+            .from(answers)
+            .where(inArray(answers.questionId, ids))
+            .groupBy(answers.questionId)
+        : [];
     const answerCountMap = new Map(countRows.map(r => [r.questionId, r.count]));
 
-    // Apply JS-side filtering for search and tags
-    let filtered = allQuestions;
-    if (query.search) {
-      const q = query.search.toLowerCase();
-      filtered = filtered.filter(
-        (p: any) => p.title.toLowerCase().includes(q) || p.content.toLowerCase().includes(q)
-      );
-    }
-    if (query.tag) {
-      filtered = filtered.filter((p: any) => {
-        const tags: string[] = p.tags ?? [];
-        return tags.includes(query.tag!);
-      });
-    }
-
-    const total = filtered.length;
-    const paged = filtered.slice(skip, skip + pageSize);
-
     return {
-      data: paged.map((p: any) => ({
-        ...p,
-        tags: p.tags ?? [],
-        answerCount: answerCountMap.get(p.id) ?? 0,
-        _count: undefined,
+      data: rows.map(r => ({
+        ...r.question,
+        author: r.author,
+        tags: r.question.tags ?? [],
+        answerCount: answerCountMap.get(r.question.id) ?? 0,
       })),
       total,
       page,
