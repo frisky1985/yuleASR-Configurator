@@ -87,7 +87,7 @@
     "fast-xml-parser": "^5.10.0"
   },
   "devDependencies": {
-    "@rollup/rollup-darwin-arm64": "^4.62.2",
+    "@rollup/rollup-darwin-arm64": "^4.62.3",
     "@vitest/coverage-v8": "^1.6.0",
     "tsup": "^8.0.0",
     "typescript": "^5.4.0",

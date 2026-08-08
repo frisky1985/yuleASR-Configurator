@@ -1,7 +1,7 @@
 {
   "name": "@yuletech/plugin-sdk",
   "version": "0.1.0",
-  "description": "Plugin SDK for yuleASR Configurator — type definitions and interfaces for plugin development",
+  "description": "Plugin SDK for yuleASR Configurator \u2014 type definitions and interfaces for plugin development",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
