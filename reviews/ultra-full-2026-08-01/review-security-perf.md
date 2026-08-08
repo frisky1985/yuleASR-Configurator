@@ -565,3 +565,26 @@
 | **suggestion** | 12 | 死代码路由、解析器深度限制、N+1 优化、key 熵/签名、依赖审计、路由前缀一致性等 |
 
 **优先修复顺序建议：** ① 所有 critical（Electron IPC 输入净化、JWT 密钥强制、LDAP 安全、支付 mock/webhook 加固、社区认证去 mock 化）；② warning 中与"可被远程利用"相关的（插件 API 鉴权、模板 IDOR、webhook、限流、CSP）；③ 其余按发布节奏排期。
+
+---
+
+## 10. 修复状态跟踪（2026-08-08 更新）
+
+> 8 项 critical 全部已修复（Batch B/C/D，commit 已合入 origin/main）。逐项验证通过：
+> 相关单测：`apps/yuleasr-desktop/electron/desktop-utils.test.mjs`（10/10 过）、`packages/@yuletech/api-server/src/routes/__tests__/auth-sso-ldap.test.ts`（13/13 过）、`payment-signature.test.ts`（6/6 过）。
+
+| # | critical 项 | 修复 commit | 修复方式 | 验证证据 |
+|---|---|---|---|---|
+| 1 | Electron 命令注入（gcc verify 文件名拼 shell） | `fdc01b5e`（Fix 5） | 文件名白名单 `^[A-Za-z0-9_-]+\.(c\|h)$` + `execFileSync` 参数数组 + IPC 入口 `sanitizeFiles` 校验 + `sandbox:true` | desktop-utils.test.mjs 10/10 过（含 `x.h; touch` 载荷拒绝） |
+| 2 | Electron 路径遍历（saveFilesToDir 越界写盘） | `fdc01b5e`（Fix 5） | 写盘前 `sanitizeFiles` 整体拒绝非法文件名（`../`、绝对路径、非 .c/.h），数量 ≤100、单文件 ≤5MB | 测试含 `../evil.c`、`/etc/passwd` 拒绝用例，10/10 过 |
+| 3 | JWT 默认密钥（dev-secret 可伪造 admin） | `5aa3b16c`（Fix 6） | 启动 fail-fast：JWT_SECRET 缺失或 <32 字符直接 `process.exit(1)`；config.ts 无默认值 | `packages/@yuletech/api-server/src/index.ts:32` 强制校验；tsc 通过 |
+| 4 | LDAP 关证书校验（rejectUnauthorized:false） | `ef7a7b94`（Fix 8） | 两处 `tls.connect` 均改 `rejectUnauthorized: true`，支持 `LDAP_CA_CERT` 注入自定义 CA；verifier 同步修复 | auth-sso-ldap.test.ts 13/13 过（含超时契约 LDAP_TIMEOUT_MS=10s） |
+| 5 | LDAP 过滤器注入（username 未转义） | `ef7a7b94`（Fix 7） | RFC 4515 转义 `ldapEscapeFilterValue`（`\ * ( ) NUL`）+ 畸形过滤器 `ldapBuildFilter` 抛错拒绝 | 测试含 `*)(uid=*))(|(uid=*` 注入载荷转义断言，13/13 过 |
+| 6 | 支付 webhook 无签名校验（未配置即跳过） | `99a4ab87`（Fix 9） | 未配置 secret 一律 503 拒绝；`verifyLemonSignature` 支持官方 `v1=` 前缀；eventId 绑定服务端订单号，激活类事件无订单号 422 拒绝 | payment-signature.test.ts 6/6 过（含 v1= 前缀/裸 hex/篡改/未配置 4 种场景） |
+| 7 | mock-success 白嫖 Pro 许可证 | `99a4ab87`（Fix 10） | `ENABLE_MOCK_PAYMENT=true` 才注册 `/mock-success`，生产默认 404 | 路由注册条件见 `payment.ts:214`；测试套件通过 |
+| 8 | 社区硬编码口令/客户端 mock 登录/客户端管理端（合并 3 项） | `cb563ebf`（Fix 11）+ `6e4791d0`（Fix 13） | 删除硬编码口令与 mock 降级；管理端登录走服务端 `/v1/auth/admin/login`（角色 admin/super_admin 才放行）；Users 页改为占位（服务端用户管理 API 未实现前不 mock）；adminStore 角色只来自服务端响应 | 源码无 `yuletech2026`/`admin123` 残留（仅 gitignored 的本地 dist 旧产物，重建即覆盖）；tsc 通过 |
+
+**备注（非 critical，观察项）：**
+- `apps/yulecommunity/src/pages/PointsPage.tsx:124` 存在一个 pre-existing TS2339 类型错误（积分页，warning 区域），与本次 8 项 critical 无关，未在本轮改动。
+- `@yuletech/core` 的 `ecuc-output.test.ts` 中 ".c 文件 gcc 全量语法检查" 用例在本机超过 vitest 默认 5s 超时（~111 次串行 gcc 调用），加大 timeout 后通过——属测试超时配置问题，非安全回归。
+- `apps/yulecommunity/dist/` 与 `apps/yuleasr-desktop/dist/` 为 gitignored 本地构建产物，其中旧版 `dist` 可能残留旧代码（如 `yuletech2026`），发布/部署前须重新构建，切勿直接复用旧产物。

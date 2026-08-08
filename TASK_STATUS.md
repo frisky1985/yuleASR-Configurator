@@ -1,6 +1,8 @@
 # yuleASR-Configurator 开发任务状态
 
-> 最后更新: 2026-08-01 当前阶段: Phase 4-5 收尾 — 测试基线与代码生成质量（安全/架构 Batch B+C 已收官）
+> 最后更新: 2026-08-08 当前阶段: Phase 4-5 收尾 — 测试基线与代码生成质量（安全/架构 Batch B+C+D 已收官）
+
+> **2026-08-08 安全债核验（P0 收官）：** ultra-full 审查 8 项 critical 全部确认已修复并合入 origin/main（Fix 5/6/7/8/9/10/11/13，见下方 Batch B 表），逐项验证通过：desktop-utils 安全单测 10/10、api-server LDAP+支付签名单测 19/19。修复状态明细见 `reviews/ultra-full-2026-08-01/review-security-perf.md` 第 10 节。
 
 ---
 
