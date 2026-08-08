@@ -71,6 +71,11 @@
       "import": "./dist/arxml-import/index.mjs",
       "require": "./dist/arxml-import/index.js"
     },
+    "./arxml-export": {
+      "types": "./dist/arxml-export/index.d.ts",
+      "import": "./dist/arxml-export/index.mjs",
+      "require": "./dist/arxml-export/index.js"
+    },
     "./conditions": {
       "types": "./dist/conditions/index.d.ts",
       "import": "./dist/conditions/index.mjs",

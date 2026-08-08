@@ -41,7 +41,12 @@ import { ValidationPanel } from '@/components/ValidationPanel';
 import { ContainerConfigSection } from '@/components/ContainerConfigSection';
 import { ContainerParameterList } from '@/components/ContainerParameterList';
 import { cn, formatDate } from '@/lib/utils';
-import { generateArxml } from '@/services/arxml-exporter';
+import {
+  DEFAULT_SCHEMA_VERSION,
+  generateArxml,
+  targetVersionOptions,
+} from '@/services/arxml-exporter';
+import type { AutosarSchemaVersion } from '@yuletech/core/arxml-export';
 import { parseArxmlContent, arxmlToConfigModules } from '@/services/arxml-parser';
 import { generateAllHeaders } from '@/services/codegen';
 import type { GeneratedFile } from '@/services/codegen';
@@ -75,6 +80,10 @@ export function Editor() {
   const [savedGeneratedCode, setSavedGeneratedCode] = useState<string | null>(null);
   const [showExportMenu, setShowExportMenu] = useState(false);
   const exportMenuRef = useRef<HTMLDivElement>(null);
+  // A4-1：ARXML 导出目标版本对话框（48=R19-11 ~ 51=R22-11）
+  const [showArxmlVersionDialog, setShowArxmlVersionDialog] = useState(false);
+  const [arxmlSchemaVersion, setArxmlSchemaVersion] =
+    useState<AutosarSchemaVersion>(DEFAULT_SCHEMA_VERSION);
   const [showImportMenu, setShowImportMenu] = useState(false);
   const importMenuRef = useRef<HTMLDivElement>(null);
   const [showSaveMenu, setShowSaveMenu] = useState(false);
@@ -274,7 +283,11 @@ export function Editor() {
       try {
         const config = JSON.parse(reader.result as string);
         // Fix 24: 导入 JSON 结构校验（缺少 modules 字段直接拒绝）
-        if (!config || typeof config !== 'object' || !Array.isArray((config as { modules?: unknown }).modules)) {
+        if (
+          !config ||
+          typeof config !== 'object' ||
+          !Array.isArray((config as { modules?: unknown }).modules)
+        ) {
           throw new Error('配置文件缺少 modules 字段');
         }
         setSelectedPath('');
@@ -534,7 +547,7 @@ export function Editor() {
           {/* Pipeline Push Button */}
           <PipelinePushButton
             config={currentConfig}
-            onPipelineStart={(jobId) => setActivePipelineJobId(jobId)}
+            onPipelineStart={jobId => setActivePipelineJobId(jobId)}
             disabled={!currentConfig}
             size="sm"
           />
@@ -666,14 +679,9 @@ export function Editor() {
                   onClick={() => {
                     setShowExportMenu(false);
                     if (!currentConfig) return;
-                    const arxml = generateArxml(currentConfig);
-                    const blob = new Blob([arxml], { type: 'application/xml' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `${currentConfig.name.replace(/\s+/g, '_')}.arxml`;
-                    a.click();
-                    URL.revokeObjectURL(url);
+                    // A4-1：打开“目标 AUTOSAR 版本”对话框，版本确认后导出
+                    setArxmlSchemaVersion(DEFAULT_SCHEMA_VERSION);
+                    setShowArxmlVersionDialog(true);
                   }}
                   className="w-full text-left px-3 py-2 text-sm hover:bg-app-bg-secondary transition-colors flex items-center gap-2"
                 >
@@ -868,7 +876,7 @@ export function Editor() {
           jobId={activePipelineJobId}
           autoPoll={true}
           pollInterval={3000}
-          onComplete={(job) => {
+          onComplete={job => {
             // Keep showing for 10 seconds after completion (Fix 24: timer 存入 ref，避免泄漏)
             if (pipelineHideTimerRef.current) {
               clearTimeout(pipelineHideTimerRef.current);
@@ -1065,6 +1073,75 @@ export function Editor() {
         onClose={() => setIsSearchOpen(false)}
         onSelectResult={path => setSelectedPath(path)}
       />
+
+      {/* A4-1: ARXML 导出对话框 — 目标 AUTOSAR 版本参数（48=R19-11 ~ 51=R22-11） */}
+      {showArxmlVersionDialog && currentConfig && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/30"
+          onClick={() => setShowArxmlVersionDialog(false)}
+        >
+          <div
+            className="bg-app-bg-primary rounded-lg shadow-xl border border-app-border-primary w-[420px] p-5"
+            onClick={e => e.stopPropagation()}
+          >
+            <h3 className="text-sm font-semibold text-app-text-primary mb-1">
+              Export ARXML — 目标 AUTOSAR 版本
+            </h3>
+            <p className="text-xs text-app-text-secondary mb-4">
+              选择导出文档的 AUTOSAR schema 版本（决定 schemaLocation 与版本差异门控输出）
+            </p>
+            <div className="space-y-2 mb-5">
+              {targetVersionOptions().map(opt => (
+                <label
+                  key={opt.version}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-colors ${
+                    arxmlSchemaVersion === opt.version
+                      ? 'border-purple-500 bg-purple-50 dark:bg-purple-500/10'
+                      : 'border-app-border-primary hover:bg-app-bg-secondary'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="arxml-schema-version"
+                    className="accent-purple-500"
+                    checked={arxmlSchemaVersion === opt.version}
+                    onChange={() => setArxmlSchemaVersion(opt.version)}
+                  />
+                  <span className="text-sm text-app-text-primary">
+                    {opt.version} — {opt.label}
+                  </span>
+                </label>
+              ))}
+            </div>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setShowArxmlVersionDialog(false)}
+                className="px-3 py-1.5 text-xs font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded hover:bg-app-bg-secondary"
+              >
+                取消
+              </button>
+              <button
+                onClick={() => {
+                  const arxml = generateArxml(currentConfig, undefined, {
+                    schemaVersion: arxmlSchemaVersion,
+                  });
+                  const blob = new Blob([arxml], { type: 'application/xml' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `${currentConfig.name.replace(/\s+/g, '_')}.arxml`;
+                  a.click();
+                  URL.revokeObjectURL(url);
+                  setShowArxmlVersionDialog(false);
+                }}
+                className="px-3 py-1.5 text-xs font-medium text-white bg-purple-500 rounded hover:bg-purple-600"
+              >
+                导出（schema {arxmlSchemaVersion}）
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Code Generation Preview Modal */}
       {codeGenResult && (

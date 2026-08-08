@@ -1,13 +1,29 @@
 /**
  * ARXML Exporter - Generate AUTOSAR ARXML from configuration data
  * Enables round-trip: Import → Edit → Export
- * Compatible with AUTOSAR 4.0 - 4.4 schema
+ *
+ * A4-1 版本化导出：目标 AUTOSAR 版本是导出参数（44/48/49/50/51，默认 51=R22-11），
+ * 版本注册表/VERSION_GATES 唯一事实来源在 @yuletech/core/arxml-export（本文件只做薄接线）。
  */
 
 import type { ConfigModule, ConfigContainer, ConfigParameter, ConfigFile } from '@/types/config';
+import {
+  DEFAULT_SCHEMA_VERSION,
+  assertSupportedSchemaVersion,
+  detectSchemaVersion,
+  schemaLocationFor,
+  type AutosarSchemaVersion,
+} from '@yuletech/core/arxml-export';
 
 const ARXML_NS = 'http://autosar.org/schema/r4.0';
-const ARXML_SCHEMA = 'http://autosar.org/schema/r4.0 AUTOSAR_00044.xsd';
+
+/** 导出选项：目标 AUTOSAR 版本（schema 号 48/49/50/51，默认 51） */
+export interface ArxmlExportOptions {
+  schemaVersion?: AutosarSchemaVersion;
+}
+
+// UI 层薄重导出：版本选项列表 + 默认版本（事实来源在 core）
+export { DEFAULT_SCHEMA_VERSION, targetVersionOptions } from '@yuletech/core/arxml-export';
 
 /** Generate a UUID v4 string */
 function uuid(): string {
@@ -176,15 +192,28 @@ function generateModuleXml(module: ConfigModule): string {
 
 /**
  * Main export function: generate complete ARXML document from config
+ *
+ * @param config 配置
+ * @param selectedModules 可选：仅导出指定模块
+ * @param options 可选：{ schemaVersion } 目标 AUTOSAR 版本（默认 51=R22-11）
  */
-export function generateArxml(config: ConfigFile, selectedModules?: string[]): string {
+export function generateArxml(
+  config: ConfigFile,
+  selectedModules?: string[],
+  options: ArxmlExportOptions = {}
+): string {
+  const schemaVersion = assertSupportedSchemaVersion(
+    options.schemaVersion ?? DEFAULT_SCHEMA_VERSION
+  );
+  const schemaLocation = schemaLocationFor(schemaVersion);
+
   const modules = selectedModules
     ? config.modules.filter(m => m.enabled && selectedModules.includes(m.id))
     : config.modules.filter(m => m.enabled);
 
   const lines: string[] = [
     `<?xml version="1.0" encoding="UTF-8" standalone="no"?>`,
-    `<AUTOSAR xmlns="${ARXML_NS}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="${ARXML_SCHEMA}">`,
+    `<AUTOSAR xmlns="${ARXML_NS}" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="${schemaLocation}">`,
     `  <AR-PACKAGES>`,
   ];
 
@@ -197,6 +226,14 @@ export function generateArxml(config: ConfigFile, selectedModules?: string[]): s
   lines.push('');
 
   return lines.join('\n');
+}
+
+/**
+ * 反向探测：从已生成的 ARXML 文本提取 schema 版本号（导入导出对称）。
+ * 与 core arxml-import reader 同一正则（cogu reader.py:589-600）。
+ */
+export function detectArxmlSchemaVersion(xml: string): number | null {
+  return detectSchemaVersion(xml);
 }
 
 /**

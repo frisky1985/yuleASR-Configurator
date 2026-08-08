@@ -14,6 +14,7 @@ export default defineConfig({
     'validators/index': 'src/validators/index.ts',
     'adapters/arxml-parser': 'src/adapters/arxml-parser.ts',
     'arxml-import/index': 'src/arxml-import/index.ts',
+    'arxml-export/index': 'src/arxml-export/index.ts',
     'conditions/index': 'src/conditions/index.ts',
   },
   format: ['cjs', 'esm'],

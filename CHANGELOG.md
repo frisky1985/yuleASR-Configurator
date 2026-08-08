@@ -12,6 +12,20 @@ with the caveats described in the [Versioning Policy](#versioning-policy) below.
 
 ### Added
 
+- **版本化 ARXML 导出**（`@yuletech/core/arxml-export`，A4-1）：
+  - schema 版本注册表：48=R19-11 / 49=R20-11 / 50=R21-11 / 51=R22-11
+    （44=AUTOSAR 4.3.1 历史兼容），文档级 `AUTOSAR_%05d.xsd` schemaLocation 按版本生成
+  - `VERSION_GATES` 版本差异登记表（集中管理替代散落 if，借鉴 cogu writer.py:4428-4456）：
+    `GATE-001` schemaLocation 按版本、`GATE-002` runnable 互斥区引用
+    （<50 用 …-EXCLUSIVE-AREA-REFS，≥50 用 CAN-ENTERS/RUNS-INSIDES）
+  - 最小导出框架：`serializeArxmlDocument`（ECUC 值层骨架 + 版本参数）、
+    `detectSchemaVersion` 反向探测（与 arxml-import 对称，cogu reader.py:589-600）
+  - Web 导出服务 `generateArxml` 增加 `schemaVersion` 参数（默认 51）；
+    Editor 导出 ARXML 改为“目标 AUTOSAR 版本”对话框；内置 ARXML 导出插件经 options 接收版本
+  - 测试：core 24 个新用例 + web 7 个新用例
+
+### Added
+
 - **ARXML SWC 层导入后端**（`@yuletech/core/arxml-import`）：
   - 导入 .arxml 工程文件（SWC/端口/接口/数据类型/CompuMethod 层）到现有数据模型
     `SwcProjectConfig`（`types/swc.ts`）
