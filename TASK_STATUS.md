@@ -1,8 +1,20 @@
 # yuleASR-Configurator 开发任务状态
 
-> 最后更新: 2026-08-08 当前阶段: Phase 4-5 收尾 — 测试基线与代码生成质量（安全/架构 Batch B+C+D 已收官）
+> 最后更新: 2026-08-09 当前阶段: A 线（cogu 吸收）— A1/A4 已完成，主仓 A2+A3 →
+> B1-B3 串行推进中
 
-> **2026-08-08 安全债核验（P0 收官）：** ultra-full 审查 8 项 critical 全部确认已修复并合入 origin/main（Fix 5/6/7/8/9/10/11/13，见下方 Batch B 表），逐项验证通过：desktop-utils 安全单测 10/10、api-server LDAP+支付签名单测 19/19。修复状态明细见 `reviews/ultra-full-2026-08-01/review-security-perf.md` 第 10 节。
+> **2026-08-09 A4 收官：** 版本化 ARXML 导出（core
+> `arxml-export`：schema 版本注册表 48-51 +
+> VERSION_GATES 登记表 + 最小导出框架 +
+> web 导出对话框版本参数）与 BSW 模块↔SWS 映射文档（`docs/bsw-sws-mapping.md`）已合入 origin/main（commit
+> 500a5384 / b57e7ba5）。core 703 测试 + web 155 测试全绿。
+
+> **2026-08-08 安全债核验（P0 收官）：**
+> ultra-full 审查 8 项 critical 全部确认已修复并合入 origin/main（Fix
+> 5/6/7/8/9/10/11/13，见下方 Batch
+> B 表），逐项验证通过：desktop-utils 安全单测 10/10、api-server
+> LDAP+支付签名单测 19/19。修复状态明细见
+> `reviews/ultra-full-2026-08-01/review-security-perf.md` 第 10 节。
 
 ---
 
@@ -20,13 +32,13 @@
 
 ## 当前阶段总览
 
-| Phase | 内容 | 状态 | 说明 |
-| ----- | ---- | ---- | ---- |
+| Phase   | 内容               | 状态    | 说明                                             |
+| ------- | ------------------ | ------- | ------------------------------------------------ |
 | Phase 1 | Service 层配置数据 | ✅ 完成 | 54 模块 schema + Dashboard 分层统计 (2026-08-01) |
-| Phase 2 | VS Code 扩展 | ✅ 完成 | 9 命令 + ConfigEditorPanel + ConfigTreeProvider |
-| Phase 3 | UI 组件库 | ✅ 完成 | 8 组件 + cn(), 16 测试, web 已集成 (2026-08-01) |
-| Phase 4 | 单元测试 | ✅ 完成 | **576 过 / 0 失败** (2026-08-01 P0-1 修复后全绿) |
-| Phase 5 | C 代码生成 | ✅ 完成 | 4 生成器齐备，Can/Mcu GCC 编译已修复 |
+| Phase 2 | VS Code 扩展       | ✅ 完成 | 9 命令 + ConfigEditorPanel + ConfigTreeProvider  |
+| Phase 3 | UI 组件库          | ✅ 完成 | 8 组件 + cn(), 16 测试, web 已集成 (2026-08-01)  |
+| Phase 4 | 单元测试           | ✅ 完成 | **576 过 / 0 失败** (2026-08-01 P0-1 修复后全绿) |
+| Phase 5 | C 代码生成         | ✅ 完成 | 4 生成器齐备，Can/Mcu GCC 编译已修复             |
 
 ---
 
@@ -34,11 +46,27 @@
 
 ### Core 层 (@yuletech/core)
 
-- **ARXML SWC 层导入后端**（2026-08-09 A1）— `arxml-import` 模块：导入 .arxml 工程
-  （SWC/端口/接口/数据类型/CompuMethod 层）到现有 `SwcProjectConfig` 数据模型；
-  借鉴 cogu/autosar switcher + ChildElementMap 未处理元素告警模式（告警不崩溃）；
-  导入报告含成功计数 + `file(line): Unprocessed element <TAG>` 清单 + schema 版本探测；
-  21 个测试用例 + 真实 bcm_demo.arxml 验证；BSW 模块配置（ECUC）边界外，由 `adapters/arxml-parser` 覆盖
+- **版本化 ARXML 导出**（2026-08-09 A4-1）— `arxml-export`
+  模块：schema 版本注册表（48=R19-11/49=R20-11/50=R21-11/51=R22-11，44=4.3.1 兼容），AUTOSAR_%05d.xsd
+  schemaLocation 按版本生成；VERSION_GATES 版本差异登记表（GATE-001
+  schemaLocation、GATE-002 runnable 互斥区引用 <50/≥50 元素名差异，借鉴 cogu
+  writer.py:4428-4456）；最小导出框架 serializeArxmlDocument +
+  detectSchemaVersion 反向探测（与 A1 导入对称）；web 导出服务 schemaVersion 参数（默认 51）+
+  Editor 导出对话框版本参数；内置导出插件经 options 接收版本。24 core 用例 + 7
+  web 用例
+
+- **模块↔SWS 映射文档**（2026-08-09 A4-2）— `docs/bsw-sws-mapping.md`：54 模块 ↔
+  AUTOSAR SWS 文档全量对照（cogu
+  CHANGELOG 风格）、A1 导入映射扩展、版本差异速查、非标准模块标注、维护约定；技术债：schema
+  `x-layer` 与标准分层不一致（can/dio/port/mcu 标为 Service）
+
+- **ARXML SWC 层导入后端**（2026-08-09 A1）— `arxml-import`
+  模块：导入 .arxml 工程（SWC/端口/接口/数据类型/CompuMethod 层）到现有
+  `SwcProjectConfig` 数据模型；借鉴 cogu/autosar switcher +
+  ChildElementMap 未处理元素告警模式（告警不崩溃）；导入报告含成功计数 +
+  `file(line): Unprocessed element <TAG>` 清单 +
+  schema 版本探测；21 个测试用例 + 真实 bcm_demo.arxml 验证；BSW 模块配置（ECUC）边界外，由
+  `adapters/arxml-parser` 覆盖
 
 - [x] 类型系统 (ModuleSchema, ModuleConfig, Validation)
 - [x] Schema 管理 (JSON Schema 转换，54 个模块 schema)
@@ -58,7 +86,8 @@
 ### Web 应用 (yuleasr-web)
 
 - [x] Dashboard / Editor / Templates / GitSync / Settings / Migrate 页面
-- [x] ModuleTree / ModuleGraph (React Flow) / ModuleConfigWizard / ValidationPanel
+- [x] ModuleTree / ModuleGraph (React Flow) / ModuleConfigWizard /
+      ValidationPanel
 - [x] DiffViewer / GlobalSearch / MigrationTool / VersionHistory 组件
 
 ### VS Code 扩展 (apps/yuleasr-vscode)
@@ -80,14 +109,14 @@
 
 ### 代码生成器对齐 (2026-07-23)
 
-| 维度 | ecuc | swc | os | rte |
-|------|------|-----|-----|-----|
-| 模板层统一 | ✅ | ✅ | ✅ | ✅ |
-| MemMap.h 集成 | ✅ | ✅ | ✅ | ✅ |
-| DET 错误处理 | ✅ | ✅ | — | ✅ |
-| 插件化委托 | ✅ | ✅ | ✅ | ✅ |
-| AUTOSAR Doxygen | ✅ | ✅ | ✅ | ✅ |
-| 多编译器支持 | ✅ | ✅ | ✅ | ✅ |
+| 维度            | ecuc | swc | os  | rte |
+| --------------- | ---- | --- | --- | --- |
+| 模板层统一      | ✅   | ✅  | ✅  | ✅  |
+| MemMap.h 集成   | ✅   | ✅  | ✅  | ✅  |
+| DET 错误处理    | ✅   | ✅  | —   | ✅  |
+| 插件化委托      | ✅   | ✅  | ✅  | ✅  |
+| AUTOSAR Doxygen | ✅   | ✅  | ✅  | ✅  |
+| 多编译器支持    | ✅   | ✅  | ✅  | ✅  |
 
 ---
 
@@ -95,8 +124,7 @@
 
 ### Phase 1: 完善 Service 层配置数据
 
-**状态**: 🟡 大部分完成
-**目标**: 补充 Service 层模块定义，完善 AUTOSAR 层级支持
+**状态**: 🟡 大部分完成 **目标**: 补充 Service 层模块定义，完善 AUTOSAR 层级支持
 
 **任务清单**:
 
@@ -110,6 +138,7 @@
 - [x] 1.8 更新 Dashboard 统计 Service 层模块 (✅ 2026-08-01 模块分层分布区块)
 
 **验收标准**:
+
 - Service 层模块可在 UI 中正常显示和配置 — ✅ 通过
 - 所有 Service 层模块有完整的参数定义 — 🟡 IoHwAb 空壳
 - 模块间依赖关系正确定义 — ⚠️ schema 层无 crossReferences
@@ -120,7 +149,8 @@
 
 ### Phase 3: 构建 UI 组件库
 
-**状态**: ✅ 完成 (2026-08-01) — 8 组件 + cn() 工具, tsup 构建, 16 测试, web 应用已集成
+**状态**: ✅ 完成 (2026-08-01) — 8 组件 + cn() 工具, tsup 构建, 16 测试,
+web 应用已集成
 
 - [x] 3.1-3.10 提取 Button/Input/Select/FormField/Modal/Tooltip/Tree/PropertyPanel + 构建发布
 - [x] 4.7 组件单元测试 (16 断言全过, 随 Phase 3 一并完成)
@@ -144,7 +174,8 @@
 
 ### Phase 5: 完善 C 代码生成
 
-**状态**: ✅ 完成 — 4 生成器 + Doxygen/MISRA 支持，Can/Mcu GCC 编译已修复 (2026-08-01)
+**状态**: ✅ 完成 — 4 生成器 + Doxygen/MISRA 支持，Can/Mcu
+GCC 编译已修复 (2026-08-01)
 
 **任务清单**:
 
@@ -161,85 +192,93 @@
 
 ### P0 — 必须修复
 
-| # | 事项 | 状态 | 根因 / 方案 |
-|---|------|------|------------|
-| P0-1 | **Can/Mcu 生成代码 GCC 编译失败** (2 个集成测试失败) | ✅ 已修复 | 2026-08-01: 中间 static const 变量 → 内联 compound literal (修复 initializer not compile-time constant)；补 DEV_ERROR_DETECT 标准宏别名。全量测试首次全绿 576/576 |
-| P0-2 | **macOS 桌面端无法签名发布** | 🔴 阻塞 | 需 Apple Developer 证书: GitHub Secrets `MAC_CSC_LINK` + `MAC_CSC_KEY_PASSWORD` (build-desktop.yml 已支持)；由老板提供证书。**申请步骤见 [docs/macos-code-signing-guide.md](docs/macos-code-signing-guide.md)**；内测阶段可用未签名包替代 |
-| P0-3 | **本地 vite build 失败** (esbuild destructuring) | ✅ 已修复 | 2026-08-01: vite.config.ts build.target: 'esnext' — 避免 esbuild 将 i18next-browser-languagedetector/@xyflow 降级转换报 "Transforming destructuring not supported"。本地 build 3.4s 通过 |
-| P0-4 | **本地 dev server 崩溃** (Node 24) | ✅ 已修复 | 2026-08-01: vite.config.ts 加 optimizeDeps.esbuildOptions.target: 'esnext' — dev 模式依赖预构建 (optimizeDeps) 默认 target 是老浏览器集，Node 24 下遇现代语法依赖崩溃 (718 destructuring 错误)；修复后 dev server 0 error，页面完整渲染。剩余无害警告: plugin-manager 动态 import 提示 + api-server 未启动的 proxy 500 |
+| #    | 事项                                                 | 状态      | 根因 / 方案                                                                                                                                                                                                                                                                                                            |
+| ---- | ---------------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P0-1 | **Can/Mcu 生成代码 GCC 编译失败** (2 个集成测试失败) | ✅ 已修复 | 2026-08-01: 中间 static const 变量 → 内联 compound literal (修复 initializer not compile-time constant)；补 DEV_ERROR_DETECT 标准宏别名。全量测试首次全绿 576/576                                                                                                                                                      |
+| P0-2 | **macOS 桌面端无法签名发布**                         | 🔴 阻塞   | 需 Apple Developer 证书: GitHub Secrets `MAC_CSC_LINK` + `MAC_CSC_KEY_PASSWORD` (build-desktop.yml 已支持)；由老板提供证书。**申请步骤见 [docs/macos-code-signing-guide.md](docs/macos-code-signing-guide.md)**；内测阶段可用未签名包替代                                                                              |
+| P0-3 | **本地 vite build 失败** (esbuild destructuring)     | ✅ 已修复 | 2026-08-01: vite.config.ts build.target: 'esnext' — 避免 esbuild 将 i18next-browser-languagedetector/@xyflow 降级转换报 "Transforming destructuring not supported"。本地 build 3.4s 通过                                                                                                                               |
+| P0-4 | **本地 dev server 崩溃** (Node 24)                   | ✅ 已修复 | 2026-08-01: vite.config.ts 加 optimizeDeps.esbuildOptions.target: 'esnext' — dev 模式依赖预构建 (optimizeDeps) 默认 target 是老浏览器集，Node 24 下遇现代语法依赖崩溃 (718 destructuring 错误)；修复后 dev server 0 error，页面完整渲染。剩余无害警告: plugin-manager 动态 import 提示 + api-server 未启动的 proxy 500 |
 
 ### P1 — 应尽快处理
 
-| # | 事项 | 状态 | 说明 |
-|---|------|------|------|
-| P1-1 | 桌面端 CI 构建失败 (三平台) | ✅ 已修复 | 2026-08-01: 六层根因全部修复，三平台 CI 全绿 + artifact 完整 (commit 98c91d34)。① @yuletech/ui 包 dist 未构建 → build 前加 `pnpm --filter @yuletech/ui build`。② macOS `--universal` 与 mac.target 冲突 → 去 universal 分构。③ Windows pnpm 深层路径超 MAX_PATH → `node-linker=hoisted`。④ macOS 空 CSC_LINK 注入空串 → electron-builder importCertificate("") 崩溃 → 仅当 secret 非空注入 env。⑤ electron 固定 39.8.10、Linux 加 homepage 字段。⑥ upload-artifact glob: Windows `\` 当路径分隔符 → 用 `*.exe`/`*.zip` 通配；deb 命名是 `name_ver_amd64.deb` 非 ProductName |
-| P1-2 | IoHwAb schema 空壳 | ✅ 已修复 | 2026-08-01 补齐 IoHwAbGeneral/Channel/Signal/Dio/Adc 5 容器，含通道方向/信号类型枚举 |
-| P1-3 | Dashboard Service 层统计仍为 mock | ✅ 已修复 | 2026-08-01 新增"模块分层分布"区块：6 层 (MCAL/ECUAL/Service/RTE/OS/ASW) 模块计数 + 占比条，Service 层高亮；zh/en i18n 齐备 |
-| P1-4 | 28/54 schema 缺 CommonPublishedInformation | ✅ 已修复 | 2026-08-01 全量补齐：54/54 schema 含标准 8 字段 CPI (ArRelease×3 + ModuleId + Sw×3 + VendorId)，新增测试断言 (schema-validation 110→165) |
-| P1-5 | 枚举参数规范 | ✅ 已修复 | PortPinDirection 14 处 + GptChannelMode 4 处 enum 化 (AUTOSAR 规范名)，IoHwAb 空壳补齐 (General/Channel/Signal/Dio/Adc 5 容器) |
+| #    | 事项                                       | 状态      | 说明                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ---- | ------------------------------------------ | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P1-1 | 桌面端 CI 构建失败 (三平台)                | ✅ 已修复 | 2026-08-01: 六层根因全部修复，三平台 CI 全绿 + artifact 完整 (commit 98c91d34)。① @yuletech/ui 包 dist 未构建 → build 前加 `pnpm --filter @yuletech/ui build`。② macOS `--universal` 与 mac.target 冲突 → 去 universal 分构。③ Windows pnpm 深层路径超 MAX_PATH → `node-linker=hoisted`。④ macOS 空 CSC_LINK 注入空串 → electron-builder importCertificate("") 崩溃 → 仅当 secret 非空注入 env。⑤ electron 固定 39.8.10、Linux 加 homepage 字段。⑥ upload-artifact glob: Windows `\` 当路径分隔符 → 用 `*.exe`/`*.zip` 通配；deb 命名是 `name_ver_amd64.deb` 非 ProductName |
+| P1-2 | IoHwAb schema 空壳                         | ✅ 已修复 | 2026-08-01 补齐 IoHwAbGeneral/Channel/Signal/Dio/Adc 5 容器，含通道方向/信号类型枚举                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| P1-3 | Dashboard Service 层统计仍为 mock          | ✅ 已修复 | 2026-08-01 新增"模块分层分布"区块：6 层 (MCAL/ECUAL/Service/RTE/OS/ASW) 模块计数 + 占比条，Service 层高亮；zh/en i18n 齐备                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| P1-4 | 28/54 schema 缺 CommonPublishedInformation | ✅ 已修复 | 2026-08-01 全量补齐：54/54 schema 含标准 8 字段 CPI (ArRelease×3 + ModuleId + Sw×3 + VendorId)，新增测试断言 (schema-validation 110→165)                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| P1-5 | 枚举参数规范                               | ✅ 已修复 | PortPinDirection 14 处 + GptChannelMode 4 处 enum 化 (AUTOSAR 规范名)，IoHwAb 空壳补齐 (General/Channel/Signal/Dio/Adc 5 容器)                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 
 ### P2 — 后续迭代
 
-| # | 事项 | 状态 | 说明 |
-|---|------|------|------|
-| P2-1 | Phase 3 UI 组件库 | ✅ 完成 | 2026-08-01: @yuletech/ui 从空壳 → 8 组件 (Button/Input/Select/FormField/Modal/Tooltip/Tree/PropertyPanel) + cn(); CVA+tailwind-merge 风格, tsup 构建 (cjs/esm/dts), 16 测试全过; web 应用已集成 (Dashboard 新建配置按钮) |
-| P2-2 | schema 层跨模块依赖 (crossReferences) | ✅ 完成 | 2026-08-01: loader (loadModuleSchemas 54 JSON→扁平 ModuleSchema) + validator 模块级引用 (sourceParam) + 19 条 AUTOSAR 约束标注 15 模块 (参数存在性全验) + 链路打通 (schemaExtractor 54/plugin fallback/configStore)；593 测试全绿 (新增 17)。修复历史缺陷: 原 can/cantrcv/pdur 标注缺 sourceParam 且 can 关系反了 (greater_than→less_than)，从未生效 |
-| P2-3 | AUTOSAR ECUC 元模型补全 | ✅ 完成 | 2026-08-01: ChoiceContainerDef 落地 — x-choice-container/x-choice-params/x-choice-description 类型层 + loader 传递 + ChoiceContainerValidator (互斥参数最多设 1 个, xChoiceParams 优先避免误算 Id) + pipeline 集成 (choiceContainerErrors) + 4 模块真实标注 (wdg/wdgif/spi/cantp)；605 测试全绿 (新增 12)。ReferenceDef/Multiplicity/ConfigurationClass 已在此前落地 |
+| #    | 事项                                  | 状态    | 说明                                                                                                                                                                                                                                                                                                                                                                 |
+| ---- | ------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P2-1 | Phase 3 UI 组件库                     | ✅ 完成 | 2026-08-01: @yuletech/ui 从空壳 → 8 组件 (Button/Input/Select/FormField/Modal/Tooltip/Tree/PropertyPanel) + cn(); CVA+tailwind-merge 风格, tsup 构建 (cjs/esm/dts), 16 测试全过; web 应用已集成 (Dashboard 新建配置按钮)                                                                                                                                             |
+| P2-2 | schema 层跨模块依赖 (crossReferences) | ✅ 完成 | 2026-08-01: loader (loadModuleSchemas 54 JSON→扁平 ModuleSchema) + validator 模块级引用 (sourceParam) + 19 条 AUTOSAR 约束标注 15 模块 (参数存在性全验) + 链路打通 (schemaExtractor 54/plugin fallback/configStore)；593 测试全绿 (新增 17)。修复历史缺陷: 原 can/cantrcv/pdur 标注缺 sourceParam 且 can 关系反了 (greater_than→less_than)，从未生效                 |
+| P2-3 | AUTOSAR ECUC 元模型补全               | ✅ 完成 | 2026-08-01: ChoiceContainerDef 落地 — x-choice-container/x-choice-params/x-choice-description 类型层 + loader 传递 + ChoiceContainerValidator (互斥参数最多设 1 个, xChoiceParams 优先避免误算 Id) + pipeline 集成 (choiceContainerErrors) + 4 模块真实标注 (wdg/wdgif/spi/cantp)；605 测试全绿 (新增 12)。ReferenceDef/Multiplicity/ConfigurationClass 已在此前落地 |
 
 ### 安全修复 (Batch B) — 2026-08-01 全部完成 ✅
 
-| Fix | 内容 | 提交 |
-|-----|------|------|
-| F5 | Electron IPC 注入/路径遍历 → sanitize + execFileSync + 窗口加固 | `fdc01b5e` |
-| F6 | JWT 默认密钥 → 启动 fail-fast | `5aa3b16c` |
-| F7+8 | LDAP 过滤器注入 + TLS 降级 → RFC 4515 转义 + 拒绝 fallback | `ef7a7b94` |
-| F9+10 | Webhook 签名校验 + mock-success 白嫖 → 503/401/422 + 开关 | `99a4ab87` |
-| F11 | 社区端认证形同虚设 → 删硬编码口令/mock 降级 + 服务端 admin 登录 | `cb563ebf` |
-| F12 | 插件 REST 无鉴权 → authenticate + requireAdmin + 外部加载开关 | `7b353d6f` |
-| F13 | community 认证契约对齐 (useAuth 解包 + 角色服务端) + no-empty-object-type 护栏 | `6e4791d0` |
+| Fix   | 内容                                                                           | 提交       |
+| ----- | ------------------------------------------------------------------------------ | ---------- |
+| F5    | Electron IPC 注入/路径遍历 → sanitize + execFileSync + 窗口加固                | `fdc01b5e` |
+| F6    | JWT 默认密钥 → 启动 fail-fast                                                  | `5aa3b16c` |
+| F7+8  | LDAP 过滤器注入 + TLS 降级 → RFC 4515 转义 + 拒绝 fallback                     | `ef7a7b94` |
+| F9+10 | Webhook 签名校验 + mock-success 白嫖 → 503/401/422 + 开关                      | `99a4ab87` |
+| F11   | 社区端认证形同虚设 → 删硬编码口令/mock 降级 + 服务端 admin 登录                | `cb563ebf` |
+| F12   | 插件 REST 无鉴权 → authenticate + requireAdmin + 外部加载开关                  | `7b353d6f` |
+| F13   | community 认证契约对齐 (useAuth 解包 + 角色服务端) + no-empty-object-type 护栏 | `6e4791d0` |
 
 ### 架构收敛 (Batch C) — 2026-08-01 全部完成 ✅
 
-| Fix | 内容 | 提交 |
-|-----|------|------|
-| F14 | 双 ORM 收敛 → 统一 Drizzle 删除 Prisma (schema 14 表补齐 + 12 路由迁移) | `31b49734` |
+| Fix | 内容                                                                                 | 提交       |
+| --- | ------------------------------------------------------------------------------------ | ---------- |
+| F14 | 双 ORM 收敛 → 统一 Drizzle 删除 Prisma (schema 14 表补齐 + 12 路由迁移)              | `31b49734` |
 | F15 | Git/generate 假实现 → 显式"未接入" (web GitService NOT_IMPLEMENTED + vscode warning) | `ed5fde41` |
-| F16 | 删空包 @yuletech/utils + @yuletech/api-client | `ed5fde41` |
-| F17 | core 条件引擎接入 web (容器 condition + 参数 visibleWhen, fails-closed) | `0947d8c1` |
-| F18 | ARXML 双解析器收敛 → core 唯一出口 + escapeCString 单一实现 | `d27e6a8b` |
-| F19 | 验证静默吞错 → 显式降级警告条 (validationDegraded) | `ed5fde41` |
+| F16 | 删空包 @yuletech/utils + @yuletech/api-client                                        | `ed5fde41` |
+| F17 | core 条件引擎接入 web (容器 condition + 参数 visibleWhen, fails-closed)              | `0947d8c1` |
+| F18 | ARXML 双解析器收敛 → core 唯一出口 + escapeCString 单一实现                          | `d27e6a8b` |
+| F19 | 验证静默吞错 → 显式降级警告条 (validationDegraded)                                   | `ed5fde41` |
 
-> 下一批: **Batch D (Fix 20-32 warnings) + Suggestions** — 见 `reviews/ultra-full-2026-08-01/implementation-plan.md`。含 Fix 20 条件引擎健壮性、Fix 21 core 验证器缺陷、Fix 22 escapeCString 剩余、CI 接入 (Fix 31/32)、Git 真实接入 (Fix 15 后续)。
+> 下一批: **Batch D (Fix 20-32 warnings) + Suggestions** — 见
+> `reviews/ultra-full-2026-08-01/implementation-plan.md`。含 Fix
+> 20 条件引擎健壮性、Fix 21 core 验证器缺陷、Fix 22
+> escapeCString 剩余、CI 接入 (Fix 31/32)、Git 真实接入 (Fix 15 后续)。
 
 ---
 
 ## Schema AUTOSAR 合规性评估 (2026-08-01)
 
-**结论: 载体合理、覆盖度高，但未完整表达 AUTOSAR ECUC 元模型语义 — "接近但不完全符合"。**
+**结论: 载体合理、覆盖度高，但未完整表达 AUTOSAR ECUC 元模型语义 —
+"接近但不完全符合"。**
 
 ### ✅ 已满足
 
-- JSON Schema draft 2020-12 载体，54 模块覆盖 5 层 (MCAL 11 / ECUAL 15 / Service 25 / RTE 1 / ASW 2)
+- JSON Schema draft 2020-12 载体，54 模块覆盖 5 层 (MCAL 11 / ECUAL 15 / Service
+  25 / RTE 1 / ASW 2)
 - 容器 + 参数两级结构，AUTOSAR 命名约定 (PascalCase, 模块前缀)
 - x-layer / x-version / x-source 元数据 (50 个标注 ARXML-Extracted)
 - 50 个 schema 从 ARXML 提取，参数含类型/范围约束 (min/max)
 
 ### ❌ 与 AUTOSAR ECUC 元模型的差距
 
-| 差距 | 说明 | 影响 |
-|------|------|------|
-| **无 ReferenceDef** | ECUC 核心是 ModuleDef → ContainerDef → ParameterDef/**ReferenceDef** 三层，跨模块/跨容器引用 (如 Can 引用 CanTrcv) 在 schema 中无表达 | 依赖关系无法在配置层校验 |
-| **无 Multiplicity** | AUTOSAR 每个参数/容器有 lower/upperMultiplicity (0..1, 1..*) | 无法表达"至少 1 个"等出现次数约束 |
-| **无 ConfigurationClass** | AUTOSAR 参数分 PREPROCESSOR/POSTBUILD/VARIANT 配置类 | 无法区分编译期/后构建参数 |
-| **枚举覆盖极少** | 仅 3 个 schema 使用 enum (appswc/compswc/os) | AUTOSAR 参数大量是枚举 (如 CanTrcv 唤醒方式)，现多退化为裸 integer |
-| **无 ChoiceContainerDef** | ~~多选一容器语义缺失~~ ✅ 2026-08-01 已落地 (x-choice-container/x-choice-params + ChoiceContainerValidator + wdg/wdgif/spi/cantp 4 模块标注) | "二选一"配置可校验 |
-| **CPI 覆盖不全** | ~~仅 26/54 含 CommonPublishedInformation~~ ✅ 2026-08-01 已补齐 54/54 | 标准发布信息完整 |
+| 差距                      | 说明                                                                                                                                         | 影响                                                               |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| **无 ReferenceDef**       | ECUC 核心是 ModuleDef → ContainerDef → ParameterDef/**ReferenceDef** 三层，跨模块/跨容器引用 (如 Can 引用 CanTrcv) 在 schema 中无表达        | 依赖关系无法在配置层校验                                           |
+| **无 Multiplicity**       | AUTOSAR 每个参数/容器有 lower/upperMultiplicity (0..1, 1..*)                                                                                 | 无法表达"至少 1 个"等出现次数约束                                  |
+| **无 ConfigurationClass** | AUTOSAR 参数分 PREPROCESSOR/POSTBUILD/VARIANT 配置类                                                                                         | 无法区分编译期/后构建参数                                          |
+| **枚举覆盖极少**          | 仅 3 个 schema 使用 enum (appswc/compswc/os)                                                                                                 | AUTOSAR 参数大量是枚举 (如 CanTrcv 唤醒方式)，现多退化为裸 integer |
+| **无 ChoiceContainerDef** | ~~多选一容器语义缺失~~ ✅ 2026-08-01 已落地 (x-choice-container/x-choice-params + ChoiceContainerValidator + wdg/wdgif/spi/cantp 4 模块标注) | "二选一"配置可校验                                                 |
+| **CPI 覆盖不全**          | ~~仅 26/54 含 CommonPublishedInformation~~ ✅ 2026-08-01 已补齐 54/54                                                                        | 标准发布信息完整                                                   |
 
 ### 建议路线
 
 1. **短期 (P1)**: ~~补 CPI + IoHwAb + enum 化~~ ✅ 已完成 2026-08-01
-2. **中期 (P2)**: ✅ 类型层已落地 (x-multiplicity/x-config-class/crossReferences) + 3 模块示例；剩余: 54 模块全量标注、ChoiceContainerDef
-3. **长期**: 若需严格 AUTOSAR 工具链互操作，考虑直接生成/消费标准 ECUC ARXML (`EcucModuleDef`)，JSON Schema 作为 UI 编辑中间层
+2. **中期 (P2)**:
+   ✅ 类型层已落地 (x-multiplicity/x-config-class/crossReferences) +
+   3 模块示例；剩余: 54 模块全量标注、ChoiceContainerDef
+3. **长期**: 若需严格 AUTOSAR 工具链互操作，考虑直接生成/消费标准 ECUC ARXML
+   (`EcucModuleDef`)，JSON Schema 作为 UI 编辑中间层
 
 ---
 
