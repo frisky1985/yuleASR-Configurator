@@ -7,6 +7,7 @@
 - [VS Code 扩展使用](#vs-code-扩展使用)
 - [配置管理](#配置管理)
 - [验证功能](#验证功能)
+- [导入 ARXML（SWC 层）](#导入-arxmlswc-层)
 - [代码生成](#代码生成)
 - [Git 同步](#git-同步)
 
@@ -133,8 +134,55 @@ Editor 提供配置编辑功能：
 
 ---
 
-## 验证功能
+## 导入 ARXML（SWC 层）
 
+> 功能入口：`@yuletech/core/arxml-import`（`importSwcArxml`）
+> 设计借鉴 cogu/autosar 的 switcher 字典分发 + ChildElementMap 未处理元素告警模式。
+
+### 支持导入的元素
+
+| ARXML 元素 | 导入到数据模型 | 说明 |
+| ---------- | -------------- | ---- |
+| `APPLICATION-SW-COMPONENT-TYPE` | `ApplicationSwComponentType` | 对应 RTE 生成的 RteSwcInfo |
+| `P-PORT-PROTOTYPE` / `R-PORT-PROTOTYPE` | `PortPrototype` | 端口方向 OUT/IN，对应 RtePortInfo |
+| `SWC-INTERNAL-BEHAVIOR` → `RUNNABLE-ENTITY` | `RunnableEntity` | 含 SYMBOL/周期/并发标志，对应 RteRunnableInfo |
+| `SENDER-RECEIVER-INTERFACE` | `SenderReceiverInterface` | 含 DATA-ELEMENTS |
+| `CLIENT-SERVER-INTERFACE` | `ClientServerInterface` | 含 OPERATIONS/ARGUMENTS |
+| `APPLICATION-PRIMITIVE-DATA-TYPE` | `ApplicationDataType` | VALUE 等类别 |
+| `IMPLEMENTATION-DATA-TYPE` | `ImplementationDataType` | cType 从 BASE-TYPE-REF 解析 |
+| `COMPU-METHOD` | `CompuMethod` | TEXTTABLE / LINEAR / RAT_NUM_LINEAR |
+| `SW-BASE-TYPE` | 基础类型注册表 | NATIVE-DECLARATION |
+
+### 导入报告
+
+导入结果除数据模型外还返回 `ImportReport`：
+
+- `counts`：成功导入的元素计数（SWC/端口/runnable/接口/数据类型/CompuMethod 等）
+- `warnings`：未处理元素告警清单，格式 `file(line): Unprocessed element <TAG>`
+- `errors`：解析硬错误（XML 畸形、缺少 AUTOSAR 根）
+- `schemaVersion`：从 `schemaLocation` 探测的 AUTOSAR 版本（如 51）
+
+**未处理元素策略：告警不崩溃。** OEM 交付的 ARXML 必然包含工具链不认识的元素（版本差异、厂商扩展、BSW 配置等），导入器记录 `file(line)` 告警但继续导入已知元素。
+
+### 边界声明
+
+- ✅ 导入范围：SWC / 端口 / 接口 / 数据类型 / CompuMethod 层
+- ❌ **不导入 BSW 模块配置**（CanIf/NvM/Com 等 ECUC 层）——ECUC 层请使用现有 `arxml-parser` 服务（`ECUC-MODULE-CONFIGURATION-VALUES`）
+- 引用解析：端口接口引用按短名解析；找不到时保留原始引用路径（UI 提示缺失引用，不崩溃）
+
+### 使用示例
+
+```ts
+import { importSwcArxml } from '@yuletech/core/arxml-import';
+
+const { project, report } = importSwcArxml(arxmlContent, 'BCM.arxml');
+console.log(report.counts.swComponents); // 成功导入的 SWC 数
+console.log(report.warnings);            // file(line): Unprocessed element <TAG>
+```
+
+---
+
+## 验证功能
 ### 实时验证
 
 配置修改时自动检查：

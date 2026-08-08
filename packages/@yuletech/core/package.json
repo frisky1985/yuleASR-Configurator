@@ -66,6 +66,11 @@
       "import": "./dist/adapters/arxml-parser.mjs",
       "require": "./dist/adapters/arxml-parser.js"
     },
+    "./arxml-import": {
+      "types": "./dist/arxml-import/index.d.ts",
+      "import": "./dist/arxml-import/index.mjs",
+      "require": "./dist/arxml-import/index.js"
+    },
     "./conditions": {
       "types": "./dist/conditions/index.d.ts",
       "import": "./dist/conditions/index.mjs",

@@ -52,6 +52,8 @@ export interface ApplicationDataType {
   /** SwDataDefProps: lower / upper limit */
   lowerLimit?: number;
   upperLimit?: number;
+  /** COMPU-METHOD-REF (short name of the referenced CompuMethod) */
+  compuMethodRef?: string;
 }
 
 /**
@@ -61,6 +63,63 @@ export interface ApplicationDataTypeMember {
   name: string;
   typeRef: string;
   description?: string;
+}
+
+// ============================================================================
+// CompuMethod (计算/标定方法)
+// ============================================================================
+
+/**
+ * AUTOSAR CompuMethod category (COMPU-METHOD/CATEGORY).
+ */
+export type CompuMethodCategory =
+  | 'LINEAR'
+  | 'TEXTTABLE'
+  | 'RAT_NUM_LINEAR'
+  | 'IDENTICAL'
+  | 'BITFIELD_TEXTTABLE'
+  | 'SCALE_LINEAR_AND_TEXTTABLE'
+  | 'RAT_NUM_SCALE_AND_TEXTTABLE'
+  | (string & {});
+
+/**
+ * One COMPU-SCALE inside a COMPU-METHOD.
+ * Covers both TEXTTABLE literals (shortLabel + content) and
+ * linear / rational scaling (offset/factor via numerator/denominator).
+ */
+export interface CompuScale {
+  /** SHORT-LABEL — the enum literal name (TEXTTABLE categories) */
+  shortLabel?: string;
+  /** LOWER-LIMIT (numeric, inclusive range start) */
+  lowerLimit?: number;
+  /** UPPER-LIMIT (numeric, inclusive range end) */
+  upperLimit?: number;
+  /** COMPU-CONST/VT — the textual value this scale maps to */
+  content?: string;
+  /** COMPU-RATIONAL-COEFFS numerator (offset = v[0], factor = v[1]) */
+  numerator?: number[];
+  /** COMPU-RATIONAL-COEFFS denominator (default [1]) */
+  denominator?: number[];
+  /** Description of the scale */
+  description?: string;
+}
+
+/**
+ * AUTOSAR COMPU-METHOD — physical ⇄ internal value conversion / enum mapping.
+ */
+export interface CompuMethod {
+  /** SHORT-NAME */
+  name: string;
+  /** COMPU-METHOD/CATEGORY */
+  category: CompuMethodCategory;
+  /** COMPU-INTERNAL-TO-PHYS scales (document order) */
+  scales: CompuScale[];
+  /** COMPU-DEFAULT-VALUE VT (used when no scale matches) */
+  defaultValue?: string;
+  /** Description */
+  description?: string;
+  /** True when the ARXML contains a COMPU-PHYS-TO-INTERNAL block */
+  hasPhysToInternal?: boolean;
 }
 
 /**
@@ -84,6 +143,8 @@ export interface ImplementationDataType {
   /** SwDataDefProps */
   lowerLimit?: number;
   upperLimit?: number;
+  /** COMPU-METHOD-REF (short name of the referenced CompuMethod) */
+  compuMethodRef?: string;
 }
 
 /**
@@ -471,6 +532,10 @@ export interface SwcProjectConfig {
   /** Data types */
   applicationDataTypes: ApplicationDataType[];
   implementationDataTypes: ImplementationDataType[];
+  /** Port interfaces used by ports (deduplicated, referenced by ports) */
+  interfaces?: PortInterfaceBase[];
+  /** CompuMethods referenced by data types / interfaces */
+  compuMethods?: CompuMethod[];
 }
 
 // ============================================================================

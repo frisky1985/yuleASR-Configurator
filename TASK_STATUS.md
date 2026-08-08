@@ -34,6 +34,12 @@
 
 ### Core 层 (@yuletech/core)
 
+- **ARXML SWC 层导入后端**（2026-08-09 A1）— `arxml-import` 模块：导入 .arxml 工程
+  （SWC/端口/接口/数据类型/CompuMethod 层）到现有 `SwcProjectConfig` 数据模型；
+  借鉴 cogu/autosar switcher + ChildElementMap 未处理元素告警模式（告警不崩溃）；
+  导入报告含成功计数 + `file(line): Unprocessed element <TAG>` 清单 + schema 版本探测；
+  21 个测试用例 + 真实 bcm_demo.arxml 验证；BSW 模块配置（ECUC）边界外，由 `adapters/arxml-parser` 覆盖
+
 - [x] 类型系统 (ModuleSchema, ModuleConfig, Validation)
 - [x] Schema 管理 (JSON Schema 转换，54 个模块 schema)
 - [x] 配置验证器

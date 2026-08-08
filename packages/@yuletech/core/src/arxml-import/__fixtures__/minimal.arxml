@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  yuleASR Configurator — ARXML 导入最小 fixture
+  覆盖：SWC（1） + 端口（2）+ 接口（1）+ 数据类型（1）+ CompuMethod（1）+ BaseType（1）
+-->
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_00051.xsd">
+  <AR-PACKAGES>
+    <!-- ========== 数据类型包 ========== -->
+    <AR-PACKAGE UUID="pkg-types">
+      <SHORT-NAME>DataTypes</SHORT-NAME>
+      <ELEMENTS>
+        <!-- 基础类型 -->
+        <SW-BASE-TYPE UUID="bt-uint8">
+          <SHORT-NAME>uint8</SHORT-NAME>
+          <BASE-TYPE-SIZE>8</BASE-TYPE-SIZE>
+          <BASE-TYPE-ENCODING>NONE</BASE-TYPE-ENCODING>
+          <NATIVE-DECLARATION>unsigned char</NATIVE-DECLARATION>
+        </SW-BASE-TYPE>
+
+        <!-- 应用数据类型 -->
+        <APPLICATION-PRIMITIVE-DATA-TYPE UUID="dt-door-state">
+          <SHORT-NAME>DoorStateType</SHORT-NAME>
+          <CATEGORY>VALUE</CATEGORY>
+          <SW-DATA-DEF-PROPS>
+            <SW-DATA-DEF-PROPS-VARIANTS>
+              <SW-DATA-DEF-PROPS-CONDITIONAL>
+                <BASE-TYPE-REF DEST="SW-BASE-TYPE">/DataTypes/uint8</BASE-TYPE-REF>
+                <COMPU-METHOD-REF DEST="COMPU-METHOD">/DataTypes/DoorState_CM</COMPU-METHOD-REF>
+              </SW-DATA-DEF-PROPS-CONDITIONAL>
+            </SW-DATA-DEF-PROPS-VARIANTS>
+          </SW-DATA-DEF-PROPS>
+        </APPLICATION-PRIMITIVE-DATA-TYPE>
+
+        <!-- CompuMethod：TEXTTABLE -->
+        <COMPU-METHOD UUID="cm-door-state">
+          <SHORT-NAME>DoorState_CM</SHORT-NAME>
+          <CATEGORY>TEXTTABLE</CATEGORY>
+          <COMPU-INTERNAL-TO-PHYS>
+            <COMPU-SCALES>
+              <COMPU-SCALE>
+                <SHORT-LABEL>CLOSED</SHORT-LABEL>
+                <LOWER-LIMIT INTERVAL-TYPE="CLOSED">0</LOWER-LIMIT>
+                <UPPER-LIMIT INTERVAL-TYPE="CLOSED">0</UPPER-LIMIT>
+                <COMPU-CONST>
+                  <VT>CLOSED</VT>
+                </COMPU-CONST>
+              </COMPU-SCALE>
+              <COMPU-SCALE>
+                <SHORT-LABEL>OPEN</SHORT-LABEL>
+                <LOWER-LIMIT INTERVAL-TYPE="CLOSED">1</LOWER-LIMIT>
+                <UPPER-LIMIT INTERVAL-TYPE="CLOSED">1</UPPER-LIMIT>
+                <COMPU-CONST>
+                  <VT>OPEN</VT>
+                </COMPU-CONST>
+              </COMPU-SCALE>
+            </COMPU-SCALES>
+            <COMPU-DEFAULT-VALUE>
+              <VT>CLOSED</VT>
+            </COMPU-DEFAULT-VALUE>
+          </COMPU-INTERNAL-TO-PHYS>
+        </COMPU-METHOD>
+      </ELEMENTS>
+    </AR-PACKAGE>
+
+    <!-- ========== 接口包 ========== -->
+    <AR-PACKAGE UUID="pkg-ifaces">
+      <SHORT-NAME>Interfaces</SHORT-NAME>
+      <ELEMENTS>
+        <SENDER-RECEIVER-INTERFACE UUID="if-door-state">
+          <SHORT-NAME>DoorState_IF</SHORT-NAME>
+          <IS-SERVICE>false</IS-SERVICE>
+          <DATA-ELEMENTS>
+            <DATA-ELEMENT-PROTOTYPE UUID="de-door-state">
+              <SHORT-NAME>DoorState</SHORT-NAME>
+              <TYPE-TREF DEST="APPLICATION-PRIMITIVE-DATA-TYPE">/DataTypes/DoorStateType</TYPE-TREF>
+            </DATA-ELEMENT-PROTOTYPE>
+          </DATA-ELEMENTS>
+        </SENDER-RECEIVER-INTERFACE>
+      </ELEMENTS>
+    </AR-PACKAGE>
+
+    <!-- ========== SWC 包 ========== -->
+    <AR-PACKAGE UUID="pkg-swc">
+      <SHORT-NAME>AppSwc</SHORT-NAME>
+      <ELEMENTS>
+        <APPLICATION-SW-COMPONENT-TYPE UUID="swc-door">
+          <SHORT-NAME>DoorControl</SHORT-NAME>
+          <DESC>
+            <L-2>Door Control SWC</L-2>
+          </DESC>
+          <PORTS>
+            <!-- 读门状态（R_PORT） -->
+            <R-PORT-PROTOTYPE UUID="port-door-state-in">
+              <SHORT-NAME>DoorState_R</SHORT-NAME>
+              <REQUIRED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/DoorState_IF</REQUIRED-INTERFACE-TREF>
+            </R-PORT-PROTOTYPE>
+            <!-- 写门锁指令（P_PORT） -->
+            <P-PORT-PROTOTYPE UUID="port-door-lock-out">
+              <SHORT-NAME>DoorLock_P</SHORT-NAME>
+              <PROVIDED-INTERFACE-TREF DEST="SENDER-RECEIVER-INTERFACE">/Interfaces/DoorState_IF</PROVIDED-INTERFACE-TREF>
+            </P-PORT-PROTOTYPE>
+          </PORTS>
+          <INTERNAL-BEHAVIORS>
+            <SWC-INTERNAL-BEHAVIOR UUID="ib-door">
+              <SHORT-NAME>DoorBehavior</SHORT-NAME>
+              <RUNNABLES>
+                <RUNNABLE-ENTITY UUID="rn-monitor">
+                  <SHORT-NAME>DoorMonitor</SHORT-NAME>
+                  <SYMBOL>DoorControl_Monitor</SYMBOL>
+                  <CAN-BE-INVOKED-CONCURRENTLY>false</CAN-BE-INVOKED-CONCURRENTLY>
+                  <MINIMUM-START-INTERVAL>0.01</MINIMUM-START-INTERVAL>
+                </RUNNABLE-ENTITY>
+              </RUNNABLES>
+            </SWC-INTERNAL-BEHAVIOR>
+          </INTERNAL-BEHAVIORS>
+        </APPLICATION-SW-COMPONENT-TYPE>
+      </ELEMENTS>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

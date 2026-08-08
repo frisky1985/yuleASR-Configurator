@@ -119,6 +119,7 @@ yuletech-monorepo/
 - **代码生成** - 自动生成 C 头文件和源文件
 - **同步机制** - 与 yuleASR 仓库自动同步
 - **扩展架构** - 易于添加新的 BSW 模块
+- **ARXML 导入** - 导入 .arxml 工程（SWC/端口/接口/数据类型/CompuMethod 层），未处理元素告警不崩溃（借鉴 cogu/autosar 的 switcher + ChildElementMap 模式）
 
 ## 使用指南
 

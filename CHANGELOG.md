@@ -12,6 +12,18 @@ with the caveats described in the [Versioning Policy](#versioning-policy) below.
 
 ### Added
 
+- **ARXML SWC 层导入后端**（`@yuletech/core/arxml-import`）：
+  - 导入 .arxml 工程文件（SWC/端口/接口/数据类型/CompuMethod 层）到现有数据模型
+    `SwcProjectConfig`（`types/swc.ts`）
+  - 借鉴 cogu/autosar 的 switcher 字典分发 + ChildElementMap 未处理元素告警模式
+    （告警不崩溃：OEM ARXML 必然含未知元素）
+  - 导入报告：成功元素计数 + `file(line): Unprocessed element <TAG>` 告警清单 + schema 版本探测
+  - 新类型：`CompuMethod` / `CompuScale` / `CompuMethodCategory`（`types/swc.ts`）
+  - 边界：BSW 模块配置（ECUC 层）不导入，由现有 `adapters/arxml-parser` 覆盖
+  - 测试：21 个用例（最小 fixture 往返、未处理元素告警、Client-Server、RAT_NUM_LINEAR、真实 bcm_demo）
+
+### Added
+
 - **Desktop auto-updater**: Integrated `electron-updater` for automatic application updates
   on the desktop build — users receive new versions without manual re-downloads
 - **CI desktop build pipeline**: Automated build matrix for macOS (x64 + arm64),

@@ -38,6 +38,19 @@ export {
   type ParsedParamValue,
 } from './adapters/arxml-parser';
 
+// 导出 ARXML SWC 层导入后端 (SWC/接口/数据类型/CompuMethod, 借鉴 cogu switcher+ChildElementMap 模式)
+export {
+  importSwcArxml,
+  parseSwcArxml,
+  ChildElementMap,
+  LineIndex,
+  refShortName,
+  type SwcImportResult,
+  type SwcArxmlProject,
+  type ImportReport,
+  type UnprocessedElementWarning,
+} from './arxml-import';
+
 // 导出 C 代码生成共享工具 (escapeCString 等, Fix 18/22 单一实现)
 export {
   escapeCString,
