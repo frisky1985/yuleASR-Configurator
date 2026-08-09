@@ -15,6 +15,8 @@
 // Fix 18/22: escapeCString / C_IDENTIFIER_RE 从 core 导出，单一实现（避免 web 私有转义分叉）
 import { escapeCString, C_IDENTIFIER_RE } from '@yuletech/core';
 
+import type { ModuleSchema, ModuleParameter } from '@yuletech/core';
+
 export interface GeneratedFile {
   filename: string;
   content: string;
@@ -82,6 +84,15 @@ function getModuleShortName(id: string): string {
     eth: 'Eth',
     os: 'Os',
     rte: 'Rte',
+    // F1 CfgH-extracted 模块别名（PascalCase 头文件名/宏前缀与 snake_case id 不同）
+    boot: 'Boot',
+    crypto: 'Crypto',
+    e2e: 'E2E',
+    flash: 'Flash',
+    secoc: 'SecOC',
+    someip: 'SomeIp',
+    tcpip: 'TcpIp',
+    udpnm: 'UdpNm',
   };
   return known[id] || id.charAt(0).toUpperCase() + id.slice(1);
 }
@@ -146,7 +157,8 @@ function generateMacroOnlyHeader(
   moduleName: string,
   moduleDisplayName: string,
   version: string,
-  parameters: Record<string, unknown>
+  parameters: Record<string, unknown>,
+  options: { rawMacroNames?: boolean } = {}
 ): string {
   const headerName = getHeaderFilename(moduleId);
   const guardName = headerName.replace(/\./g, '_').toUpperCase();
@@ -185,7 +197,8 @@ function generateMacroOnlyHeader(
 
   for (const [key, value] of Object.entries(parameters)) {
     const keyUpper = toUpperSnake(key);
-    const macro = `${prefix}_${keyUpper}`;
+    // rawMacroNames: schema 驱动模式 — 参数名已是最终宏名（CfgH 提取），不再叠加模块前缀
+    const macro = options.rawMacroNames ? key : `${prefix}_${keyUpper}`;
 
     // Categorize based on key name patterns
     if (/dev.?error|version.?info|det|dev/i.test(key)) {
@@ -233,6 +246,56 @@ function generateMacroOnlyHeader(
   content += `/*==================[end of file]===========================================*/\n`;
 
   return content;
+}
+
+/**
+ * Schema 驱动（F2a）— 参数名 → 宏名解析。
+ *
+ * 规则（与 yuleASR 手写 Cfg.h 对齐）：
+ * 1. CfgH 提取的参数名本身就是宏名（如 FLS_CFG_VENDOR_ID）→ 原样使用；
+ * 2. ARXML 风格参数名（如 WdgDisableAllowed）→ 去除模块名前缀后叠加模块前缀 → WDG_DISABLE_ALLOWED。
+ */
+function schemaParamToMacroName(moduleShortName: string, param: ModuleParameter): string {
+  const raw = param.name;
+  // 已是 UPPER_SNAKE 宏名（CfgH-Extracted: 参数名即宏名）
+  if (/^[A-Z][A-Z0-9_]*$/.test(raw)) return raw;
+  // 去除 PascalCase 模块名前缀，避免 WDG_WDG_* 双重前缀
+  let stripped = raw;
+  if (stripped.startsWith(moduleShortName) && stripped.length > moduleShortName.length) {
+    stripped = stripped.slice(moduleShortName.length);
+  }
+  return `${moduleShortName.toUpperCase()}_${toUpperSnake(stripped)}`;
+}
+
+/**
+ * Schema 驱动 — 参数默认值解析（loader 将 Cfg.h 提取值放入 default）。
+ * 无 default 时按类型回落，保证所有参数都能产出合法宏值。
+ */
+function schemaParamValue(param: ModuleParameter): unknown {
+  if (param.default !== undefined) return param.default;
+  switch (param.type) {
+    case 'boolean':
+      return false;
+    case 'integer':
+    case 'float':
+      return 0;
+    case 'enum':
+      return param.options?.[0]?.value ?? '';
+    default:
+      return '';
+  }
+}
+
+/**
+ * Schema 驱动 — 将扁平 ModuleSchema.parameters（已含递归展平的容器参数）
+ * 转为宏名 → 宏值的映射。
+ */
+function schemaToMacroParams(moduleShortName: string, schema: ModuleSchema): Record<string, unknown> {
+  const params: Record<string, unknown> = {};
+  for (const p of schema.parameters || []) {
+    params[schemaParamToMacroName(moduleShortName, p)] = schemaParamValue(p);
+  }
+  return params;
 }
 
 /**
@@ -383,6 +446,52 @@ export async function generateAllHeaders(
         module.version,
         params
       );
+    }
+
+    files.push({
+      filename,
+      content,
+      language: 'h',
+    });
+  }
+
+  return files;
+}
+
+/**
+ * Generate macro-only `<Module>_Cfg.h` headers from flat ModuleSchema[] (F2a).
+ *
+ * Schema 驱动全量生成：对任意 ModuleSchema（含 F1 从 yuleASR Cfg.h 提取的
+ * 110 个模块）按 schema.parameters 生成宏头；container 参数已由 loader
+ * （load-generated.ts）递归展平进 schema.parameters，生成 `PREFIX_NAME` 宏。
+ *
+ * 与 generateAllHeaders 的关系：
+ * - generateAllHeaders 走 13 模块硬编码路径（存量，保持不变）；
+ * - 本函数走 schema 驱动路径（增量），can 特例同样保留。
+ * - ModuleSchema 无 enabled 字段，传入的 schema 全部生成。
+ */
+export async function generateHeadersFromSchemas(
+  schemas: ModuleSchema[]
+): Promise<GeneratedFile[]> {
+  const files: GeneratedFile[] = [];
+
+  for (const schema of schemas) {
+    const shortName = getModuleShortName(schema.name);
+    const displayName = schema.label || schema.name;
+    const filename = getHeaderFilename(schema.name);
+
+    let content: string;
+    if (schema.name.toLowerCase() === 'can') {
+      // can 特例：需要原始参数名（devErrorDetect 等），不能叠加宏前缀
+      const params: Record<string, unknown> = {};
+      for (const p of schema.parameters || []) {
+        params[p.name] = schemaParamValue(p);
+      }
+      content = generateCanMacroHeader(displayName, schema.version, params);
+    } else {
+      content = generateMacroOnlyHeader(schema.name, schema.name, displayName, schema.version, schemaToMacroParams(shortName, schema), {
+        rawMacroNames: true,
+      });
     }
 
     files.push({
