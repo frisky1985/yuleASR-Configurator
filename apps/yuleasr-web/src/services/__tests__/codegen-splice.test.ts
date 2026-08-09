@@ -149,13 +149,105 @@ describe('V3.2 — 混合头拼接（codegen splice）', () => {
       expect(extractNonMacroSegment(HANDWRITTEN_CAN)).toBeNull();
     });
 
-    it('护栏：非宏段混入 #define → 拒绝拼接并抛错', () => {
+    it('护栏（demo-fixA）：非宏段混入普通 #define → 剔除并记录，不抛错（生成头宏段提供同名宏）', () => {
       const bad = [
         'typedef uint32 T;',
         '#define CANIF_E_PARAM_CANID 0x01U',
         'extern const T Arr[1];',
       ].join('\n');
-      expect(() => extractNonMacroSegment(bad)).toThrow(/非宏段混入 #define/);
+      const seg = extractNonMacroSegment(bad);
+      expect(seg).not.toBeNull();
+      expect(seg!.segment).not.toContain('#define');
+      expect(seg!.droppedDefines).toEqual(['CANIF_E_PARAM_CANID']);
+      expect(seg!.segment).toContain('typedef uint32 T;');
+      expect(seg!.segment).toContain('extern const T Arr[1];');
+    });
+
+    it('护栏（demo-fixA）：MemMap 段宏（START/STOP_SEC）→ 原样保留，不剔除、不拒绝', () => {
+      const sample = [
+        '#define WDGM_START_SEC_CODE', // 首个非宏行之前：不在切片内（其 STOP 在切片内，reset 无害）
+        '#include "WdgM_MemMap.h"',
+        'extern void WdgM_WatchdogTrigger(void);',
+        '#define WDGM_STOP_SEC_CODE', // 非宏语句之后：在切片内，原样保留
+        '#include "WdgM_MemMap.h"',
+      ].join('\n');
+      const seg = extractNonMacroSegment(sample);
+      expect(seg).not.toBeNull();
+      expect(seg!.segment).toContain('extern void WdgM_WatchdogTrigger(void);');
+      expect(seg!.segment).toContain('#define WDGM_STOP_SEC_CODE');
+      expect(seg!.segment).toContain('#include "WdgM_MemMap.h"');
+      expect(seg!.segment).not.toContain('WDGM_START_SEC_CODE');
+      expect(seg!.droppedDefines).toEqual([]);
+    });
+
+    it('（demo-fixA 修截断）：末个非宏行为多行 typedef struct 开头 → 切片扩展到完整闭合', () => {
+      const sample = [
+        'typedef uint16 IdType;',
+        'typedef struct {',
+        '    IdType Fid;',
+        '    boolean availability;',
+        '} FiM_FidConfigType;',
+        '#endif /* guard */',
+      ].join('\n');
+      const seg = extractNonMacroSegment(sample);
+      expect(seg).not.toBeNull();
+      expect(seg!.segment).toBe(sample.slice(0, sample.indexOf('\n#endif')));
+      expect(seg!.segment).toContain('} FiM_FidConfigType;');
+      expect(seg!.segment).not.toContain('#endif');
+    });
+
+    it('（demo-fixA 修截断）：多行 extern 函数声明完整保留到 );', () => {
+      const sample = [
+        'extern Std_ReturnType Csm_Cfg_KeyWrite(',
+        '    uint32 keyId,',
+        '    const uint8* data',
+        ');',
+        '#define CSM_STOP_SEC_CODE',
+        '#include "Csm_MemMap.h"',
+      ].join('\n');
+      const seg = extractNonMacroSegment(sample);
+      expect(seg).not.toBeNull();
+      // 多行 extern 完整保留，; 出现在 MemMap 段标记之前
+      const stmtPart = seg!.segment.split('#define CSM_STOP_SEC_CODE')[0];
+      expect(stmtPart).toContain('extern Std_ReturnType Csm_Cfg_KeyWrite(');
+      expect(stmtPart.trimEnd().endsWith(');')).toBe(true);
+      // 尾部 MemMap 段标记对一并纳入（段 pragma 开合平衡）
+      expect(seg!.segment).toContain('#define CSM_STOP_SEC_CODE');
+      expect(seg!.segment).toContain('#include "Csm_MemMap.h"');
+      expect(seg!.droppedDefines).toEqual([]);
+    });
+
+    it('（demo-fixA）：extern "C" 闭合块（裸 }，#ifdef __cplusplus）→ 剔除，避免悬空 }', () => {
+      const sample = [
+        'typedef uint32 T;',
+        '#ifdef __cplusplus',
+        '}',
+        '#endif',
+        'extern const T Fls_Config;',
+      ].join('\n');
+      const seg = extractNonMacroSegment(sample);
+      expect(seg).not.toBeNull();
+      expect(seg!.segment).not.toContain('__cplusplus');
+      expect(seg!.segment).not.toContain('\n}');
+      expect(seg!.segment).toContain('extern const T Fls_Config;');
+    });
+
+    it('（demo-fixA）：切片内 #ifdef __cplusplus 块含 extern "C" { 配对 → 不剔除', () => {
+      const sample = [
+        'typedef uint32 T;',
+        '#ifdef __cplusplus',
+        'extern "C" {',
+        '#endif',
+        'extern const T Fls_Config;',
+        '#ifdef __cplusplus',
+        '}',
+        '#endif',
+      ].join('\n');
+      const seg = extractNonMacroSegment(sample);
+      expect(seg).not.toBeNull();
+      // 开合配对在切片内 → 保留块（裸 } 剔除规则仅作用于缺配对的闭合块）
+      expect(seg!.segment).toContain('extern "C" {');
+      expect(seg!.segment).toContain('extern const T Fls_Config;');
     });
 
     it('护栏：生成头缺 guard/#endif → splice 抛错', () => {

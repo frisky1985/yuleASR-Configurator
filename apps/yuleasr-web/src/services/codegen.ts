@@ -150,6 +150,18 @@ const KNOWN_MIXED_HEADERS = new Set(['canif']);
  */
 const NON_MACRO_LINE_RE = /^\s*(?:typedef\b|struct\b|extern\b(?!\s*"))/;
 
+/**
+ * MemMap 段宏标记（无值段标记行）：`#define XXX_START_SEC[_suffix]` /
+ * `#define XXX_STOP_SEC[_suffix]`（如 CSM_STOP_SEC_CODE、WDGM_START_SEC_CONFIG_DATA_UNSPECIFIED、
+ * XXX_START_SEC_STRICT）。与 `#include "X_MemMap.h"` 成对控制 #pragma section 开合。
+ * demo-fixA（A 类修复）：此类行豁免护栏（原样保留在非宏段，不剔除、不拒绝拼接）。
+ */
+const MEMMAP_SEGMENT_DEFINE_RE =
+  /^#\s*define\s+[A-Za-z_][A-Za-z0-9_]*_(?:START|STOP)_SEC(?:_[A-Za-z0-9_]*)?\s*$/;
+
+/** MemMap.h 包含行（与段标记成对出现，段开合边界用） */
+const MEMMAP_INCLUDE_RE = /^\s*#\s*include\s+"[^"]*_MemMap\.h"/;
+
 /** 判断一行是否为非宏内容（typedef/struct/extern 配置表），排除注释行 */
 function isNonMacroLine(line: string): boolean {
   const t = line.trim();
@@ -167,7 +179,7 @@ export function hasNonMacroContent(headerContent: string): boolean {
 
 /** 非宏段提取结果 */
 export interface NonMacroSegment {
-  /** 原样行切片（含段内注释），首尾为首个/末个非宏行 */
+  /** 原样行切片（含段内注释），首为首个非宏行，尾为末个非宏语句的完整闭合 */
   segment: string;
   /** 标量 typedef 数 */
   typedefs: number;
@@ -175,12 +187,58 @@ export interface NonMacroSegment {
   structs: number;
   /** extern 配置表数 */
   externs: number;
+  /** 从切片剔除的 #define 宏名（生成头宏段提供同名宏，剔除防重复定义；MemMap 段宏不在此列） */
+  droppedDefines: string[];
+}
+
+/** 行内花括号增量（忽略行尾 // 注释；Cfg.h 配置表无字符串内花括号场景） */
+function braceDelta(line: string): number {
+  const t = line.replace(/\/\/.*$/, '');
+  let d = 0;
+  for (const ch of t) {
+    if (ch === '{') d++;
+    else if (ch === '}') d--;
+  }
+  return d;
+}
+
+/** 行是否以 ; 结束语句（忽略行尾注释） */
+function endsWithSemicolon(line: string): boolean {
+  const t = line.replace(/\/\*.*?\*\//g, '').replace(/\/\/.*$/, '').trimEnd();
+  return t.endsWith(';');
 }
 
 /**
- * 提取手写头非宏段：从首个 typedef/struct/extern 行到末个非宏行的连续切片。
- * 护栏（规则 3）：切片内混入 #define（错误码/别名，如 CanIf_Cfg.h 的
- * CANIF_E_PARAM_CANID/DLC 位于 extern 段之后，天然排除；但防御性拦截）→ 抛错。
+ * 从 startIdx 起扫描到「语句完整闭合」：brace 深度归零且以 ; 结尾
+ * （多行 typedef struct/enum 的 }Type;、多行 extern 函数声明的 ); 均在此收敛）。
+ * 未闭合（异常头）→ 取到文件尾。
+ */
+function findStatementEnd(lines: string[], startIdx: number): number {
+  let depth = 0;
+  for (let i = startIdx; i < lines.length; i++) {
+    depth += braceDelta(lines[i]);
+    if (depth <= 0 && endsWithSemicolon(lines[i])) return i;
+  }
+  return lines.length - 1;
+}
+
+/**
+ * 提取手写头非宏段：从首个 typedef/struct/extern 行起，到「末个非宏语句完整闭合」的连续切片。
+ *
+ * demo-fixA（A 类 splice 修复，2026-08-10）：
+ * 1. 语句闭合扩展（修截断）：原实现切片止于「末个非宏行」——若末个非宏行是多行
+ *    `typedef struct {` 的开头行，切片截断（产物 `typedef struct {` 后直接 #endif）。
+ *    现从末个非宏行向后扫描到语句完整闭合（多行 typedef struct/enum、多行 extern
+ *    函数声明均完整保留），并纳入语句后的尾部 MemMap 段标记对（STOP/START +
+ *    MemMap.h include，保证段 pragma 开合平衡）。
+ * 2. MemMap 段宏豁免（修护栏）：切片内 `#define XXX_START_SEC/STOP_SEC[_*]` 段标记行
+ *    原样保留（不剔除、不触发拒绝）；`#ifdef __cplusplus` 闭合块（裸 `}` 收尾的
+ *    extern "C" 结尾）因缺少切片内的 `extern "C" {` 配对而剔除，避免悬空 `}`。
+ * 3. 非段宏 #define 剔除：切片内其余 #define（配置宏/错误码/防重定义标记，如
+ *    Linker 的 MPU_REGION_COUNT、Flash 的 FLASH_* 寄存器宏）从非宏段剔除——这些宏由
+ *    生成头宏段提供（宏名版 schema 与手写头同名），剔除防重复定义；名单记录在
+ *    droppedDefines 供诊断。护栏由「拒绝拼接」改为「剔除 + 记录」。
+ *
  * 无非宏内容 → 返回 null（纯宏头，无需拼接）。
  */
 export function extractNonMacroSegment(headerContent: string): NonMacroSegment | null {
@@ -191,19 +249,99 @@ export function extractNonMacroSegment(headerContent: string): NonMacroSegment |
   });
   if (idxs.length === 0) return null;
 
-  const slice = lines.slice(idxs[0], idxs[idxs.length - 1] + 1);
-  const defines = slice.filter(l => /^\s*#define\b/.test(l));
-  if (defines.length > 0) {
-    throw new Error(
-      `[codegen] 非宏段混入 #define，拒绝拼接: ${defines[0].trim()}（手写头结构异常）`
-    );
+  // 末个非宏语句完整闭合（修截断）
+  let end = findStatementEnd(lines, idxs[idxs.length - 1]);
+  // 尾部 MemMap 段标记对（含其间空行）：保证切片内段 pragma 开合平衡
+  while (end + 1 < lines.length) {
+    const t = lines[end + 1].trim();
+    if (!t || MEMMAP_SEGMENT_DEFINE_RE.test(t) || MEMMAP_INCLUDE_RE.test(t)) end++;
+    else break;
+  }
+  // 条件编译平衡：切片内未闭合的 #if/#ifdef/#ifndef（如 Swc 的 #if (SWC_PB_CONFIG == STD_ON)）
+  // → 前向补足配对 #endif，避免拼接产物 #if 悬空吞掉生成头尾部 #endif
+  let cppBalance = 0;
+  for (let i = idxs[0]; i <= end; i++) {
+    const t = lines[i].trim();
+    if (/^#\s*if(?:def|ndef)?\b/.test(t)) cppBalance++;
+    else if (/^#\s*endif\b/.test(t)) cppBalance--;
+  }
+  while (cppBalance > 0 && end + 1 < lines.length) {
+    end++;
+    const t = lines[end].trim();
+    if (/^#\s*if(?:def|ndef)?\b/.test(t)) cppBalance++;
+    else if (/^#\s*endif\b/.test(t)) cppBalance--;
   }
 
+  const slice = lines.slice(idxs[0], end + 1);
+
+  // 剔除 extern "C" 闭合块：#ifdef __cplusplus 内含裸 `}`（其配对 extern "C" { 在切片外）
+  // 以及悬空 #endif（配对 #if 在切片外，如切片起始于条件块内部）
+  const dropLines = new Set<number>();
+  {
+    // 悬空 #endif 剔除
+    let bal = 0;
+    for (let i = 0; i < slice.length; i++) {
+      const t = slice[i].trim();
+      if (/^#\s*if(?:def|ndef)?\b/.test(t)) bal++;
+      else if (/^#\s*endif\b/.test(t)) {
+        if (bal === 0) dropLines.add(i);
+        else bal--;
+      }
+    }
+    // extern "C" 闭合块剔除
+    let i = 0;
+    while (i < slice.length) {
+      const t = slice[i].trim();
+      if (/^#\s*if(?:def\s+__cplusplus\b| defined\(__cplusplus\))/.test(t)) {
+        let j = i + 1;
+        let nest = 0;
+        while (j < slice.length) {
+          const tj = slice[j].trim();
+          if (/^#\s*if(?:def|ndef)?\b/.test(tj)) nest++;
+          else if (/^#\s*endif\b/.test(tj)) {
+            if (nest === 0) break;
+            nest--;
+          }
+          j++;
+        }
+        const block = slice.slice(i, Math.min(j + 1, slice.length));
+        const hasBareClose = block.some(l => l.trim() === '}');
+        const hasOpen = block.some(l => l.trim() === '{' || l.includes('extern "C" {'));
+        if (hasBareClose && !hasOpen) {
+          for (let k = i; k <= j && k < slice.length; k++) dropLines.add(k);
+        }
+        i = j + 1;
+      } else {
+        i++;
+      }
+    }
+  }
+
+  // 剔除非段宏 #define（MemMap 段宏保留）；记录剔除名单
+  const kept: string[] = [];
+  const droppedDefines: string[] = [];
+  for (let i = 0; i < slice.length; i++) {
+    if (dropLines.has(i)) continue;
+    const t = slice[i].trim();
+    if (/^#\s*define\b/.test(t)) {
+      if (MEMMAP_SEGMENT_DEFINE_RE.test(t)) {
+        kept.push(slice[i]); // MemMap 段标记：原样保留
+      } else {
+        const m = /^#\s*define\s+([A-Za-z_][A-Za-z0-9_]*)/.exec(t);
+        if (m) droppedDefines.push(m[1]); // 配置宏：生成头宏段提供，剔除防重复定义
+      }
+      continue;
+    }
+    kept.push(slice[i]);
+  }
+  const segment = kept.join('\n').trim();
+
   return {
-    segment: slice.join('\n'),
-    typedefs: slice.filter(l => /^\s*typedef\b/.test(l) && !/^\s*typedef\s+struct\b/.test(l)).length,
-    structs: slice.filter(l => /^\s*typedef\s+struct\b/.test(l)).length,
-    externs: slice.filter(l => /^\s*extern\b/.test(l)).length,
+    segment,
+    typedefs: kept.filter(l => /^\s*typedef\b/.test(l) && !/^\s*typedef\s+struct\b/.test(l)).length,
+    structs: kept.filter(l => /^\s*typedef\s+struct\b/.test(l)).length,
+    externs: kept.filter(l => /^\s*extern\b/.test(l)).length,
+    droppedDefines,
   };
 }
 
@@ -212,9 +350,36 @@ const STD_TYPES_TYPE_RE =
   /\b(?:uint8|uint16|uint32|uint64|sint8|sint16|sint32|sint64|boolean|float32|float64)\b/;
 
 /**
+ * 收集手写头「序部」类型 include（demo-fixA，A 类修复）：
+ * 手写非宏段（typedef/struct/extern）可能依赖手写头顶部的类型头
+ * （如 Csm_Cfg.h 的 Csm_Types.h、Os_TimingProtection_Cfg.h 的 Os.h），
+ * 纯宏生成头不含这些 include → 拼接头缺类型定义。
+ * 规则：首个非宏行之前出现的 #include "..." 原样携带，去重保序；
+ * 排除 Std_Types.h（splice 按需添加）与 *_MemMap.h（段标记，切片内已含）。
+ */
+function collectHandwrittenPrologueIncludes(headerContent: string): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+  for (const line of headerContent.split('\n')) {
+    const t = line.trim();
+    if (isNonMacroLine(line)) break; // 首个非宏行：序部结束
+    const m = /^#\s*include\s+"([^"]+)"/.exec(t);
+    if (!m) continue;
+    const name = m[1];
+    if (name === 'Std_Types.h' || /_MemMap\.h$/.test(name)) continue;
+    if (!seen.has(name)) {
+      seen.add(name);
+      out.push(line);
+    }
+  }
+  return out;
+}
+
+/**
  * 拼接实现（V3.1 方案固化）：
  *   生成头（宏段）拆分为 head(文件头+guard) / macros / tail(#endif+文件尾)，
- *   在 guard 后插入 #include "Std_Types.h"（非宏段依赖 Std_Types 类型时），
+ *   在 guard 后插入 #include "Std_Types.h"（非宏段依赖 Std_Types 类型时）及
+ *   手写头序部类型 include（Csm_Types.h/Os.h 等，demo-fixA），
  *   宏段之后追加手写非宏段（typedef/struct/extern），再拼回 tail。
  *
  * 顺序约束：宏段先行——extern 数组尺寸引用宏段计数宏。
@@ -245,11 +410,16 @@ export function spliceGeneratedWithNonMacro(
   const include = STD_TYPES_TYPE_RE.test(nonMacro.segment)
     ? '#include "Std_Types.h"   /* 非宏段依赖 Std_Types 基础类型 (uint32/uint8/uint16/boolean 等)，生成宏段不含此 include */'
     : null;
+  // demo-fixA：手写头序部类型 include（Csm_Types.h/Os.h 等）原样携带，非宏段类型依赖不丢
+  const prologueIncludes = collectHandwrittenPrologueIncludes(handwrittenContent);
 
   const banner = [
     '/*==================================================================================================',
     '*  NON-MACRO SEGMENT (preserved from handwritten header, merged by codegen splice)',
     `*  typedef(${nonMacro.typedefs}) + struct(${nonMacro.structs}) + extern config tables(${nonMacro.externs}) — 依赖宏段计数宏, 故置于宏段之后`,
+    ...(nonMacro.droppedDefines.length > 0
+      ? [`*  剔除重复 #define: ${nonMacro.droppedDefines.join(', ')}（生成宏段提供同名宏）`]
+      : []),
     '*================================================================================================*/',
   ];
 
@@ -257,6 +427,7 @@ export function spliceGeneratedWithNonMacro(
     ...head,
     '',
     ...(include ? [include] : []),
+    ...prologueIncludes,
     ...macros,
     '',
     ...banner,
