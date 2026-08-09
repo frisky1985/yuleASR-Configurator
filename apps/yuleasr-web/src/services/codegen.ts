@@ -14,8 +14,9 @@
 
 // Fix 18/22: escapeCString / C_IDENTIFIER_RE 从 core 导出，单一实现（避免 web 私有转义分叉）
 import { escapeCString, C_IDENTIFIER_RE } from '@yuletech/core';
-
 import type { ModuleSchema, ModuleParameter } from '@yuletech/core';
+import { loadModuleSchemas } from '@yuletech/core/schema/load-generated';
+
 
 export interface GeneratedFile {
   filename: string;
@@ -502,6 +503,150 @@ export async function generateHeadersFromSchemas(
   }
 
   return files;
+}
+
+/**
+ * UI 层可用的最小配置模块形状（F2b：Editor 配置数据 → schema 驱动生成）。
+ * 与 types/config.ts 的 ConfigModule 结构化兼容（多余字段忽略）。
+ */
+export interface ConfigModuleLike {
+  /** 模块 id（与 name 同义，可为 undefined） */
+  id?: string;
+  /** 模块短名（如 'Can' / 'flash'，与 schema.name 大小写不敏感匹配） */
+  name: string;
+  /** 模块是否启用：仅 enabled 模块的参数值参与覆盖；禁用模块回落 schema 默认值 */
+  enabled: boolean;
+  /** 模块级参数（name → value；与 schema 参数名精确匹配才覆盖） */
+  parameters?: Array<{ name: string; value: unknown }>;
+}
+
+/** Schema 覆盖行（F2b：模块列表页 117 模块 schema 覆盖展示） */
+export interface SchemaCoverageRow {
+  /** 模块名（schema 名或配置独有模块名） */
+  name: string;
+  /** 显示标签 */
+  label?: string;
+  /** 层级（MCAL/ECUAL/Service/RTE/ASW；无 schema 时为空） */
+  layer?: string;
+  /** 参数数（schema.parameters 长度；无 schema 时为配置参数数） */
+  paramCount: number;
+  /** 容器数（schema.containers 长度；无 schema 时为 0） */
+  containerCount: number;
+  /** 是否有 schema（有 → 可配；无 → 仅展示） */
+  hasSchema: boolean;
+  /** 在当前配置中的状态 */
+  configStatus: 'enabled' | 'disabled' | 'absent';
+}
+
+/** 覆盖统计（覆盖表头摘要用） */
+export interface SchemaCoverageSummary {
+  total: number;
+  withSchema: number;
+  withoutSchema: number;
+  configured: number;
+  enabled: number;
+}
+
+/**
+ * 构建 117 模块 schema 覆盖行（F2b）。
+ *
+ * 语义：
+ * - 有 schema 且配置中存在 → 「有 schema 可配」（configStatus 区分 enabled/disabled）；
+ * - 有 schema 但配置未启用/未配置 → 可配但未用；
+ * - 配置中存在但无 schema → 「无 schema 仅展示」（hasSchema=false）。
+ *
+ * @param configModules 当前配置模块列表（可为空数组：仅展示 schema 清单）
+ * @param schemas 可选 schema 列表（默认 loadModuleSchemas()，117 个）
+ */
+export function buildSchemaCoverage(
+  configModules: ConfigModuleLike[],
+  schemas?: ModuleSchema[]
+): { rows: SchemaCoverageRow[]; summary: SchemaCoverageSummary } {
+  const allSchemas = schemas ?? loadModuleSchemas();
+  const configByName = new Map(
+    configModules.map(m => [m.name.toLowerCase(), m])
+  );
+
+  const rows: SchemaCoverageRow[] = allSchemas.map(schema => {
+    const cfg = configByName.get(schema.name.toLowerCase());
+    return {
+      name: schema.name,
+      label: schema.label,
+      layer: schema.layer,
+      paramCount: schema.parameters?.length ?? 0,
+      containerCount: schema.containers?.length ?? 0,
+      hasSchema: true,
+      configStatus: cfg ? (cfg.enabled ? 'enabled' : 'disabled') : 'absent',
+    };
+  });
+
+  // 配置中无 schema 的模块（仅展示）
+  const schemaNames = new Set(allSchemas.map(s => s.name.toLowerCase()));
+  for (const cfg of configModules) {
+    if (schemaNames.has(cfg.name.toLowerCase())) continue;
+    rows.push({
+      name: cfg.name,
+      label: cfg.name,
+      paramCount: cfg.parameters?.length ?? 0,
+      containerCount: 0,
+      hasSchema: false,
+      configStatus: cfg.enabled ? 'enabled' : 'disabled',
+    });
+  }
+
+  rows.sort((a, b) => a.name.localeCompare(b.name));
+
+  const summary: SchemaCoverageSummary = {
+    total: rows.length,
+    withSchema: rows.filter(r => r.hasSchema).length,
+    withoutSchema: rows.filter(r => !r.hasSchema).length,
+    configured: rows.filter(r => r.configStatus !== 'absent').length,
+    enabled: rows.filter(r => r.configStatus === 'enabled').length,
+  };
+
+  return { rows, summary };
+}
+
+/**
+ * 配置数据 → schema 驱动全量生成（F2b 主入口）。
+ *
+ * 将 Editor 配置模块的参数值覆盖到对应 schema 的 default 上（按参数名精确匹配），
+ * 然后走 F2a 的 generateHeadersFromSchemas 生成全部模块 `<Module>_Cfg.h`。
+ *
+ * 规则（诚实声明）：
+ * - 生成集合 = 全部 schema（117 个），不因配置未启用而跳过——yuleASR 构建需要全量头文件；
+ * - 仅 enabled 配置模块的参数参与覆盖；disabled/未配置模块按 schema 默认值生成；
+ * - 配置参数名与 schema 参数名精确匹配（区分大小写）；不匹配的参数不影响该模块生成；
+ * - 配置中存在但 schema 缺失的模块不参与生成（无 schema 无法生成宏头，仅覆盖表展示）。
+ *
+ * @param configModules 当前配置模块
+ * @param schemas 可选 schema 列表（默认 loadModuleSchemas()）
+ * @returns 全部模块生成文件（与 schemas 等长）
+ */
+export async function generateHeadersFromConfig(
+  configModules: ConfigModuleLike[],
+  schemas?: ModuleSchema[]
+): Promise<GeneratedFile[]> {
+  const allSchemas = schemas ?? loadModuleSchemas();
+  const configByModule = new Map(
+    configModules
+      .filter(m => m.enabled)
+      .map(m => [m.name.toLowerCase(), m])
+  );
+
+  const overridden = allSchemas.map(schema => {
+    const cfg = configByModule.get(schema.name.toLowerCase());
+    if (!cfg) return schema;
+    const cfgParams = new Map((cfg.parameters ?? []).map(p => [p.name, p.value]));
+    return {
+      ...schema,
+      parameters: (schema.parameters ?? []).map(p =>
+        cfgParams.has(p.name) ? { ...p, default: cfgParams.get(p.name) } : p
+      ),
+    };
+  });
+
+  return generateHeadersFromSchemas(overridden);
 }
 
 /**

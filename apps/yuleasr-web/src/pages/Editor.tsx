@@ -1,3 +1,4 @@
+import type { AutosarSchemaVersion } from '@yuletech/core/arxml-export';
 import JSZip from 'jszip';
 import {
   Save,
@@ -17,6 +18,7 @@ import {
   FileJson,
   Cloud,
   CloudOff,
+  Boxes,
 } from 'lucide-react';
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -30,34 +32,34 @@ import {
   ConfigurationStatusPanel,
   exportConfigReport,
 } from '@/components/ConfigurationStatusPanel';
+import { ContainerConfigSection } from '@/components/ContainerConfigSection';
+import { ContainerParameterList } from '@/components/ContainerParameterList';
+import { SchemaCoverageTable } from '@/components/ecuc/SchemaCoverageTable';
 import { GlobalSearch } from '@/components/GlobalSearch';
+import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp';
 import { ModuleConfigWizard } from '@/components/ModuleConfigWizard';
 import { OSEditor } from '@/components/OSEditor';
 import { ParameterEditor } from '@/components/ParameterEditor';
-import { useTheme } from '@/components/ThemeProvider';
-import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp';
+import { PipelinePushButton } from '@/components/PipelinePushButton';
+import { PipelineStatusPanel } from '@/components/PipelineStatusPanel';
 import { ShareDialog } from '@/components/ShareDialog';
+import { useTheme } from '@/components/ThemeProvider';
 import { ValidationPanel } from '@/components/ValidationPanel';
-import { ContainerConfigSection } from '@/components/ContainerConfigSection';
-import { ContainerParameterList } from '@/components/ContainerParameterList';
 import { cn, formatDate } from '@/lib/utils';
 import {
   DEFAULT_SCHEMA_VERSION,
   generateArxml,
   targetVersionOptions,
 } from '@/services/arxml-exporter';
-import type { AutosarSchemaVersion } from '@yuletech/core/arxml-export';
 import { parseArxmlContent, arxmlToConfigModules } from '@/services/arxml-parser';
-import { generateAllHeaders } from '@/services/codegen';
+import { generateHeadersFromConfig } from '@/services/codegen';
 import type { GeneratedFile } from '@/services/codegen';
 import { downloadAuditReport } from '@/services/configReportGenerator';
+import { triggerPipeline } from '@/services/yuleoshPipeline';
 import { useConfigStore, toConditionModuleConfigs } from '@/stores/configStore';
+import { useSettingsStore } from '@/stores/settingsStore';
 import type { ValidationResult } from '@/types';
 import type { ConfigContainer, ConfigFile } from '@/types/config';
-import { PipelinePushButton } from '@/components/PipelinePushButton';
-import { PipelineStatusPanel } from '@/components/PipelineStatusPanel';
-import { triggerPipeline } from '@/services/yuleoshPipeline';
-import { useSettingsStore } from '@/stores/settingsStore';
 
 export function Editor() {
   const { configId } = useParams<{ configId: string }>();
@@ -90,6 +92,8 @@ export function Editor() {
   const saveMenuRef = useRef<HTMLDivElement>(null);
   const [showOverflowMenu, setShowOverflowMenu] = useState(false);
   const overflowMenuRef = useRef<HTMLDivElement>(null);
+  // F2b: 全量 schema 覆盖弹窗（117 模块覆盖展示 + 全量生成 ZIP）
+  const [showSchemaCoverage, setShowSchemaCoverage] = useState(false);
 
   // ── Code gen state (declared early — used by Electron useEffect below) ──
   const [importing, setImporting] = useState(false);
@@ -781,11 +785,10 @@ export function Editor() {
           <button
             onClick={async () => {
               if (!currentConfig) return;
-              const files = await generateAllHeaders(currentConfig.modules);
+              // F2b: 配置数据 → schema 驱动全量生成（117 模块，配置值覆盖默认值）
+              const files = await generateHeadersFromConfig(currentConfig.modules);
               if (files.length === 0) {
-                alert(
-                  'No enabled modules with code generation support.\nEnable a module (e.g. Adc, Mcu, Can) first.'
-                );
+                alert('未加载到任何模块 schema，无法生成。');
                 return;
               }
               setCodeGenFiles(files);
@@ -843,6 +846,16 @@ export function Editor() {
             </button>
             {showOverflowMenu && (
               <div className="absolute right-0 top-full mt-1 bg-app-bg-primary border border-app-border-primary rounded-lg shadow-lg z-50 min-w-[190px] py-1">
+                <button
+                  onClick={() => {
+                    setShowOverflowMenu(false);
+                    setShowSchemaCoverage(true);
+                  }}
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-app-bg-secondary transition-colors flex items-center gap-2"
+                >
+                  <Boxes className="w-4 h-4 text-blue-500" />
+                  全量 Schema 覆盖（117 模块）
+                </button>
                 <button
                   onClick={() => {
                     setShowOverflowMenu(false);
@@ -1316,6 +1329,46 @@ export function Editor() {
               <pre className="text-xs font-mono leading-relaxed text-gray-800 bg-app-bg-secondary rounded-lg p-4 overflow-x-auto whitespace-pre">
                 {codeGenResult.content}
               </pre>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* F2b: 全量 Schema 覆盖弹窗 */}
+      {showSchemaCoverage && currentConfig && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4"
+          onClick={() => setShowSchemaCoverage(false)}
+        >
+          <div
+            className="bg-app-bg-primary rounded-lg shadow-xl border border-app-border-primary w-[860px] max-h-[85vh] flex flex-col"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-5 py-3 border-b border-app-border-primary">
+              <h3 className="text-sm font-semibold text-app-text-primary">
+                全量模块 Schema 覆盖（117）
+              </h3>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowSchemaCoverage(false)}
+                  className="p-1.5 text-app-text-tertiary hover:text-app-text-secondary"
+                >
+                  <span className="text-lg">×</span>
+                </button>
+              </div>
+            </div>
+            <div className="p-5 overflow-y-auto">
+              <SchemaCoverageTable
+                configModules={currentConfig.modules}
+                onGenerated={files => {
+                  // 生成后同步到主预览（可查看/单文件下载/GCC 校验）
+                  if (files.length > 0) {
+                    setCodeGenFiles(files);
+                    setCodeGenResult(files[0]);
+                    setGccResults(null);
+                  }
+                }}
+              />
             </div>
           </div>
         </div>
