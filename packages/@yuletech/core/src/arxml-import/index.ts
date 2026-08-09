@@ -21,10 +21,22 @@ export {
   ChildElementMap,
   LineIndex,
   refShortName,
+  resolveReferences,
   type SwcArxmlProject,
   type ImportReport,
   type UnprocessedElementWarning,
+  type PendingReference,
 } from './reader';
+
+// 引用类型约束表（C1 · R1）：REF_CONSTRAINTS + RefTargetKind
+// 对齐 cogu reference.py 47 个 Ref 类的 accepted_sub_types() 白名单
+// （这里只覆盖本导入器涉及的 4 类引用点）。
+export {
+  REF_CONSTRAINTS,
+  REF_TARGET_KIND_LABELS,
+  type RefTargetKind,
+  type RefConstraintKey,
+} from './reference';
 
 /** 导入结果：现有数据模型 + 导入报告 */
 export interface SwcImportResult {

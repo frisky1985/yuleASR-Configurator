@@ -31,6 +31,8 @@ import type {
   SwcInternalBehavior,
 } from '../types/swc';
 
+import { REF_CONSTRAINTS, REF_TARGET_KIND_LABELS, type RefTargetKind } from './reference';
+
 // ============================================================================
 // 导入报告类型
 // ============================================================================
@@ -302,6 +304,18 @@ export class LineIndex {
 // 读取上下文
 // ============================================================================
 
+/** 待解析引用（C1：解析期类型校验 + 短名写回） */
+export interface PendingReference {
+  /** 原始引用路径（如 /Interfaces/DoorState_IF） */
+  ref: string;
+  /** 期望目标类别（REF_CONSTRAINTS 约束表取值） */
+  expected: RefTargetKind;
+  /** 引用上下文（错误信息用，如 "port DoorState_R"） */
+  context: string;
+  /** 解析成功（目标存在且类别匹配）后写回短名；缺省则不写回 */
+  onResolved?: (shortName: string) => void;
+}
+
 export interface ReadContext {
   sourceName: string;
   lineIndex: LineIndex;
@@ -310,6 +324,8 @@ export interface ReadContext {
   interfaceMap: Map<string, PortInterfaceBase>;
   /** 数据类型引用：类型名 → 数据类型 */
   typeMap: Map<string, ApplicationDataType | ImplementationDataType>;
+  /** 待解析引用队列（收集 → 末遍统一类型校验与写回） */
+  pendingRefs: PendingReference[];
 }
 
 export function createReadContext(sourceName: string, xml: string): ReadContext {
@@ -335,6 +351,7 @@ export function createReadContext(sourceName: string, xml: string): ReadContext 
     },
     interfaceMap: new Map(),
     typeMap: new Map(),
+    pendingRefs: [],
   };
 }
 
@@ -473,8 +490,8 @@ export function parseSwcArxml(xmlContent: string, sourceName = 'input.arxml'): S
       }
     }
 
-    // 解析引用：SWC 端口 interfaceRef 从短名解析为完整接口
-    resolvePortInterfaceRefs(project);
+    // 解析引用：类型约束校验（C1）+ 短名写回（目标存在且类别匹配）
+    resolveReferences(ctx, project);
   } catch (err) {
     ctx.report.errors.push(`Parse error: ${err instanceof Error ? err.message : String(err)}`);
   }
@@ -532,27 +549,47 @@ export function refShortName(ref: string): string {
   return idx >= 0 ? ref.substring(idx + 1) : ref;
 }
 
-/** 解析端口 interfaceRef：引用路径 → 项目中存在的接口名（找不到则保留短名并告警） */
-function resolvePortInterfaceRefs(project: SwcArxmlProject): void {
-  const interfaceByName = new Map<string, PortInterfaceBase>();
-  for (const iface of project.interfaces) {
-    interfaceByName.set(iface.name, iface);
-  }
-
-  const resolve = (port: PortPrototype): void => {
-    if (!port.interfaceRef) return;
-    const shortName = refShortName(port.interfaceRef);
-    if (interfaceByName.has(shortName)) {
-      port.interfaceRef = shortName;
+/**
+ * 引用解析（C1 类型约束版）。
+ * 按 REF_CONSTRAINTS 约束表逐条校验收集到的引用：
+ *  - 目标存在且类别匹配 → 写回短名（onResolved）；
+ *  - 目标存在但类别不符 → 硬错误（类型不符即报错，替代"告警后猜"）；
+ *  - 目标不存在 → 容忍（保留原引用，OEM ARXML 可引用包外元素）。
+ */
+export function resolveReferences(ctx: ReadContext, project: SwcArxmlProject): void {
+  // 目标注册表：元素名 → 类别集合（引用解析的唯一事实来源）。
+  // 用 Set 而非单值：同名元素可能同时存在为接口与数据类型（跨包合法场景），
+  // 任一类匹配即通过；都不匹配才报类型不符。
+  const targets = new Map<string, Set<RefTargetKind>>();
+  const register = (name: string, kind: RefTargetKind): void => {
+    let kinds = targets.get(name);
+    if (!kinds) {
+      kinds = new Set();
+      targets.set(name, kinds);
     }
-    // 未找到：保留原始引用，UI 可提示缺失引用（不崩溃）
+    kinds.add(kind);
   };
+  for (const iface of project.interfaces) register(iface.name, 'INTERFACE');
+  for (const dt of project.applicationDataTypes) register(dt.name, 'DATA_TYPE');
+  for (const dt of project.implementationDataTypes) register(dt.name, 'DATA_TYPE');
+  for (const name of project.baseTypes.keys()) register(name, 'BASE_TYPE');
+  for (const cm of project.compuMethods) register(cm.name, 'COMPU_METHOD');
 
-  for (const swc of project.applicationComponents) {
-    swc.ports.forEach(resolve);
-  }
-  for (const swc of project.compositionComponents) {
-    swc.ports.forEach(resolve);
+  for (const pending of ctx.pendingRefs) {
+    if (!pending.ref) continue;
+    const shortName = refShortName(pending.ref);
+    const actualKinds = targets.get(shortName);
+    if (actualKinds === undefined) continue; // 缺失引用：容忍（UI 可提示缺失）
+    if (!actualKinds.has(pending.expected)) {
+      // 类型不符：报错而非猜测
+      ctx.report.errors.push(
+        `Invalid reference: ${pending.ref} (${pending.context}): expected ` +
+          `${REF_TARGET_KIND_LABELS[pending.expected]}, but '${shortName}' is ` +
+          `${[...actualKinds].map(k => REF_TARGET_KIND_LABELS[k]).join(', ')}`
+      );
+      continue;
+    }
+    pending.onResolved?.(shortName);
   }
 }
 
@@ -615,10 +652,20 @@ function readApplicationDataType(ctx: ReadContext, node: Record<string, unknown>
       const baseTypeRef = getTextContent(conditional, 'BASE-TYPE-REF');
       if (baseTypeRef) {
         dt.baseType = refShortName(baseTypeRef);
+        ctx.pendingRefs.push({
+          ref: baseTypeRef,
+          expected: REF_CONSTRAINTS.baseTypeRef,
+          context: `data type ${name}`,
+        });
       }
       const compuRef = getTextContent(conditional, 'COMPU-METHOD-REF');
       if (compuRef) {
         dt.compuMethodRef = refShortName(compuRef);
+        ctx.pendingRefs.push({
+          ref: compuRef,
+          expected: REF_CONSTRAINTS.compuMethodRef,
+          context: `data type ${name}`,
+        });
       }
     }
   }
@@ -661,9 +708,21 @@ function readImplementationDataType(ctx: ReadContext, node: Record<string, unkno
       if (baseTypeRef) {
         const shortName = refShortName(baseTypeRef);
         dt.cType = project.baseTypes.get(shortName) || shortName;
+        ctx.pendingRefs.push({
+          ref: baseTypeRef,
+          expected: REF_CONSTRAINTS.baseTypeRef,
+          context: `implementation data type ${name}`,
+        });
       }
       const compuRef = getTextContent(conditional, 'COMPU-METHOD-REF');
-      if (compuRef) dt.compuMethodRef = refShortName(compuRef);
+      if (compuRef) {
+        dt.compuMethodRef = refShortName(compuRef);
+        ctx.pendingRefs.push({
+          ref: compuRef,
+          expected: REF_CONSTRAINTS.compuMethodRef,
+          context: `implementation data type ${name}`,
+        });
+      }
     }
   }
 
@@ -845,6 +904,13 @@ function readDataElementPrototype(ctx: ReadContext, node: Record<string, unknown
     name,
     typeRef: typeRef ? refShortName(typeRef) : '',
   };
+  if (typeRef) {
+    ctx.pendingRefs.push({
+      ref: typeRef,
+      expected: REF_CONSTRAINTS.typeRef,
+      context: `data element ${name}`,
+    });
+  }
 
   const desc = getDescText(node);
   if (desc) de.description = desc;
@@ -953,6 +1019,13 @@ function readCsArgument(
     typeRef: typeRef ? refShortName(typeRef) : '',
     direction: (directionRaw === 'OUT' ? 'OUT' : directionRaw === 'INOUT' ? 'INOUT' : 'IN') as 'IN' | 'OUT' | 'INOUT',
   };
+  if (typeRef) {
+    ctx.pendingRefs.push({
+      ref: typeRef,
+      expected: REF_CONSTRAINTS.typeRef,
+      context: `argument ${name}`,
+    });
+  }
 
   reportUnprocessedChildren(ctx, children);
   return arg;
@@ -1037,11 +1110,22 @@ function readPortPrototype(ctx: ReadContext, node: Record<string, unknown>, dire
   const requiredRef = getTextContent(node, 'REQUIRED-INTERFACE-TREF');
   children.skip('REQUIRED-INTERFACE-TREF');
 
+  const ref = providedRef || requiredRef || '';
   const port: PortPrototype = {
     name,
     direction,
-    interfaceRef: providedRef || requiredRef || '',
+    interfaceRef: ref,
   };
+  if (ref) {
+    ctx.pendingRefs.push({
+      ref,
+      expected: REF_CONSTRAINTS.interfaceRef,
+      context: `port ${name}`,
+      onResolved: shortName => {
+        port.interfaceRef = shortName;
+      },
+    });
+  }
 
   const desc = getDescText(node);
   if (desc) port.description = desc;
