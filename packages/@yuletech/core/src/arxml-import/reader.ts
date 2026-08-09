@@ -1,9 +1,10 @@
 /**
- * @yuletech/core - ARXML SWC-layer Reader（R8/E1 起覆盖 ECUC 值层）
+ * @yuletech/core - ARXML SWC-layer Reader（R8/E1 起覆盖 ECUC 值层，R8/E2 起覆盖 ECUC 定义层）
  *
  * 轻量自研 ARXML 解析器：SWC/端口/接口/数据类型/CompuMethod 层 +
  * ECUC 值层（ECUC-MODULE-CONFIGURATION-VALUES / PARAMETER-VALUES /
- * ECUC-CONTAINER-VALUE 递归，R8/E1 启动）。
+ * ECUC-CONTAINER-VALUE 递归，R8/E1）+ ECUC 定义层（ECUC-MODULE-DEF /
+ * ECUC-PARAM-DEF 族 / ECUC-CONTAINER-DEF 递归 / ECUC-REFERENCE-DEF，R8/E2）。
  *
  * 设计借鉴 cogu/autosar（https://github.com/cogu/autosar）reader.py 的两个模式：
  *  1. switcher 字典分发（reader.py:116-200）—— 每个元素类型对应一个 _read_xxx 方法，
@@ -12,11 +13,14 @@
  *     的子元素是否被消费，未消费的按 `file(line): Unprocessed element <TAG>` 告警，
  *     告警而非崩溃（OEM ARXML 必然含库不认识的元素）。
  *
- * R8/E1 边界（诚实声明，详见批次 3 报告）：
- *  - 本批只做 ECUC **值层**；定义层（ECUC-MODULE-DEF 元模型）不解析，
- *    DEFINITION-REF 保留字符串（definitionRef / moduleDefRef=短名），不做值-定义一致性校验；
+ * R8 边界（诚实声明，详见批次 3/4 报告）：
+ *  - E1 值层：ECUC-MODULE-CONFIGURATION-VALUES / 参数 / 容器递归，DEFINITION-REF 保留原文；
+ *  - E2 定义层：ECUC-MODULE-DEF 元模型（参数族含 INTEGER/FLOAT/STRING 子类归一），
+ *    定义↔值关联按 DEFINITION-REF 短名回填 moduleDef；
+ *  - E3 一致性校验：见 ecuc-consistency.ts（定义层缺席的纯值层文件跳过校验，避免误报）；
  *  - ECUC 定义引用（DEST=ECUC-MODULE-DEF / ECUC-PARAM-CONF-CONTAINER-DEF）
- *    不参与 C1 pendingRefs 类型校验（无定义层目标可校验）；
+ *    不参与 C1 pendingRefs 类型校验（E3 自校验，见 ecuc-consistency.ts）；
+ *  - 定义层未建模的常用子元素（MIN/MAX/PHYSICAL-UNIT/CHOICE 等）沿用未处理告警（不崩溃）；
  *  - IMPLEMENTATION-CONFIG-VARIANT 为标准元素但值层模型不捕获（skip 不告警，见 readEcucModule）。
  *
  * 与导出侧对称：EcucModuleConfigValue / EcucContainerValue / EcucParameterValue
@@ -72,6 +76,8 @@ export interface ImportReport {
     compuMethods: number;
     /** ECUC 值层模块数（R8/E1） */
     ecucModules: number;
+    /** ECUC 定义层模块数（R8/E2：ECUC-MODULE-DEF） */
+    ecucModuleDefs: number;
   };
   /** 未处理元素告警清单（不崩溃，仅告警） */
   warnings: UnprocessedElementWarning[];
@@ -94,6 +100,8 @@ export interface SwcArxmlProject {
   baseTypes: Map<string, string>;
   /** ECUC 值层模块（R8/E1；ECUC-MODULE-CONFIGURATION-VALUES） */
   ecucModules: EcucModuleConfigValue[];
+  /** ECUC 定义层模块（R8/E2；ECUC-MODULE-DEF 元模型） */
+  ecucModuleDefs: EcucModuleDef[];
   report: ImportReport;
 }
 
@@ -139,11 +147,12 @@ export interface EcucContainerValue {
 /**
  * ECUC 模块配置值（ECUC-MODULE-CONFIGURATION-VALUES）。
  * 与导出侧 ArxmlExportModule 对称；moduleDefRef 为 DEFINITION-REF 短名。
+ * moduleDef 为 E2 定义↔值关联回填（按短名匹配 ecucModuleDefs，可空）。
  */
 export interface EcucModuleConfigValue {
   /** 模块短名（SHORT-NAME） */
   name: string;
-  /** DEFINITION-REF 原文（DEST=ECUC-MODULE-DEF，定义层远期解析） */
+  /** DEFINITION-REF 原文（DEST=ECUC-MODULE-DEF） */
   definitionRef: string;
   /** 模块定义短名（DEFINITION-REF 最后一段） */
   moduleDefRef: string;
@@ -151,6 +160,71 @@ export interface EcucModuleConfigValue {
   parameters: EcucParameterValue[];
   /** 容器（CONTAINERS → ECUC-CONTAINER-VALUE 递归） */
   containers: EcucContainerValue[];
+  /** 关联的模块定义（R8/E2 resolveEcucModuleDefs 回填；定义缺失时 undefined） */
+  moduleDef?: EcucModuleDef;
+}
+
+// ============================================================================
+// ECUC 定义层数据模型（R8/E2）
+// 解析 ECUC-MODULE-DEF → 参数定义（ECUC-PARAM-DEF 族）/ 容器定义（递归）。
+// 字段命名对齐 AUTOSAR 元模型：LOWER/UPPER-MULTIPLICITY、DEFAULT-VALUE、LITERALS。
+// ============================================================================
+
+/** ECUC 参数定义类别（ECUC-PARAM-DEF 族；INTEGER/FLOAT 归一 NUMERICAL，STRING 归一 TEXTUAL） */
+export type EcucParameterDefKind =
+  /** ECUC-NUMERICAL-PARAM-DEF（含 ECUC-INTEGER/FLOAT-PARAM-DEF） */
+  | 'NUMERICAL'
+  /** ECUC-TEXTUAL-PARAM-DEF（含 ECUC-STRING-PARAM-DEF / ECUC-FUNCTION-NAME-DEF） */
+  | 'TEXTUAL'
+  /** ECUC-BOOLEAN-PARAM-DEF */
+  | 'BOOLEAN'
+  /** ECUC-ENUMERATION-PARAM-DEF（LITERALS 短名列表） */
+  | 'ENUMERATION'
+  /** ECUC-REFERENCE-DEF（含 CHOICE/FOREIGN/INSTANCE-REFERENCE-DEF，可选） */
+  | 'REFERENCE';
+
+/**
+ * ECUC 参数定义（ECUC-*-PARAM-DEF / ECUC-REFERENCE-DEF）。
+ * multiplicity 语义：upperMultiplicity 仅记录显式声明（AUTOSAR 缺省 1，
+ * 本模型不隐式补值；E3 超限判定只看显式值，负数视为不限）。
+ */
+export interface EcucParameterDef {
+  /** 参数定义短名（SHORT-NAME） */
+  name: string;
+  /** 定义类别（按元素 tag 归一，见 EcucParameterDefKind） */
+  kind: EcucParameterDefKind;
+  /** LOWER-MULTIPLICITY（显式声明时） */
+  lowerMultiplicity?: number;
+  /** UPPER-MULTIPLICITY（显式声明时；负数视为不限） */
+  upperMultiplicity?: number;
+  /** DEFAULT-VALUE 原文（可选） */
+  defaultValue?: string;
+  /** 枚举合法取值（ECUC-ENUMERATION-PARAM-DEF 的 LITERALS → ECUC-ENUMERATION-LITERAL-DEF 短名） */
+  literals?: string[];
+}
+
+/** ECUC 容器定义（ECUC-CONTAINER-DEF，SUB-CONTAINERS 递归） */
+export interface EcucContainerDef {
+  /** 容器定义短名（SHORT-NAME） */
+  name: string;
+  /** LOWER-MULTIPLICITY（显式声明时） */
+  lowerMultiplicity?: number;
+  /** UPPER-MULTIPLICITY（显式声明时；负数视为不限） */
+  upperMultiplicity?: number;
+  /** 直接参数定义（PARAMETER-DEFS） */
+  parameterDefs: EcucParameterDef[];
+  /** 子容器定义（SUB-CONTAINERS 递归） */
+  subContainerDefs: EcucContainerDef[];
+}
+
+/** ECUC 模块定义（ECUC-MODULE-DEF） */
+export interface EcucModuleDef {
+  /** 模块定义短名（SHORT-NAME） */
+  name: string;
+  /** 模块级参数定义（PARAMETER-DEFS） */
+  parameterDefs: EcucParameterDef[];
+  /** 容器定义（CONTAINER-DEFS → ECUC-CONTAINER-DEF 递归） */
+  containerDefs: EcucContainerDef[];
 }
 
 // ============================================================================
@@ -209,6 +283,24 @@ const ARRAY_TAGS = new Set([
   'PARAMETER-VALUES',
   'CONTAINERS',
   'SUB-CONTAINERS',
+  // ECUC 定义层（R8/E2）：定义元素可能单/多出现，统一强制数组保证遍历语义
+  'ECUC-MODULE-DEF',
+  'PARAMETER-DEFS',
+  'CONTAINER-DEFS',
+  'ECUC-NUMERICAL-PARAM-DEF',
+  'ECUC-INTEGER-PARAM-DEF',
+  'ECUC-FLOAT-PARAM-DEF',
+  'ECUC-TEXTUAL-PARAM-DEF',
+  'ECUC-STRING-PARAM-DEF',
+  'ECUC-FUNCTION-NAME-DEF',
+  'ECUC-BOOLEAN-PARAM-DEF',
+  'ECUC-ENUMERATION-PARAM-DEF',
+  'ECUC-REFERENCE-DEF',
+  'ECUC-CHOICE-REFERENCE-DEF',
+  'ECUC-FOREIGN-REFERENCE-DEF',
+  'ECUC-INSTANCE-REFERENCE-DEF',
+  'LITERALS',
+  'ECUC-ENUMERATION-LITERAL-DEF',
 ]);
 
 function createXmlParser(): XMLParser {
@@ -424,6 +516,7 @@ export function createReadContext(sourceName: string, xml: string): ReadContext 
         implementationDataTypes: 0,
         compuMethods: 0,
         ecucModules: 0,
+        ecucModuleDefs: 0,
       },
       warnings: [],
       errors: [],
@@ -462,8 +555,8 @@ export function reportUnprocessedChildren(ctx: ReadContext, childMap: ChildEleme
 
 /**
  * 解析 ARXML 内容并提取 SWC 层元素（SWC/端口/接口/数据类型/CompuMethod）+ ECUC 值层
- * （ECUC-MODULE-CONFIGURATION-VALUES，R8/E1）。未知元素仅告警不崩溃；
- * ECUC 定义层（元模型）不解析（DEFINITION-REF 保留字符串，见文件头边界说明）。
+ * （ECUC-MODULE-CONFIGURATION-VALUES，R8/E1）+ ECUC 定义层（ECUC-MODULE-DEF 元模型，R8/E2）。
+ * 未知元素仅告警不崩溃；定义↔值关联（moduleDef 回填）与 E3 一致性校验在解析后自动执行。
  */
 export function parseSwcArxml(xmlContent: string, sourceName = 'input.arxml'): SwcArxmlProject {
   const project: SwcArxmlProject = {
@@ -475,6 +568,7 @@ export function parseSwcArxml(xmlContent: string, sourceName = 'input.arxml'): S
     compuMethods: [],
     baseTypes: new Map(),
     ecucModules: [],
+    ecucModuleDefs: [],
     report: {
       sourceName,
       schemaVersion: null,
@@ -489,6 +583,7 @@ export function parseSwcArxml(xmlContent: string, sourceName = 'input.arxml'): S
         implementationDataTypes: 0,
         compuMethods: 0,
         ecucModules: 0,
+        ecucModuleDefs: 0,
       },
       warnings: [],
       errors: [],
@@ -560,16 +655,20 @@ export function parseSwcArxml(xmlContent: string, sourceName = 'input.arxml'): S
       else if (tag === 'CLIENT-SERVER-INTERFACE') readClientServerInterface(ctx, node, project);
     }
 
-    // 第三遍：SWC 组件（端口引用接口）+ ECUC 值层模块（R8/E1）
+    // 第三遍：SWC 组件（端口引用接口）+ ECUC 值层模块（R8/E1）+ ECUC 定义层（R8/E2）
     for (const { tag, node } of elementNodes) {
       if (tag === 'APPLICATION-SW-COMPONENT-TYPE') readApplicationSwc(ctx, node, project);
       else if (tag === 'COMPOSITION-SW-COMPONENT-TYPE') readCompositionSwc(ctx, node, project);
       else if (tag === 'ECUC-MODULE-CONFIGURATION-VALUES') readEcucModule(ctx, node, project);
+      else if (tag === 'ECUC-MODULE-DEF') readEcucModuleDef(ctx, node, project);
       else if (!isKnownTopLevelTag(tag)) {
         // 未知顶层元素 → 告警不崩溃（OEM ARXML 必然含未知元素）
         reportUnprocessed(ctx, node, tag);
       }
     }
+
+    // R8/E2：定义↔值关联（按 DEFINITION-REF 短名匹配 ecucModules ↔ ecucModuleDefs）
+    resolveEcucModuleDefs(project);
 
     // 解析引用：类型约束校验（C1）+ 短名写回（目标存在且类别匹配）
     resolveReferences(ctx, project);
@@ -596,6 +695,7 @@ const KNOWN_TOP_LEVEL_TAGS = new Set([
   'SW-BASE-TYPE',
   'COMPU-METHOD',
   'ECUC-MODULE-CONFIGURATION-VALUES', // R8/E1：ECUC 值层顶层元素
+  'ECUC-MODULE-DEF', // R8/E2：ECUC 定义层顶层元素
 ]);
 
 function isKnownTopLevelTag(tag: string): boolean {
@@ -1555,4 +1655,207 @@ function readEcucModule(ctx: ReadContext, node: Record<string, unknown>, project
   }
 
   reportUnprocessedChildren(ctx, children);
+}
+
+// ============================================================================
+// ECUC 定义层（R8/E2）—— ECUC-MODULE-DEF 元模型
+// 解析：模块定义（SHORT-NAME / PARAMETER-DEFS / CONTAINER-DEFS）
+//      → 参数定义（ECUC-PARAM-DEF 族：NUMERICAL/TEXTUAL/BOOLEAN/ENUMERATION/REFERENCE）
+//      → 容器定义（ECUC-CONTAINER-DEF 递归 SUB-CONTAINERS）
+// 未建模的常用子元素（MIN/MAX/PHYSICAL-UNIT/CHOICE 等）沿用未处理告警（不崩溃）；
+// DESC 为标准元素但模型不捕获（显式 skip 避免噪音告警，同 IMPLEMENTATION-CONFIG-VARIANT 惯例）。
+// ============================================================================
+
+/** ECUC-PARAM-DEF 族元素 tag → 定义类别（switcher 表；含子类归一） */
+const ECUC_PARAM_DEF_KIND: Record<string, EcucParameterDefKind> = {
+  'ECUC-NUMERICAL-PARAM-DEF': 'NUMERICAL',
+  'ECUC-INTEGER-PARAM-DEF': 'NUMERICAL',
+  'ECUC-FLOAT-PARAM-DEF': 'NUMERICAL',
+  'ECUC-TEXTUAL-PARAM-DEF': 'TEXTUAL',
+  'ECUC-STRING-PARAM-DEF': 'TEXTUAL',
+  'ECUC-FUNCTION-NAME-DEF': 'TEXTUAL',
+  'ECUC-BOOLEAN-PARAM-DEF': 'BOOLEAN',
+  'ECUC-ENUMERATION-PARAM-DEF': 'ENUMERATION',
+  'ECUC-REFERENCE-DEF': 'REFERENCE',
+  'ECUC-CHOICE-REFERENCE-DEF': 'REFERENCE',
+  'ECUC-FOREIGN-REFERENCE-DEF': 'REFERENCE',
+  'ECUC-INSTANCE-REFERENCE-DEF': 'REFERENCE',
+};
+
+/** 解析 PARAMETER-DEFS 包装节点内的全部参数定义（按文档顺序） */
+function readEcucParameterDefs(ctx: ReadContext, wrapper: Record<string, unknown>): EcucParameterDef[] {
+  const defs: EcucParameterDef[] = [];
+  for (const [tag, value] of Object.entries(wrapper)) {
+    if (tag.startsWith('@_') || tag === '#text') continue;
+    if (!(tag in ECUC_PARAM_DEF_KIND)) continue;
+    for (const node of ensureArray<Record<string, unknown>>(value)) {
+      const def = readEcucParameterDef(ctx, node, tag);
+      if (def) defs.push(def);
+    }
+  }
+  return defs;
+}
+
+/**
+ * 解析单个 ECUC-*-PARAM-DEF / ECUC-REFERENCE-DEF（SHORT-NAME / MULTIPLICITY /
+ * DEFAULT-VALUE / LITERALS[枚举]）。
+ */
+function readEcucParameterDef(
+  ctx: ReadContext,
+  node: Record<string, unknown>,
+  tag: string
+): EcucParameterDef | null {
+  const children = new ChildElementMap(node);
+  const name = getTextContent(node, 'SHORT-NAME');
+  if (!name) {
+    reportUnprocessedChildren(ctx, children);
+    return null;
+  }
+  children.skip('SHORT-NAME');
+
+  const def: EcucParameterDef = {
+    name,
+    kind: ECUC_PARAM_DEF_KIND[tag] ?? 'TEXTUAL',
+  };
+
+  const lower = getTextContent(node, 'LOWER-MULTIPLICITY');
+  children.skip('LOWER-MULTIPLICITY');
+  if (lower !== undefined) def.lowerMultiplicity = parseInt(lower, 10);
+
+  const upper = getTextContent(node, 'UPPER-MULTIPLICITY');
+  children.skip('UPPER-MULTIPLICITY');
+  if (upper !== undefined) def.upperMultiplicity = parseInt(upper, 10);
+
+  const defaultValue = getTextContent(node, 'DEFAULT-VALUE');
+  children.skip('DEFAULT-VALUE');
+  if (defaultValue !== undefined) def.defaultValue = defaultValue;
+
+  // 枚举：LITERALS → ECUC-ENUMERATION-LITERAL-DEF 短名列表
+  if (tag === 'ECUC-ENUMERATION-PARAM-DEF') {
+    const literalsWrapper = firstChild(node, 'LITERALS');
+    children.skip('LITERALS');
+    if (literalsWrapper) {
+      const literals: string[] = [];
+      for (const litNode of ensureArray<Record<string, unknown>>(
+        literalsWrapper['ECUC-ENUMERATION-LITERAL-DEF']
+      )) {
+        const litName = getTextContent(litNode, 'SHORT-NAME');
+        if (litName) literals.push(litName);
+      }
+      if (literals.length > 0) def.literals = literals;
+    }
+  }
+
+  // DESC：标准元素但模型不捕获（skip 不告警）
+  children.skip('DESC');
+
+  reportUnprocessedChildren(ctx, children);
+  return def;
+}
+
+/**
+ * 解析单个 ECUC-CONTAINER-DEF（递归：PARAMETER-DEFS + SUB-CONTAINERS）。
+ * 与值层 readEcucContainer 同构（name / parameterDefs / subContainerDefs）。
+ */
+function readEcucContainerDef(ctx: ReadContext, node: Record<string, unknown>): EcucContainerDef | null {
+  const children = new ChildElementMap(node);
+  const name = getTextContent(node, 'SHORT-NAME');
+  if (!name) {
+    reportUnprocessedChildren(ctx, children);
+    return null;
+  }
+  children.skip('SHORT-NAME');
+
+  const def: EcucContainerDef = {
+    name,
+    parameterDefs: [],
+    subContainerDefs: [],
+  };
+
+  const lower = getTextContent(node, 'LOWER-MULTIPLICITY');
+  children.skip('LOWER-MULTIPLICITY');
+  if (lower !== undefined) def.lowerMultiplicity = parseInt(lower, 10);
+
+  const upper = getTextContent(node, 'UPPER-MULTIPLICITY');
+  children.skip('UPPER-MULTIPLICITY');
+  if (upper !== undefined) def.upperMultiplicity = parseInt(upper, 10);
+
+  const paramsWrapper = firstChild(node, 'PARAMETER-DEFS');
+  children.skip('PARAMETER-DEFS');
+  if (paramsWrapper) def.parameterDefs = readEcucParameterDefs(ctx, paramsWrapper);
+
+  const subWrapper = firstChild(node, 'SUB-CONTAINERS');
+  children.skip('SUB-CONTAINERS');
+  if (subWrapper) {
+    def.subContainerDefs = ensureArray<Record<string, unknown>>(subWrapper['ECUC-CONTAINER-DEF'])
+      .map(sub => readEcucContainerDef(ctx, sub))
+      .filter((d): d is EcucContainerDef => d !== null);
+  }
+
+  // DESC：标准元素但模型不捕获（skip 不告警）
+  children.skip('DESC');
+
+  reportUnprocessedChildren(ctx, children);
+  return def;
+}
+
+/** 解析 CONTAINER-DEFS 包装节点内的全部容器定义 */
+function readEcucContainerDefs(ctx: ReadContext, wrapper: Record<string, unknown>): EcucContainerDef[] {
+  return ensureArray<Record<string, unknown>>(wrapper['ECUC-CONTAINER-DEF'])
+    .map(node => readEcucContainerDef(ctx, node))
+    .filter((d): d is EcucContainerDef => d !== null);
+}
+
+/**
+ * 读取 ECUC-MODULE-DEF（模块定义层导入）。
+ * 与值层 readEcucModule 对称：SHORT-NAME / PARAMETER-DEFS / CONTAINER-DEFS 递归。
+ */
+function readEcucModuleDef(ctx: ReadContext, node: Record<string, unknown>, project: SwcArxmlProject): void {
+  const children = new ChildElementMap(node);
+  const name = getTextContent(node, 'SHORT-NAME');
+  if (!name) {
+    reportUnprocessed(ctx, node, 'SHORT-NAME');
+    reportUnprocessedChildren(ctx, children);
+    return;
+  }
+  children.skip('SHORT-NAME');
+
+  const def: EcucModuleDef = {
+    name,
+    parameterDefs: [],
+    containerDefs: [],
+  };
+
+  const paramsWrapper = firstChild(node, 'PARAMETER-DEFS');
+  children.skip('PARAMETER-DEFS');
+  if (paramsWrapper) def.parameterDefs = readEcucParameterDefs(ctx, paramsWrapper);
+
+  const containersWrapper = firstChild(node, 'CONTAINER-DEFS');
+  children.skip('CONTAINER-DEFS');
+  if (containersWrapper) def.containerDefs = readEcucContainerDefs(ctx, containersWrapper);
+
+  // DESC：标准元素但模型不捕获（skip 不告警）
+  children.skip('DESC');
+
+  // 重复模块定义检测（R6 惯例：reportDuplicate + 跳过，不覆盖）
+  if (project.ecucModuleDefs.some(d => d.name === name)) {
+    reportDuplicate(ctx, 'ECUC module defs', name);
+  } else {
+    project.ecucModuleDefs.push(def);
+    ctx.report.counts.ecucModuleDefs++;
+  }
+
+  reportUnprocessedChildren(ctx, children);
+}
+
+/**
+ * 定义↔值关联：按 DEFINITION-REF 短名（moduleDefRef）匹配 ecucModules ↔ ecucModuleDefs，
+ * 命中则回填 module.moduleDef（E3 一致性校验的入口）。
+ * 匹配优先级：moduleDefRef（DEFINITION-REF 最后一段）→ 模块短名（SHORT-NAME）。
+ */
+export function resolveEcucModuleDefs(project: SwcArxmlProject): void {
+  const defsByName = new Map(project.ecucModuleDefs.map(d => [d.name, d]));
+  for (const module of project.ecucModules) {
+    module.moduleDef = defsByName.get(module.moduleDefRef) ?? defsByName.get(module.name);
+  }
 }

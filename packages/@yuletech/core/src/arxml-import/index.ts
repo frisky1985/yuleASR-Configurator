@@ -10,7 +10,9 @@
  *  - 未处理元素仅告警不崩溃（OEM ARXML 必然含未知元素）；
  *  - ECUC 值层（R8/E1）：ECUC-MODULE-CONFIGURATION-VALUES / PARAMETER-VALUES /
  *    ECUC-CONTAINER-VALUE 递归，与 arxml-export/serializer.ts 对称构成导入导出闭环；
- *    ECUC 定义层（元模型）不解析，DEFINITION-REF 保留字符串（边界见 reader.ts 头注释）。
+ *  - ECUC 定义层（R8/E2）：ECUC-MODULE-DEF 元模型（参数族/容器递归/REFERENCE-DEF），
+ *    定义↔值关联按 DEFINITION-REF 短名回填 moduleDef；
+ *  - ECUC 一致性校验（R8/E3）：值-定义匹配/枚举合法/容器超限，见 ecuc-consistency.ts。
  *  - BSW 模块配置的旧入口 @yuletech/core/adapters/arxml-parser（ECUC 层）仍可用，
  *    与本导入器互为补充（adapter 产出 ParsedModuleConfig 领域模型）。
  */
@@ -31,6 +33,7 @@ export {
   LineIndex,
   refShortName,
   resolveReferences,
+  resolveEcucModuleDefs,
   reportDuplicate,
   type SwcArxmlProject,
   type ImportReport,
@@ -40,6 +43,11 @@ export {
   type EcucModuleConfigValue,
   type EcucContainerValue,
   type EcucParameterValue,
+  // R8/E2：ECUC 定义层数据模型（ECUC-MODULE-DEF 元模型）
+  type EcucModuleDef,
+  type EcucContainerDef,
+  type EcucParameterDef,
+  type EcucParameterDefKind,
 } from './reader';
 
 // 引用类型约束表（C1 · R1）：REF_CONSTRAINTS + RefTargetKind

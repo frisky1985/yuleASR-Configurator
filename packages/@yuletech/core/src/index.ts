@@ -46,10 +46,16 @@ export {
   ChildElementMap,
   LineIndex,
   refShortName,
+  resolveEcucModuleDefs,
   type SwcImportResult,
   type SwcArxmlProject,
   type ImportReport,
   type UnprocessedElementWarning,
+  // R8/E2：ECUC 定义层数据模型
+  type EcucModuleDef,
+  type EcucContainerDef,
+  type EcucParameterDef,
+  type EcucParameterDefKind,
 } from './arxml-import';
 
 // 导出 ARXML 异常体系 (R6, 对齐 cogu exception.py 5 类, 调用方可按类捕获)
