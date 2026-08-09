@@ -1,32 +1,58 @@
 /**
- * ECUC 导入页（R8/E4）— 只读展示
+ * ECUC 导入页（R8/E4 只读 + F3 可编辑）
  *
  * 链路：文件导入（web input / Electron 菜单 file-opened）→ parseSwcArxml
  *       → buildEcucProjectView → 模块树 / 参数表 双视图 + 统计摘要 + 告警面板。
  *
+ * F3 编辑能力（点「编辑」进入）：
+ *  - 树/表视图内联编辑：类型感知输入（boolean 开关 / integer 数字 / enum 下拉 /
+ *    string 输入）、容器增删（按定义树选型，同名兄弟按索引定位）、模块启停；
+ *  - 实时校验：E3 同规则（类型/枚举/容器上下限），行内提示 + 计数摘要；
+ *  - 保存回写：导出 ARXML（复用 A4 generateArxml）或直接生成 Cfg.h
+ *    （复用 F2a generateHeadersFromSchemas，编辑值覆盖 schema 默认值），
+ *    均可打包 ZIP 下载。
+ *
  * 边界（诚实声明）：
- *  - **只读**：本页无任何编辑入口；ECUC 编辑（改值/增删容器）留遗留；
- *  - 展示模型独立于 EcucCodeGenerator 的 ModuleSchema/ModuleConfig
- *    （types/config.ts），避免污染生成器模型；
+ *  - 编辑模型为页面内存工作副本（ecuc-editor.ts），不落盘；
+ *  - 纯值层文件（无定义）无法校验/新增容器（无定义可依），参数仍可改值；
  *  - Electron 菜单「Open Configuration...」已含 .arxml filter（main.mjs），
  *    经 file:read IPC 读内容后与本页 web input 走同一解析链路。
  */
 
+import JSZip from 'jszip';
 import {
   AlertCircle,
   CheckCircle2,
+  Download,
   FileUp,
   FolderTree,
   Loader2,
+  Pencil,
+  RotateCcw,
   Table2,
+  X,
 } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { EcucModuleTree } from '@/components/ecuc/EcucModuleTree';
+import type { EcucTreeEditHandlers } from '@/components/ecuc/EcucModuleTree';
 import { EcucParameterTable } from '@/components/ecuc/EcucParameterTable';
 import { cn } from '@/lib/utils';
 import { parseSwcArxml } from '@/services/arxml-ecuc-import';
+import { generateArxml } from '@/services/arxml-exporter';
+import { generateHeadersFromSchemas } from '@/services/codegen';
+import {
+  addContainerInstance,
+  createEditableProject,
+  editableToConfigFile,
+  editableToSchemas,
+  flattenEditableParams,
+  removeContainerInstance,
+  toggleModuleEnabled,
+  updateParamValue,
+} from '@/services/ecuc-editor';
 import { buildEcucProjectView } from '@/services/ecuc-view-adapter';
+import type { EcucContainerPath , EcucEditableProject } from '@/types/ecuc-edit';
 import type { EcucProjectView } from '@/types/ecuc-view';
 import { createEmptyEcucProjectView } from '@/types/ecuc-view';
 
@@ -120,6 +146,11 @@ export function EcucImport() {
   const [tab, setTab] = useState<ViewTab>('tree');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // F3 编辑状态：view 的内存工作副本 + 编辑模式开关
+  const [editMode, setEditMode] = useState(false);
+  const [editable, setEditable] = useState<EcucEditableProject | null>(null);
+  const [exporting, setExporting] = useState<'arxml' | 'cfgh' | null>(null);
+
   /** 解析入口：xml 内容 + 源文件名 → 视图（web input 与 Electron 共用） */
   const parseContent = (content: string, name: string): void => {
     try {
@@ -129,6 +160,8 @@ export function EcucImport() {
       setView(nextView);
       setFileName(name);
       setSourceName(name);
+      // 新文件 → 重置编辑状态（保留编辑模式开关；工作副本从新视图重建）
+      setEditable(createEditableProject(nextView));
     } catch (err) {
       setError({ message: err instanceof Error ? err.message : 'ARXML 解析失败' });
     }
@@ -172,6 +205,80 @@ export function EcucImport() {
     }
   };
 
+  // ── F3 编辑操作（不可变更新，每次重算校验计数） ──────────────────────
+  const enterEditMode = useCallback((): void => {
+    if (!editable) {
+      setEditable(createEditableProject(view));
+    }
+    setEditMode(true);
+  }, [editable, view]);
+
+  const exitEditMode = useCallback((): void => {
+    setEditMode(false);
+  }, []);
+
+  const resetEdits = useCallback((): void => {
+    setEditable(createEditableProject(view));
+  }, [view]);
+
+  const editHandlers: EcucTreeEditHandlers = {
+    onParamChange: (module, containerPath, paramName, value) => {
+      setEditable(prev => (prev ? updateParamValue(prev, module, containerPath, paramName, value) : prev));
+    },
+    onToggleModule: (module, _enabled) => {
+      setEditable(prev => (prev ? toggleModuleEnabled(prev, module) : prev));
+    },
+    onAddContainer: (module, parentPath, defName) => {
+      setEditable(prev => (prev ? addContainerInstance(prev, module, parentPath, defName) : prev));
+    },
+    onRemoveContainer: (module, parentPath, childIndex) => {
+      setEditable(prev => (prev ? removeContainerInstance(prev, module, parentPath, childIndex) : prev));
+    },
+  };
+
+  /** 导出 ARXML（F3 回写：复用 A4 generateArxml） */
+  const handleExportArxml = async (): Promise<void> => {
+    if (!editable) return;
+    setExporting('arxml');
+    try {
+      const config = editableToConfigFile(editable);
+      const arxml = generateArxml(config, undefined, { schemaVersion: 51 });
+      const blob = new Blob([arxml], { type: 'application/xml' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ecuc-edited-${sourceName.replace(/\.arxml$/i, '') || 'config'}-export.arxml`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } finally {
+      setExporting(null);
+    }
+  };
+
+  /** 生成 Cfg.h（F3 回写：复用 F2a schema 驱动生成，编辑值覆盖默认值） */
+  const handleGenerateCfgH = async (): Promise<void> => {
+    if (!editable) return;
+    setExporting('cfgh');
+    try {
+      const files = await generateHeadersFromSchemas(editableToSchemas(editable));
+      const zip = new JSZip();
+      for (const f of files) {
+        zip.file(f.filename, f.content);
+      }
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ecuc-edited-${sourceName.replace(/\.arxml$/i, '') || 'config'}-cfg.zip`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } finally {
+      setExporting(null);
+    }
+  };
+
+  const editableRows = editable ? flattenEditableParams(editable) : [];
+
   return (
     <div className="space-y-6">
       {/* 页头 */}
@@ -179,28 +286,85 @@ export function EcucImport() {
         <div>
           <h1 className="text-xl font-semibold text-foreground">ECUC 导入</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            ARXML ECUC 值层/定义层只读展示（R8/E4）。编辑能力未实现，留遗留。
+            {editMode
+              ? '编辑模式：改值/增删容器/模块启停，实时校验，可回写导出 ARXML 或生成 Cfg.h（F3）。'
+              : 'ARXML ECUC 值层/定义层展示（R8/E4）。点击「编辑」进入 F3 编辑模式。'}
           </p>
         </div>
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          disabled={loading}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 disabled:opacity-50 transition-colors"
-        >
-          {loading ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
-          ) : (
-            <FileUp className="w-4 h-4" />
+        <div className="flex items-center gap-2">
+          {fileName && !error && !loading && !editMode && (
+            <button
+              onClick={enterEditMode}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
+            >
+              <Pencil className="w-4 h-4" />
+              编辑
+            </button>
           )}
-          选择 ARXML 文件
-        </button>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".arxml"
-          onChange={handleFileSelect}
-          className="hidden"
-        />
+          {fileName && !error && !loading && editMode && editable && (
+            <>
+              <button
+                onClick={exitEditMode}
+                className="inline-flex items-center gap-2 px-4 py-2 text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg font-medium hover:bg-app-bg-secondary transition-colors"
+              >
+                <X className="w-4 h-4" />
+                退出编辑
+              </button>
+              <button
+                onClick={resetEdits}
+                className="inline-flex items-center gap-2 px-4 py-2 text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg font-medium hover:bg-app-bg-secondary transition-colors"
+                title="丢弃编辑，恢复为最近一次解析结果"
+              >
+                <RotateCcw className="w-4 h-4" />
+                重置
+              </button>
+              <button
+                onClick={handleExportArxml}
+                disabled={exporting !== null}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 disabled:opacity-50 transition-colors"
+              >
+                {exporting === 'arxml' ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Download className="w-4 h-4" />
+                )}
+                导出 ARXML
+              </button>
+              <button
+                onClick={handleGenerateCfgH}
+                disabled={exporting !== null || editable.errors > 0}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 disabled:opacity-50 transition-colors"
+                title={editable.errors > 0 ? `存在 ${editable.errors} 个校验错误，请先修复` : '按编辑值生成 Cfg.h（ZIP）'}
+              >
+                {exporting === 'cfgh' ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Download className="w-4 h-4" />
+                )}
+                生成 Cfg.h
+              </button>
+            </>
+          )}
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={loading}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-app-bg-primary text-app-text-primary border border-app-border-primary rounded-lg font-medium hover:bg-app-bg-secondary disabled:opacity-50 transition-colors"
+          >
+            {loading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <FileUp className="w-4 h-4" />
+            )}
+            选择 ARXML 文件
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".arxml"
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+        </div>
       </div>
 
       {/* 加载中 */}
@@ -225,6 +389,25 @@ export function EcucImport() {
             <CheckCircle2 className="w-4 h-4 text-green-600 shrink-0" />
             已加载：<span className="font-medium text-foreground">{fileName}</span>
             {sourceName && <span className="text-xs">（{sourceName}）</span>}
+            {editMode && editable && (
+              <>
+                {editable.dirty && (
+                  <span className="px-2 py-0.5 text-[11px] font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-950/60 dark:text-yellow-300 rounded-full">
+                    有未保存修改
+                  </span>
+                )}
+                {editable.errors > 0 && (
+                  <span className="px-2 py-0.5 text-[11px] font-medium bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-300 rounded-full">
+                    {editable.errors} 错误
+                  </span>
+                )}
+                {editable.warnings > 0 && (
+                  <span className="px-2 py-0.5 text-[11px] font-medium bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 rounded-full">
+                    {editable.warnings} 告警
+                  </span>
+                )}
+              </>
+            )}
           </div>
 
           <SummaryCards view={view} />
@@ -255,12 +438,22 @@ export function EcucImport() {
               )}
             >
               <Table2 className="w-4 h-4" />
-              参数表（{view.flatParams.length}）
+              参数表（{editMode && editable ? editableRows.length : view.flatParams.length}）
             </button>
           </div>
 
           {tab === 'tree' ? (
-            <EcucModuleTree modules={view.modules} />
+            editMode && editable ? (
+              <EcucModuleTree
+                modules={editable.modules}
+                editable
+                handlers={editHandlers}
+              />
+            ) : (
+              <EcucModuleTree modules={view.modules} />
+            )
+          ) : editMode && editable ? (
+            <EcucParameterTable rows={editableRows} editable onParamChange={editHandlers.onParamChange} />
           ) : (
             <EcucParameterTable rows={view.flatParams} />
           )}
@@ -273,6 +466,9 @@ export function EcucImport() {
           <FileUp className="w-10 h-10 text-muted-foreground mx-auto" />
           <p className="mt-3 text-sm font-medium text-foreground">
             选择 .arxml 文件（ECUC-MODULE-CONFIGURATION-VALUES / ECUC-MODULE-DEF）
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            导入后可编辑参数值、增删容器、启停模块，并回写导出 ARXML / 生成 Cfg.h（F3）
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
             Electron 桌面端也可用 File &gt; Open Configuration...（已含 ARXML filter）

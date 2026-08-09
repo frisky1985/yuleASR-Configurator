@@ -1,16 +1,30 @@
 /**
- * ECUC 参数表（只读展示）
+ * ECUC 参数表（R8/E4 只读展示 + F3 可编辑）
  *
  * 扁平展示导入的 ECUC 参数：模块 / 路径 / 名称 / 值 / 定义类别 / 定义引用。
  * 数据源为 ecuc-view-adapter 的 flatParams（值层参数已挂定义元数据）。
  *
- * 边界（诚实声明）：只读表格，无编辑入口；编辑留遗留。
+ * 编辑模式（F3，editable=true 时启用）：值单元格渲染类型感知编辑器
+ * （boolean 开关 / integer 数字 / enum 下拉 / string 输入），实时校验
+ * （issue，E3 同规则）行内提示；行携带带索引容器路径（pathKey）供回写定位。
+ *
+ * 只读模式（默认）渲染与 R8/E4 完全一致。
  */
 
 import { Table2 } from 'lucide-react';
 
+import { EcucParamIssue, EcucParameterInput } from './EcucParameterInput';
+
 import { cn } from '@/lib/utils';
+import type { EcucEditIssue , EcucContainerPath } from '@/types/ecuc-edit';
 import type { EcucFlatParamRow } from '@/types/ecuc-view';
+
+/** 表格行形态（只读行与可编辑行结构兼容） */
+export interface EcucTableRow extends EcucFlatParamRow {
+  issue?: EcucEditIssue | null;
+  /** 带索引容器路径（编辑回写定位用；只读行可不带） */
+  pathKey?: EcucContainerPath;
+}
 
 /** 定义类别徽标配色（与 EcucModuleTree 一致，独立维护避免耦合） */
 const KIND_BADGE: Record<string, string> = {
@@ -21,13 +35,24 @@ const KIND_BADGE: Record<string, string> = {
   REFERENCE: 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300',
 };
 
-/** 展示参数值（布尔渲染成 true/false 原文，便于核对） */
-function formatValue(value: string | number | boolean): string {
-  return String(value);
-}
-
-/** ECUC 参数表（只读）：模块/路径/名称/值/类别/定义引用 */
-export function EcucParameterTable({ rows }: { rows: EcucFlatParamRow[] }) {
+/**
+ * ECUC 参数表：模块/路径/名称/值/类别/定义引用。
+ * editable=true 时值单元格为类型感知编辑器，需传入 onParamChange。
+ */
+export function EcucParameterTable({
+  rows,
+  editable,
+  onParamChange,
+}: {
+  rows: EcucTableRow[];
+  editable?: boolean;
+  onParamChange?: (
+    module: string,
+    containerPath: EcucContainerPath,
+    paramName: string,
+    value: string | number | boolean
+  ) => void;
+}) {
   if (rows.length === 0) {
     return (
       <div className="text-center py-10 text-muted-foreground text-sm">
@@ -64,8 +89,22 @@ export function EcucParameterTable({ rows }: { rows: EcucFlatParamRow[] }) {
                 {row.pathLabel || '—'}
               </td>
               <td className="px-3 py-1.5 text-foreground whitespace-nowrap">{row.name}</td>
-              <td className="px-3 py-1.5 font-mono text-primary-700 dark:text-primary-400 whitespace-nowrap">
-                {formatValue(row.value)}
+              <td className="px-3 py-1.5 whitespace-nowrap">
+                {editable && onParamChange && row.pathKey ? (
+                  <div className="flex flex-col">
+                    <EcucParameterInput
+                      param={row}
+                      onChange={value =>
+                        onParamChange(row.module, row.pathKey!, row.name, value)
+                      }
+                    />
+                    <EcucParamIssue issue={row.issue} />
+                  </div>
+                ) : (
+                  <span className="font-mono text-primary-700 dark:text-primary-400">
+                    {String(row.value)}
+                  </span>
+                )}
               </td>
               <td className="px-3 py-1.5 whitespace-nowrap">
                 {row.kind ? (
