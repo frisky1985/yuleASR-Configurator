@@ -11,19 +11,21 @@ described in the [Versioning Policy](#versioning-policy) below.
 
 ## [Unreleased]
 
-### Added
-
-- **模块 ↔ AUTOSAR SWS 章节映射文档**（`docs/bsw-sws-mapping.md`，A4-2）：
-  - 54 个 Configurator 模块 ↔
-    SWS 文档全量对照表（MCAL/ECUAL/Service/RTE/OS/ASW 分层），借鉴 cogu
-    CHANGELOG “类名 | XSD 复杂类型” 对照表风格
-  - A1 导入映射扩展：SWC/端口/接口/数据类型/CompuMethod ↔ AUTOSAR 概念
-  - 版本差异速查（48–51 + VERSION_GATES）+ 非标准模块诚实标注 + 维护约定
-  - 技术债记录：schema `x-layer`
-    字段与标准 AUTOSAR 分层不一致（can/dio/port/mcu 等标记为 Service）
+## [0.3.0] - 2026-08-09
 
 ### Added
 
+- **ARXML SWC 层导入后端**（`@yuletech/core/arxml-import`，A1）：
+  - 导入 .arxml 工程文件（SWC/端口/接口/数据类型/CompuMethod 层）到现有数据模型
+    `SwcProjectConfig`（`types/swc.ts`）
+  - 借鉴 cogu/autosar 的 switcher 字典分发 +
+    ChildElementMap 未处理元素告警模式（告警不崩溃：OEM ARXML 必然含未知元素）
+  - 导入报告：成功元素计数 + `file(line): Unprocessed element <TAG>` 告警清单 +
+    schema 版本探测
+  - 新类型：`CompuMethod` / `CompuScale` /
+    `CompuMethodCategory`（`types/swc.ts`）
+  - 边界：BSW 模块配置（ECUC 层）不导入，由现有 `adapters/arxml-parser` 覆盖
+  - 测试：21 个用例（最小 fixture 往返、未处理元素告警、Client-Server、RAT_NUM_LINEAR、真实 bcm_demo）
 - **版本化 ARXML 导出**（`@yuletech/core/arxml-export`，A4-1）：
   - schema 版本注册表：48=R19-11 / 49=R20-11 / 50=R21-11 / 51=R22-11（44=AUTOSAR
     4.3.1 历史兼容），文档级 `AUTOSAR_%05d.xsd` schemaLocation 按版本生成
@@ -36,23 +38,41 @@ described in the [Versioning Policy](#versioning-policy) below.
   - Web 导出服务 `generateArxml` 增加 `schemaVersion`
     参数（默认 51）；Editor 导出 ARXML 改为“目标 AUTOSAR 版本”对话框；内置 ARXML 导出插件经 options 接收版本
   - 测试：core 24 个新用例 + web 7 个新用例
-
-### Added
-
-- **ARXML SWC 层导入后端**（`@yuletech/core/arxml-import`）：
-  - 导入 .arxml 工程文件（SWC/端口/接口/数据类型/CompuMethod 层）到现有数据模型
-    `SwcProjectConfig`（`types/swc.ts`）
-  - 借鉴 cogu/autosar 的 switcher 字典分发 +
-    ChildElementMap 未处理元素告警模式（告警不崩溃：OEM ARXML 必然含未知元素）
-  - 导入报告：成功元素计数 + `file(line): Unprocessed element <TAG>` 告警清单 +
-    schema 版本探测
-  - 新类型：`CompuMethod` / `CompuScale` /
-    `CompuMethodCategory`（`types/swc.ts`）
-  - 边界：BSW 模块配置（ECUC 层）不导入，由现有 `adapters/arxml-parser` 覆盖
-  - 测试：21 个用例（最小 fixture 往返、未处理元素告警、Client-Server、RAT_NUM_LINEAR、真实 bcm_demo）
-
-### Added
-
+- **模块 ↔ AUTOSAR SWS 章节映射文档**（`docs/bsw-sws-mapping.md`，A4-2）：
+  - 54 个 Configurator 模块 ↔
+    SWS 文档全量对照表（MCAL/ECUAL/Service/RTE/OS/ASW 分层），借鉴 cogu
+    CHANGELOG “类名 | XSD 复杂类型” 对照表风格
+  - A1 导入映射扩展：SWC/端口/接口/数据类型/CompuMethod ↔ AUTOSAR 概念
+  - 版本差异速查（48–51 + VERSION_GATES）+ 非标准模块诚实标注 + 维护约定
+  - 技术债记录：schema `x-layer`
+    字段与标准 AUTOSAR 分层不一致（can/dio/port/mcu 等标记为 Service）
+- **引用类型安全**（C1/R1）：`REF_CONSTRAINTS` 约束表 + 解析期类型校验
+- **异常体系分类**（C2/R6）：`ArxmlError` 5 类 + `classifyImportError` 前缀映射 +
+  重复元素检测
+- **导出 XSD 校验**（C3/R7）：结构契约校验器 `validateArxmlDocument` +
+  `assertValidArxmlExport`
+- **模板机制**（D1/R2）：`ElementTemplate` 基类 + `TemplateWorkspace.apply`
+  四步自动化 + SWC 实用模板
+- **文档拆分**（D2/R3）：`splitModulesByType` + `serializeArxmlDocuments`
+  多文档导出
+- **ECUC 值层导入**（E1/R8）：`EcucModuleConfigValue` + 容器递归 + 嵌套包下钻 +
+  导出布尔 tag 对齐
+- **ECUC 定义层导入**（E2/R8）：`ECUC-MODULE-DEF` 元模型 + 参数族/容器递归/枚举
+  `LITERALS` + 定义↔值关联
+- **ECUC 值-定义一致性校验**（E3/R8）：定义解析/类型匹配/枚举合法/容器超限 +
+  R6 异常分类接入
+- **ECUC 接入 UI 领域模型**（E4/R8）：薄重导出层 + 只读展示视图/组件/页面 +
+  Electron 文件读取链路
+- **yuleASR Cfg.h schema 自动提取器**（F1）：110 模块全覆盖（54→117），
+  `x-multiplicity`/`crossReferences` 等 AUTOSAR 合规属性补全
+- **codegen schema 驱动全量生成**（F2）：`generateHeadersFromSchemas` 按任意
+  ModuleSchema 生成宏头（F2a）+ 配置合并生成 117 Cfg.h + 覆盖展示/批量导出
+  （F2b/F2c UI 挂接）
+- **ECUC 编辑**（F3）：类型感知改值/容器增删/模块启停 + 实时校验 + 回写导出
+- **ECUC 元模型补全**（P2）：`crossReferences` 全量推广 + `ChoiceContainerDef`
+  补全（AUTOSAR ECUC 元模型四要素齐备）
+- **中期合规**（P0-1）：Can/Mcu GCC 编译修复 + `x-multiplicity`/`crossReferences`
+  对齐 + `@yuletech/ui` 组件库（Phase 3，8 组件 + 测试 + web 集成）
 - **Desktop auto-updater**: Integrated `electron-updater` for automatic
   application updates on the desktop build — users receive new versions without
   manual re-downloads
@@ -79,6 +99,23 @@ described in the [Versioning Policy](#versioning-policy) below.
 
 ### Fixed
 
+- **安全修复批次**（Fix 5–13）：Electron IPC 命令注入 + 路径遍历（RCE/任意写盘）、
+  JWT 默认密钥硬编码（启动 fail-fast 拒绝弱密钥）、LDAP 过滤器注入 + TLS 证书校验、
+  支付 webhook 签名校验（封堵 mock-success 白嫖 Pro）、社区端硬编码口令删除、
+  插件 REST 无鉴权 + 外部插件沙箱（RCE 面）、useAuth 解包修复 + 角色来自服务端
+- **Web 编辑正确性闭环**（C1–C4 + Batch D）：参数编辑静默失败、动态容器实例数据
+  不持久化、实例参数编辑回显、Web↔Server API 断裂（注册 configsRoutes + JWT
+  payload 对齐 + `/v1` 前缀统一）、`isCloudSynced` 假成功修复
+- **架构收敛批次**（Fix 14–32）：双 ORM 收敛至 Drizzle（删除 Prisma）、ARXML
+  解析器提升 core（escapeCString 单一实现）、core 条件引擎接入 web（消除零消费者）、
+  生成器缺陷修复、插件能力恢复、比较/审计/API/性能/editor-core 引擎修复、vscode/
+  community/api-server 修复、测试与 CI 清理（Batch D 收官）
+- **CI 与桌面打包修复**：三平台打包（Linux webkit 4.1 / macOS 去 universal /
+  Windows hoisted node-linker）、macOS 空 CSC_LINK 签名崩溃、Windows NSIS MAX_PATH
+  → MSI 方案 + electron-builder 26.x 兼容、Linux AppImage/deb homepage 字段、
+  artifact glob 空格转义、Vite dev server 崩溃（P0-4）
+- **依赖安全**：dependabot 合并升级（vite 8.2.1 / dompurify 3.4.13 / electron /
+  fastify 等），43 advisories + 14 critical/67 high 漏洞修复
 - **i18n navigation fixes**: Translation keys in sidebar and top-nav now
   correctly resolve under all configured locales; previously hardcoded text in
   some menu items would not update on language switch
@@ -90,12 +127,6 @@ described in the [Versioning Policy](#versioning-policy) below.
 
 ### Changed
 
-- **Desktop version sync**: Desktop build version bumped from `0.1.0` → `0.2.3`
-  to align with the monorepo tag, ensuring `app.getVersion()` reports the
-  correct release
-
-### Changed
-
 - **`EcucCodeGenerator` 转正**（F4，`@yuletech/core/generator`）：移除
   `@experimental` 标注与“仅测试引用”说明，升级为正式发布路径。与 web 层宏头
   生成器明确分工：core `EcucCodeGenerator` 生成 `Ecuc_<Module>.c/h` 完整 C
@@ -103,9 +134,9 @@ described in the [Versioning Policy](#versioning-policy) below.
   （`apps/yuleasr-web/src/services/codegen.ts`）schema 驱动生成宏头 `Cfg.h`
   （`generateHeadersFromSchemas` + `editableToSchemas` 编辑回写），供 Editor
   配置预览/导出。两者互补，不做代码合并；API 为正式契约，变更遵循 SemVer。
-
----
-
+- **Desktop version sync**: Desktop build version bumped from `0.2.3` → `0.3.0`
+  to align with the monorepo tag, ensuring `app.getVersion()` reports the
+  correct release
 ## [0.2.3] - 2026-07-17
 
 ### Fixed
