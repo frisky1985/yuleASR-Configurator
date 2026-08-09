@@ -116,7 +116,9 @@ yuletech-monorepo/
 
 - **JSON Schema 校验** - 基于 AJV 的高性能校验
 - **类型安全** - 完整的 TypeScript 类型定义
-- **代码生成** - 自动生成 C 头文件和源文件
+- **代码生成** - 双生成器分工：core `EcucCodeGenerator` 生成 `Ecuc_<Module>.c/h`
+  完整 C 代码（AUTOSAR 4.4，已转正）；web codegen schema 驱动生成宏头 `Cfg.h`
+  （配置编辑回写导出，供 Editor 预览）
 - **同步机制** - 与 yuleASR 仓库自动同步
 - **扩展架构** - 易于添加新的 BSW 模块
 - **ARXML 导入** - 导入 .arxml 工程（SWC/端口/接口/数据类型/CompuMethod 层），未处理元素告警不崩溃（借鉴 cogu/autosar 的 switcher + ChildElementMap 模式）

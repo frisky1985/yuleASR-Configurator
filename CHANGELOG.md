@@ -94,6 +94,16 @@ described in the [Versioning Policy](#versioning-policy) below.
   to align with the monorepo tag, ensuring `app.getVersion()` reports the
   correct release
 
+### Changed
+
+- **`EcucCodeGenerator` 转正**（F4，`@yuletech/core/generator`）：移除
+  `@experimental` 标注与“仅测试引用”说明，升级为正式发布路径。与 web 层宏头
+  生成器明确分工：core `EcucCodeGenerator` 生成 `Ecuc_<Module>.c/h` 完整 C
+  代码（AUTOSAR 4.4，参数/容器/实例 + 插件委托）；web codegen
+  （`apps/yuleasr-web/src/services/codegen.ts`）schema 驱动生成宏头 `Cfg.h`
+  （`generateHeadersFromSchemas` + `editableToSchemas` 编辑回写），供 Editor
+  配置预览/导出。两者互补，不做代码合并；API 为正式契约，变更遵循 SemVer。
+
 ---
 
 ## [0.2.3] - 2026-07-17
