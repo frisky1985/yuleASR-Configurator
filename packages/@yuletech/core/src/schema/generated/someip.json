@@ -1,0 +1,888 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/someip.json",
+  "title": "SomeIp Configuration",
+  "description": "SOME/IP Configuration Header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SOMEIP_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "SOMEIP_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "AUTOSAR VERSION"
+    },
+    "SOMEIP_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "SOMEIP_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "AUTOSAR VERSION"
+    },
+    "SOMEIP_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "SOMEIP_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "AUTOSAR VERSION"
+    },
+    "SOMEIP_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "SOMEIP_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MODULE VERSION"
+    },
+    "SOMEIP_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "SOMEIP_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MODULE VERSION"
+    },
+    "SOMEIP_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "SOMEIP_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MODULE VERSION"
+    },
+    "SOMEIP_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "SOMEIP_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIP_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "SOMEIP_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIP_TRANSFORMER_SUPPORT": {
+      "type": "boolean",
+      "description": "SOMEIP_TRANSFORMER_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIP_EVENT_HANDLING_ENABLED": {
+      "type": "boolean",
+      "description": "SOMEIP_EVENT_HANDLING_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIP_METHOD_CALL_HANDLING_ENABLED": {
+      "type": "boolean",
+      "description": "SOMEIP_METHOD_CALL_HANDLING_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIP_MAX_MESSAGE_SIZE": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_MESSAGE_SIZE 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "MESSAGE BUFFER CONFIGURATION"
+    },
+    "SOMEIP_MAX_PAYLOAD_SIZE": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_MESSAGE_SIZE - SOMEIP_HEADER_SIZE",
+      "default": 4072,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "MESSAGE BUFFER CONFIGURATION"
+    },
+    "SOMEIP_NUM_RX_BUFFERS": {
+      "type": "integer",
+      "description": "SOMEIP_NUM_RX_BUFFERS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MESSAGE BUFFER CONFIGURATION"
+    },
+    "SOMEIP_NUM_TX_BUFFERS": {
+      "type": "integer",
+      "description": "SOMEIP_NUM_TX_BUFFERS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MESSAGE BUFFER CONFIGURATION"
+    },
+    "SOMEIP_TOTAL_NUM_BUFFERS": {
+      "type": "integer",
+      "description": "SOMEIP_TOTAL_NUM_BUFFERS（派生表达式: SOMEIP_NUM_RX_BUFFERS + SOMEIP_NUM_TX_BUFFERS）",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "MESSAGE BUFFER CONFIGURATION"
+    },
+    "SOMEIP_RX_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "SOMEIP_RX_BUFFER_SIZE（别名: SOMEIP_MAX_MESSAGE_SIZE = 4096；同族可选: SOMEIP_MAX_MESSAGE_SIZE）",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "MESSAGE BUFFER CONFIGURATION"
+    },
+    "SOMEIP_TX_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "SOMEIP_TX_BUFFER_SIZE（别名: SOMEIP_MAX_MESSAGE_SIZE = 4096；同族可选: SOMEIP_MAX_MESSAGE_SIZE）",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "MESSAGE BUFFER CONFIGURATION"
+    },
+    "SOMEIP_MAX_SERVICES": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_SERVICES 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SERVICE CONFIGURATION"
+    },
+    "SOMEIP_MAX_SERVICE_INSTANCES": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_SERVICE_INSTANCES 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SERVICE CONFIGURATION"
+    },
+    "SOMEIP_MAX_METHODS_PER_SERVICE": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_METHODS_PER_SERVICE 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SERVICE CONFIGURATION"
+    },
+    "SOMEIP_MAX_EVENTS_PER_SERVICE": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_EVENTS_PER_SERVICE 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SERVICE CONFIGURATION"
+    },
+    "SOMEIP_MAX_FIELDS_PER_SERVICE": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_FIELDS_PER_SERVICE 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SERVICE CONFIGURATION"
+    },
+    "SOMEIP_MAX_EVENTGROUPS_PER_SERVICE": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_EVENTGROUPS_PER_SERVICE 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SERVICE CONFIGURATION"
+    },
+    "SOMEIP_MAX_METHODS_TOTAL": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_METHODS_TOTAL 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SERVICE CONFIGURATION"
+    },
+    "SOMEIP_MAX_EVENTS_TOTAL": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_EVENTS_TOTAL 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SERVICE CONFIGURATION"
+    },
+    "SOMEIP_MAX_FIELDS_TOTAL": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_FIELDS_TOTAL 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SERVICE CONFIGURATION"
+    },
+    "SOMEIP_MAX_CLIENTS": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_CLIENTS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CLIENT CONFIGURATION"
+    },
+    "SOMEIP_MAX_PENDING_REQUESTS": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_PENDING_REQUESTS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CLIENT CONFIGURATION"
+    },
+    "SOMEIP_INITIAL_SESSION_ID": {
+      "type": "integer",
+      "description": "SOMEIP_INITIAL_SESSION_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CLIENT CONFIGURATION"
+    },
+    "SOMEIP_MAX_SESSION_ID": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_SESSION_ID 参数",
+      "default": 65535,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CLIENT CONFIGURATION"
+    },
+    "SOMEIP_INITIAL_CLIENT_ID": {
+      "type": "integer",
+      "description": "SOMEIP_INITIAL_CLIENT_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CLIENT CONFIGURATION"
+    },
+    "SOMEIP_REQUEST_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "SOMEIP_REQUEST_TIMEOUT_MS 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "TIMEOUT CONFIGURATION"
+    },
+    "SOMEIP_RESPONSE_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "SOMEIP_RESPONSE_TIMEOUT_MS 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "TIMEOUT CONFIGURATION"
+    },
+    "SOMEIP_METHOD_CALL_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "SOMEIP_METHOD_CALL_TIMEOUT_MS 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "TIMEOUT CONFIGURATION"
+    },
+    "SOMEIP_EVENT_SUBSCRIPTION_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "SOMEIP_EVENT_SUBSCRIPTION_TIMEOUT_MS 参数",
+      "default": 3000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "TIMEOUT CONFIGURATION"
+    },
+    "SOMEIP_TX_CONFIRMATION_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "SOMEIP_TX_CONFIRMATION_TIMEOUT_MS 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "TIMEOUT CONFIGURATION"
+    },
+    "SOMEIP_CONNECTION_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "SOMEIP_CONNECTION_TIMEOUT_MS 参数",
+      "default": 3000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "TIMEOUT CONFIGURATION"
+    },
+    "SOMEIP_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "SOMEIP_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION PERIODS"
+    },
+    "SOMEIP_MAIN_FUNCTION_RX_PERIOD_MS": {
+      "type": "integer",
+      "description": "SOMEIP_MAIN_FUNCTION_RX_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION PERIODS"
+    },
+    "SOMEIP_MAIN_FUNCTION_TX_PERIOD_MS": {
+      "type": "integer",
+      "description": "SOMEIP_MAIN_FUNCTION_TX_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION PERIODS"
+    },
+    "SOMEIP_MAIN_FUNCTION_TIMEOUT_PERIOD_MS": {
+      "type": "integer",
+      "description": "SOMEIP_MAIN_FUNCTION_TIMEOUT_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION PERIODS"
+    },
+    "SOMEIP_SEPARATE_TX_THREAD": {
+      "type": "boolean",
+      "description": "SOMEIP_SEPARATE_TX_THREAD 参数",
+      "default": false,
+      "x-section": "TRANSMISSION CONFIGURATION"
+    },
+    "SOMEIP_RETRY_FAILED_TRANSMISSION": {
+      "type": "boolean",
+      "description": "SOMEIP_RETRY_FAILED_TRANSMISSION 参数",
+      "default": true,
+      "x-section": "TRANSMISSION CONFIGURATION"
+    },
+    "SOMEIP_MAX_TX_RETRIES": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_TX_RETRIES 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TRANSMISSION CONFIGURATION"
+    },
+    "SOMEIP_TX_RETRY_DELAY_MS": {
+      "type": "integer",
+      "description": "SOMEIP_TX_RETRY_DELAY_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TRANSMISSION CONFIGURATION"
+    },
+    "SOMEIP_SERVICE_ID_SD": {
+      "type": "integer",
+      "description": "SOMEIP_SERVICE_ID_SD（cast: SomeIp_ServiceIdType）",
+      "default": 65535,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "SERVICE ID DEFINITIONS"
+    },
+    "SOMEIP_SERVICE_ID_VEHICLE": {
+      "type": "integer",
+      "description": "SOMEIP_SERVICE_ID_VEHICLE（cast: SomeIp_ServiceIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "SERVICE ID DEFINITIONS"
+    },
+    "SOMEIP_SERVICE_ID_ENGINE": {
+      "type": "integer",
+      "description": "SOMEIP_SERVICE_ID_ENGINE（cast: SomeIp_ServiceIdType）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "SERVICE ID DEFINITIONS"
+    },
+    "SOMEIP_SERVICE_ID_CHASSIS": {
+      "type": "integer",
+      "description": "SOMEIP_SERVICE_ID_CHASSIS（cast: SomeIp_ServiceIdType）",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "SERVICE ID DEFINITIONS"
+    },
+    "SOMEIP_SERVICE_ID_BODY": {
+      "type": "integer",
+      "description": "SOMEIP_SERVICE_ID_BODY（cast: SomeIp_ServiceIdType）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "SERVICE ID DEFINITIONS"
+    },
+    "SOMEIP_SERVICE_ID_DIAGNOSTIC": {
+      "type": "integer",
+      "description": "SOMEIP_SERVICE_ID_DIAGNOSTIC（cast: SomeIp_ServiceIdType）",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "SERVICE ID DEFINITIONS"
+    },
+    "SOMEIP_SERVICE_ID_INFOTAINMENT": {
+      "type": "integer",
+      "description": "SOMEIP_SERVICE_ID_INFOTAINMENT（cast: SomeIp_ServiceIdType）",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "SERVICE ID DEFINITIONS"
+    },
+    "SOMEIP_SERVICE_ID_ADAS": {
+      "type": "integer",
+      "description": "SOMEIP_SERVICE_ID_ADAS（cast: SomeIp_ServiceIdType）",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "SERVICE ID DEFINITIONS"
+    },
+    "SOMEIP_SERVICE_ID_POWERTRAIN": {
+      "type": "integer",
+      "description": "SOMEIP_SERVICE_ID_POWERTRAIN（cast: SomeIp_ServiceIdType）",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "SERVICE ID DEFINITIONS"
+    },
+    "SOMEIP_METHOD_ID_VEHICLE_GET_SPEED": {
+      "type": "integer",
+      "description": "SOMEIP_METHOD_ID_VEHICLE_GET_SPEED（cast: SomeIp_MethodIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "METHOD ID DEFINITIONS"
+    },
+    "SOMEIP_METHOD_ID_VEHICLE_GET_POSITION": {
+      "type": "integer",
+      "description": "SOMEIP_METHOD_ID_VEHICLE_GET_POSITION（cast: SomeIp_MethodIdType）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "METHOD ID DEFINITIONS"
+    },
+    "SOMEIP_METHOD_ID_VEHICLE_SET_MODE": {
+      "type": "integer",
+      "description": "SOMEIP_METHOD_ID_VEHICLE_SET_MODE（cast: SomeIp_MethodIdType）",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "METHOD ID DEFINITIONS"
+    },
+    "SOMEIP_METHOD_ID_VEHICLE_GET_STATUS": {
+      "type": "integer",
+      "description": "SOMEIP_METHOD_ID_VEHICLE_GET_STATUS（cast: SomeIp_MethodIdType）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "METHOD ID DEFINITIONS"
+    },
+    "SOMEIP_METHOD_ID_ENGINE_GET_RPM": {
+      "type": "integer",
+      "description": "SOMEIP_METHOD_ID_ENGINE_GET_RPM（cast: SomeIp_MethodIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "METHOD ID DEFINITIONS"
+    },
+    "SOMEIP_METHOD_ID_ENGINE_GET_TEMP": {
+      "type": "integer",
+      "description": "SOMEIP_METHOD_ID_ENGINE_GET_TEMP（cast: SomeIp_MethodIdType）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "METHOD ID DEFINITIONS"
+    },
+    "SOMEIP_METHOD_ID_ENGINE_START": {
+      "type": "integer",
+      "description": "SOMEIP_METHOD_ID_ENGINE_START（cast: SomeIp_MethodIdType）",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "METHOD ID DEFINITIONS"
+    },
+    "SOMEIP_METHOD_ID_ENGINE_STOP": {
+      "type": "integer",
+      "description": "SOMEIP_METHOD_ID_ENGINE_STOP（cast: SomeIp_MethodIdType）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "METHOD ID DEFINITIONS"
+    },
+    "SOMEIP_METHOD_ID_CHASSIS_GET_STEERING": {
+      "type": "integer",
+      "description": "SOMEIP_METHOD_ID_CHASSIS_GET_STEERING（cast: SomeIp_MethodIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "METHOD ID DEFINITIONS"
+    },
+    "SOMEIP_METHOD_ID_CHASSIS_GET_BRAKE": {
+      "type": "integer",
+      "description": "SOMEIP_METHOD_ID_CHASSIS_GET_BRAKE（cast: SomeIp_MethodIdType）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "METHOD ID DEFINITIONS"
+    },
+    "SOMEIP_EVENT_ID_VEHICLE_SPEED_CHANGED": {
+      "type": "integer",
+      "description": "SOMEIP_EVENT_ID_VEHICLE_SPEED_CHANGED（cast: SomeIp_MethodIdType）",
+      "default": 32769,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "EVENT ID DEFINITIONS"
+    },
+    "SOMEIP_EVENT_ID_VEHICLE_POSITION_CHANGED": {
+      "type": "integer",
+      "description": "SOMEIP_EVENT_ID_VEHICLE_POSITION_CHANGED（cast: SomeIp_MethodIdType）",
+      "default": 32770,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "EVENT ID DEFINITIONS"
+    },
+    "SOMEIP_EVENT_ID_VEHICLE_STATUS_CHANGED": {
+      "type": "integer",
+      "description": "SOMEIP_EVENT_ID_VEHICLE_STATUS_CHANGED（cast: SomeIp_MethodIdType）",
+      "default": 32771,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "EVENT ID DEFINITIONS"
+    },
+    "SOMEIP_EVENT_ID_ENGINE_RPM_CHANGED": {
+      "type": "integer",
+      "description": "SOMEIP_EVENT_ID_ENGINE_RPM_CHANGED（cast: SomeIp_MethodIdType）",
+      "default": 32769,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "EVENT ID DEFINITIONS"
+    },
+    "SOMEIP_EVENT_ID_ENGINE_TEMP_CHANGED": {
+      "type": "integer",
+      "description": "SOMEIP_EVENT_ID_ENGINE_TEMP_CHANGED（cast: SomeIp_MethodIdType）",
+      "default": 32770,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "EVENT ID DEFINITIONS"
+    },
+    "SOMEIP_EVENT_ID_ENGINE_STATUS_CHANGED": {
+      "type": "integer",
+      "description": "SOMEIP_EVENT_ID_ENGINE_STATUS_CHANGED（cast: SomeIp_MethodIdType）",
+      "default": 32771,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "EVENT ID DEFINITIONS"
+    },
+    "SOMEIP_EVENTGROUP_ID_VEHICLE_BASIC": {
+      "type": "integer",
+      "description": "SOMEIP_EVENTGROUP_ID_VEHICLE_BASIC（cast: uint16）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "EVENT GROUP ID DEFINITIONS"
+    },
+    "SOMEIP_EVENTGROUP_ID_VEHICLE_EXTENDED": {
+      "type": "integer",
+      "description": "SOMEIP_EVENTGROUP_ID_VEHICLE_EXTENDED（cast: uint16）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "EVENT GROUP ID DEFINITIONS"
+    },
+    "SOMEIP_EVENTGROUP_ID_ENGINE_BASIC": {
+      "type": "integer",
+      "description": "SOMEIP_EVENTGROUP_ID_ENGINE_BASIC（cast: uint16）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "EVENT GROUP ID DEFINITIONS"
+    },
+    "SOMEIP_EVENTGROUP_ID_ENGINE_DIAGNOSTIC": {
+      "type": "integer",
+      "description": "SOMEIP_EVENTGROUP_ID_ENGINE_DIAGNOSTIC（cast: uint16）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "EVENT GROUP ID DEFINITIONS"
+    },
+    "SOMEIP_FIELD_ID_VEHICLE_SPEED": {
+      "type": "integer",
+      "description": "SOMEIP_FIELD_ID_VEHICLE_SPEED（cast: SomeIp_MethodIdType）",
+      "default": 36865,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "FIELD ID DEFINITIONS"
+    },
+    "SOMEIP_FIELD_ID_VEHICLE_ODOMETER": {
+      "type": "integer",
+      "description": "SOMEIP_FIELD_ID_VEHICLE_ODOMETER（cast: SomeIp_MethodIdType）",
+      "default": 36866,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "FIELD ID DEFINITIONS"
+    },
+    "SOMEIP_FIELD_ID_VEHICLE_GEAR_POSITION": {
+      "type": "integer",
+      "description": "SOMEIP_FIELD_ID_VEHICLE_GEAR_POSITION（cast: SomeIp_MethodIdType）",
+      "default": 36867,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "FIELD ID DEFINITIONS"
+    },
+    "SOMEIP_FIELD_ID_ENGINE_RPM": {
+      "type": "integer",
+      "description": "SOMEIP_FIELD_ID_ENGINE_RPM（cast: SomeIp_MethodIdType）",
+      "default": 36865,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "FIELD ID DEFINITIONS"
+    },
+    "SOMEIP_FIELD_ID_ENGINE_TEMPERATURE": {
+      "type": "integer",
+      "description": "SOMEIP_FIELD_ID_ENGINE_TEMPERATURE（cast: SomeIp_MethodIdType）",
+      "default": 36866,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "FIELD ID DEFINITIONS"
+    },
+    "SOMEIP_FIELD_ID_ENGINE_HOURS": {
+      "type": "integer",
+      "description": "SOMEIP_FIELD_ID_ENGINE_HOURS（cast: SomeIp_MethodIdType）",
+      "default": 36867,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "FIELD ID DEFINITIONS"
+    },
+    "SOMEIP_INSTANCE_ID_DEFAULT": {
+      "type": "integer",
+      "description": "SOMEIP_INSTANCE_ID_DEFAULT（cast: uint16）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "INSTANCE ID DEFINITIONS"
+    },
+    "SOMEIP_INSTANCE_ID_SECONDARY": {
+      "type": "integer",
+      "description": "SOMEIP_INSTANCE_ID_SECONDARY（cast: uint16）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "INSTANCE ID DEFINITIONS"
+    },
+    "SOMEIP_INSTANCE_ID_ANY": {
+      "type": "integer",
+      "description": "SOMEIP_INSTANCE_ID_ANY（cast: uint16）",
+      "default": 65535,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "INSTANCE ID DEFINITIONS"
+    },
+    "SOMEIP_CFG_PROTOCOL_VERSION": {
+      "type": "integer",
+      "description": "SOMEIP_CFG_PROTOCOL_VERSION（cast: SomeIp_ProtocolVersionType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "SOMEIP_CFG_INTERFACE_VERSION": {
+      "type": "integer",
+      "description": "SOMEIP_CFG_INTERFACE_VERSION（cast: SomeIp_InterfaceVersionType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "SOMEIP_ENDIANNESS": {
+      "type": "integer",
+      "description": "Network Byte Order (Big Endian)",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ENDIANNESS CONFIGURATION"
+    },
+    "SOMEIP_HEADER_NETWORK_BYTE_ORDER": {
+      "type": "boolean",
+      "description": "SOMEIP_HEADER_NETWORK_BYTE_ORDER 参数",
+      "default": true,
+      "x-section": "ENDIANNESS CONFIGURATION"
+    },
+    "SOMEIP_ASYNC_METHOD_CALL_ENABLED": {
+      "type": "boolean",
+      "description": "SOMEIP_ASYNC_METHOD_CALL_ENABLED 参数",
+      "default": true,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "SOMEIP_SEPARATE_METHOD_CALLBACKS": {
+      "type": "boolean",
+      "description": "SOMEIP_SEPARATE_METHOD_CALLBACKS 参数",
+      "default": true,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "SOMEIP_SEPARATE_EVENT_CALLBACKS": {
+      "type": "boolean",
+      "description": "SOMEIP_SEPARATE_EVENT_CALLBACKS 参数",
+      "default": true,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "SOMEIP_ENABLE_TRANSFORMER": {
+      "type": "boolean",
+      "description": "SOMEIP_ENABLE_TRANSFORMER 参数",
+      "default": true,
+      "x-section": "TRANSFORMER CONFIGURATION"
+    },
+    "SOMEIP_E2E_PROTECTION_ENABLED": {
+      "type": "boolean",
+      "description": "SOMEIP_E2E_PROTECTION_ENABLED 参数",
+      "default": false,
+      "x-section": "TRANSFORMER CONFIGURATION"
+    },
+    "SOMEIP_WIRE_TYPE_CONFIG_ENABLED": {
+      "type": "boolean",
+      "description": "SOMEIP_WIRE_TYPE_CONFIG_ENABLED 参数",
+      "default": true,
+      "x-section": "TRANSFORMER CONFIGURATION"
+    },
+    "SOMEIP_CLIENT_ID_BASE": {
+      "type": "integer",
+      "description": "SOMEIP_CLIENT_ID_BASE（cast: SomeIp_ClientIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "ECU CONFIGURATION"
+    },
+    "SOMEIP_MAX_CONCURRENT_METHOD_CALLS": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_CONCURRENT_METHOD_CALLS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ECU CONFIGURATION"
+    },
+    "SOMEIP_MAX_EVENT_SUBSCRIPTIONS": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_EVENT_SUBSCRIPTIONS 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ECU CONFIGURATION"
+    },
+    "SOMEIP_NUM_CONFIGURED_SERVICES": {
+      "type": "integer",
+      "description": "SOMEIP_NUM_CONFIGURED_SERVICES 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION ARRAY SIZES"
+    },
+    "SOMEIP_NUM_CONFIGURED_METHODS": {
+      "type": "integer",
+      "description": "SOMEIP_NUM_CONFIGURED_METHODS 参数",
+      "default": 12,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION ARRAY SIZES"
+    },
+    "SOMEIP_NUM_CONFIGURED_EVENTS": {
+      "type": "integer",
+      "description": "SOMEIP_NUM_CONFIGURED_EVENTS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION ARRAY SIZES"
+    },
+    "SOMEIP_NUM_CONFIGURED_FIELDS": {
+      "type": "integer",
+      "description": "SOMEIP_NUM_CONFIGURED_FIELDS 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION ARRAY SIZES"
+    },
+    "SOMEIP_NUM_CONFIGURED_EVENTGROUPS": {
+      "type": "integer",
+      "description": "SOMEIP_NUM_CONFIGURED_EVENTGROUPS 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION ARRAY SIZES"
+    },
+    "SOMEIP_NUM_CONFIGURED_CLIENTS": {
+      "type": "integer",
+      "description": "SOMEIP_NUM_CONFIGURED_CLIENTS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION ARRAY SIZES"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/someip/include/SomeIp_Cfg.h",
+  "x-display-name": "SomeIp",
+  "x-sections": [
+    "AUTOSAR VERSION",
+    "MODULE VERSION",
+    "PRE-COMPILE CONFIGURATION",
+    "MESSAGE BUFFER CONFIGURATION",
+    "SERVICE CONFIGURATION",
+    "CLIENT CONFIGURATION",
+    "TIMEOUT CONFIGURATION",
+    "MAIN FUNCTION PERIODS",
+    "TRANSMISSION CONFIGURATION",
+    "SERVICE ID DEFINITIONS",
+    "METHOD ID DEFINITIONS",
+    "EVENT ID DEFINITIONS",
+    "EVENT GROUP ID DEFINITIONS",
+    "FIELD ID DEFINITIONS",
+    "INSTANCE ID DEFINITIONS",
+    "PROTOCOL CONFIGURATION",
+    "ENDIANNESS CONFIGURATION",
+    "CALLBACK CONFIGURATION",
+    "TRANSFORMER CONFIGURATION",
+    "ECU CONFIGURATION",
+    "CONFIGURATION ARRAY SIZES"
+  ]
+}

@@ -1,0 +1,367 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/ipdum_ecual.json",
+  "title": "IpduM_Ecual Configuration",
+  "description": "AUTOSAR I-PDU Multiplexer Configuration Header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "IPDUM_CFG_VENDOR_ID": {
+      "type": "integer",
+      "description": "IPDUM_CFG_VENDOR_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFO"
+    },
+    "IPDUM_CFG_MODULE_ID": {
+      "type": "integer",
+      "description": "IPDUM_CFG_MODULE_ID 参数",
+      "default": 77,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFO"
+    },
+    "IPDUM_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "IPDUM_CFG_SW_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFO"
+    },
+    "IPDUM_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "IPDUM_CFG_SW_MINOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFO"
+    },
+    "IPDUM_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "IPDUM_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFO"
+    },
+    "IPDUM_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "IPDUM_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "CONFIGURATION SWITCHES"
+    },
+    "IPDUM_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "IPDUM_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "CONFIGURATION SWITCHES"
+    },
+    "IPDUM_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "IPDUM_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION SWITCHES"
+    },
+    "IPDUM_MAX_TX_MUX_PDUS": {
+      "type": "integer",
+      "description": "IPDUM_MAX_TX_MUX_PDUS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION SWITCHES"
+    },
+    "IPDUM_MAX_RX_MUX_PDUS": {
+      "type": "integer",
+      "description": "IPDUM_MAX_RX_MUX_PDUS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION SWITCHES"
+    },
+    "IPDUM_MAX_DYNAMIC_PARTS_PER_TX_PDU": {
+      "type": "integer",
+      "description": "IPDUM_MAX_DYNAMIC_PARTS_PER_TX_PDU 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION SWITCHES"
+    },
+    "IPDUM_MAX_DYNAMIC_PARTS_PER_RX_PDU": {
+      "type": "integer",
+      "description": "IPDUM_MAX_DYNAMIC_PARTS_PER_RX_PDU 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION SWITCHES"
+    },
+    "IPDUM_MAX_STATIC_PARTS_PER_RX_PDU": {
+      "type": "integer",
+      "description": "IPDUM_MAX_STATIC_PARTS_PER_RX_PDU 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION SWITCHES"
+    },
+    "IPDUM_MAX_PDU_LENGTH": {
+      "type": "integer",
+      "description": "IPDUM_MAX_PDU_LENGTH 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION SWITCHES"
+    },
+    "IPDUM_SELECTOR_START_BYTE_DEFAULT": {
+      "type": "integer",
+      "description": "IPDUM_SELECTOR_START_BYTE_DEFAULT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION SWITCHES"
+    },
+    "IPDUM_SELECTOR_START_BIT_DEFAULT": {
+      "type": "integer",
+      "description": "IPDUM_SELECTOR_START_BIT_DEFAULT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION SWITCHES"
+    },
+    "IPDUM_SELECTOR_BIT_LENGTH_DEFAULT": {
+      "type": "integer",
+      "description": "IPDUM_SELECTOR_BIT_LENGTH_DEFAULT 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION SWITCHES"
+    },
+    "IPDUM_TX_MUX_PDU_0": {
+      "type": "integer",
+      "description": "IPDUM_TX_MUX_PDU_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_TX_MUX_PDU_1": {
+      "type": "integer",
+      "description": "IPDUM_TX_MUX_PDU_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_TX_MUX_PDU_2": {
+      "type": "integer",
+      "description": "IPDUM_TX_MUX_PDU_2 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_TX_MUX_PDU_3": {
+      "type": "integer",
+      "description": "IPDUM_TX_MUX_PDU_3 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_RX_MUX_PDU_0": {
+      "type": "integer",
+      "description": "IPDUM_RX_MUX_PDU_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_RX_MUX_PDU_1": {
+      "type": "integer",
+      "description": "IPDUM_RX_MUX_PDU_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_RX_MUX_PDU_2": {
+      "type": "integer",
+      "description": "IPDUM_RX_MUX_PDU_2 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_RX_MUX_PDU_3": {
+      "type": "integer",
+      "description": "IPDUM_RX_MUX_PDU_3 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_COM_TX_PDU_0": {
+      "type": "integer",
+      "description": "IPDUM_COM_TX_PDU_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_COM_TX_PDU_1": {
+      "type": "integer",
+      "description": "IPDUM_COM_TX_PDU_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_COM_TX_PDU_2": {
+      "type": "integer",
+      "description": "IPDUM_COM_TX_PDU_2 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_COM_TX_PDU_3": {
+      "type": "integer",
+      "description": "IPDUM_COM_TX_PDU_3 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_COM_RX_PDU_0": {
+      "type": "integer",
+      "description": "IPDUM_COM_RX_PDU_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_COM_RX_PDU_1": {
+      "type": "integer",
+      "description": "IPDUM_COM_RX_PDU_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_COM_RX_PDU_2": {
+      "type": "integer",
+      "description": "IPDUM_COM_RX_PDU_2 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_COM_RX_PDU_3": {
+      "type": "integer",
+      "description": "IPDUM_COM_RX_PDU_3 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_SELECTOR_VALUE_0": {
+      "type": "integer",
+      "description": "IPDUM_SELECTOR_VALUE_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_SELECTOR_VALUE_1": {
+      "type": "integer",
+      "description": "IPDUM_SELECTOR_VALUE_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_SELECTOR_VALUE_2": {
+      "type": "integer",
+      "description": "IPDUM_SELECTOR_VALUE_2 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    },
+    "IPDUM_SELECTOR_VALUE_3": {
+      "type": "integer",
+      "description": "IPDUM_SELECTOR_VALUE_3 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU ID MAPPING"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/ecual/ipdum/include/IpduM_Cfg.h",
+  "x-display-name": "IpduM_Ecual",
+  "x-sections": [
+    "VERSION INFO",
+    "CONFIGURATION SWITCHES",
+    "PDU ID MAPPING"
+  ]
+}

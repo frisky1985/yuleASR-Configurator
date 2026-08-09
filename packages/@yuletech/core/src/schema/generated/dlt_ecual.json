@@ -1,0 +1,413 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/dlt_ecual.json",
+  "title": "Dlt_Ecual Configuration",
+  "description": "Dlt configuration (extracted from yuleASR Cfg.h)",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DLT_CFG_AR_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "DLT_CFG_AR_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_CFG_AR_MINOR_VERSION": {
+      "type": "integer",
+      "description": "DLT_CFG_AR_MINOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_CFG_AR_PATCH_VERSION": {
+      "type": "integer",
+      "description": "DLT_CFG_AR_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_CFG_VENDOR_ID": {
+      "type": "integer",
+      "description": "DLT_CFG_VENDOR_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_MODULE_ID": {
+      "type": "integer",
+      "description": "DLT_MODULE_ID 参数",
+      "default": 210,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "DLT_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "DLT_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "DLT_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "DLT_USE_COM": {
+      "type": "boolean",
+      "description": "DLT_USE_COM 参数",
+      "default": true
+    },
+    "DLT_USE_VERBOSE_MODE": {
+      "type": "boolean",
+      "description": "DLT_USE_VERBOSE_MODE 参数",
+      "default": true
+    },
+    "DLT_USE_LOG_LEVEL_FILTER": {
+      "type": "boolean",
+      "description": "DLT_USE_LOG_LEVEL_FILTER 参数",
+      "default": true
+    },
+    "DLT_USE_TRACE_STATUS": {
+      "type": "boolean",
+      "description": "DLT_USE_TRACE_STATUS 参数",
+      "default": true
+    },
+    "DLT_USE_BUFFERING": {
+      "type": "boolean",
+      "description": "DLT_USE_BUFFERING 参数",
+      "default": true
+    },
+    "DLT_PROTOCOL_VERSION_MAJOR": {
+      "type": "integer",
+      "description": "DLT_PROTOCOL_VERSION_MAJOR 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_PROTOCOL_VERSION_MINOR": {
+      "type": "integer",
+      "description": "DLT_PROTOCOL_VERSION_MINOR 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_MAX_MESSAGE_LENGTH": {
+      "type": "integer",
+      "description": "DLT_MAX_MESSAGE_LENGTH 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "DLT_MAX_CONTEXT_DESCRIPTION": {
+      "type": "integer",
+      "description": "DLT_MAX_CONTEXT_DESCRIPTION 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_MAX_APP_DESCRIPTION": {
+      "type": "integer",
+      "description": "DLT_MAX_APP_DESCRIPTION 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_BUFFER_COUNT": {
+      "type": "integer",
+      "description": "DLT_BUFFER_COUNT 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "DLT_BUFFER_SIZE 参数",
+      "default": 2048,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "DLT_MAX_MESSAGE_COUNT": {
+      "type": "integer",
+      "description": "DLT_MAX_MESSAGE_COUNT 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "DLT_BUFFERING_TIMEOUT": {
+      "type": "integer",
+      "description": "ms",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "DLT_MAX_CONTEXT_COUNT": {
+      "type": "integer",
+      "description": "DLT_MAX_CONTEXT_COUNT 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_MAX_CONTEXT_ID_LENGTH": {
+      "type": "integer",
+      "description": "DLT_MAX_CONTEXT_ID_LENGTH 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_MAX_APP_ID_LENGTH": {
+      "type": "integer",
+      "description": "DLT_MAX_APP_ID_LENGTH 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_DEFAULT_LOG_LEVEL": {
+      "type": "enum",
+      "description": "DLT_DEFAULT_LOG_LEVEL 参数",
+      "default": "DLT_LOG_INFO",
+      "enum": [
+        "DLT_LOG_OFF",
+        "DLT_LOG_FATAL",
+        "DLT_LOG_ERROR",
+        "DLT_LOG_WARN",
+        "DLT_LOG_INFO",
+        "DLT_LOG_DEBUG",
+        "DLT_LOG_VERBOSE"
+      ]
+    },
+    "DLT_DEFAULT_TRACE_STATUS": {
+      "type": "enum",
+      "description": "DLT_DEFAULT_TRACE_STATUS 参数",
+      "default": "DLT_TRACE_STATUS_ON",
+      "enum": [
+        "DLT_TRACE_STATUS_OFF",
+        "DLT_TRACE_STATUS_ON"
+      ]
+    },
+    "DLT_ECU_ID": {
+      "type": "string",
+      "description": "DLT_ECU_ID 参数",
+      "default": "ECU1"
+    },
+    "DLT_ECU_ID_LENGTH": {
+      "type": "integer",
+      "description": "DLT_ECU_ID_LENGTH 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_DEFAULT_SESSION_ID": {
+      "type": "integer",
+      "description": "DLT_DEFAULT_SESSION_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_MAIN_FUNCTION_PERIOD": {
+      "type": "integer",
+      "description": "ms",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_E_NO_ERROR": {
+      "type": "integer",
+      "description": "DLT_E_NO_ERROR 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_E_NOT_INITIALIZED": {
+      "type": "integer",
+      "description": "DLT_E_NOT_INITIALIZED 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_E_NULL_POINTER": {
+      "type": "integer",
+      "description": "DLT_E_NULL_POINTER 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_E_INVALID_PARAMETER": {
+      "type": "integer",
+      "description": "DLT_E_INVALID_PARAMETER 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_E_CONTEXT_FULL": {
+      "type": "integer",
+      "description": "DLT_E_CONTEXT_FULL 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_E_CONTEXT_NOT_FOUND": {
+      "type": "integer",
+      "description": "DLT_E_CONTEXT_NOT_FOUND 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_E_BUFFER_FULL": {
+      "type": "integer",
+      "description": "DLT_E_BUFFER_FULL 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_E_COM_FAILURE": {
+      "type": "integer",
+      "description": "DLT_E_COM_FAILURE 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_SID_INIT": {
+      "type": "integer",
+      "description": "DLT_SID_INIT 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_SID_DEINIT": {
+      "type": "integer",
+      "description": "DLT_SID_DEINIT 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_SID_SEND_LOG_MESSAGE": {
+      "type": "integer",
+      "description": "DLT_SID_SEND_LOG_MESSAGE 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_SID_SEND_TRACE_MESSAGE": {
+      "type": "integer",
+      "description": "DLT_SID_SEND_TRACE_MESSAGE 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_SID_REGISTER_CONTEXT": {
+      "type": "integer",
+      "description": "DLT_SID_REGISTER_CONTEXT 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_SID_UNREGISTER_CONTEXT": {
+      "type": "integer",
+      "description": "DLT_SID_UNREGISTER_CONTEXT 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_SID_GET_VERSION_INFO": {
+      "type": "integer",
+      "description": "DLT_SID_GET_VERSION_INFO 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_SID_SET_LOG_LEVEL": {
+      "type": "integer",
+      "description": "DLT_SID_SET_LOG_LEVEL 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_SID_GET_LOG_LEVEL": {
+      "type": "integer",
+      "description": "DLT_SID_GET_LOG_LEVEL 参数",
+      "default": 9,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_SID_SET_TRACE_STATUS": {
+      "type": "integer",
+      "description": "DLT_SID_SET_TRACE_STATUS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_SID_GET_TRACE_STATUS": {
+      "type": "integer",
+      "description": "DLT_SID_GET_TRACE_STATUS 参数",
+      "default": 11,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_SID_MAIN_FUNCTION": {
+      "type": "integer",
+      "description": "DLT_SID_MAIN_FUNCTION 参数",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/ecual/dlt/include/Dlt_Cfg.h",
+  "x-display-name": "Dlt_Ecual"
+}

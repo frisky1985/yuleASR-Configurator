@@ -1,0 +1,439 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/fim_ecual.json",
+  "title": "FiM_Ecual Configuration",
+  "description": "FiM configuration (extracted from yuleASR Cfg.h)",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FIM_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "FIM_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "FIM_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "FIM_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "FIM_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "FIM_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "FIM_EVENT_UPDATE_TRIGGERED_BY_DEM": {
+      "type": "boolean",
+      "description": "FIM_EVENT_UPDATE_TRIGGERED_BY_DEM 参数",
+      "default": true
+    },
+    "FIM_FUNCTION_INHIBITION_AVAILABLE": {
+      "type": "boolean",
+      "description": "FIM_FUNCTION_INHIBITION_AVAILABLE 参数",
+      "default": true
+    },
+    "FIM_EVENT_UPDATE_TRIGGER": {
+      "type": "boolean",
+      "description": "FIM_EVENT_UPDATE_TRIGGER 参数",
+      "default": true
+    },
+    "FIM_MAIN_FUNCTION_CALLOUT_SUPPORTED": {
+      "type": "boolean",
+      "description": "FIM_MAIN_FUNCTION_CALLOUT_SUPPORTED 参数",
+      "default": false
+    },
+    "FIM_CFG_NUMBER_OF_FIDS": {
+      "type": "integer",
+      "description": "FIM_CFG_NUMBER_OF_FIDS 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_CFG_MAX_FID": {
+      "type": "integer",
+      "description": "FIM_CFG_MAX_FID（派生表达式: FIM_CFG_NUMBER_OF_FIDS - 1u）",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FIM_CFG_NUMBER_OF_EVENTS": {
+      "type": "integer",
+      "description": "FIM_CFG_NUMBER_OF_EVENTS 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_CFG_MAX_EVENT": {
+      "type": "integer",
+      "description": "FIM_CFG_MAX_EVENT（派生表达式: FIM_CFG_NUMBER_OF_EVENTS - 1u）",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FIM_CFG_MAX_INHIBITION_CONFIG": {
+      "type": "integer",
+      "description": "FIM_CFG_MAX_INHIBITION_CONFIG 参数",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_CFG_MAX_EVENT_FID_MAP": {
+      "type": "integer",
+      "description": "FIM_CFG_MAX_EVENT_FID_MAP 参数",
+      "default": 96,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_INVALID_FID": {
+      "type": "integer",
+      "description": "FIM_INVALID_FID 参数",
+      "default": 65535,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FIM_INVALID_EVENT": {
+      "type": "integer",
+      "description": "FIM_INVALID_EVENT 参数",
+      "default": 65535,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FIM_LAST_FAILED": {
+      "type": "integer",
+      "description": "FIM_LAST_FAILED 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_NOT_TESTED": {
+      "type": "integer",
+      "description": "FIM_NOT_TESTED 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_TESTED_FAULTY": {
+      "type": "integer",
+      "description": "FIM_TESTED_FAULTY 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_TESTED_AND_FAILED": {
+      "type": "integer",
+      "description": "FIM_TESTED_AND_FAILED（别名: FIM_TESTED_FAULTY = 4；同族可选: FIM_TESTED_FAULTY）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_INHIBIT_IF_FAILED": {
+      "type": "integer",
+      "description": "FIM_INHIBIT_IF_FAILED 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_MASK_NONE": {
+      "type": "integer",
+      "description": "FIM_MASK_NONE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_MASK_ALL_FAILURES": {
+      "type": "integer",
+      "description": "FIM_MASK_ALL_FAILURES 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DEM_UDS_STATUS_TF": {
+      "type": "integer",
+      "description": "Test Failed",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DEM_UDS_STATUS_TFTOC": {
+      "type": "integer",
+      "description": "Test Failed This Operation Cycle",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DEM_UDS_STATUS_PDTC": {
+      "type": "integer",
+      "description": "Pending DTC",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DEM_UDS_STATUS_CDTC": {
+      "type": "integer",
+      "description": "Confirmed DTC",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DEM_UDS_STATUS_TNCSLC": {
+      "type": "integer",
+      "description": "Test Not Completed Since Last Clear",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DEM_UDS_STATUS_TFSLC": {
+      "type": "integer",
+      "description": "Test Failed Since Last Clear",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DEM_UDS_STATUS_TNCTOC": {
+      "type": "integer",
+      "description": "Test Not Completed This Operation Cycle",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DEM_UDS_STATUS_WIR": {
+      "type": "integer",
+      "description": "Warning Indicator Requested",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_FID_POWER_LIMIT": {
+      "type": "integer",
+      "description": "FIM_FID_POWER_LIMIT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_FID_TORQUE_LIMIT": {
+      "type": "integer",
+      "description": "FIM_FID_TORQUE_LIMIT 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_FID_SPEED_LIMIT": {
+      "type": "integer",
+      "description": "FIM_FID_SPEED_LIMIT 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_FID_EMISSION_CONTROL": {
+      "type": "integer",
+      "description": "FIM_FID_EMISSION_CONTROL 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_FID_START_STOP_FUNCTION": {
+      "type": "integer",
+      "description": "FIM_FID_START_STOP_FUNCTION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_FID_CRUISE_CONTROL": {
+      "type": "integer",
+      "description": "FIM_FID_CRUISE_CONTROL 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_FID_ADAS_FEATURES": {
+      "type": "integer",
+      "description": "FIM_FID_ADAS_FEATURES 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_FID_THERMAL_MANAGEMENT": {
+      "type": "integer",
+      "description": "FIM_FID_THERMAL_MANAGEMENT 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_FID_BATTERY_CHARGING": {
+      "type": "integer",
+      "description": "FIM_FID_BATTERY_CHARGING 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_FID_REGENERATIVE_BRAKING": {
+      "type": "integer",
+      "description": "FIM_FID_REGENERATIVE_BRAKING 参数",
+      "default": 9,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_FID_USER_DEFINED_1": {
+      "type": "integer",
+      "description": "FIM_FID_USER_DEFINED_1 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_FID_USER_DEFINED_2": {
+      "type": "integer",
+      "description": "FIM_FID_USER_DEFINED_2 参数",
+      "default": 11,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_EVENT_CATALYST_DAMAGE": {
+      "type": "integer",
+      "description": "FIM_EVENT_CATALYST_DAMAGE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_EVENT_MISFIRE": {
+      "type": "integer",
+      "description": "FIM_EVENT_MISFIRE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_EVENT_FUEL_SYSTEM": {
+      "type": "integer",
+      "description": "FIM_EVENT_FUEL_SYSTEM 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_EVENT_O2_SENSOR": {
+      "type": "integer",
+      "description": "FIM_EVENT_O2_SENSOR 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_EVENT_BOOST_PRESSURE": {
+      "type": "integer",
+      "description": "FIM_EVENT_BOOST_PRESSURE 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_EVENT_COOLANT_TEMP": {
+      "type": "integer",
+      "description": "FIM_EVENT_COOLANT_TEMP 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_EVENT_THROTTLE_POSITION": {
+      "type": "integer",
+      "description": "FIM_EVENT_THROTTLE_POSITION 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_EVENT_MAF_SENSOR": {
+      "type": "integer",
+      "description": "FIM_EVENT_MAF_SENSOR 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_EVENT_ENGINE_KNOCK": {
+      "type": "integer",
+      "description": "FIM_EVENT_ENGINE_KNOCK 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_EVENT_BATTERY_VOLTAGE": {
+      "type": "integer",
+      "description": "FIM_EVENT_BATTERY_VOLTAGE 参数",
+      "default": 9,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FIM_CFG_CONST": {
+      "type": "integer",
+      "description": "FIM_CFG_CONST（派生表达式: const）",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FIM_CFG_CONST_ROOT": {
+      "type": "integer",
+      "description": "FIM_CFG_CONST_ROOT（派生表达式: const）",
+      "minimum": 0,
+      "maximum": 4294967295
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/ecual/fim/include/FiM_Cfg.h",
+  "x-display-name": "FiM_Ecual"
+}

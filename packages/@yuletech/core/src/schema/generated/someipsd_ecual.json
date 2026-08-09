@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/someipsd_ecual.json",
+  "title": "SomeIpSd_Ecual Configuration",
+  "description": "SOME/IP Service Discovery Configuration",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SOMEIPSD_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "SOMEIPSD_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "SOMEIPSD_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "SOMEIPSD_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "SOMEIPSD_PROTOCOL_VERSION": {
+      "type": "integer",
+      "description": "SOMEIPSD_PROTOCOL_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SOMEIPSD_INTERFACE_VERSION": {
+      "type": "integer",
+      "description": "SOMEIPSD_INTERFACE_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SOMEIPSD_HEADER_SIZE": {
+      "type": "integer",
+      "description": "SOMEIPSD_HEADER_SIZE 参数",
+      "default": 12,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SOMEIPSD_ENTRY_LENGTH": {
+      "type": "integer",
+      "description": "SOMEIPSD_ENTRY_LENGTH 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SOMEIPSD_MAX_SERVICES": {
+      "type": "integer",
+      "description": "SOMEIPSD_MAX_SERVICES 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SOMEIPSD_MAX_SUBSCRIPTIONS": {
+      "type": "integer",
+      "description": "SOMEIPSD_MAX_SUBSCRIPTIONS 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SOMEIPSD_INITIAL_DELAY_MIN_MS": {
+      "type": "integer",
+      "description": "SOMEIPSD_INITIAL_DELAY_MIN_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SOMEIPSD_INITIAL_DELAY_MAX_MS": {
+      "type": "integer",
+      "description": "SOMEIPSD_INITIAL_DELAY_MAX_MS 参数",
+      "default": 500,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "SOMEIPSD_REPETITIONS_MAX": {
+      "type": "integer",
+      "description": "SOMEIPSD_REPETITIONS_MAX 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SOMEIPSD_CYCLIC_OFFER_DELAY_MS": {
+      "type": "integer",
+      "description": "SOMEIPSD_CYCLIC_OFFER_DELAY_MS 参数",
+      "default": 3000,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "SOMEIPSD_MULTICAST_IP": {
+      "type": "integer",
+      "description": "239.255.0.1",
+      "default": 4026466305,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "SOMEIPSD_MULTICAST_PORT": {
+      "type": "integer",
+      "description": "SOMEIPSD_MULTICAST_PORT 参数",
+      "default": 30490,
+      "minimum": 0,
+      "maximum": 65535
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/ecual/someipsd/include/SomeIpSd_Cfg.h",
+  "x-display-name": "SomeIpSd_Ecual"
+}

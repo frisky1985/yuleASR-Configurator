@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/linslave.json",
+  "title": "LinSlave Configuration",
+  "description": "LinSlave 模块配置参数",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LINSLAVE_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "LINSLAVE_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "LINSLAVE_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "LINSLAVE_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "LINSLAVE_NODE_ID": {
+      "type": "integer",
+      "description": "从机节点ID: 0-59",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "LINSLAVE_BAUDRATE": {
+      "type": "integer",
+      "description": "0=9600, 1=19200",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "LINSLAVE_RESPONSE_LENGTH": {
+      "type": "integer",
+      "description": "响应数据长度",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "LINSLAVE_CHECKSUM_TYPE": {
+      "type": "integer",
+      "description": "0=经典, 1=增强",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "LINSLAVE_MAX_DATA_LENGTH": {
+      "type": "integer",
+      "description": "LINSLAVE_MAX_DATA_LENGTH 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "LINSLAVE_MAX_FRAME_LENGTH": {
+      "type": "integer",
+      "description": "最大报文长度",
+      "default": 12,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "LINSLAVE_BREAK_THRESHOLD_US": {
+      "type": "integer",
+      "description": "Break 检测阈值 (微秒)",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "LINSLAVE_FRAME_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "报文超时 (毫秒)",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "LINSLAVE_INTERBYTE_TIMEOUT_US": {
+      "type": "integer",
+      "description": "字节间超时 (微秒)",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "LINSLAVE_UART_IRQ_HANDLER": {
+      "type": "integer",
+      "description": "LINSLAVE_UART_IRQ_HANDLER（派生表达式: LinSlave_RxInterruptHandler）",
+      "minimum": 0,
+      "maximum": 4294967295
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/mcal/lin/include/LinSlave_Cfg.h",
+  "x-display-name": "LinSlave"
+}

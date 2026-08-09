@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/flstst.json",
+  "title": "FlStSt Configuration",
+  "description": "Flash Test Pre-Compile Configuration",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FLSTST_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "FLSTST_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "DEVELOPMENT ERROR DETECT"
+    },
+    "FLSTST_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "FLSTST_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "DEVELOPMENT ERROR DETECT"
+    },
+    "FLSTST_MAX_SECTORS": {
+      "type": "integer",
+      "description": "FLSTST_MAX_SECTORS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SECTOR CONFIGURATION"
+    },
+    "FLSTST_MARCH_BACKGROUND_PATTERN": {
+      "type": "integer",
+      "description": "01010101",
+      "default": 85,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MARCH C PARAMETERS"
+    },
+    "FLSTST_MARCH_BACKGROUND_INVERT": {
+      "type": "integer",
+      "description": "10101010",
+      "default": 170,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MARCH C PARAMETERS"
+    },
+    "FLSTST_MARCH_CHECKERBOARD_A": {
+      "type": "integer",
+      "description": "FLSTST_MARCH_CHECKERBOARD_A 参数",
+      "default": 170,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MARCH C PARAMETERS"
+    },
+    "FLSTST_MARCH_CHECKERBOARD_B": {
+      "type": "integer",
+      "description": "FLSTST_MARCH_CHECKERBOARD_B 参数",
+      "default": 85,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MARCH C PARAMETERS"
+    },
+    "FLSTST_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "FLSTST_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIMING"
+    },
+    "FLSTST_BYTES_PER_CYCLE": {
+      "type": "integer",
+      "description": "Words per MainFunction call (deferred)",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIMING"
+    },
+    "FLSTST_ERASE_VALUE": {
+      "type": "integer",
+      "description": "Expected value after erase",
+      "default": 255,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ERASE / PROGRAM VERIFY PARAMETERS"
+    },
+    "FLSTST_VERIFY_CHUNK_SIZE": {
+      "type": "integer",
+      "description": "FLSTST_VERIFY_CHUNK_SIZE 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "ERASE / PROGRAM VERIFY PARAMETERS"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/flstst/include/FlStSt_Cfg.h",
+  "x-display-name": "FlStSt",
+  "x-sections": [
+    "DEVELOPMENT ERROR DETECT",
+    "SECTOR CONFIGURATION",
+    "MARCH C PARAMETERS",
+    "TIMING",
+    "ERASE / PROGRAM VERIFY PARAMETERS"
+  ]
+}

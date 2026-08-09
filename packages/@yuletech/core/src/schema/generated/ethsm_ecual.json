@@ -1,0 +1,364 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/ethsm_ecual.json",
+  "title": "EthSM_Ecual Configuration",
+  "description": "Ethernet State Manager (EthSM) Configuration Header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ETHSM_CFG_VENDOR_ID": {
+      "type": "integer",
+      "description": "ETHSM_CFG_VENDOR_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "ETHSM_CFG_MODULE_ID": {
+      "type": "integer",
+      "description": "ETHSM_CFG_MODULE_ID 参数",
+      "default": 67,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "ETHSM_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "ETHSM_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "ETHSM_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "ETHSM_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "ETHSM_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "ETHSM_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "ETHSM_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "ETHSM_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "ETHSM_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "ETHSM_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "ETHSM_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "ETHSM_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "ETHSM_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "ETHSM_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION OPTIONS"
+    },
+    "ETHSM_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "ETHSM_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION OPTIONS"
+    },
+    "ETHSM_WAKEUP_SUPPORT": {
+      "type": "boolean",
+      "description": "ETHSM_WAKEUP_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION OPTIONS"
+    },
+    "ETHSM_TRCVLINK_CHANGE_NOTIFICATION": {
+      "type": "boolean",
+      "description": "ETHSM_TRCVLINK_CHANGE_NOTIFICATION 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION OPTIONS"
+    },
+    "ETHSM_STATE_CHANGE_CALLBACK": {
+      "type": "boolean",
+      "description": "ETHSM_STATE_CHANGE_CALLBACK 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION OPTIONS"
+    },
+    "ETHSM_MAX_NETWORKS": {
+      "type": "integer",
+      "description": "ETHSM_MAX_NETWORKS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NETWORK CONFIGURATION"
+    },
+    "ETHSM_NETWORK_0": {
+      "type": "integer",
+      "description": "ETHSM_NETWORK_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NETWORK CONFIGURATION"
+    },
+    "ETHSM_NETWORK_1": {
+      "type": "integer",
+      "description": "ETHSM_NETWORK_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NETWORK CONFIGURATION"
+    },
+    "ETHSM_TIMEOUT_WAIT_TRCVLINK": {
+      "type": "integer",
+      "description": "100ms",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NETWORK CONFIGURATION"
+    },
+    "ETHSM_TIMEOUT_WAIT_ONLINE": {
+      "type": "integer",
+      "description": "5 seconds",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "NETWORK CONFIGURATION"
+    },
+    "ETHSM_TIMEOUT_TRCV_WAKEUP": {
+      "type": "integer",
+      "description": "50ms",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NETWORK CONFIGURATION"
+    },
+    "ETHSM_LINK_DEBOUNCE_TIME": {
+      "type": "integer",
+      "description": "20ms",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NETWORK CONFIGURATION"
+    },
+    "ETHSM_MAIN_FUNCTION_CYCLE_MS": {
+      "type": "integer",
+      "description": "10ms",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION CYCLE TIME"
+    },
+    "ETHSM_CTRL_IDX_NETWORK_0": {
+      "type": "integer",
+      "description": "ETHSM_CTRL_IDX_NETWORK_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONTROLLER CONFIGURATION"
+    },
+    "ETHSM_CTRL_IDX_NETWORK_1": {
+      "type": "integer",
+      "description": "ETHSM_CTRL_IDX_NETWORK_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONTROLLER CONFIGURATION"
+    },
+    "ETHSM_TRCV_IDX_NETWORK_0": {
+      "type": "integer",
+      "description": "ETHSM_TRCV_IDX_NETWORK_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TRANSCEIVER CONFIGURATION"
+    },
+    "ETHSM_TRCV_IDX_NETWORK_1": {
+      "type": "integer",
+      "description": "ETHSM_TRCV_IDX_NETWORK_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TRANSCEIVER CONFIGURATION"
+    },
+    "ETHSM_TCPIP_CTRL_IDX_NETWORK_0": {
+      "type": "integer",
+      "description": "ETHSM_TCPIP_CTRL_IDX_NETWORK_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TCP/IP CONFIGURATION"
+    },
+    "ETHSM_TCPIP_CTRL_IDX_NETWORK_1": {
+      "type": "integer",
+      "description": "ETHSM_TCPIP_CTRL_IDX_NETWORK_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TCP/IP CONFIGURATION"
+    },
+    "ETHSM_WAKEUP_SOURCE_NETWORK_0": {
+      "type": "integer",
+      "description": "ETHSM_WAKEUP_SOURCE_NETWORK_0 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "WAKE-UP CONFIGURATION"
+    },
+    "ETHSM_WAKEUP_SOURCE_NETWORK_1": {
+      "type": "integer",
+      "description": "ETHSM_WAKEUP_SOURCE_NETWORK_1 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "WAKE-UP CONFIGURATION"
+    },
+    "ETHSM_WAKEUP_BY_BUS_NETWORK_0": {
+      "type": "boolean",
+      "description": "ETHSM_WAKEUP_BY_BUS_NETWORK_0 参数",
+      "default": true,
+      "x-section": "WAKE-UP CONFIGURATION"
+    },
+    "ETHSM_WAKEUP_BY_BUS_NETWORK_1": {
+      "type": "boolean",
+      "description": "ETHSM_WAKEUP_BY_BUS_NETWORK_1 参数",
+      "default": true,
+      "x-section": "WAKE-UP CONFIGURATION"
+    },
+    "ETHSM_MAX_RETRIES": {
+      "type": "integer",
+      "description": "ETHSM_MAX_RETRIES 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "RETRY CONFIGURATION"
+    },
+    "ETHSM_RETRY_DELAY_MS": {
+      "type": "integer",
+      "description": "ETHSM_RETRY_DELAY_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "RETRY CONFIGURATION"
+    },
+    "ETHSM_CONFIG_VARIANT": {
+      "type": "integer",
+      "description": "ETHSM_CONFIG_VARIANT（别名: ETHSM_CONFIG_VARIANT_PRECOMPILE = 0；同族可选: ETHSM_CONFIG_VARIANT_POSTBUILD / ETHSM_CONFIG_VARIANT_PRECOMPILE / ETHSM_CONFIG_VARIANT_SELECTABLE）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "POST-BUILD CONFIGURATION"
+    },
+    "ETHSM_CONFIG_VARIANT_PRECOMPILE": {
+      "type": "integer",
+      "description": "ETHSM_CONFIG_VARIANT_PRECOMPILE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "POST-BUILD CONFIGURATION"
+    },
+    "ETHSM_CONFIG_VARIANT_SELECTABLE": {
+      "type": "integer",
+      "description": "ETHSM_CONFIG_VARIANT_SELECTABLE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "POST-BUILD CONFIGURATION"
+    },
+    "ETHSM_CONFIG_VARIANT_POSTBUILD": {
+      "type": "integer",
+      "description": "ETHSM_CONFIG_VARIANT_POSTBUILD 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "POST-BUILD CONFIGURATION"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/ecual/ethSm/include/EthSM_Cfg.h",
+  "x-display-name": "EthSM_Ecual",
+  "x-sections": [
+    "VERSION INFORMATION",
+    "PRE-COMPILE CONFIGURATION OPTIONS",
+    "NETWORK CONFIGURATION",
+    "MAIN FUNCTION CYCLE TIME",
+    "CONTROLLER CONFIGURATION",
+    "TRANSCEIVER CONFIGURATION",
+    "TCP/IP CONFIGURATION",
+    "WAKE-UP CONFIGURATION",
+    "RETRY CONFIGURATION",
+    "POST-BUILD CONFIGURATION"
+  ]
+}

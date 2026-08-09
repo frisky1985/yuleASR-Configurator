@@ -1,0 +1,383 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/someipxf.json",
+  "title": "SomeIpXf Configuration",
+  "description": "SOME/IP Transformer configuration header - AutoSAR R22-11",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SOMEIPXF_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "SOMEIPXF_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPXF_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "SOMEIPXF_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPXF_NUMBER_OF_TRANSFORMERS": {
+      "type": "integer",
+      "description": "SOMEIPXF_NUMBER_OF_TRANSFORMERS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TRANSFORMER CONFIGURATION"
+    },
+    "SOMEIPXF_NUMBER_OF_DATA_ELEMENTS": {
+      "type": "integer",
+      "description": "SOMEIPXF_NUMBER_OF_DATA_ELEMENTS 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TRANSFORMER CONFIGURATION"
+    },
+    "SOMEIPXF_MAX_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "SOMEIPXF_MAX_BUFFER_SIZE 参数",
+      "default": 1400,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "BUFFER CONFIGURATION"
+    },
+    "SOMEIPXF_MAX_STRING_LENGTH": {
+      "type": "integer",
+      "description": "SOMEIPXF_MAX_STRING_LENGTH 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "BUFFER CONFIGURATION"
+    },
+    "SOMEIPXF_MAX_ARRAY_ELEMENTS": {
+      "type": "integer",
+      "description": "SOMEIPXF_MAX_ARRAY_ELEMENTS 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "BUFFER CONFIGURATION"
+    },
+    "SOMEIPXF_ENABLE_BOOLEAN": {
+      "type": "boolean",
+      "description": "SOMEIPXF_ENABLE_BOOLEAN 参数",
+      "default": true,
+      "x-section": "DATA TYPE CONFIGURATION"
+    },
+    "SOMEIPXF_ENABLE_UINT8": {
+      "type": "boolean",
+      "description": "SOMEIPXF_ENABLE_UINT8 参数",
+      "default": true,
+      "x-section": "DATA TYPE CONFIGURATION"
+    },
+    "SOMEIPXF_ENABLE_UINT16": {
+      "type": "boolean",
+      "description": "SOMEIPXF_ENABLE_UINT16 参数",
+      "default": true,
+      "x-section": "DATA TYPE CONFIGURATION"
+    },
+    "SOMEIPXF_ENABLE_UINT32": {
+      "type": "boolean",
+      "description": "SOMEIPXF_ENABLE_UINT32 参数",
+      "default": true,
+      "x-section": "DATA TYPE CONFIGURATION"
+    },
+    "SOMEIPXF_ENABLE_UINT64": {
+      "type": "boolean",
+      "description": "SOMEIPXF_ENABLE_UINT64 参数",
+      "default": true,
+      "x-section": "DATA TYPE CONFIGURATION"
+    },
+    "SOMEIPXF_ENABLE_SINT8": {
+      "type": "boolean",
+      "description": "SOMEIPXF_ENABLE_SINT8 参数",
+      "default": true,
+      "x-section": "DATA TYPE CONFIGURATION"
+    },
+    "SOMEIPXF_ENABLE_SINT16": {
+      "type": "boolean",
+      "description": "SOMEIPXF_ENABLE_SINT16 参数",
+      "default": true,
+      "x-section": "DATA TYPE CONFIGURATION"
+    },
+    "SOMEIPXF_ENABLE_SINT32": {
+      "type": "boolean",
+      "description": "SOMEIPXF_ENABLE_SINT32 参数",
+      "default": true,
+      "x-section": "DATA TYPE CONFIGURATION"
+    },
+    "SOMEIPXF_ENABLE_SINT64": {
+      "type": "boolean",
+      "description": "SOMEIPXF_ENABLE_SINT64 参数",
+      "default": true,
+      "x-section": "DATA TYPE CONFIGURATION"
+    },
+    "SOMEIPXF_ENABLE_FLOAT32": {
+      "type": "boolean",
+      "description": "SOMEIPXF_ENABLE_FLOAT32 参数",
+      "default": true,
+      "x-section": "DATA TYPE CONFIGURATION"
+    },
+    "SOMEIPXF_ENABLE_FLOAT64": {
+      "type": "boolean",
+      "description": "SOMEIPXF_ENABLE_FLOAT64 参数",
+      "default": true,
+      "x-section": "DATA TYPE CONFIGURATION"
+    },
+    "SOMEIPXF_ENABLE_STRING": {
+      "type": "boolean",
+      "description": "SOMEIPXF_ENABLE_STRING 参数",
+      "default": true,
+      "x-section": "DATA TYPE CONFIGURATION"
+    },
+    "SOMEIPXF_ENABLE_ARRAY": {
+      "type": "boolean",
+      "description": "SOMEIPXF_ENABLE_ARRAY 参数",
+      "default": true,
+      "x-section": "DATA TYPE CONFIGURATION"
+    },
+    "SOMEIPXF_ENABLE_STRUCT": {
+      "type": "boolean",
+      "description": "SOMEIPXF_ENABLE_STRUCT 参数",
+      "default": true,
+      "x-section": "DATA TYPE CONFIGURATION"
+    },
+    "SOMEIPXF_ENABLE_UNION": {
+      "type": "boolean",
+      "description": "SOMEIPXF_ENABLE_UNION 参数",
+      "default": false,
+      "x-section": "DATA TYPE CONFIGURATION"
+    },
+    "SOMEIPXF_E2E_ENABLED": {
+      "type": "boolean",
+      "description": "SOMEIPXF_E2E_ENABLED 参数",
+      "default": false,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_E2E_PROFILE": {
+      "type": "integer",
+      "description": "SOMEIPXF_E2E_PROFILE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_TRANSFORMER_ID_0": {
+      "type": "integer",
+      "description": "SOMEIPXF_TRANSFORMER_ID_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_TRANSFORMER_ID_1": {
+      "type": "integer",
+      "description": "SOMEIPXF_TRANSFORMER_ID_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_TRANSFORMER_ID_2": {
+      "type": "integer",
+      "description": "SOMEIPXF_TRANSFORMER_ID_2 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_TRANSFORMER_ID_3": {
+      "type": "integer",
+      "description": "SOMEIPXF_TRANSFORMER_ID_3 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_TRANSFORMER_ID_4": {
+      "type": "integer",
+      "description": "SOMEIPXF_TRANSFORMER_ID_4 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_TRANSFORMER_ID_5": {
+      "type": "integer",
+      "description": "SOMEIPXF_TRANSFORMER_ID_5 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_TRANSFORMER_ID_6": {
+      "type": "integer",
+      "description": "SOMEIPXF_TRANSFORMER_ID_6 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_TRANSFORMER_ID_7": {
+      "type": "integer",
+      "description": "SOMEIPXF_TRANSFORMER_ID_7 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_SERVICE_ID_ECU_MONITOR": {
+      "type": "integer",
+      "description": "SOMEIPXF_SERVICE_ID_ECU_MONITOR 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_SERVICE_ID_DIAGNOSTICS": {
+      "type": "integer",
+      "description": "SOMEIPXF_SERVICE_ID_DIAGNOSTICS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_SERVICE_ID_VEHICLE_DATA": {
+      "type": "integer",
+      "description": "SOMEIPXF_SERVICE_ID_VEHICLE_DATA 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_SERVICE_ID_ENGINE_CTRL": {
+      "type": "integer",
+      "description": "SOMEIPXF_SERVICE_ID_ENGINE_CTRL 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_METHOD_ID_GET_STATUS": {
+      "type": "integer",
+      "description": "SOMEIPXF_METHOD_ID_GET_STATUS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_METHOD_ID_SET_MODE": {
+      "type": "integer",
+      "description": "SOMEIPXF_METHOD_ID_SET_MODE 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_METHOD_ID_NOTIFY_EVENT": {
+      "type": "integer",
+      "description": "SOMEIPXF_METHOD_ID_NOTIFY_EVENT 参数",
+      "default": 32769,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "E2E CONFIGURATION"
+    },
+    "SOMEIPXF_PROTOCOL_VERSION": {
+      "type": "integer",
+      "description": "SOMEIPXF_PROTOCOL_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL VERSION"
+    },
+    "SOMEIPXF_INTERFACE_VERSION": {
+      "type": "integer",
+      "description": "SOMEIPXF_INTERFACE_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL VERSION"
+    },
+    "SOMEIPXF_BIG_ENDIAN": {
+      "type": "boolean",
+      "description": "SOMEIPXF_BIG_ENDIAN 参数",
+      "default": true,
+      "x-section": "ENDIANNESS"
+    },
+    "SOMEIPXF_LITTLE_ENDIAN": {
+      "type": "boolean",
+      "description": "SOMEIPXF_LITTLE_ENDIAN 参数",
+      "default": false,
+      "x-section": "ENDIANNESS"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/someipxf/include/SomeIpXf_Cfg.h",
+  "x-display-name": "SomeIpXf",
+  "x-sections": [
+    "PRE-COMPILE CONFIGURATION",
+    "TRANSFORMER CONFIGURATION",
+    "BUFFER CONFIGURATION",
+    "DATA TYPE CONFIGURATION",
+    "E2E CONFIGURATION",
+    "PROTOCOL VERSION",
+    "ENDIANNESS"
+  ]
+}

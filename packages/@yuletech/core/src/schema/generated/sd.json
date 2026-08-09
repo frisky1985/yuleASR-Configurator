@@ -1,0 +1,209 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/sd.json",
+  "title": "Sd Configuration",
+  "description": "Service Discovery Pre-Compile Configuration",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SD_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "SD_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "DEVELOPMENT ERROR DETECT"
+    },
+    "SD_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "SD_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "DEVELOPMENT ERROR DETECT"
+    },
+    "SD_MAX_OFFERED_SERVICES": {
+      "type": "integer",
+      "description": "SD_MAX_OFFERED_SERVICES 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CAPACITY CONFIGURATION"
+    },
+    "SD_MAX_FOUND_SERVICES": {
+      "type": "integer",
+      "description": "SD_MAX_FOUND_SERVICES 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CAPACITY CONFIGURATION"
+    },
+    "SD_MAX_SUBSCRIPTIONS": {
+      "type": "integer",
+      "description": "SD_MAX_SUBSCRIPTIONS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CAPACITY CONFIGURATION"
+    },
+    "SD_MAX_EVENT_GROUPS": {
+      "type": "integer",
+      "description": "SD_MAX_EVENT_GROUPS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CAPACITY CONFIGURATION"
+    },
+    "SD_OFFER_CYCLE_TIME_MS": {
+      "type": "integer",
+      "description": "2 s",
+      "default": 2000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "TIMING CONFIGURATION"
+    },
+    "SD_FIND_CYCLE_TIME_MS": {
+      "type": "integer",
+      "description": "3 s",
+      "default": 3000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "TIMING CONFIGURATION"
+    },
+    "SD_TTL_DEFAULT_SEC": {
+      "type": "integer",
+      "description": "5 s",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIMING CONFIGURATION"
+    },
+    "SD_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "SD_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIMING CONFIGURATION"
+    },
+    "SD_INITIAL_DELAY_MS": {
+      "type": "integer",
+      "description": "500 ms initial delay",
+      "default": 500,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "TIMING CONFIGURATION"
+    },
+    "SD_SOMEIP_SERVICE_ID": {
+      "type": "integer",
+      "description": "SD_SOMEIP_SERVICE_ID 参数",
+      "default": 65535,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "SD MESSAGE CONSTANTS"
+    },
+    "SD_SOMEIP_METHOD_ID": {
+      "type": "integer",
+      "description": "SD_SOMEIP_METHOD_ID 参数",
+      "default": 33024,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "SD MESSAGE CONSTANTS"
+    },
+    "SD_MAX_SD_MSG_LENGTH": {
+      "type": "integer",
+      "description": "SD_MAX_SD_MSG_LENGTH 参数",
+      "default": 1400,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "SD MESSAGE CONSTANTS"
+    },
+    "SD_MULTICAST_IPV4_ADDR": {
+      "type": "integer",
+      "description": "239.255.255.255（cast: uint32）",
+      "default": 4026531839,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "NETWORK CONFIGURATION"
+    },
+    "SD_MULTICAST_PORT": {
+      "type": "integer",
+      "description": "SD_MULTICAST_PORT 参数",
+      "default": 30490,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "NETWORK CONFIGURATION"
+    },
+    "SD_UNICAST_PORT": {
+      "type": "integer",
+      "description": "SD_UNICAST_PORT 参数",
+      "default": 30491,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "NETWORK CONFIGURATION"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/sd/include/Sd_Cfg.h",
+  "x-display-name": "Sd",
+  "x-sections": [
+    "DEVELOPMENT ERROR DETECT",
+    "CAPACITY CONFIGURATION",
+    "TIMING CONFIGURATION",
+    "SD MESSAGE CONSTANTS",
+    "NETWORK CONFIGURATION"
+  ]
+}

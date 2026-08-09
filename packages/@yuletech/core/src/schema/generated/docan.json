@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/docan.json",
+  "title": "DoCan Configuration",
+  "description": "Diagnostic over CAN configuration header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DOCAN_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "DOCAN_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DOCAN_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "DOCAN_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DOCAN_MAX_CHANNELS": {
+      "type": "integer",
+      "description": "DOCAN_MAX_CHANNELS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "DOCAN_MAX_PDU_MAPPINGS": {
+      "type": "integer",
+      "description": "DOCAN_MAX_PDU_MAPPINGS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "DOCAN_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "DOCAN_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "DOCAN_DCM_TX_DIAG_PHYSICAL": {
+      "type": "integer",
+      "description": "DOCAN_DCM_TX_DIAG_PHYSICAL（cast: PduIdType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "DOCAN_DCM_TX_DIAG_FUNCTIONAL": {
+      "type": "integer",
+      "description": "DOCAN_DCM_TX_DIAG_FUNCTIONAL（cast: PduIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "DOCAN_DCM_RX_DIAG_PHYSICAL": {
+      "type": "integer",
+      "description": "DOCAN_DCM_RX_DIAG_PHYSICAL（cast: PduIdType）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "DOCAN_DCM_RX_DIAG_FUNCTIONAL": {
+      "type": "integer",
+      "description": "DOCAN_DCM_RX_DIAG_FUNCTIONAL（cast: PduIdType）",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "DOCAN_CANTP_TX_DIAG_PHYSICAL": {
+      "type": "integer",
+      "description": "DOCAN_CANTP_TX_DIAG_PHYSICAL（cast: PduIdType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "DOCAN_CANTP_TX_DIAG_FUNCTIONAL": {
+      "type": "integer",
+      "description": "DOCAN_CANTP_TX_DIAG_FUNCTIONAL（cast: PduIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "DOCAN_CANTP_RX_DIAG_PHYSICAL": {
+      "type": "integer",
+      "description": "DOCAN_CANTP_RX_DIAG_PHYSICAL（cast: PduIdType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "DOCAN_CANTP_RX_DIAG_FUNCTIONAL": {
+      "type": "integer",
+      "description": "DOCAN_CANTP_RX_DIAG_FUNCTIONAL（cast: PduIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "DOCAN_CHANNEL_0": {
+      "type": "integer",
+      "description": "DOCAN_CHANNEL_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "DOCAN_CHANNEL_1": {
+      "type": "integer",
+      "description": "DOCAN_CHANNEL_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "DOCAN_CHANNEL_2": {
+      "type": "integer",
+      "description": "DOCAN_CHANNEL_2 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "DOCAN_CHANNEL_3": {
+      "type": "integer",
+      "description": "DOCAN_CHANNEL_3 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION PERIOD"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/docan/include/DoCan_Cfg.h",
+  "x-display-name": "DoCan",
+  "x-sections": [
+    "PRE-COMPILE CONFIGURATION",
+    "CHANNEL CONFIGURATION",
+    "MAIN FUNCTION PERIOD"
+  ]
+}

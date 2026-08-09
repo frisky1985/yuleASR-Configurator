@@ -129,7 +129,7 @@ function validateCrossModuleChanges(
   changedParamName: string
 ): { issues: ValidationIssue[]; failed: boolean } {
   try {
-    // P2-2: 使用 54 个 generated JSON schema (crossReferences 链路打通)
+    // P2-2 + F1: 使用 117 个 generated JSON schema (54 手写 + 63 CfgH 提取)
     // Fix 26: 使用模块级缓存，避免热路径每次重新装配
     const schemas: ModuleSchema[] = getModuleSchemas();
     const validator = new CrossModuleValidator(new Map(schemas.map(s => [s.name, s])));

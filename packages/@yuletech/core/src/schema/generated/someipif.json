@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/someipif.json",
+  "title": "SomeIpIf Configuration",
+  "description": "SOME/IP Interface Configuration",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SOMEIPIF_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "SOMEIPIF_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "SOMEIPIF_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "SOMEIPIF_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "SOMEIP_PROTOCOL_VERSION": {
+      "type": "integer",
+      "description": "SOMEIP_PROTOCOL_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SOMEIP_INTERFACE_VERSION": {
+      "type": "integer",
+      "description": "SOMEIP_INTERFACE_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SOMEIP_HEADER_SIZE": {
+      "type": "integer",
+      "description": "SOMEIP_HEADER_SIZE 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SOMEIP_MAX_MESSAGE_LENGTH": {
+      "type": "integer",
+      "description": "SOMEIP_MAX_MESSAGE_LENGTH 参数",
+      "default": 4095,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "SOMEIPIF_MAX_SERVICES": {
+      "type": "integer",
+      "description": "SOMEIPIF_MAX_SERVICES 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SOMEIPIF_MAX_ENDPOINTS": {
+      "type": "integer",
+      "description": "SOMEIPIF_MAX_ENDPOINTS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SOMEIP_CONNECTION_TCP": {
+      "type": "integer",
+      "description": "SOMEIP_CONNECTION_TCP 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SOMEIP_CONNECTION_UDP": {
+      "type": "integer",
+      "description": "SOMEIP_CONNECTION_UDP 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/ecual/someipif/include/SomeIpIf_Cfg.h",
+  "x-display-name": "SomeIpIf"
+}

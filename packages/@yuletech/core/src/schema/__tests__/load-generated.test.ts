@@ -3,10 +3,10 @@ import { describe, it, expect } from 'vitest';
 import { loadModuleSchemas, generatedJsonToModuleSchema, moduleSchemas } from '../load-generated';
 
 describe('loadModuleSchemas (P2-2 loader)', () => {
-  it('should load all 54 generated modules', () => {
+  it('should load all 117 generated modules', () => {
     const schemas = loadModuleSchemas();
-    // 54 JSON + index.ts 导出 54 个
-    expect(schemas.length).toBe(54);
+    // 117 JSON + index.ts 导出 117 个
+    expect(schemas.length).toBe(117);
   });
 
   it('should preserve module metadata (layer/version/description)', () => {
@@ -59,8 +59,8 @@ describe('loadModuleSchemas (P2-2 loader)', () => {
     }
   });
 
-  it('should expose singleton moduleSchemas with 54 entries', () => {
-    expect(moduleSchemas.length).toBe(54);
+  it('should expose singleton moduleSchemas with 117 entries', () => {
+    expect(moduleSchemas.length).toBe(117);
   });
 
   it('should convert a minimal JSON with non-container top-level props', () => {

@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/dlt.json",
+  "title": "Dlt Configuration",
+  "description": "DLT 模块配置模板",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DLT_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "DLT_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "DLT_RUNTIME_ERROR_REPORT": {
+      "type": "boolean",
+      "description": "DLT_RUNTIME_ERROR_REPORT 参数",
+      "default": true
+    },
+    "DLT_MESSAGE_LOSS_REPORT": {
+      "type": "boolean",
+      "description": "DLT_MESSAGE_LOSS_REPORT 参数",
+      "default": true
+    },
+    "DLT_TRANSPORT_PROTOCOL": {
+      "type": "enum",
+      "description": "DLT_TRANSPORT_PROTOCOL 参数",
+      "default": "DLT_TRANSPORT_UDP",
+      "enum": [
+        "DLT_TRANSPORT_UDP",
+        "DLT_TRANSPORT_TCP",
+        "DLT_TRANSPORT_SOMEIP"
+      ]
+    },
+    "DLT_SERVER_PORT": {
+      "type": "integer",
+      "description": "DLT_SERVER_PORT 参数",
+      "default": 3490,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "DLT_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "DLT_BUFFER_SIZE 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "DLT_MAX_MSG_SIZE": {
+      "type": "integer",
+      "description": "DLT_MAX_MSG_SIZE 参数",
+      "default": 1400,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "DLT_QUEUE_SIZE": {
+      "type": "integer",
+      "description": "DLT_QUEUE_SIZE 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "DLT_MAX_APPS": {
+      "type": "integer",
+      "description": "DLT_MAX_APPS 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_PRIORITY_QUEUE_ENABLED": {
+      "type": "boolean",
+      "description": "DLT_PRIORITY_QUEUE_ENABLED 参数",
+      "default": true
+    },
+    "DLT_HIGH_PRIORITY_QUEUE_SIZE": {
+      "type": "integer",
+      "description": "DLT_HIGH_PRIORITY_QUEUE_SIZE 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_DEFAULT_LOG_LEVEL": {
+      "type": "enum",
+      "description": "DLT_DEFAULT_LOG_LEVEL 参数",
+      "default": "DLT_LOG_INFO",
+      "enum": [
+        "DLT_LOG_FATAL",
+        "DLT_LOG_ERROR",
+        "DLT_LOG_WARN",
+        "DLT_LOG_INFO",
+        "DLT_LOG_DEBUG",
+        "DLT_LOG_VERBOSE"
+      ]
+    },
+    "DLT_DEFAULT_ENABLED": {
+      "type": "boolean",
+      "description": "DLT_DEFAULT_ENABLED 参数",
+      "default": true
+    },
+    "DLT_TIMESTAMP_ENABLED": {
+      "type": "boolean",
+      "description": "DLT_TIMESTAMP_ENABLED 参数",
+      "default": true
+    },
+    "DLT_TIMESTAMP_PRECISION_US": {
+      "type": "integer",
+      "description": "DLT_TIMESTAMP_PRECISION_US 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_SESSION_ID_ENABLED": {
+      "type": "boolean",
+      "description": "DLT_SESSION_ID_ENABLED 参数",
+      "default": true
+    },
+    "DLT_DEFAULT_SESSION_ID": {
+      "type": "integer",
+      "description": "DLT_DEFAULT_SESSION_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_MAIN_FUNCTION_CYCLE": {
+      "type": "integer",
+      "description": "DLT_MAIN_FUNCTION_CYCLE 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DLT_MESSAGE_LOSS_THRESHOLD": {
+      "type": "integer",
+      "description": "DLT_MESSAGE_LOSS_THRESHOLD 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/dlt/include/Dlt_Cfg.h",
+  "x-display-name": "Dlt"
+}

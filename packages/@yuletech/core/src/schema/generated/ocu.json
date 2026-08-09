@@ -1,0 +1,524 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/ocu.json",
+  "title": "Ocu Configuration",
+  "description": "OCU (Output Compare Unit) Driver configuration header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "OCU_CFG_VENDOR_ID": {
+      "type": "integer",
+      "description": "YuleTech Vendor ID",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "OCU_CFG_MODULE_ID": {
+      "type": "integer",
+      "description": "OCU Module ID",
+      "default": 122,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "OCU_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "OCU_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "OCU_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "OCU_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "OCU_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "OCU_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "OCU_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "OCU_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "OCU_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "OCU_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "OCU_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "OCU_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "OCU_CONFIGURATION_VARIANT": {
+      "type": "enum",
+      "description": "OCU_CONFIGURATION_VARIANT 参数",
+      "default": "OCU_VARIANT_PRE_COMPILE",
+      "enum": [
+        "OCU_VARIANT_PRE_COMPILE"
+      ],
+      "x-section": "CONFIGURATION VARIANT"
+    },
+    "OCU_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "OCU_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OCU_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "OCU_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OCU_DE_INIT_API": {
+      "type": "boolean",
+      "description": "OCU_DE_INIT_API 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OCU_SET_PIN_STATE_API": {
+      "type": "boolean",
+      "description": "OCU_SET_PIN_STATE_API 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OCU_SET_PIN_ACTION_API": {
+      "type": "boolean",
+      "description": "OCU_SET_PIN_ACTION_API 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OCU_SET_THRESHOLD_API": {
+      "type": "boolean",
+      "description": "OCU_SET_THRESHOLD_API 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OCU_NOTIFICATION_SUPPORTED": {
+      "type": "boolean",
+      "description": "OCU_NOTIFICATION_SUPPORTED 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OCU_NUM_CHANNELS": {
+      "type": "integer",
+      "description": "OCU_NUM_CHANNELS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OCU_MAX_COUNTER_VALUE": {
+      "type": "integer",
+      "description": "OCU_MAX_COUNTER_VALUE 参数",
+      "default": 4294967295,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OCU_CHANNEL_0": {
+      "type": "integer",
+      "description": "OCU_CHANNEL_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_1": {
+      "type": "integer",
+      "description": "OCU_CHANNEL_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_2": {
+      "type": "integer",
+      "description": "OCU_CHANNEL_2 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_3": {
+      "type": "integer",
+      "description": "OCU_CHANNEL_3 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_0_ENABLE": {
+      "type": "boolean",
+      "description": "OCU_CHANNEL_0_ENABLE 参数",
+      "default": true,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_0_DEFAULT_PIN_STATE": {
+      "type": "enum",
+      "description": "OCU_CHANNEL_0_DEFAULT_PIN_STATE 参数",
+      "default": "OCU_LOW",
+      "enum": [
+        "OCU_HIGH",
+        "OCU_LOW"
+      ],
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_0_DEFAULT_THRESHOLD": {
+      "type": "integer",
+      "description": "OCU_CHANNEL_0_DEFAULT_THRESHOLD 参数",
+      "default": 65536,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_0_NOTIFICATION": {
+      "type": "reference",
+      "description": "OCU_CHANNEL_0_NOTIFICATION（NULL_PTR 回调指针）",
+      "default": null,
+      "x-reference-target": "callback",
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_0_BACKGROUND_MODE": {
+      "type": "boolean",
+      "description": "OCU_CHANNEL_0_BACKGROUND_MODE 参数",
+      "default": false,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_0_BASE_ADDRESS": {
+      "type": "integer",
+      "description": "OCU_CHANNEL_0_BASE_ADDRESS 参数",
+      "default": 1073741824,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_1_ENABLE": {
+      "type": "boolean",
+      "description": "OCU_CHANNEL_1_ENABLE 参数",
+      "default": true,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_1_DEFAULT_PIN_STATE": {
+      "type": "enum",
+      "description": "OCU_CHANNEL_1_DEFAULT_PIN_STATE 参数",
+      "default": "OCU_LOW",
+      "enum": [
+        "OCU_HIGH",
+        "OCU_LOW"
+      ],
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_1_DEFAULT_THRESHOLD": {
+      "type": "integer",
+      "description": "OCU_CHANNEL_1_DEFAULT_THRESHOLD 参数",
+      "default": 65536,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_1_NOTIFICATION": {
+      "type": "reference",
+      "description": "OCU_CHANNEL_1_NOTIFICATION（NULL_PTR 回调指针）",
+      "default": null,
+      "x-reference-target": "callback",
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_1_BACKGROUND_MODE": {
+      "type": "boolean",
+      "description": "OCU_CHANNEL_1_BACKGROUND_MODE 参数",
+      "default": false,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_1_BASE_ADDRESS": {
+      "type": "integer",
+      "description": "OCU_CHANNEL_1_BASE_ADDRESS 参数",
+      "default": 1073741840,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_2_ENABLE": {
+      "type": "boolean",
+      "description": "OCU_CHANNEL_2_ENABLE 参数",
+      "default": true,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_2_DEFAULT_PIN_STATE": {
+      "type": "enum",
+      "description": "OCU_CHANNEL_2_DEFAULT_PIN_STATE 参数",
+      "default": "OCU_LOW",
+      "enum": [
+        "OCU_HIGH",
+        "OCU_LOW"
+      ],
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_2_DEFAULT_THRESHOLD": {
+      "type": "integer",
+      "description": "OCU_CHANNEL_2_DEFAULT_THRESHOLD 参数",
+      "default": 65536,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_2_NOTIFICATION": {
+      "type": "reference",
+      "description": "OCU_CHANNEL_2_NOTIFICATION（NULL_PTR 回调指针）",
+      "default": null,
+      "x-reference-target": "callback",
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_2_BACKGROUND_MODE": {
+      "type": "boolean",
+      "description": "OCU_CHANNEL_2_BACKGROUND_MODE 参数",
+      "default": false,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_2_BASE_ADDRESS": {
+      "type": "integer",
+      "description": "OCU_CHANNEL_2_BASE_ADDRESS 参数",
+      "default": 1073741856,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_3_ENABLE": {
+      "type": "boolean",
+      "description": "OCU_CHANNEL_3_ENABLE 参数",
+      "default": true,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_3_DEFAULT_PIN_STATE": {
+      "type": "enum",
+      "description": "OCU_CHANNEL_3_DEFAULT_PIN_STATE 参数",
+      "default": "OCU_LOW",
+      "enum": [
+        "OCU_HIGH",
+        "OCU_LOW"
+      ],
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_3_DEFAULT_THRESHOLD": {
+      "type": "integer",
+      "description": "OCU_CHANNEL_3_DEFAULT_THRESHOLD 参数",
+      "default": 65536,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_3_NOTIFICATION": {
+      "type": "reference",
+      "description": "OCU_CHANNEL_3_NOTIFICATION（NULL_PTR 回调指针）",
+      "default": null,
+      "x-reference-target": "callback",
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_3_BACKGROUND_MODE": {
+      "type": "boolean",
+      "description": "OCU_CHANNEL_3_BACKGROUND_MODE 参数",
+      "default": false,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_CHANNEL_3_BASE_ADDRESS": {
+      "type": "integer",
+      "description": "OCU_CHANNEL_3_BASE_ADDRESS 参数",
+      "default": 1073741872,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "OCU_REG_CTRL_OFFSET": {
+      "type": "integer",
+      "description": "OCU_REG_CTRL_OFFSET 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "HARDWARE CONFIGURATION"
+    },
+    "OCU_REG_STATUS_OFFSET": {
+      "type": "integer",
+      "description": "OCU_REG_STATUS_OFFSET 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "HARDWARE CONFIGURATION"
+    },
+    "OCU_REG_COUNTER_OFFSET": {
+      "type": "integer",
+      "description": "OCU_REG_COUNTER_OFFSET 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "HARDWARE CONFIGURATION"
+    },
+    "OCU_REG_COMPARE_OFFSET": {
+      "type": "integer",
+      "description": "OCU_REG_COMPARE_OFFSET 参数",
+      "default": 12,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "HARDWARE CONFIGURATION"
+    },
+    "OCU_REG_ACTION_OFFSET": {
+      "type": "integer",
+      "description": "OCU_REG_ACTION_OFFSET 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "HARDWARE CONFIGURATION"
+    },
+    "OCU_REG_PIN_CTRL_OFFSET": {
+      "type": "integer",
+      "description": "OCU_REG_PIN_CTRL_OFFSET 参数",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "HARDWARE CONFIGURATION"
+    },
+    "OCU_CTRL_ENABLE_BIT": {
+      "type": "integer",
+      "description": "OCU_CTRL_ENABLE_BIT 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "HARDWARE CONFIGURATION"
+    },
+    "OCU_CTRL_INTERRUPT_BIT": {
+      "type": "integer",
+      "description": "OCU_CTRL_INTERRUPT_BIT 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "HARDWARE CONFIGURATION"
+    },
+    "OCU_CTRL_PRESCALER_MASK": {
+      "type": "integer",
+      "description": "OCU_CTRL_PRESCALER_MASK 参数",
+      "default": 65280,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "HARDWARE CONFIGURATION"
+    },
+    "OCU_CTRL_PRESCALER_SHIFT": {
+      "type": "integer",
+      "description": "OCU_CTRL_PRESCALER_SHIFT 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "HARDWARE CONFIGURATION"
+    },
+    "OCU_STATUS_MATCH_BIT": {
+      "type": "integer",
+      "description": "OCU_STATUS_MATCH_BIT 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "HARDWARE CONFIGURATION"
+    },
+    "OCU_STATUS_OVERFLOW_BIT": {
+      "type": "integer",
+      "description": "OCU_STATUS_OVERFLOW_BIT 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "HARDWARE CONFIGURATION"
+    },
+    "OCU_DEFAULT_PRESCALER": {
+      "type": "integer",
+      "description": "OCU_DEFAULT_PRESCALER 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "HARDWARE CONFIGURATION"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/mcal/ocu/include/Ocu_Cfg.h",
+  "x-display-name": "Ocu",
+  "x-sections": [
+    "VERSION INFORMATION",
+    "CONFIGURATION VARIANT",
+    "GENERAL CONFIGURATION",
+    "CHANNEL CONFIGURATION",
+    "HARDWARE CONFIGURATION"
+  ]
+}

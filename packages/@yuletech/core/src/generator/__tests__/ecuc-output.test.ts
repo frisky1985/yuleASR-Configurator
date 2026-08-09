@@ -1931,6 +1931,7 @@ extern const Port_ConfigType Port_Config;
     }
   });
 
+  // 37 个模块 × gcc -fsyntax-only 实测约 6.5s，默认 5s 超时在慢机器上会误报 → 显式 20s
   it('all generated .c files should pass gcc -fsyntax-only', async () => {
     for (const def of moduleDefs) {
       const result = await generator.generate(def.config, def.schema, { outputDir: tmpDir });
@@ -1954,5 +1955,5 @@ extern const Port_ConfigType Port_Config;
         console.log(`✅ ${src} passes syntax check`);
       }
     }
-  });
+  }, 30000);
 });

@@ -1,0 +1,375 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/linm.json",
+  "title": "LinM Configuration",
+  "description": "LIN Master Management configuration header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LINM_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "LINM_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINM_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "LINM_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINM_WAKEUP_SUPPORT": {
+      "type": "boolean",
+      "description": "LINM_WAKEUP_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINM_SLEEP_SUPPORT": {
+      "type": "boolean",
+      "description": "LINM_SLEEP_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINM_MASTER_NODE_SUPPORT": {
+      "type": "boolean",
+      "description": "LINM_MASTER_NODE_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINM_NUMBER_OF_CHANNELS": {
+      "type": "integer",
+      "description": "LINM_NUMBER_OF_CHANNELS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "LINM_NUMBER_OF_SCHEDULES": {
+      "type": "integer",
+      "description": "LINM_NUMBER_OF_SCHEDULES 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "LINM_NUMBER_OF_ENTRIES": {
+      "type": "integer",
+      "description": "LINM_NUMBER_OF_ENTRIES 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "LINM_CHANNEL_0": {
+      "type": "integer",
+      "description": "LINM_CHANNEL_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "LINM_SCHEDULE_NULL": {
+      "type": "integer",
+      "description": "LINM_SCHEDULE_NULL 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "LINM_SCHEDULE_MASTER": {
+      "type": "integer",
+      "description": "LINM_SCHEDULE_MASTER 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "LINM_SCHEDULE_DIAGNOSTIC": {
+      "type": "integer",
+      "description": "LINM_SCHEDULE_DIAGNOSTIC 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "LINM_SCHEDULE_TABLE_0": {
+      "type": "integer",
+      "description": "LINM_SCHEDULE_TABLE_0 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "LINM_ENTRY_TYPE_UNCONDITIONAL": {
+      "type": "integer",
+      "description": "LINM_ENTRY_TYPE_UNCONDITIONAL 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SCHEDULE ENTRY TYPES"
+    },
+    "LINM_ENTRY_TYPE_EVENT_TRIGGERED": {
+      "type": "integer",
+      "description": "LINM_ENTRY_TYPE_EVENT_TRIGGERED 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SCHEDULE ENTRY TYPES"
+    },
+    "LINM_ENTRY_TYPE_SPORADIC": {
+      "type": "integer",
+      "description": "LINM_ENTRY_TYPE_SPORADIC 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SCHEDULE ENTRY TYPES"
+    },
+    "LINM_ENTRY_TYPE_DIAGNOSTIC": {
+      "type": "integer",
+      "description": "LINM_ENTRY_TYPE_DIAGNOSTIC 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SCHEDULE ENTRY TYPES"
+    },
+    "LINM_ENTRY_TYPE_SLAVE_TO_SLAVE": {
+      "type": "integer",
+      "description": "LINM_ENTRY_TYPE_SLAVE_TO_SLAVE 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SCHEDULE ENTRY TYPES"
+    },
+    "LINM_ENTRY_TYPE_EMPTY": {
+      "type": "integer",
+      "description": "LINM_ENTRY_TYPE_EMPTY 参数",
+      "default": 255,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SCHEDULE ENTRY TYPES"
+    },
+    "LINM_FRAME_TYPE_PUBLISHER": {
+      "type": "integer",
+      "description": "LINM_FRAME_TYPE_PUBLISHER 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "FRAME TYPES"
+    },
+    "LINM_FRAME_TYPE_SUBSCRIBER": {
+      "type": "integer",
+      "description": "LINM_FRAME_TYPE_SUBSCRIBER 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "FRAME TYPES"
+    },
+    "LINM_FRAME_TYPE_SUBSCRIBER_AUTO": {
+      "type": "integer",
+      "description": "LINM_FRAME_TYPE_SUBSCRIBER_AUTO 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "FRAME TYPES"
+    },
+    "LINM_SCHEDULE_BASE_TIME_MS": {
+      "type": "integer",
+      "description": "LINM_SCHEDULE_BASE_TIME_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIMING CONFIGURATION"
+    },
+    "LINM_WAKEUP_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "LINM_WAKEUP_TIMEOUT_MS 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIMING CONFIGURATION"
+    },
+    "LINM_SLEEP_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "LINM_SLEEP_TIMEOUT_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIMING CONFIGURATION"
+    },
+    "LINM_MASTER_REQUEST_DELAY_MS": {
+      "type": "integer",
+      "description": "LINM_MASTER_REQUEST_DELAY_MS 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIMING CONFIGURATION"
+    },
+    "LINM_SLAVE_RESPONSE_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "LINM_SLAVE_RESPONSE_TIMEOUT_MS 参数",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIMING CONFIGURATION"
+    },
+    "LINM_ENTRY_DELAY_MASK": {
+      "type": "integer",
+      "description": "LINM_ENTRY_DELAY_MASK 参数",
+      "default": 255,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SCHEDULE ENTRY MASKS"
+    },
+    "LINM_ENTRY_FRAME_MASK": {
+      "type": "integer",
+      "description": "LINM_ENTRY_FRAME_MASK 参数",
+      "default": 65280,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "SCHEDULE ENTRY MASKS"
+    },
+    "LINM_ENTRY_TYPE_MASK": {
+      "type": "integer",
+      "description": "LINM_ENTRY_TYPE_MASK 参数",
+      "default": 16711680,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "SCHEDULE ENTRY MASKS"
+    },
+    "LINM_ENTRY_DELAY_SHIFT": {
+      "type": "integer",
+      "description": "LINM_ENTRY_DELAY_SHIFT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SCHEDULE ENTRY MASKS"
+    },
+    "LINM_ENTRY_FRAME_SHIFT": {
+      "type": "integer",
+      "description": "LINM_ENTRY_FRAME_SHIFT 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SCHEDULE ENTRY MASKS"
+    },
+    "LINM_ENTRY_TYPE_SHIFT": {
+      "type": "integer",
+      "description": "LINM_ENTRY_TYPE_SHIFT 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SCHEDULE ENTRY MASKS"
+    },
+    "LINM_SCHEDULE_PRIORITY_HIGH": {
+      "type": "integer",
+      "description": "LINM_SCHEDULE_PRIORITY_HIGH 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SCHEDULE PRIORITIES"
+    },
+    "LINM_SCHEDULE_PRIORITY_NORMAL": {
+      "type": "integer",
+      "description": "LINM_SCHEDULE_PRIORITY_NORMAL 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SCHEDULE PRIORITIES"
+    },
+    "LINM_SCHEDULE_PRIORITY_LOW": {
+      "type": "integer",
+      "description": "LINM_SCHEDULE_PRIORITY_LOW 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SCHEDULE PRIORITIES"
+    },
+    "LINM_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "LINM_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "LINM_NULL_ENTRY": {
+      "type": "integer",
+      "description": "LINM_NULL_ENTRY 参数",
+      "default": 4294967295,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "NULL SCHEDULE ENTRY"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/linm/include/LinM_Cfg.h",
+  "x-display-name": "LinM",
+  "x-sections": [
+    "PRE-COMPILE CONFIGURATION",
+    "CHANNEL CONFIGURATION",
+    "SCHEDULE ENTRY TYPES",
+    "FRAME TYPES",
+    "TIMING CONFIGURATION",
+    "SCHEDULE ENTRY MASKS",
+    "SCHEDULE PRIORITIES",
+    "MAIN FUNCTION PERIOD",
+    "NULL SCHEDULE ENTRY"
+  ]
+}

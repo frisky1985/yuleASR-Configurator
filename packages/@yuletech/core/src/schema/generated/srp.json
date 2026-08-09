@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/srp.json",
+  "title": "Srp Configuration",
+  "description": "SRP Configuration",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SRP_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "SRP_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "SRP_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "SRP_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "SRP_MAX_STREAMS": {
+      "type": "integer",
+      "description": "SRP_MAX_STREAMS 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "SRP_MAX_DOMAINS": {
+      "type": "integer",
+      "description": "SRP_MAX_DOMAINS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SRP_ETHERTYPE": {
+      "type": "integer",
+      "description": "SRP_ETHERTYPE 参数",
+      "default": 8938,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "SRP_DEFAULT_PRIORITY": {
+      "type": "integer",
+      "description": "SRP_DEFAULT_PRIORITY 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SRP_ATTRIBUTE_TYPE_TALKER_ADVERTISE": {
+      "type": "integer",
+      "description": "SRP_ATTRIBUTE_TYPE_TALKER_ADVERTISE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SRP_ATTRIBUTE_TYPE_TALKER_FAILED": {
+      "type": "integer",
+      "description": "SRP_ATTRIBUTE_TYPE_TALKER_FAILED 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SRP_ATTRIBUTE_TYPE_LISTENER_READY": {
+      "type": "integer",
+      "description": "SRP_ATTRIBUTE_TYPE_LISTENER_READY 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SRP_ATTRIBUTE_TYPE_LISTENER_READY_FAILED": {
+      "type": "integer",
+      "description": "SRP_ATTRIBUTE_TYPE_LISTENER_READY_FAILED 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "SRP_ATTRIBUTE_TYPE_LISTENER_ASKING_FAILED": {
+      "type": "integer",
+      "description": "SRP_ATTRIBUTE_TYPE_LISTENER_ASKING_FAILED 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/ecual/srp/include/Srp_Cfg.h",
+  "x-display-name": "Srp"
+}

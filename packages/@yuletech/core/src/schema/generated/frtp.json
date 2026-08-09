@@ -1,0 +1,419 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/frtp.json",
+  "title": "FrTp Configuration",
+  "description": "FlexRay Transport Protocol configuration header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FRTP_CFG_VENDOR_ID": {
+      "type": "integer",
+      "description": "FRTP_CFG_VENDOR_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "FRTP_CFG_MODULE_ID": {
+      "type": "integer",
+      "description": "FRTP_CFG_MODULE_ID 参数",
+      "default": 45,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "FRTP_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "FRTP_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "FRTP_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "FRTP_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "FRTP_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "FRTP_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "FRTP_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "FRTP_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "FRTP_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "FRTP_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "FRTP_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "FRTP_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "FRTP_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_MAX_CONNECTIONS": {
+      "type": "integer",
+      "description": "FRTP_MAX_CONNECTIONS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_MAX_PAYLOAD_PER_FRAME": {
+      "type": "integer",
+      "description": "FRTP_MAX_PAYLOAD_PER_FRAME 参数",
+      "default": 254,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_MAX_SF_PAYLOAD": {
+      "type": "integer",
+      "description": "FRTP_MAX_SF_PAYLOAD 参数",
+      "default": 254,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_MAX_FF_PAYLOAD": {
+      "type": "integer",
+      "description": "FRTP_MAX_FF_PAYLOAD 参数",
+      "default": 254,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_MAX_CF_PAYLOAD": {
+      "type": "integer",
+      "description": "FRTP_MAX_CF_PAYLOAD 参数",
+      "default": 254,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_DEFAULT_NAS_TIMEOUT": {
+      "type": "integer",
+      "description": "FRTP_DEFAULT_NAS_TIMEOUT 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_DEFAULT_NBS_TIMEOUT": {
+      "type": "integer",
+      "description": "FRTP_DEFAULT_NBS_TIMEOUT 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_DEFAULT_NCS_TIMEOUT": {
+      "type": "integer",
+      "description": "FRTP_DEFAULT_NCS_TIMEOUT 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_DEFAULT_NAR_TIMEOUT": {
+      "type": "integer",
+      "description": "FRTP_DEFAULT_NAR_TIMEOUT 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_DEFAULT_NBR_TIMEOUT": {
+      "type": "integer",
+      "description": "FRTP_DEFAULT_NBR_TIMEOUT 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_DEFAULT_NCR_TIMEOUT": {
+      "type": "integer",
+      "description": "FRTP_DEFAULT_NCR_TIMEOUT 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_DEFAULT_BLOCK_SIZE": {
+      "type": "integer",
+      "description": "FRTP_DEFAULT_BLOCK_SIZE 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_DEFAULT_STMIN": {
+      "type": "integer",
+      "description": "FRTP_DEFAULT_STMIN 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_MAX_RETRY_COUNT": {
+      "type": "integer",
+      "description": "FRTP_MAX_RETRY_COUNT 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_FLOW_CONTROL_ENABLED": {
+      "type": "boolean",
+      "description": "FRTP_FLOW_CONTROL_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_MAIN_FUNCTION_PERIOD": {
+      "type": "integer",
+      "description": "FRTP_MAIN_FUNCTION_PERIOD 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRTP_PCI_TYPE_MASK": {
+      "type": "integer",
+      "description": "FRTP_PCI_TYPE_MASK 参数",
+      "default": 192,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU TYPE ENCODING"
+    },
+    "FRTP_PCI_TYPE_SF": {
+      "type": "integer",
+      "description": "Single Frame: 00 xxxxxx",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU TYPE ENCODING"
+    },
+    "FRTP_PCI_TYPE_FF": {
+      "type": "integer",
+      "description": "First Frame: 01 xxxxxx",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU TYPE ENCODING"
+    },
+    "FRTP_PCI_TYPE_CF": {
+      "type": "integer",
+      "description": "Consecutive Frame: 10 xxxxxx",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU TYPE ENCODING"
+    },
+    "FRTP_PCI_TYPE_FC": {
+      "type": "integer",
+      "description": "Flow Control: 11 xxxxxx",
+      "default": 192,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU TYPE ENCODING"
+    },
+    "FRTP_PCI_SF_LENGTH_MASK": {
+      "type": "integer",
+      "description": "SF length in lower 6 bits",
+      "default": 63,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU TYPE ENCODING"
+    },
+    "FRTP_PCI_CF_SEQ_MASK": {
+      "type": "integer",
+      "description": "CF sequence number in lower 4 bits",
+      "default": 15,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU TYPE ENCODING"
+    },
+    "FRTP_PCI_FC_STATUS_MASK": {
+      "type": "integer",
+      "description": "FC status in lower 4 bits",
+      "default": 15,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU TYPE ENCODING"
+    },
+    "FRTP_FC_STATUS_CTS": {
+      "type": "integer",
+      "description": "Clear To Send",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU TYPE ENCODING"
+    },
+    "FRTP_FC_STATUS_WAIT": {
+      "type": "integer",
+      "description": "Wait",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU TYPE ENCODING"
+    },
+    "FRTP_FC_STATUS_OVFLW": {
+      "type": "integer",
+      "description": "Overflow/Abort",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU TYPE ENCODING"
+    },
+    "FRTP_FLAG_NONE": {
+      "type": "integer",
+      "description": "FRTP_FLAG_NONE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "STATE DEFINITIONS"
+    },
+    "FRTP_FLAG_TX_ACTIVE": {
+      "type": "integer",
+      "description": "FRTP_FLAG_TX_ACTIVE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "STATE DEFINITIONS"
+    },
+    "FRTP_FLAG_RX_ACTIVE": {
+      "type": "integer",
+      "description": "FRTP_FLAG_RX_ACTIVE 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "STATE DEFINITIONS"
+    },
+    "FRTP_FLAG_FC_SENT": {
+      "type": "integer",
+      "description": "FRTP_FLAG_FC_SENT 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "STATE DEFINITIONS"
+    },
+    "FRTP_FLAG_WAIT_CONFIRM": {
+      "type": "integer",
+      "description": "FRTP_FLAG_WAIT_CONFIRM 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "STATE DEFINITIONS"
+    },
+    "FRTP_FLAG_LAST_CF": {
+      "type": "integer",
+      "description": "FRTP_FLAG_LAST_CF 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "STATE DEFINITIONS"
+    },
+    "FRTP_TX_CONFIRMATION_ENABLED": {
+      "type": "boolean",
+      "description": "FRTP_TX_CONFIRMATION_ENABLED 参数",
+      "default": true,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "FRTP_RX_INDICATION_ENABLED": {
+      "type": "boolean",
+      "description": "FRTP_RX_INDICATION_ENABLED 参数",
+      "default": true,
+      "x-section": "CALLBACK CONFIGURATION"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/ecual/frtp/include/FrTp_Cfg.h",
+  "x-display-name": "FrTp",
+  "x-sections": [
+    "VERSION INFORMATION",
+    "PRE-COMPILE CONFIGURATION",
+    "PDU TYPE ENCODING",
+    "STATE DEFINITIONS",
+    "CALLBACK CONFIGURATION"
+  ]
+}

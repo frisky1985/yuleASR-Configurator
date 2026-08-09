@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/nvmecchandler.json",
+  "title": "NvM_EccHandler Configuration",
+  "description": "NvM ECC处理模块配置",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "NVM_ECCHANDLER_CFG_VENDOR_ID": {
+      "type": "integer",
+      "description": "NVM_ECCHANDLER_CFG_VENDOR_ID 参数",
+      "default": 43,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NVM_ECCHANDLER_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "NVM_ECCHANDLER_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NVM_ECCHANDLER_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "NVM_ECCHANDLER_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NVM_ECCHANDLER_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "NVM_ECCHANDLER_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NVM_ECCHANDLER_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "NVM_ECCHANDLER_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NVM_ECCHANDLER_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "NVM_ECCHANDLER_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NVM_ECCHANDLER_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "NVM_ECCHANDLER_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NVM_ECCHANDLER_CFG_ENABLED": {
+      "type": "boolean",
+      "description": "NVM_ECCHANDLER_CFG_ENABLED 参数",
+      "default": true
+    },
+    "NVM_ECCHANDLER_CFG_DEFAULT_RETRY_COUNT": {
+      "type": "integer",
+      "description": "NVM_ECCHANDLER_CFG_DEFAULT_RETRY_COUNT 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NVM_ECCHANDLER_CFG_WRITE_VERIFICATION": {
+      "type": "boolean",
+      "description": "NVM_ECCHANDLER_CFG_WRITE_VERIFICATION 参数",
+      "default": true
+    },
+    "NVM_ECCHANDLER_CFG_NUM_BLOCKS": {
+      "type": "integer",
+      "description": "NVM_ECCHANDLER_CFG_NUM_BLOCKS 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NVM_BLOCK_ID_DEM_ADMIN": {
+      "type": "integer",
+      "description": "NVM_BLOCK_ID_DEM_ADMIN 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NVM_BLOCK_ID_DEM_STATUS": {
+      "type": "integer",
+      "description": "NVM_BLOCK_ID_DEM_STATUS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NVM_BLOCK_ID_ECUM_CONFIG": {
+      "type": "integer",
+      "description": "NVM_BLOCK_ID_ECUM_CONFIG 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NVM_BLOCK_ID_BSWM_CONFIG": {
+      "type": "integer",
+      "description": "NVM_BLOCK_ID_BSWM_CONFIG 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NVM_BLOCK_ID_APP_DATA": {
+      "type": "integer",
+      "description": "NVM_BLOCK_ID_APP_DATA 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/nvm/include/NvM_EccHandler_Cfg.h",
+  "x-display-name": "NvM_EccHandler"
+}
