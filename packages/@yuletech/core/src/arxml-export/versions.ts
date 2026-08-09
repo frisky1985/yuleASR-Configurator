@@ -17,6 +17,8 @@
  *  - 51 → R22-11（AUTOSAR 4.5.0）
  */
 
+import { VersionError } from '../arxml-errors';
+
 /** ARXML 默认命名空间（Classic AUTOSAR 4.x 全系列同用 r4.0） */
 export const ARXML_NAMESPACE = 'http://autosar.org/schema/r4.0';
 
@@ -57,11 +59,11 @@ export function isSupportedSchemaVersion(v: number): v is AutosarSchemaVersion {
   return v in ARXML_SCHEMA_VERSIONS;
 }
 
-/** 断言版本受支持，否则抛出带支持列表的明确错误 */
+/** 断言版本受支持，否则抛出带支持列表的明确错误（R6：分类为 VersionError） */
 export function assertSupportedSchemaVersion(v: number): AutosarSchemaVersion {
   if (!isSupportedSchemaVersion(v)) {
     const supported = Object.keys(ARXML_SCHEMA_VERSIONS).join(', ');
-    throw new RangeError(
+    throw new VersionError(
       `Unsupported AUTOSAR schema version: ${v}. Supported versions: ${supported}.`
     );
   }

@@ -41,6 +41,7 @@ export {
 // 导出 ARXML SWC 层导入后端 (SWC/接口/数据类型/CompuMethod, 借鉴 cogu switcher+ChildElementMap 模式)
 export {
   importSwcArxml,
+  importSwcArxmlStrict,
   parseSwcArxml,
   ChildElementMap,
   LineIndex,
@@ -50,6 +51,18 @@ export {
   type ImportReport,
   type UnprocessedElementWarning,
 } from './arxml-import';
+
+// 导出 ARXML 异常体系 (R6, 对齐 cogu exception.py 5 类, 调用方可按类捕获)
+export {
+  ArxmlError,
+  ParseError,
+  DuplicateElementError,
+  VersionError,
+  AssignmentTypeError,
+  InvalidReferenceError,
+  isArxmlError,
+  classifyImportError,
+} from './arxml-errors';
 
 // 导出 C 代码生成共享工具 (escapeCString 等, Fix 18/22 单一实现)
 export {

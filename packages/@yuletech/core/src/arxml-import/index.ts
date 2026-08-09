@@ -14,6 +14,12 @@
 
 import type { SwcProjectConfig } from '../types/swc';
 
+import {
+  classifyImportError,
+  isArxmlError,
+  ParseError,
+  type ArxmlError,
+} from '../arxml-errors';
 import { parseSwcArxml, type ImportReport, type SwcArxmlProject } from './reader';
 
 export {
@@ -22,6 +28,7 @@ export {
   LineIndex,
   refShortName,
   resolveReferences,
+  reportDuplicate,
   type SwcArxmlProject,
   type ImportReport,
   type UnprocessedElementWarning,
@@ -37,6 +44,9 @@ export {
   type RefTargetKind,
   type RefConstraintKey,
 } from './reference';
+
+// R6 异常分类工具（report 化导入 → 按类重抛/差异化提示）
+export { classifyImportError, isArxmlError, type ArxmlError };
 
 /** 导入结果：现有数据模型 + 导入报告 */
 export interface SwcImportResult {
@@ -73,6 +83,32 @@ export function importSwcArxml(xmlContent: string, sourceName = 'input.arxml'): 
   };
 
   return { project, report: parsed.report };
+}
+
+/**
+ * 严格导入（R6：异常分类入口）：与 importSwcArxml 同语义，但存在硬错误时
+ * **按类抛异常**（ParseError / InvalidReferenceError / DuplicateElementError / …），
+ * 调用方可 try/catch + instanceof 分类捕获；无硬错误时行为与容错版一致。
+ *
+ * 适用场景：需要强校验的导入（CI 管道 / 批量处理），或需要差异化提示的 UI。
+ *
+ * @example
+ * ```ts
+ * try {
+ *   const { project } = importSwcArxmlStrict(xml, 'BCM.arxml');
+ * } catch (err) {
+ *   if (err instanceof InvalidReferenceError) { handleRefIssue(); }
+ *   else if (err instanceof ParseError) { handleXmlIssue(); }
+ * }
+ * ```
+ */
+export function importSwcArxmlStrict(xmlContent: string, sourceName = 'input.arxml'): SwcImportResult {
+  const result = importSwcArxml(xmlContent, sourceName);
+  if (result.report.errors.length > 0) {
+    const first = result.report.errors[0];
+    throw classifyImportError(first) ?? new ParseError(first);
+  }
+  return result;
 }
 
 export default importSwcArxml;

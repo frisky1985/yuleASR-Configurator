@@ -19,6 +19,8 @@
 
 import { XMLParser } from 'fast-xml-parser';
 
+import { ParseError } from '../arxml-errors';
+
 export interface ParsedModuleDef {
   shortName: string;
   definitionRef: string;
@@ -179,7 +181,7 @@ export function convertArxmlToYuleasr(content: string): Record<string, unknown> 
   const result = parseArxml(content);
 
   if (result.errors.length > 0) {
-    throw new Error(`ARXML parse failed: ${result.errors.join(', ')}`);
+    throw new ParseError(`ARXML parse failed: ${result.errors.join(', ')}`);
   }
 
   const bswConfig: Record<string, unknown> = {

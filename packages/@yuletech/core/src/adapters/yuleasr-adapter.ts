@@ -6,6 +6,7 @@
 
 import type { ModuleConfig } from '../types';
 
+import { ParseError } from '../arxml-errors';
 import { parseArxml, validateArxml } from './arxml-parser';
 
 /**
@@ -172,7 +173,7 @@ export class YuleasrAdapter {
     const result = parseArxml(arxmlContent);
 
     if (result.errors.length > 0) {
-      throw new Error(`ARXML parse failed: ${result.errors.join(', ')}`);
+      throw new ParseError(`ARXML parse failed: ${result.errors.join(', ')}`);
     }
 
     return result.modules.map(mod => ({

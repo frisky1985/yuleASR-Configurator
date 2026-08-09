@@ -365,6 +365,11 @@ export function reportUnprocessed(ctx: ReadContext, _parent: Record<string, unkn
   });
 }
 
+/** 记录重复元素错误（R6：DuplicateElementError 分类，消息带固定前缀供 classifyImportError 识别） */
+export function reportDuplicate(ctx: ReadContext, context: string, name: string): void {
+  ctx.report.errors.push(`Duplicate element: ${name} in ${context}`);
+}
+
 /** 在读取器完成一个父节点后，报告其未消费子元素（cogu _report_unprocessed_elements 模式） */
 export function reportUnprocessedChildren(ctx: ReadContext, childMap: ChildElementMap): void {
   for (const { tag } of childMap.unprocessed()) {
@@ -872,9 +877,15 @@ function readSenderReceiverInterface(ctx: ReadContext, node: Record<string, unkn
   const deWrapper = firstChild(node, 'DATA-ELEMENTS');
   children.skip('DATA-ELEMENTS');
   if (deWrapper) {
+    const seen = new Set<string>();
     for (const deNode of ensureArray<Record<string, unknown>>(deWrapper['DATA-ELEMENT-PROTOTYPE'])) {
       const de = readDataElementPrototype(ctx, deNode);
       if (de) {
+        if (seen.has(de.name)) {
+          reportDuplicate(ctx, `interface ${name} data elements`, de.name);
+          continue;
+        }
+        seen.add(de.name);
         iface.dataElements.push(de);
         ctx.report.counts.dataElements++;
       }
@@ -945,9 +956,15 @@ function readClientServerInterface(ctx: ReadContext, node: Record<string, unknow
   const opsWrapper = firstChild(node, 'OPERATIONS');
   children.skip('OPERATIONS');
   if (opsWrapper) {
+    const seen = new Set<string>();
     for (const opNode of ensureArray<Record<string, unknown>>(opsWrapper['CLIENT-SERVER-OPERATION'])) {
       const op = readCsOperation(ctx, opNode);
       if (op) {
+        if (seen.has(op.name)) {
+          reportDuplicate(ctx, `interface ${name} operations`, op.name);
+          continue;
+        }
+        seen.add(op.name);
         iface.operations.push(op);
         ctx.report.counts.operations++;
       }
@@ -982,9 +999,15 @@ function readCsOperation(ctx: ReadContext, node: Record<string, unknown>): Clien
   const argsWrapper = firstChild(node, 'ARGUMENTS');
   children.skip('ARGUMENTS');
   if (argsWrapper) {
+    const seen = new Set<string>();
     for (const argNode of ensureArray<Record<string, unknown>>(argsWrapper['ARGUMENT-DATA-PROTOTYPE'])) {
       const arg = readCsArgument(ctx, argNode);
       if (arg) {
+        if (seen.has(arg.name)) {
+          reportDuplicate(ctx, `operation ${name} arguments`, arg.name);
+          continue;
+        }
+        seen.add(arg.name);
         if (!op.arguments) op.arguments = [];
         op.arguments.push(arg);
       }
@@ -1060,9 +1083,15 @@ function readApplicationSwc(ctx: ReadContext, node: Record<string, unknown>, pro
   const portsWrapper = firstChild(node, 'PORTS');
   children.skip('PORTS');
   if (portsWrapper) {
+    const seen = new Set<string>();
     for (const pNode of ensureArray<Record<string, unknown>>(portsWrapper['P-PORT-PROTOTYPE'])) {
       const port = readPortPrototype(ctx, pNode, 'OUT');
       if (port) {
+        if (seen.has(port.name)) {
+          reportDuplicate(ctx, `SWC ${name} ports`, port.name);
+          continue;
+        }
+        seen.add(port.name);
         swc.ports.push(port);
         ctx.report.counts.ports++;
       }
@@ -1070,6 +1099,11 @@ function readApplicationSwc(ctx: ReadContext, node: Record<string, unknown>, pro
     for (const rNode of ensureArray<Record<string, unknown>>(portsWrapper['R-PORT-PROTOTYPE'])) {
       const port = readPortPrototype(ctx, rNode, 'IN');
       if (port) {
+        if (seen.has(port.name)) {
+          reportDuplicate(ctx, `SWC ${name} ports`, port.name);
+          continue;
+        }
+        seen.add(port.name);
         swc.ports.push(port);
         ctx.report.counts.ports++;
       }
@@ -1151,9 +1185,17 @@ function readSwcInternalBehavior(ctx: ReadContext, node: Record<string, unknown>
   const runnablesWrapper = firstChild(node, 'RUNNABLES');
   children.skip('RUNNABLES');
   if (runnablesWrapper) {
+    const seen = new Set<string>();
     for (const rNode of ensureArray<Record<string, unknown>>(runnablesWrapper['RUNNABLE-ENTITY'])) {
       const runnable = readRunnableEntity(ctx, rNode);
-      if (runnable) behavior.runnables.push(runnable);
+      if (runnable) {
+        if (seen.has(runnable.name)) {
+          reportDuplicate(ctx, `behavior ${name} runnables`, runnable.name);
+          continue;
+        }
+        seen.add(runnable.name);
+        behavior.runnables.push(runnable);
+      }
     }
   }
 
