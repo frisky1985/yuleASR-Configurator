@@ -46,6 +46,8 @@ import type {
 
 import { REF_CONSTRAINTS, REF_TARGET_KIND_LABELS, type RefTargetKind } from './reference';
 
+import { validateEcucConsistency } from './ecuc-consistency';
+
 // ============================================================================
 // 导入报告类型
 // ============================================================================
@@ -669,6 +671,9 @@ export function parseSwcArxml(xmlContent: string, sourceName = 'input.arxml'): S
 
     // R8/E2：定义↔值关联（按 DEFINITION-REF 短名匹配 ecucModules ↔ ecucModuleDefs）
     resolveEcucModuleDefs(project);
+
+    // R8/E3：值-定义一致性校验（定义层缺席的纯值层文件跳过，见 ecuc-consistency.ts 头注释）
+    validateEcucConsistency(ctx, project);
 
     // 解析引用：类型约束校验（C1）+ 短名写回（目标存在且类别匹配）
     resolveReferences(ctx, project);

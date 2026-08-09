@@ -59,6 +59,9 @@ export function classifyImportError(message: string): ArxmlError | VersionError 
   if (message.startsWith('Invalid reference:')) {
     return new InvalidReferenceError(message);
   }
+  if (message.startsWith('Assignment type mismatch:')) {
+    return new AssignmentTypeError(message);
+  }
   if (
     message.startsWith('Parse error:') ||
     message.startsWith('Malformed XML:') ||

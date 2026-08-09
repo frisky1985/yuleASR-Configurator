@@ -50,6 +50,9 @@ export {
   type EcucParameterDefKind,
 } from './reader';
 
+// R8/E3：值-定义一致性校验（依赖 reader 的值层/定义层模型，独立模块避免循环引用）
+export { validateEcucConsistency } from './ecuc-consistency';
+
 // 引用类型约束表（C1 · R1）：REF_CONSTRAINTS + RefTargetKind
 // 对齐 cogu reference.py 47 个 Ref 类的 accepted_sub_types() 白名单
 // （这里只覆盖本导入器涉及的 4 类引用点）。

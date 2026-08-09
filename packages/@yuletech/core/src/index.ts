@@ -47,6 +47,7 @@ export {
   LineIndex,
   refShortName,
   resolveEcucModuleDefs,
+  validateEcucConsistency,
   type SwcImportResult,
   type SwcArxmlProject,
   type ImportReport,
