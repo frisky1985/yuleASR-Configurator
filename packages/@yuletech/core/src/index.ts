@@ -64,6 +64,9 @@ export {
   classifyImportError,
 } from './arxml-errors';
 
+// 导出 ARXML 模板机制 (R2, 对齐 cogu template.py/workspace.apply)
+export * from './arxml-templates';
+
 // 导出 C 代码生成共享工具 (escapeCString 等, Fix 18/22 单一实现)
 export {
   escapeCString,
