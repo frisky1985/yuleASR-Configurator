@@ -9,6 +9,11 @@
  *    供导出层复用或逐步接管；
  *  - 反向探测 detectSchemaVersion：与 arxml-import/reader.ts:563-567
  *    同一正则，导入导出对称（cogu reader.py:589-600）。
+ *
+ * R3 多文档拆分：serializeArxmlDocuments 按 documentMapping
+ * （对齐 cogu workspace.py:36-58 PackageToDocumentMapping）把模块按
+ * "类型（模块名列表）+ 文件名后缀"拆成多个 ARXML 文档，贴近 OEM
+ * 交付习惯（tresos/DaVinci 分文件）；缺省/空映射 = 单文档不变。
  */
 
 import {
@@ -170,6 +175,81 @@ export function serializeArxmlDocument(
   }
   lines.push('      </ELEMENTS>', '    </AR-PACKAGE>', '  </AR-PACKAGES>', '</AUTOSAR>', '');
   return lines.join('\n');
+}
+
+// ============================================================================
+// 多文档拆分（R3 · PackageToDocumentMapping 文档拆分）
+// ============================================================================
+
+/**
+ * 文档映射（cogu PackageToDocumentMapping 对应物，workspace.py:36-58）：
+ * 一个映射条目把 moduleNames 中的模块拆到独立文档 `${name}${suffix}.arxml`。
+ * cogu 按元素类型 + 文件名后缀分文件；yuleASR 的 ECUC 模块无类型体系，
+ * 以模块名列表作为"类型"代理（moduleNames 精确匹配 ArxmlExportModule.name）。
+ *
+ * 例：{ suffix: "_Implementation", moduleNames: ["Can"] } → Can_Implementation.arxml
+ * 只含 Can 模块；可再加 { suffix: "", moduleNames: ["Mcu"] } → Mcu.arxml。
+ */
+export interface DocumentMapping {
+  /** 输出文档文件名后缀（不含 .arxml；缺省 "" → `${moduleName}.arxml`） */
+  suffix: string;
+  /** 归入该分组的模块名（精确匹配，先匹配者优先） */
+  moduleNames: string[];
+}
+
+/** 多文档导出选项：在 ArxmlExportOptions 基础上增加 documentMapping */
+export interface MultiDocumentExportOptions extends ArxmlExportOptions {
+  /** 多文档拆分映射；缺省/空数组 = 单文档输出（与 serializeArxmlDocument 一致） */
+  documentMapping?: DocumentMapping[];
+}
+
+/** 未被任何映射覆盖的模块 → 默认文档（组键 ''，文件名取 packageName） */
+const DEFAULT_DOCUMENT_GROUP = '';
+
+/**
+ * 按文档映射把模块拆组：返回 { 文件名基（不含 .arxml）: 模块[] }。
+ * 未被映射覆盖的模块进入默认组（键 ''）；无映射时整体为 { '': modules }。
+ */
+export function splitModulesByType(
+  modules: ArxmlExportModule[],
+  mappings: DocumentMapping[]
+): Record<string, ArxmlExportModule[]> {
+  const groups: Record<string, ArxmlExportModule[]> = {};
+  for (const module of modules) {
+    const mapping = mappings.find(m => m.moduleNames.includes(module.name));
+    const key =
+      mapping === undefined ? DEFAULT_DOCUMENT_GROUP : `${module.name}${mapping.suffix}`;
+    (groups[key] ??= []).push(module);
+  }
+  return groups;
+}
+
+/**
+ * 多文档导出：按 documentMapping 拆分为多个 ARXML 文档。
+ * 输出 { [fileName]: xml }；fileName = `${组键}.arxml`（默认文档 = `${packageName}.arxml`）。
+ * documentMapping 缺省/空数组 → 单文档（与 serializeArxmlDocument 输出逐字节一致）。
+ */
+export function serializeArxmlDocuments(
+  modules: ArxmlExportModule[],
+  options: MultiDocumentExportOptions = {}
+): Record<string, string> {
+  const packageName = options.packageName ?? 'yuleASR';
+  const groups = splitModulesByType(modules, options.documentMapping ?? []);
+
+  // 确定性顺序：默认文档排最后，其余按文件名排序
+  const keys = Object.keys(groups).sort((a, b) => {
+    if (a === DEFAULT_DOCUMENT_GROUP) return 1;
+    if (b === DEFAULT_DOCUMENT_GROUP) return -1;
+    return a.localeCompare(b);
+  });
+
+  const result: Record<string, string> = {};
+  for (const key of keys) {
+    const fileName =
+      key === DEFAULT_DOCUMENT_GROUP ? `${packageName}.arxml` : `${key}.arxml`;
+    result[fileName] = serializeArxmlDocument(groups[key], options);
+  }
+  return result;
 }
 
 /** SWC runnable 互斥区引用的输出形态（GATE-002） */

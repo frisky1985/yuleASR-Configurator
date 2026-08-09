@@ -12,7 +12,9 @@ import {
   detectSchemaVersion,
   exclusiveAreaRefsForVersion,
   serializeArxmlDocument,
+  serializeArxmlDocuments,
   serializeRunnableExclusiveAreaRefs,
+  splitModulesByType,
   type ArxmlExportModule,
 } from '../serializer';
 import { DEFAULT_SCHEMA_VERSION } from '../versions';
@@ -131,5 +133,87 @@ describe('exclusiveAreaRefsForVersion / serializeRunnableExclusiveAreaRefs（GAT
     expect(new51).toContain('<CAN-ENTERS>');
     expect(new51).not.toContain('CAN-ENTER-EXCLUSIVE-AREA-REFS');
     expect(new51).toContain('EXCLUSIVE-AREA-REF');
+  });
+});
+
+describe('splitModulesByType / serializeArxmlDocuments（R3 多文档拆分）', () => {
+  const multiModules: ArxmlExportModule[] = [
+    { name: 'Can', version: '4.4.0', parameters: [{ name: 'CanBaudrate', value: 500000 }] },
+    {
+      name: 'Can_Implementation',
+      version: '4.4.0',
+      parameters: [{ name: 'CanMainFunctionPeriod', value: 10 }],
+    },
+    { name: 'Mcu', parameters: [{ name: 'McuClockReferencePoint', value: 120000000 }] },
+  ];
+
+  it('按类型+后缀拆多文档：匹配模块各自成档，未匹配进默认档', () => {
+    const groups = splitModulesByType(multiModules, [
+      { suffix: '_Implementation', moduleNames: ['Can'] },
+      { suffix: '', moduleNames: ['Mcu'] },
+    ]);
+
+    expect(Object.keys(groups).sort()).toEqual(['', 'Can_Implementation', 'Mcu']);
+    expect(groups['Can_Implementation'].map(m => m.name)).toEqual(['Can']);
+    expect(groups['Mcu'].map(m => m.name)).toEqual(['Mcu']);
+    expect(groups[''].map(m => m.name)).toEqual(['Can_Implementation']);
+  });
+
+  it('先匹配者优先：模块出现在多个映射时只归首个匹配档（不重复）', () => {
+    const groups = splitModulesByType(multiModules, [
+      { suffix: '_A', moduleNames: ['Can'] },
+      { suffix: '_B', moduleNames: ['Can'] },
+    ]);
+
+    expect(groups['Can_A']).toBeDefined();
+    expect(groups['Can_A']).toHaveLength(1);
+    expect(groups['Can_B']).toBeUndefined();
+    expect(groups[''].map(m => m.name)).toEqual(['Can_Implementation', 'Mcu']);
+  });
+
+  it('默认单文档不变：缺省/空映射输出与 serializeArxmlDocument 逐字节一致', () => {
+    const single = serializeArxmlDocuments(multiModules);
+    expect(Object.keys(single)).toEqual(['yuleASR.arxml']);
+    expect(single['yuleASR.arxml']).toBe(serializeArxmlDocument(multiModules));
+
+    const explicitEmpty = serializeArxmlDocuments(multiModules, { documentMapping: [] });
+    expect(Object.keys(explicitEmpty)).toEqual(['yuleASR.arxml']);
+    expect(explicitEmpty['yuleASR.arxml']).toBe(serializeArxmlDocument(multiModules));
+  });
+
+  it('多文档导出：每档都是合法骨架且仅含本档模块', () => {
+    const docs = serializeArxmlDocuments(multiModules, {
+      documentMapping: [
+        { suffix: '_Implementation', moduleNames: ['Can'] },
+        { suffix: '', moduleNames: ['Mcu'] },
+      ],
+    });
+
+    expect(Object.keys(docs).sort()).toEqual([
+      'Can_Implementation.arxml',
+      'Mcu.arxml',
+      'yuleASR.arxml',
+    ]);
+    for (const [fileName, xml] of Object.entries(docs)) {
+      expect(xml).toContain('<AUTOSAR');
+      expect(detectSchemaVersion(xml)).toBe(51);
+      if (fileName === 'Can_Implementation.arxml') {
+        expect(xml).toContain('<SHORT-NAME>Can</SHORT-NAME>');
+        expect(xml).not.toContain('Mcu');
+      } else if (fileName === 'Mcu.arxml') {
+        expect(xml).toContain('<SHORT-NAME>Mcu</SHORT-NAME>');
+        expect(xml).not.toContain('Can');
+      } else {
+        expect(xml).toContain('<SHORT-NAME>Can_Implementation</SHORT-NAME>');
+      }
+    }
+  });
+
+  it('packageName 自定义时默认文档名随之变化', () => {
+    const docs = serializeArxmlDocuments(multiModules, {
+      packageName: 'MyEcu',
+      documentMapping: [{ suffix: '', moduleNames: ['Can'] }],
+    });
+    expect(Object.keys(docs).sort()).toEqual(['Can.arxml', 'MyEcu.arxml']);
   });
 });
