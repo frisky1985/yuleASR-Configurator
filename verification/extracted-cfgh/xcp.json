@@ -1,0 +1,781 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/xcp.json",
+  "title": "Xcp Configuration",
+  "description": "XCP Configuration File",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "XCP_CFG_VENDOR_ID": {
+      "type": "integer",
+      "description": "XCP_CFG_VENDOR_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "XCP_CFG_MODULE_ID": {
+      "type": "integer",
+      "description": "XCP_CFG_MODULE_ID 参数",
+      "default": 208,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "XCP_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "XCP_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "XCP_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "XCP_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "XCP_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "XCP_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "XCP_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "XCP_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "XCP_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "XCP_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "XCP_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "XCP_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "XCP_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "XCP_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "XCP_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_NUMBER_OF_CHANNELS": {
+      "type": "integer",
+      "description": "XCP_NUMBER_OF_CHANNELS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_MAX_DAQ_LISTS": {
+      "type": "integer",
+      "description": "XCP_MAX_DAQ_LISTS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_MAX_ODTS_PER_DAQ": {
+      "type": "integer",
+      "description": "XCP_MAX_ODTS_PER_DAQ 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_MAX_ODT_ENTRIES_PER_ODT": {
+      "type": "integer",
+      "description": "XCP_MAX_ODT_ENTRIES_PER_ODT 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_MAX_CTO_SIZE": {
+      "type": "integer",
+      "description": "XCP_MAX_CTO_SIZE 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_MAX_DTO_SIZE": {
+      "type": "integer",
+      "description": "XCP_MAX_DTO_SIZE 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_MAX_EVENT_CHANNELS": {
+      "type": "integer",
+      "description": "XCP_MAX_EVENT_CHANNELS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_BLOCK_DOWNLOAD_SUPPORTED": {
+      "type": "boolean",
+      "description": "XCP_BLOCK_DOWNLOAD_SUPPORTED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_BLOCK_UPLOAD_SUPPORTED": {
+      "type": "boolean",
+      "description": "XCP_BLOCK_UPLOAD_SUPPORTED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_INTERLEAVED_MODE_SUPPORTED": {
+      "type": "boolean",
+      "description": "XCP_INTERLEAVED_MODE_SUPPORTED 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_CHECKSUM_TYPE": {
+      "type": "integer",
+      "description": "CRC-16",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_TIMESTAMP_SUPPORTED": {
+      "type": "boolean",
+      "description": "XCP_TIMESTAMP_SUPPORTED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_TIMESTAMP_UNIT": {
+      "type": "integer",
+      "description": "1ms",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_TIMESTAMP_SIZE": {
+      "type": "integer",
+      "description": "4 bytes",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_DAQ_HEADER_TYPE": {
+      "type": "integer",
+      "description": "DAQ",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_IDENTIFICATION_FIELD_TYPE": {
+      "type": "integer",
+      "description": "RELATIVE_WORD",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_ADDRESS_GRANULARITY": {
+      "type": "integer",
+      "description": "BYTE",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_BYTE_ORDER": {
+      "type": "integer",
+      "description": "LSB_FIRST",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_SLAVE_BLOCK_MODE": {
+      "type": "boolean",
+      "description": "XCP_SLAVE_BLOCK_MODE 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_MASTER_BLOCK_MODE": {
+      "type": "boolean",
+      "description": "XCP_MASTER_BLOCK_MODE 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_INTERLEAVED_BLOCK_MODE": {
+      "type": "boolean",
+      "description": "XCP_INTERLEAVED_BLOCK_MODE 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_MAX_BS_UPLOAD": {
+      "type": "integer",
+      "description": "XCP_MAX_BS_UPLOAD 参数",
+      "default": 255,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_MAX_BS_DOWNLOAD": {
+      "type": "integer",
+      "description": "XCP_MAX_BS_DOWNLOAD 参数",
+      "default": 255,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_MIN_ST": {
+      "type": "integer",
+      "description": "XCP_MIN_ST 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_STIM_QUEUE_SIZE": {
+      "type": "integer",
+      "description": "XCP_STIM_QUEUE_SIZE 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_MAX_CONNECTIONS": {
+      "type": "integer",
+      "description": "XCP_MAX_CONNECTIONS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_MAX_SEEDS": {
+      "type": "integer",
+      "description": "XCP_MAX_SEEDS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_SEED_KEY_SUPPORTED": {
+      "type": "boolean",
+      "description": "XCP_SEED_KEY_SUPPORTED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_CAL_PAGE_SWITCHING": {
+      "type": "boolean",
+      "description": "XCP_CAL_PAGE_SWITCHING 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_NUMBER_OF_CAL_PAGES": {
+      "type": "integer",
+      "description": "XCP_NUMBER_OF_CAL_PAGES 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_PROGRAMMING_SUPPORTED": {
+      "type": "boolean",
+      "description": "XCP_PROGRAMMING_SUPPORTED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_MAX_PROGRAMMING_SECTOR_SIZE": {
+      "type": "integer",
+      "description": "XCP_MAX_PROGRAMMING_SECTOR_SIZE 参数",
+      "default": 1024,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_FLASH_PROGRAMMING_SUPPORTED": {
+      "type": "boolean",
+      "description": "XCP_FLASH_PROGRAMMING_SUPPORTED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_NVM_PROGRAMMING_SUPPORTED": {
+      "type": "boolean",
+      "description": "XCP_NVM_PROGRAMMING_SUPPORTED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_RESOURCE_CAL_PAG_PROTECTED": {
+      "type": "boolean",
+      "description": "XCP_RESOURCE_CAL_PAG_PROTECTED 参数",
+      "default": false,
+      "x-section": "RESOURCE PROTECTION CONFIGURATION"
+    },
+    "XCP_RESOURCE_DAQ_PROTECTED": {
+      "type": "boolean",
+      "description": "XCP_RESOURCE_DAQ_PROTECTED 参数",
+      "default": false,
+      "x-section": "RESOURCE PROTECTION CONFIGURATION"
+    },
+    "XCP_RESOURCE_STIM_PROTECTED": {
+      "type": "boolean",
+      "description": "XCP_RESOURCE_STIM_PROTECTED 参数",
+      "default": false,
+      "x-section": "RESOURCE PROTECTION CONFIGURATION"
+    },
+    "XCP_RESOURCE_PGM_PROTECTED": {
+      "type": "boolean",
+      "description": "XCP_RESOURCE_PGM_PROTECTED 参数",
+      "default": true,
+      "x-section": "RESOURCE PROTECTION CONFIGURATION"
+    },
+    "XCP_DAQ_DYNAMIC_ALLOCATION": {
+      "type": "boolean",
+      "description": "XCP_DAQ_DYNAMIC_ALLOCATION 参数",
+      "default": true,
+      "x-section": "DAQ CONFIGURATION"
+    },
+    "XCP_DAQ_PRESCALER_SUPPORTED": {
+      "type": "boolean",
+      "description": "XCP_DAQ_PRESCALER_SUPPORTED 参数",
+      "default": true,
+      "x-section": "DAQ CONFIGURATION"
+    },
+    "XCP_DAQ_TIMESTAMP_SUPPORTED": {
+      "type": "boolean",
+      "description": "XCP_DAQ_TIMESTAMP_SUPPORTED 参数",
+      "default": true,
+      "x-section": "DAQ CONFIGURATION"
+    },
+    "XCP_DAQ_PID_OFF_SUPPORTED": {
+      "type": "boolean",
+      "description": "XCP_DAQ_PID_OFF_SUPPORTED 参数",
+      "default": true,
+      "x-section": "DAQ CONFIGURATION"
+    },
+    "XCP_DAQ_OVERLOAD_INDICATION": {
+      "type": "integer",
+      "description": "XCP_DAQ_OVERLOAD_INDICATION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "DAQ CONFIGURATION"
+    },
+    "XCP_EVENT_CHANNEL_TIMING_TYPE": {
+      "type": "integer",
+      "description": "XCP_EVENT_CHANNEL_TIMING_TYPE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "DAQ CONFIGURATION"
+    },
+    "XCP_EVENT_CHANNEL_CONSISTENCY": {
+      "type": "integer",
+      "description": "XCP_EVENT_CHANNEL_CONSISTENCY 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "DAQ CONFIGURATION"
+    },
+    "XCP_ON_CAN_ENABLED": {
+      "type": "boolean",
+      "description": "XCP_ON_CAN_ENABLED 参数",
+      "default": true,
+      "x-section": "TRANSPORT LAYER CONFIGURATION"
+    },
+    "XCP_ON_ETH_UDP_ENABLED": {
+      "type": "boolean",
+      "description": "XCP_ON_ETH_UDP_ENABLED 参数",
+      "default": true,
+      "x-section": "TRANSPORT LAYER CONFIGURATION"
+    },
+    "XCP_ON_ETH_TCP_ENABLED": {
+      "type": "boolean",
+      "description": "XCP_ON_ETH_TCP_ENABLED 参数",
+      "default": false,
+      "x-section": "TRANSPORT LAYER CONFIGURATION"
+    },
+    "XCP_ON_FLEXRAY_ENABLED": {
+      "type": "boolean",
+      "description": "XCP_ON_FLEXRAY_ENABLED 参数",
+      "default": true,
+      "x-section": "TRANSPORT LAYER CONFIGURATION"
+    },
+    "XCP_ON_USB_ENABLED": {
+      "type": "boolean",
+      "description": "XCP_ON_USB_ENABLED 参数",
+      "default": false,
+      "x-section": "TRANSPORT LAYER CONFIGURATION"
+    },
+    "XCP_ON_LIN_ENABLED": {
+      "type": "boolean",
+      "description": "XCP_ON_LIN_ENABLED 参数",
+      "default": false,
+      "x-section": "TRANSPORT LAYER CONFIGURATION"
+    },
+    "XCP_DAQ_SUPPORTED": {
+      "type": "boolean",
+      "description": "XCP_DAQ_SUPPORTED 参数",
+      "default": true,
+      "x-section": "DAQ ADDITIONAL CONFIGURATION"
+    },
+    "XCP_GRANULARITY_ODT_ENTRY_SIZE_DAQ": {
+      "type": "integer",
+      "description": "XCP_GRANULARITY_ODT_ENTRY_SIZE_DAQ 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "DAQ ADDITIONAL CONFIGURATION"
+    },
+    "XCP_MAX_ODT_ENTRY_SIZE_DAQ": {
+      "type": "integer",
+      "description": "XCP_MAX_ODT_ENTRY_SIZE_DAQ（别名: XCP_MAX_DTO_SIZE = 8；同族可选: XCP_MAX_DTO_SIZE）",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "DAQ ADDITIONAL CONFIGURATION"
+    },
+    "XCP_GRANULARITY_ODT_ENTRY_SIZE_STIM": {
+      "type": "integer",
+      "description": "XCP_GRANULARITY_ODT_ENTRY_SIZE_STIM 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "DAQ ADDITIONAL CONFIGURATION"
+    },
+    "XCP_MAX_ODT_ENTRY_SIZE_STIM": {
+      "type": "integer",
+      "description": "XCP_MAX_ODT_ENTRY_SIZE_STIM（别名: XCP_MAX_DTO_SIZE = 8；同族可选: XCP_MAX_DTO_SIZE）",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "DAQ ADDITIONAL CONFIGURATION"
+    },
+    "XCP_DAQ_KEY_BYTE": {
+      "type": "integer",
+      "description": "XCP_DAQ_KEY_BYTE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "DAQ ADDITIONAL CONFIGURATION"
+    },
+    "XCP_MAX_CTO_PGM": {
+      "type": "integer",
+      "description": "XCP_MAX_CTO_PGM（别名: XCP_MAX_CTO_SIZE = 8；同族可选: XCP_MAX_CTO_SIZE）",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PGM ADDITIONAL CONFIGURATION"
+    },
+    "XCP_MAX_BS_PGM": {
+      "type": "integer",
+      "description": "XCP_MAX_BS_PGM 参数",
+      "default": 255,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PGM ADDITIONAL CONFIGURATION"
+    },
+    "XCP_MIN_ST_PGM": {
+      "type": "integer",
+      "description": "XCP_MIN_ST_PGM 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PGM ADDITIONAL CONFIGURATION"
+    },
+    "XCP_QUEUE_SIZE_PGM": {
+      "type": "integer",
+      "description": "XCP_QUEUE_SIZE_PGM 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PGM ADDITIONAL CONFIGURATION"
+    },
+    "XCP_INSTANCE_ID": {
+      "type": "integer",
+      "description": "XCP_INSTANCE_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "INSTANCE ID"
+    },
+    "XCP_CAN_FRAME_TYPE": {
+      "type": "integer",
+      "description": "XCP_CAN_FRAME_TYPE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CAN CONFIGURATION"
+    },
+    "XCP_CAN_CTO_ID": {
+      "type": "integer",
+      "description": "XCP_CAN_CTO_ID 参数",
+      "default": 291,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CAN CONFIGURATION"
+    },
+    "XCP_CAN_DTO_ID": {
+      "type": "integer",
+      "description": "XCP_CAN_DTO_ID 参数",
+      "default": 292,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CAN CONFIGURATION"
+    },
+    "XCP_CAN_BAUDRATE": {
+      "type": "integer",
+      "description": "kbps",
+      "default": 500,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CAN CONFIGURATION"
+    },
+    "XCP_ETH_PORT": {
+      "type": "integer",
+      "description": "XCP_ETH_PORT 参数",
+      "default": 5555,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "ETHERNET CONFIGURATION"
+    },
+    "XCP_ETH_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "XCP_ETH_BUFFER_SIZE 参数",
+      "default": 1500,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "ETHERNET CONFIGURATION"
+    },
+    "XCP_FLEXRAY_SLOT_ID": {
+      "type": "integer",
+      "description": "XCP_FLEXRAY_SLOT_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "FLEXRAY CONFIGURATION"
+    },
+    "XCP_FLEXRAY_CYCLE": {
+      "type": "integer",
+      "description": "XCP_FLEXRAY_CYCLE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "FLEXRAY CONFIGURATION"
+    },
+    "XCP_NUMBER_OF_MEMORY_RANGES": {
+      "type": "integer",
+      "description": "XCP_NUMBER_OF_MEMORY_RANGES 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MEMORY RANGES CONFIGURATION"
+    },
+    "XCP_MEMORY_ACCESS_READ": {
+      "type": "integer",
+      "description": "XCP_MEMORY_ACCESS_READ 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MEMORY RANGES CONFIGURATION"
+    },
+    "XCP_MEMORY_ACCESS_WRITE": {
+      "type": "integer",
+      "description": "XCP_MEMORY_ACCESS_WRITE 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MEMORY RANGES CONFIGURATION"
+    },
+    "XCP_MEMORY_ACCESS_EXECUTE": {
+      "type": "integer",
+      "description": "XCP_MEMORY_ACCESS_EXECUTE 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MEMORY RANGES CONFIGURATION"
+    },
+    "XCP_MEMORY_ACCESS_ERASE": {
+      "type": "integer",
+      "description": "XCP_MEMORY_ACCESS_ERASE 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MEMORY RANGES CONFIGURATION"
+    },
+    "XCP_MEMORY_SECTOR_TYPE_RAM": {
+      "type": "integer",
+      "description": "XCP_MEMORY_SECTOR_TYPE_RAM 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MEMORY RANGES CONFIGURATION"
+    },
+    "XCP_MEMORY_SECTOR_TYPE_ROM": {
+      "type": "integer",
+      "description": "XCP_MEMORY_SECTOR_TYPE_ROM 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MEMORY RANGES CONFIGURATION"
+    },
+    "XCP_MEMORY_SECTOR_TYPE_FLASH": {
+      "type": "integer",
+      "description": "XCP_MEMORY_SECTOR_TYPE_FLASH 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MEMORY RANGES CONFIGURATION"
+    },
+    "XCP_MEMORY_SECTOR_TYPE_EEPROM": {
+      "type": "integer",
+      "description": "XCP_MEMORY_SECTOR_TYPE_EEPROM 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MEMORY RANGES CONFIGURATION"
+    },
+    "XCP_FLASH_ERASE_CALLBACK": {
+      "type": "integer",
+      "description": "XCP_FLASH_ERASE_CALLBACK（派生表达式: Xcp_FlashErase）",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CALLBACK FUNCTIONS"
+    },
+    "XCP_FLASH_PROGRAM_CALLBACK": {
+      "type": "integer",
+      "description": "XCP_FLASH_PROGRAM_CALLBACK（派生表达式: Xcp_FlashProgram）",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CALLBACK FUNCTIONS"
+    },
+    "XCP_FLASH_READ_CALLBACK": {
+      "type": "integer",
+      "description": "XCP_FLASH_READ_CALLBACK（派生表达式: Xcp_FlashRead）",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CALLBACK FUNCTIONS"
+    },
+    "XCP_GET_SEED_CALLBACK": {
+      "type": "integer",
+      "description": "XCP_GET_SEED_CALLBACK（派生表达式: Xcp_GetSeed）",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CALLBACK FUNCTIONS"
+    },
+    "XCP_COMPARE_KEY_CALLBACK": {
+      "type": "integer",
+      "description": "XCP_COMPARE_KEY_CALLBACK（派生表达式: Xcp_CompareKey）",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CALLBACK FUNCTIONS"
+    },
+    "XCP_GET_TIMESTAMP_CALLBACK": {
+      "type": "integer",
+      "description": "XCP_GET_TIMESTAMP_CALLBACK（派生表达式: Xcp_GetTimestamp）",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CALLBACK FUNCTIONS"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/xcp/include/Xcp_Cfg.h",
+  "x-display-name": "Xcp",
+  "x-sections": [
+    "VERSION INFORMATION",
+    "PRE-COMPILE CONFIGURATION",
+    "RESOURCE PROTECTION CONFIGURATION",
+    "DAQ CONFIGURATION",
+    "TRANSPORT LAYER CONFIGURATION",
+    "DAQ ADDITIONAL CONFIGURATION",
+    "PGM ADDITIONAL CONFIGURATION",
+    "INSTANCE ID",
+    "CAN CONFIGURATION",
+    "ETHERNET CONFIGURATION",
+    "FLEXRAY CONFIGURATION",
+    "MEMORY RANGES CONFIGURATION",
+    "CALLBACK FUNCTIONS"
+  ]
+}

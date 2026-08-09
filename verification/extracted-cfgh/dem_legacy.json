@@ -1,0 +1,598 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/dem_legacy.json",
+  "title": "Dem_Legacy Configuration",
+  "description": "Dem configuration (extracted from yuleASR Cfg.h)",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DEM_CFG_VENDOR_ID": {
+      "type": "integer",
+      "description": "DEM_CFG_VENDOR_ID 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFO"
+    },
+    "DEM_CFG_MODULE_ID": {
+      "type": "integer",
+      "description": "DEM_CFG_MODULE_ID 参数",
+      "default": 54,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFO"
+    },
+    "DEM_CFG_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "DEM_CFG_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFO"
+    },
+    "DEM_CFG_MINOR_VERSION": {
+      "type": "integer",
+      "description": "DEM_CFG_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFO"
+    },
+    "DEM_CFG_PATCH_VERSION": {
+      "type": "integer",
+      "description": "DEM_CFG_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFO"
+    },
+    "DEM_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "DEM_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "DEM_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "DEM_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "DEM_DEBUG_SUPPORT": {
+      "type": "boolean",
+      "description": "DEM_DEBUG_SUPPORT 参数",
+      "default": false,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "DEM_CFG_FreezeFrameSupport": {
+      "type": "boolean",
+      "description": "DEM_CFG_FreezeFrameSupport 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "DEM_CFG_ExtendedDataSupport": {
+      "type": "boolean",
+      "description": "DEM_CFG_ExtendedDataSupport 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "DEM_CFG_AgingSupport": {
+      "type": "boolean",
+      "description": "DEM_CFG_AgingSupport 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "DEM_CFG_OperationCycleSupport": {
+      "type": "boolean",
+      "description": "DEM_CFG_OperationCycleSupport 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "DEM_CFG_IndicatorSupport": {
+      "type": "boolean",
+      "description": "DEM_CFG_IndicatorSupport 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "DEM_CFG_EventDebounceSupport": {
+      "type": "boolean",
+      "description": "DEM_CFG_EventDebounceSupport 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "DEM_CFG_OBDSupport": {
+      "type": "boolean",
+      "description": "DEM_CFG_OBDSupport 参数",
+      "default": false,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "DEM_CFG_J1939Support": {
+      "type": "boolean",
+      "description": "DEM_CFG_J1939Support 参数",
+      "default": false,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "DEM_CFG_BswMSupport": {
+      "type": "boolean",
+      "description": "DEM_CFG_BswMSupport 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "DEM_CFG_FimSupport": {
+      "type": "boolean",
+      "description": "DEM_CFG_FimSupport 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "DEM_CFG_DcmSupport": {
+      "type": "boolean",
+      "description": "DEM_CFG_DcmSupport 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "DEM_CFG_MAX_NUMBER_EVENTS": {
+      "type": "integer",
+      "description": "DEM_CFG_MAX_NUMBER_EVENTS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "EVENT CONFIGURATION"
+    },
+    "DEM_CFG_MAX_NUMBER_DTCS": {
+      "type": "integer",
+      "description": "DEM_CFG_MAX_NUMBER_DTCS 参数",
+      "default": 80,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "EVENT CONFIGURATION"
+    },
+    "DEM_CFG_MAX_FREEZEFRAME_RECORDS": {
+      "type": "integer",
+      "description": "DEM_CFG_MAX_FREEZEFRAME_RECORDS 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "EVENT CONFIGURATION"
+    },
+    "DEM_CFG_MAX_EXTENDED_DATA_RECORDS": {
+      "type": "integer",
+      "description": "DEM_CFG_MAX_EXTENDED_DATA_RECORDS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "EVENT CONFIGURATION"
+    },
+    "DEM_CFG_MAX_FREEZEFRAME_SIZE": {
+      "type": "integer",
+      "description": "DEM_CFG_MAX_FREEZEFRAME_SIZE 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "EVENT CONFIGURATION"
+    },
+    "DEM_CFG_MAX_EXTENDED_DATA_SIZE": {
+      "type": "integer",
+      "description": "DEM_CFG_MAX_EXTENDED_DATA_SIZE 参数",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "EVENT CONFIGURATION"
+    },
+    "DEM_CFG_MAX_INDICATORS": {
+      "type": "integer",
+      "description": "DEM_CFG_MAX_INDICATORS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "EVENT CONFIGURATION"
+    },
+    "DEM_CFG_MAX_INDICATOR_ATTRIBUTES": {
+      "type": "integer",
+      "description": "DEM_CFG_MAX_INDICATOR_ATTRIBUTES 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "EVENT CONFIGURATION"
+    },
+    "DEM_CFG_MAX_OPERATION_CYCLES": {
+      "type": "integer",
+      "description": "DEM_CFG_MAX_OPERATION_CYCLES 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "EVENT CONFIGURATION"
+    },
+    "DEM_CFG_MAX_DEBOUNCE_ALGORITHMS": {
+      "type": "integer",
+      "description": "DEM_CFG_MAX_DEBOUNCE_ALGORITHMS 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "EVENT CONFIGURATION"
+    },
+    "DEM_CFG_EVENT_QUEUE_SIZE": {
+      "type": "integer",
+      "description": "DEM_CFG_EVENT_QUEUE_SIZE 参数",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "EVENT CONFIGURATION"
+    },
+    "DEM_CFG_DTC_FORMAT": {
+      "type": "enum",
+      "description": "DEM_CFG_DTC_FORMAT 参数",
+      "default": "DEM_DTC_FORMAT_UDS",
+      "enum": [
+        "DEM_DTC_FORMAT_UDS"
+      ],
+      "x-section": "DTC CONFIGURATION"
+    },
+    "DEM_CFG_PRIMARY_MEMORY_MAX_ENTRIES": {
+      "type": "integer",
+      "description": "DEM_CFG_PRIMARY_MEMORY_MAX_ENTRIES 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "DTC CONFIGURATION"
+    },
+    "DEM_CFG_MIRROR_MEMORY_MAX_ENTRIES": {
+      "type": "integer",
+      "description": "DEM_CFG_MIRROR_MEMORY_MAX_ENTRIES 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "DTC CONFIGURATION"
+    },
+    "DEM_CFG_PERMANENT_MEMORY_MAX_ENTRIES": {
+      "type": "integer",
+      "description": "DEM_CFG_PERMANENT_MEMORY_MAX_ENTRIES 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "DTC CONFIGURATION"
+    },
+    "DEM_CFG_USER_DEFINED_MEMORY": {
+      "type": "integer",
+      "description": "DEM_CFG_USER_DEFINED_MEMORY 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "DTC CONFIGURATION"
+    },
+    "DEM_CFG_AGING_COUNTER_THRESHOLD": {
+      "type": "integer",
+      "description": "DEM_CFG_AGING_COUNTER_THRESHOLD 参数",
+      "default": 40,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "DTC CONFIGURATION"
+    },
+    "DEM_CFG_AGING_CYCLE_THRESHOLD": {
+      "type": "integer",
+      "description": "DEM_CFG_AGING_CYCLE_THRESHOLD 参数",
+      "default": 40,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "DTC CONFIGURATION"
+    },
+    "DEM_CFG_DEBOUNCE_COUNTER_SUPPORT": {
+      "type": "boolean",
+      "description": "DEM_CFG_DEBOUNCE_COUNTER_SUPPORT 参数",
+      "default": true,
+      "x-section": "DEBOUNCE CONFIGURATION"
+    },
+    "DEM_CFG_DEBOUNCE_TIME_SUPPORT": {
+      "type": "boolean",
+      "description": "DEM_CFG_DEBOUNCE_TIME_SUPPORT 参数",
+      "default": true,
+      "x-section": "DEBOUNCE CONFIGURATION"
+    },
+    "DEM_CFG_DEBOUNCE_MONITOR_SUPPORT": {
+      "type": "boolean",
+      "description": "DEM_CFG_DEBOUNCE_MONITOR_SUPPORT 参数",
+      "default": true,
+      "x-section": "DEBOUNCE CONFIGURATION"
+    },
+    "DEM_CFG_DEBOUNCE_COUNTER_MAX": {
+      "type": "integer",
+      "description": "DEM_CFG_DEBOUNCE_COUNTER_MAX 参数",
+      "default": 127,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "DEBOUNCE CONFIGURATION"
+    },
+    "DEM_CFG_DEBOUNCE_COUNTER_MIN": {
+      "type": "integer",
+      "description": "DEM_CFG_DEBOUNCE_COUNTER_MIN 参数",
+      "default": -128,
+      "minimum": -128,
+      "maximum": 127,
+      "x-section": "DEBOUNCE CONFIGURATION"
+    },
+    "DEM_CFG_DEBOUNCE_COUNTER_FAILED": {
+      "type": "integer",
+      "description": "DEM_CFG_DEBOUNCE_COUNTER_FAILED 参数",
+      "default": 127,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "DEBOUNCE CONFIGURATION"
+    },
+    "DEM_CFG_DEBOUNCE_COUNTER_PASSED": {
+      "type": "integer",
+      "description": "DEM_CFG_DEBOUNCE_COUNTER_PASSED 参数",
+      "default": -128,
+      "minimum": -128,
+      "maximum": 127,
+      "x-section": "DEBOUNCE CONFIGURATION"
+    },
+    "DEM_CFG_CALLBACK_ON_EVC_STATUS_CHANGED": {
+      "type": "boolean",
+      "description": "DEM_CFG_CALLBACK_ON_EVC_STATUS_CHANGED 参数",
+      "default": true,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "DEM_CFG_CALLBACK_ON_EVC_DATA_CHANGED": {
+      "type": "boolean",
+      "description": "DEM_CFG_CALLBACK_ON_EVC_DATA_CHANGED 参数",
+      "default": false,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "DEM_CFG_CALLBACK_ON_DTC_STATUS_CHANGED": {
+      "type": "boolean",
+      "description": "DEM_CFG_CALLBACK_ON_DTC_STATUS_CHANGED 参数",
+      "default": true,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "DEM_CFG_CALLBACK_ON_MONITOR_STATUS_CHANGED": {
+      "type": "boolean",
+      "description": "DEM_CFG_CALLBACK_ON_MONITOR_STATUS_CHANGED 参数",
+      "default": false,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "DEM_CFG_CALLBACK_ON_CYCLE_STATUS_CHANGED": {
+      "type": "boolean",
+      "description": "DEM_CFG_CALLBACK_ON_CYCLE_STATUS_CHANGED 参数",
+      "default": true,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "DEM_CFG_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "DEM_CFG_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "DEM_CFG_DEBOUNCE_TASK_PERIOD_MS": {
+      "type": "integer",
+      "description": "DEM_CFG_DEBOUNCE_TASK_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "DEM_CFG_NVM_WRITE_RETRY": {
+      "type": "integer",
+      "description": "DEM_CFG_NVM_WRITE_RETRY 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "DEM_CFG_NVM_READ_RETRY": {
+      "type": "integer",
+      "description": "DEM_CFG_NVM_READ_RETRY 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "DEM_CFG_NVM_WRITE_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "DEM_CFG_NVM_WRITE_TIMEOUT_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "DEM_CFG_NVM_READ_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "DEM_CFG_NVM_READ_TIMEOUT_MS 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "DEM_CFG_CLEAR_DTC_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "DEM_CFG_CLEAR_DTC_TIMEOUT_MS 参数",
+      "default": 10000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "TIMEOUT CONFIGURATION"
+    },
+    "DEM_CFG_DISABLE_DTC_RECORD_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "DEM_CFG_DISABLE_DTC_RECORD_TIMEOUT_MS 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "TIMEOUT CONFIGURATION"
+    },
+    "DEM_CFG_GET_DTC_STATUS_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "DEM_CFG_GET_DTC_STATUS_TIMEOUT_MS 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "TIMEOUT CONFIGURATION"
+    },
+    "DEM_CFG_COMBINED_DTCS_SUPPORT": {
+      "type": "boolean",
+      "description": "DEM_CFG_COMBINED_DTCS_SUPPORT 参数",
+      "default": false,
+      "x-section": "SPECIAL CONFIGURATION"
+    },
+    "DEM_CFG_MULTIPLE_EVENT_MEMORIES": {
+      "type": "boolean",
+      "description": "DEM_CFG_MULTIPLE_EVENT_MEMORIES 参数",
+      "default": false,
+      "x-section": "SPECIAL CONFIGURATION"
+    },
+    "DEM_CFG_TIME_BASED_DEBOUNCE": {
+      "type": "boolean",
+      "description": "DEM_CFG_TIME_BASED_DEBOUNCE 参数",
+      "default": true,
+      "x-section": "SPECIAL CONFIGURATION"
+    },
+    "DEM_CFG_FREQUENCY_BASED_DEBOUNCE": {
+      "type": "boolean",
+      "description": "DEM_CFG_FREQUENCY_BASED_DEBOUNCE 参数",
+      "default": false,
+      "x-section": "SPECIAL CONFIGURATION"
+    },
+    "DEM_CFG_STORAGE_CONDITIONS_SUPPORT": {
+      "type": "boolean",
+      "description": "DEM_CFG_STORAGE_CONDITIONS_SUPPORT 参数",
+      "default": false,
+      "x-section": "SPECIAL CONFIGURATION"
+    },
+    "DEM_CFG_ENABLE_CONDITIONS_SUPPORT": {
+      "type": "boolean",
+      "description": "DEM_CFG_ENABLE_CONDITIONS_SUPPORT 参数",
+      "default": false,
+      "x-section": "SPECIAL CONFIGURATION"
+    },
+    "DEM_CFG_COMPONENT_AVAILABLE_SUPPORT": {
+      "type": "boolean",
+      "description": "DEM_CFG_COMPONENT_AVAILABLE_SUPPORT 参数",
+      "default": false,
+      "x-section": "SPECIAL CONFIGURATION"
+    },
+    "DEM_CFG_PID41_SUPPORT": {
+      "type": "boolean",
+      "description": "DEM_CFG_PID41_SUPPORT 参数",
+      "default": false,
+      "x-section": "SPECIAL CONFIGURATION"
+    },
+    "DEM_CFG_PID1C_SUPPORT": {
+      "type": "boolean",
+      "description": "DEM_CFG_PID1C_SUPPORT 参数",
+      "default": false,
+      "x-section": "SPECIAL CONFIGURATION"
+    },
+    "DEM_CFG_WWH_OBD_SUPPORT": {
+      "type": "boolean",
+      "description": "DEM_CFG_WWH_OBD_SUPPORT 参数",
+      "default": false,
+      "x-section": "SPECIAL CONFIGURATION"
+    },
+    "DEM_CFG_WORLD_WIDE_HARMONIZED_OBD": {
+      "type": "boolean",
+      "description": "DEM_CFG_WORLD_WIDE_HARMONIZED_OBD 参数",
+      "default": false,
+      "x-section": "SPECIAL CONFIGURATION"
+    },
+    "DEM_CFG_EMISSION_RELATED_DTCS_ONLY": {
+      "type": "boolean",
+      "description": "DEM_CFG_EMISSION_RELATED_DTCS_ONLY 参数",
+      "default": false,
+      "x-section": "SPECIAL CONFIGURATION"
+    },
+    "DEM_CFG_CLEAR_DTCLIMIT_SUPPORT": {
+      "type": "boolean",
+      "description": "DEM_CFG_CLEAR_DTCLIMIT_SUPPORT 参数",
+      "default": false,
+      "x-section": "SPECIAL CONFIGURATION"
+    },
+    "DEM_CFG_WARNING_INDICATOR_SUPPORTED": {
+      "type": "boolean",
+      "description": "DEM_CFG_WARNING_INDICATOR_SUPPORTED 参数",
+      "default": true,
+      "x-section": "SPECIAL CONFIGURATION"
+    },
+    "DEM_CFG_MIL_INDICATOR_SUPPORTED": {
+      "type": "boolean",
+      "description": "DEM_CFG_MIL_INDICATOR_SUPPORTED 参数",
+      "default": true,
+      "x-section": "SPECIAL CONFIGURATION"
+    },
+    "DEM_CFG_SERVICE_ONLY_TRACKING": {
+      "type": "boolean",
+      "description": "DEM_CFG_SERVICE_ONLY_TRACKING 参数",
+      "default": false,
+      "x-section": "SPECIAL CONFIGURATION"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/dem/legacy/config/Dem_Cfg.h",
+  "x-display-name": "Dem_Legacy",
+  "x-sections": [
+    "VERSION INFO",
+    "GENERAL CONFIGURATION",
+    "EVENT CONFIGURATION",
+    "DTC CONFIGURATION",
+    "DEBOUNCE CONFIGURATION",
+    "CALLBACK CONFIGURATION",
+    "TASK CONFIGURATION",
+    "TIMEOUT CONFIGURATION",
+    "SPECIAL CONFIGURATION"
+  ]
+}

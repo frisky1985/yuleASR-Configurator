@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/linmaster.json",
+  "title": "LinMaster Configuration",
+  "description": "LinMaster 模块配置文件",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LINMASTER_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "LINMASTER_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "LINMASTER_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "LINMASTER_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "LINMASTER_DEFAULT_BAUDRATE": {
+      "type": "integer",
+      "description": "LINMASTER_DEFAULT_BAUDRATE 参数",
+      "default": 9600,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "LINMASTER_DEFAULT_BREAK_US": {
+      "type": "integer",
+      "description": "13位 @ 9600bps",
+      "default": 728,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "LINMASTER_DEFAULT_INTERFRAME_MS": {
+      "type": "integer",
+      "description": "LINMASTER_DEFAULT_INTERFRAME_MS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "LINMASTER_DEFAULT_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "LINMASTER_DEFAULT_TIMEOUT_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "LINMASTER_BREAK_SEND_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "Break发送超时",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "LINMASTER_SYNC_SEND_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "Sync发送超时",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "LINMASTER_PID_SEND_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "PID发送超时",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "LINMASTER_DATA_SEND_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "数据发送超时",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "LINMASTER_RX_RESPONSE_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "接收响应超时",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "LINMASTER_MAX_FRAME_CONFIG": {
+      "type": "integer",
+      "description": "LINMASTER_MAX_FRAME_CONFIG 参数",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "LINMASTER_MAINFUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "LINMASTER_MAINFUNCTION_PERIOD_MS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/mcal/lin/include/LinMaster_Cfg.h",
+  "x-display-name": "LinMaster"
+}

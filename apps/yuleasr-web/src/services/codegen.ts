@@ -15,7 +15,8 @@
 // Fix 18/22: escapeCString / C_IDENTIFIER_RE 从 core 导出，单一实现（避免 web 私有转义分叉）
 import { escapeCString, C_IDENTIFIER_RE } from '@yuletech/core';
 import type { ModuleSchema, ModuleParameter } from '@yuletech/core';
-import { loadModuleSchemas } from '@yuletech/core/schema/load-generated';
+
+import { loadPreferredSchemas } from './schemaSource';
 
 
 export interface GeneratedFile {
@@ -467,8 +468,9 @@ export async function generateAllHeaders(
  * （load-generated.ts）递归展平进 schema.parameters，生成 `PREFIX_NAME` 宏。
  *
  * 与 generateAllHeaders 的关系：
- * - generateAllHeaders 走 13 模块硬编码路径（存量，保持不变）；
- * - 本函数走 schema 驱动路径（增量），can 特例同样保留。
+ * - generateAllHeaders 走 13 模块硬编码路径（存量，保持不变，can 仍走 generateCanMacroHeader）；
+ * - 本函数走 schema 驱动路径（增量，V2.2 起 can 也走通用路径：宏名版 can.json
+ *   参数名即 CAN_* 宏，rawMacroNames 原样输出，配置可流入）。
  * - ModuleSchema 无 enabled 字段，传入的 schema 全部生成。
  */
 export async function generateHeadersFromSchemas(
@@ -481,19 +483,16 @@ export async function generateHeadersFromSchemas(
     const displayName = schema.label || schema.name;
     const filename = getHeaderFilename(schema.name);
 
-    let content: string;
-    if (schema.name.toLowerCase() === 'can') {
-      // can 特例：需要原始参数名（devErrorDetect 等），不能叠加宏前缀
-      const params: Record<string, unknown> = {};
-      for (const p of schema.parameters || []) {
-        params[p.name] = schemaParamValue(p);
-      }
-      content = generateCanMacroHeader(displayName, schema.version, params);
-    } else {
-      content = generateMacroOnlyHeader(schema.name, schema.name, displayName, schema.version, schemaToMacroParams(shortName, schema), {
+    const content = generateMacroOnlyHeader(
+      schema.name,
+      schema.name,
+      displayName,
+      schema.version,
+      schemaToMacroParams(shortName, schema),
+      {
         rawMacroNames: true,
-      });
-    }
+      }
+    );
 
     files.push({
       filename,
@@ -556,13 +555,13 @@ export interface SchemaCoverageSummary {
  * - 配置中存在但无 schema → 「无 schema 仅展示」（hasSchema=false）。
  *
  * @param configModules 当前配置模块列表（可为空数组：仅展示 schema 清单）
- * @param schemas 可选 schema 列表（默认 loadModuleSchemas()，117 个）
+ * @param schemas 可选 schema 列表（默认 loadPreferredSchemas()，宏名版优先，117 个）
  */
 export function buildSchemaCoverage(
   configModules: ConfigModuleLike[],
   schemas?: ModuleSchema[]
 ): { rows: SchemaCoverageRow[]; summary: SchemaCoverageSummary } {
-  const allSchemas = schemas ?? loadModuleSchemas();
+  const allSchemas = schemas ?? loadPreferredSchemas();
   const configByName = new Map(
     configModules.map(m => [m.name.toLowerCase(), m])
   );
@@ -619,15 +618,20 @@ export function buildSchemaCoverage(
  * - 配置参数名与 schema 参数名精确匹配（区分大小写）；不匹配的参数不影响该模块生成；
  * - 配置中存在但 schema 缺失的模块不参与生成（无 schema 无法生成宏头，仅覆盖表展示）。
  *
+ * V2.2（schema 源切换）：默认源改为 loadPreferredSchemas() —— 宏名版
+ * （verification/extracted-cfgh/*.json，参数名即宏名）优先，无宏名版的模块回退
+ * generated/（loadModuleSchemas）。宏名版默认值与 yuleASR 手写头一致，
+ * 生成头可直接替换编译（V2 已验证 139/139）。
+ *
  * @param configModules 当前配置模块
- * @param schemas 可选 schema 列表（默认 loadModuleSchemas()）
+ * @param schemas 可选 schema 列表（默认 loadPreferredSchemas()，宏名版优先）
  * @returns 全部模块生成文件（与 schemas 等长）
  */
 export async function generateHeadersFromConfig(
   configModules: ConfigModuleLike[],
   schemas?: ModuleSchema[]
 ): Promise<GeneratedFile[]> {
-  const allSchemas = schemas ?? loadModuleSchemas();
+  const allSchemas = schemas ?? loadPreferredSchemas();
   const configByModule = new Map(
     configModules
       .filter(m => m.enabled)

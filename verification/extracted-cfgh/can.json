@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/can.json",
+  "title": "Can Configuration",
+  "description": "CAN Driver configuration header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CAN_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "CAN_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CAN_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "CAN_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CAN_NUM_CONTROLLERS": {
+      "type": "integer",
+      "description": "CAN_NUM_CONTROLLERS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NUMBER OF CAN CONTROLLERS"
+    },
+    "CAN_NUM_HOH": {
+      "type": "integer",
+      "description": "CAN_NUM_HOH 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NUMBER OF HARDWARE OBJECTS"
+    },
+    "CAN_NUM_BAUDRATE_CONFIGS": {
+      "type": "integer",
+      "description": "CAN_NUM_BAUDRATE_CONFIGS 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "BAUDRATE CONFIGURATIONS"
+    },
+    "CAN_BAUDRATE_500K": {
+      "type": "integer",
+      "description": "CAN_BAUDRATE_500K 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "BAUDRATE CONFIGURATIONS"
+    },
+    "CAN_BAUDRATE_250K": {
+      "type": "integer",
+      "description": "CAN_BAUDRATE_250K 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "BAUDRATE CONFIGURATIONS"
+    },
+    "CAN_BAUDRATE_125K": {
+      "type": "integer",
+      "description": "CAN_BAUDRATE_125K 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "BAUDRATE CONFIGURATIONS"
+    },
+    "CAN_PROCESSING_INTERRUPT": {
+      "type": "integer",
+      "description": "CAN_PROCESSING_INTERRUPT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROCESSING MODES"
+    },
+    "CAN_PROCESSING_POLLING": {
+      "type": "integer",
+      "description": "CAN_PROCESSING_POLLING 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROCESSING MODES"
+    },
+    "CAN_CONTROLLER_0": {
+      "type": "integer",
+      "description": "CAN_CONTROLLER_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONTROLLER DEFINITIONS"
+    },
+    "CAN_CONTROLLER_1": {
+      "type": "integer",
+      "description": "CAN_CONTROLLER_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONTROLLER DEFINITIONS"
+    },
+    "CAN_HOH_RX_0": {
+      "type": "integer",
+      "description": "CAN_HOH_RX_0（cast: Can_HwHandleType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "HARDWARE OBJECT HANDLES"
+    },
+    "CAN_HOH_RX_1": {
+      "type": "integer",
+      "description": "CAN_HOH_RX_1（cast: Can_HwHandleType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "HARDWARE OBJECT HANDLES"
+    },
+    "CAN_HOH_RX_2": {
+      "type": "integer",
+      "description": "CAN_HOH_RX_2（cast: Can_HwHandleType）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "HARDWARE OBJECT HANDLES"
+    },
+    "CAN_HOH_RX_3": {
+      "type": "integer",
+      "description": "CAN_HOH_RX_3（cast: Can_HwHandleType）",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "HARDWARE OBJECT HANDLES"
+    },
+    "CAN_HOH_TX_0": {
+      "type": "integer",
+      "description": "CAN_HOH_TX_0（cast: Can_HwHandleType）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "HARDWARE OBJECT HANDLES"
+    },
+    "CAN_HOH_TX_1": {
+      "type": "integer",
+      "description": "CAN_HOH_TX_1（cast: Can_HwHandleType）",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "HARDWARE OBJECT HANDLES"
+    },
+    "CAN_HOH_TX_2": {
+      "type": "integer",
+      "description": "CAN_HOH_TX_2（cast: Can_HwHandleType）",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "HARDWARE OBJECT HANDLES"
+    },
+    "CAN_HOH_TX_3": {
+      "type": "integer",
+      "description": "CAN_HOH_TX_3（cast: Can_HwHandleType）",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "HARDWARE OBJECT HANDLES"
+    },
+    "CAN_TIMEOUT_DURATION": {
+      "type": "integer",
+      "description": "10ms timeout",
+      "default": 10000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "TIMEOUT CONFIGURATION"
+    },
+    "CAN_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "CAN_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION PERIODS"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/mcal/can/include/Can_Cfg.h",
+  "x-display-name": "Can",
+  "x-sections": [
+    "PRE-COMPILE CONFIGURATION",
+    "NUMBER OF CAN CONTROLLERS",
+    "NUMBER OF HARDWARE OBJECTS",
+    "BAUDRATE CONFIGURATIONS",
+    "PROCESSING MODES",
+    "CONTROLLER DEFINITIONS",
+    "HARDWARE OBJECT HANDLES",
+    "TIMEOUT CONFIGURATION",
+    "MAIN FUNCTION PERIODS"
+  ]
+}

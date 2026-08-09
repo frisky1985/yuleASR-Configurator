@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/boot.json",
+  "title": "Boot Configuration",
+  "description": "Boot configuration (extracted from yuleASR Cfg.h)",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BOOT_FLASH_BASE": {
+      "type": "integer",
+      "description": "BOOT_FLASH_BASE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BOOT_PBL_ADDR": {
+      "type": "integer",
+      "description": "BOOT_PBL_ADDR 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BOOT_PBL_SIZE": {
+      "type": "integer",
+      "description": "4KB",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "BOOT_SBL_ADDR": {
+      "type": "integer",
+      "description": "BOOT_SBL_ADDR 参数",
+      "default": 8192,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "BOOT_SBL_SIZE": {
+      "type": "integer",
+      "description": "64KB",
+      "default": 65536,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "BOOT_APP_SLOT_A_ADDR": {
+      "type": "integer",
+      "description": "BOOT_APP_SLOT_A_ADDR 参数",
+      "default": 73728,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "BOOT_APP_SLOT_A_SIZE": {
+      "type": "integer",
+      "description": "BOOT_APP_SLOT_A_SIZE 参数",
+      "default": 974848,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "BOOT_APP_SLOT_B_ADDR": {
+      "type": "integer",
+      "description": "BOOT_APP_SLOT_B_ADDR 参数",
+      "default": 1048576,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "BOOT_APP_SLOT_B_SIZE": {
+      "type": "integer",
+      "description": "BOOT_APP_SLOT_B_SIZE 参数",
+      "default": 917504,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "BOOT_BIB_ADDR": {
+      "type": "integer",
+      "description": "BOOT_BIB_ADDR 参数",
+      "default": 1966080,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "BOOT_BIB_SIZE": {
+      "type": "integer",
+      "description": "BOOT_BIB_SIZE 参数",
+      "default": 65536,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "BOOT_NVM_ADDR": {
+      "type": "integer",
+      "description": "BOOT_NVM_ADDR 参数",
+      "default": 2031616,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "BOOT_NVM_SIZE": {
+      "type": "integer",
+      "description": "BOOT_NVM_SIZE 参数",
+      "default": 32768,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "BOOT_WDG_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "BOOT_WDG_TIMEOUT_MS 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "BOOT_MAX_RETRIES": {
+      "type": "integer",
+      "description": "BOOT_MAX_RETRIES 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BOOT_VERIFY_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "BOOT_VERIFY_TIMEOUT_MS 参数",
+      "default": 10000,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "BOOT_MAX_BOOT_ATTEMPTS": {
+      "type": "integer",
+      "description": "BOOT_MAX_BOOT_ATTEMPTS 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BOOT_HASH_SIZE": {
+      "type": "integer",
+      "description": "BOOT_HASH_SIZE 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BOOT_SIGNATURE_SIZE": {
+      "type": "integer",
+      "description": "BOOT_SIGNATURE_SIZE 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BOOT_HSM_KEY_SLOT_PBL": {
+      "type": "integer",
+      "description": "BOOT_HSM_KEY_SLOT_PBL 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BOOT_HSM_KEY_SLOT_SBL": {
+      "type": "integer",
+      "description": "BOOT_HSM_KEY_SLOT_SBL 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BOOT_HSM_KEY_SLOT_APP": {
+      "type": "integer",
+      "description": "BOOT_HSM_KEY_SLOT_APP 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BOOT_DEBUG_ENABLE": {
+      "type": "integer",
+      "description": "BOOT_DEBUG_ENABLE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/boot/include/Boot_Cfg.h",
+  "x-display-name": "Boot"
+}

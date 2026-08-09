@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/com.json",
+  "title": "Com Configuration",
+  "description": "COM Configuration",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "COM_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "COM_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "COM_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "COM_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "COM_MAX_SIGNALS": {
+      "type": "integer",
+      "description": "COM_MAX_SIGNALS 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "COM_MAX_IPDUS": {
+      "type": "integer",
+      "description": "COM_MAX_IPDUS 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "COM_MAX_GROUPS": {
+      "type": "integer",
+      "description": "COM_MAX_GROUPS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "COM_MAX_SIGNAL_LENGTH": {
+      "type": "integer",
+      "description": "COM_MAX_SIGNAL_LENGTH 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "COM_TX_MODE_DIRECT": {
+      "type": "integer",
+      "description": "COM_TX_MODE_DIRECT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "COM_TX_MODE_PERIODIC": {
+      "type": "integer",
+      "description": "COM_TX_MODE_PERIODIC 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "COM_TX_MODE_MIXED": {
+      "type": "integer",
+      "description": "COM_TX_MODE_MIXED 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "COM_LITTLE_ENDIAN": {
+      "type": "integer",
+      "description": "COM_LITTLE_ENDIAN 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "COM_BIG_ENDIAN": {
+      "type": "integer",
+      "description": "COM_BIG_ENDIAN 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "COM_NUM_OF_IPDUS": {
+      "type": "integer",
+      "description": "COM_NUM_OF_IPDUS（别名: COM_MAX_IPDUS = 64；同族可选: COM_MAX_GROUPS / COM_MAX_IPDUS / COM_MAX_IPDU_BUFFER_SIZE / COM_MAX_IPDU_LENGTH / COM_MAX_SIGNALS / COM_MAX_SIGNAL_LENGTH）",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "COM_NUM_OF_SIGNALS": {
+      "type": "integer",
+      "description": "COM_NUM_OF_SIGNALS（别名: COM_MAX_SIGNALS = 256；同族可选: COM_MAX_GROUPS / COM_MAX_IPDUS / COM_MAX_IPDU_BUFFER_SIZE / COM_MAX_IPDU_LENGTH / COM_MAX_SIGNALS / COM_MAX_SIGNAL_LENGTH）",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "COM_NUM_OF_IPDU_GROUPS": {
+      "type": "integer",
+      "description": "COM_NUM_OF_IPDU_GROUPS（别名: COM_MAX_GROUPS = 16；同族可选: COM_MAX_GROUPS / COM_MAX_IPDUS / COM_MAX_IPDU_BUFFER_SIZE / COM_MAX_IPDU_LENGTH / COM_MAX_SIGNALS / COM_MAX_SIGNAL_LENGTH）",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "COM_NUM_IPDU_GROUPS": {
+      "type": "enum",
+      "description": "COM_NUM_IPDU_GROUPS 参数",
+      "default": "COM_NUM_OF_IPDU_GROUPS",
+      "enum": [
+        "COM_NUM_OF_IPDU_GROUPS"
+      ]
+    },
+    "COM_NUM_OF_SIGNAL_GROUPS": {
+      "type": "integer",
+      "description": "COM_NUM_OF_SIGNAL_GROUPS（别名: COM_MAX_GROUPS = 16；同族可选: COM_MAX_GROUPS / COM_MAX_IPDUS / COM_MAX_IPDU_BUFFER_SIZE / COM_MAX_IPDU_LENGTH / COM_MAX_SIGNALS / COM_MAX_SIGNAL_LENGTH）",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "COM_MAX_IPDU_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "COM_MAX_IPDU_BUFFER_SIZE 参数",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "COM_MAX_IPDU_LENGTH": {
+      "type": "integer",
+      "description": "COM_MAX_IPDU_LENGTH 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/com/include/Com_Cfg.h",
+  "x-display-name": "Com"
+}

@@ -1,0 +1,428 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/adc.json",
+  "title": "Adc Configuration",
+  "description": "ADC Driver configuration header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ADC_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "ADC_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ADC_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "ADC_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ADC_DE_INIT_API": {
+      "type": "boolean",
+      "description": "ADC_DE_INIT_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ADC_ENABLE_START_STOP_GROUP_API": {
+      "type": "boolean",
+      "description": "ADC_ENABLE_START_STOP_GROUP_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ADC_HW_TRIGGER_API": {
+      "type": "boolean",
+      "description": "ADC_HW_TRIGGER_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ADC_READ_GROUP_API": {
+      "type": "boolean",
+      "description": "ADC_READ_GROUP_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ADC_GET_STREAM_LAST_POINTER_API": {
+      "type": "boolean",
+      "description": "ADC_GET_STREAM_LAST_POINTER_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ADC_ENABLE_QUEUING": {
+      "type": "boolean",
+      "description": "ADC_ENABLE_QUEUING 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ADC_GRP_NOTIF_CAPABILITY": {
+      "type": "boolean",
+      "description": "ADC_GRP_NOTIF_CAPABILITY 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ADC_POWER_STATE_SUPPORTED": {
+      "type": "boolean",
+      "description": "ADC_POWER_STATE_SUPPORTED 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ADC_NUM_HW_UNITS": {
+      "type": "integer",
+      "description": "ADC_NUM_HW_UNITS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NUMBER OF HW UNITS"
+    },
+    "ADC_NUM_GROUPS": {
+      "type": "integer",
+      "description": "ADC_NUM_GROUPS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NUMBER OF GROUPS"
+    },
+    "ADC_NUM_CHANNELS": {
+      "type": "integer",
+      "description": "ADC_NUM_CHANNELS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NUMBER OF CHANNELS"
+    },
+    "ADC_HWUNIT_0": {
+      "type": "integer",
+      "description": "ADC_HWUNIT_0（cast: Adc_HWUnitType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "HW UNIT DEFINITIONS"
+    },
+    "ADC_HWUNIT_1": {
+      "type": "integer",
+      "description": "ADC_HWUNIT_1（cast: Adc_HWUnitType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "HW UNIT DEFINITIONS"
+    },
+    "ADC_GROUP_0": {
+      "type": "integer",
+      "description": "ADC_GROUP_0（cast: Adc_GroupType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "GROUP DEFINITIONS"
+    },
+    "ADC_GROUP_1": {
+      "type": "integer",
+      "description": "ADC_GROUP_1（cast: Adc_GroupType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "GROUP DEFINITIONS"
+    },
+    "ADC_GROUP_2": {
+      "type": "integer",
+      "description": "ADC_GROUP_2（cast: Adc_GroupType）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "GROUP DEFINITIONS"
+    },
+    "ADC_GROUP_3": {
+      "type": "integer",
+      "description": "ADC_GROUP_3（cast: Adc_GroupType）",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "GROUP DEFINITIONS"
+    },
+    "ADC_GROUP_4": {
+      "type": "integer",
+      "description": "ADC_GROUP_4（cast: Adc_GroupType）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "GROUP DEFINITIONS"
+    },
+    "ADC_GROUP_5": {
+      "type": "integer",
+      "description": "ADC_GROUP_5（cast: Adc_GroupType）",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "GROUP DEFINITIONS"
+    },
+    "ADC_GROUP_6": {
+      "type": "integer",
+      "description": "ADC_GROUP_6（cast: Adc_GroupType）",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "GROUP DEFINITIONS"
+    },
+    "ADC_GROUP_7": {
+      "type": "integer",
+      "description": "ADC_GROUP_7（cast: Adc_GroupType）",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "GROUP DEFINITIONS"
+    },
+    "ADC_CHANNEL_0": {
+      "type": "integer",
+      "description": "ADC_CHANNEL_0（cast: Adc_ChannelType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "ADC_CHANNEL_1": {
+      "type": "integer",
+      "description": "ADC_CHANNEL_1（cast: Adc_ChannelType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "ADC_CHANNEL_2": {
+      "type": "integer",
+      "description": "ADC_CHANNEL_2（cast: Adc_ChannelType）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "ADC_CHANNEL_3": {
+      "type": "integer",
+      "description": "ADC_CHANNEL_3（cast: Adc_ChannelType）",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "ADC_CHANNEL_4": {
+      "type": "integer",
+      "description": "ADC_CHANNEL_4（cast: Adc_ChannelType）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "ADC_CHANNEL_5": {
+      "type": "integer",
+      "description": "ADC_CHANNEL_5（cast: Adc_ChannelType）",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "ADC_CHANNEL_6": {
+      "type": "integer",
+      "description": "ADC_CHANNEL_6（cast: Adc_ChannelType）",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "ADC_CHANNEL_7": {
+      "type": "integer",
+      "description": "ADC_CHANNEL_7（cast: Adc_ChannelType）",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "ADC_CHANNEL_8": {
+      "type": "integer",
+      "description": "ADC_CHANNEL_8（cast: Adc_ChannelType）",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "ADC_CHANNEL_9": {
+      "type": "integer",
+      "description": "ADC_CHANNEL_9（cast: Adc_ChannelType）",
+      "default": 9,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "ADC_CHANNEL_10": {
+      "type": "integer",
+      "description": "ADC_CHANNEL_10（cast: Adc_ChannelType）",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "ADC_CHANNEL_11": {
+      "type": "integer",
+      "description": "ADC_CHANNEL_11（cast: Adc_ChannelType）",
+      "default": 11,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "ADC_CHANNEL_12": {
+      "type": "integer",
+      "description": "ADC_CHANNEL_12（cast: Adc_ChannelType）",
+      "default": 12,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "ADC_CHANNEL_13": {
+      "type": "integer",
+      "description": "ADC_CHANNEL_13（cast: Adc_ChannelType）",
+      "default": 13,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "ADC_CHANNEL_14": {
+      "type": "integer",
+      "description": "ADC_CHANNEL_14（cast: Adc_ChannelType）",
+      "default": 14,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "ADC_CHANNEL_15": {
+      "type": "integer",
+      "description": "ADC_CHANNEL_15（cast: Adc_ChannelType）",
+      "default": 15,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "ADC_DEFAULT_RESOLUTION": {
+      "type": "enum",
+      "description": "ADC_DEFAULT_RESOLUTION 参数",
+      "default": "ADC_RESOLUTION_12BIT",
+      "enum": [
+        "ADC_RESOLUTION_6BIT",
+        "ADC_RESOLUTION_8BIT",
+        "ADC_RESOLUTION_10BIT",
+        "ADC_RESOLUTION_12BIT"
+      ],
+      "x-section": "DEFAULT RESOLUTION"
+    },
+    "ADC_DEFAULT_SAMPLING_TIME": {
+      "type": "enum",
+      "description": "ADC_DEFAULT_SAMPLING_TIME 参数",
+      "default": "ADC_SAMPLING_TIME_15CYCLES",
+      "enum": [
+        "ADC_SAMPLING_TIME_3CYCLES",
+        "ADC_SAMPLING_TIME_15CYCLES",
+        "ADC_SAMPLING_TIME_28CYCLES",
+        "ADC_SAMPLING_TIME_56CYCLES",
+        "ADC_SAMPLING_TIME_84CYCLES",
+        "ADC_SAMPLING_TIME_112CYCLES",
+        "ADC_SAMPLING_TIME_144CYCLES",
+        "ADC_SAMPLING_TIME_480CYCLES"
+      ],
+      "x-section": "DEFAULT SAMPLING TIME"
+    },
+    "ADC_CLOCK_FREQUENCY_HZ": {
+      "type": "integer",
+      "description": "24MHz",
+      "default": 24000000,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CLOCK CONFIGURATION"
+    },
+    "ADC_STREAM_NUM_SAMPLES": {
+      "type": "integer",
+      "description": "ADC_STREAM_NUM_SAMPLES 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "STREAM SAMPLES"
+    },
+    "ADC_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "ADC_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION PERIOD"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/mcal/adc/include/Adc_Cfg.h",
+  "x-display-name": "Adc",
+  "x-sections": [
+    "PRE-COMPILE CONFIGURATION",
+    "NUMBER OF HW UNITS",
+    "NUMBER OF GROUPS",
+    "NUMBER OF CHANNELS",
+    "HW UNIT DEFINITIONS",
+    "GROUP DEFINITIONS",
+    "CHANNEL DEFINITIONS",
+    "DEFAULT RESOLUTION",
+    "DEFAULT SAMPLING TIME",
+    "CLOCK CONFIGURATION",
+    "STREAM SAMPLES",
+    "MAIN FUNCTION PERIOD"
+  ]
+}

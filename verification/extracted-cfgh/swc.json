@@ -1,0 +1,253 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/swc.json",
+  "title": "Swc Configuration",
+  "description": "Swc configuration (extracted from yuleASR Cfg.h)",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SWC_CFG_VENDOR_ID": {
+      "type": "integer",
+      "description": "SWC_CFG_VENDOR_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION DEFINITIONS"
+    },
+    "SWC_CFG_MODULE_ID": {
+      "type": "integer",
+      "description": "SWC_CFG_MODULE_ID 参数",
+      "default": 80,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION DEFINITIONS"
+    },
+    "SWC_CFG_AR_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "SWC_CFG_AR_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION DEFINITIONS"
+    },
+    "SWC_CFG_AR_MINOR_VERSION": {
+      "type": "integer",
+      "description": "SWC_CFG_AR_MINOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION DEFINITIONS"
+    },
+    "SWC_CFG_AR_PATCH_VERSION": {
+      "type": "integer",
+      "description": "SWC_CFG_AR_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION DEFINITIONS"
+    },
+    "SWC_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "SWC_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION DEFINITIONS"
+    },
+    "SWC_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "SWC_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION DEFINITIONS"
+    },
+    "SWC_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "SWC_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION DEFINITIONS"
+    },
+    "SWC_MAX_COMPONENT_INSTANCES": {
+      "type": "integer",
+      "description": "SWC_MAX_COMPONENT_INSTANCES 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SWC_MAX_RUNNABLES_PER_COMPONENT": {
+      "type": "integer",
+      "description": "SWC_MAX_RUNNABLES_PER_COMPONENT 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SWC_MAX_PORTS_PER_COMPONENT": {
+      "type": "integer",
+      "description": "SWC_MAX_PORTS_PER_COMPONENT 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SWC_MAX_RTE_EVENTS": {
+      "type": "integer",
+      "description": "SWC_MAX_RTE_EVENTS 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SWC_EVENT_QUEUE_SIZE": {
+      "type": "integer",
+      "description": "SWC_EVENT_QUEUE_SIZE 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SWC_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "SWC_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SWC_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "SWC_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SWC_INSTANCE_COUNT_ENABLED": {
+      "type": "boolean",
+      "description": "SWC_INSTANCE_COUNT_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SWC_MAX_NAME_LENGTH": {
+      "type": "integer",
+      "description": "SWC_MAX_NAME_LENGTH 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SWC_CYCLIC_SCHEDULING_ENABLED": {
+      "type": "boolean",
+      "description": "SWC_CYCLIC_SCHEDULING_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SWC_DEFAULT_SCHEDULING_PERIOD_MS": {
+      "type": "integer",
+      "description": "SWC_DEFAULT_SCHEDULING_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SWC_RTE_CALLBACK_ENABLED": {
+      "type": "boolean",
+      "description": "SWC_RTE_CALLBACK_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SWC_PORT_BUFFERING_ENABLED": {
+      "type": "boolean",
+      "description": "SWC_PORT_BUFFERING_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SWC_PORT_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "SWC_PORT_BUFFER_SIZE 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SWC_RTE_NOTIFICATION_CALLBACK": {
+      "type": "reference",
+      "description": "SWC_RTE_NOTIFICATION_CALLBACK（NULL_PTR 回调指针）",
+      "default": null,
+      "x-reference-target": "callback",
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "SWC_ERROR_HOOK": {
+      "type": "reference",
+      "description": "SWC_ERROR_HOOK（NULL_PTR 回调指针）",
+      "default": null,
+      "x-reference-target": "callback",
+      "x-section": "CALLBACK CONFIGURATION"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/swc/include/Swc_Cfg.h",
+  "x-display-name": "Swc",
+  "x-sections": [
+    "VERSION DEFINITIONS",
+    "PRE-COMPILE CONFIGURATION",
+    "CALLBACK CONFIGURATION"
+  ]
+}

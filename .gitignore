@@ -11,7 +11,8 @@ release/
 *.zip
 *.blockmap
 builder-debug.yml
-verification/
+verification/*
+!verification/extracted-cfgh/
 test-results/
 playwright-report/
 *.tsbuildinfo

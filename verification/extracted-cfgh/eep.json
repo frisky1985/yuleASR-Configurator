@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/eep.json",
+  "title": "Eep Configuration",
+  "description": "EEPROM Driver Configuration Header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EEP_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "EEP_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "SWITCHES"
+    },
+    "EEP_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "EEP_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "SWITCHES"
+    },
+    "EEP_CANCEL_API": {
+      "type": "boolean",
+      "description": "EEP_CANCEL_API 参数",
+      "default": true,
+      "x-section": "SWITCHES"
+    },
+    "EEP_BASE_ADDRESS": {
+      "type": "integer",
+      "description": "EEP_BASE_ADDRESS 参数",
+      "default": 134742016,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CONFIGURATION VALUES"
+    },
+    "EEP_SIZE": {
+      "type": "integer",
+      "description": "EEP_SIZE 参数",
+      "default": 65536,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CONFIGURATION VALUES"
+    },
+    "EEP_PAGE_SIZE": {
+      "type": "integer",
+      "description": "EEP_PAGE_SIZE 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION VALUES"
+    },
+    "EEP_WRITE_CYCLE_TIME": {
+      "type": "integer",
+      "description": "EEP_WRITE_CYCLE_TIME 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION VALUES"
+    },
+    "EEP_ERASE_CYCLE_TIME": {
+      "type": "integer",
+      "description": "EEP_ERASE_CYCLE_TIME 参数",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION VALUES"
+    },
+    "EEP_JOB_CALL_CYCLE": {
+      "type": "integer",
+      "description": "EEP_JOB_CALL_CYCLE 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION VALUES"
+    },
+    "EEP_POLLING_MODE": {
+      "type": "boolean",
+      "description": "EEP_POLLING_MODE 参数",
+      "default": true,
+      "x-section": "CONFIGURATION VALUES"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/mcal/eep/include/Eep_Cfg.h",
+  "x-display-name": "Eep",
+  "x-sections": [
+    "SWITCHES",
+    "CONFIGURATION VALUES"
+  ]
+}

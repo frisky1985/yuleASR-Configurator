@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/ostimingprotection.json",
+  "title": "Os_TimingProtection Configuration",
+  "description": "OS Timing Protection Configuration",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "OS_TASK_COUNT": {
+      "type": "integer",
+      "description": "OS_TASK_COUNT 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "OS_RESOURCE_COUNT": {
+      "type": "integer",
+      "description": "OS_RESOURCE_COUNT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "OS_TIMING_PROTECTION_ENABLED": {
+      "type": "boolean",
+      "description": "OS_TIMING_PROTECTION_ENABLED 参数",
+      "default": true
+    },
+    "OS_EXECUTION_TIME_PROTECTION": {
+      "type": "boolean",
+      "description": "OS_EXECUTION_TIME_PROTECTION 参数",
+      "default": true
+    },
+    "OS_MAX_TASK_EXECUTION_TIME_MS": {
+      "type": "integer",
+      "description": "Max 100ms per task",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "OS_MAX_ISR_EXECUTION_TIME_MS": {
+      "type": "integer",
+      "description": "Max 50ms per ISR",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "OS_ARRIVAL_TIME_PROTECTION": {
+      "type": "boolean",
+      "description": "OS_ARRIVAL_TIME_PROTECTION 参数",
+      "default": true
+    },
+    "OS_MAX_TASK_ARRIVAL_INTERVAL_MS": {
+      "type": "integer",
+      "description": "Min 10ms between activations",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "OS_RESOURCE_LOCK_PROTECTION": {
+      "type": "boolean",
+      "description": "OS_RESOURCE_LOCK_PROTECTION 参数",
+      "default": true
+    },
+    "OS_MAX_RESOURCE_LOCK_TIME_MS": {
+      "type": "integer",
+      "description": "Max 50ms holding resource",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "OS_INTERRUPT_LOCK_PROTECTION": {
+      "type": "boolean",
+      "description": "OS_INTERRUPT_LOCK_PROTECTION 参数",
+      "default": true
+    },
+    "OS_MAX_ALL_INT_LOCK_TIME_MS": {
+      "type": "integer",
+      "description": "Max 10ms all interrupts disabled",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "OS_MAX_OS_INT_LOCK_TIME_MS": {
+      "type": "integer",
+      "description": "Max 50ms OS interrupts disabled",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/os/include/Os_TimingProtection_Cfg.h",
+  "x-display-name": "Os_TimingProtection"
+}

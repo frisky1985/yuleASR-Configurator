@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/ramtst.json",
+  "title": "RamTst Configuration",
+  "description": "RAM Test Driver Configuration Header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "RAMTST_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "RAMTST_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "SWITCHES"
+    },
+    "RAMTST_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "RAMTST_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "SWITCHES"
+    },
+    "RAMTST_SET_MODE_API": {
+      "type": "boolean",
+      "description": "RAMTST_SET_MODE_API 参数",
+      "default": false,
+      "x-section": "SWITCHES"
+    },
+    "RAMTST_GET_MODE_API": {
+      "type": "boolean",
+      "description": "RAMTST_GET_MODE_API 参数",
+      "default": false,
+      "x-section": "SWITCHES"
+    },
+    "RAMTST_INSTANCE_ID": {
+      "type": "integer",
+      "description": "RAMTST_INSTANCE_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MODULE INSTANCE"
+    },
+    "RAMTST_START_ADDRESS": {
+      "type": "integer",
+      "description": "RAMTST_START_ADDRESS 参数",
+      "default": 536870912,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CONFIGURATION VALUES"
+    },
+    "RAMTST_SIZE": {
+      "type": "integer",
+      "description": "RAMTST_SIZE 参数",
+      "default": 131072,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CONFIGURATION VALUES"
+    },
+    "RAMTST_ALGORITHM": {
+      "type": "enum",
+      "description": "RAMTST_ALGORITHM 参数",
+      "default": "RAMTST_ALGORITHM_MARCH_C",
+      "enum": [
+        "RAMTST_ALGORITHM_MARCH_C",
+        "RAMTST_ALGORITHM_MARCH_C_MINUS",
+        "RAMTST_ALGORITHM_GALPAT",
+        "RAMTST_ALGORITHM_WALKPATH",
+        "RAMTST_ALGORITHM_CHECKERBOARD",
+        "RAMTST_ALGORITHM_MARCH_13N"
+      ],
+      "x-section": "CONFIGURATION VALUES"
+    },
+    "RAMTST_CALL_CYCLE": {
+      "type": "integer",
+      "description": "RAMTST_CALL_CYCLE 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION VALUES"
+    },
+    "RAMTST_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "RAMTST_TIMEOUT_MS 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CONFIGURATION VALUES"
+    },
+    "RAMTST_STOP_ON_ERROR": {
+      "type": "boolean",
+      "description": "RAMTST_STOP_ON_ERROR 参数",
+      "default": false,
+      "x-section": "CONFIGURATION VALUES"
+    },
+    "RAMTST_PATTERN_SEED": {
+      "type": "integer",
+      "description": "RAMTST_PATTERN_SEED 参数",
+      "default": 2779096485,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CONFIGURATION VALUES"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/mcal/ramtst/include/RamTst_Cfg.h",
+  "x-display-name": "RamTst",
+  "x-sections": [
+    "SWITCHES",
+    "MODULE INSTANCE",
+    "CONFIGURATION VALUES"
+  ]
+}

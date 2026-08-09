@@ -1,0 +1,616 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/doip_ecual.json",
+  "title": "DoIP_Ecual Configuration",
+  "description": "DoIP configuration (extracted from yuleASR Cfg.h)",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DOIP_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "DOIP_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION OPTIONS"
+    },
+    "DOIP_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "DOIP_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION OPTIONS"
+    },
+    "DOIP_ROUTING_ACTIVATION_AUTHENTICATION": {
+      "type": "boolean",
+      "description": "DOIP_ROUTING_ACTIVATION_AUTHENTICATION 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION OPTIONS"
+    },
+    "DOIP_ROUTING_ACTIVATION_CONFIRMATION": {
+      "type": "boolean",
+      "description": "DOIP_ROUTING_ACTIVATION_CONFIRMATION 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION OPTIONS"
+    },
+    "DOIP_ALIVE_CHECK_SUPPORT": {
+      "type": "boolean",
+      "description": "DOIP_ALIVE_CHECK_SUPPORT 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION OPTIONS"
+    },
+    "DOIP_NODE_TYPE": {
+      "type": "enum",
+      "description": "DOIP_NODE_TYPE 参数",
+      "default": "DOIP_NODE_TYPE_GATEWAY",
+      "enum": [
+        "DOIP_NODE_TYPE_GATEWAY",
+        "DOIP_NODE_TYPE_NODE"
+      ],
+      "x-section": "GENERAL CONFIGURATION OPTIONS"
+    },
+    "DOIP_VEHICLE_ANNOUNCEMENT": {
+      "type": "boolean",
+      "description": "DOIP_VEHICLE_ANNOUNCEMENT 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION OPTIONS"
+    },
+    "DOIP_USE_EID_AS_VIN": {
+      "type": "boolean",
+      "description": "DOIP_USE_EID_AS_VIN 参数",
+      "default": false,
+      "x-section": "GENERAL CONFIGURATION OPTIONS"
+    },
+    "DOIP_OBD_SUPPORT": {
+      "type": "boolean",
+      "description": "DOIP_OBD_SUPPORT 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION OPTIONS"
+    },
+    "DOIP_PROTOCOL_VERSION": {
+      "type": "integer",
+      "description": "DOIP_PROTOCOL_VERSION 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_PROTOCOL_VERSION_INVERTED": {
+      "type": "integer",
+      "description": "DOIP_PROTOCOL_VERSION_INVERTED 参数",
+      "default": 252,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_UDP_DISCOVERY_PORT": {
+      "type": "integer",
+      "description": "DOIP_UDP_DISCOVERY_PORT 参数",
+      "default": 13400,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_TCP_DATA_PORT": {
+      "type": "integer",
+      "description": "DOIP_TCP_DATA_PORT 参数",
+      "default": 13400,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_UDP_TEST_EQUIPMENT_PORT": {
+      "type": "integer",
+      "description": "DOIP_UDP_TEST_EQUIPMENT_PORT 参数",
+      "default": 49152,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_GENERAL_INACTIVITY_TIMEOUT": {
+      "type": "integer",
+      "description": "5 minutes",
+      "default": 300000,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_VEHICLE_ANNOUNCEMENT_INTERVAL": {
+      "type": "integer",
+      "description": "500ms",
+      "default": 500,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_VEHICLE_ANNOUNCEMENT_NUM": {
+      "type": "integer",
+      "description": "DOIP_VEHICLE_ANNOUNCEMENT_NUM 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_ALIVE_CHECK_RESPONSE_TIMEOUT": {
+      "type": "integer",
+      "description": "500ms",
+      "default": 500,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_INITIAL_INACTIVITY_TIME": {
+      "type": "integer",
+      "description": "DOIP_INITIAL_INACTIVITY_TIME 参数",
+      "default": 500,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_ALIVE_CHECK_INTERVAL": {
+      "type": "integer",
+      "description": "15 seconds",
+      "default": 15000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "DOIP_BUFFER_SIZE 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_MAX_TESTER_CONNECTIONS": {
+      "type": "integer",
+      "description": "DOIP_MAX_TESTER_CONNECTIONS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_MAX_SIMULTANEOUS_REQUESTS": {
+      "type": "integer",
+      "description": "DOIP_MAX_SIMULTANEOUS_REQUESTS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_VIN_LENGTH": {
+      "type": "integer",
+      "description": "DOIP_VIN_LENGTH 参数",
+      "default": 17,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_EID_LENGTH": {
+      "type": "integer",
+      "description": "DOIP_EID_LENGTH 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_GID_LENGTH": {
+      "type": "integer",
+      "description": "DOIP_GID_LENGTH 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_MAX_DIAG_MESSAGE_SIZE": {
+      "type": "integer",
+      "description": "DOIP_MAX_DIAG_MESSAGE_SIZE 参数",
+      "default": 4095,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_ROUTING_ACTIVATION_RESERVED": {
+      "type": "integer",
+      "description": "DOIP_ROUTING_ACTIVATION_RESERVED 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_ROUTING_ACTIVATION_OEM": {
+      "type": "integer",
+      "description": "DOIP_ROUTING_ACTIVATION_OEM 参数",
+      "default": 4294967295,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_FURTHER_ACTION_NONE": {
+      "type": "integer",
+      "description": "DOIP_FURTHER_ACTION_NONE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_FURTHER_ACTION_CENTRAL_SEC": {
+      "type": "integer",
+      "description": "DOIP_FURTHER_ACTION_CENTRAL_SEC 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_SYNC_STATUS_COMPLETE": {
+      "type": "integer",
+      "description": "DOIP_SYNC_STATUS_COMPLETE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_SYNC_STATUS_INCOMPLETE": {
+      "type": "integer",
+      "description": "DOIP_SYNC_STATUS_INCOMPLETE 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "DOIP_UDP_SOAD_RX_PDU_ID": {
+      "type": "integer",
+      "description": "DOIP_UDP_SOAD_RX_PDU_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU CONFIGURATION"
+    },
+    "DOIP_UDP_SOAD_TX_PDU_ID": {
+      "type": "integer",
+      "description": "DOIP_UDP_SOAD_TX_PDU_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU CONFIGURATION"
+    },
+    "DOIP_TCP_SOAD_RX_PDU_ID_BASE": {
+      "type": "integer",
+      "description": "DOIP_TCP_SOAD_RX_PDU_ID_BASE 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU CONFIGURATION"
+    },
+    "DOIP_TCP_SOAD_TX_PDU_ID_BASE": {
+      "type": "integer",
+      "description": "DOIP_TCP_SOAD_TX_PDU_ID_BASE 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU CONFIGURATION"
+    },
+    "DOIP_PDUR_RX_PDU_ID_BASE": {
+      "type": "integer",
+      "description": "DOIP_PDUR_RX_PDU_ID_BASE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU CONFIGURATION"
+    },
+    "DOIP_PDUR_TX_PDU_ID_BASE": {
+      "type": "integer",
+      "description": "DOIP_PDUR_TX_PDU_ID_BASE 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU CONFIGURATION"
+    },
+    "DOIP_LOCAL_LOGICAL_ADDRESS": {
+      "type": "integer",
+      "description": "DOIP_LOCAL_LOGICAL_ADDRESS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NETWORK CONFIGURATION"
+    },
+    "DOIP_FUNCTIONAL_REQUEST_ADDR": {
+      "type": "integer",
+      "description": "DOIP_FUNCTIONAL_REQUEST_ADDR 参数",
+      "default": 58368,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "NETWORK CONFIGURATION"
+    },
+    "DOIP_DEFAULT_TESTER_ADDRESS": {
+      "type": "integer",
+      "description": "DOIP_DEFAULT_TESTER_ADDRESS 参数",
+      "default": 3584,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "NETWORK CONFIGURATION"
+    },
+    "DOIP_WWH_OBD_TESTER_ADDRESS": {
+      "type": "integer",
+      "description": "DOIP_WWH_OBD_TESTER_ADDRESS 参数",
+      "default": 3585,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "NETWORK CONFIGURATION"
+    },
+    "DOIP_CDS_TESTER_ADDRESS": {
+      "type": "integer",
+      "description": "DOIP_CDS_TESTER_ADDRESS 参数",
+      "default": 3586,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "NETWORK CONFIGURATION"
+    },
+    "DOIP_PAYLOAD_TYPE_GENERIC_NACK": {
+      "type": "integer",
+      "description": "DOIP_PAYLOAD_TYPE_GENERIC_NACK 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_PAYLOAD_TYPE_VID_REQUEST": {
+      "type": "integer",
+      "description": "DOIP_PAYLOAD_TYPE_VID_REQUEST 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_PAYLOAD_TYPE_VID_RESPONSE": {
+      "type": "integer",
+      "description": "DOIP_PAYLOAD_TYPE_VID_RESPONSE 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_PAYLOAD_TYPE_ROUTING_ACTIVATION_REQUEST": {
+      "type": "integer",
+      "description": "DOIP_PAYLOAD_TYPE_ROUTING_ACTIVATION_REQUEST 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_PAYLOAD_TYPE_ROUTING_ACTIVATION_RESPONSE": {
+      "type": "integer",
+      "description": "DOIP_PAYLOAD_TYPE_ROUTING_ACTIVATION_RESPONSE 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_PAYLOAD_TYPE_ALIVE_CHECK_REQUEST": {
+      "type": "integer",
+      "description": "DOIP_PAYLOAD_TYPE_ALIVE_CHECK_REQUEST 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_PAYLOAD_TYPE_ALIVE_CHECK_RESPONSE": {
+      "type": "integer",
+      "description": "DOIP_PAYLOAD_TYPE_ALIVE_CHECK_RESPONSE 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_PAYLOAD_TYPE_DIAGNOSTIC_MESSAGE": {
+      "type": "integer",
+      "description": "DOIP_PAYLOAD_TYPE_DIAGNOSTIC_MESSAGE 参数",
+      "default": 32769,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_PAYLOAD_TYPE_DIAGNOSTIC_MESSAGE_ACK": {
+      "type": "integer",
+      "description": "DOIP_PAYLOAD_TYPE_DIAGNOSTIC_MESSAGE_ACK 参数",
+      "default": 32770,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_PAYLOAD_TYPE_DIAGNOSTIC_MESSAGE_NACK": {
+      "type": "integer",
+      "description": "DOIP_PAYLOAD_TYPE_DIAGNOSTIC_MESSAGE_NACK 参数",
+      "default": 32771,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_PAYLOAD_TYPE_ENTITY_STATUS_REQUEST": {
+      "type": "integer",
+      "description": "DOIP_PAYLOAD_TYPE_ENTITY_STATUS_REQUEST 参数",
+      "default": 16385,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_PAYLOAD_TYPE_ENTITY_STATUS_RESPONSE": {
+      "type": "integer",
+      "description": "DOIP_PAYLOAD_TYPE_ENTITY_STATUS_RESPONSE 参数",
+      "default": 16386,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_PAYLOAD_TYPE_POWER_MODE_INFO_REQUEST": {
+      "type": "integer",
+      "description": "DOIP_PAYLOAD_TYPE_POWER_MODE_INFO_REQUEST 参数",
+      "default": 16387,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_PAYLOAD_TYPE_POWER_MODE_INFO_RESPONSE": {
+      "type": "integer",
+      "description": "DOIP_PAYLOAD_TYPE_POWER_MODE_INFO_RESPONSE 参数",
+      "default": 16388,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_PAYLOAD_TYPE_DIAGNOSTIC_POWER_MODE_REQUEST": {
+      "type": "integer",
+      "description": "DOIP_PAYLOAD_TYPE_DIAGNOSTIC_POWER_MODE_REQUEST 参数",
+      "default": 16387,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_PAYLOAD_TYPE_DIAGNOSTIC_POWER_MODE_RESPONSE": {
+      "type": "integer",
+      "description": "DOIP_PAYLOAD_TYPE_DIAGNOSTIC_POWER_MODE_RESPONSE 参数",
+      "default": 16388,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_NACK_CODE_INCORRECT_PATTERN_FORMAT": {
+      "type": "integer",
+      "description": "DOIP_NACK_CODE_INCORRECT_PATTERN_FORMAT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_NACK_CODE_UNKNOWN_PAYLOAD_TYPE": {
+      "type": "integer",
+      "description": "DOIP_NACK_CODE_UNKNOWN_PAYLOAD_TYPE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_NACK_CODE_MESSAGE_TOO_LARGE": {
+      "type": "integer",
+      "description": "DOIP_NACK_CODE_MESSAGE_TOO_LARGE 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_NACK_CODE_OUT_OF_MEMORY": {
+      "type": "integer",
+      "description": "DOIP_NACK_CODE_OUT_OF_MEMORY 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_NACK_CODE_INVALID_PAYLOAD_LENGTH": {
+      "type": "integer",
+      "description": "DOIP_NACK_CODE_INVALID_PAYLOAD_LENGTH 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PAYLOAD TYPES"
+    },
+    "DOIP_ROUTING_ACTIVATION_DEFAULT": {
+      "type": "integer",
+      "description": "DOIP_ROUTING_ACTIVATION_DEFAULT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "EXTERNAL CONFIGURATION REFERENCES"
+    },
+    "DOIP_ROUTING_ACTIVATION_WWH_OBD": {
+      "type": "integer",
+      "description": "DOIP_ROUTING_ACTIVATION_WWH_OBD 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "EXTERNAL CONFIGURATION REFERENCES"
+    },
+    "DOIP_ROUTING_ACTIVATION_CDS": {
+      "type": "integer",
+      "description": "DOIP_ROUTING_ACTIVATION_CDS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "EXTERNAL CONFIGURATION REFERENCES"
+    },
+    "DOIP_ROUTING_ACTIVATION_CENTRAL_SECURITY": {
+      "type": "integer",
+      "description": "DOIP_ROUTING_ACTIVATION_CENTRAL_SECURITY 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "EXTERNAL CONFIGURATION REFERENCES"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/ecual/doIP/include/DoIP_Cfg.h",
+  "x-display-name": "DoIP_Ecual",
+  "x-sections": [
+    "GENERAL CONFIGURATION OPTIONS",
+    "PROTOCOL CONFIGURATION",
+    "PDU CONFIGURATION",
+    "NETWORK CONFIGURATION",
+    "PAYLOAD TYPES",
+    "EXTERNAL CONFIGURATION REFERENCES"
+  ]
+}

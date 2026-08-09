@@ -1,0 +1,547 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/port.json",
+  "title": "Port Configuration",
+  "description": "PORT Driver configuration header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PORT_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "PORT_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PORT_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "PORT_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PORT_SET_PIN_DIRECTION_API": {
+      "type": "boolean",
+      "description": "PORT_SET_PIN_DIRECTION_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PORT_SET_PIN_MODE_API": {
+      "type": "boolean",
+      "description": "PORT_SET_PIN_MODE_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PORT_DE_INIT_API": {
+      "type": "boolean",
+      "description": "PORT_DE_INIT_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PORT_NUM_PORTS": {
+      "type": "integer",
+      "description": "PORT_NUM_PORTS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NUMBER OF PORTS"
+    },
+    "PORT_NUM_PINS_PER_PORT": {
+      "type": "integer",
+      "description": "PORT_NUM_PINS_PER_PORT 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NUMBER OF PORTS"
+    },
+    "PORT_TOTAL_NUM_PINS": {
+      "type": "integer",
+      "description": "PORT_TOTAL_NUM_PINS 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "NUMBER OF PORTS"
+    },
+    "PORT_A": {
+      "type": "integer",
+      "description": "PORT_A 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT DEFINITIONS"
+    },
+    "PORT_B": {
+      "type": "integer",
+      "description": "PORT_B 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT DEFINITIONS"
+    },
+    "PORT_C": {
+      "type": "integer",
+      "description": "PORT_C 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT DEFINITIONS"
+    },
+    "PORT_D": {
+      "type": "integer",
+      "description": "PORT_D 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT DEFINITIONS"
+    },
+    "PORT_E": {
+      "type": "integer",
+      "description": "PORT_E 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT DEFINITIONS"
+    },
+    "PORT_F": {
+      "type": "integer",
+      "description": "PORT_F 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT DEFINITIONS"
+    },
+    "PORT_G": {
+      "type": "integer",
+      "description": "PORT_G 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT DEFINITIONS"
+    },
+    "PORT_H": {
+      "type": "integer",
+      "description": "PORT_H 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT DEFINITIONS"
+    },
+    "PORT_PIN_MODE_GPIO": {
+      "type": "integer",
+      "description": "PORT_PIN_MODE_GPIO 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT MODE DEFINITIONS"
+    },
+    "PORT_PIN_MODE_CAN": {
+      "type": "integer",
+      "description": "PORT_PIN_MODE_CAN 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT MODE DEFINITIONS"
+    },
+    "PORT_PIN_MODE_SPI": {
+      "type": "integer",
+      "description": "PORT_PIN_MODE_SPI 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT MODE DEFINITIONS"
+    },
+    "PORT_PIN_MODE_UART": {
+      "type": "integer",
+      "description": "PORT_PIN_MODE_UART 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT MODE DEFINITIONS"
+    },
+    "PORT_PIN_MODE_I2C": {
+      "type": "integer",
+      "description": "PORT_PIN_MODE_I2C 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT MODE DEFINITIONS"
+    },
+    "PORT_PIN_MODE_PWM": {
+      "type": "integer",
+      "description": "PORT_PIN_MODE_PWM 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT MODE DEFINITIONS"
+    },
+    "PORT_PIN_MODE_ADC": {
+      "type": "integer",
+      "description": "PORT_PIN_MODE_ADC 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT MODE DEFINITIONS"
+    },
+    "PORT_PIN_MODE_ETH": {
+      "type": "integer",
+      "description": "PORT_PIN_MODE_ETH 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT MODE DEFINITIONS"
+    },
+    "PORT_PIN_MODE_USB": {
+      "type": "integer",
+      "description": "PORT_PIN_MODE_USB 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT MODE DEFINITIONS"
+    },
+    "PORT_PIN_MODE_FLEXIO": {
+      "type": "integer",
+      "description": "PORT_PIN_MODE_FLEXIO 参数",
+      "default": 9,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT MODE DEFINITIONS"
+    },
+    "PORT_PIN_MODE_DISABLED": {
+      "type": "integer",
+      "description": "PORT_PIN_MODE_DISABLED 参数",
+      "default": 15,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PORT MODE DEFINITIONS"
+    },
+    "PORT_A_PIN_0": {
+      "type": "integer",
+      "description": "PORT_A_PIN_0（cast: Port_PinType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_A_PIN_1": {
+      "type": "integer",
+      "description": "PORT_A_PIN_1（cast: Port_PinType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_A_PIN_2": {
+      "type": "integer",
+      "description": "PORT_A_PIN_2（cast: Port_PinType）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_A_PIN_3": {
+      "type": "integer",
+      "description": "PORT_A_PIN_3（cast: Port_PinType）",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_A_PIN_4": {
+      "type": "integer",
+      "description": "PORT_A_PIN_4（cast: Port_PinType）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_A_PIN_5": {
+      "type": "integer",
+      "description": "PORT_A_PIN_5（cast: Port_PinType）",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_A_PIN_6": {
+      "type": "integer",
+      "description": "PORT_A_PIN_6（cast: Port_PinType）",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_A_PIN_7": {
+      "type": "integer",
+      "description": "PORT_A_PIN_7（cast: Port_PinType）",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_B_PIN_0": {
+      "type": "integer",
+      "description": "PORT_B_PIN_0（cast: Port_PinType）",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_B_PIN_1": {
+      "type": "integer",
+      "description": "PORT_B_PIN_1（cast: Port_PinType）",
+      "default": 257,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_B_PIN_2": {
+      "type": "integer",
+      "description": "PORT_B_PIN_2（cast: Port_PinType）",
+      "default": 258,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_B_PIN_3": {
+      "type": "integer",
+      "description": "PORT_B_PIN_3（cast: Port_PinType）",
+      "default": 259,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_B_PIN_4": {
+      "type": "integer",
+      "description": "PORT_B_PIN_4（cast: Port_PinType）",
+      "default": 260,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_B_PIN_5": {
+      "type": "integer",
+      "description": "PORT_B_PIN_5（cast: Port_PinType）",
+      "default": 261,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_B_PIN_6": {
+      "type": "integer",
+      "description": "PORT_B_PIN_6（cast: Port_PinType）",
+      "default": 262,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_B_PIN_7": {
+      "type": "integer",
+      "description": "PORT_B_PIN_7（cast: Port_PinType）",
+      "default": 263,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_C_PIN_0": {
+      "type": "integer",
+      "description": "PORT_C_PIN_0（cast: Port_PinType）",
+      "default": 512,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_C_PIN_1": {
+      "type": "integer",
+      "description": "PORT_C_PIN_1（cast: Port_PinType）",
+      "default": 513,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_C_PIN_2": {
+      "type": "integer",
+      "description": "PORT_C_PIN_2（cast: Port_PinType）",
+      "default": 514,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_C_PIN_3": {
+      "type": "integer",
+      "description": "PORT_C_PIN_3（cast: Port_PinType）",
+      "default": 515,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_C_PIN_4": {
+      "type": "integer",
+      "description": "PORT_C_PIN_4（cast: Port_PinType）",
+      "default": 516,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_C_PIN_5": {
+      "type": "integer",
+      "description": "PORT_C_PIN_5（cast: Port_PinType）",
+      "default": 517,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_C_PIN_6": {
+      "type": "integer",
+      "description": "PORT_C_PIN_6（cast: Port_PinType）",
+      "default": 518,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_C_PIN_7": {
+      "type": "integer",
+      "description": "PORT_C_PIN_7（cast: Port_PinType）",
+      "default": 519,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_D_PIN_0": {
+      "type": "integer",
+      "description": "PORT_D_PIN_0（cast: Port_PinType）",
+      "default": 768,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_D_PIN_1": {
+      "type": "integer",
+      "description": "PORT_D_PIN_1（cast: Port_PinType）",
+      "default": 769,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_D_PIN_2": {
+      "type": "integer",
+      "description": "PORT_D_PIN_2（cast: Port_PinType）",
+      "default": 770,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_D_PIN_3": {
+      "type": "integer",
+      "description": "PORT_D_PIN_3（cast: Port_PinType）",
+      "default": 771,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_D_PIN_4": {
+      "type": "integer",
+      "description": "PORT_D_PIN_4（cast: Port_PinType）",
+      "default": 772,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_D_PIN_5": {
+      "type": "integer",
+      "description": "PORT_D_PIN_5（cast: Port_PinType）",
+      "default": 773,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_D_PIN_6": {
+      "type": "integer",
+      "description": "PORT_D_PIN_6（cast: Port_PinType）",
+      "default": 774,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_D_PIN_7": {
+      "type": "integer",
+      "description": "PORT_D_PIN_7（cast: Port_PinType）",
+      "default": 775,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT PIN DEFINITIONS"
+    },
+    "PORT_CONFIGSET_NAME": {
+      "type": "integer",
+      "description": "PORT_CONFIGSET_NAME（派生表达式: Port_ConfigSet）",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PORT CONFIGURATION SET"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/mcal/port/include/Port_Cfg.h",
+  "x-display-name": "Port",
+  "x-sections": [
+    "PRE-COMPILE CONFIGURATION",
+    "NUMBER OF PORTS",
+    "PORT DEFINITIONS",
+    "PORT MODE DEFINITIONS",
+    "PORT PIN DEFINITIONS",
+    "PORT CONFIGURATION SET"
+  ]
+}

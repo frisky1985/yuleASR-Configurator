@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/pwm.json",
+  "title": "Pwm Configuration",
+  "description": "PWM Driver configuration header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PWM_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "PWM_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PWM_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "PWM_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PWM_DE_INIT_API": {
+      "type": "boolean",
+      "description": "PWM_DE_INIT_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PWM_SET_DUTY_CYCLE_API": {
+      "type": "boolean",
+      "description": "PWM_SET_DUTY_CYCLE_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PWM_SET_PERIOD_AND_DUTY_API": {
+      "type": "boolean",
+      "description": "PWM_SET_PERIOD_AND_DUTY_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PWM_SET_OUTPUT_TO_IDLE_API": {
+      "type": "boolean",
+      "description": "PWM_SET_OUTPUT_TO_IDLE_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PWM_GET_OUTPUT_STATE_API": {
+      "type": "boolean",
+      "description": "PWM_GET_OUTPUT_STATE_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PWM_NOTIFICATION_SUPPORTED": {
+      "type": "boolean",
+      "description": "PWM_NOTIFICATION_SUPPORTED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PWM_POWER_STATE_SUPPORTED": {
+      "type": "boolean",
+      "description": "PWM_POWER_STATE_SUPPORTED 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PWM_NUM_CHANNELS": {
+      "type": "integer",
+      "description": "PWM_NUM_CHANNELS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NUMBER OF CHANNELS"
+    },
+    "PWM_CHANNEL_0": {
+      "type": "integer",
+      "description": "PWM_CHANNEL_0（cast: Pwm_ChannelType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "PWM_CHANNEL_1": {
+      "type": "integer",
+      "description": "PWM_CHANNEL_1（cast: Pwm_ChannelType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "PWM_CHANNEL_2": {
+      "type": "integer",
+      "description": "PWM_CHANNEL_2（cast: Pwm_ChannelType）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "PWM_CHANNEL_3": {
+      "type": "integer",
+      "description": "PWM_CHANNEL_3（cast: Pwm_ChannelType）",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "PWM_CHANNEL_4": {
+      "type": "integer",
+      "description": "PWM_CHANNEL_4（cast: Pwm_ChannelType）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "PWM_CHANNEL_5": {
+      "type": "integer",
+      "description": "PWM_CHANNEL_5（cast: Pwm_ChannelType）",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "PWM_CHANNEL_6": {
+      "type": "integer",
+      "description": "PWM_CHANNEL_6（cast: Pwm_ChannelType）",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "PWM_CHANNEL_7": {
+      "type": "integer",
+      "description": "PWM_CHANNEL_7（cast: Pwm_ChannelType）",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "PWM_DEFAULT_PERIOD": {
+      "type": "integer",
+      "description": "1ms = 1kHz（cast: Pwm_PeriodType）",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "DEFAULT PERIOD"
+    },
+    "PWM_DEFAULT_DUTY_CYCLE": {
+      "type": "integer",
+      "description": "50%（cast: uint16）",
+      "default": 16384,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "DEFAULT DUTY CYCLE"
+    },
+    "PWM_DUTY_CYCLE_RESOLUTION": {
+      "type": "integer",
+      "description": "0x8000 = 100%（cast: uint16）",
+      "default": 32768,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "DUTY CYCLE RESOLUTION"
+    },
+    "PWM_CLOCK_FREQUENCY_HZ": {
+      "type": "integer",
+      "description": "24MHz",
+      "default": 24000000,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CLOCK CONFIGURATION"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/mcal/pwm/include/Pwm_Cfg.h",
+  "x-display-name": "Pwm",
+  "x-sections": [
+    "PRE-COMPILE CONFIGURATION",
+    "NUMBER OF CHANNELS",
+    "CHANNEL DEFINITIONS",
+    "DEFAULT PERIOD",
+    "DEFAULT DUTY CYCLE",
+    "DUTY CYCLE RESOLUTION",
+    "CLOCK CONFIGURATION"
+  ]
+}

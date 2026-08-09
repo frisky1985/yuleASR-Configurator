@@ -1,0 +1,1451 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/flash.json",
+  "title": "Flash Configuration",
+  "description": "Flash configuration (extracted from yuleASR Cfg.h)",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FLS_CFG_VENDOR_ID": {
+      "type": "integer",
+      "description": "FLS_CFG_VENDOR_ID（cast: uint16）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_CFG_MODULE_ID": {
+      "type": "integer",
+      "description": "FLS_CFG_MODULE_ID（cast: uint16）",
+      "default": 92,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "FLS_CFG_SW_MAJOR_VERSION（cast: uint8）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "FLS_CFG_SW_MINOR_VERSION（cast: uint8）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "FLS_CFG_SW_PATCH_VERSION（cast: uint8）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_CFG_AR_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "FLS_CFG_AR_MAJOR_VERSION（cast: uint8）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_CFG_AR_MINOR_VERSION": {
+      "type": "integer",
+      "description": "FLS_CFG_AR_MINOR_VERSION（cast: uint8）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_CFG_AR_PATCH_VERSION": {
+      "type": "integer",
+      "description": "FLS_CFG_AR_PATCH_VERSION（cast: uint8）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "FLS_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "FLS_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "FLS_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "FLS_CANCEL_API": {
+      "type": "boolean",
+      "description": "FLS_CANCEL_API 参数",
+      "default": true
+    },
+    "FLS_SET_MODE_API": {
+      "type": "boolean",
+      "description": "FLS_SET_MODE_API 参数",
+      "default": true
+    },
+    "FLS_COMPARE_API": {
+      "type": "boolean",
+      "description": "FLS_COMPARE_API 参数",
+      "default": true
+    },
+    "FLS_BLANK_CHECK_API": {
+      "type": "boolean",
+      "description": "FLS_BLANK_CHECK_API 参数",
+      "default": true
+    },
+    "FLS_TIMEOUT_SUPERVISION_ENABLED": {
+      "type": "boolean",
+      "description": "FLS_TIMEOUT_SUPERVISION_ENABLED 参数",
+      "default": true
+    },
+    "FLS_USE_INTERRUPTS": {
+      "type": "boolean",
+      "description": "FLS_USE_INTERRUPTS 参数",
+      "default": false
+    },
+    "FLS_RUNTIME_CONFIG_API": {
+      "type": "boolean",
+      "description": "FLS_RUNTIME_CONFIG_API 参数",
+      "default": false
+    },
+    "FLS_NUM_OF_CONFIGURED_SECTORS": {
+      "type": "integer",
+      "description": "FLS_NUM_OF_CONFIGURED_SECTORS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_NUM_OF_FLASH_BANKS": {
+      "type": "integer",
+      "description": "FLS_NUM_OF_FLASH_BANKS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_BANK1_BASE_ADDRESS": {
+      "type": "integer",
+      "description": "FLS_BANK1_BASE_ADDRESS 参数",
+      "default": 134217728,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_BANK2_BASE_ADDRESS": {
+      "type": "integer",
+      "description": "FLS_BANK2_BASE_ADDRESS 参数",
+      "default": 135266304,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_TOTAL_SIZE": {
+      "type": "integer",
+      "description": "2MB Total",
+      "default": 2097152,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_BANK_SIZE": {
+      "type": "integer",
+      "description": "1MB per bank",
+      "default": 1048576,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_SECTOR_SIZE_4KB_VALUE": {
+      "type": "integer",
+      "description": "4KB",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_SECTOR_SIZE_32KB_VALUE": {
+      "type": "integer",
+      "description": "32KB",
+      "default": 32768,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_SECTOR_SIZE_64KB_VALUE": {
+      "type": "integer",
+      "description": "64KB",
+      "default": 65536,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_SECTOR_SIZE_128KB_VALUE": {
+      "type": "integer",
+      "description": "128KB",
+      "default": 131072,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_ERASE_4KB_TIME_TYPICAL": {
+      "type": "integer",
+      "description": "125ms typical",
+      "default": 125000,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_ERASE_4KB_TIME_MAX": {
+      "type": "integer",
+      "description": "400ms maximum",
+      "default": 400000,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_ERASE_32KB_TIME_TYPICAL": {
+      "type": "integer",
+      "description": "500ms typical",
+      "default": 500000,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_ERASE_32KB_TIME_MAX": {
+      "type": "integer",
+      "description": "1.6s maximum",
+      "default": 1600000,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_ERASE_64KB_TIME_TYPICAL": {
+      "type": "integer",
+      "description": "1s typical",
+      "default": 1000000,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_ERASE_64KB_TIME_MAX": {
+      "type": "integer",
+      "description": "3.2s maximum",
+      "default": 3200000,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_ERASE_128KB_TIME_TYPICAL": {
+      "type": "integer",
+      "description": "2s typical",
+      "default": 2000000,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_ERASE_128KB_TIME_MAX": {
+      "type": "integer",
+      "description": "6.4s maximum",
+      "default": 6400000,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_PROGRAM_BYTE_TIME_TYPICAL": {
+      "type": "integer",
+      "description": "16us typical",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_PROGRAM_BYTE_TIME_MAX": {
+      "type": "integer",
+      "description": "100us maximum",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_PROGRAM_WORD_TIME_TYPICAL": {
+      "type": "integer",
+      "description": "32us typical",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_PROGRAM_WORD_TIME_MAX": {
+      "type": "integer",
+      "description": "200us maximum",
+      "default": 200,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_MAX_ERASE_TIMEOUT_US": {
+      "type": "integer",
+      "description": "10s maximum",
+      "default": 10000000,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_MAX_PROGRAM_TIMEOUT_US": {
+      "type": "integer",
+      "description": "100ms maximum",
+      "default": 100000,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_MAX_WAIT_STATES": {
+      "type": "integer",
+      "description": "FLS_MAX_WAIT_STATES 参数",
+      "default": 15,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_ACR_LATENCY_POS": {
+      "type": "integer",
+      "description": "FLS_ACR_LATENCY_POS 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_ACR_LATENCY_MASK": {
+      "type": "integer",
+      "description": "FLS_ACR_LATENCY_MASK 参数",
+      "default": 15,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_ACR_PRFTEN": {
+      "type": "integer",
+      "description": "FLS_ACR_PRFTEN 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_ACR_ICEN": {
+      "type": "integer",
+      "description": "FLS_ACR_ICEN 参数",
+      "default": 512,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_ACR_DCEN": {
+      "type": "integer",
+      "description": "FLS_ACR_DCEN 参数",
+      "default": 1024,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_ACR_RUN_PD": {
+      "type": "integer",
+      "description": "FLS_ACR_RUN_PD 参数",
+      "default": 2048,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_ACR_SLEEP_PD": {
+      "type": "integer",
+      "description": "FLS_ACR_SLEEP_PD 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_KEY1": {
+      "type": "integer",
+      "description": "FLS_KEY1 参数",
+      "default": 1164378403,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_KEY2": {
+      "type": "integer",
+      "description": "FLS_KEY2 参数",
+      "default": 3455027627,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_OPT_KEY1": {
+      "type": "integer",
+      "description": "FLS_OPT_KEY1 参数",
+      "default": 135866939,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_OPT_KEY2": {
+      "type": "integer",
+      "description": "FLS_OPT_KEY2 参数",
+      "default": 1281191551,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_SR_EOP": {
+      "type": "integer",
+      "description": "FLS_SR_EOP 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_SR_OPERR": {
+      "type": "integer",
+      "description": "FLS_SR_OPERR 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_SR_PROGERR": {
+      "type": "integer",
+      "description": "FLS_SR_PROGERR 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_SR_WRPERR": {
+      "type": "integer",
+      "description": "FLS_SR_WRPERR 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_SR_PGAERR": {
+      "type": "integer",
+      "description": "FLS_SR_PGAERR 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_SR_SIZERR": {
+      "type": "integer",
+      "description": "FLS_SR_SIZERR 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_SR_PGSERR": {
+      "type": "integer",
+      "description": "FLS_SR_PGSERR 参数",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_SR_MISERR": {
+      "type": "integer",
+      "description": "FLS_SR_MISERR 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_SR_FASTERR": {
+      "type": "integer",
+      "description": "FLS_SR_FASTERR 参数",
+      "default": 512,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_SR_RDERR": {
+      "type": "integer",
+      "description": "FLS_SR_RDERR 参数",
+      "default": 16384,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_SR_OPTVERR": {
+      "type": "integer",
+      "description": "FLS_SR_OPTVERR 参数",
+      "default": 32768,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_SR_BSY": {
+      "type": "integer",
+      "description": "FLS_SR_BSY 参数",
+      "default": 65536,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_CR_PG": {
+      "type": "integer",
+      "description": "FLS_CR_PG 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_CR_SER": {
+      "type": "integer",
+      "description": "FLS_CR_SER 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_CR_MER": {
+      "type": "integer",
+      "description": "FLS_CR_MER 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_CR_SNB_POS": {
+      "type": "integer",
+      "description": "FLS_CR_SNB_POS 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_CR_SNB_MASK": {
+      "type": "integer",
+      "description": "FLS_CR_SNB_MASK 参数",
+      "default": 120,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_CR_PSIZE_POS": {
+      "type": "integer",
+      "description": "FLS_CR_PSIZE_POS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_CR_PSIZE_MASK": {
+      "type": "integer",
+      "description": "FLS_CR_PSIZE_MASK 参数",
+      "default": 768,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_CR_MER1": {
+      "type": "integer",
+      "description": "FLS_CR_MER1 参数",
+      "default": 32768,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_CR_STRT": {
+      "type": "integer",
+      "description": "FLS_CR_STRT 参数",
+      "default": 65536,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_CR_OPTSTRT": {
+      "type": "integer",
+      "description": "FLS_CR_OPTSTRT 参数",
+      "default": 131072,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_CR_FSTPG": {
+      "type": "integer",
+      "description": "FLS_CR_FSTPG 参数",
+      "default": 262144,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_CR_EOPIE": {
+      "type": "integer",
+      "description": "FLS_CR_EOPIE 参数",
+      "default": 16777216,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_CR_ERRIE": {
+      "type": "integer",
+      "description": "FLS_CR_ERRIE 参数",
+      "default": 33554432,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_CR_RDERRIE": {
+      "type": "integer",
+      "description": "FLS_CR_RDERRIE 参数",
+      "default": 67108864,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_CR_OBL_LAUNCH": {
+      "type": "integer",
+      "description": "FLS_CR_OBL_LAUNCH 参数",
+      "default": 134217728,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_CR_OPTLOCK": {
+      "type": "integer",
+      "description": "FLS_CR_OPTLOCK 参数",
+      "default": 1073741824,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_CR_LOCK": {
+      "type": "integer",
+      "description": "FLS_CR_LOCK 参数",
+      "default": 2147483648,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLS_PSIZE_BYTE": {
+      "type": "integer",
+      "description": "8-bit",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_PSIZE_HALFWORD": {
+      "type": "integer",
+      "description": "16-bit",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_PSIZE_WORD": {
+      "type": "integer",
+      "description": "32-bit",
+      "default": 512,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_PSIZE_DOUBLEWORD": {
+      "type": "integer",
+      "description": "64-bit",
+      "default": 768,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLS_RDP_LEVEL_NONE": {
+      "type": "integer",
+      "description": "FLS_RDP_LEVEL_NONE 参数",
+      "default": 170,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_RDP_LEVEL_1": {
+      "type": "integer",
+      "description": "FLS_RDP_LEVEL_1 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_RDP_LEVEL_2": {
+      "type": "integer",
+      "description": "FLS_RDP_LEVEL_2 参数",
+      "default": 204,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_WRP_SECTOR_0": {
+      "type": "integer",
+      "description": "FLS_WRP_SECTOR_0 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_WRP_SECTOR_1": {
+      "type": "integer",
+      "description": "FLS_WRP_SECTOR_1 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_WRP_SECTOR_2": {
+      "type": "integer",
+      "description": "FLS_WRP_SECTOR_2 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_WRP_SECTOR_3": {
+      "type": "integer",
+      "description": "FLS_WRP_SECTOR_3 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_WRP_SECTOR_4": {
+      "type": "integer",
+      "description": "FLS_WRP_SECTOR_4 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_WRP_SECTOR_5": {
+      "type": "integer",
+      "description": "FLS_WRP_SECTOR_5 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_WRP_SECTOR_6": {
+      "type": "integer",
+      "description": "FLS_WRP_SECTOR_6 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_WRP_SECTOR_7": {
+      "type": "integer",
+      "description": "FLS_WRP_SECTOR_7 参数",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_WRP_ALL_SECTORS": {
+      "type": "integer",
+      "description": "FLS_WRP_ALL_SECTORS 参数",
+      "default": 255,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLS_PCROP_ENABLED": {
+      "type": "boolean",
+      "description": "FLS_PCROP_ENABLED 参数",
+      "default": false
+    },
+    "FLS_PCROP_RDP_ERASE": {
+      "type": "boolean",
+      "description": "FLS_PCROP_RDP_ERASE 参数",
+      "default": false
+    },
+    "FLASH_VENDOR_ID": {
+      "type": "integer",
+      "description": "FLASH_VENDOR_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_MODULE_ID": {
+      "type": "integer",
+      "description": "FLASH_MODULE_ID 参数",
+      "default": 40,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_INSTANCE_ID": {
+      "type": "integer",
+      "description": "FLASH_INSTANCE_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "FLASH_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "FLASH_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "FLASH_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "FLASH_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "FLASH_RUNTIME_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "FLASH_RUNTIME_ERROR_DETECT 参数",
+      "default": false
+    },
+    "FLASH_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "FLASH_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "FLASH_SET_MODE_API": {
+      "type": "boolean",
+      "description": "FLASH_SET_MODE_API 参数",
+      "default": true
+    },
+    "FLASH_SUSPEND_RESUME_API": {
+      "type": "boolean",
+      "description": "FLASH_SUSPEND_RESUME_API 参数",
+      "default": false
+    },
+    "FLASH_CANCEL_API": {
+      "type": "boolean",
+      "description": "FLASH_CANCEL_API 参数",
+      "default": false
+    },
+    "FLASH_COMPARE_API": {
+      "type": "boolean",
+      "description": "FLASH_COMPARE_API 参数",
+      "default": false
+    },
+    "FLASH_BLANK_CHECK_API": {
+      "type": "boolean",
+      "description": "FLASH_BLANK_CHECK_API 参数",
+      "default": false
+    },
+    "FLASH_JOB_END_NOTIFICATION": {
+      "type": "boolean",
+      "description": "FLASH_JOB_END_NOTIFICATION 参数",
+      "default": false
+    },
+    "FLASH_JOB_ERROR_NOTIFICATION": {
+      "type": "boolean",
+      "description": "FLASH_JOB_ERROR_NOTIFICATION 参数",
+      "default": false
+    },
+    "FLASH_USE_ACCESS_CODE": {
+      "type": "boolean",
+      "description": "FLASH_USE_ACCESS_CODE 参数",
+      "default": false
+    },
+    "FLASH_NUM_OF_SECTORS": {
+      "type": "integer",
+      "description": "FLASH_NUM_OF_SECTORS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_TOTAL_SIZE": {
+      "type": "integer",
+      "description": "FLASH_TOTAL_SIZE 参数",
+      "default": 1048576,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_BASE_ADDRESS": {
+      "type": "integer",
+      "description": "FLASH_BASE_ADDRESS 参数",
+      "default": 134217728,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_END_ADDRESS": {
+      "type": "integer",
+      "description": "FLASH_END_ADDRESS 参数",
+      "default": 135266304,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_PROGRAM_UNIT": {
+      "type": "integer",
+      "description": "FLASH_PROGRAM_UNIT 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_ERASE_UNIT": {
+      "type": "integer",
+      "description": "FLASH_ERASE_UNIT 参数",
+      "default": 8192,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLASH_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "FLASH_TIMEOUT_MS 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLASH_MAX_READ_NORMAL_MODE": {
+      "type": "integer",
+      "description": "FLASH_MAX_READ_NORMAL_MODE 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_MAX_READ_FAST_MODE": {
+      "type": "integer",
+      "description": "FLASH_MAX_READ_FAST_MODE 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_MAX_WRITE_NORMAL_MODE": {
+      "type": "integer",
+      "description": "FLASH_MAX_WRITE_NORMAL_MODE 参数",
+      "default": 500,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLASH_MAX_WRITE_FAST_MODE": {
+      "type": "integer",
+      "description": "FLASH_MAX_WRITE_FAST_MODE 参数",
+      "default": 200,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_MAX_COMPARE_MODE": {
+      "type": "integer",
+      "description": "FLASH_MAX_COMPARE_MODE 参数",
+      "default": 200,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_BANK_0": {
+      "type": "integer",
+      "description": "FLASH_BANK_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_BANK_1": {
+      "type": "integer",
+      "description": "FLASH_BANK_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SECTOR_0_START_ADDR": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_0_START_ADDR 参数",
+      "default": 134217728,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SECTOR_0_SIZE": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_0_SIZE 参数",
+      "default": 131072,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SECTOR_0_PAGE_SIZE": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_0_PAGE_SIZE 参数",
+      "default": 8192,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLASH_SECTOR_1_START_ADDR": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_1_START_ADDR 参数",
+      "default": 134348800,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SECTOR_1_SIZE": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_1_SIZE 参数",
+      "default": 131072,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SECTOR_1_PAGE_SIZE": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_1_PAGE_SIZE 参数",
+      "default": 8192,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLASH_SECTOR_2_START_ADDR": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_2_START_ADDR 参数",
+      "default": 134479872,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SECTOR_2_SIZE": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_2_SIZE 参数",
+      "default": 131072,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SECTOR_2_PAGE_SIZE": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_2_PAGE_SIZE 参数",
+      "default": 8192,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLASH_SECTOR_3_START_ADDR": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_3_START_ADDR 参数",
+      "default": 134610944,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SECTOR_3_SIZE": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_3_SIZE 参数",
+      "default": 131072,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SECTOR_3_PAGE_SIZE": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_3_PAGE_SIZE 参数",
+      "default": 8192,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLASH_SECTOR_4_START_ADDR": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_4_START_ADDR 参数",
+      "default": 134742016,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SECTOR_4_SIZE": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_4_SIZE 参数",
+      "default": 131072,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SECTOR_4_PAGE_SIZE": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_4_PAGE_SIZE 参数",
+      "default": 8192,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLASH_SECTOR_5_START_ADDR": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_5_START_ADDR 参数",
+      "default": 134873088,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SECTOR_5_SIZE": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_5_SIZE 参数",
+      "default": 131072,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SECTOR_5_PAGE_SIZE": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_5_PAGE_SIZE 参数",
+      "default": 8192,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLASH_SECTOR_6_START_ADDR": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_6_START_ADDR 参数",
+      "default": 135004160,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SECTOR_6_SIZE": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_6_SIZE 参数",
+      "default": 131072,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SECTOR_6_PAGE_SIZE": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_6_PAGE_SIZE 参数",
+      "default": 8192,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLASH_SECTOR_7_START_ADDR": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_7_START_ADDR 参数",
+      "default": 135135232,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SECTOR_7_SIZE": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_7_SIZE 参数",
+      "default": 131072,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SECTOR_7_PAGE_SIZE": {
+      "type": "integer",
+      "description": "FLASH_SECTOR_7_PAGE_SIZE 参数",
+      "default": 8192,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLASH_CR": {
+      "type": "integer",
+      "description": "FLASH_CR（派生表达式: *((volatile uint32*)0x40023C14U)）",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_CR_PG": {
+      "type": "integer",
+      "description": "FLASH_CR_PG 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_CR_SER": {
+      "type": "integer",
+      "description": "FLASH_CR_SER 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_CR_MER": {
+      "type": "integer",
+      "description": "FLASH_CR_MER 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_CR_SNB_P": {
+      "type": "integer",
+      "description": "FLASH_CR_SNB_P 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_CR_SNB_Pos": {
+      "type": "integer",
+      "description": "FLASH_CR_SNB_Pos 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_CR_STRT": {
+      "type": "integer",
+      "description": "FLASH_CR_STRT 参数",
+      "default": 65536,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_CR_LOCK": {
+      "type": "integer",
+      "description": "FLASH_CR_LOCK 参数",
+      "default": 2147483648,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SR": {
+      "type": "integer",
+      "description": "FLASH_SR（派生表达式: *((volatile uint32*)0x40023C0CU)）",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SR_BSY": {
+      "type": "integer",
+      "description": "FLASH_SR_BSY 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SR_PGERR": {
+      "type": "integer",
+      "description": "FLASH_SR_PGERR 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SR_WRPERR": {
+      "type": "integer",
+      "description": "FLASH_SR_WRPERR 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SR_PGAERR": {
+      "type": "integer",
+      "description": "FLASH_SR_PGAERR 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SR_PGPERR": {
+      "type": "integer",
+      "description": "FLASH_SR_PGPERR 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SR_PGSERR": {
+      "type": "integer",
+      "description": "FLASH_SR_PGSERR 参数",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SR_OPERR": {
+      "type": "integer",
+      "description": "FLASH_SR_OPERR 参数",
+      "default": 512,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "FLASH_KEYR": {
+      "type": "integer",
+      "description": "FLASH_KEYR（派生表达式: *((volatile uint32*)0x40023C04U)）",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_KEY_1": {
+      "type": "integer",
+      "description": "FLASH_KEY_1 参数",
+      "default": 1164378403,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_KEY_2": {
+      "type": "integer",
+      "description": "FLASH_KEY_2 参数",
+      "default": 3455027627,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "FLASH_SID_INIT": {
+      "type": "integer",
+      "description": "FLASH_SID_INIT 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SID_DEINIT": {
+      "type": "integer",
+      "description": "FLASH_SID_DEINIT 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SID_GETVERSIONINFO": {
+      "type": "integer",
+      "description": "FLASH_SID_GETVERSIONINFO 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SID_ERASE": {
+      "type": "integer",
+      "description": "FLASH_SID_ERASE 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SID_WRITE": {
+      "type": "integer",
+      "description": "FLASH_SID_WRITE 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SID_READ": {
+      "type": "integer",
+      "description": "FLASH_SID_READ 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SID_CANCEL": {
+      "type": "integer",
+      "description": "FLASH_SID_CANCEL 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SID_GETJOBRESULT": {
+      "type": "integer",
+      "description": "FLASH_SID_GETJOBRESULT 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SID_SETMODE": {
+      "type": "integer",
+      "description": "FLASH_SID_SETMODE 参数",
+      "default": 9,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SID_COMPARE": {
+      "type": "integer",
+      "description": "FLASH_SID_COMPARE 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SID_BLANKCHECK": {
+      "type": "integer",
+      "description": "FLASH_SID_BLANKCHECK 参数",
+      "default": 11,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SID_SUSPEND": {
+      "type": "integer",
+      "description": "FLASH_SID_SUSPEND 参数",
+      "default": 12,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_SID_RESUME": {
+      "type": "integer",
+      "description": "FLASH_SID_RESUME 参数",
+      "default": 13,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_E_UNINIT": {
+      "type": "integer",
+      "description": "FLASH_E_UNINIT 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_E_BUSY": {
+      "type": "integer",
+      "description": "FLASH_E_BUSY 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_E_ALREADY_INITIALIZED": {
+      "type": "integer",
+      "description": "FLASH_E_ALREADY_INITIALIZED 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_E_PARAM_POINTER": {
+      "type": "integer",
+      "description": "FLASH_E_PARAM_POINTER 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_E_PARAM_CONFIG": {
+      "type": "integer",
+      "description": "FLASH_E_PARAM_CONFIG 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_E_PARAM_ADDRESS": {
+      "type": "integer",
+      "description": "FLASH_E_PARAM_ADDRESS 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_E_PARAM_LENGTH": {
+      "type": "integer",
+      "description": "FLASH_E_PARAM_LENGTH 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_E_WRITE_FAILED": {
+      "type": "integer",
+      "description": "FLASH_E_WRITE_FAILED 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_E_ERASE_FAILED": {
+      "type": "integer",
+      "description": "FLASH_E_ERASE_FAILED 参数",
+      "default": 9,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_E_COMPARE_FAILED": {
+      "type": "integer",
+      "description": "FLASH_E_COMPARE_FAILED 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_E_BLANK_CHECK_FAILED": {
+      "type": "integer",
+      "description": "FLASH_E_BLANK_CHECK_FAILED 参数",
+      "default": 11,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_UNINIT": {
+      "type": "integer",
+      "description": "FLASH_UNINIT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_IDLE": {
+      "type": "integer",
+      "description": "FLASH_IDLE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_BUSY": {
+      "type": "integer",
+      "description": "FLASH_BUSY 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_BUSY_ERASING": {
+      "type": "integer",
+      "description": "FLASH_BUSY_ERASING 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_BUSY_WRITING": {
+      "type": "integer",
+      "description": "FLASH_BUSY_WRITING 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "FLASH_BUSY_READING": {
+      "type": "integer",
+      "description": "FLASH_BUSY_READING 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/mcal/flash/include/Flash_Cfg.h",
+  "x-display-name": "Flash"
+}

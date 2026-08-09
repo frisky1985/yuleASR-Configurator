@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/nm.json",
+  "title": "Nm Configuration",
+  "description": "Network Management Configuration",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "NM_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "NM_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "NM_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "NM_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "NM_MAX_CHANNELS": {
+      "type": "integer",
+      "description": "NM_MAX_CHANNELS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NM_NODE_ID": {
+      "type": "integer",
+      "description": "NM_NODE_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NM_NODE_COUNT": {
+      "type": "integer",
+      "description": "NM_NODE_COUNT 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NM_TIMEOUT_TIME": {
+      "type": "integer",
+      "description": "NM_TIMEOUT_TIME 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "NM_REPEAT_MESSAGE_TIME": {
+      "type": "integer",
+      "description": "NM_REPEAT_MESSAGE_TIME 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NM_WAIT_BUS_SLEEP_TIME": {
+      "type": "integer",
+      "description": "NM_WAIT_BUS_SLEEP_TIME 参数",
+      "default": 500,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "NM_REMOTE_SLEEP_IND_TIME": {
+      "type": "integer",
+      "description": "NM_REMOTE_SLEEP_IND_TIME 参数",
+      "default": 2000,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "NM_MAIN_FUNCTION_PERIOD": {
+      "type": "integer",
+      "description": "NM_MAIN_FUNCTION_PERIOD 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NM_COORDINATOR_SUPPORT_ENABLED": {
+      "type": "boolean",
+      "description": "NM_COORDINATOR_SUPPORT_ENABLED 参数",
+      "default": true
+    },
+    "NM_COORDINATOR_SYNC_SUPPORT": {
+      "type": "boolean",
+      "description": "NM_COORDINATOR_SYNC_SUPPORT 参数",
+      "default": true
+    },
+    "NM_CLUSTER_COUNT": {
+      "type": "integer",
+      "description": "NM_CLUSTER_COUNT 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NM_PASSIVE_MODE_ENABLED": {
+      "type": "boolean",
+      "description": "NM_PASSIVE_MODE_ENABLED 参数",
+      "default": false
+    },
+    "NM_CAR_WAKEUP_RX_ENABLED": {
+      "type": "boolean",
+      "description": "NM_CAR_WAKEUP_RX_ENABLED 参数",
+      "default": false
+    },
+    "NM_CAR_WAKEUP_TX_ENABLED": {
+      "type": "boolean",
+      "description": "NM_CAR_WAKEUP_TX_ENABLED 参数",
+      "default": false
+    },
+    "NM_PARTIAL_NETWORKING_ENABLED": {
+      "type": "boolean",
+      "description": "NM_PARTIAL_NETWORKING_ENABLED 参数",
+      "default": false
+    },
+    "NM_PN_EIRA_CALCULATION_ENABLED": {
+      "type": "boolean",
+      "description": "NM_PN_EIRA_CALCULATION_ENABLED 参数",
+      "default": false
+    },
+    "NM_PN_ERA_CALCULATION_ENABLED": {
+      "type": "boolean",
+      "description": "NM_PN_ERA_CALCULATION_ENABLED 参数",
+      "default": false
+    },
+    "NM_STATE_CHANGE_IND_ENABLED": {
+      "type": "boolean",
+      "description": "NM_STATE_CHANGE_IND_ENABLED 参数",
+      "default": true
+    },
+    "NM_REMOTE_SLEEP_IND_ENABLED": {
+      "type": "boolean",
+      "description": "NM_REMOTE_SLEEP_IND_ENABLED 参数",
+      "default": true
+    },
+    "NM_BUS_SYNCHRONIZATION_ENABLED": {
+      "type": "boolean",
+      "description": "NM_BUS_SYNCHRONIZATION_ENABLED 参数",
+      "default": false
+    },
+    "NM_CHANNEL_CAN0": {
+      "type": "integer",
+      "description": "NM_CHANNEL_CAN0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NM_CHANNEL_CAN1": {
+      "type": "integer",
+      "description": "NM_CHANNEL_CAN1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NM_CHANNEL_LIN0": {
+      "type": "integer",
+      "description": "NM_CHANNEL_LIN0 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NM_CHANNEL_ETH0": {
+      "type": "integer",
+      "description": "NM_CHANNEL_ETH0 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "NM_COMM_ENABLED": {
+      "type": "boolean",
+      "description": "NM_COMM_ENABLED 参数",
+      "default": true
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/nm/include/Nm_Cfg.h",
+  "x-display-name": "Nm"
+}

@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/wdgif.json",
+  "title": "WdgIf Configuration",
+  "description": "Watchdog Interface configuration header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "WDGIF_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "WDGIF_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "WDGIF_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "WDGIF_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "WDGIF_NUMBER_OF_DEVICES": {
+      "type": "integer",
+      "description": "WDGIF_NUMBER_OF_DEVICES 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "WDGIF_DEFAULT_DEVICE": {
+      "type": "integer",
+      "description": "WDGIF_DEFAULT_DEVICE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "WDGIF_FAST_MODE_TIMEOUT": {
+      "type": "integer",
+      "description": "WDGIF_FAST_MODE_TIMEOUT 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "WDGIF_SLOW_MODE_TIMEOUT": {
+      "type": "integer",
+      "description": "WDGIF_SLOW_MODE_TIMEOUT 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "WDGIF_FAST_MODE_TRIGGER_MS": {
+      "type": "integer",
+      "description": "WDGIF_FAST_MODE_TRIGGER_MS 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "WDGIF_SLOW_MODE_TRIGGER_MS": {
+      "type": "integer",
+      "description": "WDGIF_SLOW_MODE_TRIGGER_MS 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "WDGIF_MODE_CHANGE_CB_ENABLED": {
+      "type": "boolean",
+      "description": "WDGIF_MODE_CHANGE_CB_ENABLED 参数",
+      "default": false,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "WDGIF_TRIGGER_CB_ENABLED": {
+      "type": "boolean",
+      "description": "WDGIF_TRIGGER_CB_ENABLED 参数",
+      "default": false,
+      "x-section": "CALLBACK CONFIGURATION"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/ecual/wdgif/include/WdgIf_Cfg.h",
+  "x-display-name": "WdgIf",
+  "x-sections": [
+    "GENERAL CONFIGURATION",
+    "CALLBACK CONFIGURATION"
+  ]
+}

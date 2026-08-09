@@ -1,0 +1,524 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/cantsyn.json",
+  "title": "CanTSyn Configuration",
+  "description": "CAN Time Synchronization Configuration - AutoSAR R22-11 Service Layer",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CANTSYN_CFG_VENDOR_ID": {
+      "type": "integer",
+      "description": "YuleTech Vendor ID",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "CANTSYN_CFG_MODULE_ID": {
+      "type": "integer",
+      "description": "CANTSYN Module ID",
+      "default": 164,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "CANTSYN_CFG_INSTANCE_ID": {
+      "type": "integer",
+      "description": "CANTSYN_CFG_INSTANCE_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "CANTSYN_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "CANTSYN_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 34,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "CANTSYN_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "CANTSYN_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 17,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "CANTSYN_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "CANTSYN_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "CANTSYN_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "CANTSYN_CFG_SW_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "CANTSYN_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "CANTSYN_CFG_SW_MINOR_VERSION 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "CANTSYN_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "CANTSYN_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "CANTSYN_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "CANTSYN_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTSYN_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "CANTSYN_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTSYN_TIME_MASTER_SUPPORT": {
+      "type": "boolean",
+      "description": "CANTSYN_TIME_MASTER_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTSYN_TIME_SLAVE_SUPPORT": {
+      "type": "boolean",
+      "description": "CANTSYN_TIME_SLAVE_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTSYN_IMMEDIATE_TIME_TRANSMISSION": {
+      "type": "boolean",
+      "description": "CANTSYN_IMMEDIATE_TIME_TRANSMISSION 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTSYN_CANCEL_TX_CONFIRMATION": {
+      "type": "boolean",
+      "description": "CANTSYN_CANCEL_TX_CONFIRMATION 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTSYN_GLOBAL_TIME_SUPPORT": {
+      "type": "boolean",
+      "description": "CANTSYN_GLOBAL_TIME_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTSYN_DEBOUNCE_COUNTER": {
+      "type": "boolean",
+      "description": "CANTSYN_DEBOUNCE_COUNTER 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTSYN_CRC_SECURED": {
+      "type": "boolean",
+      "description": "CANTSYN_CRC_SECURED 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTSYN_MESSAGE_COUNTER_SUPPORT": {
+      "type": "boolean",
+      "description": "CANTSYN_MESSAGE_COUNTER_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTSYN_SEQUENCE_COUNTER_SUPPORT": {
+      "type": "boolean",
+      "description": "CANTSYN_SEQUENCE_COUNTER_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTSYN_TLV_SUPPORT": {
+      "type": "boolean",
+      "description": "CANTSYN_TLV_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTSYN_USER_DATA_SUPPORT": {
+      "type": "boolean",
+      "description": "CANTSYN_USER_DATA_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTSYN_RATE_CORRECTION_SUPPORT": {
+      "type": "boolean",
+      "description": "CANTSYN_RATE_CORRECTION_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTSYN_OFFSET_CORRECTION_SUPPORT": {
+      "type": "boolean",
+      "description": "CANTSYN_OFFSET_CORRECTION_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTSYN_MAX_TIME_BASES": {
+      "type": "integer",
+      "description": "CANTSYN_MAX_TIME_BASES 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIME BASE CONFIGURATION"
+    },
+    "CANTSYN_MAX_TIME_MASTERS": {
+      "type": "integer",
+      "description": "CANTSYN_MAX_TIME_MASTERS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIME BASE CONFIGURATION"
+    },
+    "CANTSYN_MAX_TIME_SLAVES": {
+      "type": "integer",
+      "description": "CANTSYN_MAX_TIME_SLAVES 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIME BASE CONFIGURATION"
+    },
+    "CANTSYN_NUM_TIME_DOMAINS": {
+      "type": "integer",
+      "description": "CANTSYN_NUM_TIME_DOMAINS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIME BASE CONFIGURATION"
+    },
+    "CANTSYN_SYNC_PERIOD_MS": {
+      "type": "integer",
+      "description": "CANTSYN_SYNC_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SYNC MESSAGE CONFIGURATION"
+    },
+    "CANTSYN_FUP_DELAY_US": {
+      "type": "integer",
+      "description": "CANTSYN_FUP_DELAY_US 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SYNC MESSAGE CONFIGURATION"
+    },
+    "CANTSYN_SYNC_CYCLE_TIME": {
+      "type": "integer",
+      "description": "CANTSYN_SYNC_CYCLE_TIME 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SYNC MESSAGE CONFIGURATION"
+    },
+    "CANTSYN_MAX_TIME_JUMP_US": {
+      "type": "integer",
+      "description": "1 second",
+      "default": 1000000,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "SYNC MESSAGE CONFIGURATION"
+    },
+    "CANTSYN_DEBOUNCE_TIME_MS": {
+      "type": "integer",
+      "description": "CANTSYN_DEBOUNCE_TIME_MS 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SYNC MESSAGE CONFIGURATION"
+    },
+    "CANTSYN_SYNC_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "CANTSYN_SYNC_TIMEOUT_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SYNC MESSAGE CONFIGURATION"
+    },
+    "CANTSYN_SYNC_LOST_THRESHOLD": {
+      "type": "integer",
+      "description": "CANTSYN_SYNC_LOST_THRESHOLD 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "SYNC MESSAGE CONFIGURATION"
+    },
+    "CANTSYN_SYNC_CAN_ID_BASE": {
+      "type": "integer",
+      "description": "CANTSYN_SYNC_CAN_ID_BASE 参数",
+      "default": 384,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "MESSAGE FORMAT CONFIGURATION"
+    },
+    "CANTSYN_FUP_CAN_ID_BASE": {
+      "type": "integer",
+      "description": "CANTSYN_FUP_CAN_ID_BASE 参数",
+      "default": 640,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "MESSAGE FORMAT CONFIGURATION"
+    },
+    "CANTSYN_OCS_CAN_ID_BASE": {
+      "type": "integer",
+      "description": "CANTSYN_OCS_CAN_ID_BASE 参数",
+      "default": 896,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "MESSAGE FORMAT CONFIGURATION"
+    },
+    "CANTSYN_SYNC_DLC": {
+      "type": "integer",
+      "description": "CANTSYN_SYNC_DLC 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MESSAGE FORMAT CONFIGURATION"
+    },
+    "CANTSYN_FUP_DLC": {
+      "type": "integer",
+      "description": "CANTSYN_FUP_DLC 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MESSAGE FORMAT CONFIGURATION"
+    },
+    "CANTSYN_OCS_DLC": {
+      "type": "integer",
+      "description": "CANTSYN_OCS_DLC 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MESSAGE FORMAT CONFIGURATION"
+    },
+    "CANTSYN_EXTENDED_CAN_ID": {
+      "type": "boolean",
+      "description": "CANTSYN_EXTENDED_CAN_ID 参数",
+      "default": false,
+      "x-section": "MESSAGE FORMAT CONFIGURATION"
+    },
+    "CANTSYN_PROTOCOL_VERSION": {
+      "type": "integer",
+      "description": "CANTSYN_PROTOCOL_VERSION 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "CANTSYN_TIME_REPRESENTATION": {
+      "type": "integer",
+      "description": "CANTSYN_TIME_REPRESENTATION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "CANTSYN_SGW_SUPPORT": {
+      "type": "boolean",
+      "description": "CANTSYN_SGW_SUPPORT 参数",
+      "default": true,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "CANTSYN_OFS_SUPPORT": {
+      "type": "boolean",
+      "description": "CANTSYN_OFS_SUPPORT 参数",
+      "default": true,
+      "x-section": "PROTOCOL CONFIGURATION"
+    },
+    "CANTSYN_TX_CONFIRMATION": {
+      "type": "boolean",
+      "description": "CANTSYN_TX_CONFIRMATION 参数",
+      "default": true,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "CANTSYN_RX_INDICATION": {
+      "type": "boolean",
+      "description": "CANTSYN_RX_INDICATION 参数",
+      "default": true,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "CANTSYN_TIME_NOTIFICATION": {
+      "type": "boolean",
+      "description": "CANTSYN_TIME_NOTIFICATION 参数",
+      "default": true,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "CANTSYN_SYNC_LOSS_NOTIFICATION": {
+      "type": "boolean",
+      "description": "CANTSYN_SYNC_LOSS_NOTIFICATION 参数",
+      "default": true,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "CANTSYN_NUM_INSTANCES": {
+      "type": "integer",
+      "description": "CANTSYN_NUM_INSTANCES 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "INSTANCE CONFIGURATION"
+    },
+    "CANTSYN_INSTANCE_ID": {
+      "type": "integer",
+      "description": "CANTSYN_INSTANCE_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "INSTANCE CONFIGURATION"
+    },
+    "CANTSYN_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "CANTSYN_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION CONFIGURATION"
+    },
+    "CANTSYN_TICKS_PER_SYNC": {
+      "type": "string",
+      "description": "CANTSYN_TICKS_PER_SYNC 参数（原始值: (CANTSYN_SYNC_PERIOD_MS / CANTSYN_MAIN_FUNCTION_PERIOD_MS)）",
+      "x-section": "MAIN FUNCTION CONFIGURATION"
+    },
+    "CANTSYN_TIMEBASE_GLOBAL_ID": {
+      "type": "integer",
+      "description": "CANTSYN_TIMEBASE_GLOBAL_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIME BASE ID MAPPING"
+    },
+    "CANTSYN_TIMEBASE_OFFSET_ID": {
+      "type": "integer",
+      "description": "CANTSYN_TIMEBASE_OFFSET_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIME BASE ID MAPPING"
+    },
+    "CANTSYN_TIMEBASE_LOCAL_ID": {
+      "type": "integer",
+      "description": "CANTSYN_TIMEBASE_LOCAL_ID 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIME BASE ID MAPPING"
+    },
+    "CANTSYN_NUMBER_OF_TIME_DOMAINS": {
+      "type": "integer",
+      "description": "CANTSYN_NUMBER_OF_TIME_DOMAINS（别名: CANTSYN_NUM_TIME_DOMAINS = 2；同族可选: CANTSYN_NUM_TIME_DOMAINS）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "COMPATIBILITY ALIASES"
+    },
+    "CANTSYN_NUMBER_OF_PDUS": {
+      "type": "integer",
+      "description": "CANTSYN_NUMBER_OF_PDUS（别名: CANTSYN_NUM_TIME_DOMAINS = 2；同族可选: CANTSYN_NUM_TIME_DOMAINS）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "COMPATIBILITY ALIASES"
+    },
+    "CANTSYN_NUMBER_OF_TIME_BASES": {
+      "type": "integer",
+      "description": "CANTSYN_NUMBER_OF_TIME_BASES（别名: CANTSYN_MAX_TIME_BASES = 4；同族可选: CANTSYN_MAX_TIME_BASES / CANTSYN_MAX_TIME_JUMP_US / CANTSYN_MAX_TIME_MASTERS / CANTSYN_MAX_TIME_SLAVES）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "COMPATIBILITY ALIASES"
+    },
+    "CANTSYN_E_INVALID_PDU_SDU_ID": {
+      "type": "integer",
+      "description": "CANTSYN_E_INVALID_PDU_SDU_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "COMPATIBILITY ALIASES"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/cantsyn/include/CanTSyn_Cfg.h",
+  "x-display-name": "CanTSyn",
+  "x-sections": [
+    "VERSION INFORMATION",
+    "PRE-COMPILE CONFIGURATION",
+    "TIME BASE CONFIGURATION",
+    "SYNC MESSAGE CONFIGURATION",
+    "MESSAGE FORMAT CONFIGURATION",
+    "PROTOCOL CONFIGURATION",
+    "CALLBACK CONFIGURATION",
+    "INSTANCE CONFIGURATION",
+    "MAIN FUNCTION CONFIGURATION",
+    "TIME BASE ID MAPPING",
+    "COMPATIBILITY ALIASES"
+  ]
+}

@@ -1,0 +1,294 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/wdgm.json",
+  "title": "WdgM Configuration",
+  "description": "看门狗管理模块配置头文件",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "WDGM_CFG_VENDOR_ID": {
+      "type": "integer",
+      "description": "WDGM_CFG_VENDOR_ID 参数",
+      "default": 43,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "WDGM_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "WDGM_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "WDGM_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "WDGM_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "WDGM_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "WDGM_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_CFG_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "WDGM_CFG_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "WDGM_CFG_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "WDGM_CFG_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "WDGM_CFG_WWD_ENABLE": {
+      "type": "boolean",
+      "description": "WDGM_CFG_WWD_ENABLE 参数",
+      "default": true
+    },
+    "WDGM_CFG_IWD_ENABLE": {
+      "type": "boolean",
+      "description": "WDGM_CFG_IWD_ENABLE 参数",
+      "default": true
+    },
+    "WDGM_CFG_SUPERVISION_CYCLE_MS": {
+      "type": "integer",
+      "description": "WDGM_CFG_SUPERVISION_CYCLE_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_CFG_FAILURE_THRESHOLD": {
+      "type": "integer",
+      "description": "WDGM_CFG_FAILURE_THRESHOLD 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_CFG_MAX_SUPERVISED_ENTITIES": {
+      "type": "integer",
+      "description": "WDGM_CFG_MAX_SUPERVISED_ENTITIES 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_CFG_LOCKSTEP_INTEGRATION": {
+      "type": "boolean",
+      "description": "WDGM_CFG_LOCKSTEP_INTEGRATION 参数",
+      "default": true
+    },
+    "WDGM_CFG_RAMSAFETY_INTEGRATION": {
+      "type": "boolean",
+      "description": "WDGM_CFG_RAMSAFETY_INTEGRATION 参数",
+      "default": true
+    },
+    "WDGM_CFG_DEM_INTEGRATION": {
+      "type": "boolean",
+      "description": "WDGM_CFG_DEM_INTEGRATION 参数",
+      "default": true
+    },
+    "WDGM_CFG_WWD_TRIGGER_PERIOD_MS": {
+      "type": "integer",
+      "description": "WDGM_CFG_WWD_TRIGGER_PERIOD_MS 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_CFG_WWD_WINDOW_START_PERCENT": {
+      "type": "integer",
+      "description": "WDGM_CFG_WWD_WINDOW_START_PERCENT 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_CFG_WWD_WINDOW_END_PERCENT": {
+      "type": "integer",
+      "description": "WDGM_CFG_WWD_WINDOW_END_PERCENT 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_CFG_WWD_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "WDGM_CFG_WWD_TIMEOUT_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_CFG_IWD_TRIGGER_PERIOD_MS": {
+      "type": "integer",
+      "description": "WDGM_CFG_IWD_TRIGGER_PERIOD_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_CFG_IWD_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "WDGM_CFG_IWD_TIMEOUT_MS 参数",
+      "default": 200,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_SEID_MAIN_CYCLE": {
+      "type": "integer",
+      "description": "WDGM_SEID_MAIN_CYCLE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_SEID_COMMUNICATION": {
+      "type": "integer",
+      "description": "WDGM_SEID_COMMUNICATION 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_SEID_DIAGNOSTICS": {
+      "type": "integer",
+      "description": "WDGM_SEID_DIAGNOSTICS 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_SEID_STORAGE": {
+      "type": "integer",
+      "description": "WDGM_SEID_STORAGE 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_SEID_SAFETY_MONITOR": {
+      "type": "integer",
+      "description": "WDGM_SEID_SAFETY_MONITOR 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_SEID_LOCKSTEP": {
+      "type": "integer",
+      "description": "WDGM_SEID_LOCKSTEP 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_SEID_RAMSAFETY": {
+      "type": "integer",
+      "description": "WDGM_SEID_RAMSAFETY 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_DEM_SUPERVISION_EXPIRED_EVENT_ID": {
+      "type": "integer",
+      "description": "WDGM_DEM_SUPERVISION_EXPIRED_EVENT_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_DEM_SET_MODE_FAILED_EVENT_ID": {
+      "type": "integer",
+      "description": "WDGM_DEM_SET_MODE_FAILED_EVENT_ID 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_DEM_LOCKSTEP_ERROR_EVENT_ID": {
+      "type": "integer",
+      "description": "WDGM_DEM_LOCKSTEP_ERROR_EVENT_ID 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "WDGM_DEM_RAMSAFETY_ERROR_EVENT_ID": {
+      "type": "integer",
+      "description": "WDGM_DEM_RAMSAFETY_ERROR_EVENT_ID 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/wdgm/include/WdgM_Cfg.h",
+  "x-display-name": "WdgM"
+}

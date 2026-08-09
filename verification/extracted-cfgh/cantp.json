@@ -1,0 +1,403 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/cantp.json",
+  "title": "CanTp Configuration",
+  "description": "CAN Transport Protocol configuration header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CANTP_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "CANTP_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTP_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "CANTP_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTP_DYNAMIC_CHANNEL_ALLOCATION": {
+      "type": "boolean",
+      "description": "CANTP_DYNAMIC_CHANNEL_ALLOCATION 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTP_PADDING_BYTE": {
+      "type": "boolean",
+      "description": "CANTP_PADDING_BYTE 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTP_PADDING_BYTE_VALUE": {
+      "type": "integer",
+      "description": "CANTP_PADDING_BYTE_VALUE 参数",
+      "default": 204,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTP_CHANGE_PARAMETER_API": {
+      "type": "boolean",
+      "description": "CANTP_CHANGE_PARAMETER_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTP_READ_PARAMETER_API": {
+      "type": "boolean",
+      "description": "CANTP_READ_PARAMETER_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANTP_MAX_CHANNEL_CNT": {
+      "type": "integer",
+      "description": "CANTP_MAX_CHANNEL_CNT 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CANTP_NUM_CHANNELS": {
+      "type": "integer",
+      "description": "CANTP_NUM_CHANNELS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CANTP_NUM_TX_NSDU": {
+      "type": "integer",
+      "description": "CANTP_NUM_TX_NSDU 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NSDU CONFIGURATION"
+    },
+    "CANTP_NUM_RX_NSDU": {
+      "type": "integer",
+      "description": "CANTP_NUM_RX_NSDU 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NSDU CONFIGURATION"
+    },
+    "CANTP_TX_DIAG_PHYSICAL": {
+      "type": "integer",
+      "description": "CANTP_TX_DIAG_PHYSICAL（cast: PduIdType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "NSDU CONFIGURATION"
+    },
+    "CANTP_TX_DIAG_FUNCTIONAL": {
+      "type": "integer",
+      "description": "CANTP_TX_DIAG_FUNCTIONAL（cast: PduIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "NSDU CONFIGURATION"
+    },
+    "CANTP_TX_UDS_PHYSICAL": {
+      "type": "integer",
+      "description": "CANTP_TX_UDS_PHYSICAL（cast: PduIdType）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "NSDU CONFIGURATION"
+    },
+    "CANTP_TX_UDS_FUNCTIONAL": {
+      "type": "integer",
+      "description": "CANTP_TX_UDS_FUNCTIONAL（cast: PduIdType）",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "NSDU CONFIGURATION"
+    },
+    "CANTP_RX_DIAG_PHYSICAL": {
+      "type": "integer",
+      "description": "CANTP_RX_DIAG_PHYSICAL（cast: PduIdType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "NSDU CONFIGURATION"
+    },
+    "CANTP_RX_DIAG_FUNCTIONAL": {
+      "type": "integer",
+      "description": "CANTP_RX_DIAG_FUNCTIONAL（cast: PduIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "NSDU CONFIGURATION"
+    },
+    "CANTP_RX_UDS_PHYSICAL": {
+      "type": "integer",
+      "description": "CANTP_RX_UDS_PHYSICAL（cast: PduIdType）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "NSDU CONFIGURATION"
+    },
+    "CANTP_RX_UDS_FUNCTIONAL": {
+      "type": "integer",
+      "description": "CANTP_RX_UDS_FUNCTIONAL（cast: PduIdType）",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "NSDU CONFIGURATION"
+    },
+    "CANTP_NAS_DEFAULT": {
+      "type": "integer",
+      "description": "N_As timeout",
+      "default": 25,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NSDU CONFIGURATION"
+    },
+    "CANTP_NBS_DEFAULT": {
+      "type": "integer",
+      "description": "N_Bs timeout",
+      "default": 75,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NSDU CONFIGURATION"
+    },
+    "CANTP_NCS_DEFAULT": {
+      "type": "integer",
+      "description": "N_Cs timeout",
+      "default": 25,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NSDU CONFIGURATION"
+    },
+    "CANTP_NAR_DEFAULT": {
+      "type": "integer",
+      "description": "N_Ar timeout",
+      "default": 25,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NSDU CONFIGURATION"
+    },
+    "CANTP_NBR_DEFAULT": {
+      "type": "integer",
+      "description": "N_Br timeout",
+      "default": 75,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NSDU CONFIGURATION"
+    },
+    "CANTP_NCR_DEFAULT": {
+      "type": "integer",
+      "description": "N_Cr timeout",
+      "default": 150,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NSDU CONFIGURATION"
+    },
+    "CANTP_BS_DEFAULT": {
+      "type": "integer",
+      "description": "Block Size",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "FLOW CONTROL DEFAULTS"
+    },
+    "CANTP_STMIN_DEFAULT": {
+      "type": "integer",
+      "description": "Minimum Separation Time (ms)",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "FLOW CONTROL DEFAULTS"
+    },
+    "CANTP_WFT_MAX_DEFAULT": {
+      "type": "integer",
+      "description": "Max Wait Frames",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "FLOW CONTROL DEFAULTS"
+    },
+    "CANTP_ADDRESSING_FORMAT": {
+      "type": "enum",
+      "description": "CANTP_ADDRESSING_FORMAT 参数",
+      "default": "CANTP_STANDARD",
+      "enum": [
+        "CANTP_STANDARD",
+        "CANTP_EXTENDED",
+        "CANTP_MIXED",
+        "CANTP_MIXED29BIT",
+        "CANTP_NORMALFIXED",
+        "CANTP_CUSTOM"
+      ],
+      "x-section": "ADDRESSING CONFIGURATION"
+    },
+    "CANTP_TX_ADDRESS": {
+      "type": "integer",
+      "description": "CANTP_TX_ADDRESS 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ADDRESSING CONFIGURATION"
+    },
+    "CANTP_RX_ADDRESS": {
+      "type": "integer",
+      "description": "CANTP_RX_ADDRESS 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ADDRESSING CONFIGURATION"
+    },
+    "CANTP_MAX_MESSAGE_LENGTH": {
+      "type": "integer",
+      "description": "ISO-TP max",
+      "default": 4095,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "MAX MESSAGE LENGTH"
+    },
+    "CANTP_CANFD_MAX_MESSAGE_LENGTH": {
+      "type": "integer",
+      "description": "CANTP_CANFD_MAX_MESSAGE_LENGTH 参数",
+      "default": 4095,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "MAX MESSAGE LENGTH"
+    },
+    "CANTP_CHANNEL_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "Internal channel buffer size",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "BUFFER AND FRAME CONFIGURATION"
+    },
+    "CANTP_CAN_FRAME_LENGTH": {
+      "type": "integer",
+      "description": "Standard CAN frame length in bytes",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "BUFFER AND FRAME CONFIGURATION"
+    },
+    "CANTP_INVALID_CHANNEL_ID": {
+      "type": "integer",
+      "description": "Invalid/No channel sentinel",
+      "default": 255,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "BUFFER AND FRAME CONFIGURATION"
+    },
+    "CANTP_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "CANTP_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "CANTP_CANIF_TX_PDU_ID": {
+      "type": "integer",
+      "description": "CANTP_CANIF_TX_PDU_ID（cast: PduIdType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PDU MAPPING"
+    },
+    "CANTP_CANIF_RX_PDU_ID": {
+      "type": "integer",
+      "description": "CANTP_CANIF_RX_PDU_ID（cast: PduIdType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PDU MAPPING"
+    },
+    "CANTP_CANIF_FC_TX_PDU_ID": {
+      "type": "integer",
+      "description": "CANTP_CANIF_FC_TX_PDU_ID（cast: PduIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PDU MAPPING"
+    },
+    "CANTP_CANIF_FC_RX_PDU_ID": {
+      "type": "integer",
+      "description": "CANTP_CANIF_FC_RX_PDU_ID（cast: PduIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PDU MAPPING"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/ecual/cantp/include/CanTp_Cfg.h",
+  "x-display-name": "CanTp",
+  "x-sections": [
+    "PRE-COMPILE CONFIGURATION",
+    "CHANNEL CONFIGURATION",
+    "NSDU CONFIGURATION",
+    "FLOW CONTROL DEFAULTS",
+    "ADDRESSING CONFIGURATION",
+    "MAX MESSAGE LENGTH",
+    "BUFFER AND FRAME CONFIGURATION",
+    "MAIN FUNCTION PERIOD",
+    "PDU MAPPING"
+  ]
+}

@@ -1,0 +1,475 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/cannm_ecual.json",
+  "title": "CanNm_Ecual Configuration",
+  "description": "CAN Network Management configuration header file",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CANNM_VENDOR_ID_CFG": {
+      "type": "integer",
+      "description": "CANNM_VENDOR_ID_CFG（cast: uint16）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANNM_MODULE_ID_CFG": {
+      "type": "integer",
+      "description": "CANNM_MODULE_ID_CFG（cast: uint16）",
+      "default": 31,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANNM_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "CANNM_CFG_SW_MAJOR_VERSION（cast: uint8）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANNM_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "CANNM_CFG_SW_MINOR_VERSION（cast: uint8）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANNM_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "CANNM_CFG_SW_PATCH_VERSION（cast: uint8）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANNM_CFG_AR_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "CANNM_CFG_AR_MAJOR_VERSION（cast: uint8）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANNM_CFG_AR_MINOR_VERSION": {
+      "type": "integer",
+      "description": "CANNM_CFG_AR_MINOR_VERSION（cast: uint8）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANNM_CFG_AR_PATCH_VERSION": {
+      "type": "integer",
+      "description": "CANNM_CFG_AR_PATCH_VERSION（cast: uint8）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANNM_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "CANNM_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_COM_CONTROL_ENABLED": {
+      "type": "boolean",
+      "description": "CANNM_COM_CONTROL_ENABLED 参数",
+      "default": true,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_COORDINATOR_SUPPORT_ENABLED": {
+      "type": "boolean",
+      "description": "CANNM_COORDINATOR_SUPPORT_ENABLED 参数",
+      "default": true,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_PASSIVE_MODE_ENABLED": {
+      "type": "boolean",
+      "description": "CANNM_PASSIVE_MODE_ENABLED 参数",
+      "default": false,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_NODE_DETECTION_ENABLED": {
+      "type": "boolean",
+      "description": "CANNM_NODE_DETECTION_ENABLED 参数",
+      "default": true,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_NODE_ID_ENABLED": {
+      "type": "boolean",
+      "description": "CANNM_NODE_ID_ENABLED 参数",
+      "default": true,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_REMOTE_SLEEP_IND_ENABLED": {
+      "type": "boolean",
+      "description": "CANNM_REMOTE_SLEEP_IND_ENABLED 参数",
+      "default": true,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_USER_DATA_ENABLED": {
+      "type": "boolean",
+      "description": "CANNM_USER_DATA_ENABLED 参数",
+      "default": true,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_PN_ENABLED": {
+      "type": "boolean",
+      "description": "CANNM_PN_ENABLED 参数",
+      "default": true,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_STATE_CHANGE_IND_ENABLED": {
+      "type": "boolean",
+      "description": "CANNM_STATE_CHANGE_IND_ENABLED 参数",
+      "default": true,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_BUS_SYNCHRONIZATION_ENABLED": {
+      "type": "boolean",
+      "description": "CANNM_BUS_SYNCHRONIZATION_ENABLED 参数",
+      "default": false,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_REMOTE_SLEEP_IND_CALLBACK": {
+      "type": "boolean",
+      "description": "CANNM_REMOTE_SLEEP_IND_CALLBACK 参数",
+      "default": true,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_CAR_WAKEUP_RX_ENABLED": {
+      "type": "boolean",
+      "description": "CANNM_CAR_WAKEUP_RX_ENABLED 参数",
+      "default": false,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_IMMEDIATE_TRANSMIT_ENABLED": {
+      "type": "boolean",
+      "description": "CANNM_IMMEDIATE_TRANSMIT_ENABLED 参数",
+      "default": true,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_ACTIVE_WAKEUP_BIT_ENABLED": {
+      "type": "boolean",
+      "description": "CANNM_ACTIVE_WAKEUP_BIT_ENABLED 参数",
+      "default": true,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_PDU_RX_INDICATION_ENABLED": {
+      "type": "boolean",
+      "description": "CANNM_PDU_RX_INDICATION_ENABLED 参数",
+      "default": true,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "CANNM_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "FEATURE SWITCHES"
+    },
+    "CANNM_NUMBER_OF_CHANNELS": {
+      "type": "integer",
+      "description": "CANNM_NUMBER_OF_CHANNELS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NUMBER OF CHANNELS"
+    },
+    "CANNM_MAX_NUMBER_OF_CHANNELS": {
+      "type": "integer",
+      "description": "CANNM_MAX_NUMBER_OF_CHANNELS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NUMBER OF CHANNELS"
+    },
+    "CANNM_CHANNEL_0": {
+      "type": "integer",
+      "description": "CANNM_CHANNEL_0（cast: NetworkHandleType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CANNM_CHANNEL_1": {
+      "type": "integer",
+      "description": "CANNM_CHANNEL_1（cast: NetworkHandleType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CANNM_CHANNEL_0_NAME": {
+      "type": "string",
+      "description": "CANNM_CHANNEL_0_NAME 参数",
+      "default": "CanNm_Channel_0",
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CANNM_CHANNEL_1_NAME": {
+      "type": "string",
+      "description": "CANNM_CHANNEL_1_NAME 参数",
+      "default": "CanNm_Channel_1",
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CANNM_NM_TIMEOUT_TIME_DEFAULT": {
+      "type": "integer",
+      "description": "CANNM_NM_TIMEOUT_TIME_DEFAULT（cast: uint16）",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CANNM_REPEAT_MESSAGE_TIME_DEFAULT": {
+      "type": "integer",
+      "description": "CANNM_REPEAT_MESSAGE_TIME_DEFAULT（cast: uint16）",
+      "default": 400,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CANNM_WAIT_BUS_SLEEP_TIME_DEFAULT": {
+      "type": "integer",
+      "description": "CANNM_WAIT_BUS_SLEEP_TIME_DEFAULT（cast: uint16）",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CANNM_MESSAGE_CYCLE_TIME_DEFAULT": {
+      "type": "integer",
+      "description": "CANNM_MESSAGE_CYCLE_TIME_DEFAULT（cast: uint16）",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CANNM_MESSAGE_CYCLE_OFFSET_DEFAULT": {
+      "type": "integer",
+      "description": "CANNM_MESSAGE_CYCLE_OFFSET_DEFAULT（cast: uint16）",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CANNM_IMMEDIATE_NM_CYCLE_TIME": {
+      "type": "integer",
+      "description": "CANNM_IMMEDIATE_NM_CYCLE_TIME（cast: uint16）",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CANNM_IMMEDIATE_NM_TRANSMSSIONS": {
+      "type": "integer",
+      "description": "CANNM_IMMEDIATE_NM_TRANSMSSIONS（cast: uint8）",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CANNM_REMOTE_SLEEP_IND_TIME": {
+      "type": "integer",
+      "description": "CANNM_REMOTE_SLEEP_IND_TIME（cast: uint16）",
+      "default": 2000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CANNM_PDU_LENGTH": {
+      "type": "integer",
+      "description": "CANNM_PDU_LENGTH（cast: uint8）",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU CONFIGURATION"
+    },
+    "CANNM_PDU_NID_POSITION": {
+      "type": "integer",
+      "description": "CANNM_PDU_NID_POSITION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU CONFIGURATION"
+    },
+    "CANNM_PDU_CBV_POSITION": {
+      "type": "integer",
+      "description": "CANNM_PDU_CBV_POSITION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU CONFIGURATION"
+    },
+    "CANNM_USER_DATA_POSITION": {
+      "type": "integer",
+      "description": "CANNM_USER_DATA_POSITION（cast: uint8）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU CONFIGURATION"
+    },
+    "CANNM_USER_DATA_LENGTH": {
+      "type": "integer",
+      "description": "CANNM_USER_DATA_LENGTH（cast: uint8）",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PDU CONFIGURATION"
+    },
+    "CANNM_CHANNEL_0_NODE_ID": {
+      "type": "integer",
+      "description": "CANNM_CHANNEL_0_NODE_ID（cast: uint8）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NODE CONFIGURATION"
+    },
+    "CANNM_CHANNEL_1_NODE_ID": {
+      "type": "integer",
+      "description": "CANNM_CHANNEL_1_NODE_ID（cast: uint8）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NODE CONFIGURATION"
+    },
+    "CANNM_CHANNEL_0_TX_PDUID": {
+      "type": "integer",
+      "description": "CANNM_CHANNEL_0_TX_PDUID（cast: PduIdType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "TX PDU CONFIGURATION"
+    },
+    "CANNM_CHANNEL_1_TX_PDUID": {
+      "type": "integer",
+      "description": "CANNM_CHANNEL_1_TX_PDUID（cast: PduIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "TX PDU CONFIGURATION"
+    },
+    "CANNM_CHANNEL_0_RX_PDUID": {
+      "type": "integer",
+      "description": "CANNM_CHANNEL_0_RX_PDUID（cast: PduIdType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "TX PDU CONFIGURATION"
+    },
+    "CANNM_CHANNEL_1_RX_PDUID": {
+      "type": "integer",
+      "description": "CANNM_CHANNEL_1_RX_PDUID（cast: PduIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "TX PDU CONFIGURATION"
+    },
+    "CANNM_STATE_CHANGE_IND_FCT": {
+      "type": "string",
+      "description": "CANNM_STATE_CHANGE_IND_FCT 参数",
+      "default": "Nm_StateChangeNotification",
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "CANNM_REMOTE_SLEEP_IND_FCT": {
+      "type": "string",
+      "description": "CANNM_REMOTE_SLEEP_IND_FCT 参数",
+      "default": "Nm_RemoteSleepIndication",
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "CANNM_REMOTE_SLEEP_CANCEL_FCT": {
+      "type": "string",
+      "description": "CANNM_REMOTE_SLEEP_CANCEL_FCT 参数",
+      "default": "Nm_RemoteSleepCancellation",
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "CANNM_MAIN_FUNCTION_PERIOD": {
+      "type": "number",
+      "description": "10ms",
+      "default": 0.01,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "CANNM_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "CANNM_MAIN_FUNCTION_PERIOD_MS（cast: uint16）",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "MAIN FUNCTION PERIOD"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/ecual/canNm/include/CanNm_Cfg.h",
+  "x-display-name": "CanNm_Ecual",
+  "x-sections": [
+    "PRE-COMPILE CONFIGURATION",
+    "FEATURE SWITCHES",
+    "NUMBER OF CHANNELS",
+    "CHANNEL CONFIGURATION",
+    "PDU CONFIGURATION",
+    "NODE CONFIGURATION",
+    "TX PDU CONFIGURATION",
+    "CALLBACK CONFIGURATION",
+    "MAIN FUNCTION PERIOD"
+  ]
+}

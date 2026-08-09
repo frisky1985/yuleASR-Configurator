@@ -1,0 +1,411 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/nvm.json",
+  "title": "NvM Configuration",
+  "description": "NVRAM Manager configuration header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "NVM_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "NVM_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "NVM_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "NVM_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "NVM_SET_RAM_BLOCK_STATUS_API": {
+      "type": "boolean",
+      "description": "NVM_SET_RAM_BLOCK_STATUS_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "NVM_GET_ERROR_STATUS_API": {
+      "type": "boolean",
+      "description": "NVM_GET_ERROR_STATUS_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "NVM_SET_BLOCK_PROTECTION_API": {
+      "type": "boolean",
+      "description": "NVM_SET_BLOCK_PROTECTION_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "NVM_GET_BLOCK_PROTECTION_API": {
+      "type": "boolean",
+      "description": "NVM_GET_BLOCK_PROTECTION_API 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "NVM_SET_DATA_INDEX_API": {
+      "type": "boolean",
+      "description": "NVM_SET_DATA_INDEX_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "NVM_GET_DATA_INDEX_API": {
+      "type": "boolean",
+      "description": "NVM_GET_DATA_INDEX_API 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "NVM_CANCEL_JOB_API": {
+      "type": "boolean",
+      "description": "NVM_CANCEL_JOB_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "NVM_KILL_WRITE_ALL_API": {
+      "type": "boolean",
+      "description": "NVM_KILL_WRITE_ALL_API 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "NVM_KILL_READ_ALL_API": {
+      "type": "boolean",
+      "description": "NVM_KILL_READ_ALL_API 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "NVM_REPAIR_DAMAGED_BLOCKS_API": {
+      "type": "boolean",
+      "description": "NVM_REPAIR_DAMAGED_BLOCKS_API 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "NVM_NUM_OF_NVRAM_BLOCKS": {
+      "type": "integer",
+      "description": "NVM_NUM_OF_NVRAM_BLOCKS 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "BLOCK CONFIGURATION"
+    },
+    "NVM_NUM_OF_DATASETS": {
+      "type": "integer",
+      "description": "NVM_NUM_OF_DATASETS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "BLOCK CONFIGURATION"
+    },
+    "NVM_NUM_OF_ROM_BLOCKS": {
+      "type": "integer",
+      "description": "NVM_NUM_OF_ROM_BLOCKS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "BLOCK CONFIGURATION"
+    },
+    "NVM_BLOCK_ID_FIRST": {
+      "type": "integer",
+      "description": "NVM_BLOCK_ID_FIRST（cast: NvM_BlockIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "BLOCK CONFIGURATION"
+    },
+    "NVM_BLOCK_ID_CONFIG": {
+      "type": "integer",
+      "description": "NVM_BLOCK_ID_CONFIG（cast: NvM_BlockIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "BLOCK CONFIGURATION"
+    },
+    "NVM_BLOCK_ID_CALIBRATION": {
+      "type": "integer",
+      "description": "NVM_BLOCK_ID_CALIBRATION（cast: NvM_BlockIdType）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "BLOCK CONFIGURATION"
+    },
+    "NVM_BLOCK_ID_FAULT_MEMORY": {
+      "type": "integer",
+      "description": "NVM_BLOCK_ID_FAULT_MEMORY（cast: NvM_BlockIdType）",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "BLOCK CONFIGURATION"
+    },
+    "NVM_BLOCK_ID_VIN": {
+      "type": "integer",
+      "description": "NVM_BLOCK_ID_VIN（cast: NvM_BlockIdType）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "BLOCK CONFIGURATION"
+    },
+    "NVM_BLOCK_ID_ODOMETER": {
+      "type": "integer",
+      "description": "NVM_BLOCK_ID_ODOMETER（cast: NvM_BlockIdType）",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "BLOCK CONFIGURATION"
+    },
+    "NVM_BLOCK_ID_USER_DATA_1": {
+      "type": "integer",
+      "description": "NVM_BLOCK_ID_USER_DATA_1（cast: NvM_BlockIdType）",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "BLOCK CONFIGURATION"
+    },
+    "NVM_BLOCK_ID_USER_DATA_2": {
+      "type": "integer",
+      "description": "NVM_BLOCK_ID_USER_DATA_2（cast: NvM_BlockIdType）",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "BLOCK CONFIGURATION"
+    },
+    "NVM_BLOCK_ID_LAST": {
+      "type": "integer",
+      "description": "NVM_BLOCK_ID_LAST（cast: NvM_BlockIdType）",
+      "default": 31,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "BLOCK CONFIGURATION"
+    },
+    "NVM_BLOCK_ID_RESERVED": {
+      "type": "integer",
+      "description": "NVM_BLOCK_ID_RESERVED（cast: NvM_BlockIdType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "BLOCK CONFIGURATION"
+    },
+    "NVM_BLOCK_SIZE_CONFIG": {
+      "type": "integer",
+      "description": "NVM_BLOCK_SIZE_CONFIG 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "BLOCK SIZES"
+    },
+    "NVM_BLOCK_SIZE_CALIBRATION": {
+      "type": "integer",
+      "description": "NVM_BLOCK_SIZE_CALIBRATION 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "BLOCK SIZES"
+    },
+    "NVM_BLOCK_SIZE_FAULT_MEMORY": {
+      "type": "integer",
+      "description": "NVM_BLOCK_SIZE_FAULT_MEMORY 参数",
+      "default": 512,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "BLOCK SIZES"
+    },
+    "NVM_BLOCK_SIZE_VIN": {
+      "type": "integer",
+      "description": "NVM_BLOCK_SIZE_VIN 参数",
+      "default": 17,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "BLOCK SIZES"
+    },
+    "NVM_BLOCK_SIZE_ODOMETER": {
+      "type": "integer",
+      "description": "NVM_BLOCK_SIZE_ODOMETER 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "BLOCK SIZES"
+    },
+    "NVM_BLOCK_SIZE_USER_DATA": {
+      "type": "integer",
+      "description": "NVM_BLOCK_SIZE_USER_DATA 参数",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "BLOCK SIZES"
+    },
+    "NVM_MAX_NUMBER_OF_WRITE_RETRIES": {
+      "type": "integer",
+      "description": "NVM_MAX_NUMBER_OF_WRITE_RETRIES 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "RETRY CONFIGURATION"
+    },
+    "NVM_MAX_NUMBER_OF_READ_RETRIES": {
+      "type": "integer",
+      "description": "NVM_MAX_NUMBER_OF_READ_RETRIES 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "RETRY CONFIGURATION"
+    },
+    "NVM_CALC_RAM_BLOCK_CRC": {
+      "type": "boolean",
+      "description": "NVM_CALC_RAM_BLOCK_CRC 参数",
+      "default": true,
+      "x-section": "CRC CONFIGURATION"
+    },
+    "NVM_USE_CRC_COMP_MECHANISM": {
+      "type": "boolean",
+      "description": "NVM_USE_CRC_COMP_MECHANISM 参数",
+      "default": true,
+      "x-section": "CRC CONFIGURATION"
+    },
+    "NVM_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "NVM_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "NVM_SIZE_STANDARD_JOB_QUEUE": {
+      "type": "integer",
+      "description": "NVM_SIZE_STANDARD_JOB_QUEUE 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "QUEUE SIZES"
+    },
+    "NVM_SIZE_IMMEDIATE_JOB_QUEUE": {
+      "type": "integer",
+      "description": "NVM_SIZE_IMMEDIATE_JOB_QUEUE 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "QUEUE SIZES"
+    },
+    "NVM_MULTI_BLOCK_CALLBACK": {
+      "type": "boolean",
+      "description": "NVM_MULTI_BLOCK_CALLBACK 参数",
+      "default": false,
+      "x-section": "MULTI BLOCK REQUESTS"
+    },
+    "NVM_CFG_MAX_BLOCK_ID": {
+      "type": "integer",
+      "description": "NVM_CFG_MAX_BLOCK_ID 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ECC HANDLER SUPPORT"
+    },
+    "NVM_CFG_BLOCK_DEM_ADMIN_SIZE": {
+      "type": "integer",
+      "description": "NVM_CFG_BLOCK_DEM_ADMIN_SIZE 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ECC HANDLER SUPPORT"
+    },
+    "NVM_CFG_BLOCK_DEM_STATUS_SIZE": {
+      "type": "integer",
+      "description": "NVM_CFG_BLOCK_DEM_STATUS_SIZE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ECC HANDLER SUPPORT"
+    },
+    "NVM_CFG_BLOCK_ECUM_CFG_SIZE": {
+      "type": "integer",
+      "description": "NVM_CFG_BLOCK_ECUM_CFG_SIZE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ECC HANDLER SUPPORT"
+    },
+    "NVM_CFG_BLOCK_BSWM_CFG_SIZE": {
+      "type": "integer",
+      "description": "NVM_CFG_BLOCK_BSWM_CFG_SIZE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ECC HANDLER SUPPORT"
+    },
+    "NVM_CFG_BLOCK_APP_DATA_SIZE": {
+      "type": "integer",
+      "description": "NVM_CFG_BLOCK_APP_DATA_SIZE 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ECC HANDLER SUPPORT"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/nvm/include/NvM_Cfg.h",
+  "x-display-name": "NvM",
+  "x-sections": [
+    "PRE-COMPILE CONFIGURATION",
+    "BLOCK CONFIGURATION",
+    "BLOCK SIZES",
+    "RETRY CONFIGURATION",
+    "CRC CONFIGURATION",
+    "MAIN FUNCTION PERIOD",
+    "QUEUE SIZES",
+    "MULTI BLOCK REQUESTS",
+    "ECC HANDLER SUPPORT"
+  ]
+}

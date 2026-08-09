@@ -1,0 +1,547 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/cantrcv.json",
+  "title": "CanTrcv Configuration",
+  "description": "CAN Transceiver Driver Configuration - AUTOSAR 4.4.0",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CANTRCV_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "CANTRCV_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION PARAMETERS"
+    },
+    "CANTRCV_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "CANTRCV_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION PARAMETERS"
+    },
+    "CANTRCV_WAKEUP_BY_BUS_USED": {
+      "type": "boolean",
+      "description": "CANTRCV_WAKEUP_BY_BUS_USED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION PARAMETERS"
+    },
+    "CANTRCV_WAKEUP_BY_PIN_USED": {
+      "type": "boolean",
+      "description": "CANTRCV_WAKEUP_BY_PIN_USED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION PARAMETERS"
+    },
+    "CANTRCV_SPI_USED": {
+      "type": "boolean",
+      "description": "CANTRCV_SPI_USED 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION PARAMETERS"
+    },
+    "CANTRCV_DIO_USED": {
+      "type": "boolean",
+      "description": "CANTRCV_DIO_USED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION PARAMETERS"
+    },
+    "CANTRCV_CHECK_WAKEUP_API": {
+      "type": "boolean",
+      "description": "CANTRCV_CHECK_WAKEUP_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION PARAMETERS"
+    },
+    "CANTRCV_CHECK_WAKEUP_BY_TRCV_API": {
+      "type": "boolean",
+      "description": "CANTRCV_CHECK_WAKEUP_BY_TRCV_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION PARAMETERS"
+    },
+    "CANTRCV_DEINIT_API": {
+      "type": "boolean",
+      "description": "CANTRCV_DEINIT_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION PARAMETERS"
+    },
+    "CANTRCV_TIMING_OPTIMIZATION": {
+      "type": "boolean",
+      "description": "CANTRCV_TIMING_OPTIMIZATION 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION PARAMETERS"
+    },
+    "CANTRCV_MULTIPLE_TRCV_SUPPORT": {
+      "type": "boolean",
+      "description": "CANTRCV_MULTIPLE_TRCV_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION PARAMETERS"
+    },
+    "CANTRCV_MAX_TRANSCEIVERS": {
+      "type": "integer",
+      "description": "CANTRCV_MAX_TRANSCEIVERS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "HARDWARE CONFIGURATION"
+    },
+    "CANTRCV_NUM_CHANNELS": {
+      "type": "integer",
+      "description": "CANTRCV_NUM_CHANNELS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "HARDWARE CONFIGURATION"
+    },
+    "CANTRCV_HARDWARE_TYPE": {
+      "type": "enum",
+      "description": "CANTRCV_HARDWARE_TYPE 参数",
+      "default": "CANTRCV_TJA1043",
+      "enum": [
+        "CANTRCV_TJA1043",
+        "CANTRCV_TJA1042",
+        "CANTRCV_GENERIC",
+        "CANTRCV_TLE6250",
+        "CANTRCV_UJA1168"
+      ],
+      "x-section": "HARDWARE CONFIGURATION"
+    },
+    "CANTRCV_DEFAULT_HARDWARE_TYPE": {
+      "type": "enum",
+      "description": "CANTRCV_DEFAULT_HARDWARE_TYPE 参数",
+      "default": "CANTRCV_TJA1043",
+      "enum": [
+        "CANTRCV_TJA1043",
+        "CANTRCV_TJA1042",
+        "CANTRCV_GENERIC",
+        "CANTRCV_TLE6250",
+        "CANTRCV_UJA1168"
+      ],
+      "x-section": "HARDWARE CONFIGURATION"
+    },
+    "CANTRCV_MODE_TRANSITION_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "CANTRCV_MODE_TRANSITION_TIMEOUT_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIMING PARAMETERS"
+    },
+    "CANTRCV_TJA1043_STB_EN_DELAY_US": {
+      "type": "integer",
+      "description": "CANTRCV_TJA1043_STB_EN_DELAY_US 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIMING PARAMETERS"
+    },
+    "CANTRCV_SLEEP_MODE_DELAY_MS": {
+      "type": "integer",
+      "description": "CANTRCV_SLEEP_MODE_DELAY_MS 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIMING PARAMETERS"
+    },
+    "CANTRCV_STANDBY_MODE_DELAY_MS": {
+      "type": "integer",
+      "description": "CANTRCV_STANDBY_MODE_DELAY_MS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIMING PARAMETERS"
+    },
+    "CANTRCV_NORMAL_MODE_DELAY_MS": {
+      "type": "integer",
+      "description": "CANTRCV_NORMAL_MODE_DELAY_MS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIMING PARAMETERS"
+    },
+    "CANTRCV_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "CANTRCV_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIMING PARAMETERS"
+    },
+    "CANTRCV_MAX_CHANNELS": {
+      "type": "integer",
+      "description": "CANTRCV_MAX_CHANNELS（别名: CANTRCV_MAX_TRANSCEIVERS = 2；同族可选: CANTRCV_MAX_TRANSCEIVERS）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TIMING PARAMETERS"
+    },
+    "CANTRCV_CH0_STB_PIN": {
+      "type": "enum",
+      "description": "Standby pin - active low",
+      "default": "DIO_CHANNEL_10",
+      "enum": [
+        "DIO_CHANNEL_10",
+        "DIO_CHANNEL_11",
+        "DIO_CHANNEL_12",
+        "DIO_CHANNEL_13",
+        "DIO_CHANNEL_20",
+        "DIO_CHANNEL_21",
+        "DIO_CHANNEL_22",
+        "DIO_CHANNEL_23",
+        "DIO_CHANNEL_30",
+        "DIO_CHANNEL_32"
+      ],
+      "x-section": "DIO CHANNEL CONFIGURATION"
+    },
+    "CANTRCV_CH0_EN_PIN": {
+      "type": "enum",
+      "description": "Enable pin - active high",
+      "default": "DIO_CHANNEL_11",
+      "enum": [
+        "DIO_CHANNEL_11",
+        "DIO_CHANNEL_10",
+        "DIO_CHANNEL_12",
+        "DIO_CHANNEL_13",
+        "DIO_CHANNEL_20",
+        "DIO_CHANNEL_21",
+        "DIO_CHANNEL_22",
+        "DIO_CHANNEL_23",
+        "DIO_CHANNEL_30",
+        "DIO_CHANNEL_32"
+      ],
+      "x-section": "DIO CHANNEL CONFIGURATION"
+    },
+    "CANTRCV_CH0_NERR_PIN": {
+      "type": "enum",
+      "description": "Error pin - active low",
+      "default": "DIO_CHANNEL_12",
+      "enum": [
+        "DIO_CHANNEL_12",
+        "DIO_CHANNEL_10",
+        "DIO_CHANNEL_11",
+        "DIO_CHANNEL_13",
+        "DIO_CHANNEL_20",
+        "DIO_CHANNEL_21",
+        "DIO_CHANNEL_22",
+        "DIO_CHANNEL_23",
+        "DIO_CHANNEL_30",
+        "DIO_CHANNEL_32"
+      ],
+      "x-section": "DIO CHANNEL CONFIGURATION"
+    },
+    "CANTRCV_CH0_WAK_PIN": {
+      "type": "enum",
+      "description": "Wake-up pin",
+      "default": "DIO_CHANNEL_13",
+      "enum": [
+        "DIO_CHANNEL_13",
+        "DIO_CHANNEL_10",
+        "DIO_CHANNEL_11",
+        "DIO_CHANNEL_12",
+        "DIO_CHANNEL_20",
+        "DIO_CHANNEL_21",
+        "DIO_CHANNEL_22",
+        "DIO_CHANNEL_23",
+        "DIO_CHANNEL_30",
+        "DIO_CHANNEL_32"
+      ],
+      "x-section": "DIO CHANNEL CONFIGURATION"
+    },
+    "CANTRCV_CH1_STB_PIN": {
+      "type": "enum",
+      "description": "Standby pin - active low",
+      "default": "DIO_CHANNEL_20",
+      "enum": [
+        "DIO_CHANNEL_20",
+        "DIO_CHANNEL_10",
+        "DIO_CHANNEL_11",
+        "DIO_CHANNEL_12",
+        "DIO_CHANNEL_13",
+        "DIO_CHANNEL_21",
+        "DIO_CHANNEL_22",
+        "DIO_CHANNEL_23",
+        "DIO_CHANNEL_30",
+        "DIO_CHANNEL_32"
+      ],
+      "x-section": "DIO CHANNEL CONFIGURATION"
+    },
+    "CANTRCV_CH1_EN_PIN": {
+      "type": "enum",
+      "description": "Enable pin - active high",
+      "default": "DIO_CHANNEL_21",
+      "enum": [
+        "DIO_CHANNEL_21",
+        "DIO_CHANNEL_10",
+        "DIO_CHANNEL_11",
+        "DIO_CHANNEL_12",
+        "DIO_CHANNEL_13",
+        "DIO_CHANNEL_20",
+        "DIO_CHANNEL_22",
+        "DIO_CHANNEL_23",
+        "DIO_CHANNEL_30",
+        "DIO_CHANNEL_32"
+      ],
+      "x-section": "DIO CHANNEL CONFIGURATION"
+    },
+    "CANTRCV_CH1_NERR_PIN": {
+      "type": "enum",
+      "description": "Error pin - active low",
+      "default": "DIO_CHANNEL_22",
+      "enum": [
+        "DIO_CHANNEL_22",
+        "DIO_CHANNEL_10",
+        "DIO_CHANNEL_11",
+        "DIO_CHANNEL_12",
+        "DIO_CHANNEL_13",
+        "DIO_CHANNEL_20",
+        "DIO_CHANNEL_21",
+        "DIO_CHANNEL_23",
+        "DIO_CHANNEL_30",
+        "DIO_CHANNEL_32"
+      ],
+      "x-section": "DIO CHANNEL CONFIGURATION"
+    },
+    "CANTRCV_CH1_WAK_PIN": {
+      "type": "enum",
+      "description": "Wake-up pin (not used for TJA1042)",
+      "default": "DIO_CHANNEL_23",
+      "enum": [
+        "DIO_CHANNEL_23",
+        "DIO_CHANNEL_10",
+        "DIO_CHANNEL_11",
+        "DIO_CHANNEL_12",
+        "DIO_CHANNEL_13",
+        "DIO_CHANNEL_20",
+        "DIO_CHANNEL_21",
+        "DIO_CHANNEL_22",
+        "DIO_CHANNEL_30",
+        "DIO_CHANNEL_32"
+      ],
+      "x-section": "DIO CHANNEL CONFIGURATION"
+    },
+    "CANTRCV_CH0_SPI_SEQUENCE": {
+      "type": "enum",
+      "description": "CANTRCV_CH0_SPI_SEQUENCE 参数",
+      "default": "SPI_SEQUENCE_0",
+      "enum": [
+        "SPI_SEQUENCE_0",
+        "SPI_SEQUENCE_1"
+      ],
+      "x-section": "DIO CHANNEL CONFIGURATION"
+    },
+    "CANTRCV_CH0_SPI_CHANNEL": {
+      "type": "enum",
+      "description": "CANTRCV_CH0_SPI_CHANNEL 参数",
+      "default": "SPI_CHANNEL_0",
+      "enum": [
+        "SPI_CHANNEL_0",
+        "SPI_CHANNEL_1"
+      ],
+      "x-section": "DIO CHANNEL CONFIGURATION"
+    },
+    "CANTRCV_CH1_SPI_SEQUENCE": {
+      "type": "enum",
+      "description": "CANTRCV_CH1_SPI_SEQUENCE 参数",
+      "default": "SPI_SEQUENCE_1",
+      "enum": [
+        "SPI_SEQUENCE_1",
+        "SPI_SEQUENCE_0"
+      ],
+      "x-section": "DIO CHANNEL CONFIGURATION"
+    },
+    "CANTRCV_CH1_SPI_CHANNEL": {
+      "type": "enum",
+      "description": "CANTRCV_CH1_SPI_CHANNEL 参数",
+      "default": "SPI_CHANNEL_1",
+      "enum": [
+        "SPI_CHANNEL_1",
+        "SPI_CHANNEL_0"
+      ],
+      "x-section": "DIO CHANNEL CONFIGURATION"
+    },
+    "CANTRCV_CH0_WAKEUP_SOURCE": {
+      "type": "enum",
+      "description": "CANTRCV_CH0_WAKEUP_SOURCE 参数",
+      "default": "ECUM_WKSOURCE_CAN",
+      "enum": [
+        "ECUM_WKSOURCE_CAN",
+        "ECUM_WKSOURCE_CAN1",
+        "ECUM_WKSOURCE_LIN_CH0",
+        "ECUM_WKSOURCE_LIN_CH1"
+      ],
+      "x-section": "WAKE-UP CONFIGURATION"
+    },
+    "CANTRCV_CH1_WAKEUP_SOURCE": {
+      "type": "enum",
+      "description": "CANTRCV_CH1_WAKEUP_SOURCE 参数",
+      "default": "ECUM_WKSOURCE_CAN1",
+      "enum": [
+        "ECUM_WKSOURCE_CAN1",
+        "ECUM_WKSOURCE_CAN",
+        "ECUM_WKSOURCE_LIN_CH0",
+        "ECUM_WKSOURCE_LIN_CH1"
+      ],
+      "x-section": "WAKE-UP CONFIGURATION"
+    },
+    "CANTRCV_DEFAULT_WAKEUP_MODE": {
+      "type": "enum",
+      "description": "CANTRCV_DEFAULT_WAKEUP_MODE 参数",
+      "default": "CANTRCV_WUMODE_ENABLE",
+      "enum": [
+        "CANTRCV_WUMODE_DISABLE",
+        "CANTRCV_WUMODE_ENABLE",
+        "CANTRCV_WUMODE_CLEAR"
+      ],
+      "x-section": "WAKE-UP CONFIGURATION"
+    },
+    "CANTRCV_WAKEUP_FILTERING_ENABLED": {
+      "type": "boolean",
+      "description": "CANTRCV_WAKEUP_FILTERING_ENABLED 参数",
+      "default": true,
+      "x-section": "WAKE-UP CONFIGURATION"
+    },
+    "CANTRCV_REPORT_TO_DET": {
+      "type": "boolean",
+      "description": "CANTRCV_REPORT_TO_DET 参数",
+      "default": true,
+      "x-section": "ERROR HANDLING CONFIGURATION"
+    },
+    "CANTRCV_RUNTIME_ERROR_REPORTING": {
+      "type": "boolean",
+      "description": "CANTRCV_RUNTIME_ERROR_REPORTING 参数",
+      "default": false,
+      "x-section": "ERROR HANDLING CONFIGURATION"
+    },
+    "CANTRCV_PROD_ERROR_REPORTING": {
+      "type": "boolean",
+      "description": "CANTRCV_PROD_ERROR_REPORTING 参数",
+      "default": false,
+      "x-section": "ERROR HANDLING CONFIGURATION"
+    },
+    "CANTRCV_WAKEUP_NOTIFICATION_ENABLED": {
+      "type": "boolean",
+      "description": "CANTRCV_WAKEUP_NOTIFICATION_ENABLED 参数",
+      "default": true,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "CANTRCV_ERROR_NOTIFICATION_ENABLED": {
+      "type": "boolean",
+      "description": "CANTRCV_ERROR_NOTIFICATION_ENABLED 参数",
+      "default": true,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "CANTRCV_INSTANCE_ID": {
+      "type": "integer",
+      "description": "CANTRCV_INSTANCE_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CALLBACK FUNCTION PROTOTYPES"
+    },
+    "CANTRCV_E_INVALID_CHANNEL": {
+      "type": "integer",
+      "description": "CANTRCV_E_INVALID_CHANNEL 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CALLBACK FUNCTION PROTOTYPES"
+    },
+    "CANTRCV_E_PARAM_TRCV_OPMODE": {
+      "type": "integer",
+      "description": "CANTRCV_E_PARAM_TRCV_OPMODE 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CALLBACK FUNCTION PROTOTYPES"
+    },
+    "CANTRCV_E_PARAM_POINTER": {
+      "type": "integer",
+      "description": "CANTRCV_E_PARAM_POINTER 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CALLBACK FUNCTION PROTOTYPES"
+    },
+    "CANTRCV_E_UNINIT": {
+      "type": "integer",
+      "description": "CANTRCV_E_UNINIT 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CALLBACK FUNCTION PROTOTYPES"
+    },
+    "CANTRCV_E_PARAM_TRCV_WAKEUP_MODE": {
+      "type": "integer",
+      "description": "CANTRCV_E_PARAM_TRCV_WAKEUP_MODE 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CALLBACK FUNCTION PROTOTYPES"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "ECUAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/ecual/cantrcv/include/CanTrcv_Cfg.h",
+  "x-display-name": "CanTrcv",
+  "x-sections": [
+    "PRE-COMPILE CONFIGURATION PARAMETERS",
+    "HARDWARE CONFIGURATION",
+    "TIMING PARAMETERS",
+    "DIO CHANNEL CONFIGURATION",
+    "WAKE-UP CONFIGURATION",
+    "ERROR HANDLING CONFIGURATION",
+    "CALLBACK CONFIGURATION",
+    "CALLBACK FUNCTION PROTOTYPES"
+  ]
+}

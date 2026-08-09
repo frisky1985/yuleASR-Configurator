@@ -1,0 +1,310 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/mcu.json",
+  "title": "Mcu Configuration",
+  "description": "MCU Driver configuration header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MCU_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "MCU_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MCU_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "MCU_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MCU_GET_RAM_STATE_API": {
+      "type": "boolean",
+      "description": "MCU_GET_RAM_STATE_API 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MCU_PERFORM_RESET_API": {
+      "type": "boolean",
+      "description": "MCU_PERFORM_RESET_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MCU_INIT_CLOCK_API": {
+      "type": "boolean",
+      "description": "MCU_INIT_CLOCK_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MCU_NO_PLL": {
+      "type": "boolean",
+      "description": "MCU_NO_PLL 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MCU_XTAL_FREQUENCY_HZ": {
+      "type": "integer",
+      "description": "24MHz XTAL",
+      "default": 24000000,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CLOCK CONFIGURATION"
+    },
+    "MCU_SYSTEM_CLOCK_HZ": {
+      "type": "integer",
+      "description": "1GHz System Clock",
+      "default": 1000000000,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CLOCK CONFIGURATION"
+    },
+    "MCU_BUS_CLOCK_HZ": {
+      "type": "integer",
+      "description": "500MHz Bus Clock",
+      "default": 500000000,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CLOCK CONFIGURATION"
+    },
+    "MCU_FLASH_CLOCK_HZ": {
+      "type": "integer",
+      "description": "100MHz Flash Clock",
+      "default": 100000000,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CLOCK CONFIGURATION"
+    },
+    "MCU_NUM_CLOCK_CONFIGS": {
+      "type": "integer",
+      "description": "MCU_NUM_CLOCK_CONFIGS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NUMBER OF CLOCK CONFIGURATIONS"
+    },
+    "MCU_NUM_RAM_SECTIONS": {
+      "type": "integer",
+      "description": "MCU_NUM_RAM_SECTIONS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NUMBER OF RAM SECTIONS"
+    },
+    "MCU_NUM_MODES": {
+      "type": "integer",
+      "description": "MCU_NUM_MODES 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NUMBER OF MCU MODES"
+    },
+    "MCU_MODE_NORMAL": {
+      "type": "integer",
+      "description": "MCU_MODE_NORMAL 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MCU MODE DEFINITIONS"
+    },
+    "MCU_MODE_RUN": {
+      "type": "integer",
+      "description": "alias for NORMAL, used in ECUC integration",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MCU MODE DEFINITIONS"
+    },
+    "MCU_MODE_SLEEP": {
+      "type": "integer",
+      "description": "MCU_MODE_SLEEP 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MCU MODE DEFINITIONS"
+    },
+    "MCU_MODE_DEEP_SLEEP": {
+      "type": "integer",
+      "description": "MCU_MODE_DEEP_SLEEP 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MCU MODE DEFINITIONS"
+    },
+    "MCU_MODE_RESET": {
+      "type": "integer",
+      "description": "MCU_MODE_RESET 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MCU MODE DEFINITIONS"
+    },
+    "MCU_RESET_UNDEFINED": {
+      "type": "integer",
+      "description": "MCU_RESET_UNDEFINED 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "RESET REASON DEFINITIONS"
+    },
+    "MCU_RESET_POWER_ON": {
+      "type": "integer",
+      "description": "MCU_RESET_POWER_ON 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "RESET REASON DEFINITIONS"
+    },
+    "MCU_RESET_WATCHDOG": {
+      "type": "integer",
+      "description": "MCU_RESET_WATCHDOG 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "RESET REASON DEFINITIONS"
+    },
+    "MCU_RESET_SW": {
+      "type": "integer",
+      "description": "MCU_RESET_SW 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "RESET REASON DEFINITIONS"
+    },
+    "MCU_RESET_EXT": {
+      "type": "integer",
+      "description": "MCU_RESET_EXT 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "RESET REASON DEFINITIONS"
+    },
+    "MCU_CLOCK_SOURCE_XTAL": {
+      "type": "integer",
+      "description": "MCU_CLOCK_SOURCE_XTAL 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CLOCK SOURCE DEFINITIONS"
+    },
+    "MCU_CLOCK_SOURCE_PLL": {
+      "type": "integer",
+      "description": "MCU_CLOCK_SOURCE_PLL 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CLOCK SOURCE DEFINITIONS"
+    },
+    "MCU_CLOCK_SOURCE_RC": {
+      "type": "integer",
+      "description": "MCU_CLOCK_SOURCE_RC 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CLOCK SOURCE DEFINITIONS"
+    },
+    "MCU_PLL_PREDIV": {
+      "type": "integer",
+      "description": "MCU_PLL_PREDIV 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PLL CONFIGURATION"
+    },
+    "MCU_PLL_MULTIPLIER": {
+      "type": "integer",
+      "description": "MCU_PLL_MULTIPLIER 参数",
+      "default": 125,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PLL CONFIGURATION"
+    },
+    "MCU_PLL_POSTDIV": {
+      "type": "integer",
+      "description": "MCU_PLL_POSTDIV 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PLL CONFIGURATION"
+    },
+    "MCU_TIMEOUT_US": {
+      "type": "integer",
+      "description": "10ms timeout",
+      "default": 10000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "TIMEOUT CONFIGURATION"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/mcal/mcu/include/Mcu_Cfg.h",
+  "x-display-name": "Mcu",
+  "x-sections": [
+    "PRE-COMPILE CONFIGURATION",
+    "CLOCK CONFIGURATION",
+    "NUMBER OF CLOCK CONFIGURATIONS",
+    "NUMBER OF RAM SECTIONS",
+    "NUMBER OF MCU MODES",
+    "MCU MODE DEFINITIONS",
+    "RESET REASON DEFINITIONS",
+    "CLOCK SOURCE DEFINITIONS",
+    "PLL CONFIGURATION",
+    "TIMEOUT CONFIGURATION"
+  ]
+}

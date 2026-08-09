@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/memif.json",
+  "title": "MemIf Configuration",
+  "description": "Memory Interface configuration header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "MEMIF_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "MEMIF_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "MEMIF_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "MEMIF_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "MEMIF_NUMBER_OF_DEVICES": {
+      "type": "integer",
+      "description": "MEMIF_NUMBER_OF_DEVICES 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MEMIF_NUMBER_OF_FEE_DEVICES": {
+      "type": "integer",
+      "description": "MEMIF_NUMBER_OF_FEE_DEVICES 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MEMIF_NUMBER_OF_EA_DEVICES": {
+      "type": "integer",
+      "description": "MEMIF_NUMBER_OF_EA_DEVICES 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MEMIF_FEE_DEVICE_INDEX": {
+      "type": "integer",
+      "description": "MEMIF_FEE_DEVICE_INDEX 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MEMIF_EA_DEVICE_INDEX": {
+      "type": "integer",
+      "description": "MEMIF_EA_DEVICE_INDEX 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MEMIF_POLLING_MODE": {
+      "type": "boolean",
+      "description": "MEMIF_POLLING_MODE 参数",
+      "default": true
+    },
+    "MEMIF_INTERRUPT_MODE": {
+      "type": "boolean",
+      "description": "MEMIF_INTERRUPT_MODE 参数",
+      "default": false
+    },
+    "MEMIF_MAX_BLOCK_NUMBER": {
+      "type": "integer",
+      "description": "MEMIF_MAX_BLOCK_NUMBER 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "MEMIF_MAX_BLOCK_SIZE": {
+      "type": "integer",
+      "description": "MEMIF_MAX_BLOCK_SIZE 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "MEMIF_READ_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "MEMIF_READ_TIMEOUT_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MEMIF_WRITE_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "MEMIF_WRITE_TIMEOUT_MS 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "MEMIF_ERASE_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "MEMIF_ERASE_TIMEOUT_MS 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "MEMIF_FEE_USED": {
+      "type": "boolean",
+      "description": "MEMIF_FEE_USED 参数",
+      "default": true
+    },
+    "MEMIF_EA_USED": {
+      "type": "boolean",
+      "description": "MEMIF_EA_USED 参数",
+      "default": true
+    },
+    "MEMIF_USE_RTE": {
+      "type": "boolean",
+      "description": "MEMIF_USE_RTE 参数",
+      "default": false
+    },
+    "MEMIF_CANCEL_API": {
+      "type": "boolean",
+      "description": "MEMIF_CANCEL_API 参数",
+      "default": true
+    },
+    "MEMIF_SETMODE_API": {
+      "type": "boolean",
+      "description": "MEMIF_SETMODE_API 参数",
+      "default": true
+    },
+    "MEMIF_GETSTATUS_API": {
+      "type": "boolean",
+      "description": "MEMIF_GETSTATUS_API 参数",
+      "default": true
+    },
+    "MEMIF_GETJOBRESULT_API": {
+      "type": "boolean",
+      "description": "MEMIF_GETJOBRESULT_API 参数",
+      "default": true
+    },
+    "MEMIF_INVALIDATEBLOCK_API": {
+      "type": "boolean",
+      "description": "MEMIF_INVALIDATEBLOCK_API 参数",
+      "default": true
+    },
+    "MEMIF_ERASEIMMEDIATEBLOCK_API": {
+      "type": "boolean",
+      "description": "MEMIF_ERASEIMMEDIATEBLOCK_API 参数",
+      "default": true
+    },
+    "MEMIF_MULTI_CORE_SUPPORT": {
+      "type": "boolean",
+      "description": "MEMIF_MULTI_CORE_SUPPORT 参数",
+      "default": false
+    },
+    "MEMIF_FEE_CORE_ID": {
+      "type": "integer",
+      "description": "MEMIF_FEE_CORE_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MEMIF_EA_CORE_ID": {
+      "type": "integer",
+      "description": "MEMIF_EA_CORE_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MEMIF_TOTAL_NUM_DEVICES": {
+      "type": "integer",
+      "description": "MEMIF_TOTAL_NUM_DEVICES 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MEMIF_INSTANCE_ID": {
+      "type": "integer",
+      "description": "MEMIF_INSTANCE_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MEMIF_SID_INIT": {
+      "type": "integer",
+      "description": "MEMIF_SID_INIT 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MEMIF_PATH_FEE": {
+      "type": "integer",
+      "description": "MEMIF_PATH_FEE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MEMIF_PATH_EA": {
+      "type": "integer",
+      "description": "MEMIF_PATH_EA 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MEMIF_BUSY_INTERNAL": {
+      "type": "integer",
+      "description": "MEMIF_BUSY_INTERNAL 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MEMIF_UNINIT": {
+      "type": "integer",
+      "description": "MEMIF_UNINIT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/memif/include/MemIf_Cfg.h",
+  "x-display-name": "MemIf"
+}

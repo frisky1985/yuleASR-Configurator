@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/det.json",
+  "title": "Det Configuration",
+  "description": "Enable/disable version info API",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DET_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "DET_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_FORWARD_TO_DLT": {
+      "type": "boolean",
+      "description": "DET_FORWARD_TO_DLT 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_FORWARD_TO_DEM": {
+      "type": "boolean",
+      "description": "DET_FORWARD_TO_DEM 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_DEM_EVENT_ID": {
+      "type": "integer",
+      "description": "DET_DEM_EVENT_ID（派生表达式: DemConf_DemEventParameter_DetError）",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_ERROR_HOOKS_ENABLED": {
+      "type": "boolean",
+      "description": "DET_ERROR_HOOKS_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_RUNTIME_ERROR_CALLOUTS": {
+      "type": "boolean",
+      "description": "DET_RUNTIME_ERROR_CALLOUTS 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_TRANSIENT_FAULT_CALLOUTS": {
+      "type": "boolean",
+      "description": "DET_TRANSIENT_FAULT_CALLOUTS 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_MAX_ERROR_HOOKS": {
+      "type": "integer",
+      "description": "DET_MAX_ERROR_HOOKS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_MAX_RUNTIME_CALLOUTS": {
+      "type": "integer",
+      "description": "DET_MAX_RUNTIME_CALLOUTS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_MAX_TRANSIENT_CALLOUTS": {
+      "type": "integer",
+      "description": "DET_MAX_TRANSIENT_CALLOUTS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_ENABLED": {
+      "type": "boolean",
+      "description": "DET_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_FREEZE_ON_ERROR": {
+      "type": "boolean",
+      "description": "DET_FREEZE_ON_ERROR 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_ERROR_LOGGING_ENABLED": {
+      "type": "boolean",
+      "description": "DET_ERROR_LOGGING_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_MAX_ERROR_ENTRIES": {
+      "type": "integer",
+      "description": "DET_MAX_ERROR_ENTRIES 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_RUNTIME_ERROR_REPORTING": {
+      "type": "boolean",
+      "description": "DET_RUNTIME_ERROR_REPORTING 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_TRANSIENT_FAULT_REPORTING": {
+      "type": "boolean",
+      "description": "DET_TRANSIENT_FAULT_REPORTING 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_ERROR_HOOK_FORWARD": {
+      "type": "boolean",
+      "description": "DET_ERROR_HOOK_FORWARD 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_RUNTIME_ERROR_HOOK_FORWARD": {
+      "type": "boolean",
+      "description": "DET_RUNTIME_ERROR_HOOK_FORWARD 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_TRANSIENT_FAULT_HOOK_FORWARD": {
+      "type": "boolean",
+      "description": "DET_TRANSIENT_FAULT_HOOK_FORWARD 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE OPTIONS"
+    },
+    "DET_NUMBER_OF_ERROR_HOOKS": {
+      "type": "integer",
+      "description": "DET_NUMBER_OF_ERROR_HOOKS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "POST-BUILD CONFIGURATION"
+    },
+    "DET_NUMBER_OF_RUNTIME_ERROR_HOOKS": {
+      "type": "integer",
+      "description": "DET_NUMBER_OF_RUNTIME_ERROR_HOOKS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "POST-BUILD CONFIGURATION"
+    },
+    "DET_NUMBER_OF_TRANSIENT_FAULT_HOOKS": {
+      "type": "integer",
+      "description": "DET_NUMBER_OF_TRANSIENT_FAULT_HOOKS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "POST-BUILD CONFIGURATION"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/det/include/Det_Cfg.h",
+  "x-display-name": "Det",
+  "x-sections": [
+    "PRE-COMPILE OPTIONS",
+    "POST-BUILD CONFIGURATION"
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/eth.json",
+  "title": "Eth Configuration",
+  "description": "Ethernet Driver Configuration",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ETH_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "ETH_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "ETH_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "ETH_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "ETH_MAX_CONTROLLERS": {
+      "type": "integer",
+      "description": "ETH_MAX_CONTROLLERS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "ETH_CONTROLLER_0": {
+      "type": "integer",
+      "description": "ETH_CONTROLLER_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "ETH_CTRL0_MAC_ADDR": {
+      "type": "string",
+      "description": "ETH_CTRL0_MAC_ADDR 参数（原始值: {0x00, 0x01, 0x02, 0x03, 0x04, 0x05}）"
+    },
+    "ETH_CTRL0_SPEED": {
+      "type": "enum",
+      "description": "ETH_CTRL0_SPEED 参数",
+      "default": "ETH_RATE_100MBPS",
+      "enum": [
+        "ETH_RATE_100MBPS",
+        "ETH_RATE_1000MBPS",
+        "ETH_RATE_10MBPS"
+      ]
+    },
+    "ETH_CTRL0_FULL_DUPLEX": {
+      "type": "boolean",
+      "description": "ETH_CTRL0_FULL_DUPLEX 参数",
+      "default": true
+    },
+    "ETH_CTRL0_RX_CHECKSUM_OFFLOAD": {
+      "type": "boolean",
+      "description": "ETH_CTRL0_RX_CHECKSUM_OFFLOAD 参数",
+      "default": false
+    },
+    "ETH_CTRL0_TX_CHECKSUM_OFFLOAD": {
+      "type": "boolean",
+      "description": "ETH_CTRL0_TX_CHECKSUM_OFFLOAD 参数",
+      "default": false
+    },
+    "ETH_MAX_TX_BUFS": {
+      "type": "integer",
+      "description": "ETH_MAX_TX_BUFS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "ETH_MAX_RX_BUFS": {
+      "type": "integer",
+      "description": "ETH_MAX_RX_BUFS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "ETH_CFG_BUF_SIZE": {
+      "type": "integer",
+      "description": "ETH_CFG_BUF_SIZE 参数",
+      "default": 1536,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "ETH_TIMEOUT": {
+      "type": "integer",
+      "description": "ETH_TIMEOUT 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "ETH_LINK_TIMEOUT": {
+      "type": "integer",
+      "description": "ETH_LINK_TIMEOUT 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "ETH_MULTICAST_SUPPORT": {
+      "type": "boolean",
+      "description": "ETH_MULTICAST_SUPPORT 参数",
+      "default": true
+    },
+    "ETH_PROMISCUOUS_MODE": {
+      "type": "boolean",
+      "description": "ETH_PROMISCUOUS_MODE 参数",
+      "default": false
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/mcal/eth/include/Eth_Cfg.h",
+  "x-display-name": "Eth"
+}

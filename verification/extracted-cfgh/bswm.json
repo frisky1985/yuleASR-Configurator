@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/bswm.json",
+  "title": "BswM Configuration",
+  "description": "BswM Configuration",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BSWM_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "BSWM_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "BSWM_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "BSWM_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "BSWM_MAX_MODE_REQUEST_PORTS": {
+      "type": "integer",
+      "description": "BSWM_MAX_MODE_REQUEST_PORTS 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BSWM_MAX_RULES": {
+      "type": "integer",
+      "description": "BSWM_MAX_RULES 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BSWM_MAX_ACTIONS": {
+      "type": "integer",
+      "description": "BSWM_MAX_ACTIONS 参数",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BSWM_MAX_ACTION_LISTS": {
+      "type": "integer",
+      "description": "BSWM_MAX_ACTION_LISTS 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BSWM_MODE_STARTUP": {
+      "type": "integer",
+      "description": "BSWM_MODE_STARTUP 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BSWM_MODE_RUN": {
+      "type": "integer",
+      "description": "BSWM_MODE_RUN 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BSWM_MODE_SHUTDOWN": {
+      "type": "integer",
+      "description": "BSWM_MODE_SHUTDOWN 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BSWM_MODE_SLEEP": {
+      "type": "integer",
+      "description": "BSWM_MODE_SLEEP 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BSWM_MODE_WAKEUP": {
+      "type": "integer",
+      "description": "BSWM_MODE_WAKEUP 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BSWM_ECUM_STATE_STARTUP": {
+      "type": "integer",
+      "description": "BSWM_ECUM_STATE_STARTUP 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BSWM_ECUM_STATE_RUN": {
+      "type": "integer",
+      "description": "BSWM_ECUM_STATE_RUN 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BSWM_ECUM_STATE_SHUTDOWN": {
+      "type": "integer",
+      "description": "BSWM_ECUM_STATE_SHUTDOWN 参数",
+      "default": 48,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "BSWM_ECUM_STATE_SLEEP": {
+      "type": "integer",
+      "description": "BSWM_ECUM_STATE_SLEEP 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/bswm/include/BswM_Cfg.h",
+  "x-display-name": "BswM"
+}

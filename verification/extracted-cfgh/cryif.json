@@ -1,0 +1,602 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/cryif.json",
+  "title": "CryIf Configuration",
+  "description": "Crypto Interface Configuration Header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CRYIF_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "CRYIF_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "CRYIF_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "CRYIF_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "CRYIF_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "CRYIF_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "CRYIF_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "CRYIF_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "CRYIF_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "CRYIF_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "CRYIF_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "CRYIF_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "VERSION INFORMATION"
+    },
+    "CRYIF_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "CRYIF_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYIF_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "CRYIF_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYIF_KEY_ELEMENT_COPY_API": {
+      "type": "boolean",
+      "description": "CRYIF_KEY_ELEMENT_COPY_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYIF_KEY_VALID_CHECK_API": {
+      "type": "boolean",
+      "description": "CRYIF_KEY_VALID_CHECK_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYIF_CFG_MAX_CHANNEL_COUNT": {
+      "type": "integer",
+      "description": "CRYIF_CFG_MAX_CHANNEL_COUNT 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION PARAMETERS"
+    },
+    "CRYIF_CFG_MAX_KEY_COUNT": {
+      "type": "integer",
+      "description": "CRYIF_CFG_MAX_KEY_COUNT 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION PARAMETERS"
+    },
+    "CRYIF_CFG_MAX_JOB_COUNT": {
+      "type": "integer",
+      "description": "CRYIF_CFG_MAX_JOB_COUNT 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION PARAMETERS"
+    },
+    "CRYIF_CFG_MAX_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "CRYIF_CFG_MAX_BUFFER_SIZE 参数",
+      "default": 1024,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CONFIGURATION PARAMETERS"
+    },
+    "CRYIF_CFG_MAX_KEY_ELEMENT_SIZE": {
+      "type": "integer",
+      "description": "CRYIF_CFG_MAX_KEY_ELEMENT_SIZE 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CONFIGURATION PARAMETERS"
+    },
+    "CRYIF_CFG_NUM_CHANNELS": {
+      "type": "integer",
+      "description": "CRYIF_CFG_NUM_CHANNELS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION PARAMETERS"
+    },
+    "CRYIF_CFG_NUM_KEYS": {
+      "type": "integer",
+      "description": "CRYIF_CFG_NUM_KEYS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION PARAMETERS"
+    },
+    "CRYIF_CFG_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "CRYIF_CFG_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CONFIGURATION PARAMETERS"
+    },
+    "CRYIF_CFG_CHANNEL_0_ID": {
+      "type": "integer",
+      "description": "CRYIF_CFG_CHANNEL_0_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CRYIF_CFG_CHANNEL_0_DRIVER_INDEX": {
+      "type": "integer",
+      "description": "CRYIF_CFG_CHANNEL_0_DRIVER_INDEX 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CRYIF_CFG_CHANNEL_0_DRIVER_OBJ": {
+      "type": "integer",
+      "description": "CRYIF_CFG_CHANNEL_0_DRIVER_OBJ 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CRYIF_CFG_CHANNEL_0_MAX_KEY_SIZE": {
+      "type": "integer",
+      "description": "CRYIF_CFG_CHANNEL_0_MAX_KEY_SIZE 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CRYIF_CFG_CHANNEL_0_MAX_JOB_SIZE": {
+      "type": "integer",
+      "description": "CRYIF_CFG_CHANNEL_0_MAX_JOB_SIZE 参数",
+      "default": 1024,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CRYIF_CFG_CHANNEL_1_ID": {
+      "type": "integer",
+      "description": "CRYIF_CFG_CHANNEL_1_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CRYIF_CFG_CHANNEL_1_DRIVER_INDEX": {
+      "type": "integer",
+      "description": "CRYIF_CFG_CHANNEL_1_DRIVER_INDEX 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CRYIF_CFG_CHANNEL_1_DRIVER_OBJ": {
+      "type": "integer",
+      "description": "CRYIF_CFG_CHANNEL_1_DRIVER_OBJ 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CRYIF_CFG_CHANNEL_1_MAX_KEY_SIZE": {
+      "type": "integer",
+      "description": "CRYIF_CFG_CHANNEL_1_MAX_KEY_SIZE 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CRYIF_CFG_CHANNEL_1_MAX_JOB_SIZE": {
+      "type": "integer",
+      "description": "CRYIF_CFG_CHANNEL_1_MAX_JOB_SIZE 参数",
+      "default": 1024,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "CHANNEL CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_0_ID": {
+      "type": "integer",
+      "description": "CRYIF_CFG_KEY_0_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_0_CRYPTO_KEY_ID": {
+      "type": "integer",
+      "description": "CRYIF_CFG_KEY_0_CRYPTO_KEY_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_0_DRIVER_INDEX": {
+      "type": "integer",
+      "description": "CRYIF_CFG_KEY_0_DRIVER_INDEX 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_0_SECURITY_LEVEL": {
+      "type": "enum",
+      "description": "CRYIF_CFG_KEY_0_SECURITY_LEVEL 参数",
+      "default": "CRYIF_SEC_LEVEL_3",
+      "enum": [
+        "CRYIF_SEC_LEVEL_NONE",
+        "CRYIF_SEC_LEVEL_1",
+        "CRYIF_SEC_LEVEL_2",
+        "CRYIF_SEC_LEVEL_3",
+        "CRYIF_SEC_LEVEL_4",
+        "CRYIF_SEC_LEVEL_5",
+        "CRYIF_SEC_LEVEL_6",
+        "CRYIF_SEC_LEVEL_7"
+      ],
+      "x-section": "KEY CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_1_ID": {
+      "type": "integer",
+      "description": "CRYIF_CFG_KEY_1_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_1_CRYPTO_KEY_ID": {
+      "type": "integer",
+      "description": "CRYIF_CFG_KEY_1_CRYPTO_KEY_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_1_DRIVER_INDEX": {
+      "type": "integer",
+      "description": "CRYIF_CFG_KEY_1_DRIVER_INDEX 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_1_SECURITY_LEVEL": {
+      "type": "enum",
+      "description": "CRYIF_CFG_KEY_1_SECURITY_LEVEL 参数",
+      "default": "CRYIF_SEC_LEVEL_2",
+      "enum": [
+        "CRYIF_SEC_LEVEL_NONE",
+        "CRYIF_SEC_LEVEL_1",
+        "CRYIF_SEC_LEVEL_2",
+        "CRYIF_SEC_LEVEL_3",
+        "CRYIF_SEC_LEVEL_4",
+        "CRYIF_SEC_LEVEL_5",
+        "CRYIF_SEC_LEVEL_6",
+        "CRYIF_SEC_LEVEL_7"
+      ],
+      "x-section": "KEY CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_2_ID": {
+      "type": "integer",
+      "description": "CRYIF_CFG_KEY_2_ID 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_2_CRYPTO_KEY_ID": {
+      "type": "integer",
+      "description": "CRYIF_CFG_KEY_2_CRYPTO_KEY_ID 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_2_DRIVER_INDEX": {
+      "type": "integer",
+      "description": "CRYIF_CFG_KEY_2_DRIVER_INDEX 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_2_SECURITY_LEVEL": {
+      "type": "enum",
+      "description": "CRYIF_CFG_KEY_2_SECURITY_LEVEL 参数",
+      "default": "CRYIF_SEC_LEVEL_1",
+      "enum": [
+        "CRYIF_SEC_LEVEL_NONE",
+        "CRYIF_SEC_LEVEL_1",
+        "CRYIF_SEC_LEVEL_2",
+        "CRYIF_SEC_LEVEL_3",
+        "CRYIF_SEC_LEVEL_4",
+        "CRYIF_SEC_LEVEL_5",
+        "CRYIF_SEC_LEVEL_6",
+        "CRYIF_SEC_LEVEL_7"
+      ],
+      "x-section": "KEY CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_3_ID": {
+      "type": "integer",
+      "description": "CRYIF_CFG_KEY_3_ID 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_3_CRYPTO_KEY_ID": {
+      "type": "integer",
+      "description": "CRYIF_CFG_KEY_3_CRYPTO_KEY_ID 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_3_DRIVER_INDEX": {
+      "type": "integer",
+      "description": "CRYIF_CFG_KEY_3_DRIVER_INDEX 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_3_SECURITY_LEVEL": {
+      "type": "enum",
+      "description": "CRYIF_CFG_KEY_3_SECURITY_LEVEL 参数",
+      "default": "CRYIF_SEC_LEVEL_NONE",
+      "enum": [
+        "CRYIF_SEC_LEVEL_NONE",
+        "CRYIF_SEC_LEVEL_1",
+        "CRYIF_SEC_LEVEL_2",
+        "CRYIF_SEC_LEVEL_3",
+        "CRYIF_SEC_LEVEL_4",
+        "CRYIF_SEC_LEVEL_5",
+        "CRYIF_SEC_LEVEL_6",
+        "CRYIF_SEC_LEVEL_7"
+      ],
+      "x-section": "KEY CONFIGURATION"
+    },
+    "CRYIF_KEY_ELEMENT_ID_IV": {
+      "type": "integer",
+      "description": "CRYIF_KEY_ELEMENT_ID_IV 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY ELEMENT CONFIGURATION"
+    },
+    "CRYIF_KEY_ELEMENT_ID_KEY": {
+      "type": "integer",
+      "description": "CRYIF_KEY_ELEMENT_ID_KEY 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY ELEMENT CONFIGURATION"
+    },
+    "CRYIF_KEY_ELEMENT_ID_SALT": {
+      "type": "integer",
+      "description": "CRYIF_KEY_ELEMENT_ID_SALT 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY ELEMENT CONFIGURATION"
+    },
+    "CRYIF_KEY_ELEMENT_ID_ITERATIONS": {
+      "type": "integer",
+      "description": "CRYIF_KEY_ELEMENT_ID_ITERATIONS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY ELEMENT CONFIGURATION"
+    },
+    "CRYIF_KEY_ELEMENT_ID_ALGORITHM": {
+      "type": "integer",
+      "description": "CRYIF_KEY_ELEMENT_ID_ALGORITHM 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY ELEMENT CONFIGURATION"
+    },
+    "CRYIF_KEY_ELEMENT_ID_SEED_STATE": {
+      "type": "integer",
+      "description": "CRYIF_KEY_ELEMENT_ID_SEED_STATE 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY ELEMENT CONFIGURATION"
+    },
+    "CRYIF_KEY_ELEMENT_ID_DRBG_STATE": {
+      "type": "integer",
+      "description": "CRYIF_KEY_ELEMENT_ID_DRBG_STATE 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY ELEMENT CONFIGURATION"
+    },
+    "CRYIF_KEY_ELEMENT_ID_MAC": {
+      "type": "integer",
+      "description": "CRYIF_KEY_ELEMENT_ID_MAC 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY ELEMENT CONFIGURATION"
+    },
+    "CRYIF_KEY_ELEMENT_ID_SIGNATURE": {
+      "type": "integer",
+      "description": "CRYIF_KEY_ELEMENT_ID_SIGNATURE 参数",
+      "default": 9,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY ELEMENT CONFIGURATION"
+    },
+    "CRYIF_KEY_ELEMENT_ID_PUBKEY": {
+      "type": "integer",
+      "description": "CRYIF_KEY_ELEMENT_ID_PUBKEY 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY ELEMENT CONFIGURATION"
+    },
+    "CRYIF_KEY_ELEMENT_ID_PRIVKEY": {
+      "type": "integer",
+      "description": "CRYIF_KEY_ELEMENT_ID_PRIVKEY 参数",
+      "default": 11,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY ELEMENT CONFIGURATION"
+    },
+    "CRYIF_KEY_ELEMENT_ID_CERTIFICATE": {
+      "type": "integer",
+      "description": "CRYIF_KEY_ELEMENT_ID_CERTIFICATE 参数",
+      "default": 12,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY ELEMENT CONFIGURATION"
+    },
+    "CRYIF_KEY_ELEMENT_ID_CERTIFICATE_DATA": {
+      "type": "integer",
+      "description": "CRYIF_KEY_ELEMENT_ID_CERTIFICATE_DATA 参数",
+      "default": 13,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY ELEMENT CONFIGURATION"
+    },
+    "CRYIF_KEY_ELEMENT_ID_CERTIFICATE_SIGN": {
+      "type": "integer",
+      "description": "CRYIF_KEY_ELEMENT_ID_CERTIFICATE_SIGN 参数",
+      "default": 14,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY ELEMENT CONFIGURATION"
+    },
+    "CRYIF_KEY_ELEMENT_ID_CERTIFICATE_ID": {
+      "type": "integer",
+      "description": "CRYIF_KEY_ELEMENT_ID_CERTIFICATE_ID 参数",
+      "default": 15,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "KEY ELEMENT CONFIGURATION"
+    },
+    "CRYIF_CFG_NOTIFICATION_ENABLED": {
+      "type": "boolean",
+      "description": "CRYIF_CFG_NOTIFICATION_ENABLED 参数",
+      "default": true,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "CRYIF_CFG_JOB_CALLBACK": {
+      "type": "integer",
+      "description": "CRYIF_CFG_JOB_CALLBACK（派生表达式: CryIf_JobNotificationCallback）",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "CRYIF_CFG_KEY_CALLBACK": {
+      "type": "integer",
+      "description": "CRYIF_CFG_KEY_CALLBACK（派生表达式: CryIf_KeyNotificationCallback）",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CALLBACK CONFIGURATION"
+    },
+    "CRYIF_DEBUG_ENABLED": {
+      "type": "boolean",
+      "description": "CRYIF_DEBUG_ENABLED 参数",
+      "default": false,
+      "x-section": "DEBUG CONFIGURATION"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/cryif/include/CryIf_Cfg.h",
+  "x-display-name": "CryIf",
+  "x-sections": [
+    "VERSION INFORMATION",
+    "PRE-COMPILE CONFIGURATION",
+    "CONFIGURATION PARAMETERS",
+    "CHANNEL CONFIGURATION",
+    "KEY CONFIGURATION",
+    "KEY ELEMENT CONFIGURATION",
+    "CALLBACK CONFIGURATION",
+    "DEBUG CONFIGURATION"
+  ]
+}

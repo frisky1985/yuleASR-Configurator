@@ -1,0 +1,467 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/os.json",
+  "title": "Os Configuration",
+  "description": "AutoSAR OS Configuration Header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "OS_CFG_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "OS_CFG_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OS_CFG_USE_GET_SERVICE_ID": {
+      "type": "boolean",
+      "description": "OS_CFG_USE_GET_SERVICE_ID 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OS_CFG_USE_PARAMETER_ACCESS": {
+      "type": "boolean",
+      "description": "OS_CFG_USE_PARAMETER_ACCESS 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OS_CFG_PROTECTION_HOOK": {
+      "type": "boolean",
+      "description": "OS_CFG_PROTECTION_HOOK 参数",
+      "default": false,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OS_CFG_STACK_MONITORING": {
+      "type": "boolean",
+      "description": "OS_CFG_STACK_MONITORING 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OS_CFG_STARTUP_HOOK": {
+      "type": "boolean",
+      "description": "OS_CFG_STARTUP_HOOK 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OS_CFG_SHUTDOWN_HOOK": {
+      "type": "boolean",
+      "description": "OS_CFG_SHUTDOWN_HOOK 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OS_CFG_ERROR_HOOK": {
+      "type": "boolean",
+      "description": "OS_CFG_ERROR_HOOK 参数",
+      "default": true,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OS_CFG_PRETASK_HOOK": {
+      "type": "boolean",
+      "description": "OS_CFG_PRETASK_HOOK 参数",
+      "default": false,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OS_CFG_POSTTASK_HOOK": {
+      "type": "boolean",
+      "description": "OS_CFG_POSTTASK_HOOK 参数",
+      "default": false,
+      "x-section": "GENERAL CONFIGURATION"
+    },
+    "OS_CFG_NUM_TASKS": {
+      "type": "integer",
+      "description": "OS_CFG_NUM_TASKS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "OS_TASK_COUNT": {
+      "type": "integer",
+      "description": "OS_TASK_COUNT（别名: OS_CFG_NUM_TASKS = 8；同族可选: OS_CFG_NUM_ALARMS / OS_CFG_NUM_RESOURCES / OS_CFG_NUM_TASKS）",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "OS_RESOURCE_COUNT": {
+      "type": "integer",
+      "description": "OS_RESOURCE_COUNT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "OsTask_Init": {
+      "type": "integer",
+      "description": "OsTask_Init 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "OsTask_10ms": {
+      "type": "integer",
+      "description": "OsTask_10ms 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "OsTask_50ms": {
+      "type": "integer",
+      "description": "OsTask_50ms 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "OsTask_100ms": {
+      "type": "integer",
+      "description": "OsTask_100ms 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "OsTask_Background": {
+      "type": "integer",
+      "description": "OsTask_Background 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "OsTask_ComMainFunctionRx": {
+      "type": "integer",
+      "description": "OsTask_ComMainFunctionRx 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "OsTask_ComMainFunctionTx": {
+      "type": "integer",
+      "description": "OsTask_ComMainFunctionTx 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "OsTask_Diagnostic": {
+      "type": "integer",
+      "description": "OsTask_Diagnostic 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "OS_TASK_PRIORITY_IDLE": {
+      "type": "integer",
+      "description": "OS_TASK_PRIORITY_IDLE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "OS_TASK_PRIORITY_LOW": {
+      "type": "integer",
+      "description": "OS_TASK_PRIORITY_LOW 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "OS_TASK_PRIORITY_NORMAL": {
+      "type": "integer",
+      "description": "OS_TASK_PRIORITY_NORMAL 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "OS_TASK_PRIORITY_HIGH": {
+      "type": "integer",
+      "description": "OS_TASK_PRIORITY_HIGH 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "OS_TASK_PRIORITY_CRITICAL": {
+      "type": "integer",
+      "description": "OS_TASK_PRIORITY_CRITICAL 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "TASK CONFIGURATION"
+    },
+    "OS_CFG_NUM_ALARMS": {
+      "type": "integer",
+      "description": "OS_CFG_NUM_ALARMS 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ALARM CONFIGURATION"
+    },
+    "OsAlarm_BswM_MainFunction": {
+      "type": "integer",
+      "description": "10ms - BswM_MainFunction",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ALARM CONFIGURATION"
+    },
+    "OsAlarm_Com_MainFunction": {
+      "type": "integer",
+      "description": "10ms - Com_MainFunctionRx + Com_MainFunctionTx",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ALARM CONFIGURATION"
+    },
+    "OsAlarm_CanIf_MainFunction": {
+      "type": "integer",
+      "description": "10ms - CanIf_MainFunction (if available)",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ALARM CONFIGURATION"
+    },
+    "OsAlarm_Dcm_MainFunction": {
+      "type": "integer",
+      "description": "10ms - Dcm_MainFunction",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ALARM CONFIGURATION"
+    },
+    "OsAlarm_NvM_MainFunction": {
+      "type": "integer",
+      "description": "100ms - NvM_MainFunction",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ALARM CONFIGURATION"
+    },
+    "OsAlarm_Dem_MainFunction": {
+      "type": "integer",
+      "description": "100ms - Dem_MainFunction",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ALARM CONFIGURATION"
+    },
+    "OS_ALARM_PERIOD_10MS": {
+      "type": "integer",
+      "description": "OS_ALARM_PERIOD_10MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ALARM CONFIGURATION"
+    },
+    "OS_ALARM_PERIOD_50MS": {
+      "type": "integer",
+      "description": "OS_ALARM_PERIOD_50MS 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ALARM CONFIGURATION"
+    },
+    "OS_ALARM_PERIOD_100MS": {
+      "type": "integer",
+      "description": "OS_ALARM_PERIOD_100MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "ALARM CONFIGURATION"
+    },
+    "OS_CFG_NUM_RESOURCES": {
+      "type": "integer",
+      "description": "OS_CFG_NUM_RESOURCES 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "RESOURCE CONFIGURATION"
+    },
+    "OsRes_CanController": {
+      "type": "integer",
+      "description": "OsRes_CanController 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "RESOURCE CONFIGURATION"
+    },
+    "OsRes_NvMBlock": {
+      "type": "integer",
+      "description": "OsRes_NvMBlock 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "RESOURCE CONFIGURATION"
+    },
+    "OsRes_ComBuffer": {
+      "type": "integer",
+      "description": "OsRes_ComBuffer 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "RESOURCE CONFIGURATION"
+    },
+    "OsRes_Diagnostic": {
+      "type": "integer",
+      "description": "OsRes_Diagnostic 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "RESOURCE CONFIGURATION"
+    },
+    "OS_EVENT_INIT_COMPLETE": {
+      "type": "integer",
+      "description": "OS_EVENT_INIT_COMPLETE（cast: EventMaskType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "EVENT CONFIGURATION"
+    },
+    "OS_EVENT_CAN_MESSAGE_RECEIVED": {
+      "type": "integer",
+      "description": "OS_EVENT_CAN_MESSAGE_RECEIVED（cast: EventMaskType）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "EVENT CONFIGURATION"
+    },
+    "OS_EVENT_NVM_WRITE_COMPLETE": {
+      "type": "integer",
+      "description": "OS_EVENT_NVM_WRITE_COMPLETE（cast: EventMaskType）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "EVENT CONFIGURATION"
+    },
+    "OS_EVENT_DIAGNOSTIC_REQUEST": {
+      "type": "integer",
+      "description": "OS_EVENT_DIAGNOSTIC_REQUEST（cast: EventMaskType）",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "EVENT CONFIGURATION"
+    },
+    "OS_EVENT_MODE_SWITCH": {
+      "type": "integer",
+      "description": "OS_EVENT_MODE_SWITCH（cast: EventMaskType）",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "EVENT CONFIGURATION"
+    },
+    "OS_CFG_MAIN_COUNTER_TICKS_PER_MS": {
+      "type": "integer",
+      "description": "OS_CFG_MAIN_COUNTER_TICKS_PER_MS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "COUNTER CONFIGURATION"
+    },
+    "OS_CFG_MAIN_COUNTER_MAX_ALLOWED": {
+      "type": "integer",
+      "description": "OS_CFG_MAIN_COUNTER_MAX_ALLOWED 参数",
+      "default": 4294967295,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "COUNTER CONFIGURATION"
+    },
+    "OS_CFG_MAIN_COUNTER_MIN_CYCLE": {
+      "type": "integer",
+      "description": "OS_CFG_MAIN_COUNTER_MIN_CYCLE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "COUNTER CONFIGURATION"
+    },
+    "OS_CFG_TASK_STACK_SIZE": {
+      "type": "integer",
+      "description": "OS_CFG_TASK_STACK_SIZE 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "STACK CONFIGURATION"
+    },
+    "OS_CFG_ISR_STACK_SIZE": {
+      "type": "integer",
+      "description": "OS_CFG_ISR_STACK_SIZE 参数",
+      "default": 2048,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "STACK CONFIGURATION"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/os/include/Os_Cfg.h",
+  "x-display-name": "Os",
+  "x-sections": [
+    "GENERAL CONFIGURATION",
+    "TASK CONFIGURATION",
+    "ALARM CONFIGURATION",
+    "RESOURCE CONFIGURATION",
+    "EVENT CONFIGURATION",
+    "COUNTER CONFIGURATION",
+    "STACK CONFIGURATION"
+  ]
+}

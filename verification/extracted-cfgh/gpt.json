@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/gpt.json",
+  "title": "Gpt Configuration",
+  "description": "GPT Driver configuration header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "GPT_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "GPT_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "GPT_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "GPT_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "GPT_DEINIT_API": {
+      "type": "boolean",
+      "description": "GPT_DEINIT_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "GPT_TIME_ELAPSED_API": {
+      "type": "boolean",
+      "description": "GPT_TIME_ELAPSED_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "GPT_TIME_REMAINING_API": {
+      "type": "boolean",
+      "description": "GPT_TIME_REMAINING_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "GPT_ENABLE_DISABLE_NOTIFICATION_API": {
+      "type": "boolean",
+      "description": "GPT_ENABLE_DISABLE_NOTIFICATION_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "GPT_WAKEUP_FUNCTIONALITY_API": {
+      "type": "boolean",
+      "description": "GPT_WAKEUP_FUNCTIONALITY_API 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "GPT_REPORT_WAKEUP_SOURCE": {
+      "type": "boolean",
+      "description": "GPT_REPORT_WAKEUP_SOURCE 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "GPT_PREDEF_TIMER_1US_16BIT_ENABLE": {
+      "type": "boolean",
+      "description": "GPT_PREDEF_TIMER_1US_16BIT_ENABLE 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "GPT_PREDEF_TIMER_1US_24BIT_ENABLE": {
+      "type": "boolean",
+      "description": "GPT_PREDEF_TIMER_1US_24BIT_ENABLE 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "GPT_PREDEF_TIMER_1US_32BIT_ENABLE": {
+      "type": "boolean",
+      "description": "GPT_PREDEF_TIMER_1US_32BIT_ENABLE 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "GPT_PREDEF_TIMER_100US_32BIT_ENABLE": {
+      "type": "boolean",
+      "description": "GPT_PREDEF_TIMER_100US_32BIT_ENABLE 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "GPT_NUM_CHANNELS": {
+      "type": "integer",
+      "description": "GPT_NUM_CHANNELS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "NUMBER OF CHANNELS"
+    },
+    "GPT_CHANNEL_0": {
+      "type": "integer",
+      "description": "GPT_CHANNEL_0（cast: Gpt_ChannelType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "GPT_CHANNEL_1": {
+      "type": "integer",
+      "description": "GPT_CHANNEL_1（cast: Gpt_ChannelType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "GPT_CHANNEL_2": {
+      "type": "integer",
+      "description": "GPT_CHANNEL_2（cast: Gpt_ChannelType）",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "GPT_CHANNEL_3": {
+      "type": "integer",
+      "description": "GPT_CHANNEL_3（cast: Gpt_ChannelType）",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "GPT_CHANNEL_4": {
+      "type": "integer",
+      "description": "GPT_CHANNEL_4（cast: Gpt_ChannelType）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "GPT_CHANNEL_5": {
+      "type": "integer",
+      "description": "GPT_CHANNEL_5（cast: Gpt_ChannelType）",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "GPT_CHANNEL_6": {
+      "type": "integer",
+      "description": "GPT_CHANNEL_6（cast: Gpt_ChannelType）",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "GPT_CHANNEL_7": {
+      "type": "integer",
+      "description": "GPT_CHANNEL_7（cast: Gpt_ChannelType）",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CHANNEL DEFINITIONS"
+    },
+    "GPT_DEFAULT_MODE": {
+      "type": "enum",
+      "description": "GPT_DEFAULT_MODE 参数",
+      "default": "GPT_MODE_NORMAL",
+      "enum": [
+        "GPT_MODE_NORMAL",
+        "GPT_MODE_SLEEP"
+      ],
+      "x-section": "DEFAULT MODE"
+    },
+    "GPT_CLOCK_FREQUENCY_HZ": {
+      "type": "integer",
+      "description": "24MHz",
+      "default": 24000000,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "CLOCK CONFIGURATION"
+    },
+    "GPT_MAX_TICK_VALUE": {
+      "type": "integer",
+      "description": "GPT_MAX_TICK_VALUE 参数",
+      "default": 4294967295,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "MAX TICK VALUE"
+    },
+    "GPT_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "GPT_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION PERIOD"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "MCAL",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/mcal/gpt/include/Gpt_Cfg.h",
+  "x-display-name": "Gpt",
+  "x-sections": [
+    "PRE-COMPILE CONFIGURATION",
+    "NUMBER OF CHANNELS",
+    "CHANNEL DEFINITIONS",
+    "DEFAULT MODE",
+    "CLOCK CONFIGURATION",
+    "MAX TICK VALUE",
+    "MAIN FUNCTION PERIOD"
+  ]
+}

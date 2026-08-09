@@ -1,0 +1,560 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/csm.json",
+  "title": "Csm Configuration",
+  "description": "CSM (Crypto Services Manager) 配置头文件",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CSM_CFG_VENDOR_ID": {
+      "type": "integer",
+      "description": "CSM_CFG_VENDOR_ID 参数",
+      "default": 43,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "CSM_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "CSM_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "CSM_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "CSM_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "CSM_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "CSM_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_CFG_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "CSM_CFG_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "CSM_CFG_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "CSM_CFG_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "CSM_CFG_ASYNC_SUPPORT": {
+      "type": "boolean",
+      "description": "CSM_CFG_ASYNC_SUPPORT 参数",
+      "default": true
+    },
+    "CSM_CFG_QUEUE_SUPPORT": {
+      "type": "boolean",
+      "description": "CSM_CFG_QUEUE_SUPPORT 参数",
+      "default": true
+    },
+    "CSM_CFG_KEY_PERSISTENCE_SUPPORT": {
+      "type": "boolean",
+      "description": "CSM_CFG_KEY_PERSISTENCE_SUPPORT 参数",
+      "default": true
+    },
+    "CSM_CFG_RANDOM_GENERATOR_SUPPORT": {
+      "type": "boolean",
+      "description": "CSM_CFG_RANDOM_GENERATOR_SUPPORT 参数",
+      "default": true
+    },
+    "CSM_CFG_DEM_INTEGRATION": {
+      "type": "boolean",
+      "description": "CSM_CFG_DEM_INTEGRATION 参数",
+      "default": true
+    },
+    "CSM_CFG_SERVICE_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "CSM_CFG_SERVICE_TIMEOUT_MS 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "CSM_CFG_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "CSM_CFG_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_KEY_ID_NONE": {
+      "type": "integer",
+      "description": "CSM_KEY_ID_NONE 参数",
+      "default": 4294967295,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "CSM_KEY_ID_MASTER": {
+      "type": "integer",
+      "description": "CSM_KEY_ID_MASTER 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_KEY_ID_SESSION": {
+      "type": "integer",
+      "description": "CSM_KEY_ID_SESSION 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_KEY_ID_STORAGE": {
+      "type": "integer",
+      "description": "CSM_KEY_ID_STORAGE 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_KEY_ID_DIAGNOSTIC": {
+      "type": "integer",
+      "description": "CSM_KEY_ID_DIAGNOSTIC 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_KEY_ID_SECURE_BOOT": {
+      "type": "integer",
+      "description": "CSM_KEY_ID_SECURE_BOOT 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_KEY_ID_COMMUNICATION": {
+      "type": "integer",
+      "description": "CSM_KEY_ID_COMMUNICATION 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_KEY_ID_DEBUG": {
+      "type": "integer",
+      "description": "CSM_KEY_ID_DEBUG 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_KEY_ELEMENT_ID_SECRET": {
+      "type": "integer",
+      "description": "CSM_KEY_ELEMENT_ID_SECRET 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_KEY_ELEMENT_ID_PUBLIC": {
+      "type": "integer",
+      "description": "CSM_KEY_ELEMENT_ID_PUBLIC 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_KEY_ELEMENT_ID_PRIVATE": {
+      "type": "integer",
+      "description": "CSM_KEY_ELEMENT_ID_PRIVATE 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_KEY_ELEMENT_ID_IV": {
+      "type": "integer",
+      "description": "CSM_KEY_ELEMENT_ID_IV 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_KEY_ELEMENT_ID_SALT": {
+      "type": "integer",
+      "description": "CSM_KEY_ELEMENT_ID_SALT 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_KEY_ELEMENT_ID_SEED": {
+      "type": "integer",
+      "description": "CSM_KEY_ELEMENT_ID_SEED 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_JOB_ID_NONE": {
+      "type": "integer",
+      "description": "CSM_JOB_ID_NONE 参数",
+      "default": 4294967295,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "CSM_JOB_ID_HASH_DEFAULT": {
+      "type": "integer",
+      "description": "CSM_JOB_ID_HASH_DEFAULT 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_JOB_ID_ENCRYPT_DEFAULT": {
+      "type": "integer",
+      "description": "CSM_JOB_ID_ENCRYPT_DEFAULT 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_JOB_ID_DECRYPT_DEFAULT": {
+      "type": "integer",
+      "description": "CSM_JOB_ID_DECRYPT_DEFAULT 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_JOB_ID_MAC_GENERATE_DEFAULT": {
+      "type": "integer",
+      "description": "CSM_JOB_ID_MAC_GENERATE_DEFAULT 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_JOB_ID_MAC_VERIFY_DEFAULT": {
+      "type": "integer",
+      "description": "CSM_JOB_ID_MAC_VERIFY_DEFAULT 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_JOB_ID_SIGN_DEFAULT": {
+      "type": "integer",
+      "description": "CSM_JOB_ID_SIGN_DEFAULT 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_JOB_ID_VERIFY_DEFAULT": {
+      "type": "integer",
+      "description": "CSM_JOB_ID_VERIFY_DEFAULT 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_JOB_ID_RANDOM_DEFAULT": {
+      "type": "integer",
+      "description": "CSM_JOB_ID_RANDOM_DEFAULT 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_CFG_DEFAULT_HASH_ALGORITHM": {
+      "type": "enum",
+      "description": "CSM_CFG_DEFAULT_HASH_ALGORITHM 参数",
+      "default": "CSM_ALGOFAM_SHA2_256",
+      "enum": [
+        "CSM_ALGOFAM_NOT_SET",
+        "CSM_ALGOFAM_SHA1",
+        "CSM_ALGOFAM_SHA2_224",
+        "CSM_ALGOFAM_SHA2_256",
+        "CSM_ALGOFAM_SHA2_384",
+        "CSM_ALGOFAM_SHA2_512",
+        "CSM_ALGOFAM_SHA3_224",
+        "CSM_ALGOFAM_SHA3_256",
+        "CSM_ALGOFAM_SHA3_384",
+        "CSM_ALGOFAM_SHA3_512",
+        "CSM_ALGOFAM_AES",
+        "CSM_ALGOFAM_DES",
+        "CSM_ALGOFAM_3DES",
+        "CSM_ALGOFAM_RSA",
+        "CSM_ALGOFAM_ECDSA",
+        "CSM_ALGOFAM_ECDH",
+        "CSM_ALGOFAM_HMAC",
+        "CSM_ALGOFAM_CMAC",
+        "CSM_ALGOFAM_GCM",
+        "CSM_ALGOFAM_CCM",
+        "CSM_ALGOFAM_CHACHA20_POLY1305",
+        "CSM_ALGOFAM_DRBG",
+        "CSM_ALGOFAM_PADDING_PKCS7",
+        "CSM_ALGOFAM_PADDING_ONEWITHZEROS"
+      ]
+    },
+    "CSM_CFG_DEFAULT_CIPHER_ALGORITHM": {
+      "type": "enum",
+      "description": "CSM_CFG_DEFAULT_CIPHER_ALGORITHM 参数",
+      "default": "CSM_ALGOFAM_AES",
+      "enum": [
+        "CSM_ALGOFAM_NOT_SET",
+        "CSM_ALGOFAM_SHA1",
+        "CSM_ALGOFAM_SHA2_224",
+        "CSM_ALGOFAM_SHA2_256",
+        "CSM_ALGOFAM_SHA2_384",
+        "CSM_ALGOFAM_SHA2_512",
+        "CSM_ALGOFAM_SHA3_224",
+        "CSM_ALGOFAM_SHA3_256",
+        "CSM_ALGOFAM_SHA3_384",
+        "CSM_ALGOFAM_SHA3_512",
+        "CSM_ALGOFAM_AES",
+        "CSM_ALGOFAM_DES",
+        "CSM_ALGOFAM_3DES",
+        "CSM_ALGOFAM_RSA",
+        "CSM_ALGOFAM_ECDSA",
+        "CSM_ALGOFAM_ECDH",
+        "CSM_ALGOFAM_HMAC",
+        "CSM_ALGOFAM_CMAC",
+        "CSM_ALGOFAM_GCM",
+        "CSM_ALGOFAM_CCM",
+        "CSM_ALGOFAM_CHACHA20_POLY1305",
+        "CSM_ALGOFAM_DRBG",
+        "CSM_ALGOFAM_PADDING_PKCS7",
+        "CSM_ALGOFAM_PADDING_ONEWITHZEROS"
+      ]
+    },
+    "CSM_CFG_DEFAULT_CIPHER_MODE": {
+      "type": "enum",
+      "description": "CSM_CFG_DEFAULT_CIPHER_MODE 参数",
+      "default": "CSM_ALGOMODE_CBC",
+      "enum": [
+        "CSM_ALGOMODE_NOT_SET",
+        "CSM_ALGOMODE_ECB",
+        "CSM_ALGOMODE_CBC",
+        "CSM_ALGOMODE_CFB",
+        "CSM_ALGOMODE_OFB",
+        "CSM_ALGOMODE_CTR",
+        "CSM_ALGOMODE_GCM",
+        "CSM_ALGOMODE_CCM",
+        "CSM_ALGOMODE_XTS",
+        "CSM_ALGOMODE_RSA_PKCS1_V15",
+        "CSM_ALGOMODE_RSA_PSS",
+        "CSM_ALGOMODE_RSA_OAEP"
+      ]
+    },
+    "CSM_CFG_DEFAULT_CIPHER_KEY_LENGTH": {
+      "type": "integer",
+      "description": "CSM_CFG_DEFAULT_CIPHER_KEY_LENGTH 参数",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_CFG_DEFAULT_MAC_ALGORITHM": {
+      "type": "enum",
+      "description": "CSM_CFG_DEFAULT_MAC_ALGORITHM 参数",
+      "default": "CSM_ALGOFAM_HMAC",
+      "enum": [
+        "CSM_ALGOFAM_NOT_SET",
+        "CSM_ALGOFAM_SHA1",
+        "CSM_ALGOFAM_SHA2_224",
+        "CSM_ALGOFAM_SHA2_256",
+        "CSM_ALGOFAM_SHA2_384",
+        "CSM_ALGOFAM_SHA2_512",
+        "CSM_ALGOFAM_SHA3_224",
+        "CSM_ALGOFAM_SHA3_256",
+        "CSM_ALGOFAM_SHA3_384",
+        "CSM_ALGOFAM_SHA3_512",
+        "CSM_ALGOFAM_AES",
+        "CSM_ALGOFAM_DES",
+        "CSM_ALGOFAM_3DES",
+        "CSM_ALGOFAM_RSA",
+        "CSM_ALGOFAM_ECDSA",
+        "CSM_ALGOFAM_ECDH",
+        "CSM_ALGOFAM_HMAC",
+        "CSM_ALGOFAM_CMAC",
+        "CSM_ALGOFAM_GCM",
+        "CSM_ALGOFAM_CCM",
+        "CSM_ALGOFAM_CHACHA20_POLY1305",
+        "CSM_ALGOFAM_DRBG",
+        "CSM_ALGOFAM_PADDING_PKCS7",
+        "CSM_ALGOFAM_PADDING_ONEWITHZEROS"
+      ]
+    },
+    "CSM_CFG_DEFAULT_MAC_HASH_ALGORITHM": {
+      "type": "enum",
+      "description": "CSM_CFG_DEFAULT_MAC_HASH_ALGORITHM 参数",
+      "default": "CSM_ALGOFAM_SHA2_256",
+      "enum": [
+        "CSM_ALGOFAM_NOT_SET",
+        "CSM_ALGOFAM_SHA1",
+        "CSM_ALGOFAM_SHA2_224",
+        "CSM_ALGOFAM_SHA2_256",
+        "CSM_ALGOFAM_SHA2_384",
+        "CSM_ALGOFAM_SHA2_512",
+        "CSM_ALGOFAM_SHA3_224",
+        "CSM_ALGOFAM_SHA3_256",
+        "CSM_ALGOFAM_SHA3_384",
+        "CSM_ALGOFAM_SHA3_512",
+        "CSM_ALGOFAM_AES",
+        "CSM_ALGOFAM_DES",
+        "CSM_ALGOFAM_3DES",
+        "CSM_ALGOFAM_RSA",
+        "CSM_ALGOFAM_ECDSA",
+        "CSM_ALGOFAM_ECDH",
+        "CSM_ALGOFAM_HMAC",
+        "CSM_ALGOFAM_CMAC",
+        "CSM_ALGOFAM_GCM",
+        "CSM_ALGOFAM_CCM",
+        "CSM_ALGOFAM_CHACHA20_POLY1305",
+        "CSM_ALGOFAM_DRBG",
+        "CSM_ALGOFAM_PADDING_PKCS7",
+        "CSM_ALGOFAM_PADDING_ONEWITHZEROS"
+      ]
+    },
+    "CSM_CFG_DEFAULT_SIGNATURE_ALGORITHM": {
+      "type": "enum",
+      "description": "CSM_CFG_DEFAULT_SIGNATURE_ALGORITHM 参数",
+      "default": "CSM_ALGOFAM_ECDSA",
+      "enum": [
+        "CSM_ALGOFAM_NOT_SET",
+        "CSM_ALGOFAM_SHA1",
+        "CSM_ALGOFAM_SHA2_224",
+        "CSM_ALGOFAM_SHA2_256",
+        "CSM_ALGOFAM_SHA2_384",
+        "CSM_ALGOFAM_SHA2_512",
+        "CSM_ALGOFAM_SHA3_224",
+        "CSM_ALGOFAM_SHA3_256",
+        "CSM_ALGOFAM_SHA3_384",
+        "CSM_ALGOFAM_SHA3_512",
+        "CSM_ALGOFAM_AES",
+        "CSM_ALGOFAM_DES",
+        "CSM_ALGOFAM_3DES",
+        "CSM_ALGOFAM_RSA",
+        "CSM_ALGOFAM_ECDSA",
+        "CSM_ALGOFAM_ECDH",
+        "CSM_ALGOFAM_HMAC",
+        "CSM_ALGOFAM_CMAC",
+        "CSM_ALGOFAM_GCM",
+        "CSM_ALGOFAM_CCM",
+        "CSM_ALGOFAM_CHACHA20_POLY1305",
+        "CSM_ALGOFAM_DRBG",
+        "CSM_ALGOFAM_PADDING_PKCS7",
+        "CSM_ALGOFAM_PADDING_ONEWITHZEROS"
+      ]
+    },
+    "CSM_CFG_DEFAULT_SIGNATURE_KEY_LENGTH": {
+      "type": "integer",
+      "description": "CSM_CFG_DEFAULT_SIGNATURE_KEY_LENGTH 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "CSM_CFG_QUEUE_SIZE": {
+      "type": "enum",
+      "description": "CSM_CFG_QUEUE_SIZE 参数",
+      "default": "CSM_MAX_QUEUE_DEPTH",
+      "enum": [
+        "CSM_MAX_QUEUE_DEPTH"
+      ]
+    },
+    "CSM_CFG_MAX_CONCURRENT_JOBS": {
+      "type": "integer",
+      "description": "CSM_CFG_MAX_CONCURRENT_JOBS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_DEM_HARDWARE_FAILURE_EVENT_ID": {
+      "type": "integer",
+      "description": "CSM_DEM_HARDWARE_FAILURE_EVENT_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_DEM_KEY_INVALID_EVENT_ID": {
+      "type": "integer",
+      "description": "CSM_DEM_KEY_INVALID_EVENT_ID 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_DEM_SERVICE_TIMEOUT_EVENT_ID": {
+      "type": "integer",
+      "description": "CSM_DEM_SERVICE_TIMEOUT_EVENT_ID 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CSM_DEM_ENTROPY_EXHAUSTION_EVENT_ID": {
+      "type": "integer",
+      "description": "CSM_DEM_ENTROPY_EXHAUSTION_EVENT_ID 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/csm/include/Csm_Cfg.h",
+  "x-display-name": "Csm"
+}

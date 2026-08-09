@@ -1,0 +1,335 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/fim.json",
+  "title": "FiM Configuration",
+  "description": "Function Inhibition Manager configuration header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FIM_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "FIM_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FIM_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "FIM_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FIM_INHIBITION_CONFIGURATION_SUPPORTED": {
+      "type": "boolean",
+      "description": "FIM_INHIBITION_CONFIGURATION_SUPPORTED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FIM_NUM_FUNCTIONS": {
+      "type": "integer",
+      "description": "FIM_NUM_FUNCTIONS 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "FUNCTION CONFIGURATION"
+    },
+    "FIM_MAX_FUNCTIONS": {
+      "type": "integer",
+      "description": "FIM_MAX_FUNCTIONS（别名: FIM_NUM_FUNCTIONS = 32；同族可选: FIM_NUM_EVENTS_PER_FUNCTION / FIM_NUM_FUNCTIONS / FIM_NUM_SUMMARY_EVENTS）",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "FUNCTION CONFIGURATION"
+    },
+    "FIM_NUM_EVENTS_PER_FUNCTION": {
+      "type": "integer",
+      "description": "FIM_NUM_EVENTS_PER_FUNCTION 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "FUNCTION CONFIGURATION"
+    },
+    "FIM_NUM_SUMMARY_EVENTS": {
+      "type": "integer",
+      "description": "FIM_NUM_SUMMARY_EVENTS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "FUNCTION CONFIGURATION"
+    },
+    "FIM_FID_MIN": {
+      "type": "integer",
+      "description": "FIM_FID_MIN（cast: FiM_FunctionIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "FUNCTION CONFIGURATION"
+    },
+    "FIM_FID_MAX": {
+      "type": "integer",
+      "description": "FIM_FID_MAX（cast: FiM_FunctionIdType）",
+      "default": 31,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "FUNCTION CONFIGURATION"
+    },
+    "FIM_FID_INVALID": {
+      "type": "integer",
+      "description": "FIM_FID_INVALID（cast: FiM_FunctionIdType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "FUNCTION CONFIGURATION"
+    },
+    "FIM_SUMMARY_EVENT_ID_MIN": {
+      "type": "integer",
+      "description": "FIM_SUMMARY_EVENT_ID_MIN（cast: FiM_SummaryEventIdType）",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "FUNCTION CONFIGURATION"
+    },
+    "FIM_SUMMARY_EVENT_ID_MAX": {
+      "type": "integer",
+      "description": "FIM_SUMMARY_EVENT_ID_MAX（cast: FiM_SummaryEventIdType）",
+      "default": 15,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "FUNCTION CONFIGURATION"
+    },
+    "FIM_SUMMARY_EVENT_ID_INVALID": {
+      "type": "integer",
+      "description": "FIM_SUMMARY_EVENT_ID_INVALID（cast: FiM_SummaryEventIdType）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "FUNCTION CONFIGURATION"
+    },
+    "FIM_INHIBIT_NONE": {
+      "type": "integer",
+      "description": "FIM_INHIBIT_NONE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "INHIBITION CONFIGURATION MASKS"
+    },
+    "FIM_INHIBIT_IF_TEST_FAILED": {
+      "type": "enum",
+      "description": "FIM_INHIBIT_IF_TEST_FAILED 参数",
+      "default": "DEM_UDS_STATUS_TF",
+      "enum": [
+        "DEM_UDS_STATUS_TF",
+        "DEM_UDS_STATUS_CDTC",
+        "DEM_UDS_STATUS_PDTC",
+        "DEM_UDS_STATUS_TFSLC",
+        "DEM_UDS_STATUS_TFTOC",
+        "DEM_UDS_STATUS_TNCSLC",
+        "DEM_UDS_STATUS_TNCTOC",
+        "DEM_UDS_STATUS_WIR"
+      ],
+      "x-section": "INHIBITION CONFIGURATION MASKS"
+    },
+    "FIM_INHIBIT_IF_TEST_FAILED_TOC": {
+      "type": "enum",
+      "description": "FIM_INHIBIT_IF_TEST_FAILED_TOC 参数",
+      "default": "DEM_UDS_STATUS_TFTOC",
+      "enum": [
+        "DEM_UDS_STATUS_TFTOC",
+        "DEM_UDS_STATUS_CDTC",
+        "DEM_UDS_STATUS_PDTC",
+        "DEM_UDS_STATUS_TF",
+        "DEM_UDS_STATUS_TFSLC",
+        "DEM_UDS_STATUS_TNCSLC",
+        "DEM_UDS_STATUS_TNCTOC",
+        "DEM_UDS_STATUS_WIR"
+      ],
+      "x-section": "INHIBITION CONFIGURATION MASKS"
+    },
+    "FIM_INHIBIT_IF_PENDING": {
+      "type": "enum",
+      "description": "FIM_INHIBIT_IF_PENDING 参数",
+      "default": "DEM_UDS_STATUS_PDTC",
+      "enum": [
+        "DEM_UDS_STATUS_PDTC",
+        "DEM_UDS_STATUS_CDTC",
+        "DEM_UDS_STATUS_TF",
+        "DEM_UDS_STATUS_TFSLC",
+        "DEM_UDS_STATUS_TFTOC",
+        "DEM_UDS_STATUS_TNCSLC",
+        "DEM_UDS_STATUS_TNCTOC",
+        "DEM_UDS_STATUS_WIR"
+      ],
+      "x-section": "INHIBITION CONFIGURATION MASKS"
+    },
+    "FIM_INHIBIT_IF_CONFIRMED": {
+      "type": "enum",
+      "description": "FIM_INHIBIT_IF_CONFIRMED 参数",
+      "default": "DEM_UDS_STATUS_CDTC",
+      "enum": [
+        "DEM_UDS_STATUS_CDTC",
+        "DEM_UDS_STATUS_PDTC",
+        "DEM_UDS_STATUS_TF",
+        "DEM_UDS_STATUS_TFSLC",
+        "DEM_UDS_STATUS_TFTOC",
+        "DEM_UDS_STATUS_TNCSLC",
+        "DEM_UDS_STATUS_TNCTOC",
+        "DEM_UDS_STATUS_WIR"
+      ],
+      "x-section": "INHIBITION CONFIGURATION MASKS"
+    },
+    "FIM_INHIBIT_IF_TEST_NOT_COMPLETED_TOC": {
+      "type": "enum",
+      "description": "FIM_INHIBIT_IF_TEST_NOT_COMPLETED_TOC 参数",
+      "default": "DEM_UDS_STATUS_TNCTOC",
+      "enum": [
+        "DEM_UDS_STATUS_TNCTOC",
+        "DEM_UDS_STATUS_CDTC",
+        "DEM_UDS_STATUS_PDTC",
+        "DEM_UDS_STATUS_TF",
+        "DEM_UDS_STATUS_TFSLC",
+        "DEM_UDS_STATUS_TFTOC",
+        "DEM_UDS_STATUS_TNCSLC",
+        "DEM_UDS_STATUS_WIR"
+      ],
+      "x-section": "INHIBITION CONFIGURATION MASKS"
+    },
+    "FIM_INHIBIT_IF_TEST_NOT_COMPLETED_SLC": {
+      "type": "enum",
+      "description": "FIM_INHIBIT_IF_TEST_NOT_COMPLETED_SLC 参数",
+      "default": "DEM_UDS_STATUS_TNCSLC",
+      "enum": [
+        "DEM_UDS_STATUS_TNCSLC",
+        "DEM_UDS_STATUS_CDTC",
+        "DEM_UDS_STATUS_PDTC",
+        "DEM_UDS_STATUS_TF",
+        "DEM_UDS_STATUS_TFSLC",
+        "DEM_UDS_STATUS_TFTOC",
+        "DEM_UDS_STATUS_TNCTOC",
+        "DEM_UDS_STATUS_WIR"
+      ],
+      "x-section": "INHIBITION CONFIGURATION MASKS"
+    },
+    "FIM_INHIBIT_IF_TEST_FAILED_SLC": {
+      "type": "enum",
+      "description": "FIM_INHIBIT_IF_TEST_FAILED_SLC 参数",
+      "default": "DEM_UDS_STATUS_TFSLC",
+      "enum": [
+        "DEM_UDS_STATUS_TFSLC",
+        "DEM_UDS_STATUS_CDTC",
+        "DEM_UDS_STATUS_PDTC",
+        "DEM_UDS_STATUS_TF",
+        "DEM_UDS_STATUS_TFTOC",
+        "DEM_UDS_STATUS_TNCSLC",
+        "DEM_UDS_STATUS_TNCTOC",
+        "DEM_UDS_STATUS_WIR"
+      ],
+      "x-section": "INHIBITION CONFIGURATION MASKS"
+    },
+    "FIM_INHIBIT_IF_WARNING_INDICATOR": {
+      "type": "enum",
+      "description": "FIM_INHIBIT_IF_WARNING_INDICATOR 参数",
+      "default": "DEM_UDS_STATUS_WIR",
+      "enum": [
+        "DEM_UDS_STATUS_WIR",
+        "DEM_UDS_STATUS_CDTC",
+        "DEM_UDS_STATUS_PDTC",
+        "DEM_UDS_STATUS_TF",
+        "DEM_UDS_STATUS_TFSLC",
+        "DEM_UDS_STATUS_TFTOC",
+        "DEM_UDS_STATUS_TNCSLC",
+        "DEM_UDS_STATUS_TNCTOC"
+      ],
+      "x-section": "INHIBITION CONFIGURATION MASKS"
+    },
+    "FIM_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "FIM_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "MAIN FUNCTION PERIOD"
+    },
+    "FIM_DEFAULT_PERMISSION": {
+      "type": "enum",
+      "description": "FIM_DEFAULT_PERMISSION 参数",
+      "default": "FIM_PERMISSION_ALLOWED",
+      "enum": [
+        "FIM_PERMISSION_DENIED",
+        "FIM_PERMISSION_ALLOWED"
+      ],
+      "x-section": "DEFAULT PERMISSIONS"
+    },
+    "FIM_DEFAULT_AVAILABILITY": {
+      "type": "boolean",
+      "description": "FIM_DEFAULT_AVAILABILITY 参数",
+      "default": true,
+      "x-section": "DEFAULT PERMISSIONS"
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/fim/include/FiM_Cfg.h",
+  "x-display-name": "FiM",
+  "x-sections": [
+    "PRE-COMPILE CONFIGURATION",
+    "FUNCTION CONFIGURATION",
+    "INHIBITION CONFIGURATION MASKS",
+    "MAIN FUNCTION PERIOD",
+    "DEFAULT PERMISSIONS"
+  ]
+}

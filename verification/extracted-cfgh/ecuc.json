@@ -1,0 +1,186 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/ecuc.json",
+  "title": "EcuC Configuration",
+  "description": "EcuC Configuration Header",
+  "type": "object",
+  "properties": {
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ECUC_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "ECUC_DEV_ERROR_DETECT 参数",
+      "default": true
+    },
+    "ECUC_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "ECUC_VERSION_INFO_API 参数",
+      "default": true
+    },
+    "ECUC_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "ECUC_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "ECUC_MAX_PDUS": {
+      "type": "integer",
+      "description": "ECUC_MAX_PDUS 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "ECUC_MAX_SIGNALS": {
+      "type": "integer",
+      "description": "ECUC_MAX_SIGNALS 参数",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "ECUC_MAX_ROUTING_PATHS": {
+      "type": "integer",
+      "description": "ECUC_MAX_ROUTING_PATHS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "ECUC_MAX_PDU_LENGTH": {
+      "type": "integer",
+      "description": "ECUC_MAX_PDU_LENGTH 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "ECUC_MAX_SIGNAL_SIZE": {
+      "type": "integer",
+      "description": "ECUC_MAX_SIGNAL_SIZE 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "ECUC_GATEWAY_DIRECT": {
+      "type": "boolean",
+      "description": "ECUC_GATEWAY_DIRECT 参数",
+      "default": true
+    },
+    "ECUC_GATEWAY_INDIRECT": {
+      "type": "boolean",
+      "description": "ECUC_GATEWAY_INDIRECT 参数",
+      "default": false
+    },
+    "ECUC_SIGNAL_ADAPTATION_ENABLED": {
+      "type": "boolean",
+      "description": "ECUC_SIGNAL_ADAPTATION_ENABLED 参数",
+      "default": true
+    },
+    "ECUC_E_NO_ERROR": {
+      "type": "integer",
+      "description": "ECUC_E_NO_ERROR 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "ECUC_E_PARAM_POINTER": {
+      "type": "integer",
+      "description": "ECUC_E_PARAM_POINTER 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "ECUC_VENDOR_ID_VALUE": {
+      "type": "integer",
+      "description": "ECUC_VENDOR_ID_VALUE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "ECUC_MODULE_ID_VALUE": {
+      "type": "integer",
+      "description": "ECUC_MODULE_ID_VALUE 参数",
+      "default": 150,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "ECUC_SW_MAJOR_VERSION_VALUE": {
+      "type": "integer",
+      "description": "ECUC_SW_MAJOR_VERSION_VALUE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "ECUC_SW_MINOR_VERSION_VALUE": {
+      "type": "integer",
+      "description": "ECUC_SW_MINOR_VERSION_VALUE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "ECUC_SW_PATCH_VERSION_VALUE": {
+      "type": "integer",
+      "description": "ECUC_SW_PATCH_VERSION_VALUE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255
+    }
+  },
+  "additionalProperties": true,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "CfgH-Extracted",
+  "x-source-file": "src/bsw/services/ecuC/include/EcuC_Cfg.h",
+  "x-display-name": "EcuC"
+}
