@@ -7,7 +7,7 @@
  *  - 覆盖 ECUC 值层（ECUC-MODULE-CONFIGURATION-VALUES / PARAMETER-VALUES /
  *    ECUC-CONTAINER-VALUE 递归）——与 apps/yuleasr-web 完整导出器同构，
  *    供导出层复用或逐步接管；
- *  - 反向探测 detectSchemaVersion：与 arxml-import/reader.ts:563-567
+ *  - 反向探测 detectSchemaVersion：与 arxml-import/reader.ts 的 SCHEMA_VERSION_RE
  *    同一正则，导入导出对称（cogu reader.py:589-600）。
  *
  * R3 多文档拆分：serializeArxmlDocuments 按 documentMapping
@@ -70,8 +70,9 @@ function paramDest(p: ArxmlExportParameter): string {
   }
 }
 
-/** 参数值元素名（数值/布尔 → ECUC-NUMERICAL-PARAM-VALUE，其余 → 文本值） */
+/** 参数值元素名（R8/E1 对齐导入侧三 tag：布尔/数值 → 对应 tag，其余 → 文本值） */
 function paramValueTag(p: ArxmlExportParameter): string {
+  if (typeof p.value === 'boolean') return 'ECUC-BOOLEAN-PARAM-VALUE';
   return typeof p.value === 'string' ? 'ECUC-TEXTUAL-PARAM-VALUE' : 'ECUC-NUMERICAL-PARAM-VALUE';
 }
 

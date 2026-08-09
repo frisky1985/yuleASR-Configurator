@@ -1,7 +1,9 @@
 /**
- * @yuletech/core - ARXML SWC-layer Reader
+ * @yuletech/core - ARXML SWC-layer Reader（R8/E1 起覆盖 ECUC 值层）
  *
- * 轻量自研 ARXML 解析器（SWC/端口/接口/数据类型/CompuMethod 层）。
+ * 轻量自研 ARXML 解析器：SWC/端口/接口/数据类型/CompuMethod 层 +
+ * ECUC 值层（ECUC-MODULE-CONFIGURATION-VALUES / PARAMETER-VALUES /
+ * ECUC-CONTAINER-VALUE 递归，R8/E1 启动）。
  *
  * 设计借鉴 cogu/autosar（https://github.com/cogu/autosar）reader.py 的两个模式：
  *  1. switcher 字典分发（reader.py:116-200）—— 每个元素类型对应一个 _read_xxx 方法，
@@ -10,9 +12,16 @@
  *     的子元素是否被消费，未消费的按 `file(line): Unprocessed element <TAG>` 告警，
  *     告警而非崩溃（OEM ARXML 必然含库不认识的元素）。
  *
- * 本模块与 @yuletech/core/adapters/arxml-parser（ECUC/BSW 层）互补：
- *   - arxml-parser:  ECUC-MODULE-CONFIGURATION-VALUES（BSW 模块配置）
- *   - arxml-import:  APPLICATION-SW-COMPONENT-TYPE / PORT-INTERFACE / DATA-TYPE / COMPU-METHOD
+ * R8/E1 边界（诚实声明，详见批次 3 报告）：
+ *  - 本批只做 ECUC **值层**；定义层（ECUC-MODULE-DEF 元模型）不解析，
+ *    DEFINITION-REF 保留字符串（definitionRef / moduleDefRef=短名），不做值-定义一致性校验；
+ *  - ECUC 定义引用（DEST=ECUC-MODULE-DEF / ECUC-PARAM-CONF-CONTAINER-DEF）
+ *    不参与 C1 pendingRefs 类型校验（无定义层目标可校验）；
+ *  - IMPLEMENTATION-CONFIG-VARIANT 为标准元素但值层模型不捕获（skip 不告警，见 readEcucModule）。
+ *
+ * 与导出侧对称：EcucModuleConfigValue / EcucContainerValue / EcucParameterValue
+ * 的字段命名对齐 arxml-export/serializer.ts 的 ArxmlExportModule / ArxmlExportContainer /
+ * ArxmlExportParameter（name/value），导入导出闭环（serialize → parse 可还原）。
  */
 
 import { XMLParser } from 'fast-xml-parser';
@@ -61,6 +70,8 @@ export interface ImportReport {
     applicationDataTypes: number;
     implementationDataTypes: number;
     compuMethods: number;
+    /** ECUC 值层模块数（R8/E1） */
+    ecucModules: number;
   };
   /** 未处理元素告警清单（不崩溃，仅告警） */
   warnings: UnprocessedElementWarning[];
@@ -81,7 +92,65 @@ export interface SwcArxmlProject {
   implementationDataTypes: ImplementationDataType[];
   compuMethods: CompuMethod[];
   baseTypes: Map<string, string>;
+  /** ECUC 值层模块（R8/E1；ECUC-MODULE-CONFIGURATION-VALUES） */
+  ecucModules: EcucModuleConfigValue[];
   report: ImportReport;
+}
+
+// ============================================================================
+// ECUC 值层数据模型（R8/E1）
+// 字段命名对齐 arxml-export/serializer.ts：
+//   ArxmlExportParameter.name/value      ↔ EcucParameterValue.name/value
+//   ArxmlExportContainer.name/parameters ↔ EcucContainerValue.name/parameters
+//   ArxmlExportModule.name/parameters    ↔ EcucModuleConfigValue.name/parameters
+// 导入侧额外保留 definitionRef（DEFINITION-REF 原文，定义层远期解析用）。
+// ============================================================================
+
+/**
+ * ECUC 参数值（值层）。
+ *
+ * 值类型按元素 tag 归一：
+ *  - ECUC-BOOLEAN-PARAM-VALUE → boolean
+ *  - ECUC-NUMERICAL-PARAM-VALUE → number（数值化失败保留原文）
+ *  - ECUC-TEXTUAL-PARAM-VALUE → string
+ * 与导出侧 ArxmlExportParameter.value（string | number | boolean）对称。
+ */
+export interface EcucParameterValue {
+  /** 参数名（DEFINITION-REF 最后一段，与导出侧 name 对称） */
+  name: string;
+  /** DEFINITION-REF 原文（定义层不解析，保留字符串） */
+  definitionRef: string;
+  /** 参数值（数值/文本/布尔） */
+  value: string | number | boolean;
+}
+
+/** ECUC 容器值（可递归嵌套，对应 CONTAINERS / SUB-CONTAINERS） */
+export interface EcucContainerValue {
+  /** 容器短名（SHORT-NAME） */
+  name: string;
+  /** DEFINITION-REF 原文（DEST=ECUC-PARAM-CONF-CONTAINER-DEF） */
+  definitionRef: string;
+  /** 直接参数值 */
+  parameters: EcucParameterValue[];
+  /** 子容器（SUB-CONTAINERS 递归） */
+  containers: EcucContainerValue[];
+}
+
+/**
+ * ECUC 模块配置值（ECUC-MODULE-CONFIGURATION-VALUES）。
+ * 与导出侧 ArxmlExportModule 对称；moduleDefRef 为 DEFINITION-REF 短名。
+ */
+export interface EcucModuleConfigValue {
+  /** 模块短名（SHORT-NAME） */
+  name: string;
+  /** DEFINITION-REF 原文（DEST=ECUC-MODULE-DEF，定义层远期解析） */
+  definitionRef: string;
+  /** 模块定义短名（DEFINITION-REF 最后一段） */
+  moduleDefRef: string;
+  /** 模块级参数（PARAMETER-VALUES） */
+  parameters: EcucParameterValue[];
+  /** 容器（CONTAINERS → ECUC-CONTAINER-VALUE 递归） */
+  containers: EcucContainerValue[];
 }
 
 // ============================================================================
@@ -131,6 +200,15 @@ const ARRAY_TAGS = new Set([
   'TYPE-TREF',
   'REQUIRED-INTERFACE-TREF',
   'PROVIDED-INTERFACE-TREF',
+  // ECUC 值层（R8/E1）：值层元素可能单/多出现，统一强制数组保证遍历语义
+  'ECUC-MODULE-CONFIGURATION-VALUES',
+  'ECUC-CONTAINER-VALUE',
+  'ECUC-NUMERICAL-PARAM-VALUE',
+  'ECUC-TEXTUAL-PARAM-VALUE',
+  'ECUC-BOOLEAN-PARAM-VALUE',
+  'PARAMETER-VALUES',
+  'CONTAINERS',
+  'SUB-CONTAINERS',
 ]);
 
 function createXmlParser(): XMLParser {
@@ -345,6 +423,7 @@ export function createReadContext(sourceName: string, xml: string): ReadContext 
         applicationDataTypes: 0,
         implementationDataTypes: 0,
         compuMethods: 0,
+        ecucModules: 0,
       },
       warnings: [],
       errors: [],
@@ -382,8 +461,9 @@ export function reportUnprocessedChildren(ctx: ReadContext, childMap: ChildEleme
 // ============================================================================
 
 /**
- * 解析 ARXML 内容并提取 SWC 层元素（SWC/端口/接口/数据类型/CompuMethod）。
- * 未知元素仅告警不崩溃；BSW 模块配置（ECUC）不属于本模块范围（见 adapters/arxml-parser）。
+ * 解析 ARXML 内容并提取 SWC 层元素（SWC/端口/接口/数据类型/CompuMethod）+ ECUC 值层
+ * （ECUC-MODULE-CONFIGURATION-VALUES，R8/E1）。未知元素仅告警不崩溃；
+ * ECUC 定义层（元模型）不解析（DEFINITION-REF 保留字符串，见文件头边界说明）。
  */
 export function parseSwcArxml(xmlContent: string, sourceName = 'input.arxml'): SwcArxmlProject {
   const project: SwcArxmlProject = {
@@ -394,6 +474,7 @@ export function parseSwcArxml(xmlContent: string, sourceName = 'input.arxml'): S
     implementationDataTypes: [],
     compuMethods: [],
     baseTypes: new Map(),
+    ecucModules: [],
     report: {
       sourceName,
       schemaVersion: null,
@@ -407,6 +488,7 @@ export function parseSwcArxml(xmlContent: string, sourceName = 'input.arxml'): S
         applicationDataTypes: 0,
         implementationDataTypes: 0,
         compuMethods: 0,
+        ecucModules: 0,
       },
       warnings: [],
       errors: [],
@@ -444,18 +526,11 @@ export function parseSwcArxml(xmlContent: string, sourceName = 'input.arxml'): S
     );
 
     // 第一遍：收集所有可识别元素（两遍法便于跨包引用解析）
+    // 递归下钻嵌套 AR-PACKAGE：真实 AUTOSAR 包可任意嵌套（含导出侧每模块一包的形态），
+    // 扁平 ELEMENTS 里的元素直接收集。
     const elementNodes: Array<{ tag: string; node: Record<string, unknown> }> = [];
     for (const pkg of packageNodes) {
-      const elements = getChild(pkg, 'ELEMENTS');
-      for (const elem of ensureArray<Record<string, unknown>>(elements as unknown)) {
-        for (const [tag, value] of Object.entries(elem)) {
-          if (tag.startsWith('@_') || tag === '#text') continue;
-          // 同一 tag 可能对应多个元素（fast-xml-parser isArray 输出数组）
-          for (const node of normalizeElementNodes(value)) {
-            elementNodes.push({ tag, node });
-          }
-        }
-      }
+      collectPackageElements(pkg, elementNodes);
     }
 
     // 第一遍：数据类型 + CompuMethod + 基础类型（先建引用目标）
@@ -485,10 +560,11 @@ export function parseSwcArxml(xmlContent: string, sourceName = 'input.arxml'): S
       else if (tag === 'CLIENT-SERVER-INTERFACE') readClientServerInterface(ctx, node, project);
     }
 
-    // 第三遍：SWC 组件（端口引用接口）
+    // 第三遍：SWC 组件（端口引用接口）+ ECUC 值层模块（R8/E1）
     for (const { tag, node } of elementNodes) {
       if (tag === 'APPLICATION-SW-COMPONENT-TYPE') readApplicationSwc(ctx, node, project);
       else if (tag === 'COMPOSITION-SW-COMPONENT-TYPE') readCompositionSwc(ctx, node, project);
+      else if (tag === 'ECUC-MODULE-CONFIGURATION-VALUES') readEcucModule(ctx, node, project);
       else if (!isKnownTopLevelTag(tag)) {
         // 未知顶层元素 → 告警不崩溃（OEM ARXML 必然含未知元素）
         reportUnprocessed(ctx, node, tag);
@@ -519,6 +595,7 @@ const KNOWN_TOP_LEVEL_TAGS = new Set([
   'IMPLEMENTATION-DATA-TYPE',
   'SW-BASE-TYPE',
   'COMPU-METHOD',
+  'ECUC-MODULE-CONFIGURATION-VALUES', // R8/E1：ECUC 值层顶层元素
 ]);
 
 function isKnownTopLevelTag(tag: string): boolean {
@@ -542,6 +619,31 @@ function normalizeElementNodes(value: unknown): Array<Record<string, unknown>> {
     }
   }
   return nodes;
+}
+
+/**
+ * 收集一个包（含递归下钻嵌套 AR-PACKAGE）内的所有顶层元素节点。
+ * 嵌套包（含导出侧 serializeModule 每模块一包的形态）递归展开，
+ * 其余元素按 { tag, node } 收集（同一 tag 多元素展开为多条）。
+ */
+function collectPackageElements(
+  pkg: Record<string, unknown>,
+  out: Array<{ tag: string; node: Record<string, unknown> }>
+): void {
+  const elements = getChild(pkg, 'ELEMENTS');
+  for (const elem of ensureArray<Record<string, unknown>>(elements as unknown)) {
+    for (const [tag, value] of Object.entries(elem)) {
+      if (tag.startsWith('@_') || tag === '#text') continue;
+      for (const node of normalizeElementNodes(value)) {
+        if (tag === 'AR-PACKAGE') {
+          // 嵌套包 → 递归下钻（真实 AUTOSAR 包可任意嵌套，避免误报 Unprocessed）
+          collectPackageElements(node, out);
+        } else {
+          out.push({ tag, node });
+        }
+      }
+    }
+  }
 }
 
 // ============================================================================
@@ -1275,5 +1377,182 @@ function readCompositionSwc(ctx: ReadContext, node: Record<string, unknown>, pro
 
   project.compositionComponents.push(swc);
   ctx.report.counts.swComponents++;
+  reportUnprocessedChildren(ctx, children);
+}
+
+// ============================================================================
+// ECUC 值层（R8/E1）—— ECUC-MODULE-CONFIGURATION-VALUES
+// 解析：模块（SHORT-NAME / DEFINITION-REF / PARAMETER-VALUES / CONTAINERS）
+//      → 参数（ECUC-NUMERICAL/TEXTUAL/BOOLEAN-PARAM-VALUE）
+//      → 容器（ECUC-CONTAINER-VALUE 递归 SUB-CONTAINERS）
+// 与 arxml-export/serializer.ts 的 serializeModule / serializeContainer / serializeParam
+// 对称，构成导入导出闭环（parse(serialize(x)) 可还原 x）。
+// 边界：定义层（ECUC-MODULE-DEF 元模型）不解析，DEFINITION-REF 保留字符串；
+// 不校验参数值是否匹配定义层（无元模型前提，见文件头说明）。
+// ============================================================================
+
+/** PARAMETER-VALUES 内可识别并导入的参数值元素 tag（switcher 表） */
+const ECUC_PARAM_VALUE_TAGS = [
+  'ECUC-NUMERICAL-PARAM-VALUE',
+  'ECUC-TEXTUAL-PARAM-VALUE',
+  'ECUC-BOOLEAN-PARAM-VALUE',
+] as const;
+
+const ECUC_PARAM_VALUE_TAG_SET = new Set<string>(ECUC_PARAM_VALUE_TAGS);
+
+/**
+ * 按参数元素 tag 归一值类型（与导出侧 ArxmlExportParameter.value 对称）：
+ *  - ECUC-BOOLEAN-PARAM-VALUE → boolean
+ *  - ECUC-NUMERICAL-PARAM-VALUE → number（数值化失败保留原文，诚实保真）
+ *  - ECUC-TEXTUAL-PARAM-VALUE → string（原文）
+ */
+function parseEcucParamValue(tag: string, raw: string | undefined): string | number | boolean {
+  if (raw === undefined) return '';
+  switch (tag) {
+    case 'ECUC-BOOLEAN-PARAM-VALUE':
+      return raw.toLowerCase() === 'true';
+    case 'ECUC-NUMERICAL-PARAM-VALUE': {
+      const num = Number(raw);
+      return Number.isNaN(num) ? raw : num;
+    }
+    default:
+      return raw;
+  }
+}
+
+/** 解析单个参数值元素（DEFINITION-REF + VALUE） */
+function readEcucParameterValue(
+  ctx: ReadContext,
+  node: Record<string, unknown>,
+  tag: string
+): EcucParameterValue | null {
+  const children = new ChildElementMap(node);
+  const definitionRef = getTextContent(node, 'DEFINITION-REF');
+  if (!definitionRef) {
+    // 无 DEFINITION-REF 的参数无法命名（定义层未解析），走未处理告警不崩溃
+    reportUnprocessedChildren(ctx, children);
+    return null;
+  }
+  children.skip('DEFINITION-REF');
+  const raw = getTextContent(node, 'VALUE');
+  children.skip('VALUE');
+  reportUnprocessedChildren(ctx, children);
+  return {
+    name: refShortName(definitionRef),
+    definitionRef,
+    value: parseEcucParamValue(tag, raw),
+  };
+}
+
+/**
+ * 解析 PARAMETER-VALUES 包装节点内的全部参数。
+ * 按文档顺序遍历（fast-xml-parser 对象键序 = 首次出现序），
+ * 保证与导出侧输入顺序一致（round-trip 顺序可还原）。
+ */
+function readEcucParameterValues(ctx: ReadContext, wrapper: Record<string, unknown>): EcucParameterValue[] {
+  const parameters: EcucParameterValue[] = [];
+  for (const [tag, value] of Object.entries(wrapper)) {
+    if (tag.startsWith('@_') || tag === '#text') continue;
+    if (!ECUC_PARAM_VALUE_TAG_SET.has(tag)) continue;
+    for (const node of ensureArray<Record<string, unknown>>(value)) {
+      const param = readEcucParameterValue(ctx, node, tag);
+      if (param) parameters.push(param);
+    }
+  }
+  return parameters;
+}
+
+/**
+ * 解析单个 ECUC-CONTAINER-VALUE（递归：PARAMETER-VALUES + SUB-CONTAINERS）。
+ * 与导出侧 ArxmlExportContainer（name/parameters/containers）对称。
+ */
+function readEcucContainer(ctx: ReadContext, node: Record<string, unknown>): EcucContainerValue | null {
+  const children = new ChildElementMap(node);
+  const name = getTextContent(node, 'SHORT-NAME');
+  if (!name) {
+    reportUnprocessedChildren(ctx, children);
+    return null;
+  }
+  children.skip('SHORT-NAME');
+
+  const definitionRef = getTextContent(node, 'DEFINITION-REF') ?? '';
+  children.skip('DEFINITION-REF');
+
+  const container: EcucContainerValue = {
+    name,
+    definitionRef,
+    parameters: [],
+    containers: [],
+  };
+
+  const paramsWrapper = firstChild(node, 'PARAMETER-VALUES');
+  children.skip('PARAMETER-VALUES');
+  if (paramsWrapper) container.parameters = readEcucParameterValues(ctx, paramsWrapper);
+
+  const subWrapper = firstChild(node, 'SUB-CONTAINERS');
+  children.skip('SUB-CONTAINERS');
+  if (subWrapper) {
+    container.containers = ensureArray<Record<string, unknown>>(subWrapper['ECUC-CONTAINER-VALUE'])
+      .map(sub => readEcucContainer(ctx, sub))
+      .filter((c): c is EcucContainerValue => c !== null);
+  }
+
+  reportUnprocessedChildren(ctx, children);
+  return container;
+}
+
+/** 解析 CONTAINERS / SUB-CONTAINERS 包装节点内的全部容器 */
+function readEcucContainers(ctx: ReadContext, wrapper: Record<string, unknown>): EcucContainerValue[] {
+  return ensureArray<Record<string, unknown>>(wrapper['ECUC-CONTAINER-VALUE'])
+    .map(node => readEcucContainer(ctx, node))
+    .filter((c): c is EcucContainerValue => c !== null);
+}
+
+/**
+ * 读取 ECUC-MODULE-CONFIGURATION-VALUES（模块级值层导入）。
+ * 与导出侧 ArxmlExportModule（name/parameters/containers）对称；
+ * 另捕获 definitionRef（DEFINITION-REF 原文）与 moduleDefRef（短名）。
+ */
+function readEcucModule(ctx: ReadContext, node: Record<string, unknown>, project: SwcArxmlProject): void {
+  const children = new ChildElementMap(node);
+  const name = getTextContent(node, 'SHORT-NAME');
+  if (!name) {
+    reportUnprocessed(ctx, node, 'SHORT-NAME');
+    reportUnprocessedChildren(ctx, children);
+    return;
+  }
+  children.skip('SHORT-NAME');
+
+  const definitionRef = getTextContent(node, 'DEFINITION-REF') ?? '';
+  children.skip('DEFINITION-REF');
+
+  // IMPLEMENTATION-CONFIG-VARIANT：标准元素但本批值层模型不捕获（边界见文件头），
+  // 已知元素显式 skip 避免噪音告警（同 COMPU-PHYS-TO-INTERNAL 处理惯例）
+  children.skip('IMPLEMENTATION-CONFIG-VARIANT');
+
+  const module: EcucModuleConfigValue = {
+    name,
+    definitionRef,
+    moduleDefRef: definitionRef ? refShortName(definitionRef) : '',
+    parameters: [],
+    containers: [],
+  };
+
+  const paramsWrapper = firstChild(node, 'PARAMETER-VALUES');
+  children.skip('PARAMETER-VALUES');
+  if (paramsWrapper) module.parameters = readEcucParameterValues(ctx, paramsWrapper);
+
+  const containersWrapper = firstChild(node, 'CONTAINERS');
+  children.skip('CONTAINERS');
+  if (containersWrapper) module.containers = readEcucContainers(ctx, containersWrapper);
+
+  // 重复模块名检测（R6 惯例：reportDuplicate + 跳过，不覆盖）
+  if (project.ecucModules.some(m => m.name === name)) {
+    reportDuplicate(ctx, 'ECUC modules', name);
+  } else {
+    project.ecucModules.push(module);
+    ctx.report.counts.ecucModules++;
+  }
+
   reportUnprocessedChildren(ctx, children);
 }

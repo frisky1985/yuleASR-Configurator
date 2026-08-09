@@ -83,7 +83,7 @@ describe('serializeArxmlDocument 最小导出框架', () => {
     expect(xml).toContain('</AUTOSAR>');
   });
 
-  it('布尔参数输出 true/false 文本', () => {
+  it('布尔参数输出 true/false 文本（R8/E1 对齐：tag 用 ECUC-BOOLEAN-PARAM-VALUE）', () => {
     const xml = serializeArxmlDocument([
       {
         name: 'M',
@@ -95,6 +95,10 @@ describe('serializeArxmlDocument 最小导出框架', () => {
     ]);
     expect(xml).toContain('<VALUE>true</VALUE>');
     expect(xml).toContain('<VALUE>false</VALUE>');
+    // R8/E1：布尔参数用 ECUC-BOOLEAN-PARAM-VALUE（与导入侧三 tag 对称，
+    // 且与 DEST=ECUC-BOOLEAN-PARAM-DEF 一致，修复此前误用 NUMERICAL tag）
+    expect(xml).toContain('<ECUC-BOOLEAN-PARAM-VALUE>');
+    expect(xml.match(/<ECUC-BOOLEAN-PARAM-VALUE>/g)).toHaveLength(2);
   });
 
   it('反向探测：导出文档可探测回原版本（导入导出对称）', () => {

@@ -1,15 +1,18 @@
 /**
- * @yuletech/core - ARXML SWC 层导入后端
+ * @yuletech/core - ARXML SWC 层 + ECUC 值层导入后端
  *
- * 导入 .arxml 工程文件（SWC/端口/接口/数据类型/CompuMethod 层）到
- * Configurator 现有数据模型（types/swc.ts：SwcProjectConfig）。
+ * 导入 .arxml 工程文件（SWC/端口/接口/数据类型/CompuMethod + ECUC 值层模块，R8/E1）
+ * 到 Configurator 现有数据模型（types/swc.ts：SwcProjectConfig）。
  *
  * 设计：
  *  - 轻量自研解析器（fast-xml-parser 已有依赖，零新增依赖），
  *    借鉴 cogu/autosar 的 switcher 字典分发 + ChildElementMap 未处理元素告警模式；
  *  - 未处理元素仅告警不崩溃（OEM ARXML 必然含未知元素）；
- *  - BSW 模块配置（CanIf/NvM 等 ECUC 层）不属于本模块范围，
- *    请使用 @yuletech/core/adapters/arxml-parser（ECUC 层）。
+ *  - ECUC 值层（R8/E1）：ECUC-MODULE-CONFIGURATION-VALUES / PARAMETER-VALUES /
+ *    ECUC-CONTAINER-VALUE 递归，与 arxml-export/serializer.ts 对称构成导入导出闭环；
+ *    ECUC 定义层（元模型）不解析，DEFINITION-REF 保留字符串（边界见 reader.ts 头注释）。
+ *  - BSW 模块配置的旧入口 @yuletech/core/adapters/arxml-parser（ECUC 层）仍可用，
+ *    与本导入器互为补充（adapter 产出 ParsedModuleConfig 领域模型）。
  */
 
 import type { SwcProjectConfig } from '../types/swc';
@@ -33,6 +36,10 @@ export {
   type ImportReport,
   type UnprocessedElementWarning,
   type PendingReference,
+  // R8/E1：ECUC 值层数据模型（与导出侧 ArxmlExport* 对称）
+  type EcucModuleConfigValue,
+  type EcucContainerValue,
+  type EcucParameterValue,
 } from './reader';
 
 // 引用类型约束表（C1 · R1）：REF_CONSTRAINTS + RefTargetKind
@@ -57,7 +64,8 @@ export interface SwcImportResult {
 }
 
 /**
- * 从 ARXML 内容导入 SWC 层元素。
+ * 从 ARXML 内容导入 SWC 层元素（ECUC 值层计数见 report.counts.ecucModules；
+ * 完整 ECUC 模块数据请用 parseSwcArxml 的 ecucModules 字段，R8/E1）。
  *
  * @param xmlContent ARXML 文件内容
  * @param sourceName 源文件名（用于告警 file(line) 前缀，默认 input.arxml）
@@ -67,6 +75,7 @@ export interface SwcImportResult {
  * ```ts
  * const { project, report } = importSwcArxml(xml, 'BCM.arxml');
  * console.log(report.counts.swComponents);      // 成功导入的 SWC 数
+ * console.log(report.counts.ecucModules);       // 成功导入的 ECUC 模块数（R8/E1）
  * console.log(report.warnings);                 // file(line): Unprocessed element <TAG>
  * ```
  */
