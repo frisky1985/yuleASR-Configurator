@@ -13,3 +13,4 @@
 export * from './versions';
 export * from './version-gates';
 export * from './serializer';
+export * from './validator';
