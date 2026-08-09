@@ -23,6 +23,8 @@ export interface GeneratedFile {
   filename: string;
   content: string;
   language: 'c' | 'h';
+  /** 生成期提示（如拼接降级警告），非致命错误 */
+  warnings?: string[];
 }
 
 /**
@@ -111,6 +113,167 @@ function getHeaderFilename(moduleId: string): string {
  */
 function getModuleId(moduleName: string): number {
   return MODULE_IDS[moduleName] || 0xffff;
+}
+
+/**
+ * ============================================================================
+ * V3.2 — 混合头拼接（splice）
+ *
+ * 背景：部分 yuleASR 手写 *_Cfg.h 除宏段外还含非宏配置内容
+ * （typedef / struct / extern 配置表，如 CanIf_Cfg.h 的 CanIf_HohCfgType /
+ * CanIf_TxPduCfg[CANIF_TX_LPDU_CNT] 等）。纯宏生成头缺这些声明，直接替换
+ * 手写头会导致编译失败（V3.1 demo 已证：拼接头 5/5 编译 0 error + ctest 45/45）。
+ *
+ * 本方案（V3.1 拼接方案的固化）：生成宏段 + #include "Std_Types.h"
+ * + 手写非宏段（typedef/struct/extern）追加。顺序约束：宏段必须先行——
+ * extern 数组尺寸引用宏段计数宏（CANIF_HOH_CNT 等）。
+ *
+ * 护栏：
+ * 1. 探测规则（推荐）——扫描手写头源文件含 typedef|struct|extern 且非注释行；
+ * 2. 已知混合头清单（KNOWN_MIXED_HEADERS）——明确已知需拼接的模块，
+ *    拼接模式下缺手写头直接报错，绝不产出残缺纯宏头；
+ * 3. 结构防呆——非宏段混入 #define（错误码/别名）或生成头缺 guard/#endif 时
+ *    拒绝拼接并抛错。
+ * ============================================================================
+ */
+
+/**
+ * 已知混合头模块清单（手写头含 typedef/struct/extern 配置表）。
+ * 拼接模式下（调用方提供 handwrittenHeaders），这些模块的手写头缺失/不可读时
+ * 直接抛错（护栏兜底），而不是静默产出纯宏头。
+ * 可随探测发现的模块追加；探测规则对清单外模块同样生效（自动拼接）。
+ */
+const KNOWN_MIXED_HEADERS = new Set(['canif']);
+
+/**
+ * 非宏内容探测正则：行首 typedef / struct / extern（extern 排除 extern "C" 链接声明）。
+ */
+const NON_MACRO_LINE_RE = /^\s*(?:typedef\b|struct\b|extern\b(?!\s*"))/;
+
+/** 判断一行是否为非宏内容（typedef/struct/extern 配置表），排除注释行 */
+function isNonMacroLine(line: string): boolean {
+  const t = line.trim();
+  if (!t || t.startsWith('*') || t.startsWith('/*') || t.startsWith('//')) return false;
+  return NON_MACRO_LINE_RE.test(line);
+}
+
+/**
+ * 混合头探测护栏（规则 1）：手写头是否含非宏内容（typedef/struct/extern 配置表）。
+ * 探测到 → 走拼接路径；否则纯宏头即可。
+ */
+export function hasNonMacroContent(headerContent: string): boolean {
+  return headerContent.split('\n').some(line => isNonMacroLine(line));
+}
+
+/** 非宏段提取结果 */
+export interface NonMacroSegment {
+  /** 原样行切片（含段内注释），首尾为首个/末个非宏行 */
+  segment: string;
+  /** 标量 typedef 数 */
+  typedefs: number;
+  /** typedef struct 数 */
+  structs: number;
+  /** extern 配置表数 */
+  externs: number;
+}
+
+/**
+ * 提取手写头非宏段：从首个 typedef/struct/extern 行到末个非宏行的连续切片。
+ * 护栏（规则 3）：切片内混入 #define（错误码/别名，如 CanIf_Cfg.h 的
+ * CANIF_E_PARAM_CANID/DLC 位于 extern 段之后，天然排除；但防御性拦截）→ 抛错。
+ * 无非宏内容 → 返回 null（纯宏头，无需拼接）。
+ */
+export function extractNonMacroSegment(headerContent: string): NonMacroSegment | null {
+  const lines = headerContent.split('\n');
+  const idxs: number[] = [];
+  lines.forEach((l, i) => {
+    if (isNonMacroLine(l)) idxs.push(i);
+  });
+  if (idxs.length === 0) return null;
+
+  const slice = lines.slice(idxs[0], idxs[idxs.length - 1] + 1);
+  const defines = slice.filter(l => /^\s*#define\b/.test(l));
+  if (defines.length > 0) {
+    throw new Error(
+      `[codegen] 非宏段混入 #define，拒绝拼接: ${defines[0].trim()}（手写头结构异常）`
+    );
+  }
+
+  return {
+    segment: slice.join('\n'),
+    typedefs: slice.filter(l => /^\s*typedef\b/.test(l) && !/^\s*typedef\s+struct\b/.test(l)).length,
+    structs: slice.filter(l => /^\s*typedef\s+struct\b/.test(l)).length,
+    externs: slice.filter(l => /^\s*extern\b/.test(l)).length,
+  };
+}
+
+/** Std_Types.h 基础类型（非宏段依赖判定用） */
+const STD_TYPES_TYPE_RE =
+  /\b(?:uint8|uint16|uint32|uint64|sint8|sint16|sint32|sint64|boolean|float32|float64)\b/;
+
+/**
+ * 拼接实现（V3.1 方案固化）：
+ *   生成头（宏段）拆分为 head(文件头+guard) / macros / tail(#endif+文件尾)，
+ *   在 guard 后插入 #include "Std_Types.h"（非宏段依赖 Std_Types 类型时），
+ *   宏段之后追加手写非宏段（typedef/struct/extern），再拼回 tail。
+ *
+ * 顺序约束：宏段先行——extern 数组尺寸引用宏段计数宏。
+ * 护栏（规则 3）：生成头缺 guard/#endif → 抛错，不产出残缺头。
+ */
+export function spliceGeneratedWithNonMacro(
+  generatedContent: string,
+  handwrittenContent: string,
+  headerName: string
+): string {
+  const nonMacro = extractNonMacroSegment(handwrittenContent);
+  if (!nonMacro) return generatedContent; // 纯宏头：无需拼接
+
+  const guardName = headerName.replace(/\./g, '_').toUpperCase();
+  const lines = generatedContent.split('\n');
+  const guardIdx = lines.findIndex(l => l.trim() === `#define ${guardName}`);
+  const endifIdx = lines.findIndex(l => l.trim().startsWith('#endif'));
+  if (guardIdx < 0 || endifIdx < 0) {
+    throw new Error(
+      `[codegen] 生成头结构异常（找不到 guard/#endif），拒绝拼接: ${headerName}`
+    );
+  }
+
+  const head = lines.slice(0, guardIdx + 1);
+  const macros = lines.slice(guardIdx + 1, endifIdx);
+  const tail = lines.slice(endifIdx);
+
+  const include = STD_TYPES_TYPE_RE.test(nonMacro.segment)
+    ? '#include "Std_Types.h"   /* 非宏段依赖 Std_Types 基础类型 (uint32/uint8/uint16/boolean 等)，生成宏段不含此 include */'
+    : null;
+
+  const banner = [
+    '/*==================================================================================================',
+    '*  NON-MACRO SEGMENT (preserved from handwritten header, merged by codegen splice)',
+    `*  typedef(${nonMacro.typedefs}) + struct(${nonMacro.structs}) + extern config tables(${nonMacro.externs}) — 依赖宏段计数宏, 故置于宏段之后`,
+    '*================================================================================================*/',
+  ];
+
+  return [
+    ...head,
+    '',
+    ...(include ? [include] : []),
+    ...macros,
+    '',
+    ...banner,
+    nonMacro.segment,
+    ...tail,
+  ].join('\n');
+}
+
+/**
+ * 拼接模式选项（F2a/F2b 入口可选）：
+ * 提供 handwrittenHeaders（filename → 手写头内容）后，codegen 对含非宏内容的
+ * 手写头走拼接路径。浏览器环境无文件系统，由调用方（Node 侧 codegen-splice.ts）
+ * 或测试读取手写头后传入。不提供 → 保持纯宏生成（既有行为，零回归）。
+ */
+export interface SpliceOptions {
+  /** 手写头内容映射（文件名如 CanIf_Cfg.h → 手写头全文） */
+  handwrittenHeaders?: Map<string, string>;
 }
 
 /**
@@ -474,7 +637,8 @@ export async function generateAllHeaders(
  * - ModuleSchema 无 enabled 字段，传入的 schema 全部生成。
  */
 export async function generateHeadersFromSchemas(
-  schemas: ModuleSchema[]
+  schemas: ModuleSchema[],
+  options: SpliceOptions = {}
 ): Promise<GeneratedFile[]> {
   const files: GeneratedFile[] = [];
 
@@ -483,7 +647,7 @@ export async function generateHeadersFromSchemas(
     const displayName = schema.label || schema.name;
     const filename = getHeaderFilename(schema.name);
 
-    const content = generateMacroOnlyHeader(
+    let content = generateMacroOnlyHeader(
       schema.name,
       schema.name,
       displayName,
@@ -494,10 +658,35 @@ export async function generateHeadersFromSchemas(
       }
     );
 
+    const warnings: string[] = [];
+    const moduleKey = schema.name.toLowerCase();
+    const handwritten = options.handwrittenHeaders?.get(filename);
+    if (handwritten !== undefined) {
+      // 混合头探测护栏（规则 1）：手写头含 typedef/struct/extern 配置表 → 拼接路径
+      if (hasNonMacroContent(handwritten)) {
+        content = spliceGeneratedWithNonMacro(content, handwritten, filename);
+      } else if (KNOWN_MIXED_HEADERS.has(moduleKey)) {
+        warnings.push(
+          `[codegen] ${filename} 已知混合头但手写头未探测到非宏内容，产物为纯宏头`
+        );
+      }
+    } else if (options.handwrittenHeaders && KNOWN_MIXED_HEADERS.has(moduleKey)) {
+      // 护栏兜底（规则 3）：拼接模式下已知混合头缺手写头 → 报错，不产出残缺头
+      throw new Error(
+        `[codegen] 已知混合头 ${filename} 缺少手写头内容（handwrittenHeaders 未提供），拒绝产出残缺纯宏头`
+      );
+    } else if (KNOWN_MIXED_HEADERS.has(moduleKey)) {
+      // 非拼接模式（浏览器）：已知混合头无法拼接，附警告但保持既有行为
+      warnings.push(
+        `[codegen] ${filename} 手写头含非宏内容（typedef/struct/extern），未提供 handwrittenHeaders，产物为纯宏头（替换手写头前需启用拼接）`
+      );
+    }
+
     files.push({
       filename,
       content,
       language: 'h',
+      ...(warnings.length > 0 ? { warnings } : {}),
     });
   }
 
@@ -629,7 +818,8 @@ export function buildSchemaCoverage(
  */
 export async function generateHeadersFromConfig(
   configModules: ConfigModuleLike[],
-  schemas?: ModuleSchema[]
+  schemas?: ModuleSchema[],
+  options: SpliceOptions = {}
 ): Promise<GeneratedFile[]> {
   const allSchemas = schemas ?? loadPreferredSchemas();
   const configByModule = new Map(
@@ -650,7 +840,7 @@ export async function generateHeadersFromConfig(
     };
   });
 
-  return generateHeadersFromSchemas(overridden);
+  return generateHeadersFromSchemas(overridden, options);
 }
 
 /**
