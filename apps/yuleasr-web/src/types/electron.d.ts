@@ -21,10 +21,18 @@ interface SaveResult {
   cancelled?: boolean;
 }
 
+interface ReadFileResult {
+  success: boolean;
+  content?: string;
+  error?: string;
+}
+
 interface ElectronAPI {
   onFileOpened(callback: (filePath: string) => void): void;
   onExportCode(callback: () => void): void;
   onRunVerify(callback: () => void): void;
+  /** 读取本地文件内容（R8/E4 ECUC 导入链路：菜单选文件 → 渲染进程解析） */
+  readFile(filePath: string): Promise<ReadFileResult>;
   gccCheck(): Promise<GCCCheckResult>;
   gccVerify(
     files: Array<{ filename: string; content: string; language: string }>
@@ -41,4 +49,4 @@ declare global {
   }
 }
 
-export type { ElectronAPI, GCCResult, GCCCheckResult, SaveResult };
+export type { ElectronAPI, GCCResult, GCCCheckResult, SaveResult, ReadFileResult };

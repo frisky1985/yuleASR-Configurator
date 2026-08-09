@@ -20,6 +20,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // File save
   saveFiles: (files) => ipcRenderer.invoke('files:save', files),
 
+  // File read（R8/E4：菜单打开配置 → 渲染进程读内容解析）
+  readFile: (filePath) => ipcRenderer.invoke('file:read', filePath),
+
   // Platform info
   platform: process.platform,
   isElectron: true,

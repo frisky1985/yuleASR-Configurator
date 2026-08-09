@@ -8,6 +8,7 @@ import { AdminBranding } from './pages/AdminBranding';
 import { Compare } from './pages/Compare';
 import { ConfigDiff } from './pages/ConfigDiff';
 import { Dashboard } from './pages/Dashboard';
+import { EcucImport } from './pages/EcucImport';
 import { Editor } from './pages/Editor';
 import { GitSync } from './pages/GitSync';
 import { LicenseActivation } from './pages/LicenseActivation';
@@ -56,6 +57,7 @@ function App() {
               }
             />
             <Route path="/migrate" element={<Migrate />} />
+            <Route path="/ecuc" element={<EcucImport />} />
             <Route path="/editor/:configId" element={<Editor />} />
             <Route path="/editor/:configId/:moduleId" element={<Editor />} />
             <Route path="/compare" element={<Compare />} />

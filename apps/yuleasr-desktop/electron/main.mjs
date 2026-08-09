@@ -3,6 +3,8 @@
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
+import { readFile } from 'fs/promises';
+
 import { app, BrowserWindow, Menu, dialog, ipcMain, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 
@@ -113,6 +115,29 @@ ipcMain.handle('files:save', async (_event, files) => {
     return { success: false, cancelled: true };
   }
   return saveFilesToDir(result.filePaths[0], safeFiles);
+});
+
+// ── File read（R8/E4 ECUC 导入链路：菜单选 .arxml → 渲染进程解析）──────
+
+/** 允许读取的配置扩展名（对齐 File > Open Configuration... 菜单 filter） */
+const READABLE_CONFIG_EXT = /\\.(arxml|json)$/i;
+/** 单文件读取上限（ARXML 工程文件一般 < 5MB，放宽到 20MB 防误伤） */
+const MAX_READ_BYTES = 20 * 1024 * 1024;
+
+ipcMain.handle('file:read', async (_event, filePath) => {
+  // Fix 5 惯例：IPC 入口校验载荷；仅放行配置类扩展名，路径由用户对话框产生
+  if (typeof filePath !== 'string' || !READABLE_CONFIG_EXT.test(filePath)) {
+    return { success: false, error: 'Invalid file path' };
+  }
+  try {
+    const buf = await readFile(filePath);
+    if (buf.byteLength > MAX_READ_BYTES) {
+      return { success: false, error: 'File too large (max 20MB)' };
+    }
+    return { success: true, content: buf.toString('utf8') };
+  } catch (err) {
+    return { success: false, error: err instanceof Error ? err.message : 'Read failed' };
+  }
 });
 
 // ── External links ─────────────────────────────────────────

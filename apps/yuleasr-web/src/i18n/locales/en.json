@@ -10,7 +10,8 @@
     "settings": "Settings",
     "editor": "Editor",
     "plugins": "Plugins",
-    "migrate": "Migrate"
+    "migrate": "Migrate",
+    "ecuc": "ECUC Import"
   },
   "common": {
     "save": "Save",

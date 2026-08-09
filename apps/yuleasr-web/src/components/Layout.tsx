@@ -16,6 +16,7 @@ import {
   Palette,
   Puzzle,
   Power,
+  ListTree,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -131,6 +132,7 @@ export function Layout({ children }: LayoutProps) {
     { path: '/dashboard', label: t('nav.dashboard'), icon: Home },
     { path: '/plugins', label: t('nav.plugins'), icon: Puzzle },
     { path: '/templates', label: t('nav.templates'), icon: FileJson },
+    { path: '/ecuc', label: t('nav.ecuc'), icon: ListTree },
     { path: '/migrate', label: t('nav.migrate'), icon: ArrowLeftRight },
     { path: '/sync', label: t('nav.gitSync'), icon: GitBranch },
     { path: '/settings', label: t('nav.settings'), icon: Settings },

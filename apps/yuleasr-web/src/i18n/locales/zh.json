@@ -10,7 +10,8 @@
     "settings": "设置",
     "editor": "编辑器",
     "plugins": "插件管理",
-    "migrate": "迁移"
+    "migrate": "迁移",
+    "ecuc": "ECUC 导入"
   },
   "common": {
     "save": "保存",
