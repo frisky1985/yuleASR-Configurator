@@ -2,75 +2,86 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/ecuc.json",
   "title": "EcuC Configuration",
-  "description": "EcuC Configuration Header",
+  "description": "EcuC Configuration configuration header",
   "type": "object",
   "properties": {
     "ECUC_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "ECUC_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUC_VERSION_INFO_API": {
       "type": "boolean",
       "description": "ECUC_VERSION_INFO_API 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUC_MAIN_FUNCTION_PERIOD_MS": {
       "type": "integer",
       "description": "ECUC_MAIN_FUNCTION_PERIOD_MS 参数",
       "default": 10,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUC_MAX_PDUS": {
       "type": "integer",
       "description": "ECUC_MAX_PDUS 参数",
       "default": 32,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUC_MAX_SIGNALS": {
       "type": "integer",
       "description": "ECUC_MAX_SIGNALS 参数",
       "default": 128,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUC_MAX_ROUTING_PATHS": {
       "type": "integer",
       "description": "ECUC_MAX_ROUTING_PATHS 参数",
       "default": 16,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUC_MAX_PDU_LENGTH": {
       "type": "integer",
       "description": "ECUC_MAX_PDU_LENGTH 参数",
       "default": 256,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUC_MAX_SIGNAL_SIZE": {
       "type": "integer",
       "description": "ECUC_MAX_SIGNAL_SIZE 参数",
       "default": 64,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUC_GATEWAY_DIRECT": {
       "type": "boolean",
       "description": "ECUC_GATEWAY_DIRECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUC_GATEWAY_INDIRECT": {
       "type": "boolean",
       "description": "ECUC_GATEWAY_INDIRECT 参数",
-      "default": false
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUC_SIGNAL_ADAPTATION_ENABLED": {
       "type": "boolean",
       "description": "ECUC_SIGNAL_ADAPTATION_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUC_E_NO_ERROR": {
       "type": "integer",
@@ -78,6 +89,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUC_E_PARAM_POINTER": {
@@ -86,6 +98,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUC_VENDOR_ID_VALUE": {
@@ -93,35 +106,40 @@
       "description": "ECUC_VENDOR_ID_VALUE 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUC_MODULE_ID_VALUE": {
       "type": "integer",
       "description": "ECUC_MODULE_ID_VALUE 参数",
       "default": 150,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUC_SW_MAJOR_VERSION_VALUE": {
       "type": "integer",
       "description": "ECUC_SW_MAJOR_VERSION_VALUE 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUC_SW_MINOR_VERSION_VALUE": {
       "type": "integer",
       "description": "ECUC_SW_MINOR_VERSION_VALUE 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUC_SW_PATCH_VERSION_VALUE": {
       "type": "integer",
       "description": "ECUC_SW_PATCH_VERSION_VALUE 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

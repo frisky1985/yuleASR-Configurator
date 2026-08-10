@@ -2,26 +2,26 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/crc.json",
   "title": "Crc Configuration",
-  "description": "Development error detection switch",
+  "description": "Crc Configuration configuration header",
   "type": "object",
   "properties": {
     "CRC_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "CRC_DEV_ERROR_DETECT 参数",
       "default": false,
-      "x-section": "PRECOMPILE-TIME CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_VERSION_INFO_API": {
       "type": "boolean",
       "description": "CRC_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "PRECOMPILE-TIME CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_8_MODE": {
       "type": "boolean",
       "description": "CRC_8_MODE 参数",
       "default": true,
-      "x-section": "CRC8 CONFIGURATION (SAE J1850)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_8_POLYNOMIAL": {
       "type": "integer",
@@ -29,7 +29,7 @@
       "default": 29,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CRC8 CONFIGURATION (SAE J1850)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_8_INITIAL_VALUE": {
       "type": "integer",
@@ -37,7 +37,7 @@
       "default": 255,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CRC8 CONFIGURATION (SAE J1850)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_8_XOR_OUT": {
       "type": "integer",
@@ -45,13 +45,13 @@
       "default": 255,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CRC8 CONFIGURATION (SAE J1850)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_8_TABLE_MODE": {
       "type": "boolean",
       "description": "CRC_8_TABLE_MODE 参数",
       "default": true,
-      "x-section": "CRC8 CONFIGURATION (SAE J1850)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_8_TABLE_SIZE": {
       "type": "integer",
@@ -59,13 +59,13 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CRC8 CONFIGURATION (SAE J1850)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_16_MODE": {
       "type": "boolean",
       "description": "CRC_16_MODE 参数",
       "default": true,
-      "x-section": "CRC16 CONFIGURATION (CCITT-FALSE)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_16_POLYNOMIAL": {
       "type": "integer",
@@ -73,7 +73,7 @@
       "default": 4129,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CRC16 CONFIGURATION (CCITT-FALSE)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_16_INITIAL_VALUE": {
       "type": "integer",
@@ -81,7 +81,7 @@
       "default": 65535,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CRC16 CONFIGURATION (CCITT-FALSE)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_16_XOR_OUT": {
       "type": "integer",
@@ -89,13 +89,13 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CRC16 CONFIGURATION (CCITT-FALSE)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_16_TABLE_MODE": {
       "type": "boolean",
       "description": "CRC_16_TABLE_MODE 参数",
       "default": true,
-      "x-section": "CRC16 CONFIGURATION (CCITT-FALSE)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_16_TABLE_SIZE": {
       "type": "integer",
@@ -103,13 +103,13 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CRC16 CONFIGURATION (CCITT-FALSE)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_32_MODE": {
       "type": "boolean",
       "description": "CRC_32_MODE 参数",
       "default": true,
-      "x-section": "CRC16 CONFIGURATION (CCITT-FALSE)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_32_POLYNOMIAL": {
       "type": "integer",
@@ -117,7 +117,7 @@
       "default": 79764919,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CRC16 CONFIGURATION (CCITT-FALSE)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_32_INITIAL_VALUE": {
       "type": "integer",
@@ -125,7 +125,7 @@
       "default": 4294967295,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CRC16 CONFIGURATION (CCITT-FALSE)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_32_XOR_OUT": {
       "type": "integer",
@@ -133,13 +133,13 @@
       "default": 4294967295,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CRC16 CONFIGURATION (CCITT-FALSE)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_32_TABLE_MODE": {
       "type": "boolean",
       "description": "CRC_32_TABLE_MODE 参数",
       "default": true,
-      "x-section": "CRC16 CONFIGURATION (CCITT-FALSE)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRC_32_TABLE_SIZE": {
       "type": "integer",
@@ -147,7 +147,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CRC16 CONFIGURATION (CCITT-FALSE)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -155,10 +155,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/crc/include/Crc_Cfg.h",
-  "x-display-name": "Crc",
-  "x-sections": [
-    "PRECOMPILE-TIME CONFIGURATION",
-    "CRC8 CONFIGURATION (SAE J1850)",
-    "CRC16 CONFIGURATION (CCITT-FALSE)"
-  ]
+  "x-display-name": "Crc"
 }

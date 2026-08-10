@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/adc.json",
   "title": "Adc Configuration",
-  "description": "ADC Driver configuration header",
+  "description": "Adc Configuration configuration header",
   "type": "object",
   "properties": {
     "ADC_DEV_ERROR_DETECT": {
@@ -15,6 +15,46 @@
       "type": "boolean",
       "description": "ADC_VERSION_INFO_API 参数",
       "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ADC_NUM_HW_UNITS": {
+      "type": "integer",
+      "description": "ADC_NUM_HW_UNITS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ADC_NUM_GROUPS": {
+      "type": "integer",
+      "description": "ADC_NUM_GROUPS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ADC_NUM_CHANNELS": {
+      "type": "integer",
+      "description": "ADC_NUM_CHANNELS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ADC_STREAM_NUM_SAMPLES": {
+      "type": "integer",
+      "description": "ADC_STREAM_NUM_SAMPLES 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ADC_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "ADC_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_DE_INIT_API": {
@@ -65,237 +105,213 @@
       "default": false,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "ADC_NUM_HW_UNITS": {
-      "type": "integer",
-      "description": "ADC_NUM_HW_UNITS 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF HW UNITS"
-    },
-    "ADC_NUM_GROUPS": {
-      "type": "integer",
-      "description": "ADC_NUM_GROUPS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF GROUPS"
-    },
-    "ADC_NUM_CHANNELS": {
-      "type": "integer",
-      "description": "ADC_NUM_CHANNELS 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF CHANNELS"
-    },
     "ADC_HWUNIT_0": {
       "type": "integer",
-      "description": "ADC_HWUNIT_0（cast: Adc_HWUnitType）",
+      "description": "ADC_HWUNIT_0 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "HW UNIT DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_HWUNIT_1": {
       "type": "integer",
-      "description": "ADC_HWUNIT_1（cast: Adc_HWUnitType）",
+      "description": "ADC_HWUNIT_1 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "HW UNIT DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_GROUP_0": {
       "type": "integer",
-      "description": "ADC_GROUP_0（cast: Adc_GroupType）",
+      "description": "ADC_GROUP_0 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "GROUP DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_GROUP_1": {
       "type": "integer",
-      "description": "ADC_GROUP_1（cast: Adc_GroupType）",
+      "description": "ADC_GROUP_1 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "GROUP DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_GROUP_2": {
       "type": "integer",
-      "description": "ADC_GROUP_2（cast: Adc_GroupType）",
+      "description": "ADC_GROUP_2 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "GROUP DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_GROUP_3": {
       "type": "integer",
-      "description": "ADC_GROUP_3（cast: Adc_GroupType）",
+      "description": "ADC_GROUP_3 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "GROUP DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_GROUP_4": {
       "type": "integer",
-      "description": "ADC_GROUP_4（cast: Adc_GroupType）",
+      "description": "ADC_GROUP_4 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "GROUP DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_GROUP_5": {
       "type": "integer",
-      "description": "ADC_GROUP_5（cast: Adc_GroupType）",
+      "description": "ADC_GROUP_5 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "GROUP DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_GROUP_6": {
       "type": "integer",
-      "description": "ADC_GROUP_6（cast: Adc_GroupType）",
+      "description": "ADC_GROUP_6 参数",
       "default": 6,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "GROUP DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_GROUP_7": {
       "type": "integer",
-      "description": "ADC_GROUP_7（cast: Adc_GroupType）",
+      "description": "ADC_GROUP_7 参数",
       "default": 7,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "GROUP DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CHANNEL_0": {
       "type": "integer",
-      "description": "ADC_CHANNEL_0（cast: Adc_ChannelType）",
+      "description": "ADC_CHANNEL_0 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CHANNEL_1": {
       "type": "integer",
-      "description": "ADC_CHANNEL_1（cast: Adc_ChannelType）",
+      "description": "ADC_CHANNEL_1 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CHANNEL_2": {
       "type": "integer",
-      "description": "ADC_CHANNEL_2（cast: Adc_ChannelType）",
+      "description": "ADC_CHANNEL_2 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CHANNEL_3": {
       "type": "integer",
-      "description": "ADC_CHANNEL_3（cast: Adc_ChannelType）",
+      "description": "ADC_CHANNEL_3 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CHANNEL_4": {
       "type": "integer",
-      "description": "ADC_CHANNEL_4（cast: Adc_ChannelType）",
+      "description": "ADC_CHANNEL_4 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CHANNEL_5": {
       "type": "integer",
-      "description": "ADC_CHANNEL_5（cast: Adc_ChannelType）",
+      "description": "ADC_CHANNEL_5 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CHANNEL_6": {
       "type": "integer",
-      "description": "ADC_CHANNEL_6（cast: Adc_ChannelType）",
+      "description": "ADC_CHANNEL_6 参数",
       "default": 6,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CHANNEL_7": {
       "type": "integer",
-      "description": "ADC_CHANNEL_7（cast: Adc_ChannelType）",
+      "description": "ADC_CHANNEL_7 参数",
       "default": 7,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CHANNEL_8": {
       "type": "integer",
-      "description": "ADC_CHANNEL_8（cast: Adc_ChannelType）",
+      "description": "ADC_CHANNEL_8 参数",
       "default": 8,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CHANNEL_9": {
       "type": "integer",
-      "description": "ADC_CHANNEL_9（cast: Adc_ChannelType）",
+      "description": "ADC_CHANNEL_9 参数",
       "default": 9,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CHANNEL_10": {
       "type": "integer",
-      "description": "ADC_CHANNEL_10（cast: Adc_ChannelType）",
+      "description": "ADC_CHANNEL_10 参数",
       "default": 10,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CHANNEL_11": {
       "type": "integer",
-      "description": "ADC_CHANNEL_11（cast: Adc_ChannelType）",
+      "description": "ADC_CHANNEL_11 参数",
       "default": 11,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CHANNEL_12": {
       "type": "integer",
-      "description": "ADC_CHANNEL_12（cast: Adc_ChannelType）",
+      "description": "ADC_CHANNEL_12 参数",
       "default": 12,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CHANNEL_13": {
       "type": "integer",
-      "description": "ADC_CHANNEL_13（cast: Adc_ChannelType）",
+      "description": "ADC_CHANNEL_13 参数",
       "default": 13,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CHANNEL_14": {
       "type": "integer",
-      "description": "ADC_CHANNEL_14（cast: Adc_ChannelType）",
+      "description": "ADC_CHANNEL_14 参数",
       "default": 14,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CHANNEL_15": {
       "type": "integer",
-      "description": "ADC_CHANNEL_15（cast: Adc_ChannelType）",
+      "description": "ADC_CHANNEL_15 参数",
       "default": 15,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_DEFAULT_RESOLUTION": {
       "type": "enum",
@@ -307,7 +323,7 @@
         "ADC_RESOLUTION_10BIT",
         "ADC_RESOLUTION_12BIT"
       ],
-      "x-section": "DEFAULT RESOLUTION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_DEFAULT_SAMPLING_TIME": {
       "type": "enum",
@@ -323,31 +339,15 @@
         "ADC_SAMPLING_TIME_144CYCLES",
         "ADC_SAMPLING_TIME_480CYCLES"
       ],
-      "x-section": "DEFAULT SAMPLING TIME"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ADC_CLOCK_FREQUENCY_HZ": {
       "type": "integer",
-      "description": "24MHz",
+      "description": "ADC_CLOCK_FREQUENCY_HZ 参数",
       "default": 24000000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CLOCK CONFIGURATION"
-    },
-    "ADC_STREAM_NUM_SAMPLES": {
-      "type": "integer",
-      "description": "ADC_STREAM_NUM_SAMPLES 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "STREAM SAMPLES"
-    },
-    "ADC_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "ADC_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MAIN FUNCTION PERIOD"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -365,19 +365,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/mcal/adc/include/Adc_Cfg.h",
-  "x-display-name": "Adc",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "NUMBER OF HW UNITS",
-    "NUMBER OF GROUPS",
-    "NUMBER OF CHANNELS",
-    "HW UNIT DEFINITIONS",
-    "GROUP DEFINITIONS",
-    "CHANNEL DEFINITIONS",
-    "DEFAULT RESOLUTION",
-    "DEFAULT SAMPLING TIME",
-    "CLOCK CONFIGURATION",
-    "STREAM SAMPLES",
-    "MAIN FUNCTION PERIOD"
-  ]
+  "x-display-name": "Adc"
 }

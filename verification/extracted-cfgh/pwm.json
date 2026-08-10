@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/pwm.json",
   "title": "Pwm Configuration",
-  "description": "PWM Driver configuration header",
+  "description": "Pwm Configuration configuration header",
   "type": "object",
   "properties": {
     "PWM_DEV_ERROR_DETECT": {
@@ -17,6 +17,28 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
+    "PWM_NUM_CHANNELS": {
+      "type": "integer",
+      "description": "PWM_NUM_CHANNELS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PWM_SET_PERIOD_AND_DUTY_API": {
+      "type": "boolean",
+      "description": "PWM_SET_PERIOD_AND_DUTY_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PWM_DEFAULT_PERIOD": {
+      "type": "integer",
+      "description": "PWM_DEFAULT_PERIOD 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
     "PWM_DE_INIT_API": {
       "type": "boolean",
       "description": "PWM_DE_INIT_API 参数",
@@ -26,12 +48,6 @@
     "PWM_SET_DUTY_CYCLE_API": {
       "type": "boolean",
       "description": "PWM_SET_DUTY_CYCLE_API 参数",
-      "default": true,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "PWM_SET_PERIOD_AND_DUTY_API": {
-      "type": "boolean",
-      "description": "PWM_SET_PERIOD_AND_DUTY_API 参数",
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
@@ -59,109 +75,93 @@
       "default": false,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "PWM_NUM_CHANNELS": {
-      "type": "integer",
-      "description": "PWM_NUM_CHANNELS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF CHANNELS"
-    },
     "PWM_CHANNEL_0": {
       "type": "integer",
-      "description": "PWM_CHANNEL_0（cast: Pwm_ChannelType）",
+      "description": "PWM_CHANNEL_0 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PWM_CHANNEL_1": {
       "type": "integer",
-      "description": "PWM_CHANNEL_1（cast: Pwm_ChannelType）",
+      "description": "PWM_CHANNEL_1 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PWM_CHANNEL_2": {
       "type": "integer",
-      "description": "PWM_CHANNEL_2（cast: Pwm_ChannelType）",
+      "description": "PWM_CHANNEL_2 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PWM_CHANNEL_3": {
       "type": "integer",
-      "description": "PWM_CHANNEL_3（cast: Pwm_ChannelType）",
+      "description": "PWM_CHANNEL_3 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PWM_CHANNEL_4": {
       "type": "integer",
-      "description": "PWM_CHANNEL_4（cast: Pwm_ChannelType）",
+      "description": "PWM_CHANNEL_4 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PWM_CHANNEL_5": {
       "type": "integer",
-      "description": "PWM_CHANNEL_5（cast: Pwm_ChannelType）",
+      "description": "PWM_CHANNEL_5 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PWM_CHANNEL_6": {
       "type": "integer",
-      "description": "PWM_CHANNEL_6（cast: Pwm_ChannelType）",
+      "description": "PWM_CHANNEL_6 参数",
       "default": 6,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PWM_CHANNEL_7": {
       "type": "integer",
-      "description": "PWM_CHANNEL_7（cast: Pwm_ChannelType）",
+      "description": "PWM_CHANNEL_7 参数",
       "default": 7,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
-    },
-    "PWM_DEFAULT_PERIOD": {
-      "type": "integer",
-      "description": "1ms = 1kHz（cast: Pwm_PeriodType）",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DEFAULT PERIOD"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PWM_DEFAULT_DUTY_CYCLE": {
       "type": "integer",
-      "description": "50%（cast: uint16）",
+      "description": "PWM_DEFAULT_DUTY_CYCLE 参数",
       "default": 16384,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "DEFAULT DUTY CYCLE"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PWM_DUTY_CYCLE_RESOLUTION": {
       "type": "integer",
-      "description": "0x8000 = 100%（cast: uint16）",
+      "description": "PWM_DUTY_CYCLE_RESOLUTION 参数",
       "default": 32768,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "DUTY CYCLE RESOLUTION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PWM_CLOCK_FREQUENCY_HZ": {
       "type": "integer",
-      "description": "24MHz",
+      "description": "PWM_CLOCK_FREQUENCY_HZ 参数",
       "default": 24000000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -179,14 +179,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/mcal/pwm/include/Pwm_Cfg.h",
-  "x-display-name": "Pwm",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "NUMBER OF CHANNELS",
-    "CHANNEL DEFINITIONS",
-    "DEFAULT PERIOD",
-    "DEFAULT DUTY CYCLE",
-    "DUTY CYCLE RESOLUTION",
-    "CLOCK CONFIGURATION"
-  ]
+  "x-display-name": "Pwm"
 }

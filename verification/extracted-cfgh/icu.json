@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/icu.json",
   "title": "Icu Configuration",
-  "description": "ICU (Input Capture Unit) Driver configuration header",
+  "description": "Icu Configuration configuration header",
   "type": "object",
   "properties": {
     "ICU_DEV_ERROR_DETECT": {
@@ -15,6 +15,36 @@
       "type": "boolean",
       "description": "ICU_VERSION_INFO_API 参数",
       "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ICU_EDGE_COUNT_API": {
+      "type": "boolean",
+      "description": "ICU_EDGE_COUNT_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ICU_NUM_CHANNELS": {
+      "type": "integer",
+      "description": "ICU_NUM_CHANNELS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ICU_MAX_EDGE_COUNT": {
+      "type": "integer",
+      "description": "ICU_MAX_EDGE_COUNT 参数",
+      "default": 65535,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ICU_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "ICU_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_DE_INIT_API": {
@@ -53,12 +83,6 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "ICU_EDGE_COUNT_API": {
-      "type": "boolean",
-      "description": "ICU_EDGE_COUNT_API 参数",
-      "default": true,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
     "ICU_SIGNAL_MEASUREMENT_API": {
       "type": "boolean",
       "description": "ICU_SIGNAL_MEASUREMENT_API 参数",
@@ -77,77 +101,69 @@
       "default": false,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "ICU_NUM_CHANNELS": {
-      "type": "integer",
-      "description": "ICU_NUM_CHANNELS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF CHANNELS"
-    },
     "ICU_CHANNEL_0": {
       "type": "integer",
-      "description": "ICU_CHANNEL_0（cast: Icu_ChannelType）",
+      "description": "ICU_CHANNEL_0 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_CHANNEL_1": {
       "type": "integer",
-      "description": "ICU_CHANNEL_1（cast: Icu_ChannelType）",
+      "description": "ICU_CHANNEL_1 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_CHANNEL_2": {
       "type": "integer",
-      "description": "ICU_CHANNEL_2（cast: Icu_ChannelType）",
+      "description": "ICU_CHANNEL_2 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_CHANNEL_3": {
       "type": "integer",
-      "description": "ICU_CHANNEL_3（cast: Icu_ChannelType）",
+      "description": "ICU_CHANNEL_3 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_CHANNEL_4": {
       "type": "integer",
-      "description": "ICU_CHANNEL_4（cast: Icu_ChannelType）",
+      "description": "ICU_CHANNEL_4 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_CHANNEL_5": {
       "type": "integer",
-      "description": "ICU_CHANNEL_5（cast: Icu_ChannelType）",
+      "description": "ICU_CHANNEL_5 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_CHANNEL_6": {
       "type": "integer",
-      "description": "ICU_CHANNEL_6（cast: Icu_ChannelType）",
+      "description": "ICU_CHANNEL_6 参数",
       "default": 6,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_CHANNEL_7": {
       "type": "integer",
-      "description": "ICU_CHANNEL_7（cast: Icu_ChannelType）",
+      "description": "ICU_CHANNEL_7 参数",
       "default": 7,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_DEFAULT_MODE": {
       "type": "enum",
@@ -157,7 +173,7 @@
         "ICU_MODE_NORMAL",
         "ICU_MODE_SLEEP"
       ],
-      "x-section": "DEFAULT MODE"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_DEFAULT_ACTIVATION": {
       "type": "enum",
@@ -168,15 +184,15 @@
         "ICU_RISING_EDGE",
         "ICU_BOTH_EDGES"
       ],
-      "x-section": "DEFAULT ACTIVATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_CLOCK_FREQUENCY_HZ": {
       "type": "integer",
-      "description": "24MHz",
+      "description": "ICU_CLOCK_FREQUENCY_HZ 参数",
       "default": 24000000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_EMIOS_0_BASE_ADDR": {
       "type": "integer",
@@ -184,7 +200,7 @@
       "default": 1073922048,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "EMIOS CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_EMIOS_1_BASE_ADDR": {
       "type": "integer",
@@ -192,7 +208,7 @@
       "default": 1073926144,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "EMIOS CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_TIMESTAMP_BUFFER_SIZE": {
       "type": "integer",
@@ -200,23 +216,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "TIMESTAMP BUFFER CONFIGURATION"
-    },
-    "ICU_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "ICU_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMESTAMP BUFFER CONFIGURATION"
-    },
-    "ICU_MAX_EDGE_COUNT": {
-      "type": "integer",
-      "description": "ICU_MAX_EDGE_COUNT 参数",
-      "default": 65535,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "MAX EDGE COUNT VALUE"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_DEFAULT_BUFFER_SIZE": {
       "type": "integer",
@@ -224,7 +224,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DEFAULT BUFFER SIZE"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_TPM1_BASE_ADDR": {
       "type": "integer",
@@ -232,7 +232,7 @@
       "default": 1073979392,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "DEFAULT BUFFER SIZE"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_TPM2_BASE_ADDR": {
       "type": "integer",
@@ -240,7 +240,7 @@
       "default": 1073983488,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "DEFAULT BUFFER SIZE"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_TPM3_BASE_ADDR": {
       "type": "integer",
@@ -248,7 +248,7 @@
       "default": 1073987584,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "DEFAULT BUFFER SIZE"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_TPM4_BASE_ADDR": {
       "type": "integer",
@@ -256,7 +256,7 @@
       "default": 1073991680,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "DEFAULT BUFFER SIZE"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -274,17 +274,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/mcal/icu/include/Icu_Cfg.h",
-  "x-display-name": "Icu",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "NUMBER OF CHANNELS",
-    "CHANNEL DEFINITIONS",
-    "DEFAULT MODE",
-    "DEFAULT ACTIVATION",
-    "CLOCK CONFIGURATION",
-    "EMIOS CONFIGURATION",
-    "TIMESTAMP BUFFER CONFIGURATION",
-    "MAX EDGE COUNT VALUE",
-    "DEFAULT BUFFER SIZE"
-  ]
+  "x-display-name": "Icu"
 }

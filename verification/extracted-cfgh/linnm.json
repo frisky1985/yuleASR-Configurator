@@ -2,16 +2,110 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/linnm.json",
   "title": "LinNm Configuration",
-  "description": "LIN Network Management module configuration following AutoSAR Classic Platform 4.x",
+  "description": "LinNm Configuration configuration header",
   "type": "object",
   "properties": {
+    "LINNM_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "LINNM_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "LINNM_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "LINNM_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "LINNM_NODE_DETECTION_ENABLED": {
+      "type": "boolean",
+      "description": "LINNM_NODE_DETECTION_ENABLED 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "LINNM_CH0_NETWORK_HANDLE": {
+      "type": "integer",
+      "description": "LINNM_CH0_NETWORK_HANDLE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINNM_CH1_NETWORK_HANDLE": {
+      "type": "integer",
+      "description": "LINNM_CH1_NETWORK_HANDLE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINNM_CH0_TX_PDU_ID": {
+      "type": "integer",
+      "description": "LINNM_CH0_TX_PDU_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINNM_CH0_RX_PDU_ID": {
+      "type": "integer",
+      "description": "LINNM_CH0_RX_PDU_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINNM_CH1_TX_PDU_ID": {
+      "type": "integer",
+      "description": "LINNM_CH1_TX_PDU_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINNM_CH1_RX_PDU_ID": {
+      "type": "integer",
+      "description": "LINNM_CH1_RX_PDU_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINNM_TIMEOUT_TIME": {
+      "type": "integer",
+      "description": "LINNM_TIMEOUT_TIME 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "LINNM_CH0_TIMEOUT_TIME": {
+      "type": "integer",
+      "description": "LINNM_CH0_TIMEOUT_TIME 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINNM_CH1_TIMEOUT_TIME": {
+      "type": "integer",
+      "description": "LINNM_CH1_TIMEOUT_TIME 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
     "LINNM_CFG_VENDOR_ID": {
       "type": "integer",
       "description": "LINNM_CFG_VENDOR_ID 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "VERSION INFORMATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CFG_MODULE_ID": {
       "type": "integer",
@@ -19,7 +113,7 @@
       "default": 69,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "VERSION INFORMATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CFG_AR_RELEASE_MAJOR_VERSION": {
       "type": "integer",
@@ -27,7 +121,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "VERSION INFORMATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CFG_AR_RELEASE_MINOR_VERSION": {
       "type": "integer",
@@ -35,7 +129,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "VERSION INFORMATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CFG_AR_RELEASE_REVISION_VERSION": {
       "type": "integer",
@@ -43,7 +137,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "VERSION INFORMATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CFG_SW_MAJOR_VERSION": {
       "type": "integer",
@@ -51,7 +145,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "VERSION INFORMATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CFG_SW_MINOR_VERSION": {
       "type": "integer",
@@ -59,7 +153,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "VERSION INFORMATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CFG_SW_PATCH_VERSION": {
       "type": "integer",
@@ -67,97 +161,76 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "LINNM_DEV_ERROR_DETECT": {
-      "type": "boolean",
-      "description": "LINNM_DEV_ERROR_DETECT 参数",
-      "default": true,
-      "x-section": "CONFIGURATION PARAMETERS",
-      "x-guarded": true
-    },
-    "LINNM_VERSION_INFO_API": {
-      "type": "boolean",
-      "description": "LINNM_VERSION_INFO_API 参数",
-      "default": true,
-      "x-section": "CONFIGURATION PARAMETERS",
-      "x-guarded": true
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_COM_CONTROL_ENABLED": {
       "type": "boolean",
       "description": "LINNM_COM_CONTROL_ENABLED 参数",
       "default": true,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_PASSIVE_MODE_ENABLED": {
       "type": "boolean",
       "description": "LINNM_PASSIVE_MODE_ENABLED 参数",
       "default": false,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_STATE_CHANGE_IND_ENABLED": {
       "type": "boolean",
       "description": "LINNM_STATE_CHANGE_IND_ENABLED 参数",
       "default": true,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_REMOTE_SLEEP_IND_ENABLED": {
       "type": "boolean",
       "description": "LINNM_REMOTE_SLEEP_IND_ENABLED 参数",
       "default": true,
-      "x-section": "CONFIGURATION PARAMETERS",
-      "x-guarded": true
-    },
-    "LINNM_NODE_DETECTION_ENABLED": {
-      "type": "boolean",
-      "description": "LINNM_NODE_DETECTION_ENABLED 参数",
-      "default": false,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_NODE_ID_ENABLED": {
       "type": "boolean",
       "description": "LINNM_NODE_ID_ENABLED 参数",
       "default": true,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_USER_DATA_ENABLED": {
       "type": "boolean",
       "description": "LINNM_USER_DATA_ENABLED 参数",
       "default": true,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_COM_CONTROL_SYNCHRONIZED": {
       "type": "boolean",
       "description": "LINNM_COM_CONTROL_SYNCHRONIZED 参数",
       "default": false,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_COORDINATOR_SYNC_SUPPORT": {
       "type": "boolean",
       "description": "LINNM_COORDINATOR_SYNC_SUPPORT 参数",
       "default": false,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_BUS_SYNCHRONIZATION_ENABLED": {
       "type": "boolean",
       "description": "LINNM_BUS_SYNCHRONIZATION_ENABLED 参数",
       "default": true,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_BUSLOAD_REDUCTION_ENABLED": {
       "type": "boolean",
       "description": "LINNM_BUSLOAD_REDUCTION_ENABLED 参数",
       "default": false,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_NUMBER_OF_CHANNELS": {
@@ -166,7 +239,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_MAX_NODES_PER_CHANNEL": {
@@ -175,16 +248,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CONFIGURATION PARAMETERS",
-      "x-guarded": true
-    },
-    "LINNM_TIMEOUT_TIME": {
-      "type": "integer",
-      "description": "LINNM_TIMEOUT_TIME 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMEOUT PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_WAIT_BUSSLEEP_TIME": {
@@ -193,7 +257,7 @@
       "default": 50,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMEOUT PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_REMOTE_SLEEP_IND_TIME": {
@@ -202,7 +266,7 @@
       "default": 500,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "TIMEOUT PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_MSG_CYCLE_TIME": {
@@ -211,7 +275,7 @@
       "default": 20,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMEOUT PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_MSG_REDUCED_TIME": {
@@ -220,7 +284,7 @@
       "default": 50,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMEOUT PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_MSG_CYCLE_OFFSET": {
@@ -229,7 +293,7 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMEOUT PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_REPEAT_MESSAGE_TIME": {
@@ -238,7 +302,7 @@
       "default": 150,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMEOUT PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_CHANNEL_0": {
@@ -247,15 +311,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINNM_CH0_NETWORK_HANDLE": {
-      "type": "integer",
-      "description": "LINNM_CH0_NETWORK_HANDLE 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH0_LINIF_CHANNEL": {
       "type": "integer",
@@ -263,7 +319,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH0_NODE_ID": {
       "type": "integer",
@@ -271,7 +327,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH0_NODE_TYPE": {
       "type": "enum",
@@ -281,27 +337,19 @@
         "LINNM_NODE_TYPE_MASTER",
         "LINNM_NODE_TYPE_SLAVE"
       ],
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH0_PASSIVE_MODE": {
       "type": "boolean",
       "description": "LINNM_CH0_PASSIVE_MODE 参数",
       "default": false,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH0_STATE_REPORT": {
       "type": "boolean",
       "description": "LINNM_CH0_STATE_REPORT 参数",
       "default": true,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINNM_CH0_TIMEOUT_TIME": {
-      "type": "integer",
-      "description": "LINNM_CH0_TIMEOUT_TIME 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH0_WAIT_BUSSLEEP_TIME": {
       "type": "integer",
@@ -309,7 +357,7 @@
       "default": 50,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH0_REMOTE_SLEEP_IND_TIME": {
       "type": "integer",
@@ -317,7 +365,7 @@
       "default": 500,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH0_MSG_CYCLE_TIME": {
       "type": "integer",
@@ -325,7 +373,7 @@
       "default": 20,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH0_MSG_REDUCED_TIME": {
       "type": "integer",
@@ -333,7 +381,7 @@
       "default": 50,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH0_MSG_CYCLE_OFFSET": {
       "type": "integer",
@@ -341,7 +389,7 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH0_USER_DATA_LENGTH": {
       "type": "integer",
@@ -349,31 +397,31 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH0_BUS_SYNC_ENABLED": {
       "type": "boolean",
       "description": "LINNM_CH0_BUS_SYNC_ENABLED 参数",
       "default": true,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH0_REMOTE_SLEEP_ENABLED": {
       "type": "boolean",
       "description": "LINNM_CH0_REMOTE_SLEEP_ENABLED 参数",
       "default": true,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH0_COM_CONTROL_ENABLED": {
       "type": "boolean",
       "description": "LINNM_CH0_COM_CONTROL_ENABLED 参数",
       "default": true,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH0_COORDINATOR_SYNC": {
       "type": "boolean",
       "description": "LINNM_CH0_COORDINATOR_SYNC 参数",
       "default": false,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CHANNEL_1": {
       "type": "integer",
@@ -381,15 +429,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINNM_CH1_NETWORK_HANDLE": {
-      "type": "integer",
-      "description": "LINNM_CH1_NETWORK_HANDLE 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH1_LINIF_CHANNEL": {
       "type": "integer",
@@ -397,7 +437,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH1_NODE_ID": {
       "type": "integer",
@@ -405,7 +445,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH1_NODE_TYPE": {
       "type": "enum",
@@ -415,27 +455,19 @@
         "LINNM_NODE_TYPE_MASTER",
         "LINNM_NODE_TYPE_SLAVE"
       ],
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH1_PASSIVE_MODE": {
       "type": "boolean",
       "description": "LINNM_CH1_PASSIVE_MODE 参数",
       "default": false,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH1_STATE_REPORT": {
       "type": "boolean",
       "description": "LINNM_CH1_STATE_REPORT 参数",
       "default": true,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINNM_CH1_TIMEOUT_TIME": {
-      "type": "integer",
-      "description": "LINNM_CH1_TIMEOUT_TIME 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH1_WAIT_BUSSLEEP_TIME": {
       "type": "integer",
@@ -443,7 +475,7 @@
       "default": 50,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH1_REMOTE_SLEEP_IND_TIME": {
       "type": "integer",
@@ -451,7 +483,7 @@
       "default": 500,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH1_MSG_CYCLE_TIME": {
       "type": "integer",
@@ -459,7 +491,7 @@
       "default": 20,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH1_MSG_REDUCED_TIME": {
       "type": "integer",
@@ -467,7 +499,7 @@
       "default": 50,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH1_MSG_CYCLE_OFFSET": {
       "type": "integer",
@@ -475,7 +507,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH1_USER_DATA_LENGTH": {
       "type": "integer",
@@ -483,63 +515,31 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH1_BUS_SYNC_ENABLED": {
       "type": "boolean",
       "description": "LINNM_CH1_BUS_SYNC_ENABLED 参数",
       "default": true,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH1_REMOTE_SLEEP_ENABLED": {
       "type": "boolean",
       "description": "LINNM_CH1_REMOTE_SLEEP_ENABLED 参数",
       "default": true,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH1_COM_CONTROL_ENABLED": {
       "type": "boolean",
       "description": "LINNM_CH1_COM_CONTROL_ENABLED 参数",
       "default": true,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH1_COORDINATOR_SYNC": {
       "type": "boolean",
       "description": "LINNM_CH1_COORDINATOR_SYNC 参数",
       "default": false,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINNM_CH0_TX_PDU_ID": {
-      "type": "integer",
-      "description": "LINNM_CH0_TX_PDU_ID 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "LINNM_CH0_RX_PDU_ID": {
-      "type": "integer",
-      "description": "LINNM_CH0_RX_PDU_ID 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "LINNM_CH1_TX_PDU_ID": {
-      "type": "integer",
-      "description": "LINNM_CH1_TX_PDU_ID 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "LINNM_CH1_RX_PDU_ID": {
-      "type": "integer",
-      "description": "LINNM_CH1_RX_PDU_ID 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_PDU_SIZE": {
       "type": "integer",
@@ -547,7 +547,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_PDU_USER_DATA_SIZE": {
       "type": "integer",
@@ -555,7 +555,7 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_PDU_BYTE_0": {
       "type": "integer",
@@ -563,7 +563,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_PDU_BYTE_1": {
       "type": "integer",
@@ -571,7 +571,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_PDU_BYTE_2": {
       "type": "integer",
@@ -579,7 +579,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_PDU_BYTE_3": {
       "type": "integer",
@@ -587,7 +587,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_PDU_BYTE_4": {
       "type": "integer",
@@ -595,7 +595,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_PDU_BYTE_5": {
       "type": "integer",
@@ -603,7 +603,7 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_PDU_BYTE_6": {
       "type": "integer",
@@ -611,7 +611,7 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_PDU_BYTE_7": {
       "type": "integer",
@@ -619,7 +619,7 @@
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_PDU_CBV_POS": {
       "type": "integer",
@@ -627,23 +627,23 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CBV_ACTIVEWAKEUP_MASK": {
       "type": "integer",
-      "description": "Active wake-up bit",
+      "description": "LINNM_CBV_ACTIVEWAKEUP_MASK 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CBV_RESERVED_MASK": {
       "type": "integer",
-      "description": "Reserved bits",
+      "description": "LINNM_CBV_RESERVED_MASK 参数",
       "default": 254,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_PDU_NODEID_POS": {
       "type": "integer",
@@ -651,7 +651,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_PDU_USERDATA_START": {
       "type": "integer",
@@ -659,27 +659,27 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_STATE_CHANGE_NOTIFICATION": {
       "type": "boolean",
       "description": "LINNM_STATE_CHANGE_NOTIFICATION 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_REMOTE_SLEEP_CALLBACK": {
       "type": "boolean",
       "description": "LINNM_REMOTE_SLEEP_CALLBACK 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINNM_SYNC_POINT_CALLBACK": {
       "type": "boolean",
       "description": "LINNM_SYNC_POINT_CALLBACK 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     }
   },
@@ -693,13 +693,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/ecual/linNm/include/LinNm_Cfg.h",
-  "x-display-name": "LinNm",
-  "x-sections": [
-    "VERSION INFORMATION",
-    "CONFIGURATION PARAMETERS",
-    "TIMEOUT PARAMETERS",
-    "CHANNEL CONFIGURATION",
-    "PDU CONFIGURATION",
-    "CALLBACK CONFIGURATION"
-  ]
+  "x-display-name": "LinNm"
 }

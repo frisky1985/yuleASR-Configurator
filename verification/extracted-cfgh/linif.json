@@ -2,95 +2,108 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/linif.json",
   "title": "LinIf Configuration",
-  "description": "LIN Interface Configuration",
+  "description": "LinIf Configuration configuration header",
   "type": "object",
   "properties": {
     "LINIF_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "LINIF_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINIF_VERSION_INFO_API": {
       "type": "boolean",
       "description": "LINIF_VERSION_INFO_API 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINIF_MAX_CHANNELS": {
       "type": "integer",
       "description": "LINIF_MAX_CHANNELS 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINIF_MAX_FRAMES": {
       "type": "integer",
       "description": "LINIF_MAX_FRAMES 参数",
       "default": 16,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINIF_MAX_SCHEDULES": {
       "type": "integer",
       "description": "LINIF_MAX_SCHEDULES 参数",
       "default": 8,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINIF_MAX_SCHEDULE_ENTRIES": {
       "type": "integer",
       "description": "LINIF_MAX_SCHEDULE_ENTRIES 参数",
       "default": 32,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINIF_FRAME_UNCONDITIONAL": {
       "type": "integer",
       "description": "LINIF_FRAME_UNCONDITIONAL 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINIF_FRAME_EVENT_TRIGGERED": {
       "type": "integer",
       "description": "LINIF_FRAME_EVENT_TRIGGERED 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINIF_FRAME_SPORADIC": {
       "type": "integer",
       "description": "LINIF_FRAME_SPORADIC 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINIF_SCHEDULE_NULL": {
       "type": "integer",
       "description": "LINIF_SCHEDULE_NULL 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINIF_SCHEDULE_NORMAL": {
       "type": "integer",
       "description": "LINIF_SCHEDULE_NORMAL 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINIF_SCHEDULE_DIAG_REQUEST": {
       "type": "integer",
       "description": "LINIF_SCHEDULE_DIAG_REQUEST 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINIF_SCHEDULE_DIAG_RESPONSE": {
       "type": "integer",
       "description": "LINIF_SCHEDULE_DIAG_RESPONSE 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -110,6 +123,14 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "LinIf 通道数不应超过 Lin 通道数"
+    },
+    {
+      "sourceParam": "LINIF_MAX_CHANNELS",
+      "module": "Lin",
+      "param": "LIN_MAX_CHANNELS",
+      "relation": "required",
+      "severity": "error",
+      "description": "LinIf 依赖 Lin 通道，Lin 必须配置"
     }
   ],
   "x-layer": "ECUAL",

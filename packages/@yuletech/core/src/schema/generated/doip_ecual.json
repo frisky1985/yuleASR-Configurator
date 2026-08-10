@@ -2,42 +2,106 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/doip_ecual.json",
   "title": "DoIP_Ecual Configuration",
-  "description": "DoIP configuration (extracted from yuleASR Cfg.h)",
+  "description": "DoIP_Ecual Configuration configuration header",
   "type": "object",
   "properties": {
     "DOIP_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "DOIP_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "DOIP_VERSION_INFO_API": {
       "type": "boolean",
       "description": "DOIP_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
+    },
+    "DOIP_UDP_SOAD_RX_PDU_ID": {
+      "type": "integer",
+      "description": "DOIP_UDP_SOAD_RX_PDU_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DOIP_UDP_SOAD_TX_PDU_ID": {
+      "type": "integer",
+      "description": "DOIP_UDP_SOAD_TX_PDU_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DOIP_TCP_SOAD_RX_PDU_ID_BASE": {
+      "type": "integer",
+      "description": "DOIP_TCP_SOAD_RX_PDU_ID_BASE 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DOIP_TCP_SOAD_TX_PDU_ID_BASE": {
+      "type": "integer",
+      "description": "DOIP_TCP_SOAD_TX_PDU_ID_BASE 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DOIP_PDUR_RX_PDU_ID_BASE": {
+      "type": "integer",
+      "description": "DOIP_PDUR_RX_PDU_ID_BASE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DOIP_PDUR_TX_PDU_ID_BASE": {
+      "type": "integer",
+      "description": "DOIP_PDUR_TX_PDU_ID_BASE 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DOIP_GENERAL_INACTIVITY_TIMEOUT": {
+      "type": "integer",
+      "description": "DOIP_GENERAL_INACTIVITY_TIMEOUT 参数",
+      "default": 300000,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DOIP_ALIVE_CHECK_RESPONSE_TIMEOUT": {
+      "type": "integer",
+      "description": "DOIP_ALIVE_CHECK_RESPONSE_TIMEOUT 参数",
+      "default": 500,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_ROUTING_ACTIVATION_AUTHENTICATION": {
       "type": "boolean",
       "description": "DOIP_ROUTING_ACTIVATION_AUTHENTICATION 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "DOIP_ROUTING_ACTIVATION_CONFIRMATION": {
       "type": "boolean",
       "description": "DOIP_ROUTING_ACTIVATION_CONFIRMATION 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "DOIP_ALIVE_CHECK_SUPPORT": {
       "type": "boolean",
       "description": "DOIP_ALIVE_CHECK_SUPPORT 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "DOIP_NODE_TYPE": {
@@ -48,28 +112,28 @@
         "DOIP_NODE_TYPE_GATEWAY",
         "DOIP_NODE_TYPE_NODE"
       ],
-      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "DOIP_VEHICLE_ANNOUNCEMENT": {
       "type": "boolean",
       "description": "DOIP_VEHICLE_ANNOUNCEMENT 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "DOIP_USE_EID_AS_VIN": {
       "type": "boolean",
       "description": "DOIP_USE_EID_AS_VIN 参数",
       "default": false,
-      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "DOIP_OBD_SUPPORT": {
       "type": "boolean",
       "description": "DOIP_OBD_SUPPORT 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "DOIP_PROTOCOL_VERSION": {
@@ -78,7 +142,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PROTOCOL_VERSION_INVERTED": {
       "type": "integer",
@@ -86,7 +150,7 @@
       "default": 252,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_UDP_DISCOVERY_PORT": {
       "type": "integer",
@@ -94,7 +158,7 @@
       "default": 13400,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_TCP_DATA_PORT": {
       "type": "integer",
@@ -102,7 +166,7 @@
       "default": 13400,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_UDP_TEST_EQUIPMENT_PORT": {
       "type": "integer",
@@ -110,23 +174,15 @@
       "default": 49152,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PROTOCOL CONFIGURATION"
-    },
-    "DOIP_GENERAL_INACTIVITY_TIMEOUT": {
-      "type": "integer",
-      "description": "5 minutes",
-      "default": 300000,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_VEHICLE_ANNOUNCEMENT_INTERVAL": {
       "type": "integer",
-      "description": "500ms",
+      "description": "DOIP_VEHICLE_ANNOUNCEMENT_INTERVAL 参数",
       "default": 500,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_VEHICLE_ANNOUNCEMENT_NUM": {
       "type": "integer",
@@ -134,15 +190,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
-    },
-    "DOIP_ALIVE_CHECK_RESPONSE_TIMEOUT": {
-      "type": "integer",
-      "description": "500ms",
-      "default": 500,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_INITIAL_INACTIVITY_TIME": {
       "type": "integer",
@@ -150,15 +198,15 @@
       "default": 500,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_ALIVE_CHECK_INTERVAL": {
       "type": "integer",
-      "description": "15 seconds",
+      "description": "DOIP_ALIVE_CHECK_INTERVAL 参数",
       "default": 15000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_BUFFER_SIZE": {
       "type": "integer",
@@ -166,7 +214,7 @@
       "default": 4096,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_MAX_TESTER_CONNECTIONS": {
       "type": "integer",
@@ -174,7 +222,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_MAX_SIMULTANEOUS_REQUESTS": {
       "type": "integer",
@@ -182,7 +230,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_VIN_LENGTH": {
       "type": "integer",
@@ -190,7 +238,7 @@
       "default": 17,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_EID_LENGTH": {
       "type": "integer",
@@ -198,7 +246,7 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_GID_LENGTH": {
       "type": "integer",
@@ -206,7 +254,7 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_MAX_DIAG_MESSAGE_SIZE": {
       "type": "integer",
@@ -214,7 +262,7 @@
       "default": 4095,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_ROUTING_ACTIVATION_RESERVED": {
       "type": "integer",
@@ -222,7 +270,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_ROUTING_ACTIVATION_OEM": {
       "type": "integer",
@@ -230,7 +278,7 @@
       "default": 4294967295,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_FURTHER_ACTION_NONE": {
       "type": "integer",
@@ -238,7 +286,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_FURTHER_ACTION_CENTRAL_SEC": {
       "type": "integer",
@@ -246,7 +294,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_SYNC_STATUS_COMPLETE": {
       "type": "integer",
@@ -254,7 +302,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_SYNC_STATUS_INCOMPLETE": {
       "type": "integer",
@@ -262,55 +310,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
-    },
-    "DOIP_UDP_SOAD_RX_PDU_ID": {
-      "type": "integer",
-      "description": "DOIP_UDP_SOAD_RX_PDU_ID 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "DOIP_UDP_SOAD_TX_PDU_ID": {
-      "type": "integer",
-      "description": "DOIP_UDP_SOAD_TX_PDU_ID 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "DOIP_TCP_SOAD_RX_PDU_ID_BASE": {
-      "type": "integer",
-      "description": "DOIP_TCP_SOAD_RX_PDU_ID_BASE 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "DOIP_TCP_SOAD_TX_PDU_ID_BASE": {
-      "type": "integer",
-      "description": "DOIP_TCP_SOAD_TX_PDU_ID_BASE 参数",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "DOIP_PDUR_RX_PDU_ID_BASE": {
-      "type": "integer",
-      "description": "DOIP_PDUR_RX_PDU_ID_BASE 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "DOIP_PDUR_TX_PDU_ID_BASE": {
-      "type": "integer",
-      "description": "DOIP_PDUR_TX_PDU_ID_BASE 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_LOCAL_LOGICAL_ADDRESS": {
       "type": "integer",
@@ -318,7 +318,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_FUNCTIONAL_REQUEST_ADDR": {
       "type": "integer",
@@ -326,7 +326,7 @@
       "default": 58368,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_DEFAULT_TESTER_ADDRESS": {
       "type": "integer",
@@ -334,7 +334,7 @@
       "default": 3584,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_WWH_OBD_TESTER_ADDRESS": {
       "type": "integer",
@@ -342,7 +342,7 @@
       "default": 3585,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_CDS_TESTER_ADDRESS": {
       "type": "integer",
@@ -350,7 +350,7 @@
       "default": 3586,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PAYLOAD_TYPE_GENERIC_NACK": {
       "type": "integer",
@@ -358,7 +358,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PAYLOAD_TYPE_VID_REQUEST": {
       "type": "integer",
@@ -366,7 +366,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PAYLOAD_TYPE_VID_RESPONSE": {
       "type": "integer",
@@ -374,7 +374,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PAYLOAD_TYPE_ROUTING_ACTIVATION_REQUEST": {
       "type": "integer",
@@ -382,7 +382,7 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PAYLOAD_TYPE_ROUTING_ACTIVATION_RESPONSE": {
       "type": "integer",
@@ -390,7 +390,7 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PAYLOAD_TYPE_ALIVE_CHECK_REQUEST": {
       "type": "integer",
@@ -398,7 +398,7 @@
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PAYLOAD_TYPE_ALIVE_CHECK_RESPONSE": {
       "type": "integer",
@@ -406,7 +406,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PAYLOAD_TYPE_DIAGNOSTIC_MESSAGE": {
       "type": "integer",
@@ -414,7 +414,7 @@
       "default": 32769,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PAYLOAD_TYPE_DIAGNOSTIC_MESSAGE_ACK": {
       "type": "integer",
@@ -422,7 +422,7 @@
       "default": 32770,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PAYLOAD_TYPE_DIAGNOSTIC_MESSAGE_NACK": {
       "type": "integer",
@@ -430,7 +430,7 @@
       "default": 32771,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PAYLOAD_TYPE_ENTITY_STATUS_REQUEST": {
       "type": "integer",
@@ -438,7 +438,7 @@
       "default": 16385,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PAYLOAD_TYPE_ENTITY_STATUS_RESPONSE": {
       "type": "integer",
@@ -446,7 +446,7 @@
       "default": 16386,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PAYLOAD_TYPE_POWER_MODE_INFO_REQUEST": {
       "type": "integer",
@@ -454,7 +454,7 @@
       "default": 16387,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PAYLOAD_TYPE_POWER_MODE_INFO_RESPONSE": {
       "type": "integer",
@@ -462,7 +462,7 @@
       "default": 16388,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PAYLOAD_TYPE_DIAGNOSTIC_POWER_MODE_REQUEST": {
       "type": "integer",
@@ -470,7 +470,7 @@
       "default": 16387,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_PAYLOAD_TYPE_DIAGNOSTIC_POWER_MODE_RESPONSE": {
       "type": "integer",
@@ -478,7 +478,7 @@
       "default": 16388,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_NACK_CODE_INCORRECT_PATTERN_FORMAT": {
       "type": "integer",
@@ -486,7 +486,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_NACK_CODE_UNKNOWN_PAYLOAD_TYPE": {
       "type": "integer",
@@ -494,7 +494,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_NACK_CODE_MESSAGE_TOO_LARGE": {
       "type": "integer",
@@ -502,7 +502,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_NACK_CODE_OUT_OF_MEMORY": {
       "type": "integer",
@@ -510,7 +510,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_NACK_CODE_INVALID_PAYLOAD_LENGTH": {
       "type": "integer",
@@ -518,7 +518,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PAYLOAD TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_ROUTING_ACTIVATION_DEFAULT": {
       "type": "integer",
@@ -526,7 +526,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "EXTERNAL CONFIGURATION REFERENCES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_ROUTING_ACTIVATION_WWH_OBD": {
       "type": "integer",
@@ -534,7 +534,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "EXTERNAL CONFIGURATION REFERENCES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_ROUTING_ACTIVATION_CDS": {
       "type": "integer",
@@ -542,7 +542,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "EXTERNAL CONFIGURATION REFERENCES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DOIP_ROUTING_ACTIVATION_CENTRAL_SECURITY": {
       "type": "integer",
@@ -550,7 +550,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "EXTERNAL CONFIGURATION REFERENCES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -558,13 +558,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/ecual/doIP/include/DoIP_Cfg.h",
-  "x-display-name": "DoIP_Ecual",
-  "x-sections": [
-    "GENERAL CONFIGURATION OPTIONS",
-    "PROTOCOL CONFIGURATION",
-    "PDU CONFIGURATION",
-    "NETWORK CONFIGURATION",
-    "PAYLOAD TYPES",
-    "EXTERNAL CONFIGURATION REFERENCES"
-  ]
+  "x-display-name": "DoIP_Ecual"
 }

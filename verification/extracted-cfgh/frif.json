@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/frif.json",
   "title": "FrIf Configuration",
-  "description": "FlexRay Interface configuration header",
+  "description": "FrIf Configuration configuration header",
   "type": "object",
   "properties": {
     "FRIF_DEV_ERROR_DETECT": {
@@ -17,6 +17,52 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
+    "FRIF_NUM_CONTROLLERS": {
+      "type": "integer",
+      "description": "FRIF_NUM_CONTROLLERS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRIF_NUM_LPDUS": {
+      "type": "integer",
+      "description": "FRIF_NUM_LPDUS 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRIF_NUM_CLUSTERS": {
+      "type": "integer",
+      "description": "FRIF_NUM_CLUSTERS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRIF_CONTROLLER_0": {
+      "type": "integer",
+      "description": "FRIF_CONTROLLER_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRIF_GET_WUP_RX_STATUS_SUPPORT": {
+      "type": "boolean",
+      "description": "FRIF_GET_WUP_RX_STATUS_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FRIF_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "FRIF_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
     "FRIF_CLST_STARTUP_ACTIVE": {
       "type": "boolean",
       "description": "FRIF_CLST_STARTUP_ACTIVE 参数",
@@ -26,12 +72,6 @@
     "FRIF_CLST_WAKEUP_ACTIVE": {
       "type": "boolean",
       "description": "FRIF_CLST_WAKEUP_ACTIVE 参数",
-      "default": true,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "FRIF_GET_WUP_RX_STATUS_SUPPORT": {
-      "type": "boolean",
-      "description": "FRIF_GET_WUP_RX_STATUS_SUPPORT 参数",
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
@@ -47,69 +87,37 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "FRIF_NUM_CONTROLLERS": {
-      "type": "integer",
-      "description": "FRIF_NUM_CONTROLLERS 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF CONTROLLERS"
-    },
-    "FRIF_NUM_LPDUS": {
-      "type": "integer",
-      "description": "FRIF_NUM_LPDUS 参数",
-      "default": 64,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF CONTROLLERS"
-    },
-    "FRIF_NUM_CLUSTERS": {
-      "type": "integer",
-      "description": "FRIF_NUM_CLUSTERS 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF CONTROLLERS"
-    },
-    "FRIF_CONTROLLER_0": {
-      "type": "integer",
-      "description": "FRIF_CONTROLLER_0 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CONTROLLER DEFINITIONS"
-    },
     "FRIF_CLUSTER_0": {
       "type": "integer",
       "description": "FRIF_CLUSTER_0 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CLUSTER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_GD_CYCLE": {
       "type": "integer",
-      "description": "5ms cycle",
+      "description": "FRIF_GD_CYCLE 参数",
       "default": 5000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CLUSTER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_GD_MACROTICK": {
       "type": "integer",
-      "description": "1us macrotick",
+      "description": "FRIF_GD_MACROTICK 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CLUSTER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_GD_STATIC_SLOT": {
       "type": "integer",
-      "description": "Static slot",
+      "description": "FRIF_GD_STATIC_SLOT 参数",
       "default": 61,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CLUSTER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_GD_NUMBER_OF_STATIC_SLOTS": {
       "type": "integer",
@@ -117,7 +125,7 @@
       "default": 94,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CLUSTER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_GD_MINISLOT": {
       "type": "integer",
@@ -125,7 +133,7 @@
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CLUSTER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_GD_NUMBER_OF_MINISLOTS": {
       "type": "integer",
@@ -133,7 +141,7 @@
       "default": 129,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CLUSTER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_LPDU_ENGINE_STATUS": {
       "type": "integer",
@@ -141,7 +149,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "LPDU DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_LPDU_VEHICLE_SPEED": {
       "type": "integer",
@@ -149,7 +157,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "LPDU DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_LPDU_STEERING_ANGLE": {
       "type": "integer",
@@ -157,7 +165,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "LPDU DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_LPDU_BRAKE_STATUS": {
       "type": "integer",
@@ -165,7 +173,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "LPDU DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_SLOT_ID_1": {
       "type": "integer",
@@ -173,7 +181,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "LPDU DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_SLOT_ID_2": {
       "type": "integer",
@@ -181,7 +189,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "LPDU DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_SLOT_ID_3": {
       "type": "integer",
@@ -189,7 +197,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "LPDU DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_SLOT_ID_4": {
       "type": "integer",
@@ -197,7 +205,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "LPDU DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_CHANNEL_A": {
       "type": "integer",
@@ -205,7 +213,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_CHANNEL_B": {
       "type": "integer",
@@ -213,7 +221,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_CHANNEL_AB": {
       "type": "integer",
@@ -221,7 +229,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_PAYLOAD_LENGTH_MAX": {
       "type": "integer",
@@ -229,7 +237,7 @@
       "default": 254,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PAYLOAD LENGTH"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_PAYLOAD_LENGTH_DEFAULT": {
       "type": "integer",
@@ -237,35 +245,27 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PAYLOAD LENGTH"
-    },
-    "FRIF_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "FRIF_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MAIN FUNCTION PERIOD"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_WAKEUP_SUPPORT": {
       "type": "boolean",
       "description": "FRIF_WAKEUP_SUPPORT 参数",
       "default": true,
-      "x-section": "WAKEUP"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_WAKEUP_CHANNEL": {
       "type": "integer",
-      "description": "FRIF_WAKEUP_CHANNEL（别名: FRIF_CHANNEL_A = 0；同族可选: FRIF_CHANNEL_A / FRIF_CHANNEL_AB / FRIF_CHANNEL_B）",
+      "description": "FRIF_WAKEUP_CHANNEL 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "WAKEUP"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_COLDSTART_SUPPORT": {
       "type": "boolean",
       "description": "FRIF_COLDSTART_SUPPORT 参数",
       "default": true,
-      "x-section": "COLDSTART"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FRIF_COLDSTART_NODES": {
       "type": "integer",
@@ -273,7 +273,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "COLDSTART"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -281,17 +281,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/ecual/frif/include/FrIf_Cfg.h",
-  "x-display-name": "FrIf",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "NUMBER OF CONTROLLERS",
-    "CONTROLLER DEFINITIONS",
-    "CLUSTER CONFIGURATION",
-    "LPDU DEFINITIONS",
-    "CHANNEL",
-    "PAYLOAD LENGTH",
-    "MAIN FUNCTION PERIOD",
-    "WAKEUP",
-    "COLDSTART"
-  ]
+  "x-display-name": "FrIf"
 }

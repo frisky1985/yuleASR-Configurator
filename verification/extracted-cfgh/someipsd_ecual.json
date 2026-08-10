@@ -2,102 +2,116 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/someipsd_ecual.json",
   "title": "SomeIpSd_Ecual Configuration",
-  "description": "SOME/IP Service Discovery Configuration",
+  "description": "SomeIpSd_Ecual Configuration configuration header",
   "type": "object",
   "properties": {
     "SOMEIPSD_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "SOMEIPSD_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_VERSION_INFO_API": {
       "type": "boolean",
       "description": "SOMEIPSD_VERSION_INFO_API 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_PROTOCOL_VERSION": {
       "type": "integer",
       "description": "SOMEIPSD_PROTOCOL_VERSION 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_INTERFACE_VERSION": {
       "type": "integer",
       "description": "SOMEIPSD_INTERFACE_VERSION 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_HEADER_SIZE": {
       "type": "integer",
       "description": "SOMEIPSD_HEADER_SIZE 参数",
       "default": 12,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_ENTRY_LENGTH": {
       "type": "integer",
       "description": "SOMEIPSD_ENTRY_LENGTH 参数",
       "default": 16,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MAX_SERVICES": {
       "type": "integer",
       "description": "SOMEIPSD_MAX_SERVICES 参数",
       "default": 32,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MAX_SUBSCRIPTIONS": {
       "type": "integer",
       "description": "SOMEIPSD_MAX_SUBSCRIPTIONS 参数",
       "default": 64,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_INITIAL_DELAY_MIN_MS": {
       "type": "integer",
       "description": "SOMEIPSD_INITIAL_DELAY_MIN_MS 参数",
       "default": 100,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_INITIAL_DELAY_MAX_MS": {
       "type": "integer",
       "description": "SOMEIPSD_INITIAL_DELAY_MAX_MS 参数",
       "default": 500,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_REPETITIONS_MAX": {
       "type": "integer",
       "description": "SOMEIPSD_REPETITIONS_MAX 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_CYCLIC_OFFER_DELAY_MS": {
       "type": "integer",
       "description": "SOMEIPSD_CYCLIC_OFFER_DELAY_MS 参数",
       "default": 3000,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MULTICAST_IP": {
       "type": "integer",
-      "description": "239.255.0.1",
+      "description": "SOMEIPSD_MULTICAST_IP 参数",
       "default": 4026466305,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MULTICAST_PORT": {
       "type": "integer",
       "description": "SOMEIPSD_MULTICAST_PORT 参数",
       "default": 30490,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

@@ -16,7 +16,7 @@ export interface CrossrefRule {
   sourceParam: string;
   targetModule: string;
   targetParam: string;
-  relation: 'equals' | 'less_than' | 'greater_than' | 'in_range' | 'in_enum';
+  relation: 'equals' | 'less_than' | 'greater_than' | 'in_range' | 'in_enum' | 'required';
   severity: 'error' | 'warning';
   description: string;
 }
@@ -475,5 +475,116 @@ export const CROSSREF_RULES: CrossrefRule[] = [
     relation: 'less_than',
     severity: 'warning',
     description: 'NvM 块数不应超过 Mcu RAM 段数',
+  },
+
+  // ── T10 依赖必须存在（required，2026-08-10 老板钦定）──
+  // 源模块配置后，目标模块/参数必须存在；缺失 → 报错（如 Can 依赖时钟）
+  {
+    sourceModule: 'Can',
+    sourceParam: 'CAN_NUM_CONTROLLERS',
+    targetModule: 'Mcu',
+    targetParam: 'MCU_SYSTEM_CLOCK_HZ',
+    relation: 'required',
+    severity: 'error',
+    description: 'Can 模块依赖 Mcu 系统时钟，时钟必须配置',
+  },
+  {
+    sourceModule: 'Can',
+    sourceParam: 'CAN_BAUDRATE_500K',
+    targetModule: 'Mcu',
+    targetParam: 'MCU_SYSTEM_CLOCK_HZ',
+    relation: 'required',
+    severity: 'error',
+    description: 'Can 波特率依赖 Mcu 系统时钟，时钟必须配置',
+  },
+  {
+    sourceModule: 'Gpt',
+    sourceParam: 'GPT_NUM_CHANNELS',
+    targetModule: 'Mcu',
+    targetParam: 'MCU_SYSTEM_CLOCK_HZ',
+    relation: 'required',
+    severity: 'error',
+    description: 'Gpt 模块依赖 Mcu 系统时钟，时钟必须配置',
+  },
+  {
+    sourceModule: 'CanTp',
+    sourceParam: 'CANTP_NUM_CHANNELS',
+    targetModule: 'Can',
+    targetParam: 'CAN_NUM_CONTROLLERS',
+    relation: 'required',
+    severity: 'error',
+    description: 'CanTp 依赖 Can 控制器，Can 必须配置',
+  },
+  {
+    sourceModule: 'CanIf',
+    sourceParam: 'CANIF_NUM_RX_PDUS',
+    targetModule: 'Can',
+    targetParam: 'CAN_NUM_CONTROLLERS',
+    relation: 'required',
+    severity: 'error',
+    description: 'CanIf 依赖 Can 控制器，Can 必须配置',
+  },
+  {
+    sourceModule: 'CanSm',
+    sourceParam: 'CANSM_NUM_NETWORKS',
+    targetModule: 'Can',
+    targetParam: 'CAN_NUM_CONTROLLERS',
+    relation: 'required',
+    severity: 'error',
+    description: 'CanSm 依赖 Can 控制器，Can 必须配置',
+  },
+  {
+    sourceModule: 'EthIf',
+    sourceParam: 'ETHIF_NUM_CONTROLLERS',
+    targetModule: 'Eth',
+    targetParam: 'ETH_MAX_CONTROLLERS',
+    relation: 'required',
+    severity: 'error',
+    description: 'EthIf 依赖 Eth 控制器，Eth 必须配置',
+  },
+  {
+    sourceModule: 'LinIf',
+    sourceParam: 'LINIF_MAX_CHANNELS',
+    targetModule: 'Lin',
+    targetParam: 'LIN_MAX_CHANNELS',
+    relation: 'required',
+    severity: 'error',
+    description: 'LinIf 依赖 Lin 通道，Lin 必须配置',
+  },
+  {
+    sourceModule: 'NvM',
+    sourceParam: 'NVM_NUM_OF_NVRAM_BLOCKS',
+    targetModule: 'MemIf',
+    targetParam: 'MEMIF_NUMBER_OF_DEVICES',
+    relation: 'required',
+    severity: 'error',
+    description: 'NvM 依赖 MemIf 设备，MemIf 必须配置',
+  },
+  {
+    sourceModule: 'Fee',
+    sourceParam: 'FEE_NUM_BLOCKS',
+    targetModule: 'MemIf',
+    targetParam: 'MEMIF_NUMBER_OF_DEVICES',
+    relation: 'required',
+    severity: 'error',
+    description: 'Fee 依赖 MemIf 设备，MemIf 必须配置',
+  },
+  {
+    sourceModule: 'Crypto',
+    sourceParam: 'CRYPTO_CFG_MAX_CHANNELS',
+    targetModule: 'Csm',
+    targetParam: 'CSM_CFG_MAX_CONCURRENT_JOBS',
+    relation: 'required',
+    severity: 'error',
+    description: 'Crypto 依赖 Csm 并发任务，Csm 必须配置',
+  },
+  {
+    sourceModule: 'Dcm',
+    sourceParam: 'DCM_NUM_CONNECTIONS',
+    targetModule: 'PduR',
+    targetParam: 'PDUR_NUMBER_OF_ROUTING_PATHS',
+    relation: 'required',
+    severity: 'error',
+    description: 'Dcm 依赖 PduR 路由路径，PduR 必须配置',
   },
 ];

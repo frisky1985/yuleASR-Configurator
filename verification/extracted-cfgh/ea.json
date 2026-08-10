@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/ea.json",
   "title": "Ea Configuration",
-  "description": "EEPROM Abstraction configuration header",
+  "description": "Ea Configuration configuration header",
   "type": "object",
   "properties": {
     "EA_DEV_ERROR_DETECT": {
@@ -17,16 +17,12 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "EA_SET_MODE_SUPPORTED": {
-      "type": "boolean",
-      "description": "EA_SET_MODE_SUPPORTED 参数",
-      "default": true,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "EA_POLL_MODE": {
-      "type": "boolean",
-      "description": "EA_POLL_MODE 参数",
-      "default": true,
+    "EA_DEVICE_INDEX": {
+      "type": "integer",
+      "description": "EA_DEVICE_INDEX 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "EA_NUM_BLOCKS": {
@@ -35,159 +31,13 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NUMBER OF BLOCKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "EA_MAX_BLOCK_SIZE": {
-      "type": "integer",
-      "description": "EA_MAX_BLOCK_SIZE 参数",
-      "default": 256,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "NUMBER OF BLOCKS"
-    },
-    "EA_BLOCK_ID_CONFIG": {
-      "type": "integer",
-      "description": "EA_BLOCK_ID_CONFIG（cast: Ea_BlockIdType）",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "NUMBER OF BLOCKS"
-    },
-    "EA_BLOCK_ID_CALIBRATION": {
-      "type": "integer",
-      "description": "EA_BLOCK_ID_CALIBRATION（cast: Ea_BlockIdType）",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "NUMBER OF BLOCKS"
-    },
-    "EA_BLOCK_ID_FAULT_MEMORY": {
-      "type": "integer",
-      "description": "EA_BLOCK_ID_FAULT_MEMORY（cast: Ea_BlockIdType）",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "NUMBER OF BLOCKS"
-    },
-    "EA_BLOCK_ID_VIN": {
-      "type": "integer",
-      "description": "EA_BLOCK_ID_VIN（cast: Ea_BlockIdType）",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "NUMBER OF BLOCKS"
-    },
-    "EA_BLOCK_ID_ODOMETER": {
-      "type": "integer",
-      "description": "EA_BLOCK_ID_ODOMETER（cast: Ea_BlockIdType）",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "NUMBER OF BLOCKS"
-    },
-    "EA_BLOCK_ID_USER_DATA_1": {
-      "type": "integer",
-      "description": "EA_BLOCK_ID_USER_DATA_1（cast: Ea_BlockIdType）",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "NUMBER OF BLOCKS"
-    },
-    "EA_BLOCK_ID_USER_DATA_2": {
-      "type": "integer",
-      "description": "EA_BLOCK_ID_USER_DATA_2（cast: Ea_BlockIdType）",
-      "default": 7,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "NUMBER OF BLOCKS"
-    },
-    "EA_BLOCK_ID_RESERVED": {
-      "type": "integer",
-      "description": "EA_BLOCK_ID_RESERVED（cast: Ea_BlockIdType）",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "NUMBER OF BLOCKS"
-    },
-    "EA_BLOCK_SIZE_CONFIG": {
-      "type": "integer",
-      "description": "EA_BLOCK_SIZE_CONFIG 参数",
-      "default": 64,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BLOCK SIZES"
-    },
-    "EA_BLOCK_SIZE_CALIBRATION": {
-      "type": "integer",
-      "description": "EA_BLOCK_SIZE_CALIBRATION 参数",
-      "default": 128,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BLOCK SIZES"
-    },
-    "EA_BLOCK_SIZE_FAULT_MEMORY": {
-      "type": "integer",
-      "description": "EA_BLOCK_SIZE_FAULT_MEMORY 参数",
-      "default": 256,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "BLOCK SIZES"
-    },
-    "EA_BLOCK_SIZE_VIN": {
-      "type": "integer",
-      "description": "EA_BLOCK_SIZE_VIN 参数",
-      "default": 17,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BLOCK SIZES"
-    },
-    "EA_BLOCK_SIZE_ODOMETER": {
-      "type": "integer",
-      "description": "EA_BLOCK_SIZE_ODOMETER 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BLOCK SIZES"
-    },
-    "EA_BLOCK_SIZE_USER_DATA": {
-      "type": "integer",
-      "description": "EA_BLOCK_SIZE_USER_DATA 参数",
-      "default": 64,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BLOCK SIZES"
-    },
-    "EA_SECTOR_SIZE": {
-      "type": "integer",
-      "description": "4KB sectors",
-      "default": 4096,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "EEPROM CONFIGURATION"
-    },
-    "EA_NUMBER_OF_SECTORS": {
-      "type": "integer",
-      "description": "EA_NUMBER_OF_SECTORS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "EEPROM CONFIGURATION"
-    },
-    "EA_INDEX_SIZE": {
-      "type": "integer",
-      "description": "16 bytes index",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "EEPROM CONFIGURATION"
-    },
-    "EA_DEVICE_INDEX": {
-      "type": "integer",
-      "description": "EA_DEVICE_INDEX 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "DEVICE INDEX"
+    "EA_POLL_MODE": {
+      "type": "boolean",
+      "description": "EA_POLL_MODE 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "EA_MAIN_FUNCTION_PERIOD_MS": {
       "type": "integer",
@@ -195,25 +45,175 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_SET_MODE_SUPPORTED": {
+      "type": "boolean",
+      "description": "EA_SET_MODE_SUPPORTED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_MAX_BLOCK_SIZE": {
+      "type": "integer",
+      "description": "EA_MAX_BLOCK_SIZE 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_BLOCK_ID_CONFIG": {
+      "type": "integer",
+      "description": "EA_BLOCK_ID_CONFIG 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_BLOCK_ID_CALIBRATION": {
+      "type": "integer",
+      "description": "EA_BLOCK_ID_CALIBRATION 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_BLOCK_ID_FAULT_MEMORY": {
+      "type": "integer",
+      "description": "EA_BLOCK_ID_FAULT_MEMORY 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_BLOCK_ID_VIN": {
+      "type": "integer",
+      "description": "EA_BLOCK_ID_VIN 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_BLOCK_ID_ODOMETER": {
+      "type": "integer",
+      "description": "EA_BLOCK_ID_ODOMETER 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_BLOCK_ID_USER_DATA_1": {
+      "type": "integer",
+      "description": "EA_BLOCK_ID_USER_DATA_1 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_BLOCK_ID_USER_DATA_2": {
+      "type": "integer",
+      "description": "EA_BLOCK_ID_USER_DATA_2 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_BLOCK_ID_RESERVED": {
+      "type": "integer",
+      "description": "EA_BLOCK_ID_RESERVED 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_BLOCK_SIZE_CONFIG": {
+      "type": "integer",
+      "description": "EA_BLOCK_SIZE_CONFIG 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_BLOCK_SIZE_CALIBRATION": {
+      "type": "integer",
+      "description": "EA_BLOCK_SIZE_CALIBRATION 参数",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_BLOCK_SIZE_FAULT_MEMORY": {
+      "type": "integer",
+      "description": "EA_BLOCK_SIZE_FAULT_MEMORY 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_BLOCK_SIZE_VIN": {
+      "type": "integer",
+      "description": "EA_BLOCK_SIZE_VIN 参数",
+      "default": 17,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_BLOCK_SIZE_ODOMETER": {
+      "type": "integer",
+      "description": "EA_BLOCK_SIZE_ODOMETER 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_BLOCK_SIZE_USER_DATA": {
+      "type": "integer",
+      "description": "EA_BLOCK_SIZE_USER_DATA 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_SECTOR_SIZE": {
+      "type": "integer",
+      "description": "EA_SECTOR_SIZE 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_NUMBER_OF_SECTORS": {
+      "type": "integer",
+      "description": "EA_NUMBER_OF_SECTORS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EA_INDEX_SIZE": {
+      "type": "integer",
+      "description": "EA_INDEX_SIZE 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "EA_NVM_JOB_END_NOTIFICATION": {
       "type": "boolean",
       "description": "EA_NVM_JOB_END_NOTIFICATION 参数",
       "default": true,
-      "x-section": "NOTIFICATIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "EA_NVM_JOB_ERROR_NOTIFICATION": {
       "type": "boolean",
       "description": "EA_NVM_JOB_ERROR_NOTIFICATION 参数",
       "default": true,
-      "x-section": "NOTIFICATIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "EA_BLOCK_CRC_ENABLED": {
       "type": "boolean",
       "description": "EA_BLOCK_CRC_ENABLED 参数",
       "default": true,
-      "x-section": "CRC CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -239,15 +239,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/ecual/ea/include/Ea_Cfg.h",
-  "x-display-name": "Ea",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "NUMBER OF BLOCKS",
-    "BLOCK SIZES",
-    "EEPROM CONFIGURATION",
-    "DEVICE INDEX",
-    "TIMING",
-    "NOTIFICATIONS",
-    "CRC CONFIGURATION"
-  ]
+  "x-display-name": "Ea"
 }

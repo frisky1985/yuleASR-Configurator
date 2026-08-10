@@ -2,68 +2,26 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/fls.json",
   "title": "Fls Configuration",
-  "description": "Enable/disable version info API",
+  "description": "Fls Configuration configuration header",
   "type": "object",
   "properties": {
     "FLS_VERSION_INFO_API": {
       "type": "boolean",
       "description": "FLS_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FLS_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "FLS_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FLS_RUNTIME_ERROR_DETECT": {
       "type": "boolean",
       "description": "FLS_RUNTIME_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_JOB_END_NOTIFICATION": {
-      "type": "boolean",
-      "description": "FLS_JOB_END_NOTIFICATION 参数",
-      "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_JOB_ERROR_NOTIFICATION": {
-      "type": "boolean",
-      "description": "FLS_JOB_ERROR_NOTIFICATION 参数",
-      "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_USE_ISR": {
-      "type": "boolean",
-      "description": "FLS_USE_ISR 参数",
-      "default": false,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_READ_SYNC_API": {
-      "type": "boolean",
-      "description": "FLS_READ_SYNC_API 参数",
-      "default": false,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_COMPARE_API": {
-      "type": "boolean",
-      "description": "FLS_COMPARE_API 参数",
-      "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_CANCEL_API": {
-      "type": "boolean",
-      "description": "FLS_CANCEL_API 参数",
-      "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_SET_MODE_API": {
-      "type": "boolean",
-      "description": "FLS_SET_MODE_API 参数",
-      "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FLS_NUM_OF_SECTORS": {
       "type": "integer",
@@ -71,151 +29,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_TOTAL_SIZE": {
-      "type": "integer",
-      "description": "1 MB",
-      "default": 1048576,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_BASE_ADDRESS": {
-      "type": "integer",
-      "description": "FLS_BASE_ADDRESS 参数",
-      "default": 134217728,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_SECTOR_0_START_ADDR": {
-      "type": "integer",
-      "description": "FLS_SECTOR_0_START_ADDR 参数",
-      "default": 134217728,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_SECTOR_0_SIZE": {
-      "type": "integer",
-      "description": "64 KB",
-      "default": 65536,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_SECTOR_0_PAGE_SIZE": {
-      "type": "integer",
-      "description": "4 bytes per write",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_SECTOR_1_START_ADDR": {
-      "type": "integer",
-      "description": "FLS_SECTOR_1_START_ADDR 参数",
-      "default": 134283264,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_SECTOR_1_SIZE": {
-      "type": "integer",
-      "description": "64 KB",
-      "default": 65536,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_SECTOR_1_PAGE_SIZE": {
-      "type": "integer",
-      "description": "FLS_SECTOR_1_PAGE_SIZE 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_SECTOR_2_START_ADDR": {
-      "type": "integer",
-      "description": "FLS_SECTOR_2_START_ADDR 参数",
-      "default": 134348800,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_SECTOR_2_SIZE": {
-      "type": "integer",
-      "description": "128 KB",
-      "default": 131072,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_SECTOR_2_PAGE_SIZE": {
-      "type": "integer",
-      "description": "FLS_SECTOR_2_PAGE_SIZE 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_SECTOR_3_START_ADDR": {
-      "type": "integer",
-      "description": "FLS_SECTOR_3_START_ADDR 参数",
-      "default": 134479872,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_SECTOR_3_SIZE": {
-      "type": "integer",
-      "description": "768 KB",
-      "default": 786432,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_SECTOR_3_PAGE_SIZE": {
-      "type": "integer",
-      "description": "FLS_SECTOR_3_PAGE_SIZE 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_MAX_READ_NORMAL_MODE": {
-      "type": "integer",
-      "description": "FLS_MAX_READ_NORMAL_MODE 参数",
-      "default": 256,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_MAX_READ_FAST_MODE": {
-      "type": "integer",
-      "description": "FLS_MAX_READ_FAST_MODE 参数",
-      "default": 512,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_MAX_WRITE_NORMAL_MODE": {
-      "type": "integer",
-      "description": "FLS_MAX_WRITE_NORMAL_MODE 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE OPTIONS"
-    },
-    "FLS_MAX_WRITE_FAST_MODE": {
-      "type": "integer",
-      "description": "FLS_MAX_WRITE_FAST_MODE 参数",
-      "default": 64,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FLS_MAIN_FUNCTION_PERIOD": {
       "type": "integer",
@@ -223,7 +37,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FLS_TIMEOUT_VALUE": {
       "type": "integer",
@@ -231,7 +45,193 @@
       "default": 1000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_JOB_END_NOTIFICATION": {
+      "type": "boolean",
+      "description": "FLS_JOB_END_NOTIFICATION 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_JOB_ERROR_NOTIFICATION": {
+      "type": "boolean",
+      "description": "FLS_JOB_ERROR_NOTIFICATION 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_USE_ISR": {
+      "type": "boolean",
+      "description": "FLS_USE_ISR 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_READ_SYNC_API": {
+      "type": "boolean",
+      "description": "FLS_READ_SYNC_API 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_COMPARE_API": {
+      "type": "boolean",
+      "description": "FLS_COMPARE_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_CANCEL_API": {
+      "type": "boolean",
+      "description": "FLS_CANCEL_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_SET_MODE_API": {
+      "type": "boolean",
+      "description": "FLS_SET_MODE_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_TOTAL_SIZE": {
+      "type": "integer",
+      "description": "FLS_TOTAL_SIZE 参数",
+      "default": 1048576,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_BASE_ADDRESS": {
+      "type": "integer",
+      "description": "FLS_BASE_ADDRESS 参数",
+      "default": 134217728,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_SECTOR_0_START_ADDR": {
+      "type": "integer",
+      "description": "FLS_SECTOR_0_START_ADDR 参数",
+      "default": 134217728,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_SECTOR_0_SIZE": {
+      "type": "integer",
+      "description": "FLS_SECTOR_0_SIZE 参数",
+      "default": 65536,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_SECTOR_0_PAGE_SIZE": {
+      "type": "integer",
+      "description": "FLS_SECTOR_0_PAGE_SIZE 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_SECTOR_1_START_ADDR": {
+      "type": "integer",
+      "description": "FLS_SECTOR_1_START_ADDR 参数",
+      "default": 134283264,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_SECTOR_1_SIZE": {
+      "type": "integer",
+      "description": "FLS_SECTOR_1_SIZE 参数",
+      "default": 65536,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_SECTOR_1_PAGE_SIZE": {
+      "type": "integer",
+      "description": "FLS_SECTOR_1_PAGE_SIZE 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_SECTOR_2_START_ADDR": {
+      "type": "integer",
+      "description": "FLS_SECTOR_2_START_ADDR 参数",
+      "default": 134348800,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_SECTOR_2_SIZE": {
+      "type": "integer",
+      "description": "FLS_SECTOR_2_SIZE 参数",
+      "default": 131072,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_SECTOR_2_PAGE_SIZE": {
+      "type": "integer",
+      "description": "FLS_SECTOR_2_PAGE_SIZE 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_SECTOR_3_START_ADDR": {
+      "type": "integer",
+      "description": "FLS_SECTOR_3_START_ADDR 参数",
+      "default": 134479872,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_SECTOR_3_SIZE": {
+      "type": "integer",
+      "description": "FLS_SECTOR_3_SIZE 参数",
+      "default": 786432,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_SECTOR_3_PAGE_SIZE": {
+      "type": "integer",
+      "description": "FLS_SECTOR_3_PAGE_SIZE 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_MAX_READ_NORMAL_MODE": {
+      "type": "integer",
+      "description": "FLS_MAX_READ_NORMAL_MODE 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_MAX_READ_FAST_MODE": {
+      "type": "integer",
+      "description": "FLS_MAX_READ_FAST_MODE 参数",
+      "default": 512,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_MAX_WRITE_NORMAL_MODE": {
+      "type": "integer",
+      "description": "FLS_MAX_WRITE_NORMAL_MODE 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FLS_MAX_WRITE_FAST_MODE": {
+      "type": "integer",
+      "description": "FLS_MAX_WRITE_FAST_MODE 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FLS_HW_E_PARAM_POINTER": {
       "type": "integer",
@@ -239,7 +239,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CALLBACK DECLARATIONS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     }
   },
@@ -258,9 +258,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/mcal/fls/include/Fls_Cfg.h",
-  "x-display-name": "Fls",
-  "x-sections": [
-    "PRE-COMPILE OPTIONS",
-    "CALLBACK DECLARATIONS"
-  ]
+  "x-display-name": "Fls"
 }

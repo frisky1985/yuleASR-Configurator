@@ -2,57 +2,9 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/cryif.json",
   "title": "CryIf Configuration",
-  "description": "Crypto Interface Configuration Header",
+  "description": "CryIf Configuration configuration header",
   "type": "object",
   "properties": {
-    "CRYIF_CFG_AR_RELEASE_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "CRYIF_CFG_AR_RELEASE_MAJOR_VERSION 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "CRYIF_CFG_AR_RELEASE_MINOR_VERSION": {
-      "type": "integer",
-      "description": "CRYIF_CFG_AR_RELEASE_MINOR_VERSION 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "CRYIF_CFG_AR_RELEASE_REVISION_VERSION": {
-      "type": "integer",
-      "description": "CRYIF_CFG_AR_RELEASE_REVISION_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "CRYIF_CFG_SW_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "CRYIF_CFG_SW_MAJOR_VERSION 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "CRYIF_CFG_SW_MINOR_VERSION": {
-      "type": "integer",
-      "description": "CRYIF_CFG_SW_MINOR_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "CRYIF_CFG_SW_PATCH_VERSION": {
-      "type": "integer",
-      "description": "CRYIF_CFG_SW_PATCH_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
     "CRYIF_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "CRYIF_DEV_ERROR_DETECT 参数",
@@ -66,6 +18,102 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
+    },
+    "CRYIF_CFG_MAX_CHANNEL_COUNT": {
+      "type": "integer",
+      "description": "CRYIF_CFG_MAX_CHANNEL_COUNT 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYIF_CFG_MAX_KEY_COUNT": {
+      "type": "integer",
+      "description": "CRYIF_CFG_MAX_KEY_COUNT 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYIF_CFG_MAX_JOB_COUNT": {
+      "type": "integer",
+      "description": "CRYIF_CFG_MAX_JOB_COUNT 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYIF_CFG_NUM_CHANNELS": {
+      "type": "integer",
+      "description": "CRYIF_CFG_NUM_CHANNELS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYIF_CFG_NUM_KEYS": {
+      "type": "integer",
+      "description": "CRYIF_CFG_NUM_KEYS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYIF_CFG_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "CRYIF_CFG_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYIF_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "CRYIF_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYIF_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "CRYIF_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYIF_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "CRYIF_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYIF_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "CRYIF_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYIF_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "CRYIF_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYIF_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "CRYIF_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_KEY_ELEMENT_COPY_API": {
       "type": "boolean",
@@ -81,37 +129,13 @@
       "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
-    "CRYIF_CFG_MAX_CHANNEL_COUNT": {
-      "type": "integer",
-      "description": "CRYIF_CFG_MAX_CHANNEL_COUNT 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CONFIGURATION PARAMETERS"
-    },
-    "CRYIF_CFG_MAX_KEY_COUNT": {
-      "type": "integer",
-      "description": "CRYIF_CFG_MAX_KEY_COUNT 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CONFIGURATION PARAMETERS"
-    },
-    "CRYIF_CFG_MAX_JOB_COUNT": {
-      "type": "integer",
-      "description": "CRYIF_CFG_MAX_JOB_COUNT 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CONFIGURATION PARAMETERS"
-    },
     "CRYIF_CFG_MAX_BUFFER_SIZE": {
       "type": "integer",
       "description": "CRYIF_CFG_MAX_BUFFER_SIZE 参数",
       "default": 1024,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_MAX_KEY_ELEMENT_SIZE": {
       "type": "integer",
@@ -119,31 +143,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CONFIGURATION PARAMETERS"
-    },
-    "CRYIF_CFG_NUM_CHANNELS": {
-      "type": "integer",
-      "description": "CRYIF_CFG_NUM_CHANNELS 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CONFIGURATION PARAMETERS"
-    },
-    "CRYIF_CFG_NUM_KEYS": {
-      "type": "integer",
-      "description": "CRYIF_CFG_NUM_KEYS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CONFIGURATION PARAMETERS"
-    },
-    "CRYIF_CFG_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "CRYIF_CFG_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_CHANNEL_0_ID": {
       "type": "integer",
@@ -151,7 +151,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_CHANNEL_0_DRIVER_INDEX": {
       "type": "integer",
@@ -159,7 +159,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_CHANNEL_0_DRIVER_OBJ": {
       "type": "integer",
@@ -167,7 +167,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_CHANNEL_0_MAX_KEY_SIZE": {
       "type": "integer",
@@ -175,7 +175,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_CHANNEL_0_MAX_JOB_SIZE": {
       "type": "integer",
@@ -183,7 +183,7 @@
       "default": 1024,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_CHANNEL_1_ID": {
       "type": "integer",
@@ -191,7 +191,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_CHANNEL_1_DRIVER_INDEX": {
       "type": "integer",
@@ -199,7 +199,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_CHANNEL_1_DRIVER_OBJ": {
       "type": "integer",
@@ -207,7 +207,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_CHANNEL_1_MAX_KEY_SIZE": {
       "type": "integer",
@@ -215,7 +215,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_CHANNEL_1_MAX_JOB_SIZE": {
       "type": "integer",
@@ -223,7 +223,7 @@
       "default": 1024,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_0_ID": {
       "type": "integer",
@@ -231,7 +231,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_0_CRYPTO_KEY_ID": {
       "type": "integer",
@@ -239,7 +239,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_0_DRIVER_INDEX": {
       "type": "integer",
@@ -247,7 +247,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_0_SECURITY_LEVEL": {
       "type": "enum",
@@ -263,7 +263,7 @@
         "CRYIF_SEC_LEVEL_6",
         "CRYIF_SEC_LEVEL_7"
       ],
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_1_ID": {
       "type": "integer",
@@ -271,7 +271,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_1_CRYPTO_KEY_ID": {
       "type": "integer",
@@ -279,7 +279,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_1_DRIVER_INDEX": {
       "type": "integer",
@@ -287,7 +287,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_1_SECURITY_LEVEL": {
       "type": "enum",
@@ -303,7 +303,7 @@
         "CRYIF_SEC_LEVEL_6",
         "CRYIF_SEC_LEVEL_7"
       ],
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_2_ID": {
       "type": "integer",
@@ -311,7 +311,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_2_CRYPTO_KEY_ID": {
       "type": "integer",
@@ -319,7 +319,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_2_DRIVER_INDEX": {
       "type": "integer",
@@ -327,7 +327,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_2_SECURITY_LEVEL": {
       "type": "enum",
@@ -343,7 +343,7 @@
         "CRYIF_SEC_LEVEL_6",
         "CRYIF_SEC_LEVEL_7"
       ],
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_3_ID": {
       "type": "integer",
@@ -351,7 +351,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_3_CRYPTO_KEY_ID": {
       "type": "integer",
@@ -359,7 +359,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_3_DRIVER_INDEX": {
       "type": "integer",
@@ -367,7 +367,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_3_SECURITY_LEVEL": {
       "type": "enum",
@@ -383,7 +383,7 @@
         "CRYIF_SEC_LEVEL_6",
         "CRYIF_SEC_LEVEL_7"
       ],
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_KEY_ELEMENT_ID_IV": {
       "type": "integer",
@@ -391,7 +391,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY ELEMENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_KEY_ELEMENT_ID_KEY": {
       "type": "integer",
@@ -399,7 +399,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY ELEMENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_KEY_ELEMENT_ID_SALT": {
       "type": "integer",
@@ -407,7 +407,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY ELEMENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_KEY_ELEMENT_ID_ITERATIONS": {
       "type": "integer",
@@ -415,7 +415,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY ELEMENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_KEY_ELEMENT_ID_ALGORITHM": {
       "type": "integer",
@@ -423,7 +423,7 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY ELEMENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_KEY_ELEMENT_ID_SEED_STATE": {
       "type": "integer",
@@ -431,7 +431,7 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY ELEMENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_KEY_ELEMENT_ID_DRBG_STATE": {
       "type": "integer",
@@ -439,7 +439,7 @@
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY ELEMENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_KEY_ELEMENT_ID_MAC": {
       "type": "integer",
@@ -447,7 +447,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY ELEMENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_KEY_ELEMENT_ID_SIGNATURE": {
       "type": "integer",
@@ -455,7 +455,7 @@
       "default": 9,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY ELEMENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_KEY_ELEMENT_ID_PUBKEY": {
       "type": "integer",
@@ -463,7 +463,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY ELEMENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_KEY_ELEMENT_ID_PRIVKEY": {
       "type": "integer",
@@ -471,7 +471,7 @@
       "default": 11,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY ELEMENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_KEY_ELEMENT_ID_CERTIFICATE": {
       "type": "integer",
@@ -479,7 +479,7 @@
       "default": 12,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY ELEMENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_KEY_ELEMENT_ID_CERTIFICATE_DATA": {
       "type": "integer",
@@ -487,7 +487,7 @@
       "default": 13,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY ELEMENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_KEY_ELEMENT_ID_CERTIFICATE_SIGN": {
       "type": "integer",
@@ -495,7 +495,7 @@
       "default": 14,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY ELEMENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_KEY_ELEMENT_ID_CERTIFICATE_ID": {
       "type": "integer",
@@ -503,31 +503,31 @@
       "default": 15,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY ELEMENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_NOTIFICATION_ENABLED": {
       "type": "boolean",
       "description": "CRYIF_CFG_NOTIFICATION_ENABLED 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_JOB_CALLBACK": {
       "type": "string",
       "description": "CRYIF_CFG_JOB_CALLBACK 参数",
       "default": "CryIf_JobNotificationCallback",
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_CFG_KEY_CALLBACK": {
       "type": "string",
       "description": "CRYIF_CFG_KEY_CALLBACK 参数",
       "default": "CryIf_KeyNotificationCallback",
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYIF_DEBUG_ENABLED": {
       "type": "boolean",
       "description": "CRYIF_DEBUG_ENABLED 参数",
       "default": false,
-      "x-section": "DEBUG CONFIGURATION",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     }
   },
@@ -541,15 +541,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/cryif/include/CryIf_Cfg.h",
-  "x-display-name": "CryIf",
-  "x-sections": [
-    "VERSION INFORMATION",
-    "PRE-COMPILE CONFIGURATION",
-    "CONFIGURATION PARAMETERS",
-    "CHANNEL CONFIGURATION",
-    "KEY CONFIGURATION",
-    "KEY ELEMENT CONFIGURATION",
-    "CALLBACK CONFIGURATION",
-    "DEBUG CONFIGURATION"
-  ]
+  "x-display-name": "CryIf"
 }

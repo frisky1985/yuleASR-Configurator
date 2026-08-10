@@ -2,109 +2,124 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/bswm.json",
   "title": "BswM Configuration",
-  "description": "BswM Configuration",
+  "description": "BswM Configuration configuration header",
   "type": "object",
   "properties": {
     "BSWM_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "BSWM_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "BSWM_VERSION_INFO_API": {
       "type": "boolean",
       "description": "BSWM_VERSION_INFO_API 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "BSWM_MAX_MODE_REQUEST_PORTS": {
       "type": "integer",
       "description": "BSWM_MAX_MODE_REQUEST_PORTS 参数",
       "default": 32,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "BSWM_MAX_RULES": {
       "type": "integer",
       "description": "BSWM_MAX_RULES 参数",
       "default": 64,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "BSWM_MAX_ACTIONS": {
       "type": "integer",
       "description": "BSWM_MAX_ACTIONS 参数",
       "default": 128,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "BSWM_MAX_ACTION_LISTS": {
       "type": "integer",
       "description": "BSWM_MAX_ACTION_LISTS 参数",
       "default": 32,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "BSWM_MODE_STARTUP": {
       "type": "integer",
       "description": "BSWM_MODE_STARTUP 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "BSWM_MODE_RUN": {
       "type": "integer",
       "description": "BSWM_MODE_RUN 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "BSWM_MODE_SHUTDOWN": {
       "type": "integer",
       "description": "BSWM_MODE_SHUTDOWN 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "BSWM_MODE_SLEEP": {
       "type": "integer",
       "description": "BSWM_MODE_SLEEP 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "BSWM_MODE_WAKEUP": {
       "type": "integer",
       "description": "BSWM_MODE_WAKEUP 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "BSWM_ECUM_STATE_STARTUP": {
       "type": "integer",
       "description": "BSWM_ECUM_STATE_STARTUP 参数",
       "default": 16,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "BSWM_ECUM_STATE_RUN": {
       "type": "integer",
       "description": "BSWM_ECUM_STATE_RUN 参数",
       "default": 32,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "BSWM_ECUM_STATE_SHUTDOWN": {
       "type": "integer",
       "description": "BSWM_ECUM_STATE_SHUTDOWN 参数",
       "default": 48,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "BSWM_ECUM_STATE_SLEEP": {
       "type": "integer",
       "description": "BSWM_ECUM_STATE_SLEEP 参数",
       "default": 64,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

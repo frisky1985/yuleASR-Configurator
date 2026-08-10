@@ -2,84 +2,20 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/ethswt.json",
   "title": "EthSwt Configuration",
-  "description": "Ethernet Switch Pre-Compile Configuration",
+  "description": "EthSwt Configuration configuration header",
   "type": "object",
   "properties": {
     "ETHSWT_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "ETHSWT_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "PRE-COMPILE SWITCHES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSWT_VERSION_INFO_API": {
       "type": "boolean",
       "description": "ETHSWT_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "PRE-COMPILE SWITCHES"
-    },
-    "ETHSWT_MAX_PORTS": {
-      "type": "integer",
-      "description": "ETHSWT_MAX_PORTS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PORT CONFIGURATION"
-    },
-    "ETHSWT_MAX_VLANS": {
-      "type": "integer",
-      "description": "ETHSWT_MAX_VLANS 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PORT CONFIGURATION"
-    },
-    "ETHSWT_MAX_MAC_FILTERS": {
-      "type": "integer",
-      "description": "ETHSWT_MAX_MAC_FILTERS 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PORT CONFIGURATION"
-    },
-    "ETHSWT_ALL_PORTS": {
-      "type": "integer",
-      "description": "ETHSWT_ALL_PORTS 参数",
-      "default": 255,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PORT CONFIGURATION"
-    },
-    "ETHSWT_FRAME_BUFFER_SIZE": {
-      "type": "integer",
-      "description": "ETHSWT_FRAME_BUFFER_SIZE 参数",
-      "default": 1600,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "BUFFER CONFIGURATION"
-    },
-    "ETHSWT_TX_QUEUE_DEPTH": {
-      "type": "integer",
-      "description": "ETHSWT_TX_QUEUE_DEPTH 参数",
-      "default": 64,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BUFFER CONFIGURATION"
-    },
-    "ETHSWT_RX_QUEUE_DEPTH": {
-      "type": "integer",
-      "description": "ETHSWT_RX_QUEUE_DEPTH 参数",
-      "default": 64,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BUFFER CONFIGURATION"
-    },
-    "ETHSWT_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "ETHSWT_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSWT_LINK_POLL_INTERVAL_MS": {
       "type": "integer",
@@ -87,43 +23,107 @@
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHSWT_TX_QUEUE_DEPTH": {
+      "type": "integer",
+      "description": "ETHSWT_TX_QUEUE_DEPTH 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHSWT_RX_QUEUE_DEPTH": {
+      "type": "integer",
+      "description": "ETHSWT_RX_QUEUE_DEPTH 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHSWT_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "ETHSWT_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHSWT_MAX_PORTS": {
+      "type": "integer",
+      "description": "ETHSWT_MAX_PORTS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHSWT_MAX_VLANS": {
+      "type": "integer",
+      "description": "ETHSWT_MAX_VLANS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHSWT_MAX_MAC_FILTERS": {
+      "type": "integer",
+      "description": "ETHSWT_MAX_MAC_FILTERS 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHSWT_ALL_PORTS": {
+      "type": "integer",
+      "description": "ETHSWT_ALL_PORTS 参数",
+      "default": 255,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHSWT_FRAME_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "ETHSWT_FRAME_BUFFER_SIZE 参数",
+      "default": 1600,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSWT_ENABLE_VLAN": {
       "type": "boolean",
       "description": "ETHSWT_ENABLE_VLAN 参数",
       "default": true,
-      "x-section": "FEATURE FLAGS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSWT_ENABLE_MAC_FILTERING": {
       "type": "boolean",
       "description": "ETHSWT_ENABLE_MAC_FILTERING 参数",
       "default": true,
-      "x-section": "FEATURE FLAGS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSWT_ENABLE_PORT_STATS": {
       "type": "boolean",
       "description": "ETHSWT_ENABLE_PORT_STATS 参数",
       "default": true,
-      "x-section": "FEATURE FLAGS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSWT_ENABLE_AUTO_NEGOTIATION": {
       "type": "boolean",
       "description": "ETHSWT_ENABLE_AUTO_NEGOTIATION 参数",
       "default": true,
-      "x-section": "FEATURE FLAGS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSWT_ENABLE_FLOW_CONTROL": {
       "type": "boolean",
       "description": "ETHSWT_ENABLE_FLOW_CONTROL 参数",
       "default": true,
-      "x-section": "FEATURE FLAGS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSWT_ENABLE_MIRRORING": {
       "type": "boolean",
       "description": "ETHSWT_ENABLE_MIRRORING 参数",
       "default": true,
-      "x-section": "FEATURE FLAGS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSWT_DEFAULT_HIGH_WATERMARK": {
       "type": "integer",
@@ -131,7 +131,7 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "FLOW CONTROL DEFAULTS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSWT_DEFAULT_LOW_WATERMARK": {
       "type": "integer",
@@ -139,7 +139,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "FLOW CONTROL DEFAULTS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSWT_DEFAULT_PAUSE_TIME": {
       "type": "integer",
@@ -147,7 +147,7 @@
       "default": 512,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "FLOW CONTROL DEFAULTS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSWT_DEFAULT_SPEED": {
       "type": "enum",
@@ -159,7 +159,7 @@
         "ETHSWT_SPEED_100MBPS",
         "ETHSWT_SPEED_10MBPS"
       ],
-      "x-section": "DEFAULT VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSWT_DEFAULT_DUPLEX": {
       "type": "enum",
@@ -169,7 +169,7 @@
         "ETHSWT_DUPLEX_FULL",
         "ETHSWT_DUPLEX_HALF"
       ],
-      "x-section": "DEFAULT VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSWT_DEFAULT_MTU": {
       "type": "integer",
@@ -177,7 +177,7 @@
       "default": 1500,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "DEFAULT VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -185,14 +185,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/ecual/ethswt/include/EthSwt_Cfg.h",
-  "x-display-name": "EthSwt",
-  "x-sections": [
-    "PRE-COMPILE SWITCHES",
-    "PORT CONFIGURATION",
-    "BUFFER CONFIGURATION",
-    "TIMING CONFIGURATION",
-    "FEATURE FLAGS",
-    "FLOW CONTROL DEFAULTS",
-    "DEFAULT VALUES"
-  ]
+  "x-display-name": "EthSwt"
 }

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/someiptp.json",
   "title": "SomeIpTp Configuration",
-  "description": "SOME/IP Transport Protocol configuration header - AutoSAR R22-11",
+  "description": "SomeIpTp Configuration configuration header",
   "type": "object",
   "properties": {
     "SOMEIPTP_DEV_ERROR_DETECT": {
@@ -17,37 +17,13 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "SOMEIPTP_NUMBER_OF_CHANNELS": {
-      "type": "integer",
-      "description": "SOMEIPTP_NUMBER_OF_CHANNELS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "SOMEIPTP_MAX_PDU_LENGTH": {
-      "type": "integer",
-      "description": "64KB max SOME/IP message",
-      "default": 65536,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "BUFFER CONFIGURATION"
-    },
-    "SOMEIPTP_MAX_SEGMENT_SIZE": {
-      "type": "integer",
-      "description": "1400 - 8 bytes SOME/IP header",
-      "default": 1392,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "BUFFER CONFIGURATION"
-    },
     "SOMEIPTP_RX_BUFFER_SIZE": {
       "type": "integer",
       "description": "SOMEIPTP_RX_BUFFER_SIZE 参数",
       "default": 65536,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "BUFFER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPTP_TX_BUFFER_SIZE": {
       "type": "integer",
@@ -55,7 +31,7 @@
       "default": 65536,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "BUFFER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPTP_TX_TIMEOUT_MS": {
       "type": "integer",
@@ -63,7 +39,7 @@
       "default": 1000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPTP_RX_TIMEOUT_MS": {
       "type": "integer",
@@ -71,55 +47,7 @@
       "default": 1000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "TIMEOUT CONFIGURATION"
-    },
-    "SOMEIPTP_RETRANSMIT_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "SOMEIPTP_RETRANSMIT_TIMEOUT_MS 参数",
-      "default": 500,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "TIMEOUT CONFIGURATION"
-    },
-    "SOMEIPTP_MAX_RETRIES": {
-      "type": "integer",
-      "description": "SOMEIPTP_MAX_RETRIES 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RETRY CONFIGURATION"
-    },
-    "SOMEIPTP_CHANNEL_ID_0": {
-      "type": "integer",
-      "description": "SOMEIPTP_CHANNEL_ID_0 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RETRY CONFIGURATION"
-    },
-    "SOMEIPTP_CHANNEL_ID_1": {
-      "type": "integer",
-      "description": "SOMEIPTP_CHANNEL_ID_1 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RETRY CONFIGURATION"
-    },
-    "SOMEIPTP_CHANNEL_ID_2": {
-      "type": "integer",
-      "description": "SOMEIPTP_CHANNEL_ID_2 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RETRY CONFIGURATION"
-    },
-    "SOMEIPTP_CHANNEL_ID_3": {
-      "type": "integer",
-      "description": "SOMEIPTP_CHANNEL_ID_3 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RETRY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPTP_PDU_ID_CHANNEL_0_TX": {
       "type": "integer",
@@ -127,7 +55,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RETRY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPTP_PDU_ID_CHANNEL_0_RX": {
       "type": "integer",
@@ -135,7 +63,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RETRY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPTP_PDU_ID_CHANNEL_1_TX": {
       "type": "integer",
@@ -143,7 +71,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RETRY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPTP_PDU_ID_CHANNEL_1_RX": {
       "type": "integer",
@@ -151,7 +79,15 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RETRY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPTP_RETRANSMIT_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "SOMEIPTP_RETRANSMIT_TIMEOUT_MS 参数",
+      "default": 500,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPTP_MAIN_FUNCTION_PERIOD_MS": {
       "type": "integer",
@@ -159,7 +95,71 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAIN FUNCTION PERIOD"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPTP_NUMBER_OF_CHANNELS": {
+      "type": "integer",
+      "description": "SOMEIPTP_NUMBER_OF_CHANNELS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPTP_MAX_PDU_LENGTH": {
+      "type": "integer",
+      "description": "SOMEIPTP_MAX_PDU_LENGTH 参数",
+      "default": 65536,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPTP_MAX_SEGMENT_SIZE": {
+      "type": "integer",
+      "description": "SOMEIPTP_MAX_SEGMENT_SIZE 参数",
+      "default": 1392,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPTP_MAX_RETRIES": {
+      "type": "integer",
+      "description": "SOMEIPTP_MAX_RETRIES 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPTP_CHANNEL_ID_0": {
+      "type": "integer",
+      "description": "SOMEIPTP_CHANNEL_ID_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPTP_CHANNEL_ID_1": {
+      "type": "integer",
+      "description": "SOMEIPTP_CHANNEL_ID_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPTP_CHANNEL_ID_2": {
+      "type": "integer",
+      "description": "SOMEIPTP_CHANNEL_ID_2 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPTP_CHANNEL_ID_3": {
+      "type": "integer",
+      "description": "SOMEIPTP_CHANNEL_ID_3 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -167,13 +167,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/someiptp/include/SomeIpTp_Cfg.h",
-  "x-display-name": "SomeIpTp",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "CHANNEL CONFIGURATION",
-    "BUFFER CONFIGURATION",
-    "TIMEOUT CONFIGURATION",
-    "RETRY CONFIGURATION",
-    "MAIN FUNCTION PERIOD"
-  ]
+  "x-display-name": "SomeIpTp"
 }

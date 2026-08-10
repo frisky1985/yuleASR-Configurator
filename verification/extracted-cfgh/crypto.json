@@ -2,336 +2,26 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/crypto.json",
   "title": "Crypto Configuration",
-  "description": "Crypto Driver Configuration Header",
+  "description": "Crypto Configuration configuration header",
   "type": "object",
   "properties": {
-    "CRYPTO_CFG_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "CRYPTO_CFG_MAJOR_VERSION 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_MINOR_VERSION": {
-      "type": "integer",
-      "description": "CRYPTO_CFG_MINOR_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_PATCH_VERSION": {
-      "type": "integer",
-      "description": "CRYPTO_CFG_PATCH_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
     "CRYPTO_CFG_VERSION_INFO_API": {
       "type": "boolean",
       "description": "CRYPTO_CFG_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "GLOBAL CONSTANT MACROS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYPTO_CFG_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "CRYPTO_CFG_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "GLOBAL CONSTANT MACROS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYPTO_CFG_RUNTIME_ERROR_DETECT": {
       "type": "boolean",
       "description": "CRYPTO_CFG_RUNTIME_ERROR_DETECT 参数",
       "default": false,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_HSM_ENABLED": {
-      "type": "boolean",
-      "description": "CRYPTO_CFG_HSM_ENABLED 参数",
-      "default": true,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_HSM_FALLBACK_TO_SW": {
-      "type": "boolean",
-      "description": "CRYPTO_CFG_HSM_FALLBACK_TO_SW 参数",
-      "default": true,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_MAX_CHANNELS": {
-      "type": "integer",
-      "description": "CRYPTO_CFG_MAX_CHANNELS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_QUEUE_SIZE": {
-      "type": "integer",
-      "description": "CRYPTO_CFG_QUEUE_SIZE 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_MAX_KEYS": {
-      "type": "integer",
-      "description": "CRYPTO_CFG_MAX_KEYS 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_MAX_KEY_ELEMENTS": {
-      "type": "integer",
-      "description": "CRYPTO_CFG_MAX_KEY_ELEMENTS 参数",
-      "default": 64,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_MAX_KEY_SIZE": {
-      "type": "integer",
-      "description": "CRYPTO_CFG_MAX_KEY_SIZE 参数",
-      "default": 128,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_MAX_IV_SIZE": {
-      "type": "integer",
-      "description": "CRYPTO_CFG_MAX_IV_SIZE 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_MAX_TAG_SIZE": {
-      "type": "integer",
-      "description": "CRYPTO_CFG_MAX_TAG_SIZE 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_MAX_AAD_SIZE": {
-      "type": "integer",
-      "description": "CRYPTO_CFG_MAX_AAD_SIZE 参数",
-      "default": 256,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_MAX_HASH_SIZE": {
-      "type": "integer",
-      "description": "CRYPTO_CFG_MAX_HASH_SIZE 参数",
-      "default": 64,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_MAX_SIGNATURE_SIZE": {
-      "type": "integer",
-      "description": "CRYPTO_CFG_MAX_SIGNATURE_SIZE 参数",
-      "default": 72,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_MAX_ECC_KEY_SIZE": {
-      "type": "integer",
-      "description": "3*32 for secp256r1 uncompressed",
-      "default": 96,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_MAX_SYMMETRIC_KEY_SIZE": {
-      "type": "integer",
-      "description": "AES-256",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_CCC_KEY_SIZE": {
-      "type": "integer",
-      "description": "AES-128 for CCC",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_CCC_IV_SIZE": {
-      "type": "integer",
-      "description": "96-bit IV for GCM",
-      "default": 12,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_CCC_TAG_SIZE": {
-      "type": "integer",
-      "description": "128-bit authentication tag",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_CCC_ECDSA_SIG_SIZE": {
-      "type": "integer",
-      "description": "R+S for secp256r1",
-      "default": 64,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_CCC_ECC_PUB_KEY_SIZE": {
-      "type": "integer",
-      "description": "Uncompressed P-256",
-      "default": 65,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_CFG_CCC_ECC_PRIV_KEY_SIZE": {
-      "type": "integer",
-      "description": "P-256 private key",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GLOBAL CONSTANT MACROS"
-    },
-    "CRYPTO_HSM_INSTANCE_ID": {
-      "type": "integer",
-      "description": "CRYPTO_HSM_INSTANCE_ID 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "HSM CONFIGURATION"
-    },
-    "CRYPTO_HSM_CHANNEL_ID": {
-      "type": "integer",
-      "description": "CRYPTO_HSM_CHANNEL_ID 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "HSM CONFIGURATION"
-    },
-    "CRYPTO_HSM_CMD_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "CRYPTO_HSM_CMD_TIMEOUT_MS 参数",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "HSM CONFIGURATION"
-    },
-    "CRYPTO_HSM_RSP_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "CRYPTO_HSM_RSP_TIMEOUT_MS 参数",
-      "default": 5000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "HSM CONFIGURATION"
-    },
-    "CRYPTO_HSM_MAX_CONCURRENT_JOBS": {
-      "type": "integer",
-      "description": "CRYPTO_HSM_MAX_CONCURRENT_JOBS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "HSM CONFIGURATION"
-    },
-    "CRYPTO_HSM_SUPPORT_ECDSA": {
-      "type": "boolean",
-      "description": "CRYPTO_HSM_SUPPORT_ECDSA 参数",
-      "default": true,
-      "x-section": "HSM CONFIGURATION"
-    },
-    "CRYPTO_HSM_SUPPORT_ECDH": {
-      "type": "boolean",
-      "description": "CRYPTO_HSM_SUPPORT_ECDH 参数",
-      "default": true,
-      "x-section": "HSM CONFIGURATION"
-    },
-    "CRYPTO_HSM_SUPPORT_AES_GCM": {
-      "type": "boolean",
-      "description": "CRYPTO_HSM_SUPPORT_AES_GCM 参数",
-      "default": true,
-      "x-section": "HSM CONFIGURATION"
-    },
-    "CRYPTO_HSM_SUPPORT_SHA256": {
-      "type": "boolean",
-      "description": "CRYPTO_HSM_SUPPORT_SHA256 参数",
-      "default": true,
-      "x-section": "HSM CONFIGURATION"
-    },
-    "CRYPTO_HSM_SUPPORT_HKDF": {
-      "type": "boolean",
-      "description": "CRYPTO_HSM_SUPPORT_HKDF 参数",
-      "default": true,
-      "x-section": "HSM CONFIGURATION"
-    },
-    "CRYPTO_HSM_SUPPORT_HMAC": {
-      "type": "boolean",
-      "description": "CRYPTO_HSM_SUPPORT_HMAC 参数",
-      "default": true,
-      "x-section": "HSM CONFIGURATION"
-    },
-    "CRYPTO_HSM_SUPPORT_RANDOM": {
-      "type": "boolean",
-      "description": "CRYPTO_HSM_SUPPORT_RANDOM 参数",
-      "default": true,
-      "x-section": "HSM CONFIGURATION"
-    },
-    "CRYPTO_HSM_SECURITY_LEVEL_1": {
-      "type": "integer",
-      "description": "Software fallback allowed",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "HSM CONFIGURATION"
-    },
-    "CRYPTO_HSM_SECURITY_LEVEL_2": {
-      "type": "integer",
-      "description": "HSM preferred",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "HSM CONFIGURATION"
-    },
-    "CRYPTO_HSM_SECURITY_LEVEL_3": {
-      "type": "integer",
-      "description": "HSM required",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "HSM CONFIGURATION"
-    },
-    "CRYPTO_KEY_ID_MASTER": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_MASTER 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
-    },
-    "CRYPTO_KEY_ID_SIGNING": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_SIGNING 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
-    },
-    "CRYPTO_KEY_ID_ENCRYPTION": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_ENCRYPTION 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYPTO_KEY_ID_DEVICE": {
       "type": "integer",
@@ -339,39 +29,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
-    },
-    "CRYPTO_KEY_ID_SESSION": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_SESSION 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
-    },
-    "CRYPTO_KEY_ID_EPHEMERAL": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_EPHEMERAL 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ID_CCC_ROOT": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_CCC_ROOT 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
-    },
-    "CRYPTO_KEY_ID_CCC_SUB_CA": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_CCC_SUB_CA 参数",
-      "default": 11,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYPTO_KEY_ID_CCC_DEVICE_KEY": {
       "type": "integer",
@@ -379,254 +37,7 @@
       "default": 14,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ID_CCC_AUTH_KEY": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_CCC_AUTH_KEY 参数",
-      "default": 13,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
-    },
-    "CRYPTO_KEY_ID_CCC_FRIEND_KEY": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_CCC_FRIEND_KEY 参数",
-      "default": 14,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
-    },
-    "CRYPTO_KEY_ELEMENT_ID_KEY_MATERIAL": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ELEMENT_ID_KEY_MATERIAL 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
-    },
-    "CRYPTO_KEY_ELEMENT_ID_IV": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ELEMENT_ID_IV 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
-    },
-    "CRYPTO_KEY_ELEMENT_ID_SALT": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ELEMENT_ID_SALT 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
-    },
-    "CRYPTO_KEY_ELEMENT_ID_TAG": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ELEMENT_ID_TAG 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
-    },
-    "CRYPTO_KEY_ELEMENT_ID_AAD": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ELEMENT_ID_AAD 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
-    },
-    "CRYPTO_KEY_ELEMENT_ID_PUBLIC_KEY": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ELEMENT_ID_PUBLIC_KEY 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
-    },
-    "CRYPTO_KEY_ELEMENT_ID_PRIVATE_KEY": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ELEMENT_ID_PRIVATE_KEY 参数",
-      "default": 11,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
-    },
-    "CRYPTO_KEY_ELEMENT_ID_SIGNATURE": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ELEMENT_ID_SIGNATURE 参数",
-      "default": 20,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
-    },
-    "CRYPTO_ALG_ECDSA_SECP256R1": {
-      "type": "object",
-      "description": "多行初始化宏（对象/数组字面量，提取器不展开）",
-      "x-section": "ALGORITHM CONFIGURATION"
-    },
-    "CRYPTO_ALG_ECDH_SECP256R1": {
-      "type": "object",
-      "description": "多行初始化宏（对象/数组字面量，提取器不展开）",
-      "x-section": "ALGORITHM CONFIGURATION"
-    },
-    "CRYPTO_ALG_AES128_GCM": {
-      "type": "object",
-      "description": "多行初始化宏（对象/数组字面量，提取器不展开）",
-      "x-section": "ALGORITHM CONFIGURATION"
-    },
-    "CRYPTO_ALG_AES256_GCM": {
-      "type": "object",
-      "description": "多行初始化宏（对象/数组字面量，提取器不展开）",
-      "x-section": "ALGORITHM CONFIGURATION"
-    },
-    "CRYPTO_ALG_SHA256": {
-      "type": "object",
-      "description": "多行初始化宏（对象/数组字面量，提取器不展开）",
-      "x-section": "ALGORITHM CONFIGURATION"
-    },
-    "CRYPTO_ALG_HMAC_SHA256": {
-      "type": "object",
-      "description": "多行初始化宏（对象/数组字面量，提取器不展开）",
-      "x-section": "ALGORITHM CONFIGURATION"
-    },
-    "CRYPTO_ALG_HKDF_SHA256": {
-      "type": "object",
-      "description": "多行初始化宏（对象/数组字面量，提取器不展开）",
-      "x-section": "ALGORITHM CONFIGURATION"
-    },
-    "CRYPTO_CFG_CALLBACK_ON_COMPLETE": {
-      "type": "boolean",
-      "description": "CRYPTO_CFG_CALLBACK_ON_COMPLETE 参数",
-      "default": true,
-      "x-section": "CALLBACK CONFIGURATION"
-    },
-    "CRYPTO_CFG_CALLBACK_ON_PROGRESS": {
-      "type": "boolean",
-      "description": "CRYPTO_CFG_CALLBACK_ON_PROGRESS 参数",
-      "default": false,
-      "x-section": "CALLBACK CONFIGURATION"
-    },
-    "CRYPTO_CFG_DEBUG_LEVEL": {
-      "type": "integer",
-      "description": "0=Off, 1=Error, 2=Warning, 3=Info, 4=Debug",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "DEBUG CONFIGURATION"
-    },
-    "CRYPTO_KEY_ID_AES_MASTER": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_AES_MASTER 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ID_AES_SESSION": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_AES_SESSION 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ID_HMAC_MASTER": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_HMAC_MASTER 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ID_RSA_PRIVATE": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_RSA_PRIVATE 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ID_RSA_PUBLIC": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_RSA_PUBLIC 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ID_ECC_PRIVATE": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_ECC_PRIVATE 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ID_ECC_PUBLIC": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_ECC_PUBLIC 参数",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ID_RNG_SEED": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_RNG_SEED 参数",
-      "default": 7,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ID_AES_STORAGE": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_AES_STORAGE 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ID_HMAC_STORAGE": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_HMAC_STORAGE 参数",
-      "default": 9,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ID_DERIVE_BASE": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_DERIVE_BASE 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ID_DERIVED_1": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_DERIVED_1 参数",
-      "default": 11,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ID_DERIVED_2": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_DERIVED_2 参数",
-      "default": 12,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ID_CERT_ROOT": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_CERT_ROOT 参数",
-      "default": 13,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYPTO_KEY_ID_CERT_DEVICE": {
       "type": "integer",
@@ -634,207 +45,7 @@
       "default": 14,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ID_RESERVED": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ID_RESERVED 参数",
-      "default": 15,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ELEMENT_AES_KEY": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ELEMENT_AES_KEY 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ELEMENT_AES_IV": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ELEMENT_AES_IV 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ELEMENT_HMAC_KEY": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ELEMENT_HMAC_KEY 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ELEMENT_RSA_MOD_N": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ELEMENT_RSA_MOD_N 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ELEMENT_RSA_PRIV_EXP_D": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ELEMENT_RSA_PRIV_EXP_D 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ELEMENT_RSA_PUB_EXP_E": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ELEMENT_RSA_PUB_EXP_E 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ELEMENT_SEED": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ELEMENT_SEED 参数",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_KEY_ELEMENT_SALT": {
-      "type": "integer",
-      "description": "CRYPTO_KEY_ELEMENT_SALT 参数",
-      "default": 7,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_AES_KEY_SIZE_256": {
-      "type": "integer",
-      "description": "CRYPTO_AES_KEY_SIZE_256 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_AES_IV_SIZE": {
-      "type": "integer",
-      "description": "CRYPTO_AES_IV_SIZE 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_HMAC_MAX_KEY_SIZE": {
-      "type": "integer",
-      "description": "CRYPTO_HMAC_MAX_KEY_SIZE 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_RSA_KEY_SIZE_2048": {
-      "type": "integer",
-      "description": "CRYPTO_RSA_KEY_SIZE_2048 参数",
-      "default": 256,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_DRIVER_OBJECT_AES_ID": {
-      "type": "integer",
-      "description": "CRYPTO_DRIVER_OBJECT_AES_ID 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_DRIVER_OBJECT_HASH_ID": {
-      "type": "integer",
-      "description": "CRYPTO_DRIVER_OBJECT_HASH_ID 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_DRIVER_OBJECT_HMAC_ID": {
-      "type": "integer",
-      "description": "CRYPTO_DRIVER_OBJECT_HMAC_ID 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_DRIVER_OBJECT_RSA_ID": {
-      "type": "integer",
-      "description": "CRYPTO_DRIVER_OBJECT_RSA_ID 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_CHANNEL_AES_0": {
-      "type": "integer",
-      "description": "CRYPTO_CHANNEL_AES_0 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_CHANNEL_AES_1": {
-      "type": "integer",
-      "description": "CRYPTO_CHANNEL_AES_1 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_CHANNEL_HASH_0": {
-      "type": "integer",
-      "description": "CRYPTO_CHANNEL_HASH_0 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_CHANNEL_HMAC_0": {
-      "type": "integer",
-      "description": "CRYPTO_CHANNEL_HMAC_0 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_CHANNEL_RSA_0": {
-      "type": "integer",
-      "description": "CRYPTO_CHANNEL_RSA_0 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_CHANNEL_RNG_0": {
-      "type": "integer",
-      "description": "CRYPTO_CHANNEL_RNG_0 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_CHANNEL_GCM_0": {
-      "type": "integer",
-      "description": "CRYPTO_CHANNEL_GCM_0 参数",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-    },
-    "CRYPTO_CHANNEL_ECC_0": {
-      "type": "integer",
-      "description": "CRYPTO_CHANNEL_ECC_0 参数",
-      "default": 7,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYPTO_NUM_KEYS": {
       "type": "integer",
@@ -842,7 +53,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYPTO_NUM_CHANNELS": {
       "type": "integer",
@@ -850,7 +61,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CRYPTO_NUM_DRIVER_OBJECTS": {
       "type": "integer",
@@ -858,7 +69,810 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_HSM_CMD_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "CRYPTO_HSM_CMD_TIMEOUT_MS 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_HSM_RSP_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "CRYPTO_HSM_RSP_TIMEOUT_MS 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_MINOR_VERSION": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_PATCH_VERSION": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_HSM_ENABLED": {
+      "type": "boolean",
+      "description": "CRYPTO_CFG_HSM_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_HSM_FALLBACK_TO_SW": {
+      "type": "boolean",
+      "description": "CRYPTO_CFG_HSM_FALLBACK_TO_SW 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_MAX_CHANNELS": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_MAX_CHANNELS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_QUEUE_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_QUEUE_SIZE 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_MAX_KEYS": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_MAX_KEYS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_MAX_KEY_ELEMENTS": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_MAX_KEY_ELEMENTS 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_MAX_KEY_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_MAX_KEY_SIZE 参数",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_MAX_IV_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_MAX_IV_SIZE 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_MAX_TAG_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_MAX_TAG_SIZE 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_MAX_AAD_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_MAX_AAD_SIZE 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_MAX_HASH_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_MAX_HASH_SIZE 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_MAX_SIGNATURE_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_MAX_SIGNATURE_SIZE 参数",
+      "default": 72,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_MAX_ECC_KEY_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_MAX_ECC_KEY_SIZE 参数",
+      "default": 96,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_MAX_SYMMETRIC_KEY_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_MAX_SYMMETRIC_KEY_SIZE 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_CCC_KEY_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_CCC_KEY_SIZE 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_CCC_IV_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_CCC_IV_SIZE 参数",
+      "default": 12,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_CCC_TAG_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_CCC_TAG_SIZE 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_CCC_ECDSA_SIG_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_CCC_ECDSA_SIG_SIZE 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_CCC_ECC_PUB_KEY_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_CCC_ECC_PUB_KEY_SIZE 参数",
+      "default": 65,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_CCC_ECC_PRIV_KEY_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_CCC_ECC_PRIV_KEY_SIZE 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_HSM_INSTANCE_ID": {
+      "type": "integer",
+      "description": "CRYPTO_HSM_INSTANCE_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_HSM_CHANNEL_ID": {
+      "type": "integer",
+      "description": "CRYPTO_HSM_CHANNEL_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_HSM_MAX_CONCURRENT_JOBS": {
+      "type": "integer",
+      "description": "CRYPTO_HSM_MAX_CONCURRENT_JOBS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_HSM_SUPPORT_ECDSA": {
+      "type": "boolean",
+      "description": "CRYPTO_HSM_SUPPORT_ECDSA 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_HSM_SUPPORT_ECDH": {
+      "type": "boolean",
+      "description": "CRYPTO_HSM_SUPPORT_ECDH 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_HSM_SUPPORT_AES_GCM": {
+      "type": "boolean",
+      "description": "CRYPTO_HSM_SUPPORT_AES_GCM 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_HSM_SUPPORT_SHA256": {
+      "type": "boolean",
+      "description": "CRYPTO_HSM_SUPPORT_SHA256 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_HSM_SUPPORT_HKDF": {
+      "type": "boolean",
+      "description": "CRYPTO_HSM_SUPPORT_HKDF 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_HSM_SUPPORT_HMAC": {
+      "type": "boolean",
+      "description": "CRYPTO_HSM_SUPPORT_HMAC 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_HSM_SUPPORT_RANDOM": {
+      "type": "boolean",
+      "description": "CRYPTO_HSM_SUPPORT_RANDOM 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_HSM_SECURITY_LEVEL_1": {
+      "type": "integer",
+      "description": "CRYPTO_HSM_SECURITY_LEVEL_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_HSM_SECURITY_LEVEL_2": {
+      "type": "integer",
+      "description": "CRYPTO_HSM_SECURITY_LEVEL_2 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_HSM_SECURITY_LEVEL_3": {
+      "type": "integer",
+      "description": "CRYPTO_HSM_SECURITY_LEVEL_3 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_MASTER": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_MASTER 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_SIGNING": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_SIGNING 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_ENCRYPTION": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_ENCRYPTION 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_SESSION": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_SESSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_EPHEMERAL": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_EPHEMERAL 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_CCC_ROOT": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_CCC_ROOT 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_CCC_SUB_CA": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_CCC_SUB_CA 参数",
+      "default": 11,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_CCC_AUTH_KEY": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_CCC_AUTH_KEY 参数",
+      "default": 13,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_CCC_FRIEND_KEY": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_CCC_FRIEND_KEY 参数",
+      "default": 14,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ELEMENT_ID_KEY_MATERIAL": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ELEMENT_ID_KEY_MATERIAL 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ELEMENT_ID_IV": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ELEMENT_ID_IV 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ELEMENT_ID_SALT": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ELEMENT_ID_SALT 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ELEMENT_ID_TAG": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ELEMENT_ID_TAG 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ELEMENT_ID_AAD": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ELEMENT_ID_AAD 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ELEMENT_ID_PUBLIC_KEY": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ELEMENT_ID_PUBLIC_KEY 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ELEMENT_ID_PRIVATE_KEY": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ELEMENT_ID_PRIVATE_KEY 参数",
+      "default": 11,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ELEMENT_ID_SIGNATURE": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ELEMENT_ID_SIGNATURE 参数",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_ALG_ECDSA_SECP256R1": {
+      "type": "string",
+      "description": "CRYPTO_ALG_ECDSA_SECP256R1 参数",
+      "default": "\"\"",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "string-literal"
+    },
+    "CRYPTO_ALG_ECDH_SECP256R1": {
+      "type": "string",
+      "description": "CRYPTO_ALG_ECDH_SECP256R1 参数",
+      "default": "\"\"",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "string-literal"
+    },
+    "CRYPTO_ALG_AES128_GCM": {
+      "type": "string",
+      "description": "CRYPTO_ALG_AES128_GCM 参数",
+      "default": "\"\"",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "string-literal"
+    },
+    "CRYPTO_ALG_AES256_GCM": {
+      "type": "string",
+      "description": "CRYPTO_ALG_AES256_GCM 参数",
+      "default": "\"\"",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "string-literal"
+    },
+    "CRYPTO_ALG_SHA256": {
+      "type": "string",
+      "description": "CRYPTO_ALG_SHA256 参数",
+      "default": "\"\"",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "string-literal"
+    },
+    "CRYPTO_ALG_HMAC_SHA256": {
+      "type": "string",
+      "description": "CRYPTO_ALG_HMAC_SHA256 参数",
+      "default": "\"\"",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "string-literal"
+    },
+    "CRYPTO_ALG_HKDF_SHA256": {
+      "type": "string",
+      "description": "CRYPTO_ALG_HKDF_SHA256 参数",
+      "default": "\"\"",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "string-literal"
+    },
+    "CRYPTO_CFG_CALLBACK_ON_COMPLETE": {
+      "type": "boolean",
+      "description": "CRYPTO_CFG_CALLBACK_ON_COMPLETE 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_CALLBACK_ON_PROGRESS": {
+      "type": "boolean",
+      "description": "CRYPTO_CFG_CALLBACK_ON_PROGRESS 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CFG_DEBUG_LEVEL": {
+      "type": "integer",
+      "description": "CRYPTO_CFG_DEBUG_LEVEL 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_AES_MASTER": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_AES_MASTER 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_AES_SESSION": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_AES_SESSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_HMAC_MASTER": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_HMAC_MASTER 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_RSA_PRIVATE": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_RSA_PRIVATE 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_RSA_PUBLIC": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_RSA_PUBLIC 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_ECC_PRIVATE": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_ECC_PRIVATE 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_ECC_PUBLIC": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_ECC_PUBLIC 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_RNG_SEED": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_RNG_SEED 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_AES_STORAGE": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_AES_STORAGE 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_HMAC_STORAGE": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_HMAC_STORAGE 参数",
+      "default": 9,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_DERIVE_BASE": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_DERIVE_BASE 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_DERIVED_1": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_DERIVED_1 参数",
+      "default": 11,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_DERIVED_2": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_DERIVED_2 参数",
+      "default": 12,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_CERT_ROOT": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_CERT_ROOT 参数",
+      "default": 13,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ID_RESERVED": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ID_RESERVED 参数",
+      "default": 15,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ELEMENT_AES_KEY": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ELEMENT_AES_KEY 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ELEMENT_AES_IV": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ELEMENT_AES_IV 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ELEMENT_HMAC_KEY": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ELEMENT_HMAC_KEY 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ELEMENT_RSA_MOD_N": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ELEMENT_RSA_MOD_N 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ELEMENT_RSA_PRIV_EXP_D": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ELEMENT_RSA_PRIV_EXP_D 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ELEMENT_RSA_PUB_EXP_E": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ELEMENT_RSA_PUB_EXP_E 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ELEMENT_SEED": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ELEMENT_SEED 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_KEY_ELEMENT_SALT": {
+      "type": "integer",
+      "description": "CRYPTO_KEY_ELEMENT_SALT 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_AES_KEY_SIZE_256": {
+      "type": "integer",
+      "description": "CRYPTO_AES_KEY_SIZE_256 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_AES_IV_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_AES_IV_SIZE 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_HMAC_MAX_KEY_SIZE": {
+      "type": "integer",
+      "description": "CRYPTO_HMAC_MAX_KEY_SIZE 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_RSA_KEY_SIZE_2048": {
+      "type": "integer",
+      "description": "CRYPTO_RSA_KEY_SIZE_2048 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_DRIVER_OBJECT_AES_ID": {
+      "type": "integer",
+      "description": "CRYPTO_DRIVER_OBJECT_AES_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_DRIVER_OBJECT_HASH_ID": {
+      "type": "integer",
+      "description": "CRYPTO_DRIVER_OBJECT_HASH_ID 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_DRIVER_OBJECT_HMAC_ID": {
+      "type": "integer",
+      "description": "CRYPTO_DRIVER_OBJECT_HMAC_ID 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_DRIVER_OBJECT_RSA_ID": {
+      "type": "integer",
+      "description": "CRYPTO_DRIVER_OBJECT_RSA_ID 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CHANNEL_AES_0": {
+      "type": "integer",
+      "description": "CRYPTO_CHANNEL_AES_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CHANNEL_AES_1": {
+      "type": "integer",
+      "description": "CRYPTO_CHANNEL_AES_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CHANNEL_HASH_0": {
+      "type": "integer",
+      "description": "CRYPTO_CHANNEL_HASH_0 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CHANNEL_HMAC_0": {
+      "type": "integer",
+      "description": "CRYPTO_CHANNEL_HMAC_0 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CHANNEL_RSA_0": {
+      "type": "integer",
+      "description": "CRYPTO_CHANNEL_RSA_0 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CHANNEL_RNG_0": {
+      "type": "integer",
+      "description": "CRYPTO_CHANNEL_RNG_0 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CHANNEL_GCM_0": {
+      "type": "integer",
+      "description": "CRYPTO_CHANNEL_GCM_0 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CRYPTO_CHANNEL_ECC_0": {
+      "type": "integer",
+      "description": "CRYPTO_CHANNEL_ECC_0 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -878,20 +892,19 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "Crypto 通道数不应超过 Csm 并发任务数"
+    },
+    {
+      "sourceParam": "CRYPTO_CFG_MAX_CHANNELS",
+      "module": "Csm",
+      "param": "CSM_CFG_MAX_CONCURRENT_JOBS",
+      "relation": "required",
+      "severity": "error",
+      "description": "Crypto 依赖 Csm 并发任务，Csm 必须配置"
     }
   ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/mcal/crypto/include/Crypto_Cfg.h",
-  "x-display-name": "Crypto",
-  "x-sections": [
-    "GLOBAL CONSTANT MACROS",
-    "HSM CONFIGURATION",
-    "KEY CONFIGURATION",
-    "ALGORITHM CONFIGURATION",
-    "CALLBACK CONFIGURATION",
-    "DEBUG CONFIGURATION",
-    "KEY / CHANNEL / DRIVER OBJECT IDENTIFIERS"
-  ]
+  "x-display-name": "Crypto"
 }

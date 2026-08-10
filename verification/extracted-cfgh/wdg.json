@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/wdg.json",
   "title": "Wdg Configuration",
-  "description": "WDG Driver configuration header",
+  "description": "Wdg Configuration configuration header",
   "type": "object",
   "properties": {
     "WDG_DEV_ERROR_DETECT": {
@@ -14,6 +14,80 @@
     "WDG_VERSION_INFO_API": {
       "type": "boolean",
       "description": "WDG_VERSION_INFO_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "WDG_FAST_MODE_INTERRUPT": {
+      "type": "boolean",
+      "description": "WDG_FAST_MODE_INTERRUPT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "WDG_SLOW_MODE_INTERRUPT": {
+      "type": "boolean",
+      "description": "WDG_SLOW_MODE_INTERRUPT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "WDG_DEFAULT_TIMEOUT": {
+      "type": "integer",
+      "description": "WDG_DEFAULT_TIMEOUT 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "WDG_FAST_MODE_TIMEOUT": {
+      "type": "integer",
+      "description": "WDG_FAST_MODE_TIMEOUT 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "WDG_FAST_MODE_TIMEOUT_PRE_US": {
+      "type": "integer",
+      "description": "WDG_FAST_MODE_TIMEOUT_PRE_US 参数",
+      "default": 500,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "WDG_SLOW_MODE_TIMEOUT": {
+      "type": "integer",
+      "description": "WDG_SLOW_MODE_TIMEOUT 参数",
+      "default": 500,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "WDG_SLOW_MODE_TIMEOUT_PRE_US": {
+      "type": "integer",
+      "description": "WDG_SLOW_MODE_TIMEOUT_PRE_US 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "WDG_MAX_TIMEOUT": {
+      "type": "integer",
+      "description": "WDG_MAX_TIMEOUT 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "WDG_MIN_TIMEOUT": {
+      "type": "integer",
+      "description": "WDG_MIN_TIMEOUT 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "WDG_TIMEOUT_PRE_WARNING": {
+      "type": "boolean",
+      "description": "WDG_TIMEOUT_PRE_WARNING 参数",
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
@@ -32,23 +106,7 @@
         "WDGIF_SLOW_MODE",
         "WDGIF_FAST_MODE"
       ],
-      "x-section": "WATCHDOG MODE"
-    },
-    "WDG_DEFAULT_TIMEOUT": {
-      "type": "integer",
-      "description": "100ms（cast: Wdg_TimeoutType）",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "WATCHDOG MODE"
-    },
-    "WDG_FAST_MODE_TIMEOUT": {
-      "type": "integer",
-      "description": "50ms（cast: Wdg_TimeoutType）",
-      "default": 50,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "FAST MODE SETTINGS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDG_FAST_MODE_PRESCALER": {
       "type": "enum",
@@ -64,51 +122,29 @@
         "WDG_PRESCALER_64",
         "WDG_PRESCALER_128"
       ],
-      "x-section": "FAST MODE SETTINGS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDG_FAST_MODE_WINDOW_ENABLED": {
       "type": "boolean",
-      "description": "启用窗口模式",
+      "description": "WDG_FAST_MODE_WINDOW_ENABLED 参数",
       "default": true,
-      "x-section": "FAST MODE SETTINGS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDG_FAST_MODE_WINDOW_START": {
       "type": "integer",
-      "description": "窗口开启: 10ms（cast: Wdg_TimeoutType）",
+      "description": "WDG_FAST_MODE_WINDOW_START 参数",
       "default": 10,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "FAST MODE SETTINGS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDG_FAST_MODE_WINDOW_END": {
       "type": "integer",
-      "description": "窗口关闭: 40ms（cast: Wdg_TimeoutType）",
+      "description": "WDG_FAST_MODE_WINDOW_END 参数",
       "default": 40,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "FAST MODE SETTINGS"
-    },
-    "WDG_FAST_MODE_INTERRUPT": {
-      "type": "boolean",
-      "description": "启用超时前中断",
-      "default": true,
-      "x-section": "FAST MODE SETTINGS"
-    },
-    "WDG_FAST_MODE_TIMEOUT_PRE_US": {
-      "type": "integer",
-      "description": "超时前预警时间 500us（cast: uint16）",
-      "default": 500,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "FAST MODE SETTINGS"
-    },
-    "WDG_SLOW_MODE_TIMEOUT": {
-      "type": "integer",
-      "description": "500ms（cast: Wdg_TimeoutType）",
-      "default": 500,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "SLOW MODE SETTINGS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDG_SLOW_MODE_PRESCALER": {
       "type": "enum",
@@ -124,103 +160,67 @@
         "WDG_PRESCALER_64",
         "WDG_PRESCALER_128"
       ],
-      "x-section": "SLOW MODE SETTINGS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDG_SLOW_MODE_WINDOW_ENABLED": {
       "type": "boolean",
-      "description": "启用窗口模式",
+      "description": "WDG_SLOW_MODE_WINDOW_ENABLED 参数",
       "default": true,
-      "x-section": "SLOW MODE SETTINGS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDG_SLOW_MODE_WINDOW_START": {
       "type": "integer",
-      "description": "窗口开启: 100ms（cast: Wdg_TimeoutType）",
+      "description": "WDG_SLOW_MODE_WINDOW_START 参数",
       "default": 100,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "SLOW MODE SETTINGS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDG_SLOW_MODE_WINDOW_END": {
       "type": "integer",
-      "description": "窗口关闭: 400ms（cast: Wdg_TimeoutType）",
+      "description": "WDG_SLOW_MODE_WINDOW_END 参数",
       "default": 400,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "SLOW MODE SETTINGS"
-    },
-    "WDG_SLOW_MODE_INTERRUPT": {
-      "type": "boolean",
-      "description": "启用超时前中断",
-      "default": true,
-      "x-section": "SLOW MODE SETTINGS"
-    },
-    "WDG_SLOW_MODE_TIMEOUT_PRE_US": {
-      "type": "integer",
-      "description": "超时前预警时间 1ms（cast: uint16）",
-      "default": 1000,
-      "minimum": 0,
       "maximum": 65535,
-      "x-section": "SLOW MODE SETTINGS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDG_BASE_ADDRESS": {
       "type": "integer",
-      "description": "i.MX8 WDOG base",
+      "description": "WDG_BASE_ADDRESS 参数",
       "default": 807927808,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "HARDWARE BASE ADDRESS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDG_CLOCK_FREQUENCY_HZ": {
       "type": "integer",
-      "description": "32kHz low power oscillator",
+      "description": "WDG_CLOCK_FREQUENCY_HZ 参数",
       "default": 32000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CLOCK CONFIGURATION"
-    },
-    "WDG_MAX_TIMEOUT": {
-      "type": "integer",
-      "description": "1000ms max（cast: uint16）",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "TRIGGER CONDITION"
-    },
-    "WDG_MIN_TIMEOUT": {
-      "type": "integer",
-      "description": "1ms min（cast: uint16）",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "TRIGGER CONDITION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDG_VALIDATE_WINDOW_MODE": {
       "type": "boolean",
-      "description": "运行时验证窗口触发",
+      "description": "WDG_VALIDATE_WINDOW_MODE 参数",
       "default": true,
-      "x-section": "WINDOW MODE VALIDATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDG_WINDOW_ERROR_ACTION": {
       "type": "enum",
-      "description": "窗口违规动作",
+      "description": "WDG_WINDOW_ERROR_ACTION 参数",
       "default": "WDG_WINDOW_ERROR_RESET",
       "enum": [
         "WDG_WINDOW_ERROR_RESET",
         "WDG_WINDOW_ERROR_IGNORE"
       ],
-      "x-section": "WINDOW MODE VALIDATION"
-    },
-    "WDG_TIMEOUT_PRE_WARNING": {
-      "type": "boolean",
-      "description": "启用超时前预警",
-      "default": true,
-      "x-section": "TIMEOUT PRE-WARNING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDG_PRE_WARNING_CALLBACK": {
       "type": "boolean",
-      "description": "启用预警回调",
+      "description": "WDG_PRE_WARNING_CALLBACK 参数",
       "default": true,
-      "x-section": "TIMEOUT PRE-WARNING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -228,16 +228,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/mcal/wdg/include/Wdg_Cfg.h",
-  "x-display-name": "Wdg",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "WATCHDOG MODE",
-    "FAST MODE SETTINGS",
-    "SLOW MODE SETTINGS",
-    "HARDWARE BASE ADDRESS",
-    "CLOCK CONFIGURATION",
-    "TRIGGER CONDITION",
-    "WINDOW MODE VALIDATION",
-    "TIMEOUT PRE-WARNING"
-  ]
+  "x-display-name": "Wdg"
 }

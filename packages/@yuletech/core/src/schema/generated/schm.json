@@ -2,25 +2,28 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/schm.json",
   "title": "SchM Configuration",
-  "description": "Scheduler Manager Configuration",
+  "description": "SchM Configuration configuration header",
   "type": "object",
   "properties": {
     "SCHM_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "SCHM_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SCHM_VERSION_INFO_API": {
       "type": "boolean",
       "description": "SCHM_VERSION_INFO_API 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SCHM_MAX_TASKS": {
       "type": "integer",
       "description": "SCHM_MAX_TASKS 参数",
       "default": 32,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

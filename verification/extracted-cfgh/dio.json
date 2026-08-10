@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/dio.json",
   "title": "Dio Configuration",
-  "description": "DIO Driver configuration header",
+  "description": "Dio Configuration configuration header",
   "type": "object",
   "properties": {
     "DIO_DEV_ERROR_DETECT": {
@@ -17,6 +17,30 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
+    "DIO_NUM_PORTS": {
+      "type": "integer",
+      "description": "DIO_NUM_PORTS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DIO_NUM_CHANNELS_PER_PORT": {
+      "type": "integer",
+      "description": "DIO_NUM_CHANNELS_PER_PORT 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DIO_NUM_CHANNEL_GROUPS": {
+      "type": "integer",
+      "description": "DIO_NUM_CHANNEL_GROUPS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
     "DIO_FLIP_CHANNEL_API": {
       "type": "boolean",
       "description": "DIO_FLIP_CHANNEL_API 参数",
@@ -29,29 +53,13 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "DIO_NUM_PORTS": {
-      "type": "integer",
-      "description": "DIO_NUM_PORTS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF PORTS"
-    },
-    "DIO_NUM_CHANNELS_PER_PORT": {
-      "type": "integer",
-      "description": "DIO_NUM_CHANNELS_PER_PORT 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF PORTS"
-    },
     "DIO_PORT_A": {
       "type": "integer",
       "description": "DIO_PORT_A 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PORT DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_PORT_B": {
       "type": "integer",
@@ -59,7 +67,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PORT DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_PORT_C": {
       "type": "integer",
@@ -67,7 +75,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PORT DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_PORT_D": {
       "type": "integer",
@@ -75,7 +83,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PORT DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_PORT_E": {
       "type": "integer",
@@ -83,7 +91,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PORT DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_PORT_F": {
       "type": "integer",
@@ -91,7 +99,7 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PORT DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_PORT_G": {
       "type": "integer",
@@ -99,7 +107,7 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PORT DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_PORT_H": {
       "type": "integer",
@@ -107,503 +115,495 @@
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PORT DEFINITIONS"
-    },
-    "DIO_NUM_CHANNEL_GROUPS": {
-      "type": "integer",
-      "description": "DIO_NUM_CHANNEL_GROUPS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL GROUP CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_A0": {
       "type": "integer",
-      "description": "DIO_CHANNEL_A0（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_A0 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_A1": {
       "type": "integer",
-      "description": "DIO_CHANNEL_A1（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_A1 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_A2": {
       "type": "integer",
-      "description": "DIO_CHANNEL_A2（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_A2 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_A3": {
       "type": "integer",
-      "description": "DIO_CHANNEL_A3（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_A3 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_A4": {
       "type": "integer",
-      "description": "DIO_CHANNEL_A4（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_A4 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_A5": {
       "type": "integer",
-      "description": "DIO_CHANNEL_A5（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_A5 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_A6": {
       "type": "integer",
-      "description": "DIO_CHANNEL_A6（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_A6 参数",
       "default": 6,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_A7": {
       "type": "integer",
-      "description": "DIO_CHANNEL_A7（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_A7 参数",
       "default": 7,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_B0": {
       "type": "integer",
-      "description": "DIO_CHANNEL_B0（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_B0 参数",
       "default": 256,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_B1": {
       "type": "integer",
-      "description": "DIO_CHANNEL_B1（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_B1 参数",
       "default": 257,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_B2": {
       "type": "integer",
-      "description": "DIO_CHANNEL_B2（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_B2 参数",
       "default": 258,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_B3": {
       "type": "integer",
-      "description": "DIO_CHANNEL_B3（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_B3 参数",
       "default": 259,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_B4": {
       "type": "integer",
-      "description": "DIO_CHANNEL_B4（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_B4 参数",
       "default": 260,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_B5": {
       "type": "integer",
-      "description": "DIO_CHANNEL_B5（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_B5 参数",
       "default": 261,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_B6": {
       "type": "integer",
-      "description": "DIO_CHANNEL_B6（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_B6 参数",
       "default": 262,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_B7": {
       "type": "integer",
-      "description": "DIO_CHANNEL_B7（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_B7 参数",
       "default": 263,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_C0": {
       "type": "integer",
-      "description": "DIO_CHANNEL_C0（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_C0 参数",
       "default": 512,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_C1": {
       "type": "integer",
-      "description": "DIO_CHANNEL_C1（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_C1 参数",
       "default": 513,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_C2": {
       "type": "integer",
-      "description": "DIO_CHANNEL_C2（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_C2 参数",
       "default": 514,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_C3": {
       "type": "integer",
-      "description": "DIO_CHANNEL_C3（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_C3 参数",
       "default": 515,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_C4": {
       "type": "integer",
-      "description": "DIO_CHANNEL_C4（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_C4 参数",
       "default": 516,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_C5": {
       "type": "integer",
-      "description": "DIO_CHANNEL_C5（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_C5 参数",
       "default": 517,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_C6": {
       "type": "integer",
-      "description": "DIO_CHANNEL_C6（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_C6 参数",
       "default": 518,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_C7": {
       "type": "integer",
-      "description": "DIO_CHANNEL_C7（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_C7 参数",
       "default": 519,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_D0": {
       "type": "integer",
-      "description": "DIO_CHANNEL_D0（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_D0 参数",
       "default": 768,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_D1": {
       "type": "integer",
-      "description": "DIO_CHANNEL_D1（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_D1 参数",
       "default": 769,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_D2": {
       "type": "integer",
-      "description": "DIO_CHANNEL_D2（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_D2 参数",
       "default": 770,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_D3": {
       "type": "integer",
-      "description": "DIO_CHANNEL_D3（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_D3 参数",
       "default": 771,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_D4": {
       "type": "integer",
-      "description": "DIO_CHANNEL_D4（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_D4 参数",
       "default": 772,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_D5": {
       "type": "integer",
-      "description": "DIO_CHANNEL_D5（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_D5 参数",
       "default": 773,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_D6": {
       "type": "integer",
-      "description": "DIO_CHANNEL_D6（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_D6 参数",
       "default": 774,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_D7": {
       "type": "integer",
-      "description": "DIO_CHANNEL_D7（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_D7 参数",
       "default": 775,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DIO CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_E0": {
       "type": "integer",
-      "description": "DIO_CHANNEL_E0（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_E0 参数",
       "default": 1024,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "EXTENDED CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_E1": {
       "type": "integer",
-      "description": "DIO_CHANNEL_E1（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_E1 参数",
       "default": 1025,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "EXTENDED CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_E2": {
       "type": "integer",
-      "description": "DIO_CHANNEL_E2（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_E2 参数",
       "default": 1026,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "EXTENDED CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_E3": {
       "type": "integer",
-      "description": "DIO_CHANNEL_E3（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_E3 参数",
       "default": 1027,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "EXTENDED CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_E4": {
       "type": "integer",
-      "description": "DIO_CHANNEL_E4（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_E4 参数",
       "default": 1028,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "EXTENDED CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_E5": {
       "type": "integer",
-      "description": "DIO_CHANNEL_E5（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_E5 参数",
       "default": 1029,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "EXTENDED CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_E6": {
       "type": "integer",
-      "description": "DIO_CHANNEL_E6（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_E6 参数",
       "default": 1030,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "EXTENDED CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_E7": {
       "type": "integer",
-      "description": "DIO_CHANNEL_E7（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_E7 参数",
       "default": 1031,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "EXTENDED CHANNEL DEFINITIONS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_10": {
       "type": "integer",
-      "description": "DIO_CHANNEL_10（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_10 参数",
       "default": 1280,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_11": {
       "type": "integer",
-      "description": "DIO_CHANNEL_11（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_11 参数",
       "default": 1281,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_12": {
       "type": "integer",
-      "description": "DIO_CHANNEL_12（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_12 参数",
       "default": 1282,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_13": {
       "type": "integer",
-      "description": "DIO_CHANNEL_13（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_13 参数",
       "default": 1283,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_20": {
       "type": "integer",
-      "description": "DIO_CHANNEL_20（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_20 参数",
       "default": 1284,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_21": {
       "type": "integer",
-      "description": "DIO_CHANNEL_21（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_21 参数",
       "default": 1285,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_22": {
       "type": "integer",
-      "description": "DIO_CHANNEL_22（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_22 参数",
       "default": 1286,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_23": {
       "type": "integer",
-      "description": "DIO_CHANNEL_23（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_23 参数",
       "default": 1287,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_30": {
       "type": "integer",
-      "description": "DIO_CHANNEL_30（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_30 参数",
       "default": 1288,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_32": {
       "type": "integer",
-      "description": "DIO_CHANNEL_32（cast: Dio_ChannelType）",
+      "description": "DIO_CHANNEL_32 参数",
       "default": 1289,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_CAN0_STB": {
       "type": "integer",
-      "description": "DIO_CHANNEL_CAN0_STB（别名: DIO_CHANNEL_10 = 1280；同族可选: DIO_CHANNEL_10 / DIO_CHANNEL_11 / DIO_CHANNEL_12 / DIO_CHANNEL_13 / DIO_CHANNEL_20 / DIO_CHANNEL_21 / DIO_CHANNEL_22 / DIO_CHANNEL_23 / DIO_CHANNEL_30 / DIO_CHANNEL_32 / DIO_CHANNEL_A0 / DIO_CHANNEL_A1 / DIO_CHANNEL_A2 / DIO_CHANNEL_A3 / DIO_CHANNEL_A4 / DIO_CHANNEL_A5 / DIO_CHANNEL_A6 / DIO_CHANNEL_A7 / DIO_CHANNEL_B0 / DIO_CHANNEL_B1 / DIO_CHANNEL_B2 / DIO_CHANNEL_B3 / DIO_CHANNEL_B4 / DIO_CHANNEL_B5 / DIO_CHANNEL_B6 / DIO_CHANNEL_B7 / DIO_CHANNEL_C0 / DIO_CHANNEL_C1 / DIO_CHANNEL_C2 / DIO_CHANNEL_C3 / DIO_CHANNEL_C4 / DIO_CHANNEL_C5 / DIO_CHANNEL_C6 / DIO_CHANNEL_C7 / DIO_CHANNEL_CAN0_EN / DIO_CHANNEL_CAN0_ERR / DIO_CHANNEL_CAN0_WAK / DIO_CHANNEL_CAN1_EN / DIO_CHANNEL_CAN1_ERR / DIO_CHANNEL_CAN1_STB / DIO_CHANNEL_CAN1_WAK / DIO_CHANNEL_CAN2_ERR / DIO_CHANNEL_CAN2_STB / DIO_CHANNEL_D0 / DIO_CHANNEL_D1 / DIO_CHANNEL_D2 / DIO_CHANNEL_D3 / DIO_CHANNEL_D4 / DIO_CHANNEL_D5 / DIO_CHANNEL_D6 / DIO_CHANNEL_D7 / DIO_CHANNEL_E0 / DIO_CHANNEL_E1 / DIO_CHANNEL_E2 / DIO_CHANNEL_E3 / DIO_CHANNEL_E4 / DIO_CHANNEL_E5 / DIO_CHANNEL_E6 / DIO_CHANNEL_E7）",
+      "description": "DIO_CHANNEL_CAN0_STB 参数",
       "default": 1280,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_CAN0_EN": {
       "type": "integer",
-      "description": "DIO_CHANNEL_CAN0_EN（别名: DIO_CHANNEL_11 = 1281；同族可选: DIO_CHANNEL_10 / DIO_CHANNEL_11 / DIO_CHANNEL_12 / DIO_CHANNEL_13 / DIO_CHANNEL_20 / DIO_CHANNEL_21 / DIO_CHANNEL_22 / DIO_CHANNEL_23 / DIO_CHANNEL_30 / DIO_CHANNEL_32 / DIO_CHANNEL_A0 / DIO_CHANNEL_A1 / DIO_CHANNEL_A2 / DIO_CHANNEL_A3 / DIO_CHANNEL_A4 / DIO_CHANNEL_A5 / DIO_CHANNEL_A6 / DIO_CHANNEL_A7 / DIO_CHANNEL_B0 / DIO_CHANNEL_B1 / DIO_CHANNEL_B2 / DIO_CHANNEL_B3 / DIO_CHANNEL_B4 / DIO_CHANNEL_B5 / DIO_CHANNEL_B6 / DIO_CHANNEL_B7 / DIO_CHANNEL_C0 / DIO_CHANNEL_C1 / DIO_CHANNEL_C2 / DIO_CHANNEL_C3 / DIO_CHANNEL_C4 / DIO_CHANNEL_C5 / DIO_CHANNEL_C6 / DIO_CHANNEL_C7 / DIO_CHANNEL_CAN0_ERR / DIO_CHANNEL_CAN0_STB / DIO_CHANNEL_CAN0_WAK / DIO_CHANNEL_CAN1_EN / DIO_CHANNEL_CAN1_ERR / DIO_CHANNEL_CAN1_STB / DIO_CHANNEL_CAN1_WAK / DIO_CHANNEL_CAN2_ERR / DIO_CHANNEL_CAN2_STB / DIO_CHANNEL_D0 / DIO_CHANNEL_D1 / DIO_CHANNEL_D2 / DIO_CHANNEL_D3 / DIO_CHANNEL_D4 / DIO_CHANNEL_D5 / DIO_CHANNEL_D6 / DIO_CHANNEL_D7 / DIO_CHANNEL_E0 / DIO_CHANNEL_E1 / DIO_CHANNEL_E2 / DIO_CHANNEL_E3 / DIO_CHANNEL_E4 / DIO_CHANNEL_E5 / DIO_CHANNEL_E6 / DIO_CHANNEL_E7）",
+      "description": "DIO_CHANNEL_CAN0_EN 参数",
       "default": 1281,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_CAN0_ERR": {
       "type": "integer",
-      "description": "DIO_CHANNEL_CAN0_ERR（别名: DIO_CHANNEL_12 = 1282；同族可选: DIO_CHANNEL_10 / DIO_CHANNEL_11 / DIO_CHANNEL_12 / DIO_CHANNEL_13 / DIO_CHANNEL_20 / DIO_CHANNEL_21 / DIO_CHANNEL_22 / DIO_CHANNEL_23 / DIO_CHANNEL_30 / DIO_CHANNEL_32 / DIO_CHANNEL_A0 / DIO_CHANNEL_A1 / DIO_CHANNEL_A2 / DIO_CHANNEL_A3 / DIO_CHANNEL_A4 / DIO_CHANNEL_A5 / DIO_CHANNEL_A6 / DIO_CHANNEL_A7 / DIO_CHANNEL_B0 / DIO_CHANNEL_B1 / DIO_CHANNEL_B2 / DIO_CHANNEL_B3 / DIO_CHANNEL_B4 / DIO_CHANNEL_B5 / DIO_CHANNEL_B6 / DIO_CHANNEL_B7 / DIO_CHANNEL_C0 / DIO_CHANNEL_C1 / DIO_CHANNEL_C2 / DIO_CHANNEL_C3 / DIO_CHANNEL_C4 / DIO_CHANNEL_C5 / DIO_CHANNEL_C6 / DIO_CHANNEL_C7 / DIO_CHANNEL_CAN0_EN / DIO_CHANNEL_CAN0_STB / DIO_CHANNEL_CAN0_WAK / DIO_CHANNEL_CAN1_EN / DIO_CHANNEL_CAN1_ERR / DIO_CHANNEL_CAN1_STB / DIO_CHANNEL_CAN1_WAK / DIO_CHANNEL_CAN2_ERR / DIO_CHANNEL_CAN2_STB / DIO_CHANNEL_D0 / DIO_CHANNEL_D1 / DIO_CHANNEL_D2 / DIO_CHANNEL_D3 / DIO_CHANNEL_D4 / DIO_CHANNEL_D5 / DIO_CHANNEL_D6 / DIO_CHANNEL_D7 / DIO_CHANNEL_E0 / DIO_CHANNEL_E1 / DIO_CHANNEL_E2 / DIO_CHANNEL_E3 / DIO_CHANNEL_E4 / DIO_CHANNEL_E5 / DIO_CHANNEL_E6 / DIO_CHANNEL_E7）",
+      "description": "DIO_CHANNEL_CAN0_ERR 参数",
       "default": 1282,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_CAN0_WAK": {
       "type": "integer",
-      "description": "DIO_CHANNEL_CAN0_WAK（别名: DIO_CHANNEL_13 = 1283；同族可选: DIO_CHANNEL_10 / DIO_CHANNEL_11 / DIO_CHANNEL_12 / DIO_CHANNEL_13 / DIO_CHANNEL_20 / DIO_CHANNEL_21 / DIO_CHANNEL_22 / DIO_CHANNEL_23 / DIO_CHANNEL_30 / DIO_CHANNEL_32 / DIO_CHANNEL_A0 / DIO_CHANNEL_A1 / DIO_CHANNEL_A2 / DIO_CHANNEL_A3 / DIO_CHANNEL_A4 / DIO_CHANNEL_A5 / DIO_CHANNEL_A6 / DIO_CHANNEL_A7 / DIO_CHANNEL_B0 / DIO_CHANNEL_B1 / DIO_CHANNEL_B2 / DIO_CHANNEL_B3 / DIO_CHANNEL_B4 / DIO_CHANNEL_B5 / DIO_CHANNEL_B6 / DIO_CHANNEL_B7 / DIO_CHANNEL_C0 / DIO_CHANNEL_C1 / DIO_CHANNEL_C2 / DIO_CHANNEL_C3 / DIO_CHANNEL_C4 / DIO_CHANNEL_C5 / DIO_CHANNEL_C6 / DIO_CHANNEL_C7 / DIO_CHANNEL_CAN0_EN / DIO_CHANNEL_CAN0_ERR / DIO_CHANNEL_CAN0_STB / DIO_CHANNEL_CAN1_EN / DIO_CHANNEL_CAN1_ERR / DIO_CHANNEL_CAN1_STB / DIO_CHANNEL_CAN1_WAK / DIO_CHANNEL_CAN2_ERR / DIO_CHANNEL_CAN2_STB / DIO_CHANNEL_D0 / DIO_CHANNEL_D1 / DIO_CHANNEL_D2 / DIO_CHANNEL_D3 / DIO_CHANNEL_D4 / DIO_CHANNEL_D5 / DIO_CHANNEL_D6 / DIO_CHANNEL_D7 / DIO_CHANNEL_E0 / DIO_CHANNEL_E1 / DIO_CHANNEL_E2 / DIO_CHANNEL_E3 / DIO_CHANNEL_E4 / DIO_CHANNEL_E5 / DIO_CHANNEL_E6 / DIO_CHANNEL_E7）",
+      "description": "DIO_CHANNEL_CAN0_WAK 参数",
       "default": 1283,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_CAN1_STB": {
       "type": "integer",
-      "description": "DIO_CHANNEL_CAN1_STB（别名: DIO_CHANNEL_20 = 1284；同族可选: DIO_CHANNEL_10 / DIO_CHANNEL_11 / DIO_CHANNEL_12 / DIO_CHANNEL_13 / DIO_CHANNEL_20 / DIO_CHANNEL_21 / DIO_CHANNEL_22 / DIO_CHANNEL_23 / DIO_CHANNEL_30 / DIO_CHANNEL_32 / DIO_CHANNEL_A0 / DIO_CHANNEL_A1 / DIO_CHANNEL_A2 / DIO_CHANNEL_A3 / DIO_CHANNEL_A4 / DIO_CHANNEL_A5 / DIO_CHANNEL_A6 / DIO_CHANNEL_A7 / DIO_CHANNEL_B0 / DIO_CHANNEL_B1 / DIO_CHANNEL_B2 / DIO_CHANNEL_B3 / DIO_CHANNEL_B4 / DIO_CHANNEL_B5 / DIO_CHANNEL_B6 / DIO_CHANNEL_B7 / DIO_CHANNEL_C0 / DIO_CHANNEL_C1 / DIO_CHANNEL_C2 / DIO_CHANNEL_C3 / DIO_CHANNEL_C4 / DIO_CHANNEL_C5 / DIO_CHANNEL_C6 / DIO_CHANNEL_C7 / DIO_CHANNEL_CAN0_EN / DIO_CHANNEL_CAN0_ERR / DIO_CHANNEL_CAN0_STB / DIO_CHANNEL_CAN0_WAK / DIO_CHANNEL_CAN1_EN / DIO_CHANNEL_CAN1_ERR / DIO_CHANNEL_CAN1_WAK / DIO_CHANNEL_CAN2_ERR / DIO_CHANNEL_CAN2_STB / DIO_CHANNEL_D0 / DIO_CHANNEL_D1 / DIO_CHANNEL_D2 / DIO_CHANNEL_D3 / DIO_CHANNEL_D4 / DIO_CHANNEL_D5 / DIO_CHANNEL_D6 / DIO_CHANNEL_D7 / DIO_CHANNEL_E0 / DIO_CHANNEL_E1 / DIO_CHANNEL_E2 / DIO_CHANNEL_E3 / DIO_CHANNEL_E4 / DIO_CHANNEL_E5 / DIO_CHANNEL_E6 / DIO_CHANNEL_E7）",
+      "description": "DIO_CHANNEL_CAN1_STB 参数",
       "default": 1284,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_CAN1_EN": {
       "type": "integer",
-      "description": "DIO_CHANNEL_CAN1_EN（别名: DIO_CHANNEL_21 = 1285；同族可选: DIO_CHANNEL_10 / DIO_CHANNEL_11 / DIO_CHANNEL_12 / DIO_CHANNEL_13 / DIO_CHANNEL_20 / DIO_CHANNEL_21 / DIO_CHANNEL_22 / DIO_CHANNEL_23 / DIO_CHANNEL_30 / DIO_CHANNEL_32 / DIO_CHANNEL_A0 / DIO_CHANNEL_A1 / DIO_CHANNEL_A2 / DIO_CHANNEL_A3 / DIO_CHANNEL_A4 / DIO_CHANNEL_A5 / DIO_CHANNEL_A6 / DIO_CHANNEL_A7 / DIO_CHANNEL_B0 / DIO_CHANNEL_B1 / DIO_CHANNEL_B2 / DIO_CHANNEL_B3 / DIO_CHANNEL_B4 / DIO_CHANNEL_B5 / DIO_CHANNEL_B6 / DIO_CHANNEL_B7 / DIO_CHANNEL_C0 / DIO_CHANNEL_C1 / DIO_CHANNEL_C2 / DIO_CHANNEL_C3 / DIO_CHANNEL_C4 / DIO_CHANNEL_C5 / DIO_CHANNEL_C6 / DIO_CHANNEL_C7 / DIO_CHANNEL_CAN0_EN / DIO_CHANNEL_CAN0_ERR / DIO_CHANNEL_CAN0_STB / DIO_CHANNEL_CAN0_WAK / DIO_CHANNEL_CAN1_ERR / DIO_CHANNEL_CAN1_STB / DIO_CHANNEL_CAN1_WAK / DIO_CHANNEL_CAN2_ERR / DIO_CHANNEL_CAN2_STB / DIO_CHANNEL_D0 / DIO_CHANNEL_D1 / DIO_CHANNEL_D2 / DIO_CHANNEL_D3 / DIO_CHANNEL_D4 / DIO_CHANNEL_D5 / DIO_CHANNEL_D6 / DIO_CHANNEL_D7 / DIO_CHANNEL_E0 / DIO_CHANNEL_E1 / DIO_CHANNEL_E2 / DIO_CHANNEL_E3 / DIO_CHANNEL_E4 / DIO_CHANNEL_E5 / DIO_CHANNEL_E6 / DIO_CHANNEL_E7）",
+      "description": "DIO_CHANNEL_CAN1_EN 参数",
       "default": 1285,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_CAN1_ERR": {
       "type": "integer",
-      "description": "DIO_CHANNEL_CAN1_ERR（别名: DIO_CHANNEL_22 = 1286；同族可选: DIO_CHANNEL_10 / DIO_CHANNEL_11 / DIO_CHANNEL_12 / DIO_CHANNEL_13 / DIO_CHANNEL_20 / DIO_CHANNEL_21 / DIO_CHANNEL_22 / DIO_CHANNEL_23 / DIO_CHANNEL_30 / DIO_CHANNEL_32 / DIO_CHANNEL_A0 / DIO_CHANNEL_A1 / DIO_CHANNEL_A2 / DIO_CHANNEL_A3 / DIO_CHANNEL_A4 / DIO_CHANNEL_A5 / DIO_CHANNEL_A6 / DIO_CHANNEL_A7 / DIO_CHANNEL_B0 / DIO_CHANNEL_B1 / DIO_CHANNEL_B2 / DIO_CHANNEL_B3 / DIO_CHANNEL_B4 / DIO_CHANNEL_B5 / DIO_CHANNEL_B6 / DIO_CHANNEL_B7 / DIO_CHANNEL_C0 / DIO_CHANNEL_C1 / DIO_CHANNEL_C2 / DIO_CHANNEL_C3 / DIO_CHANNEL_C4 / DIO_CHANNEL_C5 / DIO_CHANNEL_C6 / DIO_CHANNEL_C7 / DIO_CHANNEL_CAN0_EN / DIO_CHANNEL_CAN0_ERR / DIO_CHANNEL_CAN0_STB / DIO_CHANNEL_CAN0_WAK / DIO_CHANNEL_CAN1_EN / DIO_CHANNEL_CAN1_STB / DIO_CHANNEL_CAN1_WAK / DIO_CHANNEL_CAN2_ERR / DIO_CHANNEL_CAN2_STB / DIO_CHANNEL_D0 / DIO_CHANNEL_D1 / DIO_CHANNEL_D2 / DIO_CHANNEL_D3 / DIO_CHANNEL_D4 / DIO_CHANNEL_D5 / DIO_CHANNEL_D6 / DIO_CHANNEL_D7 / DIO_CHANNEL_E0 / DIO_CHANNEL_E1 / DIO_CHANNEL_E2 / DIO_CHANNEL_E3 / DIO_CHANNEL_E4 / DIO_CHANNEL_E5 / DIO_CHANNEL_E6 / DIO_CHANNEL_E7）",
+      "description": "DIO_CHANNEL_CAN1_ERR 参数",
       "default": 1286,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_CAN1_WAK": {
       "type": "integer",
-      "description": "DIO_CHANNEL_CAN1_WAK（别名: DIO_CHANNEL_23 = 1287；同族可选: DIO_CHANNEL_10 / DIO_CHANNEL_11 / DIO_CHANNEL_12 / DIO_CHANNEL_13 / DIO_CHANNEL_20 / DIO_CHANNEL_21 / DIO_CHANNEL_22 / DIO_CHANNEL_23 / DIO_CHANNEL_30 / DIO_CHANNEL_32 / DIO_CHANNEL_A0 / DIO_CHANNEL_A1 / DIO_CHANNEL_A2 / DIO_CHANNEL_A3 / DIO_CHANNEL_A4 / DIO_CHANNEL_A5 / DIO_CHANNEL_A6 / DIO_CHANNEL_A7 / DIO_CHANNEL_B0 / DIO_CHANNEL_B1 / DIO_CHANNEL_B2 / DIO_CHANNEL_B3 / DIO_CHANNEL_B4 / DIO_CHANNEL_B5 / DIO_CHANNEL_B6 / DIO_CHANNEL_B7 / DIO_CHANNEL_C0 / DIO_CHANNEL_C1 / DIO_CHANNEL_C2 / DIO_CHANNEL_C3 / DIO_CHANNEL_C4 / DIO_CHANNEL_C5 / DIO_CHANNEL_C6 / DIO_CHANNEL_C7 / DIO_CHANNEL_CAN0_EN / DIO_CHANNEL_CAN0_ERR / DIO_CHANNEL_CAN0_STB / DIO_CHANNEL_CAN0_WAK / DIO_CHANNEL_CAN1_EN / DIO_CHANNEL_CAN1_ERR / DIO_CHANNEL_CAN1_STB / DIO_CHANNEL_CAN2_ERR / DIO_CHANNEL_CAN2_STB / DIO_CHANNEL_D0 / DIO_CHANNEL_D1 / DIO_CHANNEL_D2 / DIO_CHANNEL_D3 / DIO_CHANNEL_D4 / DIO_CHANNEL_D5 / DIO_CHANNEL_D6 / DIO_CHANNEL_D7 / DIO_CHANNEL_E0 / DIO_CHANNEL_E1 / DIO_CHANNEL_E2 / DIO_CHANNEL_E3 / DIO_CHANNEL_E4 / DIO_CHANNEL_E5 / DIO_CHANNEL_E6 / DIO_CHANNEL_E7）",
+      "description": "DIO_CHANNEL_CAN1_WAK 参数",
       "default": 1287,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_CAN2_STB": {
       "type": "integer",
-      "description": "DIO_CHANNEL_CAN2_STB（别名: DIO_CHANNEL_30 = 1288；同族可选: DIO_CHANNEL_10 / DIO_CHANNEL_11 / DIO_CHANNEL_12 / DIO_CHANNEL_13 / DIO_CHANNEL_20 / DIO_CHANNEL_21 / DIO_CHANNEL_22 / DIO_CHANNEL_23 / DIO_CHANNEL_30 / DIO_CHANNEL_32 / DIO_CHANNEL_A0 / DIO_CHANNEL_A1 / DIO_CHANNEL_A2 / DIO_CHANNEL_A3 / DIO_CHANNEL_A4 / DIO_CHANNEL_A5 / DIO_CHANNEL_A6 / DIO_CHANNEL_A7 / DIO_CHANNEL_B0 / DIO_CHANNEL_B1 / DIO_CHANNEL_B2 / DIO_CHANNEL_B3 / DIO_CHANNEL_B4 / DIO_CHANNEL_B5 / DIO_CHANNEL_B6 / DIO_CHANNEL_B7 / DIO_CHANNEL_C0 / DIO_CHANNEL_C1 / DIO_CHANNEL_C2 / DIO_CHANNEL_C3 / DIO_CHANNEL_C4 / DIO_CHANNEL_C5 / DIO_CHANNEL_C6 / DIO_CHANNEL_C7 / DIO_CHANNEL_CAN0_EN / DIO_CHANNEL_CAN0_ERR / DIO_CHANNEL_CAN0_STB / DIO_CHANNEL_CAN0_WAK / DIO_CHANNEL_CAN1_EN / DIO_CHANNEL_CAN1_ERR / DIO_CHANNEL_CAN1_STB / DIO_CHANNEL_CAN1_WAK / DIO_CHANNEL_CAN2_ERR / DIO_CHANNEL_D0 / DIO_CHANNEL_D1 / DIO_CHANNEL_D2 / DIO_CHANNEL_D3 / DIO_CHANNEL_D4 / DIO_CHANNEL_D5 / DIO_CHANNEL_D6 / DIO_CHANNEL_D7 / DIO_CHANNEL_E0 / DIO_CHANNEL_E1 / DIO_CHANNEL_E2 / DIO_CHANNEL_E3 / DIO_CHANNEL_E4 / DIO_CHANNEL_E5 / DIO_CHANNEL_E6 / DIO_CHANNEL_E7）",
+      "description": "DIO_CHANNEL_CAN2_STB 参数",
       "default": 1288,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_CAN2_ERR": {
       "type": "integer",
-      "description": "DIO_CHANNEL_CAN2_ERR（别名: DIO_CHANNEL_32 = 1289；同族可选: DIO_CHANNEL_10 / DIO_CHANNEL_11 / DIO_CHANNEL_12 / DIO_CHANNEL_13 / DIO_CHANNEL_20 / DIO_CHANNEL_21 / DIO_CHANNEL_22 / DIO_CHANNEL_23 / DIO_CHANNEL_30 / DIO_CHANNEL_32 / DIO_CHANNEL_A0 / DIO_CHANNEL_A1 / DIO_CHANNEL_A2 / DIO_CHANNEL_A3 / DIO_CHANNEL_A4 / DIO_CHANNEL_A5 / DIO_CHANNEL_A6 / DIO_CHANNEL_A7 / DIO_CHANNEL_B0 / DIO_CHANNEL_B1 / DIO_CHANNEL_B2 / DIO_CHANNEL_B3 / DIO_CHANNEL_B4 / DIO_CHANNEL_B5 / DIO_CHANNEL_B6 / DIO_CHANNEL_B7 / DIO_CHANNEL_C0 / DIO_CHANNEL_C1 / DIO_CHANNEL_C2 / DIO_CHANNEL_C3 / DIO_CHANNEL_C4 / DIO_CHANNEL_C5 / DIO_CHANNEL_C6 / DIO_CHANNEL_C7 / DIO_CHANNEL_CAN0_EN / DIO_CHANNEL_CAN0_ERR / DIO_CHANNEL_CAN0_STB / DIO_CHANNEL_CAN0_WAK / DIO_CHANNEL_CAN1_EN / DIO_CHANNEL_CAN1_ERR / DIO_CHANNEL_CAN1_STB / DIO_CHANNEL_CAN1_WAK / DIO_CHANNEL_CAN2_STB / DIO_CHANNEL_D0 / DIO_CHANNEL_D1 / DIO_CHANNEL_D2 / DIO_CHANNEL_D3 / DIO_CHANNEL_D4 / DIO_CHANNEL_D5 / DIO_CHANNEL_D6 / DIO_CHANNEL_D7 / DIO_CHANNEL_E0 / DIO_CHANNEL_E1 / DIO_CHANNEL_E2 / DIO_CHANNEL_E3 / DIO_CHANNEL_E4 / DIO_CHANNEL_E5 / DIO_CHANNEL_E6 / DIO_CHANNEL_E7）",
+      "description": "DIO_CHANNEL_CAN2_ERR 参数",
       "default": 1289,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_INVALID_CHANNEL": {
       "type": "integer",
-      "description": "DIO_INVALID_CHANNEL（cast: Dio_ChannelType）",
+      "description": "DIO_INVALID_CHANNEL 参数",
       "default": 65535,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CAN TRANSCEIVER CHANNELS"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -629,14 +629,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/mcal/dio/include/Dio_Cfg.h",
-  "x-display-name": "Dio",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "NUMBER OF PORTS",
-    "PORT DEFINITIONS",
-    "CHANNEL GROUP CONFIGURATION",
-    "DIO CHANNEL DEFINITIONS",
-    "EXTENDED CHANNEL DEFINITIONS",
-    "CAN TRANSCEIVER CHANNELS"
-  ]
+  "x-display-name": "Dio"
 }

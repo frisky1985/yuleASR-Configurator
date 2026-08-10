@@ -2,95 +2,108 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/linmaster.json",
   "title": "LinMaster Configuration",
-  "description": "LinMaster 模块配置文件",
+  "description": "LinMaster Configuration configuration header",
   "type": "object",
   "properties": {
     "LINMASTER_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "LINMASTER_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINMASTER_VERSION_INFO_API": {
       "type": "boolean",
       "description": "LINMASTER_VERSION_INFO_API 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINMASTER_DEFAULT_BAUDRATE": {
       "type": "integer",
       "description": "LINMASTER_DEFAULT_BAUDRATE 参数",
       "default": 9600,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "LINMASTER_DEFAULT_BREAK_US": {
+    "LINMASTER_RX_RESPONSE_TIMEOUT_MS": {
       "type": "integer",
-      "description": "13位 @ 9600bps",
-      "default": 728,
+      "description": "LINMASTER_RX_RESPONSE_TIMEOUT_MS 参数",
+      "default": 100,
       "minimum": 0,
-      "maximum": 65535
-    },
-    "LINMASTER_DEFAULT_INTERFRAME_MS": {
-      "type": "integer",
-      "description": "LINMASTER_DEFAULT_INTERFRAME_MS 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINMASTER_DEFAULT_TIMEOUT_MS": {
       "type": "integer",
       "description": "LINMASTER_DEFAULT_TIMEOUT_MS 参数",
       "default": 100,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINMASTER_BREAK_SEND_TIMEOUT_MS": {
       "type": "integer",
-      "description": "Break发送超时",
+      "description": "LINMASTER_BREAK_SEND_TIMEOUT_MS 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINMASTER_SYNC_SEND_TIMEOUT_MS": {
       "type": "integer",
-      "description": "Sync发送超时",
+      "description": "LINMASTER_SYNC_SEND_TIMEOUT_MS 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINMASTER_PID_SEND_TIMEOUT_MS": {
       "type": "integer",
-      "description": "PID发送超时",
+      "description": "LINMASTER_PID_SEND_TIMEOUT_MS 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINMASTER_DATA_SEND_TIMEOUT_MS": {
       "type": "integer",
-      "description": "数据发送超时",
+      "description": "LINMASTER_DATA_SEND_TIMEOUT_MS 参数",
       "default": 50,
       "minimum": 0,
-      "maximum": 255
-    },
-    "LINMASTER_RX_RESPONSE_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "接收响应超时",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "LINMASTER_MAX_FRAME_CONFIG": {
-      "type": "integer",
-      "description": "LINMASTER_MAX_FRAME_CONFIG 参数",
-      "default": 20,
-      "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINMASTER_MAINFUNCTION_PERIOD_MS": {
       "type": "integer",
       "description": "LINMASTER_MAINFUNCTION_PERIOD_MS 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINMASTER_DEFAULT_BREAK_US": {
+      "type": "integer",
+      "description": "LINMASTER_DEFAULT_BREAK_US 参数",
+      "default": 728,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINMASTER_DEFAULT_INTERFRAME_MS": {
+      "type": "integer",
+      "description": "LINMASTER_DEFAULT_INTERFRAME_MS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINMASTER_MAX_FRAME_CONFIG": {
+      "type": "integer",
+      "description": "LINMASTER_MAX_FRAME_CONFIG 参数",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

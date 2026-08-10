@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/pdur.json",
   "title": "PduR Configuration",
-  "description": "PDU Router configuration header",
+  "description": "PduR Configuration configuration header",
   "type": "object",
   "properties": {
     "PDUR_DEV_ERROR_DETECT": {
@@ -17,187 +17,61 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "PDUR_NUMBER_OF_ROUTING_PATHS": {
-      "type": "integer",
-      "description": "PDUR_NUMBER_OF_ROUTING_PATHS 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ROUTING PATH CONFIGURATION"
-    },
-    "PDUR_NUMBER_OF_ROUTING_PATH_GROUPS": {
-      "type": "integer",
-      "description": "PDUR_NUMBER_OF_ROUTING_PATH_GROUPS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ROUTING PATH CONFIGURATION"
-    },
-    "PDUR_MAX_DESTINATIONS_PER_PATH": {
-      "type": "integer",
-      "description": "PDUR_MAX_DESTINATIONS_PER_PATH 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ROUTING PATH CONFIGURATION"
-    },
-    "PDUR_MODULE_CANIF": {
-      "type": "integer",
-      "description": "PDUR_MODULE_CANIF 参数",
-      "default": 60,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ROUTING PATH CONFIGURATION"
-    },
-    "PDUR_MODULE_CANTP": {
-      "type": "integer",
-      "description": "PDUR_MODULE_CANTP 参数",
-      "default": 61,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ROUTING PATH CONFIGURATION"
-    },
-    "PDUR_MODULE_LINIF": {
-      "type": "integer",
-      "description": "PDUR_MODULE_LINIF 参数",
-      "default": 62,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ROUTING PATH CONFIGURATION"
-    },
-    "PDUR_MODULE_COM": {
-      "type": "integer",
-      "description": "PDUR_MODULE_COM 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ROUTING PATH CONFIGURATION"
-    },
-    "PDUR_MODULE_DCM": {
-      "type": "integer",
-      "description": "PDUR_MODULE_DCM 参数",
-      "default": 41,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ROUTING PATH CONFIGURATION"
-    },
-    "PDUR_MODULE_SOAD": {
-      "type": "integer",
-      "description": "PDUR_MODULE_SOAD 参数",
-      "default": 67,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ROUTING PATH CONFIGURATION"
-    },
     "PDUR_COM_TX_ENGINE_STATUS": {
       "type": "integer",
-      "description": "PDUR_COM_TX_ENGINE_STATUS（cast: PduIdType）",
+      "description": "PDUR_COM_TX_ENGINE_STATUS 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "ROUTING PATH CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PDUR_COM_TX_VEHICLE_SPEED": {
       "type": "integer",
-      "description": "PDUR_COM_TX_VEHICLE_SPEED（cast: PduIdType）",
+      "description": "PDUR_COM_TX_VEHICLE_SPEED 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "ROUTING PATH CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PDUR_COM_TX_BATTERY_STATUS": {
       "type": "integer",
-      "description": "PDUR_COM_TX_BATTERY_STATUS（cast: PduIdType）",
+      "description": "PDUR_COM_TX_BATTERY_STATUS 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "ROUTING PATH CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PDUR_COM_RX_ENGINE_CMD": {
       "type": "integer",
-      "description": "PDUR_COM_RX_ENGINE_CMD（cast: PduIdType）",
+      "description": "PDUR_COM_RX_ENGINE_CMD 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "ROUTING PATH CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PDUR_COM_RX_VEHICLE_CMD": {
       "type": "integer",
-      "description": "PDUR_COM_RX_VEHICLE_CMD（cast: PduIdType）",
+      "description": "PDUR_COM_RX_VEHICLE_CMD 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "ROUTING PATH CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PDUR_DCM_TX_DIAG_RESPONSE": {
       "type": "integer",
-      "description": "PDUR_DCM_TX_DIAG_RESPONSE（cast: PduIdType）",
+      "description": "PDUR_DCM_TX_DIAG_RESPONSE 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "ROUTING PATH CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PDUR_DCM_RX_DIAG_REQUEST": {
       "type": "integer",
-      "description": "PDUR_DCM_RX_DIAG_REQUEST（cast: PduIdType）",
+      "description": "PDUR_DCM_RX_DIAG_REQUEST 参数",
       "default": 6,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "ROUTING PATH CONFIGURATION"
-    },
-    "PDUR_ROUTING_PATH_GROUP_0": {
-      "type": "integer",
-      "description": "PDUR_ROUTING_PATH_GROUP_0 参数",
-      "default": 0,
-      "minimum": 0,
       "maximum": 255,
-      "x-section": "ROUTING PATH CONFIGURATION"
-    },
-    "PDUR_ROUTING_PATH_GROUP_1": {
-      "type": "integer",
-      "description": "PDUR_ROUTING_PATH_GROUP_1 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ROUTING PATH CONFIGURATION"
-    },
-    "PDUR_ROUTING_PATH_GROUP_2": {
-      "type": "integer",
-      "description": "PDUR_ROUTING_PATH_GROUP_2 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ROUTING PATH CONFIGURATION"
-    },
-    "PDUR_ROUTING_PATH_GROUP_3": {
-      "type": "integer",
-      "description": "PDUR_ROUTING_PATH_GROUP_3 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ROUTING PATH CONFIGURATION"
-    },
-    "PDUR_GATEWAY_OPERATION_ENABLED": {
-      "type": "boolean",
-      "description": "PDUR_GATEWAY_OPERATION_ENABLED 参数",
-      "default": true,
-      "x-section": "GATEWAY OPERATIONS"
-    },
-    "PDUR_FIFO_DEPTH": {
-      "type": "integer",
-      "description": "PDUR_FIFO_DEPTH 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GATEWAY OPERATIONS"
-    },
-    "PDUR_MAX_FIFO_DEPTH": {
-      "type": "integer",
-      "description": "PDUR_MAX_FIFO_DEPTH（别名: PDUR_FIFO_DEPTH = 8；同族可选: PDUR_FIFO_DEPTH）",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GATEWAY OPERATIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "PDUR_MAIN_FUNCTION_PERIOD_MS": {
       "type": "integer",
@@ -205,7 +79,133 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAIN FUNCTION PERIOD"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PDUR_NUMBER_OF_ROUTING_PATHS": {
+      "type": "integer",
+      "description": "PDUR_NUMBER_OF_ROUTING_PATHS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PDUR_NUMBER_OF_ROUTING_PATH_GROUPS": {
+      "type": "integer",
+      "description": "PDUR_NUMBER_OF_ROUTING_PATH_GROUPS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PDUR_MAX_DESTINATIONS_PER_PATH": {
+      "type": "integer",
+      "description": "PDUR_MAX_DESTINATIONS_PER_PATH 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PDUR_MODULE_CANIF": {
+      "type": "integer",
+      "description": "PDUR_MODULE_CANIF 参数",
+      "default": 60,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PDUR_MODULE_CANTP": {
+      "type": "integer",
+      "description": "PDUR_MODULE_CANTP 参数",
+      "default": 61,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PDUR_MODULE_LINIF": {
+      "type": "integer",
+      "description": "PDUR_MODULE_LINIF 参数",
+      "default": 62,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PDUR_MODULE_COM": {
+      "type": "integer",
+      "description": "PDUR_MODULE_COM 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PDUR_MODULE_DCM": {
+      "type": "integer",
+      "description": "PDUR_MODULE_DCM 参数",
+      "default": 41,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PDUR_MODULE_SOAD": {
+      "type": "integer",
+      "description": "PDUR_MODULE_SOAD 参数",
+      "default": 67,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PDUR_ROUTING_PATH_GROUP_0": {
+      "type": "integer",
+      "description": "PDUR_ROUTING_PATH_GROUP_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PDUR_ROUTING_PATH_GROUP_1": {
+      "type": "integer",
+      "description": "PDUR_ROUTING_PATH_GROUP_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PDUR_ROUTING_PATH_GROUP_2": {
+      "type": "integer",
+      "description": "PDUR_ROUTING_PATH_GROUP_2 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PDUR_ROUTING_PATH_GROUP_3": {
+      "type": "integer",
+      "description": "PDUR_ROUTING_PATH_GROUP_3 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PDUR_GATEWAY_OPERATION_ENABLED": {
+      "type": "boolean",
+      "description": "PDUR_GATEWAY_OPERATION_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PDUR_FIFO_DEPTH": {
+      "type": "integer",
+      "description": "PDUR_FIFO_DEPTH 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "PDUR_MAX_FIFO_DEPTH": {
+      "type": "integer",
+      "description": "PDUR_MAX_FIFO_DEPTH 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -231,11 +231,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/pdur/include/PduR_Cfg.h",
-  "x-display-name": "PduR",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "ROUTING PATH CONFIGURATION",
-    "GATEWAY OPERATIONS",
-    "MAIN FUNCTION PERIOD"
-  ]
+  "x-display-name": "PduR"
 }

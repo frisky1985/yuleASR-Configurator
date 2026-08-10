@@ -2,46 +2,52 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/ethsm.json",
   "title": "EthSM Configuration",
-  "description": "Ethernet State Manager Configuration",
+  "description": "EthSM Configuration configuration header",
   "type": "object",
   "properties": {
     "ETHSM_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "ETHSM_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSM_VERSION_INFO_API": {
       "type": "boolean",
       "description": "ETHSM_VERSION_INFO_API 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHSM_MAIN_FUNCTION_PERIOD": {
+      "type": "integer",
+      "description": "ETHSM_MAIN_FUNCTION_PERIOD 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSM_MAX_NETWORKS": {
       "type": "integer",
       "description": "ETHSM_MAX_NETWORKS 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
-    },
-    "ETHSM_MAIN_FUNCTION_PERIOD": {
-      "type": "integer",
-      "description": "ms",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSM_NETWORK_ETH0": {
       "type": "integer",
       "description": "ETHSM_NETWORK_ETH0 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSM_NETWORK_ETH1": {
       "type": "integer",
       "description": "ETHSM_NETWORK_ETH1 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/gpt.json",
   "title": "Gpt Configuration",
-  "description": "GPT Driver configuration header",
+  "description": "Gpt Configuration configuration header",
   "type": "object",
   "properties": {
     "GPT_DEV_ERROR_DETECT": {
@@ -15,6 +15,22 @@
       "type": "boolean",
       "description": "GPT_VERSION_INFO_API 参数",
       "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "GPT_NUM_CHANNELS": {
+      "type": "integer",
+      "description": "GPT_NUM_CHANNELS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "GPT_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "GPT_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "GPT_DEINIT_API": {
@@ -77,77 +93,69 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "GPT_NUM_CHANNELS": {
-      "type": "integer",
-      "description": "GPT_NUM_CHANNELS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF CHANNELS"
-    },
     "GPT_CHANNEL_0": {
       "type": "integer",
-      "description": "GPT_CHANNEL_0（cast: Gpt_ChannelType）",
+      "description": "GPT_CHANNEL_0 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "GPT_CHANNEL_1": {
       "type": "integer",
-      "description": "GPT_CHANNEL_1（cast: Gpt_ChannelType）",
+      "description": "GPT_CHANNEL_1 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "GPT_CHANNEL_2": {
       "type": "integer",
-      "description": "GPT_CHANNEL_2（cast: Gpt_ChannelType）",
+      "description": "GPT_CHANNEL_2 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "GPT_CHANNEL_3": {
       "type": "integer",
-      "description": "GPT_CHANNEL_3（cast: Gpt_ChannelType）",
+      "description": "GPT_CHANNEL_3 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "GPT_CHANNEL_4": {
       "type": "integer",
-      "description": "GPT_CHANNEL_4（cast: Gpt_ChannelType）",
+      "description": "GPT_CHANNEL_4 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "GPT_CHANNEL_5": {
       "type": "integer",
-      "description": "GPT_CHANNEL_5（cast: Gpt_ChannelType）",
+      "description": "GPT_CHANNEL_5 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "GPT_CHANNEL_6": {
       "type": "integer",
-      "description": "GPT_CHANNEL_6（cast: Gpt_ChannelType）",
+      "description": "GPT_CHANNEL_6 参数",
       "default": 6,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "GPT_CHANNEL_7": {
       "type": "integer",
-      "description": "GPT_CHANNEL_7（cast: Gpt_ChannelType）",
+      "description": "GPT_CHANNEL_7 参数",
       "default": 7,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "GPT_DEFAULT_MODE": {
       "type": "enum",
@@ -157,15 +165,15 @@
         "GPT_MODE_NORMAL",
         "GPT_MODE_SLEEP"
       ],
-      "x-section": "DEFAULT MODE"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "GPT_CLOCK_FREQUENCY_HZ": {
       "type": "integer",
-      "description": "24MHz",
+      "description": "GPT_CLOCK_FREQUENCY_HZ 参数",
       "default": 24000000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "GPT_MAX_TICK_VALUE": {
       "type": "integer",
@@ -173,15 +181,7 @@
       "default": 4294967295,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "MAX TICK VALUE"
-    },
-    "GPT_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "GPT_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MAIN FUNCTION PERIOD"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -193,20 +193,19 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "Gpt 通道数应匹配 Mcu 时钟配置"
+    },
+    {
+      "sourceParam": "GPT_NUM_CHANNELS",
+      "module": "Mcu",
+      "param": "MCU_SYSTEM_CLOCK_HZ",
+      "relation": "required",
+      "severity": "error",
+      "description": "Gpt 模块依赖 Mcu 系统时钟，时钟必须配置"
     }
   ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/mcal/gpt/include/Gpt_Cfg.h",
-  "x-display-name": "Gpt",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "NUMBER OF CHANNELS",
-    "CHANNEL DEFINITIONS",
-    "DEFAULT MODE",
-    "CLOCK CONFIGURATION",
-    "MAX TICK VALUE",
-    "MAIN FUNCTION PERIOD"
-  ]
+  "x-display-name": "Gpt"
 }

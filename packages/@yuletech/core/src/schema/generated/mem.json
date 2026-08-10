@@ -2,57 +2,9 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/mem.json",
   "title": "Mem Configuration",
-  "description": "Development error detection enable/disable",
+  "description": "Mem Configuration configuration header",
   "type": "object",
   "properties": {
-    "MEM_CFG_AR_RELEASE_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "MEM_CFG_AR_RELEASE_MAJOR_VERSION 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "MEM_CFG_AR_RELEASE_MINOR_VERSION": {
-      "type": "integer",
-      "description": "MEM_CFG_AR_RELEASE_MINOR_VERSION 参数",
-      "default": 7,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "MEM_CFG_AR_RELEASE_REVISION_VERSION": {
-      "type": "integer",
-      "description": "MEM_CFG_AR_RELEASE_REVISION_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "MEM_CFG_SW_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "MEM_CFG_SW_MAJOR_VERSION 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "MEM_CFG_SW_MINOR_VERSION": {
-      "type": "integer",
-      "description": "MEM_CFG_SW_MINOR_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "MEM_CFG_SW_PATCH_VERSION": {
-      "type": "integer",
-      "description": "MEM_CFG_SW_PATCH_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
     "MEM_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "MEM_DEV_ERROR_DETECT 参数",
@@ -65,6 +17,14 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
+    "MEM_NUM_POOLS": {
+      "type": "integer",
+      "description": "MEM_NUM_POOLS 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
     "MEM_MAIN_FUNCTION_PERIOD_MS": {
       "type": "integer",
       "description": "MEM_MAIN_FUNCTION_PERIOD_MS 参数",
@@ -73,13 +33,53 @@
       "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "MEM_NUM_POOLS": {
+    "MEM_CFG_AR_RELEASE_MAJOR_VERSION": {
       "type": "integer",
-      "description": "MEM_NUM_POOLS 参数",
-      "default": 3,
+      "description": "MEM_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MEMORY POOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MEM_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "MEM_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MEM_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "MEM_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MEM_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "MEM_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MEM_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "MEM_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MEM_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "MEM_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_DEFAULT_POOL_INDEX": {
       "type": "integer",
@@ -87,7 +87,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MEMORY POOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_FAST_POOL_SIZE": {
       "type": "integer",
@@ -95,7 +95,7 @@
       "default": 4096,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "MEMORY POOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_STANDARD_POOL_SIZE": {
       "type": "integer",
@@ -103,7 +103,7 @@
       "default": 16384,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "MEMORY POOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_LARGE_POOL_SIZE": {
       "type": "integer",
@@ -111,7 +111,7 @@
       "default": 65536,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "MEMORY POOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_MIN_BLOCK_SIZE": {
       "type": "integer",
@@ -119,7 +119,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MEMORY POOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_FAST_POOL_MAX_BLOCK": {
       "type": "integer",
@@ -127,7 +127,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "MEMORY POOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_STANDARD_POOL_MAX_BLOCK": {
       "type": "integer",
@@ -135,7 +135,7 @@
       "default": 2048,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "MEMORY POOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_LARGE_POOL_MAX_BLOCK": {
       "type": "integer",
@@ -143,7 +143,7 @@
       "default": 65536,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "MEMORY POOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_DEFAULT_ALIGNMENT": {
       "type": "integer",
@@ -151,19 +151,19 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MEMORY POOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_ENABLE_CHECKSUM": {
       "type": "boolean",
       "description": "MEM_ENABLE_CHECKSUM 参数",
       "default": true,
-      "x-section": "MEMORY POOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_ENABLE_MONITORING": {
       "type": "boolean",
       "description": "MEM_ENABLE_MONITORING 参数",
       "default": true,
-      "x-section": "MEMORY POOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_DEFRAG_THRESHOLD": {
       "type": "integer",
@@ -171,7 +171,7 @@
       "default": 30,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MEMORY POOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_MAX_ALLOCATIONS": {
       "type": "integer",
@@ -179,7 +179,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "MEMORY POOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_MAGIC_NUMBER_CFG": {
       "type": "integer",
@@ -187,7 +187,7 @@
       "default": 1296387361,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "MEMORY POOL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -195,10 +195,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/mem/include/Mem_Cfg.h",
-  "x-display-name": "Mem",
-  "x-sections": [
-    "VERSION INFORMATION",
-    "PRE-COMPILE CONFIGURATION",
-    "MEMORY POOL CONFIGURATION"
-  ]
+  "x-display-name": "Mem"
 }

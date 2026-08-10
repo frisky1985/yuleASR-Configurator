@@ -2,26 +2,32 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/eep.json",
   "title": "Eep Configuration",
-  "description": "EEPROM Driver Configuration Header",
+  "description": "Eep Configuration configuration header",
   "type": "object",
   "properties": {
     "EEP_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "EEP_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "SWITCHES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "EEP_VERSION_INFO_API": {
       "type": "boolean",
       "description": "EEP_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "SWITCHES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "EEP_POLLING_MODE": {
+      "type": "boolean",
+      "description": "EEP_POLLING_MODE 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "EEP_CANCEL_API": {
       "type": "boolean",
       "description": "EEP_CANCEL_API 参数",
       "default": true,
-      "x-section": "SWITCHES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "EEP_BASE_ADDRESS": {
       "type": "integer",
@@ -29,7 +35,7 @@
       "default": 134742016,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CONFIGURATION VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "EEP_SIZE": {
       "type": "integer",
@@ -37,7 +43,7 @@
       "default": 65536,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CONFIGURATION VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "EEP_PAGE_SIZE": {
       "type": "integer",
@@ -45,7 +51,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CONFIGURATION VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "EEP_WRITE_CYCLE_TIME": {
       "type": "integer",
@@ -53,7 +59,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CONFIGURATION VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "EEP_ERASE_CYCLE_TIME": {
       "type": "integer",
@@ -61,7 +67,7 @@
       "default": 20,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CONFIGURATION VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "EEP_JOB_CALL_CYCLE": {
       "type": "integer",
@@ -69,13 +75,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CONFIGURATION VALUES"
-    },
-    "EEP_POLLING_MODE": {
-      "type": "boolean",
-      "description": "EEP_POLLING_MODE 参数",
-      "default": true,
-      "x-section": "CONFIGURATION VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -83,9 +83,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/mcal/eep/include/Eep_Cfg.h",
-  "x-display-name": "Eep",
-  "x-sections": [
-    "SWITCHES",
-    "CONFIGURATION VALUES"
-  ]
+  "x-display-name": "Eep"
 }

@@ -2,126 +2,146 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/e2e.json",
   "title": "E2E Configuration",
-  "description": "E2E Configuration Header",
+  "description": "E2E Configuration configuration header",
   "type": "object",
   "properties": {
-    "E2E_PROFILE_01_ENABLED": {
-      "type": "boolean",
-      "description": "E2E_PROFILE_01_ENABLED 参数",
-      "default": true
-    },
-    "E2E_PROFILE_02_ENABLED": {
-      "type": "boolean",
-      "description": "E2E_PROFILE_02_ENABLED 参数",
-      "default": true
-    },
-    "E2E_PROFILE_04_ENABLED": {
-      "type": "boolean",
-      "description": "E2E_PROFILE_04_ENABLED 参数",
-      "default": true
-    },
-    "E2E_PROFILE_05_ENABLED": {
-      "type": "boolean",
-      "description": "E2E_PROFILE_05_ENABLED 参数",
-      "default": true
-    },
-    "E2E_PROFILE_06_ENABLED": {
-      "type": "boolean",
-      "description": "E2E_PROFILE_06_ENABLED 参数",
-      "default": true
-    },
-    "E2E_PROFILE_07_ENABLED": {
-      "type": "boolean",
-      "description": "E2E_PROFILE_07_ENABLED 参数",
-      "default": true
-    },
-    "E2E_USE_CRC_HARDWARE": {
-      "type": "boolean",
-      "description": "E2E_USE_CRC_HARDWARE 参数",
-      "default": false
-    },
-    "E2E_USE_CRC_SOFTWARE": {
-      "type": "boolean",
-      "description": "E2E_USE_CRC_SOFTWARE 参数",
-      "default": true
-    },
-    "E2E_CRC_TABLE_OPTIMIZED": {
-      "type": "boolean",
-      "description": "E2E_CRC_TABLE_OPTIMIZED 参数",
-      "default": true
-    },
     "E2E_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "E2E_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "E2E_VERSION_INFO_API": {
       "type": "boolean",
       "description": "E2E_VERSION_INFO_API 参数",
-      "default": true
-    },
-    "E2E_MAX_DATA_LENGTH_P01": {
-      "type": "integer",
-      "description": "Max payload for Profile 1",
-      "default": 30,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "E2E_MAX_DATA_LENGTH_P02": {
-      "type": "integer",
-      "description": "Max payload for Profile 2",
-      "default": 256,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "E2E_MAX_DATA_LENGTH_P04": {
-      "type": "integer",
-      "description": "Max payload for Profile 4",
-      "default": 4096,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "E2E_MAX_DATA_LENGTH_P05": {
-      "type": "integer",
-      "description": "Max payload for Profile 5",
-      "default": 4096,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "E2E_MAX_DATA_LENGTH_P06": {
-      "type": "integer",
-      "description": "Max payload for Profile 6",
-      "default": 4096,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "E2E_MAX_DATA_LENGTH_P07": {
-      "type": "integer",
-      "description": "Max payload for Profile 7",
-      "default": 4096,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "E2E_SM_MAX_ERROR_WINDOW": {
-      "type": "integer",
-      "description": "E2E_SM_MAX_ERROR_WINDOW 参数",
-      "default": 15,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "E2E_SM_MAX_SYNC_STEPS": {
-      "type": "integer",
-      "description": "E2E_SM_MAX_SYNC_STEPS 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "E2E_SM_MIN_OK_COUNT": {
       "type": "integer",
       "description": "E2E_SM_MIN_OK_COUNT 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_PROFILE_01_ENABLED": {
+      "type": "boolean",
+      "description": "E2E_PROFILE_01_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_PROFILE_02_ENABLED": {
+      "type": "boolean",
+      "description": "E2E_PROFILE_02_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_PROFILE_04_ENABLED": {
+      "type": "boolean",
+      "description": "E2E_PROFILE_04_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_PROFILE_05_ENABLED": {
+      "type": "boolean",
+      "description": "E2E_PROFILE_05_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_PROFILE_06_ENABLED": {
+      "type": "boolean",
+      "description": "E2E_PROFILE_06_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_PROFILE_07_ENABLED": {
+      "type": "boolean",
+      "description": "E2E_PROFILE_07_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_USE_CRC_HARDWARE": {
+      "type": "boolean",
+      "description": "E2E_USE_CRC_HARDWARE 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_USE_CRC_SOFTWARE": {
+      "type": "boolean",
+      "description": "E2E_USE_CRC_SOFTWARE 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_CRC_TABLE_OPTIMIZED": {
+      "type": "boolean",
+      "description": "E2E_CRC_TABLE_OPTIMIZED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_MAX_DATA_LENGTH_P01": {
+      "type": "integer",
+      "description": "E2E_MAX_DATA_LENGTH_P01 参数",
+      "default": 30,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_MAX_DATA_LENGTH_P02": {
+      "type": "integer",
+      "description": "E2E_MAX_DATA_LENGTH_P02 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_MAX_DATA_LENGTH_P04": {
+      "type": "integer",
+      "description": "E2E_MAX_DATA_LENGTH_P04 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_MAX_DATA_LENGTH_P05": {
+      "type": "integer",
+      "description": "E2E_MAX_DATA_LENGTH_P05 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_MAX_DATA_LENGTH_P06": {
+      "type": "integer",
+      "description": "E2E_MAX_DATA_LENGTH_P06 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_MAX_DATA_LENGTH_P07": {
+      "type": "integer",
+      "description": "E2E_MAX_DATA_LENGTH_P07 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_SM_MAX_ERROR_WINDOW": {
+      "type": "integer",
+      "description": "E2E_SM_MAX_ERROR_WINDOW 参数",
+      "default": 15,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "E2E_SM_MAX_SYNC_STEPS": {
+      "type": "integer",
+      "description": "E2E_SM_MAX_SYNC_STEPS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

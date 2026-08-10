@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/j1939nm.json",
   "title": "J1939Nm Configuration",
-  "description": "J1939 Network Management configuration header",
+  "description": "J1939Nm Configuration configuration header",
   "type": "object",
   "properties": {
     "J1939NM_DEV_ERROR_DETECT": {
@@ -23,6 +23,22 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
+    "J1939NM_AC_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "J1939NM_AC_TIMEOUT_MS 参数",
+      "default": 250,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939NM_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "J1939NM_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
     "J1939NM_NODE_MONITORING_ENABLED": {
       "type": "boolean",
       "description": "J1939NM_NODE_MONITORING_ENABLED 参数",
@@ -41,7 +57,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NUMBER_OF_NODES": {
       "type": "integer",
@@ -49,7 +65,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_CHANNEL_0": {
       "type": "integer",
@@ -57,7 +73,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NODE_0": {
       "type": "integer",
@@ -65,159 +81,151 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_AC_DELAY_MIN_MS": {
       "type": "integer",
-      "description": "!< Minimum address claim delay in ms",
+      "description": "J1939NM_AC_DELAY_MIN_MS 参数",
       "default": 50,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ADDRESS CLAIMING TIMING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_AC_DELAY_MAX_MS": {
       "type": "integer",
-      "description": "!< Maximum address claim delay in ms",
+      "description": "J1939NM_AC_DELAY_MAX_MS 参数",
       "default": 150,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ADDRESS CLAIMING TIMING"
-    },
-    "J1939NM_AC_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "!< Address claim timeout in ms",
-      "default": 250,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ADDRESS CLAIMING TIMING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_BUS_OFF_RECOVERY_TIME_MS": {
       "type": "integer",
-      "description": "!< Bus-off recovery time in ms",
+      "description": "J1939NM_BUS_OFF_RECOVERY_TIME_MS 参数",
       "default": 1000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "ADDRESS CLAIMING TIMING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_AC_REPEAT_TIME_MS": {
       "type": "integer",
-      "description": "!< Address claim repeat time in ms",
+      "description": "J1939NM_AC_REPEAT_TIME_MS 参数",
       "default": 1000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "ADDRESS CLAIMING TIMING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NULL_ADDRESS": {
       "type": "integer",
-      "description": "!< NULL address",
+      "description": "J1939NM_NULL_ADDRESS 参数",
       "default": 254,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ADDRESS DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_GLOBAL_ADDRESS": {
       "type": "integer",
-      "description": "!< Global address (broadcast)",
+      "description": "J1939NM_GLOBAL_ADDRESS 参数",
       "default": 255,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ADDRESS DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_MIN_VALID_ADDRESS": {
       "type": "integer",
-      "description": "!< Minimum valid address",
+      "description": "J1939NM_MIN_VALID_ADDRESS 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ADDRESS DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_MAX_VALID_ADDRESS": {
       "type": "integer",
-      "description": "!< Maximum valid address",
+      "description": "J1939NM_MAX_VALID_ADDRESS 参数",
       "default": 253,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ADDRESS DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_IDENTITY_NUMBER_MASK": {
       "type": "integer",
-      "description": "!< Identity Number (21 bits)",
+      "description": "J1939NM_NAME_IDENTITY_NUMBER_MASK 参数",
       "default": 2097151,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "NAME FIELD MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_MANUFACTURER_CODE_MASK": {
       "type": "integer",
-      "description": "!< Manufacturer Code (11 bits)",
+      "description": "J1939NM_NAME_MANUFACTURER_CODE_MASK 参数",
       "default": 34357641216,
       "minimum": 0,
       "maximum": 9007199254740991,
-      "x-section": "NAME FIELD MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_ECU_INSTANCE_MASK": {
       "type": "integer",
-      "description": "!< ECU Instance (3 bits)",
+      "description": "J1939NM_NAME_ECU_INSTANCE_MASK 参数",
       "default": 240518168576,
       "minimum": 0,
       "maximum": 9007199254740991,
-      "x-section": "NAME FIELD MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_FUNCTION_INSTANCE_MASK": {
       "type": "integer",
-      "description": "!< Function Instance (5 bits)",
+      "description": "J1939NM_NAME_FUNCTION_INSTANCE_MASK 参数",
       "default": 8521215115264,
       "minimum": 0,
       "maximum": 9007199254740991,
-      "x-section": "NAME FIELD MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_FUNCTION_MASK": {
       "type": "integer",
-      "description": "!< Function (8 bits)",
+      "description": "J1939NM_NAME_FUNCTION_MASK 参数",
       "default": 2243003720663040,
       "minimum": 0,
       "maximum": 9007199254740991,
-      "x-section": "NAME FIELD MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_RESERVED_MASK": {
       "type": "integer",
-      "description": "!< Reserved (1 bit)",
+      "description": "J1939NM_NAME_RESERVED_MASK 参数",
       "default": 2251799813685248,
       "minimum": 0,
       "maximum": 9007199254740991,
-      "x-section": "NAME FIELD MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_VEHICLE_SYSTEM_MASK": {
       "type": "integer",
-      "description": "!< Vehicle System (7 bits)",
+      "description": "J1939NM_NAME_VEHICLE_SYSTEM_MASK 参数",
       "default": 571957152676053000,
       "minimum": 0,
       "maximum": 9007199254740991,
-      "x-section": "NAME FIELD MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_VEHICLE_SYSTEM_INSTANCE_MASK": {
       "type": "integer",
-      "description": "!< Vehicle System Instance (4 bits)",
+      "description": "J1939NM_NAME_VEHICLE_SYSTEM_INSTANCE_MASK 参数",
       "default": 8646911284551352000,
       "minimum": 0,
       "maximum": 9007199254740991,
-      "x-section": "NAME FIELD MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_INDUSTRY_GROUP_MASK": {
       "type": "integer",
-      "description": "!< Industry Group (3 bits) - partially overlaps",
+      "description": "J1939NM_NAME_INDUSTRY_GROUP_MASK 参数",
       "default": 9223372036854776000,
       "minimum": 0,
       "maximum": 9007199254740991,
-      "x-section": "NAME FIELD MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_ARBITRARY_ADDRESS_CAPABLE_MASK": {
       "type": "integer",
-      "description": "!< Arbitrary Address Capable (1 bit)",
+      "description": "J1939NM_NAME_ARBITRARY_ADDRESS_CAPABLE_MASK 参数",
       "default": 9223372036854776000,
       "minimum": 0,
       "maximum": 9007199254740991,
-      "x-section": "NAME FIELD MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_IDENTITY_NUMBER_SHIFT": {
       "type": "integer",
@@ -225,7 +233,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NAME FIELD SHIFTS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_MANUFACTURER_CODE_SHIFT": {
       "type": "integer",
@@ -233,7 +241,7 @@
       "default": 21,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NAME FIELD SHIFTS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_ECU_INSTANCE_SHIFT": {
       "type": "integer",
@@ -241,7 +249,7 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NAME FIELD SHIFTS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_FUNCTION_INSTANCE_SHIFT": {
       "type": "integer",
@@ -249,7 +257,7 @@
       "default": 35,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NAME FIELD SHIFTS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_FUNCTION_SHIFT": {
       "type": "integer",
@@ -257,7 +265,7 @@
       "default": 40,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NAME FIELD SHIFTS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_RESERVED_SHIFT": {
       "type": "integer",
@@ -265,7 +273,7 @@
       "default": 48,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NAME FIELD SHIFTS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_VEHICLE_SYSTEM_SHIFT": {
       "type": "integer",
@@ -273,7 +281,7 @@
       "default": 49,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NAME FIELD SHIFTS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_VEHICLE_SYSTEM_INSTANCE_SHIFT": {
       "type": "integer",
@@ -281,7 +289,7 @@
       "default": 56,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NAME FIELD SHIFTS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_INDUSTRY_GROUP_SHIFT": {
       "type": "integer",
@@ -289,7 +297,7 @@
       "default": 60,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NAME FIELD SHIFTS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_NAME_ARBITRARY_ADDRESS_CAPABLE_SHIFT": {
       "type": "integer",
@@ -297,101 +305,93 @@
       "default": 63,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NAME FIELD SHIFTS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_DEFAULT_IDENTITY_NUMBER": {
       "type": "integer",
-      "description": "!< Identity Number",
+      "description": "J1939NM_DEFAULT_IDENTITY_NUMBER 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DEFAULT NAME CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_DEFAULT_MANUFACTURER_CODE": {
       "type": "integer",
-      "description": "!< Manufacturer Code (YuleTech: 2001)",
+      "description": "J1939NM_DEFAULT_MANUFACTURER_CODE 参数",
       "default": 2001,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "DEFAULT NAME CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_DEFAULT_ECU_INSTANCE": {
       "type": "integer",
-      "description": "!< ECU Instance",
+      "description": "J1939NM_DEFAULT_ECU_INSTANCE 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DEFAULT NAME CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_DEFAULT_FUNCTION_INSTANCE": {
       "type": "integer",
-      "description": "!< Function Instance",
+      "description": "J1939NM_DEFAULT_FUNCTION_INSTANCE 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DEFAULT NAME CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_DEFAULT_FUNCTION": {
       "type": "integer",
-      "description": "!< Function (Unspecified)",
+      "description": "J1939NM_DEFAULT_FUNCTION 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DEFAULT NAME CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_DEFAULT_VEHICLE_SYSTEM": {
       "type": "integer",
-      "description": "!< Vehicle System (Unspecified)",
+      "description": "J1939NM_DEFAULT_VEHICLE_SYSTEM 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DEFAULT NAME CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_DEFAULT_VEHICLE_SYSTEM_INSTANCE": {
       "type": "integer",
-      "description": "!< Vehicle System Instance",
+      "description": "J1939NM_DEFAULT_VEHICLE_SYSTEM_INSTANCE 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DEFAULT NAME CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_DEFAULT_INDUSTRY_GROUP": {
       "type": "integer",
-      "description": "!< Industry Group (Global)",
+      "description": "J1939NM_DEFAULT_INDUSTRY_GROUP 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DEFAULT NAME CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_DEFAULT_ARBITRARY_ADDRESS_CAPABLE": {
       "type": "boolean",
-      "description": "!< Arbitrary Address Capable",
+      "description": "J1939NM_DEFAULT_ARBITRARY_ADDRESS_CAPABLE 参数",
       "default": true,
-      "x-section": "DEFAULT NAME CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_DEFAULT_ADDRESS": {
       "type": "integer",
-      "description": "!< Default address (128)",
+      "description": "J1939NM_DEFAULT_ADDRESS 参数",
       "default": 128,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DEFAULT ADDRESS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939NM_DEFAULT_PREFERRED_ADDRESS": {
       "type": "integer",
-      "description": "!< Preferred address (128)",
+      "description": "J1939NM_DEFAULT_PREFERRED_ADDRESS 参数",
       "default": 128,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DEFAULT ADDRESS"
-    },
-    "J1939NM_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "!< Main function period in ms",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MAIN FUNCTION PERIOD"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -399,16 +399,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/j1939nm/include/J1939Nm_Cfg.h",
-  "x-display-name": "J1939Nm",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "CHANNEL CONFIGURATION",
-    "ADDRESS CLAIMING TIMING",
-    "ADDRESS DEFINITIONS",
-    "NAME FIELD MASKS",
-    "NAME FIELD SHIFTS",
-    "DEFAULT NAME CONFIGURATION",
-    "DEFAULT ADDRESS",
-    "MAIN FUNCTION PERIOD"
-  ]
+  "x-display-name": "J1939Nm"
 }

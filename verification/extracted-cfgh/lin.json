@@ -2,110 +2,126 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/lin.json",
   "title": "Lin Configuration",
-  "description": "LIN Driver Configuration",
+  "description": "Lin Configuration configuration header",
   "type": "object",
   "properties": {
     "LIN_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "LIN_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LIN_VERSION_INFO_API": {
       "type": "boolean",
       "description": "LIN_VERSION_INFO_API 参数",
-      "default": true
-    },
-    "LIN_WAKEUP_SUPPORT": {
-      "type": "boolean",
-      "description": "LIN_WAKEUP_SUPPORT 参数",
-      "default": true
-    },
-    "LIN_MAX_CHANNELS": {
-      "type": "integer",
-      "description": "LIN_MAX_CHANNELS 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "LIN_CHANNEL_0": {
-      "type": "integer",
-      "description": "LIN_CHANNEL_0 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "LIN_CHANNEL_1": {
-      "type": "integer",
-      "description": "LIN_CHANNEL_1 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LIN_BAUDRATE_9600": {
       "type": "integer",
       "description": "LIN_BAUDRATE_9600 参数",
       "default": 9600,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LIN_BAUDRATE_19200": {
       "type": "integer",
       "description": "LIN_BAUDRATE_19200 参数",
       "default": 19200,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LIN_CH0_BAUDRATE": {
+      "type": "integer",
+      "description": "LIN_CH0_BAUDRATE 参数",
+      "default": 19200,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LIN_CH1_BAUDRATE": {
+      "type": "integer",
+      "description": "LIN_CH1_BAUDRATE 参数",
+      "default": 19200,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LIN_TIMEOUT": {
       "type": "integer",
       "description": "LIN_TIMEOUT 参数",
       "default": 100,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LIN_WAKEUP_TIMEOUT": {
       "type": "integer",
       "description": "LIN_WAKEUP_TIMEOUT 参数",
       "default": 50,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LIN_WAKEUP_SUPPORT": {
+      "type": "boolean",
+      "description": "LIN_WAKEUP_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LIN_MAX_CHANNELS": {
+      "type": "integer",
+      "description": "LIN_MAX_CHANNELS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LIN_CHANNEL_0": {
+      "type": "integer",
+      "description": "LIN_CHANNEL_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LIN_CHANNEL_1": {
+      "type": "integer",
+      "description": "LIN_CHANNEL_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LIN_MAX_FRAME_LENGTH": {
       "type": "integer",
       "description": "LIN_MAX_FRAME_LENGTH 参数",
       "default": 8,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LIN_MAX_PID": {
       "type": "integer",
       "description": "LIN_MAX_PID 参数",
       "default": 63,
       "minimum": 0,
-      "maximum": 255
-    },
-    "LIN_CH0_BAUDRATE": {
-      "type": "integer",
-      "description": "LIN_CH0_BAUDRATE（别名: LIN_BAUDRATE_19200 = 19200；同族可选: LIN_BAUDRATE_19200 / LIN_BAUDRATE_9600）",
-      "default": 19200,
-      "minimum": 0,
-      "maximum": 65535
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LIN_CH0_WAKEUP_SUPPORT": {
       "type": "boolean",
       "description": "LIN_CH0_WAKEUP_SUPPORT 参数",
-      "default": true
-    },
-    "LIN_CH1_BAUDRATE": {
-      "type": "integer",
-      "description": "LIN_CH1_BAUDRATE（别名: LIN_BAUDRATE_19200 = 19200；同族可选: LIN_BAUDRATE_19200 / LIN_BAUDRATE_9600）",
-      "default": 19200,
-      "minimum": 0,
-      "maximum": 65535
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LIN_CH1_WAKEUP_SUPPORT": {
       "type": "boolean",
       "description": "LIN_CH1_WAKEUP_SUPPORT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

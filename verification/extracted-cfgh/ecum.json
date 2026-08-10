@@ -2,49 +2,135 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/ecum.json",
   "title": "EcuM Configuration",
-  "description": "ECU State Manager Configuration - Multi-Phase Startup Support",
+  "description": "EcuM Configuration configuration header",
   "type": "object",
   "properties": {
     "ECUM_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "ECUM_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_VERSION_INFO_API": {
       "type": "boolean",
       "description": "ECUM_VERSION_INFO_API 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ECUM_POLL_MODE_SUPPORTED": {
+      "type": "boolean",
+      "description": "ECUM_POLL_MODE_SUPPORTED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ECUM_POLL_SID": {
+      "type": "integer",
+      "description": "ECUM_POLL_SID 参数",
+      "default": 19,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "ECUM_MAIN_FUNCTION_PERIOD": {
       "type": "integer",
       "description": "ECUM_MAIN_FUNCTION_PERIOD 参数",
       "default": 10,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ECUM_WAKEUP_VALIDATION_TIMEOUT": {
+      "type": "integer",
+      "description": "ECUM_WAKEUP_VALIDATION_TIMEOUT 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ECUM_CHECK_WAKEUP_TIMEOUT": {
+      "type": "integer",
+      "description": "ECUM_CHECK_WAKEUP_TIMEOUT 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ECUM_NVM_READALL_TIMEOUT": {
+      "type": "integer",
+      "description": "ECUM_NVM_READALL_TIMEOUT 参数",
+      "default": 10000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ECUM_NVM_WRITEALL_TIMEOUT": {
+      "type": "integer",
+      "description": "ECUM_NVM_WRITEALL_TIMEOUT 参数",
+      "default": 10000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ECUM_STARTUP_TIMEOUT": {
+      "type": "integer",
+      "description": "ECUM_STARTUP_TIMEOUT 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ECUM_SLEEP_TRANSITION_TIMEOUT": {
+      "type": "integer",
+      "description": "ECUM_SLEEP_TRANSITION_TIMEOUT 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ECUM_WAKEUP_RESTART_TIMEOUT": {
+      "type": "integer",
+      "description": "ECUM_WAKEUP_RESTART_TIMEOUT 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ECUM_SHUTDOWN_TRANSITION_TIMEOUT": {
+      "type": "integer",
+      "description": "ECUM_SHUTDOWN_TRANSITION_TIMEOUT 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_MAX_USERS": {
       "type": "integer",
       "description": "ECUM_MAX_USERS 参数",
       "default": 32,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_MAX_WAKEUP_SOURCES": {
       "type": "integer",
       "description": "ECUM_MAX_WAKEUP_SOURCES 参数",
       "default": 32,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_MULTI_CORE_SUPPORT": {
       "type": "boolean",
       "description": "ECUM_MULTI_CORE_SUPPORT 参数",
-      "default": false
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_FAST_STARTUP_MODE": {
       "type": "boolean",
       "description": "ECUM_FAST_STARTUP_MODE 参数",
-      "default": false
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_WKSOURCE_POWER": {
       "type": "integer",
@@ -52,6 +138,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_RESET": {
@@ -60,6 +147,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_INTERNAL_RESET": {
@@ -68,6 +156,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_INTERNAL_WDG": {
@@ -76,6 +165,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_EXTERNAL_WDG": {
@@ -84,6 +174,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_TIMER": {
@@ -92,6 +183,7 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_CAN": {
@@ -100,6 +192,7 @@
       "default": 64,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_CAN0": {
@@ -108,6 +201,7 @@
       "default": 64,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_CAN1": {
@@ -116,6 +210,7 @@
       "default": 128,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_CAN2": {
@@ -124,6 +219,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_CAN3": {
@@ -132,6 +228,7 @@
       "default": 512,
       "minimum": 0,
       "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_LIN": {
@@ -140,6 +237,7 @@
       "default": 1024,
       "minimum": 0,
       "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_ETH": {
@@ -148,6 +246,7 @@
       "default": 2048,
       "minimum": 0,
       "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_FLEXRAY": {
@@ -156,6 +255,7 @@
       "default": 4096,
       "minimum": 0,
       "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_GPIO": {
@@ -164,6 +264,7 @@
       "default": 8192,
       "minimum": 0,
       "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_SPI": {
@@ -172,6 +273,7 @@
       "default": 16384,
       "minimum": 0,
       "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_I2C": {
@@ -180,6 +282,7 @@
       "default": 32768,
       "minimum": 0,
       "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WKSOURCE_ADC": {
@@ -188,197 +291,162 @@
       "default": 65536,
       "minimum": 0,
       "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_CONFIGURED_WAKEUP_SOURCES": {
-      "type": "object",
-      "description": "ECUM_CONFIGURED_WAKEUP_SOURCES 参数"
-    },
-    "ECUM_WAKEUP_VALIDATION_TIMEOUT": {
-      "type": "integer",
-      "description": "ECUM_WAKEUP_VALIDATION_TIMEOUT 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "ECUM_CHECK_WAKEUP_TIMEOUT": {
-      "type": "integer",
-      "description": "ECUM_CHECK_WAKEUP_TIMEOUT 参数",
-      "default": 50,
-      "minimum": 0,
-      "maximum": 255
+      "type": "string",
+      "description": "ECUM_CONFIGURED_WAKEUP_SOURCES 参数",
+      "default": "\"\"",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "string-literal"
     },
     "ECUM_CHECK_WAKEUP_ENABLED": {
       "type": "boolean",
       "description": "ECUM_CHECK_WAKEUP_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_DEFAULT_SLEEP_MODE": {
       "type": "integer",
       "description": "ECUM_DEFAULT_SLEEP_MODE 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_HALT_MODE_SUPPORTED": {
       "type": "boolean",
       "description": "ECUM_HALT_MODE_SUPPORTED 参数",
-      "default": true
-    },
-    "ECUM_POLL_MODE_SUPPORTED": {
-      "type": "boolean",
-      "description": "ECUM_POLL_MODE_SUPPORTED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_NVM_ENABLED": {
       "type": "boolean",
       "description": "ECUM_NVM_ENABLED 参数",
-      "default": true
-    },
-    "ECUM_NVM_READALL_TIMEOUT": {
-      "type": "integer",
-      "description": "ms",
-      "default": 10000,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "ECUM_NVM_WRITEALL_TIMEOUT": {
-      "type": "integer",
-      "description": "ms",
-      "default": 10000,
-      "minimum": 0,
-      "maximum": 65535
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_WDGM_ENABLED": {
       "type": "boolean",
       "description": "ECUM_WDGM_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_COMM_ENABLED": {
       "type": "boolean",
       "description": "ECUM_COMM_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_BSWM_ENABLED": {
       "type": "boolean",
       "description": "ECUM_BSWM_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_SCHM_ENABLED": {
       "type": "boolean",
       "description": "ECUM_SCHM_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_RTE_ENABLED": {
       "type": "boolean",
       "description": "ECUM_RTE_ENABLED 参数",
-      "default": true
-    },
-    "ECUM_STARTUP_TIMEOUT": {
-      "type": "integer",
-      "description": "ms",
-      "default": 5000,
-      "minimum": 0,
-      "maximum": 65535
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_STARTUP_ONE_ENABLED": {
       "type": "boolean",
       "description": "ECUM_STARTUP_ONE_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_STARTUP_TWO_ENABLED": {
       "type": "boolean",
       "description": "ECUM_STARTUP_TWO_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_STARTUP_THREE_ENABLED": {
       "type": "boolean",
       "description": "ECUM_STARTUP_THREE_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_RESET_MCU": {
       "type": "integer",
       "description": "ECUM_RESET_MCU 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_RESET_WDG": {
       "type": "integer",
       "description": "ECUM_RESET_WDG 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_RESET_IO": {
       "type": "integer",
       "description": "ECUM_RESET_IO 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_RESET_SW": {
       "type": "integer",
       "description": "ECUM_RESET_SW 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_DEFAULT_RESET_TYPE": {
       "type": "integer",
-      "description": "ECUM_DEFAULT_RESET_TYPE（别名: ECUM_RESET_MCU = 0；同族可选: ECUM_RESET_IO / ECUM_RESET_MCU / ECUM_RESET_SW / ECUM_RESET_TYPE_DEFINED / ECUM_RESET_WDG）",
+      "description": "ECUM_DEFAULT_RESET_TYPE 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
-    },
-    "ECUM_SLEEP_TRANSITION_TIMEOUT": {
-      "type": "integer",
-      "description": "ms",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "ECUM_WAKEUP_RESTART_TIMEOUT": {
-      "type": "integer",
-      "description": "ms",
-      "default": 5000,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "ECUM_SHUTDOWN_TRANSITION_TIMEOUT": {
-      "type": "integer",
-      "description": "ms",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535
     },
     "ECUM_ALARM_CLOCK_ENABLED": {
       "type": "boolean",
       "description": "ECUM_ALARM_CLOCK_ENABLED 参数",
-      "default": false
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_ALARM_CLOCK_TIME_BASE": {
       "type": "integer",
-      "description": "ms",
+      "description": "ECUM_ALARM_CLOCK_TIME_BASE 参数",
       "default": 1000,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_FIXED_BLOCKS_ENABLED": {
       "type": "boolean",
       "description": "ECUM_FIXED_BLOCKS_ENABLED 参数",
-      "default": false
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_PREOS_CALLBACK_ENABLED": {
       "type": "boolean",
       "description": "ECUM_PREOS_CALLBACK_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_POSTOS_CALLBACK_ENABLED": {
       "type": "boolean",
       "description": "ECUM_POSTOS_CALLBACK_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_STARTUPONE_SID": {
       "type": "integer",
@@ -386,6 +454,7 @@
       "default": 15,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_STARTUPTWO_SID": {
@@ -394,6 +463,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_SLEEP_SID": {
@@ -402,6 +472,7 @@
       "default": 17,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_HALT_SID": {
@@ -410,14 +481,7 @@
       "default": 18,
       "minimum": 0,
       "maximum": 255,
-      "x-guarded": true
-    },
-    "ECUM_POLL_SID": {
-      "type": "integer",
-      "description": "ECUM_POLL_SID 参数",
-      "default": 19,
-      "minimum": 0,
-      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_WAKEUPRESTART_SID": {
@@ -426,6 +490,7 @@
       "default": 20,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_CLEARWAKEUPEVENT_SID": {
@@ -434,6 +499,7 @@
       "default": 21,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_CHECKWAKEUP_SID": {
@@ -442,6 +508,7 @@
       "default": 22,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_ENABLEWAKEUPSOURCES_SID": {
@@ -450,6 +517,7 @@
       "default": 23,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_DISABLEWAKEUPSOURCES_SID": {
@@ -458,6 +526,7 @@
       "default": 24,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "ECUM_GETSTATUSOFWAKEUPSOURCE_SID": {
@@ -466,6 +535,7 @@
       "default": 25,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     }
   },

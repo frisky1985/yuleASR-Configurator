@@ -2,57 +2,9 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/someipsd.json",
   "title": "SomeIpSd Configuration",
-  "description": "SOME/IP Service Discovery Configuration Header",
+  "description": "SomeIpSd Configuration configuration header",
   "type": "object",
   "properties": {
-    "SOMEIPSD_CFG_AR_RELEASE_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "SOMEIPSD_CFG_AR_RELEASE_MAJOR_VERSION 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "AUTOSAR VERSION"
-    },
-    "SOMEIPSD_CFG_AR_RELEASE_MINOR_VERSION": {
-      "type": "integer",
-      "description": "SOMEIPSD_CFG_AR_RELEASE_MINOR_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "AUTOSAR VERSION"
-    },
-    "SOMEIPSD_CFG_AR_RELEASE_REVISION_VERSION": {
-      "type": "integer",
-      "description": "SOMEIPSD_CFG_AR_RELEASE_REVISION_VERSION 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "AUTOSAR VERSION"
-    },
-    "SOMEIPSD_CFG_SW_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "SOMEIPSD_CFG_SW_MAJOR_VERSION 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MODULE VERSION"
-    },
-    "SOMEIPSD_CFG_SW_MINOR_VERSION": {
-      "type": "integer",
-      "description": "SOMEIPSD_CFG_SW_MINOR_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MODULE VERSION"
-    },
-    "SOMEIPSD_CFG_SW_PATCH_VERSION": {
-      "type": "integer",
-      "description": "SOMEIPSD_CFG_SW_PATCH_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MODULE VERSION"
-    },
     "SOMEIPSD_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "SOMEIPSD_DEV_ERROR_DETECT 参数",
@@ -63,6 +15,118 @@
       "type": "boolean",
       "description": "SOMEIPSD_VERSION_INFO_API 参数",
       "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPSD_REPETITION_MAX_COUNT": {
+      "type": "integer",
+      "description": "SOMEIPSD_REPETITION_MAX_COUNT 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPSD_NUM_OFFERED_SERVICES": {
+      "type": "integer",
+      "description": "SOMEIPSD_NUM_OFFERED_SERVICES 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPSD_NUM_REQUIRED_SERVICES": {
+      "type": "integer",
+      "description": "SOMEIPSD_NUM_REQUIRED_SERVICES 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPSD_NUM_CONFIGURED_EVENTGROUPS": {
+      "type": "integer",
+      "description": "SOMEIPSD_NUM_CONFIGURED_EVENTGROUPS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPSD_NUM_CONFIGURED_SUBSCRIPTIONS": {
+      "type": "integer",
+      "description": "SOMEIPSD_NUM_CONFIGURED_SUBSCRIPTIONS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPSD_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "SOMEIPSD_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPSD_TTL_CHECK_PERIOD_MS": {
+      "type": "integer",
+      "description": "SOMEIPSD_TTL_CHECK_PERIOD_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPSD_OFFER_CYCLE_PERIOD_MS": {
+      "type": "integer",
+      "description": "SOMEIPSD_OFFER_CYCLE_PERIOD_MS 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPSD_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "SOMEIPSD_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPSD_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "SOMEIPSD_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPSD_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "SOMEIPSD_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPSD_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "SOMEIPSD_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPSD_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "SOMEIPSD_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOMEIPSD_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "SOMEIPSD_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_SERVER_SERVICE_DISCOVERY_ENABLED": {
@@ -101,7 +165,7 @@
       "default": 1400,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "MESSAGE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MAX_ENTRIES_PER_MESSAGE": {
       "type": "integer",
@@ -109,7 +173,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MESSAGE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MAX_OPTIONS_PER_MESSAGE": {
       "type": "integer",
@@ -117,7 +181,7 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MESSAGE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_ENTRY_HEADER_SIZE": {
       "type": "integer",
@@ -125,7 +189,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MESSAGE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_IPV4_ENDPOINT_OPTION_SIZE": {
       "type": "integer",
@@ -133,7 +197,7 @@
       "default": 9,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MESSAGE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_IPV6_ENDPOINT_OPTION_SIZE": {
       "type": "integer",
@@ -141,7 +205,7 @@
       "default": 21,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MESSAGE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_CONFIGURATION_OPTION_MAX_SIZE": {
       "type": "integer",
@@ -149,7 +213,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "MESSAGE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MAX_OFFERED_SERVICES": {
       "type": "integer",
@@ -157,7 +221,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SERVICE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MAX_FOUND_SERVICES": {
       "type": "integer",
@@ -165,7 +229,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SERVICE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MAX_SUBSCRIBED_EVENTGROUPS": {
       "type": "integer",
@@ -173,7 +237,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SERVICE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MAX_EVENTGROUPS_PER_SERVICE": {
       "type": "integer",
@@ -181,7 +245,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SERVICE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_INITIAL_DELAY_MIN_MS": {
       "type": "integer",
@@ -189,7 +253,7 @@
       "default": 50,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_INITIAL_DELAY_MAX_MS": {
       "type": "integer",
@@ -197,7 +261,7 @@
       "default": 150,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_REPETITION_BASE_DELAY_MS": {
       "type": "integer",
@@ -205,15 +269,7 @@
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "SOMEIPSD_REPETITION_MAX_COUNT": {
-      "type": "integer",
-      "description": "SOMEIPSD_REPETITION_MAX_COUNT 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_CYCLIC_OFFER_DELAY_MS": {
       "type": "integer",
@@ -221,7 +277,7 @@
       "default": 3000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "TIMING CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_CYCLIC_FIND_DELAY_MS": {
       "type": "integer",
@@ -229,7 +285,7 @@
       "default": 3000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "TIMING CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_OFFER_TTL_MS": {
       "type": "integer",
@@ -237,7 +293,7 @@
       "default": 3000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "TIMING CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_SUBSCRIPTION_TTL_MS": {
       "type": "integer",
@@ -245,7 +301,7 @@
       "default": 3000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "TIMING CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_TTL_FACTOR_OFFER": {
       "type": "integer",
@@ -253,7 +309,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_TTL_FACTOR_SUBSCRIBE": {
       "type": "integer",
@@ -261,7 +317,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_REQUEST_RESPONSE_DELAY_MIN_MS": {
       "type": "integer",
@@ -269,7 +325,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "REQUEST/RESPONSE DELAY"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_REQUEST_RESPONSE_DELAY_MAX_MS": {
       "type": "integer",
@@ -277,199 +333,175 @@
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "REQUEST/RESPONSE DELAY"
-    },
-    "SOMEIPSD_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "SOMEIPSD_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MAIN FUNCTION PERIODS"
-    },
-    "SOMEIPSD_TTL_CHECK_PERIOD_MS": {
-      "type": "integer",
-      "description": "SOMEIPSD_TTL_CHECK_PERIOD_MS 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MAIN FUNCTION PERIODS"
-    },
-    "SOMEIPSD_OFFER_CYCLE_PERIOD_MS": {
-      "type": "integer",
-      "description": "SOMEIPSD_OFFER_CYCLE_PERIOD_MS 参数",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "MAIN FUNCTION PERIODS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MULTICAST_IP_ADDRESS": {
       "type": "integer",
-      "description": "224.244.224.245",
+      "description": "SOMEIPSD_MULTICAST_IP_ADDRESS 参数",
       "default": 3774144757,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MULTICAST_PORT": {
       "type": "integer",
-      "description": "SOMEIPSD_MULTICAST_PORT（cast: uint16）",
+      "description": "SOMEIPSD_MULTICAST_PORT 参数",
       "default": 30490,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_UNICAST_PORT": {
       "type": "integer",
-      "description": "SOMEIPSD_UNICAST_PORT（cast: uint16）",
+      "description": "SOMEIPSD_UNICAST_PORT 参数",
       "default": 30500,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_LOCAL_IP_ADDRESS": {
       "type": "integer",
-      "description": "192.168.1.10",
+      "description": "SOMEIPSD_LOCAL_IP_ADDRESS 参数",
       "default": 3232235786,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_SUBNET_MASK": {
       "type": "integer",
-      "description": "255.255.255.0",
+      "description": "SOMEIPSD_SUBNET_MASK 参数",
       "default": 4294967040,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_DEFAULT_PROTOCOL": {
       "type": "integer",
-      "description": "SOMEIPSD_DEFAULT_PROTOCOL（别名: SOMEIPSD_PROTO_UDP = 17；同族可选: SOMEIPSD_PROTO_TCP / SOMEIPSD_PROTO_UDP）",
+      "description": "SOMEIPSD_DEFAULT_PROTOCOL 参数",
       "default": 17,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_PROTOCOL": {
       "type": "integer",
-      "description": "SOMEIPSD_PROTOCOL（别名: SOMEIPSD_PROTO_UDP = 17；同族可选: SOMEIPSD_PROTO_TCP / SOMEIPSD_PROTO_UDP）",
+      "description": "SOMEIPSD_PROTOCOL 参数",
       "default": 17,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_PROTO_TCP": {
       "type": "integer",
-      "description": "SOMEIPSD_PROTO_TCP（cast: uint8）",
+      "description": "SOMEIPSD_PROTO_TCP 参数",
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL TYPE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_PROTO_UDP": {
       "type": "integer",
-      "description": "SOMEIPSD_PROTO_UDP（cast: uint8）",
+      "description": "SOMEIPSD_PROTO_UDP 参数",
       "default": 17,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL TYPE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_ENTRY_TYPE_FIND_SERVICE": {
       "type": "integer",
-      "description": "SOMEIPSD_ENTRY_TYPE_FIND_SERVICE（cast: uint8）",
+      "description": "SOMEIPSD_ENTRY_TYPE_FIND_SERVICE 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ENTRY TYPE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_ENTRY_TYPE_OFFER_SERVICE": {
       "type": "integer",
-      "description": "SOMEIPSD_ENTRY_TYPE_OFFER_SERVICE（cast: uint8）",
+      "description": "SOMEIPSD_ENTRY_TYPE_OFFER_SERVICE 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ENTRY TYPE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_ENTRY_TYPE_SUBSCRIBE": {
       "type": "integer",
-      "description": "SOMEIPSD_ENTRY_TYPE_SUBSCRIBE（cast: uint8）",
+      "description": "SOMEIPSD_ENTRY_TYPE_SUBSCRIBE 参数",
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ENTRY TYPE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_ENTRY_TYPE_SUBSCRIBE_ACK": {
       "type": "integer",
-      "description": "SOMEIPSD_ENTRY_TYPE_SUBSCRIBE_ACK（cast: uint8）",
+      "description": "SOMEIPSD_ENTRY_TYPE_SUBSCRIBE_ACK 参数",
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ENTRY TYPE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_ENTRY_TYPE_STOP_OFFER": {
       "type": "integer",
-      "description": "SOMEIPSD_ENTRY_TYPE_STOP_OFFER（cast: uint8）",
+      "description": "SOMEIPSD_ENTRY_TYPE_STOP_OFFER 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ENTRY TYPE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_ENTRY_TYPE_STOP_SUBSCRIBE": {
       "type": "integer",
-      "description": "SOMEIPSD_ENTRY_TYPE_STOP_SUBSCRIBE（cast: uint8）",
+      "description": "SOMEIPSD_ENTRY_TYPE_STOP_SUBSCRIBE 参数",
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ENTRY TYPE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_OPTION_TYPE_CONFIGURATION": {
       "type": "integer",
-      "description": "SOMEIPSD_OPTION_TYPE_CONFIGURATION（cast: uint8）",
+      "description": "SOMEIPSD_OPTION_TYPE_CONFIGURATION 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "OPTION TYPE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_OPTION_TYPE_LOAD_BALANCING": {
       "type": "integer",
-      "description": "SOMEIPSD_OPTION_TYPE_LOAD_BALANCING（cast: uint8）",
+      "description": "SOMEIPSD_OPTION_TYPE_LOAD_BALANCING 参数",
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "OPTION TYPE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_OPTION_TYPE_IPV4_ENDPOINT": {
       "type": "integer",
-      "description": "SOMEIPSD_OPTION_TYPE_IPV4_ENDPOINT（cast: uint8）",
+      "description": "SOMEIPSD_OPTION_TYPE_IPV4_ENDPOINT 参数",
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "OPTION TYPE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_OPTION_TYPE_IPV4_MULTICAST": {
       "type": "integer",
-      "description": "SOMEIPSD_OPTION_TYPE_IPV4_MULTICAST（cast: uint8）",
+      "description": "SOMEIPSD_OPTION_TYPE_IPV4_MULTICAST 参数",
       "default": 20,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "OPTION TYPE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_OPTION_TYPE_IPV6_ENDPOINT": {
       "type": "integer",
-      "description": "SOMEIPSD_OPTION_TYPE_IPV6_ENDPOINT（cast: uint8）",
+      "description": "SOMEIPSD_OPTION_TYPE_IPV6_ENDPOINT 参数",
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "OPTION TYPE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_OPTION_TYPE_IPV6_MULTICAST": {
       "type": "integer",
-      "description": "SOMEIPSD_OPTION_TYPE_IPV6_MULTICAST（cast: uint8）",
+      "description": "SOMEIPSD_OPTION_TYPE_IPV6_MULTICAST 参数",
       "default": 22,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "OPTION TYPE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_OPTION_CONFIG_LENGTH": {
       "type": "integer",
@@ -477,135 +509,135 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "OPTION TYPE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_FLAG_REBOOT": {
       "type": "integer",
-      "description": "SOMEIPSD_FLAG_REBOOT（cast: uint8）",
+      "description": "SOMEIPSD_FLAG_REBOOT 参数",
       "default": 128,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "FLAG DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_FLAG_UNICAST": {
       "type": "integer",
-      "description": "SOMEIPSD_FLAG_UNICAST（cast: uint8）",
+      "description": "SOMEIPSD_FLAG_UNICAST 参数",
       "default": 64,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "FLAG DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_FLAG_EXPLICIT_INIT_DATA": {
       "type": "integer",
-      "description": "SOMEIPSD_FLAG_EXPLICIT_INIT_DATA（cast: uint8）",
+      "description": "SOMEIPSD_FLAG_EXPLICIT_INIT_DATA 参数",
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "FLAG DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_FLAGS_DEFAULT": {
       "type": "integer",
-      "description": "SOMEIPSD_FLAGS_DEFAULT（别名: SOMEIPSD_FLAG_REBOOT = 128；同族可选: SOMEIPSD_FLAG_EXPLICIT_INIT_DATA / SOMEIPSD_FLAG_REBOOT / SOMEIPSD_FLAG_UNICAST）",
+      "description": "SOMEIPSD_FLAGS_DEFAULT 参数",
       "default": 128,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "FLAG DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_FLAGS_RUNNING": {
       "type": "integer",
-      "description": "SOMEIPSD_FLAGS_RUNNING（cast: uint8）",
+      "description": "SOMEIPSD_FLAGS_RUNNING 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "FLAG DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_DEFAULT_MAJOR_VERSION": {
       "type": "integer",
-      "description": "SOMEIPSD_DEFAULT_MAJOR_VERSION（cast: uint8）",
+      "description": "SOMEIPSD_DEFAULT_MAJOR_VERSION 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INSTANCE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_DEFAULT_MINOR_VERSION": {
       "type": "integer",
-      "description": "SOMEIPSD_DEFAULT_MINOR_VERSION（cast: uint32）",
+      "description": "SOMEIPSD_DEFAULT_MINOR_VERSION 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "INSTANCE CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_INSTANCE_ID_WILDCARD": {
       "type": "integer",
-      "description": "SOMEIPSD_INSTANCE_ID_WILDCARD（cast: uint16）",
+      "description": "SOMEIPSD_INSTANCE_ID_WILDCARD 参数",
       "default": 65535,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "INSTANCE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MAJOR_VERSION_WILDCARD": {
       "type": "integer",
-      "description": "SOMEIPSD_MAJOR_VERSION_WILDCARD（cast: uint8）",
+      "description": "SOMEIPSD_MAJOR_VERSION_WILDCARD 参数",
       "default": 255,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INSTANCE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MINOR_VERSION_WILDCARD": {
       "type": "integer",
-      "description": "SOMEIPSD_MINOR_VERSION_WILDCARD（cast: uint32）",
+      "description": "SOMEIPSD_MINOR_VERSION_WILDCARD 参数",
       "default": 4294967295,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "INSTANCE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_INSTANCE_ID_VEHICLE_01": {
       "type": "integer",
-      "description": "SOMEIPSD_INSTANCE_ID_VEHICLE_01（cast: uint16）",
+      "description": "SOMEIPSD_INSTANCE_ID_VEHICLE_01 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 65535,
-      "x-section": "SERVICE INSTANCE CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_INSTANCE_ID_VEHICLE_02": {
       "type": "integer",
-      "description": "SOMEIPSD_INSTANCE_ID_VEHICLE_02（cast: uint16）",
+      "description": "SOMEIPSD_INSTANCE_ID_VEHICLE_02 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 65535,
-      "x-section": "SERVICE INSTANCE CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_INSTANCE_ID_ENGINE_01": {
       "type": "integer",
-      "description": "SOMEIPSD_INSTANCE_ID_ENGINE_01（cast: uint16）",
+      "description": "SOMEIPSD_INSTANCE_ID_ENGINE_01 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 65535,
-      "x-section": "SERVICE INSTANCE CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_INSTANCE_ID_ENGINE_02": {
       "type": "integer",
-      "description": "SOMEIPSD_INSTANCE_ID_ENGINE_02（cast: uint16）",
+      "description": "SOMEIPSD_INSTANCE_ID_ENGINE_02 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 65535,
-      "x-section": "SERVICE INSTANCE CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_INSTANCE_ID_CHASSIS_01": {
       "type": "integer",
-      "description": "SOMEIPSD_INSTANCE_ID_CHASSIS_01（cast: uint16）",
+      "description": "SOMEIPSD_INSTANCE_ID_CHASSIS_01 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 65535,
-      "x-section": "SERVICE INSTANCE CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_INSTANCE_ID_BODY_01": {
       "type": "integer",
-      "description": "SOMEIPSD_INSTANCE_ID_BODY_01（cast: uint16）",
+      "description": "SOMEIPSD_INSTANCE_ID_BODY_01 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 65535,
-      "x-section": "SERVICE INSTANCE CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MAX_EVENTGROUPS": {
       "type": "integer",
@@ -613,111 +645,79 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "EVENT GROUP CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_EVENTGROUP_NOT_AVAILABLE": {
       "type": "integer",
-      "description": "SOMEIPSD_EVENTGROUP_NOT_AVAILABLE（cast: uint16）",
+      "description": "SOMEIPSD_EVENTGROUP_NOT_AVAILABLE 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 65535,
-      "x-section": "EVENT GROUP CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_EVENTGROUP_VEHICLE_STATUS": {
       "type": "integer",
-      "description": "SOMEIPSD_EVENTGROUP_VEHICLE_STATUS（cast: uint16）",
+      "description": "SOMEIPSD_EVENTGROUP_VEHICLE_STATUS 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 65535,
-      "x-section": "EVENT GROUP CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_EVENTGROUP_VEHICLE_POSITION": {
       "type": "integer",
-      "description": "SOMEIPSD_EVENTGROUP_VEHICLE_POSITION（cast: uint16）",
+      "description": "SOMEIPSD_EVENTGROUP_VEHICLE_POSITION 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 65535,
-      "x-section": "EVENT GROUP CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_EVENTGROUP_VEHICLE_DIAGNOSTIC": {
       "type": "integer",
-      "description": "SOMEIPSD_EVENTGROUP_VEHICLE_DIAGNOSTIC（cast: uint16）",
+      "description": "SOMEIPSD_EVENTGROUP_VEHICLE_DIAGNOSTIC 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 65535,
-      "x-section": "EVENT GROUP CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_EVENTGROUP_ENGINE_STATUS": {
       "type": "integer",
-      "description": "SOMEIPSD_EVENTGROUP_ENGINE_STATUS（cast: uint16）",
+      "description": "SOMEIPSD_EVENTGROUP_ENGINE_STATUS 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 65535,
-      "x-section": "EVENT GROUP CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_EVENTGROUP_ENGINE_DIAGNOSTIC": {
       "type": "integer",
-      "description": "SOMEIPSD_EVENTGROUP_ENGINE_DIAGNOSTIC（cast: uint16）",
+      "description": "SOMEIPSD_EVENTGROUP_ENGINE_DIAGNOSTIC 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 65535,
-      "x-section": "EVENT GROUP CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_EVENTGROUP_CHASSIS_STATUS": {
       "type": "integer",
-      "description": "SOMEIPSD_EVENTGROUP_CHASSIS_STATUS（cast: uint16）",
+      "description": "SOMEIPSD_EVENTGROUP_CHASSIS_STATUS 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 65535,
-      "x-section": "EVENT GROUP CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_EVENTGROUP_BODY_STATUS": {
       "type": "integer",
-      "description": "SOMEIPSD_EVENTGROUP_BODY_STATUS（cast: uint16）",
+      "description": "SOMEIPSD_EVENTGROUP_BODY_STATUS 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 65535,
-      "x-section": "EVENT GROUP CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_EVENTGROUP_BODY_COMFORT": {
       "type": "integer",
-      "description": "SOMEIPSD_EVENTGROUP_BODY_COMFORT（cast: uint16）",
+      "description": "SOMEIPSD_EVENTGROUP_BODY_COMFORT 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 65535,
-      "x-section": "EVENT GROUP CONFIGURATION"
-    },
-    "SOMEIPSD_NUM_OFFERED_SERVICES": {
-      "type": "integer",
-      "description": "SOMEIPSD_NUM_OFFERED_SERVICES 参数",
-      "default": 4,
-      "minimum": 0,
       "maximum": 255,
-      "x-section": "SERVICE SPECIFIC CONFIGURATION"
-    },
-    "SOMEIPSD_NUM_REQUIRED_SERVICES": {
-      "type": "integer",
-      "description": "SOMEIPSD_NUM_REQUIRED_SERVICES 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "SERVICE SPECIFIC CONFIGURATION"
-    },
-    "SOMEIPSD_NUM_CONFIGURED_EVENTGROUPS": {
-      "type": "integer",
-      "description": "SOMEIPSD_NUM_CONFIGURED_EVENTGROUPS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "SERVICE SPECIFIC CONFIGURATION"
-    },
-    "SOMEIPSD_NUM_CONFIGURED_SUBSCRIPTIONS": {
-      "type": "integer",
-      "description": "SOMEIPSD_NUM_CONFIGURED_SUBSCRIPTIONS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "SERVICE SPECIFIC CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MAX_FIND_SERVICE_RETRIES": {
       "type": "integer",
@@ -725,7 +725,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RETRY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_MAX_SUBSCRIBE_RETRIES": {
       "type": "integer",
@@ -733,7 +733,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RETRY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_FIND_SERVICE_RETRY_DELAY_MS": {
       "type": "integer",
@@ -741,7 +741,7 @@
       "default": 1000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "RETRY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_SUBSCRIBE_RETRY_DELAY_MS": {
       "type": "integer",
@@ -749,19 +749,19 @@
       "default": 1000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "RETRY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_SERVICE_AVAILABILITY_CALLBACKS": {
       "type": "boolean",
       "description": "SOMEIPSD_SERVICE_AVAILABILITY_CALLBACKS 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPSD_SUBSCRIPTION_STATE_CALLBACKS": {
       "type": "boolean",
       "description": "SOMEIPSD_SUBSCRIPTION_STATE_CALLBACKS 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -769,26 +769,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/someip/include/SomeIpSd_Cfg.h",
-  "x-display-name": "SomeIpSd",
-  "x-sections": [
-    "AUTOSAR VERSION",
-    "MODULE VERSION",
-    "PRE-COMPILE CONFIGURATION",
-    "MESSAGE CONFIGURATION",
-    "SERVICE CONFIGURATION",
-    "TIMING CONFIGURATION",
-    "REQUEST/RESPONSE DELAY",
-    "MAIN FUNCTION PERIODS",
-    "NETWORK CONFIGURATION",
-    "PROTOCOL TYPE DEFINITIONS",
-    "ENTRY TYPE DEFINITIONS",
-    "OPTION TYPE DEFINITIONS",
-    "FLAG DEFINITIONS",
-    "INSTANCE CONFIGURATION",
-    "SERVICE INSTANCE CONFIGURATION",
-    "EVENT GROUP CONFIGURATION",
-    "SERVICE SPECIFIC CONFIGURATION",
-    "RETRY CONFIGURATION",
-    "CALLBACK CONFIGURATION"
-  ]
+  "x-display-name": "SomeIpSd"
 }

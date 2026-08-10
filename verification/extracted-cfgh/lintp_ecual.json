@@ -2,418 +2,20 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/lintp_ecual.json",
   "title": "LinTp_Ecual Configuration",
-  "description": "LinTp configuration (extracted from yuleASR Cfg.h)",
+  "description": "LinTp_Ecual Configuration configuration header",
   "type": "object",
   "properties": {
-    "LINTP_CFG_VENDOR_ID": {
-      "type": "integer",
-      "description": "YuleTech Vendor ID",
-      "default": 153,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "LINTP_CFG_MODULE_ID": {
-      "type": "integer",
-      "description": "LinTp Module ID",
-      "default": 98,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "LINTP_CFG_SW_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "LINTP_CFG_SW_MAJOR_VERSION 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "LINTP_CFG_SW_MINOR_VERSION": {
-      "type": "integer",
-      "description": "LINTP_CFG_SW_MINOR_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "LINTP_CFG_SW_PATCH_VERSION": {
-      "type": "integer",
-      "description": "LINTP_CFG_SW_PATCH_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "LINTP_CFG_AR_RELEASE_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "LINTP_CFG_AR_RELEASE_MAJOR_VERSION 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "LINTP_CFG_AR_RELEASE_MINOR_VERSION": {
-      "type": "integer",
-      "description": "LINTP_CFG_AR_RELEASE_MINOR_VERSION 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "LINTP_CFG_AR_RELEASE_REVISION_VERSION": {
-      "type": "integer",
-      "description": "LINTP_CFG_AR_RELEASE_REVISION_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
     "LINTP_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "LINTP_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "CONFIGURATION SWITCHES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_VERSION_INFO_API": {
       "type": "boolean",
       "description": "LINTP_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "CONFIGURATION SWITCHES"
-    },
-    "LINTP_CANCEL_TRANSMIT_API": {
-      "type": "boolean",
-      "description": "LINTP_CANCEL_TRANSMIT_API 参数",
-      "default": true,
-      "x-section": "CONFIGURATION SWITCHES"
-    },
-    "LINTP_CANCEL_RECEIVE_API": {
-      "type": "boolean",
-      "description": "LINTP_CANCEL_RECEIVE_API 参数",
-      "default": true,
-      "x-section": "CONFIGURATION SWITCHES"
-    },
-    "LINTP_CHANGE_PARAMETER_API": {
-      "type": "boolean",
-      "description": "LINTP_CHANGE_PARAMETER_API 参数",
-      "default": true,
-      "x-section": "CONFIGURATION SWITCHES"
-    },
-    "LINTP_SUPPORT_WAIT_FRAMES": {
-      "type": "boolean",
-      "description": "LINTP_SUPPORT_WAIT_FRAMES 参数",
-      "default": true,
-      "x-section": "CONFIGURATION SWITCHES"
-    },
-    "LINTP_EXTENDED_ADDRESSING_SUPPORT": {
-      "type": "boolean",
-      "description": "LINTP_EXTENDED_ADDRESSING_SUPPORT 参数",
-      "default": false,
-      "x-section": "CONFIGURATION SWITCHES"
-    },
-    "LINTP_MAX_CHANNEL_COUNT": {
-      "type": "integer",
-      "description": "LINTP_MAX_CHANNEL_COUNT 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINTP_NSDU_COUNT": {
-      "type": "integer",
-      "description": "LINTP_NSDU_COUNT 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINTP_RX_NSDU_COUNT": {
-      "type": "integer",
-      "description": "LINTP_RX_NSDU_COUNT 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINTP_TX_NSDU_COUNT": {
-      "type": "integer",
-      "description": "LINTP_TX_NSDU_COUNT 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINTP_NAS_DEFAULT": {
-      "type": "integer",
-      "description": "LINTP_NAS_DEFAULT 参数",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINTP_NCS_DEFAULT": {
-      "type": "integer",
-      "description": "LINTP_NCS_DEFAULT 参数",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINTP_NCR_DEFAULT": {
-      "type": "integer",
-      "description": "LINTP_NCR_DEFAULT 参数",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINTP_STMIN_DEFAULT": {
-      "type": "integer",
-      "description": "LINTP_STMIN_DEFAULT 参数",
-      "default": 20,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINTP_BS_DEFAULT": {
-      "type": "integer",
-      "description": "LINTP_BS_DEFAULT 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINTP_MAX_WFT": {
-      "type": "integer",
-      "description": "LINTP_MAX_WFT 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINTP_BUFFER_SIZE": {
-      "type": "integer",
-      "description": "LINTP_BUFFER_SIZE 参数",
-      "default": 4095,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "BUFFER CONFIGURATION"
-    },
-    "LINTP_SF_MAX_DATA_LENGTH": {
-      "type": "integer",
-      "description": "LINTP_SF_MAX_DATA_LENGTH 参数",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BUFFER CONFIGURATION"
-    },
-    "LINTP_FF_MAX_DATA_LENGTH": {
-      "type": "integer",
-      "description": "LINTP_FF_MAX_DATA_LENGTH 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BUFFER CONFIGURATION"
-    },
-    "LINTP_CF_MAX_DATA_LENGTH": {
-      "type": "integer",
-      "description": "LINTP_CF_MAX_DATA_LENGTH 参数",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BUFFER CONFIGURATION"
-    },
-    "LINTP_SF_TIMEOUT_CYCLES": {
-      "type": "integer",
-      "description": "LINTP_SF_TIMEOUT_CYCLES 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BUFFER CONFIGURATION"
-    },
-    "LINTP_FF_TIMEOUT_CYCLES": {
-      "type": "integer",
-      "description": "LINTP_FF_TIMEOUT_CYCLES 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BUFFER CONFIGURATION"
-    },
-    "LINTP_CF_TIMEOUT_CYCLES": {
-      "type": "integer",
-      "description": "LINTP_CF_TIMEOUT_CYCLES 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BUFFER CONFIGURATION"
-    },
-    "LINTP_FC_TIMEOUT_CYCLES": {
-      "type": "integer",
-      "description": "LINTP_FC_TIMEOUT_CYCLES 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BUFFER CONFIGURATION"
-    },
-    "LINTP_E_UNINIT": {
-      "type": "integer",
-      "description": "API service called before initialization",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_E_INVALID_PDU_SDU_ID": {
-      "type": "integer",
-      "description": "Invalid PDU/SDU ID",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_E_PARAM_POINTER": {
-      "type": "integer",
-      "description": "API called with NULL pointer",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_E_INVALID_PARAMETER": {
-      "type": "integer",
-      "description": "Invalid parameter value",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_E_INIT_FAILED": {
-      "type": "integer",
-      "description": "Initialization failed",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_E_INVALID_TX_ID": {
-      "type": "integer",
-      "description": "Invalid Tx N-SDU ID",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_E_INVALID_RX_ID": {
-      "type": "integer",
-      "description": "Invalid Rx N-SDU ID",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_E_INVALD_NSDU_ID": {
-      "type": "integer",
-      "description": "Invalid N-SDU ID",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_E_INVALD_NSA": {
-      "type": "integer",
-      "description": "Invalid Network Source Address",
-      "default": 48,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_E_TIMEOUT": {
-      "type": "integer",
-      "description": "Timeout occurred",
-      "default": 112,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_E_INVALID_FRAME": {
-      "type": "integer",
-      "description": "Invalid frame received",
-      "default": 113,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_E_BUFFER_OVERFLOW": {
-      "type": "integer",
-      "description": "Buffer overflow",
-      "default": 114,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_E_SEQUENCE_ERROR": {
-      "type": "integer",
-      "description": "Sequence number error",
-      "default": 115,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_E_INVALID_FC": {
-      "type": "integer",
-      "description": "Invalid Flow Control frame",
-      "default": 116,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_SID_INIT": {
-      "type": "integer",
-      "description": "LINTP_SID_INIT 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_SID_DEINIT": {
-      "type": "integer",
-      "description": "LINTP_SID_DEINIT 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_SID_TRANSMIT": {
-      "type": "integer",
-      "description": "LINTP_SID_TRANSMIT 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_SID_CANCEL_TRANSMIT": {
-      "type": "integer",
-      "description": "LINTP_SID_CANCEL_TRANSMIT 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_SID_CANCEL_RECEIVE": {
-      "type": "integer",
-      "description": "LINTP_SID_CANCEL_RECEIVE 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
-    },
-    "LINTP_SID_CHANGE_PARAMETER": {
-      "type": "integer",
-      "description": "LINTP_SID_CHANGE_PARAMETER 参数",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ERROR CODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_SID_GET_VERSION_INFO": {
       "type": "integer",
@@ -421,15 +23,55 @@
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ERROR CODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "LINTP_SID_MAIN_FUNCTION": {
+    "LINTP_MAX_CHANNEL_COUNT": {
       "type": "integer",
-      "description": "LINTP_SID_MAIN_FUNCTION 参数",
-      "default": 8,
+      "description": "LINTP_MAX_CHANNEL_COUNT 参数",
+      "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ERROR CODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_NSDU_COUNT": {
+      "type": "integer",
+      "description": "LINTP_NSDU_COUNT 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_RX_NSDU_COUNT": {
+      "type": "integer",
+      "description": "LINTP_RX_NSDU_COUNT 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_TX_NSDU_COUNT": {
+      "type": "integer",
+      "description": "LINTP_TX_NSDU_COUNT 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_E_INVALID_TX_ID": {
+      "type": "integer",
+      "description": "LINTP_E_INVALID_TX_ID 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_E_INVALID_RX_ID": {
+      "type": "integer",
+      "description": "LINTP_E_INVALID_RX_ID 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_SID_RX_INDICATION": {
       "type": "integer",
@@ -437,7 +79,7 @@
       "default": 66,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ERROR CODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_SID_TX_CONFIRMATION": {
       "type": "integer",
@@ -445,7 +87,365 @@
       "default": 67,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ERROR CODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_SF_TIMEOUT_CYCLES": {
+      "type": "integer",
+      "description": "LINTP_SF_TIMEOUT_CYCLES 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_FF_TIMEOUT_CYCLES": {
+      "type": "integer",
+      "description": "LINTP_FF_TIMEOUT_CYCLES 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_CF_TIMEOUT_CYCLES": {
+      "type": "integer",
+      "description": "LINTP_CF_TIMEOUT_CYCLES 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_FC_TIMEOUT_CYCLES": {
+      "type": "integer",
+      "description": "LINTP_FC_TIMEOUT_CYCLES 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_E_TIMEOUT": {
+      "type": "integer",
+      "description": "LINTP_E_TIMEOUT 参数",
+      "default": 112,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_CFG_VENDOR_ID": {
+      "type": "integer",
+      "description": "LINTP_CFG_VENDOR_ID 参数",
+      "default": 153,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_CFG_MODULE_ID": {
+      "type": "integer",
+      "description": "LINTP_CFG_MODULE_ID 参数",
+      "default": 98,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "LINTP_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "LINTP_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "LINTP_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "LINTP_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "LINTP_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "LINTP_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_CANCEL_TRANSMIT_API": {
+      "type": "boolean",
+      "description": "LINTP_CANCEL_TRANSMIT_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_CANCEL_RECEIVE_API": {
+      "type": "boolean",
+      "description": "LINTP_CANCEL_RECEIVE_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_CHANGE_PARAMETER_API": {
+      "type": "boolean",
+      "description": "LINTP_CHANGE_PARAMETER_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_SUPPORT_WAIT_FRAMES": {
+      "type": "boolean",
+      "description": "LINTP_SUPPORT_WAIT_FRAMES 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_EXTENDED_ADDRESSING_SUPPORT": {
+      "type": "boolean",
+      "description": "LINTP_EXTENDED_ADDRESSING_SUPPORT 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_NAS_DEFAULT": {
+      "type": "integer",
+      "description": "LINTP_NAS_DEFAULT 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_NCS_DEFAULT": {
+      "type": "integer",
+      "description": "LINTP_NCS_DEFAULT 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_NCR_DEFAULT": {
+      "type": "integer",
+      "description": "LINTP_NCR_DEFAULT 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_STMIN_DEFAULT": {
+      "type": "integer",
+      "description": "LINTP_STMIN_DEFAULT 参数",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_BS_DEFAULT": {
+      "type": "integer",
+      "description": "LINTP_BS_DEFAULT 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_MAX_WFT": {
+      "type": "integer",
+      "description": "LINTP_MAX_WFT 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "LINTP_BUFFER_SIZE 参数",
+      "default": 4095,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_SF_MAX_DATA_LENGTH": {
+      "type": "integer",
+      "description": "LINTP_SF_MAX_DATA_LENGTH 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_FF_MAX_DATA_LENGTH": {
+      "type": "integer",
+      "description": "LINTP_FF_MAX_DATA_LENGTH 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_CF_MAX_DATA_LENGTH": {
+      "type": "integer",
+      "description": "LINTP_CF_MAX_DATA_LENGTH 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_E_UNINIT": {
+      "type": "integer",
+      "description": "LINTP_E_UNINIT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_E_INVALID_PDU_SDU_ID": {
+      "type": "integer",
+      "description": "LINTP_E_INVALID_PDU_SDU_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_E_PARAM_POINTER": {
+      "type": "integer",
+      "description": "LINTP_E_PARAM_POINTER 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_E_INVALID_PARAMETER": {
+      "type": "integer",
+      "description": "LINTP_E_INVALID_PARAMETER 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_E_INIT_FAILED": {
+      "type": "integer",
+      "description": "LINTP_E_INIT_FAILED 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_E_INVALD_NSDU_ID": {
+      "type": "integer",
+      "description": "LINTP_E_INVALD_NSDU_ID 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_E_INVALD_NSA": {
+      "type": "integer",
+      "description": "LINTP_E_INVALD_NSA 参数",
+      "default": 48,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_E_INVALID_FRAME": {
+      "type": "integer",
+      "description": "LINTP_E_INVALID_FRAME 参数",
+      "default": 113,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_E_BUFFER_OVERFLOW": {
+      "type": "integer",
+      "description": "LINTP_E_BUFFER_OVERFLOW 参数",
+      "default": 114,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_E_SEQUENCE_ERROR": {
+      "type": "integer",
+      "description": "LINTP_E_SEQUENCE_ERROR 参数",
+      "default": 115,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_E_INVALID_FC": {
+      "type": "integer",
+      "description": "LINTP_E_INVALID_FC 参数",
+      "default": 116,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_SID_INIT": {
+      "type": "integer",
+      "description": "LINTP_SID_INIT 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_SID_DEINIT": {
+      "type": "integer",
+      "description": "LINTP_SID_DEINIT 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_SID_TRANSMIT": {
+      "type": "integer",
+      "description": "LINTP_SID_TRANSMIT 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_SID_CANCEL_TRANSMIT": {
+      "type": "integer",
+      "description": "LINTP_SID_CANCEL_TRANSMIT 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_SID_CANCEL_RECEIVE": {
+      "type": "integer",
+      "description": "LINTP_SID_CANCEL_RECEIVE 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_SID_CHANGE_PARAMETER": {
+      "type": "integer",
+      "description": "LINTP_SID_CHANGE_PARAMETER 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_SID_MAIN_FUNCTION": {
+      "type": "integer",
+      "description": "LINTP_SID_MAIN_FUNCTION 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_SID_TRIGGER_TRANSMIT": {
       "type": "integer",
@@ -453,7 +453,7 @@
       "default": 68,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ERROR CODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -461,12 +461,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/ecual/linTp/include/LinTp_Cfg.h",
-  "x-display-name": "LinTp_Ecual",
-  "x-sections": [
-    "VERSION INFORMATION",
-    "CONFIGURATION SWITCHES",
-    "CHANNEL CONFIGURATION",
-    "BUFFER CONFIGURATION",
-    "ERROR CODES"
-  ]
+  "x-display-name": "LinTp_Ecual"
 }

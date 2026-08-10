@@ -2,32 +2,20 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/rte.json",
   "title": "Rte Configuration",
-  "description": "RTE Configuration header",
+  "description": "Rte Configuration configuration header",
   "type": "object",
   "properties": {
     "RTE_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "RTE_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "RTE GENERAL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_VERSION_INFO_API": {
       "type": "boolean",
       "description": "RTE_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "RTE GENERAL CONFIGURATION"
-    },
-    "RTE_MEASUREMENT_SUPPORT": {
-      "type": "boolean",
-      "description": "RTE_MEASUREMENT_SUPPORT 参数",
-      "default": true,
-      "x-section": "RTE GENERAL CONFIGURATION"
-    },
-    "RTE_CALIBRATION_SUPPORT": {
-      "type": "boolean",
-      "description": "RTE_CALIBRATION_SUPPORT 参数",
-      "default": true,
-      "x-section": "RTE GENERAL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_COMPONENTS": {
       "type": "integer",
@@ -35,7 +23,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE COMPONENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_INSTANCES": {
       "type": "integer",
@@ -43,7 +31,7 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE COMPONENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_RUNNABLES": {
       "type": "integer",
@@ -51,7 +39,7 @@
       "default": 64,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE COMPONENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_PORTS": {
       "type": "integer",
@@ -59,7 +47,7 @@
       "default": 128,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE COMPONENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_INTERFACES": {
       "type": "integer",
@@ -67,7 +55,7 @@
       "default": 64,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE COMPONENT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_SR_INTERFACES": {
       "type": "integer",
@@ -75,7 +63,7 @@
       "default": 64,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE COMMUNICATION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_CS_INTERFACES": {
       "type": "integer",
@@ -83,7 +71,7 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE COMMUNICATION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_MODE_INTERFACES": {
       "type": "integer",
@@ -91,7 +79,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE COMMUNICATION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_TRIGGER_INTERFACES": {
       "type": "integer",
@@ -99,7 +87,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE COMMUNICATION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_DATA_ELEMENTS": {
       "type": "integer",
@@ -107,7 +95,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "RTE DATA CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_OPERATIONS": {
       "type": "integer",
@@ -115,7 +103,7 @@
       "default": 128,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE DATA CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_PARAMETERS": {
       "type": "integer",
@@ -123,7 +111,7 @@
       "default": 64,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE DATA CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_FIELD_ELEMENTS": {
       "type": "integer",
@@ -131,7 +119,7 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE DATA CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_IRV": {
       "type": "integer",
@@ -139,15 +127,7 @@
       "default": 64,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MEMORY CONFIGURATION"
-    },
-    "RTE_MAX_PORTS_PER_COMPONENT": {
-      "type": "integer",
-      "description": "RTE_MAX_PORTS_PER_COMPONENT 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE MODE & PORT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_MODE_GROUPS": {
       "type": "integer",
@@ -155,39 +135,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE & PORT CONFIGURATION"
-    },
-    "RTE_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "RTE_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE MAIN FUNCTION PERIOD"
-    },
-    "RTE_STATE_INIT": {
-      "type": "integer",
-      "description": "RTE_STATE_INIT 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE STATE DEFINITIONS"
-    },
-    "RTE_STATE_STARTED": {
-      "type": "integer",
-      "description": "RTE_STATE_STARTED 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE STATE DEFINITIONS"
-    },
-    "RTE_STATE_STOPPED": {
-      "type": "integer",
-      "description": "RTE_STATE_STOPPED 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE STATE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_PIM": {
       "type": "integer",
@@ -195,7 +143,7 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE STATE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_CALPRM": {
       "type": "integer",
@@ -203,7 +151,7 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE STATE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_MEASUREMENT": {
       "type": "integer",
@@ -211,7 +159,7 @@
       "default": 64,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE STATE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_EXCLUSIVE_AREAS": {
       "type": "integer",
@@ -219,39 +167,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE EXCLUSIVE AREA CONFIGURATION"
-    },
-    "RTE_MAX_BUFFER_SIZE": {
-      "type": "integer",
-      "description": "RTE_MAX_BUFFER_SIZE 参数",
-      "default": 256,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "RTE BUFFER CONFIGURATION"
-    },
-    "RTE_MAX_STRING_LENGTH": {
-      "type": "integer",
-      "description": "RTE_MAX_STRING_LENGTH 参数",
-      "default": 256,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "RTE BUFFER CONFIGURATION"
-    },
-    "RTE_MAX_BYTE_ARRAY_LENGTH": {
-      "type": "integer",
-      "description": "RTE_MAX_BYTE_ARRAY_LENGTH 参数",
-      "default": 256,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "RTE BUFFER CONFIGURATION"
-    },
-    "RTE_MAX_QUEUE_LENGTH": {
-      "type": "integer",
-      "description": "RTE_MAX_QUEUE_LENGTH 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE BUFFER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NUM_TRANSFORMERS": {
       "type": "integer",
@@ -259,21 +175,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TRANSFORMATION CONFIGURATION"
-    },
-    "RTE_TRANSFORMER_BUFFER_SIZE": {
-      "type": "integer",
-      "description": "RTE_TRANSFORMER_BUFFER_SIZE 参数",
-      "default": 4096,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "RTE TRANSFORMATION CONFIGURATION"
-    },
-    "RTE_SOMEIP_SUPPORT": {
-      "type": "boolean",
-      "description": "RTE_SOMEIP_SUPPORT 参数",
-      "default": true,
-      "x-section": "RTE SOME/IP CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_SOMEIP_NUM_SERVICES": {
       "type": "integer",
@@ -281,7 +183,7 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE SOME/IP CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_SOMEIP_NUM_METHODS": {
       "type": "integer",
@@ -289,7 +191,7 @@
       "default": 64,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE SOME/IP CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_SOMEIP_NUM_EVENTS": {
       "type": "integer",
@@ -297,7 +199,7 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE SOME/IP CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_SOMEIP_NUM_FIELDS": {
       "type": "integer",
@@ -305,13 +207,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE SOME/IP CONFIGURATION"
-    },
-    "RTE_E2E_SUPPORT": {
-      "type": "boolean",
-      "description": "RTE_E2E_SUPPORT 参数",
-      "default": true,
-      "x-section": "RTE E2E CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_E2E_NUM_PROFILES": {
       "type": "integer",
@@ -319,7 +215,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE E2E CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_E2E_NUM_DATA_IDS": {
       "type": "integer",
@@ -327,13 +223,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "RTE E2E CONFIGURATION"
-    },
-    "RTE_COM_SUPPORT": {
-      "type": "boolean",
-      "description": "RTE_COM_SUPPORT 参数",
-      "default": true,
-      "x-section": "RTE COM CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COM_NUM_SIGNALS": {
       "type": "integer",
@@ -341,7 +231,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "RTE COM CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COM_NUM_SIGNAL_GROUPS": {
       "type": "integer",
@@ -349,111 +239,7 @@
       "default": 64,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE COM CONFIGURATION"
-    },
-    "RTE_OS_TASKS_NUM": {
-      "type": "integer",
-      "description": "RTE_OS_TASKS_NUM 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE OS CONFIGURATION"
-    },
-    "RTE_OS_EVENTS_NUM": {
-      "type": "integer",
-      "description": "RTE_OS_EVENTS_NUM 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE OS CONFIGURATION"
-    },
-    "RTE_OS_ALARMS_NUM": {
-      "type": "integer",
-      "description": "RTE_OS_ALARMS_NUM 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE OS CONFIGURATION"
-    },
-    "RTE_DEFAULT_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "RTE_DEFAULT_TIMEOUT_MS 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
-    },
-    "RTE_MAX_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "RTE_MAX_TIMEOUT_MS 参数",
-      "default": 10000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
-    },
-    "RTE_COMPONENT_SWC_ECU_MANAGER": {
-      "type": "integer",
-      "description": "RTE_COMPONENT_SWC_ECU_MANAGER 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
-    },
-    "RTE_COMPONENT_SWC_DIAGNOSTIC": {
-      "type": "integer",
-      "description": "RTE_COMPONENT_SWC_DIAGNOSTIC 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
-    },
-    "RTE_COMPONENT_SWC_COMMUNICATION": {
-      "type": "integer",
-      "description": "RTE_COMPONENT_SWC_COMMUNICATION 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
-    },
-    "RTE_COMPONENT_SWC_STORAGE": {
-      "type": "integer",
-      "description": "RTE_COMPONENT_SWC_STORAGE 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
-    },
-    "RTE_COMPONENT_SWC_IO_CONTROL": {
-      "type": "integer",
-      "description": "RTE_COMPONENT_SWC_IO_CONTROL 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
-    },
-    "RTE_COMPONENT_SWC_MODE_MANAGER": {
-      "type": "integer",
-      "description": "RTE_COMPONENT_SWC_MODE_MANAGER 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
-    },
-    "RTE_COMPONENT_SWC_WATCHDOG": {
-      "type": "integer",
-      "description": "RTE_COMPONENT_SWC_WATCHDOG 参数",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
-    },
-    "RTE_COMPONENT_SWC_NVM_MANAGER": {
-      "type": "integer",
-      "description": "RTE_COMPONENT_SWC_NVM_MANAGER 参数",
-      "default": 7,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMPONENT_SWC_DCM_HANDLER": {
       "type": "integer",
@@ -461,7 +247,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMPONENT_SWC_DEM_HANDLER": {
       "type": "integer",
@@ -469,7 +255,7 @@
       "default": 9,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMPONENT_SWC_COM_HANDLER": {
       "type": "integer",
@@ -477,7 +263,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMPONENT_SWC_PDUR_HANDLER": {
       "type": "integer",
@@ -485,7 +271,7 @@
       "default": 11,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMPONENT_SWC_CANIF_HANDLER": {
       "type": "integer",
@@ -493,7 +279,7 @@
       "default": 12,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMPONENT_SWC_ETHIF_HANDLER": {
       "type": "integer",
@@ -501,7 +287,7 @@
       "default": 13,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMPONENT_SWC_LINIF_HANDLER": {
       "type": "integer",
@@ -509,7 +295,7 @@
       "default": 14,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMPONENT_SWC_FRIF_HANDLER": {
       "type": "integer",
@@ -517,63 +303,7 @@
       "default": 15,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
-    },
-    "RTE_RUNNABLE_INIT": {
-      "type": "integer",
-      "description": "RTE_RUNNABLE_INIT 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
-    },
-    "RTE_RUNNABLE_MAIN": {
-      "type": "integer",
-      "description": "RTE_RUNNABLE_MAIN 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
-    },
-    "RTE_RUNNABLE_CYCLIC_10MS": {
-      "type": "integer",
-      "description": "RTE_RUNNABLE_CYCLIC_10MS 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
-    },
-    "RTE_RUNNABLE_CYCLIC_100MS": {
-      "type": "integer",
-      "description": "RTE_RUNNABLE_CYCLIC_100MS 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
-    },
-    "RTE_RUNNABLE_EVENT_RECEIVED": {
-      "type": "integer",
-      "description": "RTE_RUNNABLE_EVENT_RECEIVED 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
-    },
-    "RTE_RUNNABLE_OPERATION_CALLED": {
-      "type": "integer",
-      "description": "RTE_RUNNABLE_OPERATION_CALLED 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
-    },
-    "RTE_RUNNABLE_MODE_SWITCHED": {
-      "type": "integer",
-      "description": "RTE_RUNNABLE_MODE_SWITCHED 参数",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_RUNNABLE_ERROR_HANDLER": {
       "type": "integer",
@@ -581,7 +311,277 @@
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "RTE_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_DEFAULT_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "RTE_DEFAULT_TIMEOUT_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_MAX_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "RTE_MAX_TIMEOUT_MS 参数",
+      "default": 10000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_MEASUREMENT_SUPPORT": {
+      "type": "boolean",
+      "description": "RTE_MEASUREMENT_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_CALIBRATION_SUPPORT": {
+      "type": "boolean",
+      "description": "RTE_CALIBRATION_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_MAX_PORTS_PER_COMPONENT": {
+      "type": "integer",
+      "description": "RTE_MAX_PORTS_PER_COMPONENT 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_STATE_INIT": {
+      "type": "integer",
+      "description": "RTE_STATE_INIT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_STATE_STARTED": {
+      "type": "integer",
+      "description": "RTE_STATE_STARTED 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_STATE_STOPPED": {
+      "type": "integer",
+      "description": "RTE_STATE_STOPPED 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_MAX_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "RTE_MAX_BUFFER_SIZE 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_MAX_STRING_LENGTH": {
+      "type": "integer",
+      "description": "RTE_MAX_STRING_LENGTH 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_MAX_BYTE_ARRAY_LENGTH": {
+      "type": "integer",
+      "description": "RTE_MAX_BYTE_ARRAY_LENGTH 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_MAX_QUEUE_LENGTH": {
+      "type": "integer",
+      "description": "RTE_MAX_QUEUE_LENGTH 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_TRANSFORMER_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "RTE_TRANSFORMER_BUFFER_SIZE 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_SOMEIP_SUPPORT": {
+      "type": "boolean",
+      "description": "RTE_SOMEIP_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_E2E_SUPPORT": {
+      "type": "boolean",
+      "description": "RTE_E2E_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_COM_SUPPORT": {
+      "type": "boolean",
+      "description": "RTE_COM_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_OS_TASKS_NUM": {
+      "type": "integer",
+      "description": "RTE_OS_TASKS_NUM 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_OS_EVENTS_NUM": {
+      "type": "integer",
+      "description": "RTE_OS_EVENTS_NUM 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_OS_ALARMS_NUM": {
+      "type": "integer",
+      "description": "RTE_OS_ALARMS_NUM 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_COMPONENT_SWC_ECU_MANAGER": {
+      "type": "integer",
+      "description": "RTE_COMPONENT_SWC_ECU_MANAGER 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_COMPONENT_SWC_DIAGNOSTIC": {
+      "type": "integer",
+      "description": "RTE_COMPONENT_SWC_DIAGNOSTIC 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_COMPONENT_SWC_COMMUNICATION": {
+      "type": "integer",
+      "description": "RTE_COMPONENT_SWC_COMMUNICATION 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_COMPONENT_SWC_STORAGE": {
+      "type": "integer",
+      "description": "RTE_COMPONENT_SWC_STORAGE 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_COMPONENT_SWC_IO_CONTROL": {
+      "type": "integer",
+      "description": "RTE_COMPONENT_SWC_IO_CONTROL 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_COMPONENT_SWC_MODE_MANAGER": {
+      "type": "integer",
+      "description": "RTE_COMPONENT_SWC_MODE_MANAGER 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_COMPONENT_SWC_WATCHDOG": {
+      "type": "integer",
+      "description": "RTE_COMPONENT_SWC_WATCHDOG 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_COMPONENT_SWC_NVM_MANAGER": {
+      "type": "integer",
+      "description": "RTE_COMPONENT_SWC_NVM_MANAGER 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_RUNNABLE_INIT": {
+      "type": "integer",
+      "description": "RTE_RUNNABLE_INIT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_RUNNABLE_MAIN": {
+      "type": "integer",
+      "description": "RTE_RUNNABLE_MAIN 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_RUNNABLE_CYCLIC_10MS": {
+      "type": "integer",
+      "description": "RTE_RUNNABLE_CYCLIC_10MS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_RUNNABLE_CYCLIC_100MS": {
+      "type": "integer",
+      "description": "RTE_RUNNABLE_CYCLIC_100MS 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_RUNNABLE_EVENT_RECEIVED": {
+      "type": "integer",
+      "description": "RTE_RUNNABLE_EVENT_RECEIVED 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_RUNNABLE_OPERATION_CALLED": {
+      "type": "integer",
+      "description": "RTE_RUNNABLE_OPERATION_CALLED 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RTE_RUNNABLE_MODE_SWITCHED": {
+      "type": "integer",
+      "description": "RTE_RUNNABLE_MODE_SWITCHED 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMPONENT_ASW_ENGINE_CONTROL": {
       "type": "integer",
@@ -589,7 +589,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMPONENT_ASW_VEHICLE_DYNAMICS": {
       "type": "integer",
@@ -597,7 +597,7 @@
       "default": 9,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER": {
       "type": "integer",
@@ -605,7 +605,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMPONENT_ASW_COMMUNICATION_MANAGER": {
       "type": "integer",
@@ -613,7 +613,7 @@
       "default": 11,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMPONENT_ASW_STORAGE_MANAGER": {
       "type": "integer",
@@ -621,7 +621,7 @@
       "default": 12,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMPONENT_ASW_IO_CONTROL": {
       "type": "integer",
@@ -629,7 +629,7 @@
       "default": 13,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMPONENT_ASW_MODE_MANAGER": {
       "type": "integer",
@@ -637,7 +637,7 @@
       "default": 14,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMPONENT_ASW_WATCHDOG_MANAGER": {
       "type": "integer",
@@ -645,7 +645,7 @@
       "default": 15,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_SR_ENGINE_STATUS": {
       "type": "integer",
@@ -653,7 +653,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_SR_VEHICLE_SPEED": {
       "type": "integer",
@@ -661,7 +661,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_SR_BATTERY_STATUS": {
       "type": "integer",
@@ -669,7 +669,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_SR_DIAG_REQUEST": {
       "type": "integer",
@@ -677,7 +677,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_SR_DIAG_RESPONSE": {
       "type": "integer",
@@ -685,7 +685,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_CS_DIAG_SERVICE": {
       "type": "integer",
@@ -693,7 +693,7 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_CS_STORAGE_SERVICE": {
       "type": "integer",
@@ -701,7 +701,7 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_CS_MODE_SERVICE": {
       "type": "integer",
@@ -709,7 +709,7 @@
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_MD_OPERATION_MODE": {
       "type": "integer",
@@ -717,7 +717,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_MD_DIAGNOSTIC_MODE": {
       "type": "integer",
@@ -725,7 +725,7 @@
       "default": 9,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_TR_WAKEUP_EVENT": {
       "type": "integer",
@@ -733,7 +733,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_TR_ERROR_EVENT": {
       "type": "integer",
@@ -741,7 +741,7 @@
       "default": 11,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_EC_RPM": {
       "type": "integer",
@@ -749,7 +749,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_EC_SPEED": {
       "type": "integer",
@@ -757,7 +757,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_EC_TEMPERATURE": {
       "type": "integer",
@@ -765,7 +765,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_EC_THROTTLE": {
       "type": "integer",
@@ -773,7 +773,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_EC_FUEL_INJECTION": {
       "type": "integer",
@@ -781,7 +781,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_VD_YAW_RATE": {
       "type": "integer",
@@ -789,7 +789,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_VD_WHEEL_SPEED": {
       "type": "integer",
@@ -797,7 +797,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_VD_STEERING_ANGLE": {
       "type": "integer",
@@ -805,7 +805,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_DM_DTC_STATUS": {
       "type": "integer",
@@ -813,7 +813,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_DM_CLEAR_DTC": {
       "type": "integer",
@@ -821,7 +821,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_DM_READ_DTC": {
       "type": "integer",
@@ -829,7 +829,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_CM_VEHICLE_SPEED": {
       "type": "integer",
@@ -837,7 +837,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_CM_STATUS": {
       "type": "integer",
@@ -845,7 +845,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_SM_DATA_READ": {
       "type": "integer",
@@ -853,7 +853,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_SM_DATA_WRITE": {
       "type": "integer",
@@ -861,7 +861,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_IO_INPUT": {
       "type": "integer",
@@ -869,7 +869,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_IO_OUTPUT": {
       "type": "integer",
@@ -877,7 +877,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_MM_CURRENT_MODE": {
       "type": "integer",
@@ -885,7 +885,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_MM_TARGET_MODE": {
       "type": "integer",
@@ -893,7 +893,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_WM_STATUS": {
       "type": "integer",
@@ -901,7 +901,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_WM_RESET": {
       "type": "integer",
@@ -909,7 +909,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_WM_TRIGGER": {
       "type": "integer",
@@ -917,160 +917,160 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_EC_RPM_H": {
       "type": "string",
-      "description": "RTE_PORT_EC_RPM_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_RPM))）",
-      "default": "(((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_RPM))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_EC_RPM_H（派生表达式: (((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_RPM))）",
+      "default": "((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_RPM)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_EC_SPEED_H": {
       "type": "string",
-      "description": "RTE_PORT_EC_SPEED_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_SPEED))）",
-      "default": "(((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_SPEED))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_EC_SPEED_H（派生表达式: (((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_SPEED))）",
+      "default": "((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_SPEED)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_EC_TEMPERATURE_H": {
       "type": "string",
-      "description": "RTE_PORT_EC_TEMPERATURE_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_TEMPERATURE))）",
-      "default": "(((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_TEMPERATURE))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_EC_TEMPERATURE_H（派生表达式: (((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_TEMPERATURE))）",
+      "default": "((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_TEMPERATURE)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_EC_THROTTLE_H": {
       "type": "string",
-      "description": "RTE_PORT_EC_THROTTLE_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_THROTTLE))）",
-      "default": "(((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_THROTTLE))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_EC_THROTTLE_H（派生表达式: (((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_THROTTLE))）",
+      "default": "((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_THROTTLE)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_EC_FUEL_INJECTION_H": {
       "type": "string",
-      "description": "RTE_PORT_EC_FUEL_INJECTION_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_FUEL_INJECTION))）",
-      "default": "(((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_FUEL_INJECTION))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_EC_FUEL_INJECTION_H（派生表达式: (((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_FUEL_INJECTION))）",
+      "default": "((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_FUEL_INJECTION)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_VD_YAW_RATE_H": {
       "type": "string",
-      "description": "RTE_PORT_VD_YAW_RATE_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_YAW_RATE))）",
-      "default": "(((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_YAW_RATE))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_VD_YAW_RATE_H（派生表达式: (((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_YAW_RATE))）",
+      "default": "((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_YAW_RATE)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_VD_WHEEL_SPEED_H": {
       "type": "string",
-      "description": "RTE_PORT_VD_WHEEL_SPEED_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_WHEEL_SPEED))）",
-      "default": "(((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_WHEEL_SPEED))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_VD_WHEEL_SPEED_H（派生表达式: (((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_WHEEL_SPEED))）",
+      "default": "((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_WHEEL_SPEED)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_VD_STEERING_ANGLE_H": {
       "type": "string",
-      "description": "RTE_PORT_VD_STEERING_ANGLE_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_STEERING_ANGLE))）",
-      "default": "(((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_STEERING_ANGLE))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_VD_STEERING_ANGLE_H（派生表达式: (((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_STEERING_ANGLE))）",
+      "default": "((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_STEERING_ANGLE)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_DM_DTC_STATUS_H": {
       "type": "string",
-      "description": "RTE_PORT_DM_DTC_STATUS_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_DTC_STATUS))）",
-      "default": "(((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_DTC_STATUS))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_DM_DTC_STATUS_H（派生表达式: (((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_DTC_STATUS))）",
+      "default": "((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_DTC_STATUS)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_DM_CLEAR_DTC_H": {
       "type": "string",
-      "description": "RTE_PORT_DM_CLEAR_DTC_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_CLEAR_DTC))）",
-      "default": "(((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_CLEAR_DTC))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_DM_CLEAR_DTC_H（派生表达式: (((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_CLEAR_DTC))）",
+      "default": "((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_CLEAR_DTC)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_DM_READ_DTC_H": {
       "type": "string",
-      "description": "RTE_PORT_DM_READ_DTC_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_READ_DTC))）",
-      "default": "(((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_READ_DTC))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_DM_READ_DTC_H（派生表达式: (((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_READ_DTC))）",
+      "default": "((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_READ_DTC)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_CM_VEHICLE_SPEED_H": {
       "type": "string",
-      "description": "RTE_PORT_CM_VEHICLE_SPEED_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_COMMUNICATION_MANAGER << 8) | RTE_PORT_CM_VEHICLE_SPEED))）",
-      "default": "(((RTE_COMPONENT_ASW_COMMUNICATION_MANAGER << 8) | RTE_PORT_CM_VEHICLE_SPEED))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_CM_VEHICLE_SPEED_H（派生表达式: (((RTE_COMPONENT_ASW_COMMUNICATION_MANAGER << 8) | RTE_PORT_CM_VEHICLE_SPEED))）",
+      "default": "((RTE_COMPONENT_ASW_COMMUNICATION_MANAGER << 8) | RTE_PORT_CM_VEHICLE_SPEED)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_CM_STATUS_H": {
       "type": "string",
-      "description": "RTE_PORT_CM_STATUS_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_COMMUNICATION_MANAGER << 8) | RTE_PORT_CM_STATUS))）",
-      "default": "(((RTE_COMPONENT_ASW_COMMUNICATION_MANAGER << 8) | RTE_PORT_CM_STATUS))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_CM_STATUS_H（派生表达式: (((RTE_COMPONENT_ASW_COMMUNICATION_MANAGER << 8) | RTE_PORT_CM_STATUS))）",
+      "default": "((RTE_COMPONENT_ASW_COMMUNICATION_MANAGER << 8) | RTE_PORT_CM_STATUS)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_SM_DATA_READ_H": {
       "type": "string",
-      "description": "RTE_PORT_SM_DATA_READ_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_STORAGE_MANAGER << 8) | RTE_PORT_SM_DATA_READ))）",
-      "default": "(((RTE_COMPONENT_ASW_STORAGE_MANAGER << 8) | RTE_PORT_SM_DATA_READ))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_SM_DATA_READ_H（派生表达式: (((RTE_COMPONENT_ASW_STORAGE_MANAGER << 8) | RTE_PORT_SM_DATA_READ))）",
+      "default": "((RTE_COMPONENT_ASW_STORAGE_MANAGER << 8) | RTE_PORT_SM_DATA_READ)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_SM_DATA_WRITE_H": {
       "type": "string",
-      "description": "RTE_PORT_SM_DATA_WRITE_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_STORAGE_MANAGER << 8) | RTE_PORT_SM_DATA_WRITE))）",
-      "default": "(((RTE_COMPONENT_ASW_STORAGE_MANAGER << 8) | RTE_PORT_SM_DATA_WRITE))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_SM_DATA_WRITE_H（派生表达式: (((RTE_COMPONENT_ASW_STORAGE_MANAGER << 8) | RTE_PORT_SM_DATA_WRITE))）",
+      "default": "((RTE_COMPONENT_ASW_STORAGE_MANAGER << 8) | RTE_PORT_SM_DATA_WRITE)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_IO_INPUT_H": {
       "type": "string",
-      "description": "RTE_PORT_IO_INPUT_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_IO_CONTROL << 8) | RTE_PORT_IO_INPUT))）",
-      "default": "(((RTE_COMPONENT_ASW_IO_CONTROL << 8) | RTE_PORT_IO_INPUT))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_IO_INPUT_H（派生表达式: (((RTE_COMPONENT_ASW_IO_CONTROL << 8) | RTE_PORT_IO_INPUT))）",
+      "default": "((RTE_COMPONENT_ASW_IO_CONTROL << 8) | RTE_PORT_IO_INPUT)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_IO_OUTPUT_H": {
       "type": "string",
-      "description": "RTE_PORT_IO_OUTPUT_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_IO_CONTROL << 8) | RTE_PORT_IO_OUTPUT))）",
-      "default": "(((RTE_COMPONENT_ASW_IO_CONTROL << 8) | RTE_PORT_IO_OUTPUT))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_IO_OUTPUT_H（派生表达式: (((RTE_COMPONENT_ASW_IO_CONTROL << 8) | RTE_PORT_IO_OUTPUT))）",
+      "default": "((RTE_COMPONENT_ASW_IO_CONTROL << 8) | RTE_PORT_IO_OUTPUT)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_MM_CURRENT_MODE_H": {
       "type": "string",
-      "description": "RTE_PORT_MM_CURRENT_MODE_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_MODE_MANAGER << 8) | RTE_PORT_MM_CURRENT_MODE))）",
-      "default": "(((RTE_COMPONENT_ASW_MODE_MANAGER << 8) | RTE_PORT_MM_CURRENT_MODE))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_MM_CURRENT_MODE_H（派生表达式: (((RTE_COMPONENT_ASW_MODE_MANAGER << 8) | RTE_PORT_MM_CURRENT_MODE))）",
+      "default": "((RTE_COMPONENT_ASW_MODE_MANAGER << 8) | RTE_PORT_MM_CURRENT_MODE)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_MM_TARGET_MODE_H": {
       "type": "string",
-      "description": "RTE_PORT_MM_TARGET_MODE_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_MODE_MANAGER << 8) | RTE_PORT_MM_TARGET_MODE))）",
-      "default": "(((RTE_COMPONENT_ASW_MODE_MANAGER << 8) | RTE_PORT_MM_TARGET_MODE))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_MM_TARGET_MODE_H（派生表达式: (((RTE_COMPONENT_ASW_MODE_MANAGER << 8) | RTE_PORT_MM_TARGET_MODE))）",
+      "default": "((RTE_COMPONENT_ASW_MODE_MANAGER << 8) | RTE_PORT_MM_TARGET_MODE)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_WM_STATUS_H": {
       "type": "string",
-      "description": "RTE_PORT_WM_STATUS_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_STATUS))）",
-      "default": "(((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_STATUS))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_WM_STATUS_H（派生表达式: (((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_STATUS))）",
+      "default": "((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_STATUS)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_WM_RESET_H": {
       "type": "string",
-      "description": "RTE_PORT_WM_RESET_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_RESET))）",
-      "default": "(((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_RESET))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_WM_RESET_H（派生表达式: (((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_RESET))）",
+      "default": "((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_RESET)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_PORT_WM_TRIGGER_H": {
       "type": "string",
-      "description": "RTE_PORT_WM_TRIGGER_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_TRIGGER))）",
-      "default": "(((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_TRIGGER))",
-      "x-section": "RTE ASW PORT HANDLES",
+      "description": "RTE_PORT_WM_TRIGGER_H（派生表达式: (((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_TRIGGER))）",
+      "default": "((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_TRIGGER)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RTE_DE_ENGINE_RPM": {
@@ -1079,7 +1079,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_DE_VEHICLE_SPEED": {
       "type": "integer",
@@ -1087,7 +1087,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_DE_BATTERY_VOLTAGE": {
       "type": "integer",
@@ -1095,7 +1095,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_DE_ENGINE_TEMP": {
       "type": "integer",
@@ -1103,7 +1103,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_DE_FUEL_LEVEL": {
       "type": "integer",
@@ -1111,7 +1111,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_DE_ODOMETER": {
       "type": "integer",
@@ -1119,7 +1119,7 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_DE_GEAR_POSITION": {
       "type": "integer",
@@ -1127,7 +1127,7 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_DE_DOOR_STATUS": {
       "type": "integer",
@@ -1135,7 +1135,7 @@
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_DE_DTC_STATUS": {
       "type": "integer",
@@ -1143,7 +1143,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_DE_DIAG_REQUEST_DATA": {
       "type": "integer",
@@ -1151,7 +1151,7 @@
       "default": 9,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_DE_DIAG_RESPONSE_DATA": {
       "type": "integer",
@@ -1159,7 +1159,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMSIGNAL_ENGINE_RPM": {
       "type": "integer",
@@ -1167,7 +1167,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMSIGNAL_VEHICLE_SPEED": {
       "type": "integer",
@@ -1175,7 +1175,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMSIGNAL_BATTERY_VOLTAGE": {
       "type": "integer",
@@ -1183,7 +1183,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMSIGNAL_ENGINE_TEMP": {
       "type": "integer",
@@ -1191,7 +1191,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMSIGNAL_FUEL_LEVEL": {
       "type": "integer",
@@ -1199,7 +1199,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMSIGNAL_ODOMETER": {
       "type": "integer",
@@ -1207,7 +1207,7 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMSIGNAL_GEAR_POSITION": {
       "type": "integer",
@@ -1215,7 +1215,7 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_COMSIGNAL_DOOR_STATUS": {
       "type": "integer",
@@ -1223,55 +1223,55 @@
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE ASW PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NVMBLOCK_ODOMETER": {
       "type": "integer",
-      "description": "RTE_NVMBLOCK_ODOMETER（cast: NvM_BlockIdType）",
+      "description": "RTE_NVMBLOCK_ODOMETER 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NVMBLOCK_VIN": {
       "type": "integer",
-      "description": "RTE_NVMBLOCK_VIN（cast: NvM_BlockIdType）",
+      "description": "RTE_NVMBLOCK_VIN 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NVMBLOCK_ERROR_LOG": {
       "type": "integer",
-      "description": "RTE_NVMBLOCK_ERROR_LOG（cast: NvM_BlockIdType）",
+      "description": "RTE_NVMBLOCK_ERROR_LOG 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NVMBLOCK_CALIBRATION_DATA": {
       "type": "integer",
-      "description": "RTE_NVMBLOCK_CALIBRATION_DATA（cast: NvM_BlockIdType）",
+      "description": "RTE_NVMBLOCK_CALIBRATION_DATA 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_NVMBLOCK_USER_SETTINGS": {
       "type": "integer",
-      "description": "RTE_NVMBLOCK_USER_SETTINGS（cast: NvM_BlockIdType）",
+      "description": "RTE_NVMBLOCK_USER_SETTINGS 参数",
       "default": 6,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PORT_NVM_READ": {
       "type": "integer",
-      "description": "RTE_PORT_NVM_READ（cast: Rte_PortHandleType）",
+      "description": "RTE_PORT_NVM_READ 参数",
       "default": 768,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE NVM PORT HANDLES"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_OP_DIAG_READ_DATA": {
       "type": "integer",
@@ -1279,7 +1279,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE NVM PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_OP_DIAG_WRITE_DATA": {
       "type": "integer",
@@ -1287,7 +1287,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE NVM PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_OP_DIAG_ROUTINE_CONTROL": {
       "type": "integer",
@@ -1295,7 +1295,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE NVM PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_OP_STORAGE_READ_BLOCK": {
       "type": "integer",
@@ -1303,7 +1303,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE NVM PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_OP_STORAGE_WRITE_BLOCK": {
       "type": "integer",
@@ -1311,7 +1311,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE NVM PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_OP_MODE_SWITCH": {
       "type": "integer",
@@ -1319,7 +1319,7 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE NVM PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_OP_IO_CONTROL": {
       "type": "integer",
@@ -1327,7 +1327,7 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE NVM PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_GROUP_OPERATION": {
       "type": "integer",
@@ -1335,7 +1335,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE NVM PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_GROUP_DIAGNOSTIC": {
       "type": "integer",
@@ -1343,7 +1343,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE NVM PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_GROUP_COMMUNICATION": {
       "type": "integer",
@@ -1351,7 +1351,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE NVM PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_GROUP_STORAGE": {
       "type": "integer",
@@ -1359,7 +1359,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE NVM PORT HANDLES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_OPERATION_NORMAL": {
       "type": "integer",
@@ -1367,7 +1367,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_OPERATION_SLEEP": {
       "type": "integer",
@@ -1375,7 +1375,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_OPERATION_STARTUP": {
       "type": "integer",
@@ -1383,7 +1383,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_OPERATION_SHUTDOWN": {
       "type": "integer",
@@ -1391,7 +1391,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_DIAGNOSTIC_DEFAULT": {
       "type": "integer",
@@ -1399,7 +1399,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_DIAGNOSTIC_EXTENDED": {
       "type": "integer",
@@ -1407,7 +1407,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_DIAGNOSTIC_PROGRAMMING": {
       "type": "integer",
@@ -1415,7 +1415,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_COMMUNICATION_FULL": {
       "type": "integer",
@@ -1423,7 +1423,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_COMMUNICATION_SILENT": {
       "type": "integer",
@@ -1431,7 +1431,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_COMMUNICATION_NONE": {
       "type": "integer",
@@ -1439,7 +1439,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_STORAGE_NORMAL": {
       "type": "integer",
@@ -1447,7 +1447,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_STORAGE_WRITE_PROTECTED": {
       "type": "integer",
@@ -1455,7 +1455,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MODE_STORAGE_ERROR": {
       "type": "integer",
@@ -1463,7 +1463,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_IRV_ENGINE_STATUS": {
       "type": "integer",
@@ -1471,7 +1471,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_IRV_VEHICLE_STATUS": {
       "type": "integer",
@@ -1479,7 +1479,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_IRV_DIAG_STATUS": {
       "type": "integer",
@@ -1487,7 +1487,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_IRV_STORAGE_STATUS": {
       "type": "integer",
@@ -1495,7 +1495,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PIM_CONFIG_DATA": {
       "type": "integer",
@@ -1503,7 +1503,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PIM_CALIBRATION_DATA": {
       "type": "integer",
@@ -1511,7 +1511,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_PIM_RUNTIME_DATA": {
       "type": "integer",
@@ -1519,7 +1519,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_CALPRM_ENGINE_PARAMS": {
       "type": "integer",
@@ -1527,7 +1527,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_CALPRM_VEHICLE_PARAMS": {
       "type": "integer",
@@ -1535,7 +1535,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_CALPRM_DIAG_PARAMS": {
       "type": "integer",
@@ -1543,7 +1543,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MEAS_ENGINE_PERF": {
       "type": "integer",
@@ -1551,7 +1551,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MEAS_VEHICLE_PERF": {
       "type": "integer",
@@ -1559,7 +1559,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MEAS_DIAG_PERF": {
       "type": "integer",
@@ -1567,7 +1567,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_MEAS_COM_PERF": {
       "type": "integer",
@@ -1575,7 +1575,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_EA_GLOBAL": {
       "type": "integer",
@@ -1583,7 +1583,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_EA_COMMUNICATION": {
       "type": "integer",
@@ -1591,7 +1591,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_EA_STORAGE": {
       "type": "integer",
@@ -1599,7 +1599,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RTE_EA_DIAGNOSTIC": {
       "type": "integer",
@@ -1607,7 +1607,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RTE MODE VALUES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -1615,26 +1615,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/rte/include/Rte_Cfg.h",
-  "x-display-name": "Rte",
-  "x-sections": [
-    "RTE GENERAL CONFIGURATION",
-    "RTE COMPONENT CONFIGURATION",
-    "RTE COMMUNICATION CONFIGURATION",
-    "RTE DATA CONFIGURATION",
-    "RTE MEMORY CONFIGURATION",
-    "RTE MODE & PORT CONFIGURATION",
-    "RTE STATE DEFINITIONS",
-    "RTE EXCLUSIVE AREA CONFIGURATION",
-    "RTE BUFFER CONFIGURATION",
-    "RTE TRANSFORMATION CONFIGURATION",
-    "RTE SOME/IP CONFIGURATION",
-    "RTE E2E CONFIGURATION",
-    "RTE COM CONFIGURATION",
-    "RTE OS CONFIGURATION",
-    "RTE MAIN FUNCTION PERIOD",
-    "RTE TIMEOUT CONFIGURATION",
-    "RTE ASW PORT HANDLES",
-    "RTE NVM PORT HANDLES",
-    "RTE MODE VALUES"
-  ]
+  "x-display-name": "Rte"
 }

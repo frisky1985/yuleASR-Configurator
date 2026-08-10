@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/ostimingprotection.json",
   "title": "Os_TimingProtection Configuration",
-  "description": "OS Timing Protection Configuration",
+  "description": "Os_TimingProtection Configuration configuration header",
   "type": "object",
   "properties": {
     "OS_TASK_COUNT": {
@@ -11,6 +11,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "OS_RESOURCE_COUNT": {
@@ -19,74 +20,86 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
-    },
-    "OS_TIMING_PROTECTION_ENABLED": {
-      "type": "boolean",
-      "description": "OS_TIMING_PROTECTION_ENABLED 参数",
-      "default": true
-    },
-    "OS_EXECUTION_TIME_PROTECTION": {
-      "type": "boolean",
-      "description": "OS_EXECUTION_TIME_PROTECTION 参数",
-      "default": true
-    },
-    "OS_MAX_TASK_EXECUTION_TIME_MS": {
-      "type": "integer",
-      "description": "Max 100ms per task",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "OS_MAX_ISR_EXECUTION_TIME_MS": {
-      "type": "integer",
-      "description": "Max 50ms per ISR",
-      "default": 50,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "OS_ARRIVAL_TIME_PROTECTION": {
-      "type": "boolean",
-      "description": "OS_ARRIVAL_TIME_PROTECTION 参数",
-      "default": true
-    },
-    "OS_MAX_TASK_ARRIVAL_INTERVAL_MS": {
-      "type": "integer",
-      "description": "Min 10ms between activations",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "OS_RESOURCE_LOCK_PROTECTION": {
-      "type": "boolean",
-      "description": "OS_RESOURCE_LOCK_PROTECTION 参数",
-      "default": true
-    },
-    "OS_MAX_RESOURCE_LOCK_TIME_MS": {
-      "type": "integer",
-      "description": "Max 50ms holding resource",
-      "default": 50,
-      "minimum": 0,
-      "maximum": 255
     },
     "OS_INTERRUPT_LOCK_PROTECTION": {
       "type": "boolean",
       "description": "OS_INTERRUPT_LOCK_PROTECTION 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "OS_TIMING_PROTECTION_ENABLED": {
+      "type": "boolean",
+      "description": "OS_TIMING_PROTECTION_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "OS_EXECUTION_TIME_PROTECTION": {
+      "type": "boolean",
+      "description": "OS_EXECUTION_TIME_PROTECTION 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "OS_MAX_TASK_EXECUTION_TIME_MS": {
+      "type": "integer",
+      "description": "OS_MAX_TASK_EXECUTION_TIME_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "OS_MAX_ISR_EXECUTION_TIME_MS": {
+      "type": "integer",
+      "description": "OS_MAX_ISR_EXECUTION_TIME_MS 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "OS_ARRIVAL_TIME_PROTECTION": {
+      "type": "boolean",
+      "description": "OS_ARRIVAL_TIME_PROTECTION 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "OS_MAX_TASK_ARRIVAL_INTERVAL_MS": {
+      "type": "integer",
+      "description": "OS_MAX_TASK_ARRIVAL_INTERVAL_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "OS_RESOURCE_LOCK_PROTECTION": {
+      "type": "boolean",
+      "description": "OS_RESOURCE_LOCK_PROTECTION 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "OS_MAX_RESOURCE_LOCK_TIME_MS": {
+      "type": "integer",
+      "description": "OS_MAX_RESOURCE_LOCK_TIME_MS 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "OS_MAX_ALL_INT_LOCK_TIME_MS": {
       "type": "integer",
-      "description": "Max 10ms all interrupts disabled",
+      "description": "OS_MAX_ALL_INT_LOCK_TIME_MS 参数",
       "default": 10,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "OS_MAX_OS_INT_LOCK_TIME_MS": {
       "type": "integer",
-      "description": "Max 50ms OS interrupts disabled",
+      "description": "OS_MAX_OS_INT_LOCK_TIME_MS 参数",
       "default": 50,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

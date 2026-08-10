@@ -2,32 +2,36 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/ipdum.json",
   "title": "IpduM Configuration",
-  "description": "IPDU Multiplexer Configuration",
+  "description": "IpduM Configuration configuration header",
   "type": "object",
   "properties": {
     "IPDUM_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "IPDUM_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "IPDUM_VERSION_INFO_API": {
       "type": "boolean",
       "description": "IPDUM_VERSION_INFO_API 参数",
-      "default": true
-    },
-    "IPDUM_MAX_STATIC_PARTS": {
-      "type": "integer",
-      "description": "IPDUM_MAX_STATIC_PARTS 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "IPDUM_MAIN_FUNCTION_PERIOD": {
       "type": "integer",
       "description": "IPDUM_MAIN_FUNCTION_PERIOD 参数",
       "default": 10,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "IPDUM_MAX_STATIC_PARTS": {
+      "type": "integer",
+      "description": "IPDUM_MAX_STATIC_PARTS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

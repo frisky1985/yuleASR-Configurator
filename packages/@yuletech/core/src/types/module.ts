@@ -213,7 +213,7 @@ export interface CrossModuleReference {
   /** 目标参数名称 */
   param: string;
   /** 关系类型 */
-  relation: 'equals' | 'less_than' | 'greater_than' | 'in_range' | 'in_enum';
+  relation: 'equals' | 'less_than' | 'greater_than' | 'in_range' | 'in_enum' | 'required';
   /** 违反时的严重级别 */
   severity: 'error' | 'warning';
   /** 约束描述 (用于错误消息) */

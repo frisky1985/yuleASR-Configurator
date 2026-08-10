@@ -2,220 +2,252 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/canif.json",
   "title": "CanIf Configuration",
-  "description": "CanIf configuration (extracted from yuleASR Cfg.h)",
+  "description": "CanIf Configuration configuration header",
   "type": "object",
   "properties": {
-    "CANIF_CONTROLLER_CNT": {
-      "type": "integer",
-      "description": "CANIF_CONTROLLER_CNT 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "CANIF_NUM_CONTROLLERS": {
-      "type": "integer",
-      "description": "CANIF_NUM_CONTROLLERS（别名: CANIF_CONTROLLER_CNT = 1；同族可选: CANIF_CONTROLLER_0 / CANIF_CONTROLLER_CNT）",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "CANIF_NUM_TRANSCEIVERS": {
-      "type": "integer",
-      "description": "CANIF_NUM_TRANSCEIVERS（别名: CANIF_CONTROLLER_CNT = 1；同族可选: CANIF_CONTROLLER_0 / CANIF_CONTROLLER_CNT）",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "CANIF_HOH_CNT": {
-      "type": "integer",
-      "description": "CANIF_HOH_CNT 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "CANIF_HTH_CNT": {
-      "type": "integer",
-      "description": "CANIF_HTH_CNT 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "CANIF_LPDU_CNT": {
-      "type": "integer",
-      "description": "CANIF_LPDU_CNT 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "CANIF_TX_LPDU_CNT": {
-      "type": "integer",
-      "description": "CANIF_TX_LPDU_CNT 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "CANIF_NUM_TX_PDUS": {
-      "type": "integer",
-      "description": "CANIF_NUM_TX_PDUS（别名: CANIF_TX_LPDU_CNT = 4；同族可选: CANIF_TX_LPDU_0 / CANIF_TX_LPDU_1 / CANIF_TX_LPDU_2 / CANIF_TX_LPDU_3 / CANIF_TX_LPDU_CNT）",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "CANIF_RX_LPDU_CNT": {
-      "type": "integer",
-      "description": "CANIF_RX_LPDU_CNT 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "CANIF_NUM_RX_PDUS": {
-      "type": "integer",
-      "description": "CANIF_NUM_RX_PDUS（别名: CANIF_RX_LPDU_CNT = 4；同族可选: CANIF_RX_LPDU_0 / CANIF_RX_LPDU_1 / CANIF_RX_LPDU_2 / CANIF_RX_LPDU_3 / CANIF_RX_LPDU_CNT）",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255
-    },
     "CANIF_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "CANIF_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANIF_VERSION_INFO_API": {
       "type": "boolean",
       "description": "CANIF_VERSION_INFO_API 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "CANIF_TRANSMIT_CANCELLATION": {
-      "type": "boolean",
-      "description": "CANIF_TRANSMIT_CANCELLATION 参数",
-      "default": false
-    },
-    "CANIF_RX_INDICATION": {
-      "type": "boolean",
-      "description": "CANIF_RX_INDICATION 参数",
-      "default": true
-    },
-    "CANIF_TX_CONFIRMATION": {
-      "type": "boolean",
-      "description": "CANIF_TX_CONFIRMATION 参数",
-      "default": true
-    },
-    "CANIF_WAKEUP_SUPPORT": {
-      "type": "boolean",
-      "description": "CANIF_WAKEUP_SUPPORT 参数",
-      "default": true
-    },
-    "CANIF_CONTROLLER_0": {
+    "CANIF_NUM_CONTROLLERS": {
       "type": "integer",
-      "description": "CANIF_CONTROLLER_0 参数",
-      "default": 0,
+      "description": "CANIF_NUM_CONTROLLERS 参数",
+      "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANIF_NUM_TRANSCEIVERS": {
+      "type": "integer",
+      "description": "CANIF_NUM_TRANSCEIVERS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANIF_NUM_TX_PDUS": {
+      "type": "integer",
+      "description": "CANIF_NUM_TX_PDUS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANIF_NUM_RX_PDUS": {
+      "type": "integer",
+      "description": "CANIF_NUM_RX_PDUS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANIF_DEFAULT_BAUDRATE": {
       "type": "integer",
       "description": "CANIF_DEFAULT_BAUDRATE 参数",
       "default": 500,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "CANIF_HTH_0": {
+    "CANIF_CONTROLLER_CNT": {
       "type": "integer",
-      "description": "CANIF_HTH_0 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "CANIF_HTH_1": {
-      "type": "integer",
-      "description": "CANIF_HTH_1 参数",
+      "description": "CANIF_CONTROLLER_CNT 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "CANIF_HRH_0": {
+    "CANIF_CONTROLLER_0": {
       "type": "integer",
-      "description": "CANIF_HRH_0 参数",
-      "default": 2,
+      "description": "CANIF_CONTROLLER_0 参数",
+      "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "CANIF_HRH_1": {
+    "CANIF_HOH_CNT": {
       "type": "integer",
-      "description": "CANIF_HRH_1 参数",
-      "default": 3,
+      "description": "CANIF_HOH_CNT 参数",
+      "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANIF_TX_LPDU_CNT": {
+      "type": "integer",
+      "description": "CANIF_TX_LPDU_CNT 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANIF_RX_LPDU_CNT": {
+      "type": "integer",
+      "description": "CANIF_RX_LPDU_CNT 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANIF_RX_INDICATION": {
+      "type": "boolean",
+      "description": "CANIF_RX_INDICATION 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANIF_TX_CONFIRMATION": {
+      "type": "boolean",
+      "description": "CANIF_TX_CONFIRMATION 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANIF_TX_LPDU_0": {
       "type": "integer",
       "description": "CANIF_TX_LPDU_0 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANIF_TX_LPDU_1": {
       "type": "integer",
       "description": "CANIF_TX_LPDU_1 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANIF_TX_LPDU_2": {
       "type": "integer",
       "description": "CANIF_TX_LPDU_2 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANIF_TX_LPDU_3": {
       "type": "integer",
       "description": "CANIF_TX_LPDU_3 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANIF_RX_LPDU_0": {
       "type": "integer",
       "description": "CANIF_RX_LPDU_0 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANIF_RX_LPDU_1": {
       "type": "integer",
       "description": "CANIF_RX_LPDU_1 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANIF_RX_LPDU_2": {
       "type": "integer",
       "description": "CANIF_RX_LPDU_2 参数",
       "default": 6,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANIF_RX_LPDU_3": {
       "type": "integer",
       "description": "CANIF_RX_LPDU_3 参数",
       "default": 7,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANIF_HTH_CNT": {
+      "type": "integer",
+      "description": "CANIF_HTH_CNT 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANIF_LPDU_CNT": {
+      "type": "integer",
+      "description": "CANIF_LPDU_CNT 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANIF_TRANSMIT_CANCELLATION": {
+      "type": "boolean",
+      "description": "CANIF_TRANSMIT_CANCELLATION 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANIF_WAKEUP_SUPPORT": {
+      "type": "boolean",
+      "description": "CANIF_WAKEUP_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANIF_HTH_0": {
+      "type": "integer",
+      "description": "CANIF_HTH_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANIF_HTH_1": {
+      "type": "integer",
+      "description": "CANIF_HTH_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANIF_HRH_0": {
+      "type": "integer",
+      "description": "CANIF_HRH_0 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANIF_HRH_1": {
+      "type": "integer",
+      "description": "CANIF_HRH_1 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANIF_E_PARAM_CANID": {
       "type": "integer",
       "description": "CANIF_E_PARAM_CANID 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANIF_E_PARAM_DLC": {
       "type": "integer",
       "description": "CANIF_E_PARAM_DLC 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -243,6 +275,14 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "CanIf 发送 PDU 数不应超过 CanTp 通道数"
+    },
+    {
+      "sourceParam": "CANIF_NUM_RX_PDUS",
+      "module": "Can",
+      "param": "CAN_NUM_CONTROLLERS",
+      "relation": "required",
+      "severity": "error",
+      "description": "CanIf 依赖 Can 控制器，Can 必须配置"
     }
   ],
   "x-layer": "ECUAL",

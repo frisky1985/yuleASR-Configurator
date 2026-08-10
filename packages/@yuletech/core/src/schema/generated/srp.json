@@ -2,81 +2,92 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/srp.json",
   "title": "Srp Configuration",
-  "description": "SRP Configuration",
+  "description": "Srp Configuration configuration header",
   "type": "object",
   "properties": {
     "SRP_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "SRP_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SRP_VERSION_INFO_API": {
       "type": "boolean",
       "description": "SRP_VERSION_INFO_API 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SRP_MAX_STREAMS": {
       "type": "integer",
       "description": "SRP_MAX_STREAMS 参数",
       "default": 256,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SRP_MAX_DOMAINS": {
       "type": "integer",
       "description": "SRP_MAX_DOMAINS 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SRP_ETHERTYPE": {
       "type": "integer",
       "description": "SRP_ETHERTYPE 参数",
       "default": 8938,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SRP_DEFAULT_PRIORITY": {
       "type": "integer",
       "description": "SRP_DEFAULT_PRIORITY 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SRP_ATTRIBUTE_TYPE_TALKER_ADVERTISE": {
       "type": "integer",
       "description": "SRP_ATTRIBUTE_TYPE_TALKER_ADVERTISE 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SRP_ATTRIBUTE_TYPE_TALKER_FAILED": {
       "type": "integer",
       "description": "SRP_ATTRIBUTE_TYPE_TALKER_FAILED 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SRP_ATTRIBUTE_TYPE_LISTENER_READY": {
       "type": "integer",
       "description": "SRP_ATTRIBUTE_TYPE_LISTENER_READY 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SRP_ATTRIBUTE_TYPE_LISTENER_READY_FAILED": {
       "type": "integer",
       "description": "SRP_ATTRIBUTE_TYPE_LISTENER_READY_FAILED 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SRP_ATTRIBUTE_TYPE_LISTENER_ASKING_FAILED": {
       "type": "integer",
       "description": "SRP_ATTRIBUTE_TYPE_LISTENER_ASKING_FAILED 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

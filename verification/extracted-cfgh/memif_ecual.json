@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/memif_ecual.json",
   "title": "MemIf_Ecual Configuration",
-  "description": "Memory Interface configuration header",
+  "description": "MemIf_Ecual Configuration configuration header",
   "type": "object",
   "properties": {
     "MEMIF_DEV_ERROR_DETECT": {
@@ -23,55 +23,31 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NUMBER OF DEVICES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEMIF_DEVICE_0": {
       "type": "integer",
-      "description": "MEMIF_DEVICE_0（cast: MemIf_DeviceIdType）",
+      "description": "MEMIF_DEVICE_0 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "NUMBER OF DEVICES"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEMIF_DEVICE_1": {
       "type": "integer",
-      "description": "MEMIF_DEVICE_1（cast: MemIf_DeviceIdType）",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "NUMBER OF DEVICES"
-    },
-    "MEMIF_UNDERLYING_EEP": {
-      "type": "integer",
-      "description": "MEMIF_UNDERLYING_EEP 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "UNDERLYING DRIVERS"
-    },
-    "MEMIF_UNDERLYING_FEE": {
-      "type": "integer",
-      "description": "MEMIF_UNDERLYING_FEE 参数",
+      "description": "MEMIF_DEVICE_1 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "UNDERLYING DRIVERS"
-    },
-    "MEMIF_UNDERLYING_EA": {
-      "type": "integer",
-      "description": "MEMIF_UNDERLYING_EA 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "UNDERLYING DRIVERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEMIF_DEVICE_0_DRIVER": {
       "type": "integer",
-      "description": "MEMIF_DEVICE_0_DRIVER（别名: MEMIF_UNDERLYING_FEE = 1；同族可选: MEMIF_UNDERLYING_EA / MEMIF_UNDERLYING_EEP / MEMIF_UNDERLYING_FEE）",
+      "description": "MEMIF_DEVICE_0_DRIVER 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DEVICE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEMIF_DEVICE_0_UNDERLYING_ID": {
       "type": "integer",
@@ -79,31 +55,31 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DEVICE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEMIF_DEVICE_0_TOTAL_SIZE": {
       "type": "integer",
-      "description": "1MB Flash",
+      "description": "MEMIF_DEVICE_0_TOTAL_SIZE 参数",
       "default": 1048576,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "DEVICE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEMIF_DEVICE_0_BLOCK_SIZE": {
       "type": "integer",
-      "description": "256 bytes",
+      "description": "MEMIF_DEVICE_0_BLOCK_SIZE 参数",
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "DEVICE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEMIF_DEVICE_1_DRIVER": {
       "type": "integer",
-      "description": "MEMIF_DEVICE_1_DRIVER（别名: MEMIF_UNDERLYING_EEP = 0；同族可选: MEMIF_UNDERLYING_EA / MEMIF_UNDERLYING_EEP / MEMIF_UNDERLYING_FEE）",
+      "description": "MEMIF_DEVICE_1_DRIVER 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DEVICE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEMIF_DEVICE_1_UNDERLYING_ID": {
       "type": "integer",
@@ -111,23 +87,47 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DEVICE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEMIF_DEVICE_1_TOTAL_SIZE": {
       "type": "integer",
-      "description": "32KB EEPROM",
+      "description": "MEMIF_DEVICE_1_TOTAL_SIZE 参数",
       "default": 32768,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "DEVICE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEMIF_DEVICE_1_BLOCK_SIZE": {
       "type": "integer",
-      "description": "64 bytes",
+      "description": "MEMIF_DEVICE_1_BLOCK_SIZE 参数",
       "default": 64,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DEVICE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MEMIF_UNDERLYING_EEP": {
+      "type": "integer",
+      "description": "MEMIF_UNDERLYING_EEP 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MEMIF_UNDERLYING_FEE": {
+      "type": "integer",
+      "description": "MEMIF_UNDERLYING_FEE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MEMIF_UNDERLYING_EA": {
+      "type": "integer",
+      "description": "MEMIF_UNDERLYING_EA 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEMIF_DEFAULT_MODE": {
       "type": "enum",
@@ -137,7 +137,7 @@
         "MEMIF_MODE_SLOW",
         "MEMIF_MODE_FAST"
       ],
-      "x-section": "DEFAULT MODE"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEMIF_MAX_BLOCK_NUMBER": {
       "type": "integer",
@@ -145,7 +145,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEMIF_MAX_BLOCK_SIZE": {
       "type": "integer",
@@ -153,7 +153,7 @@
       "default": 4096,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -161,13 +161,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/ecual/memif/include/MemIf_Cfg.h",
-  "x-display-name": "MemIf_Ecual",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "NUMBER OF DEVICES",
-    "UNDERLYING DRIVERS",
-    "DEVICE CONFIGURATION",
-    "DEFAULT MODE",
-    "BLOCK CONFIGURATION"
-  ]
+  "x-display-name": "MemIf_Ecual"
 }

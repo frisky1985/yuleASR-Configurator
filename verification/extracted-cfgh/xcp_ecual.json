@@ -2,9 +2,31 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/xcp_ecual.json",
   "title": "Xcp_Ecual Configuration",
-  "description": "AUTOSAR XCP configuration header file",
+  "description": "Xcp_Ecual Configuration configuration header",
   "type": "object",
   "properties": {
+    "XCP_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "XCP_DEV_ERROR_DETECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_SESSION_TIMEOUT": {
+      "type": "integer",
+      "description": "XCP_SESSION_TIMEOUT 参数",
+      "default": 30000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "XCP_RESPONSE_TIMEOUT": {
+      "type": "integer",
+      "description": "XCP_RESPONSE_TIMEOUT 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
     "XCP_PROTOCOL_LAYER_VERSION_MAJOR": {
       "type": "integer",
       "description": "XCP_PROTOCOL_LAYER_VERSION_MAJOR 参数",
@@ -95,7 +117,7 @@
     },
     "XCP_RESOURCE_CAL_PAG": {
       "type": "integer",
-      "description": "Calibration/Paging",
+      "description": "XCP_RESOURCE_CAL_PAG 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
@@ -103,7 +125,7 @@
     },
     "XCP_RESOURCE_DAQ": {
       "type": "integer",
-      "description": "Data Acquisition",
+      "description": "XCP_RESOURCE_DAQ 参数",
       "default": 4,
       "minimum": 0,
       "maximum": 255,
@@ -111,7 +133,7 @@
     },
     "XCP_RESOURCE_STIM": {
       "type": "integer",
-      "description": "Stimulation",
+      "description": "XCP_RESOURCE_STIM 参数",
       "default": 8,
       "minimum": 0,
       "maximum": 255,
@@ -119,7 +141,7 @@
     },
     "XCP_RESOURCE_PGM": {
       "type": "integer",
-      "description": "Programming",
+      "description": "XCP_RESOURCE_PGM 参数",
       "default": 16,
       "minimum": 0,
       "maximum": 255,
@@ -127,59 +149,59 @@
     },
     "XCP_CTO_SIZE": {
       "type": "integer",
-      "description": "Standard CAN frame size",
+      "description": "XCP_CTO_SIZE 参数",
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_DTO_SIZE": {
       "type": "integer",
-      "description": "Standard CAN frame size",
+      "description": "XCP_DTO_SIZE 参数",
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_MAX_DAQ_LISTS": {
       "type": "integer",
-      "description": "Maximum DAQ lists",
+      "description": "XCP_MAX_DAQ_LISTS 参数",
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_MAX_DAQ": {
       "type": "integer",
-      "description": "Maximum DAQ lists (alias)",
+      "description": "XCP_MAX_DAQ 参数",
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_MAX_CTO": {
       "type": "integer",
-      "description": "Maximum CTO length",
+      "description": "XCP_MAX_CTO 参数",
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_MAX_DTO": {
       "type": "integer",
-      "description": "Maximum DTO length",
+      "description": "XCP_MAX_DTO 参数",
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_MAX_SEED_SIZE": {
       "type": "integer",
-      "description": "Maximum seed & key size",
+      "description": "XCP_MAX_SEED_SIZE 参数",
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_MAX_KEY_SIZE": {
       "type": "integer",
@@ -187,143 +209,127 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_MAX_STIM": {
       "type": "integer",
-      "description": "Maximum STIM lists",
+      "description": "XCP_MAX_STIM 参数",
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_MAX_ODT": {
       "type": "integer",
-      "description": "Maximum ODTs per DAQ list",
+      "description": "XCP_MAX_ODT 参数",
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_MAX_ODT_ENTRIES": {
       "type": "integer",
-      "description": "Maximum entries per ODT",
+      "description": "XCP_MAX_ODT_ENTRIES 参数",
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_MAX_EVENT_CHANNELS": {
       "type": "integer",
-      "description": "Maximum event channels",
+      "description": "XCP_MAX_EVENT_CHANNELS 参数",
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_MAX_SEGMENTS": {
       "type": "integer",
-      "description": "Maximum calibration segments",
+      "description": "XCP_MAX_SEGMENTS 参数",
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_MAX_PAGES": {
       "type": "integer",
-      "description": "Maximum pages per segment",
+      "description": "XCP_MAX_PAGES 参数",
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_PAGE_SIZE": {
       "type": "integer",
-      "description": "Page size in bytes",
+      "description": "XCP_PAGE_SIZE 参数",
       "default": 4096,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_MAX_BS": {
       "type": "integer",
-      "description": "Maximum block size",
+      "description": "XCP_MAX_BS 参数",
       "default": 255,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_MIN_ST": {
       "type": "integer",
-      "description": "Minimum separation time",
+      "description": "XCP_MIN_ST 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_MAX_UPLOAD_SIZE": {
       "type": "integer",
-      "description": "Maximum upload size",
+      "description": "XCP_MAX_UPLOAD_SIZE 参数",
       "default": 255,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_MAX_DOWNLOAD_SIZE": {
       "type": "integer",
-      "description": "Maximum download size",
+      "description": "XCP_MAX_DOWNLOAD_SIZE 参数",
       "default": 255,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAXIMUM LIMITS"
-    },
-    "XCP_SESSION_TIMEOUT": {
-      "type": "integer",
-      "description": "30 seconds",
-      "default": 30000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "TIMEOUT CONFIGURATION"
-    },
-    "XCP_RESPONSE_TIMEOUT": {
-      "type": "integer",
-      "description": "1 second",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_ADDR_EXT_RAM": {
       "type": "integer",
-      "description": "Internal RAM",
+      "description": "XCP_ADDR_EXT_RAM 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ADDRESS MAPPING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_ADDR_EXT_FLASH": {
       "type": "integer",
-      "description": "Flash memory",
+      "description": "XCP_ADDR_EXT_FLASH 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ADDRESS MAPPING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_ADDR_EXT_EEPROM": {
       "type": "integer",
-      "description": "EEPROM",
+      "description": "XCP_ADDR_EXT_EEPROM 参数",
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ADDRESS MAPPING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_ADDR_EXT_EXT_MEM": {
       "type": "integer",
-      "description": "External memory",
+      "description": "XCP_ADDR_EXT_EXT_MEM 参数",
       "default": 255,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ADDRESS MAPPING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_DAQ_MIN_PRESCALER": {
       "type": "integer",
@@ -331,7 +337,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DAQ TIMING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_DAQ_MAX_PRESCALER": {
       "type": "integer",
@@ -339,29 +345,29 @@
       "default": 255,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DAQ TIMING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_TIMESTAMP_ENABLED": {
       "type": "boolean",
       "description": "XCP_TIMESTAMP_ENABLED 参数",
       "default": true,
-      "x-section": "DAQ TIMING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_TIMESTAMP_SIZE": {
       "type": "integer",
-      "description": "2 bytes timestamp",
+      "description": "XCP_TIMESTAMP_SIZE 参数",
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DAQ TIMING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_TIMESTAMP_UNIT": {
       "type": "integer",
-      "description": "1ms unit",
+      "description": "XCP_TIMESTAMP_UNIT 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DAQ TIMING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_TIMESTAMP_TICKS_PER_UNIT": {
       "type": "integer",
@@ -369,7 +375,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DAQ TIMING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_CHECKSUM_XOR8": {
       "type": "integer",
@@ -377,7 +383,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHECKSUM CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_CHECKSUM_CRC16": {
       "type": "integer",
@@ -385,7 +391,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHECKSUM CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_CHECKSUM_CRC32": {
       "type": "integer",
@@ -393,7 +399,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHECKSUM CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_CHECKSUM_CRC16_CCITT": {
       "type": "integer",
@@ -401,21 +407,21 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHECKSUM CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_CHECKSUM_TYPE": {
       "type": "integer",
-      "description": "XCP_CHECKSUM_TYPE（别名: XCP_CHECKSUM_CRC16 = 2；同族可选: XCP_CHECKSUM_CRC16 / XCP_CHECKSUM_CRC16_CCITT / XCP_CHECKSUM_CRC32 / XCP_CHECKSUM_ENABLED / XCP_CHECKSUM_XOR8）",
+      "description": "XCP_CHECKSUM_TYPE 参数",
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHECKSUM CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_SLAVE_NAME": {
       "type": "string",
       "description": "XCP_SLAVE_NAME 参数",
       "default": "\"YuleTech_XCP\"",
-      "x-section": "SLAVE DEVICE INFO",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "string-literal"
     },
     "XCP_SLAVE_NAME_LEN": {
@@ -424,7 +430,7 @@
       "default": 12,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SLAVE DEVICE INFO"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_SLAVE_VERSION_MAJOR": {
       "type": "integer",
@@ -432,7 +438,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SLAVE DEVICE INFO"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_SLAVE_VERSION_MINOR": {
       "type": "integer",
@@ -440,7 +446,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SLAVE DEVICE INFO"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_RESOURCE_DEFAULT_LOCK": {
       "type": "integer",
@@ -448,13 +454,13 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RESOURCE PROTECTION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_SEED_KEY_ENABLED": {
       "type": "boolean",
       "description": "XCP_SEED_KEY_ENABLED 参数",
       "default": false,
-      "x-section": "RESOURCE PROTECTION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_SEED_LENGTH": {
       "type": "integer",
@@ -462,7 +468,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RESOURCE PROTECTION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_KEY_LENGTH": {
       "type": "integer",
@@ -470,25 +476,25 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RESOURCE PROTECTION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_USER_COPY_CAL_PAGE_CALLBACK": {
       "type": "boolean",
       "description": "XCP_USER_COPY_CAL_PAGE_CALLBACK 参数",
       "default": false,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_USER_CHECKSUM_CALLBACK": {
       "type": "boolean",
       "description": "XCP_USER_CHECKSUM_CALLBACK 参数",
       "default": false,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_USER_TIMESTAMP_CALLBACK": {
       "type": "boolean",
       "description": "XCP_USER_TIMESTAMP_CALLBACK 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_ECU_CONFIGURATION_ID": {
       "type": "integer",
@@ -496,13 +502,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ECU CONFIGURATION ID"
-    },
-    "XCP_DEV_ERROR_DETECT": {
-      "type": "boolean",
-      "description": "XCP_DEV_ERROR_DETECT 参数",
-      "default": true,
-      "x-section": "ERROR HANDLING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_E_PARAM_POINTER": {
       "type": "integer",
@@ -510,7 +510,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ERROR HANDLING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_E_PARAM_LENGTH": {
       "type": "integer",
@@ -518,7 +518,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ERROR HANDLING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_E_PARAM_ADDRESS": {
       "type": "integer",
@@ -526,7 +526,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ERROR HANDLING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_E_UNINIT": {
       "type": "integer",
@@ -534,7 +534,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ERROR HANDLING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_E_ALREADY_INITIALIZED": {
       "type": "integer",
@@ -542,7 +542,7 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ERROR HANDLING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_E_INVALID_STATE": {
       "type": "integer",
@@ -550,7 +550,7 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ERROR HANDLING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_E_INVALID_DAQ_LIST": {
       "type": "integer",
@@ -558,7 +558,7 @@
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ERROR HANDLING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_E_INVALID_ODT": {
       "type": "integer",
@@ -566,7 +566,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ERROR HANDLING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "XCP_E_INVALID_ODT_ENTRY": {
       "type": "integer",
@@ -574,7 +574,7 @@
       "default": 9,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ERROR HANDLING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -582,18 +582,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/ecual/xcp/include/Xcp_Cfg.h",
-  "x-display-name": "Xcp_Ecual",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "MAXIMUM LIMITS",
-    "TIMEOUT CONFIGURATION",
-    "ADDRESS MAPPING",
-    "DAQ TIMING",
-    "CHECKSUM CONFIGURATION",
-    "SLAVE DEVICE INFO",
-    "RESOURCE PROTECTION",
-    "CALLBACK CONFIGURATION",
-    "ECU CONFIGURATION ID",
-    "ERROR HANDLING"
-  ]
+  "x-display-name": "Xcp_Ecual"
 }

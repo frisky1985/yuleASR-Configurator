@@ -45,7 +45,9 @@ describe('replace-cfgh（可追溯替换工具）', () => {
     expect(r.applied).toBeGreaterThan(100);
     const dirty = execSync(`git -C ${Y} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
     console.log(`[apply] yuleASR 改动文件数: ${dirty}`);
-    expect(Number(dirty)).toBeGreaterThan(100);
+    // 2026-08-10：yuleASR 已入库生成头（3902399e）后，再 apply 是增量差异（仅内容变化文件），
+    // 不再要求 >100；核心断言是 applied>100（工具替换数）+ rollback 后工作树归零。
+    expect(Number(dirty)).toBeGreaterThan(0);
 
     // 3) rollback：恢复手写头
     const rb = await runReplace('rollback');

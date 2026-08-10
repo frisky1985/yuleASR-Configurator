@@ -2,223 +2,256 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/j1939tp.json",
   "title": "J1939Tp Configuration",
-  "description": "J1939Tp Pre-compile Configuration",
+  "description": "J1939Tp Configuration configuration header",
   "type": "object",
   "properties": {
     "J1939TP_VERSION_INFO_API": {
       "type": "boolean",
       "description": "J1939TP_VERSION_INFO_API 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "J1939TP_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_J1939TP_FPP_TX_ENABLED": {
       "type": "boolean",
       "description": "J1939TP_J1939TP_FPP_TX_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_J1939TP_FPP_RX_ENABLED": {
       "type": "boolean",
       "description": "J1939TP_J1939TP_FPP_RX_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_BAM_TX_ENABLED": {
       "type": "boolean",
       "description": "J1939TP_BAM_TX_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_BAM_RX_ENABLED": {
       "type": "boolean",
       "description": "J1939TP_BAM_RX_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_CMDT_TX_ENABLED": {
       "type": "boolean",
       "description": "J1939TP_CMDT_TX_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_CMDT_RX_ENABLED": {
       "type": "boolean",
       "description": "J1939TP_CMDT_RX_ENABLED 参数",
-      "default": true
-    },
-    "J1939TP_MAIN_FUNCTION_PERIOD": {
-      "type": "integer",
-      "description": "10ms（cast: uint16）",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "J1939TP_N_BROADCAST_TIME": {
-      "type": "integer",
-      "description": "50ms between BAM frames（cast: uint8）",
-      "default": 50,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "J1939TP_MAX_PG": {
-      "type": "integer",
-      "description": "J1939TP_MAX_PG（cast: uint8）",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "J1939TP_MAX_CONNECTIONS": {
-      "type": "integer",
-      "description": "J1939TP_MAX_CONNECTIONS（cast: uint8）",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_MAX_TX_CHANNELS": {
       "type": "integer",
-      "description": "J1939TP_MAX_TX_CHANNELS（cast: uint8）",
+      "description": "J1939TP_MAX_TX_CHANNELS 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_MAX_RX_CHANNELS": {
       "type": "integer",
-      "description": "J1939TP_MAX_RX_CHANNELS（cast: uint8）",
+      "description": "J1939TP_MAX_RX_CHANNELS 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_MAIN_FUNCTION_PERIOD": {
+      "type": "integer",
+      "description": "J1939TP_MAIN_FUNCTION_PERIOD 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_T1_TIMEOUT_DEFAULT": {
       "type": "integer",
-      "description": "T1 - Response timeout（cast: uint16）",
+      "description": "J1939TP_T1_TIMEOUT_DEFAULT 参数",
       "default": 750,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_T2_TIMEOUT_DEFAULT": {
       "type": "integer",
-      "description": "T2 - Send CTS timeout（cast: uint16）",
+      "description": "J1939TP_T2_TIMEOUT_DEFAULT 参数",
       "default": 1250,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_T3_TIMEOUT_DEFAULT": {
       "type": "integer",
-      "description": "T3 - Send DT timeout（cast: uint16）",
+      "description": "J1939TP_T3_TIMEOUT_DEFAULT 参数",
       "default": 1250,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_T4_TIMEOUT_DEFAULT": {
       "type": "integer",
-      "description": "T4 - CTS hold timeout（cast: uint16）",
+      "description": "J1939TP_T4_TIMEOUT_DEFAULT 参数",
       "default": 1050,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_N_BROADCAST_TIME": {
+      "type": "integer",
+      "description": "J1939TP_N_BROADCAST_TIME 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_MAX_PG": {
+      "type": "integer",
+      "description": "J1939TP_MAX_PG 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_MAX_CONNECTIONS": {
+      "type": "integer",
+      "description": "J1939TP_MAX_CONNECTIONS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_N_BS_DEFAULT": {
       "type": "integer",
-      "description": "T3 in ISO-TP terms（cast: uint16）",
+      "description": "J1939TP_N_BS_DEFAULT 参数",
       "default": 500,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_N_CS_DEFAULT": {
       "type": "integer",
-      "description": "Delay between DT frames（cast: uint16）",
+      "description": "J1939TP_N_CS_DEFAULT 参数",
       "default": 500,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_N_BR_DEFAULT": {
       "type": "integer",
-      "description": "Receiver ready delay（cast: uint16）",
+      "description": "J1939TP_N_BR_DEFAULT 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_N_AR_DEFAULT": {
       "type": "integer",
-      "description": "Acknowledgment delay（cast: uint16）",
+      "description": "J1939TP_N_AR_DEFAULT 参数",
       "default": 500,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_CM_RTS": {
       "type": "integer",
-      "description": "J1939TP_CM_RTS（cast: uint8）",
+      "description": "J1939TP_CM_RTS 参数",
       "default": 16,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_CM_CTS": {
       "type": "integer",
-      "description": "J1939TP_CM_CTS（cast: uint8）",
+      "description": "J1939TP_CM_CTS 参数",
       "default": 17,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_CM_ACK": {
       "type": "integer",
-      "description": "J1939TP_CM_ACK（cast: uint8）",
+      "description": "J1939TP_CM_ACK 参数",
       "default": 19,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_CM_BAM": {
       "type": "integer",
-      "description": "J1939TP_CM_BAM（cast: uint8）",
+      "description": "J1939TP_CM_BAM 参数",
       "default": 32,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_CM_ABORT": {
       "type": "integer",
-      "description": "J1939TP_CM_ABORT（cast: uint8）",
+      "description": "J1939TP_CM_ABORT 参数",
       "default": 255,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_DT_PACKET_SIZE": {
       "type": "integer",
-      "description": "DT data bytes per packet（cast: uint8）",
+      "description": "J1939TP_DT_PACKET_SIZE 参数",
       "default": 7,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_MAX_TP_PACKETS": {
       "type": "integer",
-      "description": "Maximum packets in multi-packet（cast: uint8）",
+      "description": "J1939TP_MAX_TP_PACKETS 参数",
       "default": 255,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_MAX_TP_SIZE": {
       "type": "integer",
-      "description": "255 * 7 = max TP size（cast: uint16）",
+      "description": "J1939TP_MAX_TP_SIZE 参数",
       "default": 1785,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_CM_PACKET_SIZE": {
       "type": "integer",
-      "description": "TP.CM packet size（cast: uint8）",
+      "description": "J1939TP_CM_PACKET_SIZE 参数",
       "default": 8,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_PGN_TP_CM": {
       "type": "integer",
-      "description": "TP.CM PGN = 0xEC00（cast: uint32）",
+      "description": "J1939TP_PGN_TP_CM 参数",
       "default": 60416,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_PGN_TP_DT": {
       "type": "integer",
-      "description": "TP.DT PGN = 0xEB00（cast: uint32）",
+      "description": "J1939TP_PGN_TP_DT 参数",
       "default": 60160,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

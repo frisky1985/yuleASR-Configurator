@@ -2,262 +2,300 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/spi.json",
   "title": "Spi Configuration",
-  "description": "SPI驱动配置头文件",
+  "description": "Spi Configuration configuration header",
   "type": "object",
   "properties": {
-    "SPI_VENDOR_ID_CFG": {
-      "type": "integer",
-      "description": "SPI_VENDOR_ID_CFG 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_MODULE_ID_CFG": {
-      "type": "integer",
-      "description": "AUTOSAR standard: 122",
-      "default": 122,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_SW_MAJOR_VERSION_CFG": {
-      "type": "integer",
-      "description": "SPI_SW_MAJOR_VERSION_CFG 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_SW_MINOR_VERSION_CFG": {
-      "type": "integer",
-      "description": "SPI_SW_MINOR_VERSION_CFG 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_SW_PATCH_VERSION_CFG": {
-      "type": "integer",
-      "description": "SPI_SW_PATCH_VERSION_CFG 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
     "SPI_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "SPI_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SPI_VERSION_INFO_API": {
       "type": "boolean",
       "description": "SPI_VERSION_INFO_API 参数",
-      "default": true
-    },
-    "SPI_DMA_SUPPORT": {
-      "type": "boolean",
-      "description": "SPI_DMA_SUPPORT 参数",
-      "default": true
-    },
-    "SPI_INTERRUPT_SUPPORT": {
-      "type": "boolean",
-      "description": "SPI_INTERRUPT_SUPPORT 参数",
-      "default": true
-    },
-    "SPI_MULTI_SLAVE_SUPPORT": {
-      "type": "boolean",
-      "description": "SPI_MULTI_SLAVE_SUPPORT 参数",
-      "default": true
-    },
-    "SPI_FIFO_SUPPORT": {
-      "type": "boolean",
-      "description": "SPI_FIFO_SUPPORT 参数",
-      "default": true
-    },
-    "SPI_CHANNEL_COUNT": {
-      "type": "integer",
-      "description": "SPI_CHANNEL_COUNT 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_MAX_JOB": {
-      "type": "integer",
-      "description": "SPI_MAX_JOB 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_MAX_SEQUENCE": {
-      "type": "integer",
-      "description": "SPI_MAX_SEQUENCE 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SPI_MAX_EXTERNAL_DEV": {
       "type": "integer",
       "description": "SPI_MAX_EXTERNAL_DEV 参数",
       "default": 16,
       "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_REF_CLOCK_HZ": {
-      "type": "integer",
-      "description": "80MHz",
-      "default": 80000000,
-      "minimum": 0,
-      "maximum": 4294967295
-    },
-    "SPI_DMA_TX_CHANNEL_BASE": {
-      "type": "integer",
-      "description": "SPI_DMA_TX_CHANNEL_BASE 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_DMA_RX_CHANNEL_BASE": {
-      "type": "integer",
-      "description": "SPI_DMA_RX_CHANNEL_BASE 参数",
-      "default": 12,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_DMA_FIFO_THRESHOLD": {
-      "type": "integer",
-      "description": "SPI_DMA_FIFO_THRESHOLD 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_IRQ_PRIORITY": {
-      "type": "integer",
-      "description": "SPI_IRQ_PRIORITY 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_FIFO_DEPTH": {
-      "type": "integer",
-      "description": "SPI_FIFO_DEPTH 参数",
-      "default": 64,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_TX_FIFO_THRESHOLD": {
-      "type": "integer",
-      "description": "SPI_TX_FIFO_THRESHOLD 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_RX_FIFO_THRESHOLD": {
-      "type": "integer",
-      "description": "SPI_RX_FIFO_THRESHOLD 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_TRANSFER_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "SPI_TRANSFER_TIMEOUT_MS 参数",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "SPI_SERVICE_ID_INIT": {
-      "type": "integer",
-      "description": "SPI_SERVICE_ID_INIT 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_SERVICE_ID_DEINIT": {
-      "type": "integer",
-      "description": "SPI_SERVICE_ID_DEINIT 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_SERVICE_ID_WRITEB_IB": {
-      "type": "integer",
-      "description": "SPI_SERVICE_ID_WRITEB_IB 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_SERVICE_ID_ASYNC_TRANSMIT": {
-      "type": "integer",
-      "description": "SPI_SERVICE_ID_ASYNC_TRANSMIT 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_SERVICE_ID_READ_IB": {
-      "type": "integer",
-      "description": "SPI_SERVICE_ID_READ_IB 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_SERVICE_ID_SETUP_EB": {
-      "type": "integer",
-      "description": "SPI_SERVICE_ID_SETUP_EB 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_SERVICE_ID_GETSTATUS": {
-      "type": "integer",
-      "description": "SPI_SERVICE_ID_GETSTATUS 参数",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_SERVICE_ID_GETJOBRESULT": {
-      "type": "integer",
-      "description": "SPI_SERVICE_ID_GETJOBRESULT 参数",
-      "default": 7,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "SPI_SERVICE_ID_GETSEQUENCERESULT": {
-      "type": "integer",
-      "description": "SPI_SERVICE_ID_GETSEQUENCERESULT 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SPI_SERVICE_ID_GETVERSIONINFO": {
       "type": "integer",
       "description": "SPI_SERVICE_ID_GETVERSIONINFO 参数",
       "default": 9,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_CHANNEL_COUNT": {
+      "type": "integer",
+      "description": "SPI_CHANNEL_COUNT 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_INTERRUPT_SUPPORT": {
+      "type": "boolean",
+      "description": "SPI_INTERRUPT_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_DMA_TX_CHANNEL_BASE": {
+      "type": "integer",
+      "description": "SPI_DMA_TX_CHANNEL_BASE 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_DMA_RX_CHANNEL_BASE": {
+      "type": "integer",
+      "description": "SPI_DMA_RX_CHANNEL_BASE 参数",
+      "default": 12,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_TX_FIFO_THRESHOLD": {
+      "type": "integer",
+      "description": "SPI_TX_FIFO_THRESHOLD 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_RX_FIFO_THRESHOLD": {
+      "type": "integer",
+      "description": "SPI_RX_FIFO_THRESHOLD 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_TRANSFER_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "SPI_TRANSFER_TIMEOUT_MS 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_VENDOR_ID_CFG": {
+      "type": "integer",
+      "description": "SPI_VENDOR_ID_CFG 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_MODULE_ID_CFG": {
+      "type": "integer",
+      "description": "SPI_MODULE_ID_CFG 参数",
+      "default": 122,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_SW_MAJOR_VERSION_CFG": {
+      "type": "integer",
+      "description": "SPI_SW_MAJOR_VERSION_CFG 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_SW_MINOR_VERSION_CFG": {
+      "type": "integer",
+      "description": "SPI_SW_MINOR_VERSION_CFG 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_SW_PATCH_VERSION_CFG": {
+      "type": "integer",
+      "description": "SPI_SW_PATCH_VERSION_CFG 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_DMA_SUPPORT": {
+      "type": "boolean",
+      "description": "SPI_DMA_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_MULTI_SLAVE_SUPPORT": {
+      "type": "boolean",
+      "description": "SPI_MULTI_SLAVE_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_FIFO_SUPPORT": {
+      "type": "boolean",
+      "description": "SPI_FIFO_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_MAX_JOB": {
+      "type": "integer",
+      "description": "SPI_MAX_JOB 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_MAX_SEQUENCE": {
+      "type": "integer",
+      "description": "SPI_MAX_SEQUENCE 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_REF_CLOCK_HZ": {
+      "type": "integer",
+      "description": "SPI_REF_CLOCK_HZ 参数",
+      "default": 80000000,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_DMA_FIFO_THRESHOLD": {
+      "type": "integer",
+      "description": "SPI_DMA_FIFO_THRESHOLD 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_IRQ_PRIORITY": {
+      "type": "integer",
+      "description": "SPI_IRQ_PRIORITY 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_FIFO_DEPTH": {
+      "type": "integer",
+      "description": "SPI_FIFO_DEPTH 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_SERVICE_ID_INIT": {
+      "type": "integer",
+      "description": "SPI_SERVICE_ID_INIT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_SERVICE_ID_DEINIT": {
+      "type": "integer",
+      "description": "SPI_SERVICE_ID_DEINIT 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_SERVICE_ID_WRITEB_IB": {
+      "type": "integer",
+      "description": "SPI_SERVICE_ID_WRITEB_IB 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_SERVICE_ID_ASYNC_TRANSMIT": {
+      "type": "integer",
+      "description": "SPI_SERVICE_ID_ASYNC_TRANSMIT 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_SERVICE_ID_READ_IB": {
+      "type": "integer",
+      "description": "SPI_SERVICE_ID_READ_IB 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_SERVICE_ID_SETUP_EB": {
+      "type": "integer",
+      "description": "SPI_SERVICE_ID_SETUP_EB 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_SERVICE_ID_GETSTATUS": {
+      "type": "integer",
+      "description": "SPI_SERVICE_ID_GETSTATUS 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_SERVICE_ID_GETJOBRESULT": {
+      "type": "integer",
+      "description": "SPI_SERVICE_ID_GETJOBRESULT 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SPI_SERVICE_ID_GETSEQUENCERESULT": {
+      "type": "integer",
+      "description": "SPI_SERVICE_ID_GETSEQUENCERESULT 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SPI_SERVICE_ID_SYNCTRANSMIT": {
       "type": "integer",
       "description": "SPI_SERVICE_ID_SYNCTRANSMIT 参数",
       "default": 10,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SPI_SERVICE_ID_GETHWUNITSTATUS": {
       "type": "integer",
       "description": "SPI_SERVICE_ID_GETHWUNITSTATUS 参数",
       "default": 11,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SPI_SERVICE_ID_CANCEL": {
       "type": "integer",
       "description": "SPI_SERVICE_ID_CANCEL 参数",
       "default": 12,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SPI_SERVICE_ID_SET_CLOCK": {
       "type": "integer",
       "description": "SPI_SERVICE_ID_SET_CLOCK 参数",
       "default": 13,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

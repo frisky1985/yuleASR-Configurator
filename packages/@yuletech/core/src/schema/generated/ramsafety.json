@@ -2,210 +2,240 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/ramsafety.json",
   "title": "RamSafety Configuration",
-  "description": "RamSafety模块配置头文件",
+  "description": "RamSafety Configuration configuration header",
   "type": "object",
   "properties": {
-    "RAMSAFETY_CFG_VENDOR_ID": {
-      "type": "integer",
-      "description": "RAMSAFETY_CFG_VENDOR_ID 参数",
-      "default": 43,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "RAMSAFETY_CFG_AR_RELEASE_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "RAMSAFETY_CFG_AR_RELEASE_MAJOR_VERSION 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "RAMSAFETY_CFG_AR_RELEASE_MINOR_VERSION": {
-      "type": "integer",
-      "description": "RAMSAFETY_CFG_AR_RELEASE_MINOR_VERSION 参数",
-      "default": 7,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "RAMSAFETY_CFG_AR_RELEASE_REVISION_VERSION": {
-      "type": "integer",
-      "description": "RAMSAFETY_CFG_AR_RELEASE_REVISION_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "RAMSAFETY_CFG_SW_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "RAMSAFETY_CFG_SW_MAJOR_VERSION 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "RAMSAFETY_CFG_SW_MINOR_VERSION": {
-      "type": "integer",
-      "description": "RAMSAFETY_CFG_SW_MINOR_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "RAMSAFETY_CFG_SW_PATCH_VERSION": {
-      "type": "integer",
-      "description": "RAMSAFETY_CFG_SW_PATCH_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
     "RAMSAFETY_CFG_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "RAMSAFETY_CFG_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMSAFETY_CFG_VERSION_INFO_API": {
       "type": "boolean",
       "description": "RAMSAFETY_CFG_VERSION_INFO_API 参数",
-      "default": true
-    },
-    "RAMSAFETY_CFG_HARDWARE_ECC": {
-      "type": "boolean",
-      "description": "RAMSAFETY_CFG_HARDWARE_ECC 参数",
-      "default": true
-    },
-    "RAMSAFETY_CFG_CRC_VERIFICATION": {
-      "type": "boolean",
-      "description": "RAMSAFETY_CFG_CRC_VERIFICATION 参数",
-      "default": true
-    },
-    "RAMSAFETY_CFG_CRC_POLYNOMIAL": {
-      "type": "integer",
-      "description": "RAMSAFETY_CFG_CRC_POLYNOMIAL 参数",
-      "default": 79764919,
-      "minimum": 0,
-      "maximum": 4294967295
-    },
-    "RAMSAFETY_CFG_CRC_INITIAL": {
-      "type": "integer",
-      "description": "RAMSAFETY_CFG_CRC_INITIAL 参数",
-      "default": 4294967295,
-      "minimum": 0,
-      "maximum": 4294967295
-    },
-    "RAMSAFETY_CFG_STARTUP_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "RAMSAFETY_CFG_STARTUP_TIMEOUT_MS 参数",
-      "default": 5000,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "RAMSAFETY_CFG_RUNTIME_PERIOD_MS": {
-      "type": "integer",
-      "description": "RAMSAFETY_CFG_RUNTIME_PERIOD_MS 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "RAMSAFETY_CFG_MAX_REGIONS_PER_CYCLE": {
-      "type": "integer",
-      "description": "RAMSAFETY_CFG_MAX_REGIONS_PER_CYCLE 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMSAFETY_CFG_NUM_REGIONS": {
       "type": "integer",
       "description": "RAMSAFETY_CFG_NUM_REGIONS 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMSAFETY_CFG_STARTUP_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "RAMSAFETY_CFG_STARTUP_TIMEOUT_MS 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMSAFETY_CFG_RUNTIME_PERIOD_MS": {
+      "type": "integer",
+      "description": "RAMSAFETY_CFG_RUNTIME_PERIOD_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMSAFETY_CFG_VENDOR_ID": {
+      "type": "integer",
+      "description": "RAMSAFETY_CFG_VENDOR_ID 参数",
+      "default": 43,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMSAFETY_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "RAMSAFETY_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMSAFETY_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "RAMSAFETY_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMSAFETY_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "RAMSAFETY_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMSAFETY_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "RAMSAFETY_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMSAFETY_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "RAMSAFETY_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMSAFETY_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "RAMSAFETY_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMSAFETY_CFG_HARDWARE_ECC": {
+      "type": "boolean",
+      "description": "RAMSAFETY_CFG_HARDWARE_ECC 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMSAFETY_CFG_CRC_VERIFICATION": {
+      "type": "boolean",
+      "description": "RAMSAFETY_CFG_CRC_VERIFICATION 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMSAFETY_CFG_CRC_POLYNOMIAL": {
+      "type": "integer",
+      "description": "RAMSAFETY_CFG_CRC_POLYNOMIAL 参数",
+      "default": 79764919,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMSAFETY_CFG_CRC_INITIAL": {
+      "type": "integer",
+      "description": "RAMSAFETY_CFG_CRC_INITIAL 参数",
+      "default": 4294967295,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMSAFETY_CFG_MAX_REGIONS_PER_CYCLE": {
+      "type": "integer",
+      "description": "RAMSAFETY_CFG_MAX_REGIONS_PER_CYCLE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMSAFETY_CFG_FAILURE_THRESHOLD": {
       "type": "integer",
       "description": "RAMSAFETY_CFG_FAILURE_THRESHOLD 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMSAFETY_ADDR_DTCM_BASE": {
       "type": "integer",
       "description": "RAMSAFETY_ADDR_DTCM_BASE 参数",
       "default": 536870912,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMSAFETY_ADDR_DTCM_SIZE": {
       "type": "integer",
       "description": "RAMSAFETY_ADDR_DTCM_SIZE 参数",
       "default": 131072,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMSAFETY_ADDR_SRAM_BASE": {
       "type": "integer",
       "description": "RAMSAFETY_ADDR_SRAM_BASE 参数",
       "default": 541065216,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMSAFETY_ADDR_SRAM_SIZE": {
       "type": "integer",
       "description": "RAMSAFETY_ADDR_SRAM_SIZE 参数",
       "default": 262144,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMSAFETY_ADDR_FLEXRAM_BASE": {
       "type": "integer",
       "description": "RAMSAFETY_ADDR_FLEXRAM_BASE 参数",
       "default": 335544320,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMSAFETY_ADDR_FLEXRAM_SIZE": {
       "type": "integer",
       "description": "RAMSAFETY_ADDR_FLEXRAM_SIZE 参数",
       "default": 524288,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMSAFETY_ADDR_STACK_BASE": {
       "type": "integer",
       "description": "RAMSAFETY_ADDR_STACK_BASE 参数",
       "default": 537001984,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMSAFETY_ADDR_STACK_SIZE": {
       "type": "integer",
       "description": "RAMSAFETY_ADDR_STACK_SIZE 参数",
       "default": 32768,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMSAFETY_REGION_DTCM": {
       "type": "integer",
       "description": "RAMSAFETY_REGION_DTCM 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMSAFETY_REGION_SRAM": {
       "type": "integer",
       "description": "RAMSAFETY_REGION_SRAM 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMSAFETY_REGION_FLEXRAM": {
       "type": "integer",
       "description": "RAMSAFETY_REGION_FLEXRAM 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMSAFETY_REGION_STACK": {
       "type": "integer",
       "description": "RAMSAFETY_REGION_STACK 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

@@ -2,60 +2,20 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/ramtst_service.json",
   "title": "RamTst_Service Configuration",
-  "description": "RAM Test Pre-Compile Configuration",
+  "description": "RamTst_Service Configuration configuration header",
   "type": "object",
   "properties": {
     "RAMTST_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "RAMTST_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "DEVELOPMENT ERROR DETECT"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMTST_VERSION_INFO_API": {
       "type": "boolean",
       "description": "RAMTST_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "DEVELOPMENT ERROR DETECT"
-    },
-    "RAMTST_MAX_REGIONS": {
-      "type": "integer",
-      "description": "RAMTST_MAX_REGIONS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "REGION CONFIGURATION"
-    },
-    "RAMTST_MARCH_BACKGROUND": {
-      "type": "integer",
-      "description": "01010101",
-      "default": 85,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MARCH C PARAMETERS"
-    },
-    "RAMTST_MARCH_BACKGROUND_INVERT": {
-      "type": "integer",
-      "description": "10101010",
-      "default": 170,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MARCH C PARAMETERS"
-    },
-    "RAMTST_CHECKERBOARD_A": {
-      "type": "integer",
-      "description": "RAMTST_CHECKERBOARD_A 参数",
-      "default": 170,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MARCH C PARAMETERS"
-    },
-    "RAMTST_CHECKERBOARD_B": {
-      "type": "integer",
-      "description": "RAMTST_CHECKERBOARD_B 参数",
-      "default": 85,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MARCH C PARAMETERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMTST_MAIN_FUNCTION_PERIOD_MS": {
       "type": "integer",
@@ -63,21 +23,61 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "RAMTST_WORDS_PER_CYCLE": {
+    "RAMTST_MAX_REGIONS": {
       "type": "integer",
-      "description": "32-bit words per MainFunction call",
+      "description": "RAMTST_MAX_REGIONS 参数",
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMING"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMTST_MARCH_BACKGROUND": {
+      "type": "integer",
+      "description": "RAMTST_MARCH_BACKGROUND 参数",
+      "default": 85,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMTST_MARCH_BACKGROUND_INVERT": {
+      "type": "integer",
+      "description": "RAMTST_MARCH_BACKGROUND_INVERT 参数",
+      "default": 170,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMTST_CHECKERBOARD_A": {
+      "type": "integer",
+      "description": "RAMTST_CHECKERBOARD_A 参数",
+      "default": 170,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMTST_CHECKERBOARD_B": {
+      "type": "integer",
+      "description": "RAMTST_CHECKERBOARD_B 参数",
+      "default": 85,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RAMTST_WORDS_PER_CYCLE": {
+      "type": "integer",
+      "description": "RAMTST_WORDS_PER_CYCLE 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAMTST_RUN_ON_STARTUP": {
       "type": "boolean",
       "description": "RAMTST_RUN_ON_STARTUP 参数",
       "default": false,
-      "x-section": "FEATURE"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -85,12 +85,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/ramtst/include/RamTst_Cfg.h",
-  "x-display-name": "RamTst_Service",
-  "x-sections": [
-    "DEVELOPMENT ERROR DETECT",
-    "REGION CONFIGURATION",
-    "MARCH C PARAMETERS",
-    "TIMING",
-    "FEATURE"
-  ]
+  "x-display-name": "RamTst_Service"
 }

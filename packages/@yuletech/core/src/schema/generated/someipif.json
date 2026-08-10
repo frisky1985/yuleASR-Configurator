@@ -2,74 +2,84 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/someipif.json",
   "title": "SomeIpIf Configuration",
-  "description": "SOME/IP Interface Configuration",
+  "description": "SomeIpIf Configuration configuration header",
   "type": "object",
   "properties": {
     "SOMEIPIF_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "SOMEIPIF_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPIF_VERSION_INFO_API": {
       "type": "boolean",
       "description": "SOMEIPIF_VERSION_INFO_API 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIP_PROTOCOL_VERSION": {
       "type": "integer",
       "description": "SOMEIP_PROTOCOL_VERSION 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIP_INTERFACE_VERSION": {
       "type": "integer",
       "description": "SOMEIP_INTERFACE_VERSION 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIP_HEADER_SIZE": {
       "type": "integer",
       "description": "SOMEIP_HEADER_SIZE 参数",
       "default": 16,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIP_MAX_MESSAGE_LENGTH": {
       "type": "integer",
       "description": "SOMEIP_MAX_MESSAGE_LENGTH 参数",
       "default": 4095,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPIF_MAX_SERVICES": {
       "type": "integer",
       "description": "SOMEIPIF_MAX_SERVICES 参数",
       "default": 32,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIPIF_MAX_ENDPOINTS": {
       "type": "integer",
       "description": "SOMEIPIF_MAX_ENDPOINTS 参数",
       "default": 16,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIP_CONNECTION_TCP": {
       "type": "integer",
       "description": "SOMEIP_CONNECTION_TCP 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOMEIP_CONNECTION_UDP": {
       "type": "integer",
       "description": "SOMEIP_CONNECTION_UDP 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

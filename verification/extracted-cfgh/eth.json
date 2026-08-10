@@ -2,36 +2,87 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/eth.json",
   "title": "Eth Configuration",
-  "description": "Ethernet Driver Configuration",
+  "description": "Eth Configuration configuration header",
   "type": "object",
   "properties": {
     "ETH_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "ETH_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETH_VERSION_INFO_API": {
       "type": "boolean",
       "description": "ETH_VERSION_INFO_API 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETH_MAX_CONTROLLERS": {
       "type": "integer",
       "description": "ETH_MAX_CONTROLLERS 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETH_CONTROLLER_0": {
       "type": "integer",
       "description": "ETH_CONTROLLER_0 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETH_CTRL0_RX_CHECKSUM_OFFLOAD": {
+      "type": "boolean",
+      "description": "ETH_CTRL0_RX_CHECKSUM_OFFLOAD 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETH_CTRL0_TX_CHECKSUM_OFFLOAD": {
+      "type": "boolean",
+      "description": "ETH_CTRL0_TX_CHECKSUM_OFFLOAD 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETH_MAX_TX_BUFS": {
+      "type": "integer",
+      "description": "ETH_MAX_TX_BUFS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETH_MAX_RX_BUFS": {
+      "type": "integer",
+      "description": "ETH_MAX_RX_BUFS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETH_TIMEOUT": {
+      "type": "integer",
+      "description": "ETH_TIMEOUT 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETH_LINK_TIMEOUT": {
+      "type": "integer",
+      "description": "ETH_LINK_TIMEOUT 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETH_CTRL0_MAC_ADDR": {
       "type": "string",
-      "description": "ETH_CTRL0_MAC_ADDR 参数（原始值: {0x00, 0x01, 0x02, 0x03, 0x04, 0x05}）"
+      "description": "ETH_CTRL0_MAC_ADDR 参数",
+      "default": "\"\"",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "string-literal"
     },
     "ETH_CTRL0_SPEED": {
       "type": "enum",
@@ -41,67 +92,34 @@
         "ETH_RATE_100MBPS",
         "ETH_RATE_1000MBPS",
         "ETH_RATE_10MBPS"
-      ]
+      ],
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETH_CTRL0_FULL_DUPLEX": {
       "type": "boolean",
       "description": "ETH_CTRL0_FULL_DUPLEX 参数",
-      "default": true
-    },
-    "ETH_CTRL0_RX_CHECKSUM_OFFLOAD": {
-      "type": "boolean",
-      "description": "ETH_CTRL0_RX_CHECKSUM_OFFLOAD 参数",
-      "default": false
-    },
-    "ETH_CTRL0_TX_CHECKSUM_OFFLOAD": {
-      "type": "boolean",
-      "description": "ETH_CTRL0_TX_CHECKSUM_OFFLOAD 参数",
-      "default": false
-    },
-    "ETH_MAX_TX_BUFS": {
-      "type": "integer",
-      "description": "ETH_MAX_TX_BUFS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "ETH_MAX_RX_BUFS": {
-      "type": "integer",
-      "description": "ETH_MAX_RX_BUFS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETH_CFG_BUF_SIZE": {
       "type": "integer",
       "description": "ETH_CFG_BUF_SIZE 参数",
       "default": 1536,
       "minimum": 0,
-      "maximum": 65535
-    },
-    "ETH_TIMEOUT": {
-      "type": "integer",
-      "description": "ETH_TIMEOUT 参数",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "ETH_LINK_TIMEOUT": {
-      "type": "integer",
-      "description": "ETH_LINK_TIMEOUT 参数",
-      "default": 5000,
-      "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETH_MULTICAST_SUPPORT": {
       "type": "boolean",
       "description": "ETH_MULTICAST_SUPPORT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETH_PROMISCUOUS_MODE": {
       "type": "boolean",
       "description": "ETH_PROMISCUOUS_MODE 参数",
-      "default": false
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

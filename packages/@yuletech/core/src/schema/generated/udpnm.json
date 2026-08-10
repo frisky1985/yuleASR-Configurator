@@ -2,324 +2,26 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/udpnm.json",
   "title": "UdpNm Configuration",
-  "description": "UDP Network Management Configuration",
+  "description": "UdpNm Configuration configuration header",
   "type": "object",
   "properties": {
-    "UDPNM_CFG_AR_RELEASE_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "UDPNM_CFG_AR_RELEASE_MAJOR_VERSION 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "UDPNM_CFG_AR_RELEASE_MINOR_VERSION": {
-      "type": "integer",
-      "description": "UDPNM_CFG_AR_RELEASE_MINOR_VERSION 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "UDPNM_CFG_AR_RELEASE_REVISION_VERSION": {
-      "type": "integer",
-      "description": "UDPNM_CFG_AR_RELEASE_REVISION_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "UDPNM_CFG_SW_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "UDPNM_CFG_SW_MAJOR_VERSION 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "UDPNM_CFG_SW_MINOR_VERSION": {
-      "type": "integer",
-      "description": "UDPNM_CFG_SW_MINOR_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "UDPNM_CFG_SW_PATCH_VERSION": {
-      "type": "integer",
-      "description": "UDPNM_CFG_SW_PATCH_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
     "UDPNM_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "UDPNM_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "UDPNM_VERSION_INFO_API": {
       "type": "boolean",
       "description": "UDPNM_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION"
-    },
-    "UDPNM_PASSIVE_MODE_ENABLED": {
-      "type": "boolean",
-      "description": "UDPNM_PASSIVE_MODE_ENABLED 参数",
-      "default": false,
-      "x-section": "GENERAL CONFIGURATION"
-    },
-    "UDPNM_NUMBER_OF_CHANNELS": {
-      "type": "integer",
-      "description": "UDPNM_NUMBER_OF_CHANNELS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GENERAL CONFIGURATION"
-    },
-    "UDPNM_MAIN_FUNCTION_PERIOD": {
-      "type": "integer",
-      "description": "10ms",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GENERAL CONFIGURATION"
-    },
-    "UDPNM_PDU_LENGTH": {
-      "type": "integer",
-      "description": "UDPNM_PDU_LENGTH 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "UDPNM_USER_DATA_ENABLED": {
-      "type": "boolean",
-      "description": "UDPNM_USER_DATA_ENABLED 参数",
-      "default": true,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "UDPNM_USER_DATA_OFFSET": {
-      "type": "integer",
-      "description": "UDPNM_USER_DATA_OFFSET 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "UDPNM_USER_DATA_LENGTH": {
-      "type": "integer",
-      "description": "UDPNM_USER_DATA_LENGTH 参数",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "UDPNM_NODE_ID_ENABLED": {
-      "type": "boolean",
-      "description": "UDPNM_NODE_ID_ENABLED 参数",
-      "default": true,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "UDPNM_CONTROL_BIT_VECTOR_ENABLED": {
-      "type": "boolean",
-      "description": "UDPNM_CONTROL_BIT_VECTOR_ENABLED 参数",
-      "default": true,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "UDPNM_NODE_ID_POSITION": {
-      "type": "integer",
-      "description": "Byte 0",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "UDPNM_CONTROL_BIT_VECTOR_POSITION": {
-      "type": "integer",
-      "description": "Byte 1",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "UDPNM_NODE_DETECTION_ENABLED": {
       "type": "boolean",
       "description": "UDPNM_NODE_DETECTION_ENABLED 参数",
       "default": true,
-      "x-section": "NODE DETECTION CONFIGURATION"
-    },
-    "UDPNM_REPEAT_MESSAGE_IND_ENABLED": {
-      "type": "boolean",
-      "description": "UDPNM_REPEAT_MESSAGE_IND_ENABLED 参数",
-      "default": true,
-      "x-section": "NODE DETECTION CONFIGURATION"
-    },
-    "UDPNM_BUS_SYNCHRONIZATION_ENABLED": {
-      "type": "boolean",
-      "description": "UDPNM_BUS_SYNCHRONIZATION_ENABLED 参数",
-      "default": true,
-      "x-section": "NODE DETECTION CONFIGURATION"
-    },
-    "UDPNM_REMOTE_SLEEP_IND_ENABLED": {
-      "type": "boolean",
-      "description": "UDPNM_REMOTE_SLEEP_IND_ENABLED 参数",
-      "default": true,
-      "x-section": "NODE DETECTION CONFIGURATION"
-    },
-    "UDPNM_MSG_CYCLE_TIME": {
-      "type": "integer",
-      "description": "256ms",
-      "default": 256,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "UDPNM_MSG_TIMEOUT_TIME": {
-      "type": "integer",
-      "description": "512ms",
-      "default": 512,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "UDPNM_REPEAT_MESSAGE_TIME": {
-      "type": "integer",
-      "description": "128ms",
-      "default": 128,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "UDPNM_WAIT_BUS_SLEEP_TIME": {
-      "type": "integer",
-      "description": "1920ms",
-      "default": 1920,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "UDPNM_TIMEOUT_TIME": {
-      "type": "integer",
-      "description": "1024ms",
-      "default": 1024,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "UDPNM_IMMEDIATE_NM_CYCLE_TIME": {
-      "type": "integer",
-      "description": "20ms",
-      "default": 20,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "UDPNM_IMMEDIATE_NM_TRANSMISIONS": {
-      "type": "integer",
-      "description": "5 transmissions",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "UDPNM_BUS_LOAD_REDUCTION_ENABLED": {
-      "type": "boolean",
-      "description": "UDPNM_BUS_LOAD_REDUCTION_ENABLED 参数",
-      "default": false,
-      "x-section": "BUS LOAD REDUCTION CONFIGURATION"
-    },
-    "UDPNM_BUS_LOAD_REDUCTION_INTERVAL": {
-      "type": "integer",
-      "description": "100 seconds",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BUS LOAD REDUCTION CONFIGURATION"
-    },
-    "UDPNM_PARTIAL_NETWORKING_ENABLED": {
-      "type": "boolean",
-      "description": "UDPNM_PARTIAL_NETWORKING_ENABLED 参数",
-      "default": false,
-      "x-section": "PARTIAL NETWORKING CONFIGURATION"
-    },
-    "UDPNM_PN_INFO_LENGTH": {
-      "type": "integer",
-      "description": "UDPNM_PN_INFO_LENGTH 参数",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PARTIAL NETWORKING CONFIGURATION"
-    },
-    "UDPNM_PN_INFO_OFFSET": {
-      "type": "integer",
-      "description": "UDPNM_PN_INFO_OFFSET 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PARTIAL NETWORKING CONFIGURATION"
-    },
-    "UDPNM_PN_EIRA_CALC_ENABLED": {
-      "type": "boolean",
-      "description": "UDPNM_PN_EIRA_CALC_ENABLED 参数",
-      "default": false,
-      "x-section": "PARTIAL NETWORKING CONFIGURATION"
-    },
-    "UDPNM_PN_ERA_CALC_ENABLED": {
-      "type": "boolean",
-      "description": "UDPNM_PN_ERA_CALC_ENABLED 参数",
-      "default": false,
-      "x-section": "PARTIAL NETWORKING CONFIGURATION"
-    },
-    "UDPNM_CHANNEL_0": {
-      "type": "integer",
-      "description": "UDPNM_CHANNEL_0 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "UDPNM_CHANNEL_1": {
-      "type": "integer",
-      "description": "UDPNM_CHANNEL_1 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "UDPNM_CHANNEL_2": {
-      "type": "integer",
-      "description": "UDPNM_CHANNEL_2 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "UDPNM_CHANNEL_3": {
-      "type": "integer",
-      "description": "UDPNM_CHANNEL_3 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "UDPNM_CHANNEL_0_NODE_ID": {
-      "type": "integer",
-      "description": "UDPNM_CHANNEL_0_NODE_ID 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "UDPNM_CHANNEL_0_CLUSTER_ID": {
-      "type": "integer",
-      "description": "UDPNM_CHANNEL_0_CLUSTER_ID 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "UDPNM_CHANNEL_0_TX_PDU_ID": {
       "type": "integer",
@@ -327,7 +29,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "UDPNM_CHANNEL_0_RX_PDU_ID": {
       "type": "integer",
@@ -335,23 +37,7 @@
       "default": 512,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "UDPNM_CHANNEL_1_NODE_ID": {
-      "type": "integer",
-      "description": "UDPNM_CHANNEL_1_NODE_ID 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "UDPNM_CHANNEL_1_CLUSTER_ID": {
-      "type": "integer",
-      "description": "UDPNM_CHANNEL_1_CLUSTER_ID 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "UDPNM_CHANNEL_1_TX_PDU_ID": {
       "type": "integer",
@@ -359,7 +45,7 @@
       "default": 257,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "UDPNM_CHANNEL_1_RX_PDU_ID": {
       "type": "integer",
@@ -367,23 +53,7 @@
       "default": 513,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "UDPNM_CHANNEL_2_NODE_ID": {
-      "type": "integer",
-      "description": "UDPNM_CHANNEL_2_NODE_ID 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "UDPNM_CHANNEL_2_CLUSTER_ID": {
-      "type": "integer",
-      "description": "UDPNM_CHANNEL_2_CLUSTER_ID 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "UDPNM_CHANNEL_2_TX_PDU_ID": {
       "type": "integer",
@@ -391,7 +61,7 @@
       "default": 258,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "UDPNM_CHANNEL_2_RX_PDU_ID": {
       "type": "integer",
@@ -399,23 +69,7 @@
       "default": 514,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "UDPNM_CHANNEL_3_NODE_ID": {
-      "type": "integer",
-      "description": "UDPNM_CHANNEL_3_NODE_ID 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "UDPNM_CHANNEL_3_CLUSTER_ID": {
-      "type": "integer",
-      "description": "UDPNM_CHANNEL_3_CLUSTER_ID 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "UDPNM_CHANNEL_3_TX_PDU_ID": {
       "type": "integer",
@@ -423,7 +77,7 @@
       "default": 259,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "UDPNM_CHANNEL_3_RX_PDU_ID": {
       "type": "integer",
@@ -431,7 +85,353 @@
       "default": 515,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_MAIN_FUNCTION_PERIOD": {
+      "type": "integer",
+      "description": "UDPNM_MAIN_FUNCTION_PERIOD 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_MSG_TIMEOUT_TIME": {
+      "type": "integer",
+      "description": "UDPNM_MSG_TIMEOUT_TIME 参数",
+      "default": 512,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_TIMEOUT_TIME": {
+      "type": "integer",
+      "description": "UDPNM_TIMEOUT_TIME 参数",
+      "default": 1024,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "UDPNM_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "UDPNM_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "UDPNM_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "UDPNM_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "UDPNM_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "UDPNM_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_PASSIVE_MODE_ENABLED": {
+      "type": "boolean",
+      "description": "UDPNM_PASSIVE_MODE_ENABLED 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_NUMBER_OF_CHANNELS": {
+      "type": "integer",
+      "description": "UDPNM_NUMBER_OF_CHANNELS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_PDU_LENGTH": {
+      "type": "integer",
+      "description": "UDPNM_PDU_LENGTH 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_USER_DATA_ENABLED": {
+      "type": "boolean",
+      "description": "UDPNM_USER_DATA_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_USER_DATA_OFFSET": {
+      "type": "integer",
+      "description": "UDPNM_USER_DATA_OFFSET 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_USER_DATA_LENGTH": {
+      "type": "integer",
+      "description": "UDPNM_USER_DATA_LENGTH 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_NODE_ID_ENABLED": {
+      "type": "boolean",
+      "description": "UDPNM_NODE_ID_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CONTROL_BIT_VECTOR_ENABLED": {
+      "type": "boolean",
+      "description": "UDPNM_CONTROL_BIT_VECTOR_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_NODE_ID_POSITION": {
+      "type": "integer",
+      "description": "UDPNM_NODE_ID_POSITION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CONTROL_BIT_VECTOR_POSITION": {
+      "type": "integer",
+      "description": "UDPNM_CONTROL_BIT_VECTOR_POSITION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_REPEAT_MESSAGE_IND_ENABLED": {
+      "type": "boolean",
+      "description": "UDPNM_REPEAT_MESSAGE_IND_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_BUS_SYNCHRONIZATION_ENABLED": {
+      "type": "boolean",
+      "description": "UDPNM_BUS_SYNCHRONIZATION_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_REMOTE_SLEEP_IND_ENABLED": {
+      "type": "boolean",
+      "description": "UDPNM_REMOTE_SLEEP_IND_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_MSG_CYCLE_TIME": {
+      "type": "integer",
+      "description": "UDPNM_MSG_CYCLE_TIME 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_REPEAT_MESSAGE_TIME": {
+      "type": "integer",
+      "description": "UDPNM_REPEAT_MESSAGE_TIME 参数",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_WAIT_BUS_SLEEP_TIME": {
+      "type": "integer",
+      "description": "UDPNM_WAIT_BUS_SLEEP_TIME 参数",
+      "default": 1920,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_IMMEDIATE_NM_CYCLE_TIME": {
+      "type": "integer",
+      "description": "UDPNM_IMMEDIATE_NM_CYCLE_TIME 参数",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_IMMEDIATE_NM_TRANSMISIONS": {
+      "type": "integer",
+      "description": "UDPNM_IMMEDIATE_NM_TRANSMISIONS 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_BUS_LOAD_REDUCTION_ENABLED": {
+      "type": "boolean",
+      "description": "UDPNM_BUS_LOAD_REDUCTION_ENABLED 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_BUS_LOAD_REDUCTION_INTERVAL": {
+      "type": "integer",
+      "description": "UDPNM_BUS_LOAD_REDUCTION_INTERVAL 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_PARTIAL_NETWORKING_ENABLED": {
+      "type": "boolean",
+      "description": "UDPNM_PARTIAL_NETWORKING_ENABLED 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_PN_INFO_LENGTH": {
+      "type": "integer",
+      "description": "UDPNM_PN_INFO_LENGTH 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_PN_INFO_OFFSET": {
+      "type": "integer",
+      "description": "UDPNM_PN_INFO_OFFSET 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_PN_EIRA_CALC_ENABLED": {
+      "type": "boolean",
+      "description": "UDPNM_PN_EIRA_CALC_ENABLED 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_PN_ERA_CALC_ENABLED": {
+      "type": "boolean",
+      "description": "UDPNM_PN_ERA_CALC_ENABLED 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CHANNEL_0": {
+      "type": "integer",
+      "description": "UDPNM_CHANNEL_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CHANNEL_1": {
+      "type": "integer",
+      "description": "UDPNM_CHANNEL_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CHANNEL_2": {
+      "type": "integer",
+      "description": "UDPNM_CHANNEL_2 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CHANNEL_3": {
+      "type": "integer",
+      "description": "UDPNM_CHANNEL_3 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CHANNEL_0_NODE_ID": {
+      "type": "integer",
+      "description": "UDPNM_CHANNEL_0_NODE_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CHANNEL_0_CLUSTER_ID": {
+      "type": "integer",
+      "description": "UDPNM_CHANNEL_0_CLUSTER_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CHANNEL_1_NODE_ID": {
+      "type": "integer",
+      "description": "UDPNM_CHANNEL_1_NODE_ID 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CHANNEL_1_CLUSTER_ID": {
+      "type": "integer",
+      "description": "UDPNM_CHANNEL_1_CLUSTER_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CHANNEL_2_NODE_ID": {
+      "type": "integer",
+      "description": "UDPNM_CHANNEL_2_NODE_ID 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CHANNEL_2_CLUSTER_ID": {
+      "type": "integer",
+      "description": "UDPNM_CHANNEL_2_CLUSTER_ID 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CHANNEL_3_NODE_ID": {
+      "type": "integer",
+      "description": "UDPNM_CHANNEL_3_NODE_ID 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UDPNM_CHANNEL_3_CLUSTER_ID": {
+      "type": "integer",
+      "description": "UDPNM_CHANNEL_3_CLUSTER_ID 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -448,15 +448,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/udpNm/include/UdpNm_Cfg.h",
-  "x-display-name": "UdpNm",
-  "x-sections": [
-    "VERSION INFORMATION",
-    "GENERAL CONFIGURATION",
-    "PDU CONFIGURATION",
-    "NODE DETECTION CONFIGURATION",
-    "TIMING CONFIGURATION",
-    "BUS LOAD REDUCTION CONFIGURATION",
-    "PARTIAL NETWORKING CONFIGURATION",
-    "CHANNEL CONFIGURATION"
-  ]
+  "x-display-name": "UdpNm"
 }

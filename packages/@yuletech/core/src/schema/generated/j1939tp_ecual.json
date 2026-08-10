@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/j1939tp_ecual.json",
   "title": "J1939Tp_Ecual Configuration",
-  "description": "J1939 Transport Protocol configuration header",
+  "description": "J1939Tp_Ecual Configuration configuration header",
   "type": "object",
   "properties": {
     "J1939TP_DEV_ERROR_DETECT": {
@@ -15,6 +15,134 @@
       "type": "boolean",
       "description": "J1939TP_VERSION_INFO_API 参数",
       "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_MAX_NUM_PACKETS": {
+      "type": "integer",
+      "description": "J1939TP_MAX_NUM_PACKETS 参数",
+      "default": 255,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_MAX_TX_SDU_PER_CHANNEL": {
+      "type": "integer",
+      "description": "J1939TP_MAX_TX_SDU_PER_CHANNEL 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_MAX_RX_SDU_PER_CHANNEL": {
+      "type": "integer",
+      "description": "J1939TP_MAX_RX_SDU_PER_CHANNEL 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_TX_CM_PDU_ID": {
+      "type": "integer",
+      "description": "J1939TP_TX_CM_PDU_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_TX_DT_PDU_ID": {
+      "type": "integer",
+      "description": "J1939TP_TX_DT_PDU_ID 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_TX_CONF_CM_ID": {
+      "type": "integer",
+      "description": "J1939TP_TX_CONF_CM_ID 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_TX_CONF_DT_ID": {
+      "type": "integer",
+      "description": "J1939TP_TX_CONF_DT_ID 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_RX_CM_PDU_ID": {
+      "type": "integer",
+      "description": "J1939TP_RX_CM_PDU_ID 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_RX_DT_PDU_ID": {
+      "type": "integer",
+      "description": "J1939TP_RX_DT_PDU_ID 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_DEFAULT_TIMEOUT": {
+      "type": "integer",
+      "description": "J1939TP_DEFAULT_TIMEOUT 参数",
+      "default": 1250,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_T1_TIMEOUT": {
+      "type": "integer",
+      "description": "J1939TP_T1_TIMEOUT 参数",
+      "default": 750,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_T2_TIMEOUT": {
+      "type": "integer",
+      "description": "J1939TP_T2_TIMEOUT 参数",
+      "default": 1250,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_T3_TIMEOUT": {
+      "type": "integer",
+      "description": "J1939TP_T3_TIMEOUT 参数",
+      "default": 1250,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_T4_TIMEOUT": {
+      "type": "integer",
+      "description": "J1939TP_T4_TIMEOUT 参数",
+      "default": 1050,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_TH_TIMEOUT": {
+      "type": "integer",
+      "description": "J1939TP_TH_TIMEOUT 参数",
+      "default": 500,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "J1939TP_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "J1939TP_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_DYNAMIC_CHANNEL_ALLOCATION": {
@@ -47,135 +175,63 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "J1939TP_MAX_TX_SDU_PER_CHANNEL": {
-      "type": "integer",
-      "description": "J1939TP_MAX_TX_SDU_PER_CHANNEL 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "J1939TP_MAX_RX_SDU_PER_CHANNEL": {
-      "type": "integer",
-      "description": "J1939TP_MAX_RX_SDU_PER_CHANNEL 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "J1939TP_DEFAULT_TIMEOUT": {
-      "type": "integer",
-      "description": "Default timeout: 1.25s",
-      "default": 1250,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "J1939TP_T1_TIMEOUT": {
-      "type": "integer",
-      "description": "T1: Response time",
-      "default": 750,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "J1939TP_T2_TIMEOUT": {
-      "type": "integer",
-      "description": "T2: Sender response time",
-      "default": 1250,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "J1939TP_T3_TIMEOUT": {
-      "type": "integer",
-      "description": "T3: Receiver response time",
-      "default": 1250,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "J1939TP_T4_TIMEOUT": {
-      "type": "integer",
-      "description": "T4: BAM receive timeout",
-      "default": 1050,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "J1939TP_TH_TIMEOUT": {
-      "type": "integer",
-      "description": "TH: Hold timeout",
-      "default": 500,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_MAX_MESSAGE_LENGTH": {
       "type": "integer",
-      "description": "Max J1939 TP message: 255 packets * 7 bytes",
+      "description": "J1939TP_MAX_MESSAGE_LENGTH 参数",
       "default": 1785,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "BUFFER CONFIGURATION"
-    },
-    "J1939TP_MAX_NUM_PACKETS": {
-      "type": "integer",
-      "description": "Maximum number of packets",
-      "default": 255,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BUFFER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_MAX_DT_DATA_LEN": {
       "type": "integer",
-      "description": "DT packet data length",
+      "description": "J1939TP_MAX_DT_DATA_LEN 参数",
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BUFFER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_MAX_PACKETS_PER_CTS": {
       "type": "integer",
-      "description": "Default max packets per CTS",
+      "description": "J1939TP_MAX_PACKETS_PER_CTS 参数",
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BUFFER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_CM_PGN": {
       "type": "integer",
-      "description": "Connection Management PGN",
+      "description": "J1939TP_CM_PGN 参数",
       "default": 60416,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CAN ID CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_CM_DA_GLOBAL": {
       "type": "integer",
-      "description": "Global destination address",
+      "description": "J1939TP_CM_DA_GLOBAL 参数",
       "default": 255,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CAN ID CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_DT_PGN": {
       "type": "integer",
-      "description": "Data Transfer PGN",
+      "description": "J1939TP_DT_PGN 参数",
       "default": 60160,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CAN ID CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_DT_DA_GLOBAL": {
       "type": "integer",
-      "description": "Global destination address",
+      "description": "J1939TP_DT_DA_GLOBAL 参数",
       "default": 255,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CAN ID CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_CM_PRIORITY": {
       "type": "integer",
@@ -183,7 +239,7 @@
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CAN ID CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_DT_PRIORITY": {
       "type": "integer",
@@ -191,7 +247,7 @@
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CAN ID CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_BAM_PRIORITY": {
       "type": "integer",
@@ -199,111 +255,55 @@
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CAN ID CONFIGURATION"
-    },
-    "J1939TP_TX_CM_PDU_ID": {
-      "type": "integer",
-      "description": "J1939TP_TX_CM_PDU_ID 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU ID CONFIGURATION"
-    },
-    "J1939TP_TX_DT_PDU_ID": {
-      "type": "integer",
-      "description": "J1939TP_TX_DT_PDU_ID 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU ID CONFIGURATION"
-    },
-    "J1939TP_TX_CONF_CM_ID": {
-      "type": "integer",
-      "description": "J1939TP_TX_CONF_CM_ID 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU ID CONFIGURATION"
-    },
-    "J1939TP_TX_CONF_DT_ID": {
-      "type": "integer",
-      "description": "J1939TP_TX_CONF_DT_ID 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU ID CONFIGURATION"
-    },
-    "J1939TP_RX_CM_PDU_ID": {
-      "type": "integer",
-      "description": "J1939TP_RX_CM_PDU_ID 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU ID CONFIGURATION"
-    },
-    "J1939TP_RX_DT_PDU_ID": {
-      "type": "integer",
-      "description": "J1939TP_RX_DT_PDU_ID 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU ID CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_MAX_RETRIES": {
       "type": "integer",
-      "description": "Maximum retry attempts",
+      "description": "J1939TP_MAX_RETRIES 参数",
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RETRY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_RETRY_INTERVAL": {
       "type": "integer",
-      "description": "Retry interval (ms)",
+      "description": "J1939TP_RETRY_INTERVAL 参数",
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RETRY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_DEFAULT_SA": {
       "type": "integer",
-      "description": "Default source address",
+      "description": "J1939TP_DEFAULT_SA 参数",
       "default": 128,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ADDRESS CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_DEFAULT_DA": {
       "type": "integer",
-      "description": "Default destination address",
+      "description": "J1939TP_DEFAULT_DA 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ADDRESS CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_GLOBAL_ADDRESS": {
       "type": "integer",
-      "description": "Global address for BAM",
+      "description": "J1939TP_GLOBAL_ADDRESS 参数",
       "default": 255,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ADDRESS CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "J1939TP_NULL_ADDRESS": {
       "type": "integer",
-      "description": "NULL address",
+      "description": "J1939TP_NULL_ADDRESS 参数",
       "default": 254,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "ADDRESS CONFIGURATION"
-    },
-    "J1939TP_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "Main function period in ms",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MAIN FUNCTION PERIOD"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -311,15 +311,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/ecual/j1939tp/include/J1939Tp_Cfg.h",
-  "x-display-name": "J1939Tp_Ecual",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "CHANNEL CONFIGURATION",
-    "BUFFER CONFIGURATION",
-    "CAN ID CONFIGURATION",
-    "PDU ID CONFIGURATION",
-    "RETRY CONFIGURATION",
-    "ADDRESS CONFIGURATION",
-    "MAIN FUNCTION PERIOD"
-  ]
+  "x-display-name": "J1939Tp_Ecual"
 }

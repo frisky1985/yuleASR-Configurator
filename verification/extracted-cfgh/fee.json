@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/fee.json",
   "title": "Fee Configuration",
-  "description": "Development error detection enable/disable",
+  "description": "Fee Configuration configuration header",
   "type": "object",
   "properties": {
     "FEE_DEV_ERROR_DETECT": {
@@ -15,6 +15,54 @@
       "type": "boolean",
       "description": "FEE_VERSION_INFO_API 参数",
       "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FEE_NUM_SECTORS": {
+      "type": "integer",
+      "description": "FEE_NUM_SECTORS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FEE_NUM_BLOCKS": {
+      "type": "integer",
+      "description": "FEE_NUM_BLOCKS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FEE_ERASE_TIMEOUT_US": {
+      "type": "integer",
+      "description": "FEE_ERASE_TIMEOUT_US 参数",
+      "default": 5000000,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FEE_WRITE_TIMEOUT_US": {
+      "type": "integer",
+      "description": "FEE_WRITE_TIMEOUT_US 参数",
+      "default": 100000,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FEE_READ_TIMEOUT_US": {
+      "type": "integer",
+      "description": "FEE_READ_TIMEOUT_US 参数",
+      "default": 10000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "FEE_BLANK_CHECK_TIMEOUT_US": {
+      "type": "integer",
+      "description": "FEE_BLANK_CHECK_TIMEOUT_US 参数",
+      "default": 10000,
+      "minimum": 0,
+      "maximum": 65535,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_ERASE_SUSPEND_SUPPORT": {
@@ -65,87 +113,71 @@
       "default": 268435456,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "FLASH HARDWARE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_FLASH_TOTAL_SIZE": {
       "type": "integer",
-      "description": "8 MB",
+      "description": "FEE_FLASH_TOTAL_SIZE 参数",
       "default": 8388608,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "FLASH HARDWARE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_FLASH_SECTOR_SIZE": {
       "type": "integer",
-      "description": "64 KB",
+      "description": "FEE_FLASH_SECTOR_SIZE 参数",
       "default": 65536,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "FLASH HARDWARE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_FLASH_PAGE_SIZE": {
       "type": "integer",
-      "description": "256 bytes",
+      "description": "FEE_FLASH_PAGE_SIZE 参数",
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "FLASH HARDWARE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_FLASH_WORD_SIZE": {
       "type": "integer",
-      "description": "4 bytes",
+      "description": "FEE_FLASH_WORD_SIZE 参数",
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "FLASH HARDWARE CONFIGURATION"
-    },
-    "FEE_NUM_SECTORS": {
-      "type": "integer",
-      "description": "FEE_NUM_SECTORS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "FLASH HARDWARE CONFIGURATION"
-    },
-    "FEE_NUM_BLOCKS": {
-      "type": "integer",
-      "description": "FEE_NUM_BLOCKS 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "FLASH HARDWARE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_VIRTUAL_PAGE_SIZE": {
       "type": "integer",
-      "description": "8 bytes",
+      "description": "FEE_VIRTUAL_PAGE_SIZE 参数",
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "EEPROM EMULATION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_MAX_WRITE_CYCLES": {
       "type": "integer",
-      "description": "100k cycles",
+      "description": "FEE_MAX_WRITE_CYCLES 参数",
       "default": 100000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "EEPROM EMULATION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_MAX_ERASE_CYCLES": {
       "type": "integer",
-      "description": "100k cycles",
+      "description": "FEE_MAX_ERASE_CYCLES 参数",
       "default": 100000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "EEPROM EMULATION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_GC_THRESHOLD_PERCENT": {
       "type": "integer",
-      "description": "80% full triggers GC",
+      "description": "FEE_GC_THRESHOLD_PERCENT 参数",
       "default": 80,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "EEPROM EMULATION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_MAX_READ_NORMAL_MODE": {
       "type": "integer",
@@ -153,7 +185,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "OPERATION LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_MAX_READ_FAST_MODE": {
       "type": "integer",
@@ -161,7 +193,7 @@
       "default": 1024,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "OPERATION LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_MAX_WRITE_NORMAL_MODE": {
       "type": "integer",
@@ -169,7 +201,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "OPERATION LIMITS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_MAX_WRITE_FAST_MODE": {
       "type": "integer",
@@ -177,179 +209,147 @@
       "default": 512,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "OPERATION LIMITS"
-    },
-    "FEE_ERASE_TIMEOUT_US": {
-      "type": "integer",
-      "description": "5 seconds",
-      "default": 5000000,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "TIMEOUT CONFIGURATION"
-    },
-    "FEE_WRITE_TIMEOUT_US": {
-      "type": "integer",
-      "description": "100 ms",
-      "default": 100000,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "TIMEOUT CONFIGURATION"
-    },
-    "FEE_READ_TIMEOUT_US": {
-      "type": "integer",
-      "description": "10 ms",
-      "default": 10000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "TIMEOUT CONFIGURATION"
-    },
-    "FEE_BLANK_CHECK_TIMEOUT_US": {
-      "type": "integer",
-      "description": "10 ms",
-      "default": 10000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR0_START_ADDR": {
       "type": "string",
       "description": "FEE_SECTOR0_START_ADDR（派生表达式: (FEE_FLASH_BASE_ADDR + 0x00000000U)）",
       "default": "(FEE_FLASH_BASE_ADDR + 0x00000000U)",
-      "x-section": "SECTOR CONFIGURATION",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "FEE_SECTOR0_SIZE": {
       "type": "integer",
-      "description": "FEE_SECTOR0_SIZE（别名: FEE_FLASH_SECTOR_SIZE = 65536；同族可选: FEE_FLASH_SECTOR_SIZE）",
+      "description": "FEE_SECTOR0_SIZE 参数",
       "default": 65536,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "SECTOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR0_ERASE_CYCLES": {
       "type": "integer",
-      "description": "FEE_SECTOR0_ERASE_CYCLES（别名: FEE_MAX_ERASE_CYCLES = 100000；同族可选: FEE_MAX_ERASE_CYCLES）",
+      "description": "FEE_SECTOR0_ERASE_CYCLES 参数",
       "default": 100000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "SECTOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR0_WRITABLE": {
       "type": "boolean",
       "description": "FEE_SECTOR0_WRITABLE 参数",
       "default": true,
-      "x-section": "SECTOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR0_ERASABLE": {
       "type": "boolean",
       "description": "FEE_SECTOR0_ERASABLE 参数",
       "default": true,
-      "x-section": "SECTOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR1_START_ADDR": {
       "type": "string",
       "description": "FEE_SECTOR1_START_ADDR（派生表达式: (FEE_FLASH_BASE_ADDR + 0x00010000U)）",
       "default": "(FEE_FLASH_BASE_ADDR + 0x00010000U)",
-      "x-section": "SECTOR CONFIGURATION",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "FEE_SECTOR1_SIZE": {
       "type": "integer",
-      "description": "FEE_SECTOR1_SIZE（别名: FEE_FLASH_SECTOR_SIZE = 65536；同族可选: FEE_FLASH_SECTOR_SIZE）",
+      "description": "FEE_SECTOR1_SIZE 参数",
       "default": 65536,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "SECTOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR1_ERASE_CYCLES": {
       "type": "integer",
-      "description": "FEE_SECTOR1_ERASE_CYCLES（别名: FEE_MAX_ERASE_CYCLES = 100000；同族可选: FEE_MAX_ERASE_CYCLES）",
+      "description": "FEE_SECTOR1_ERASE_CYCLES 参数",
       "default": 100000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "SECTOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR1_WRITABLE": {
       "type": "boolean",
       "description": "FEE_SECTOR1_WRITABLE 参数",
       "default": true,
-      "x-section": "SECTOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR1_ERASABLE": {
       "type": "boolean",
       "description": "FEE_SECTOR1_ERASABLE 参数",
       "default": true,
-      "x-section": "SECTOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR2_START_ADDR": {
       "type": "string",
       "description": "FEE_SECTOR2_START_ADDR（派生表达式: (FEE_FLASH_BASE_ADDR + 0x00020000U)）",
       "default": "(FEE_FLASH_BASE_ADDR + 0x00020000U)",
-      "x-section": "SECTOR CONFIGURATION",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "FEE_SECTOR2_SIZE": {
       "type": "integer",
-      "description": "FEE_SECTOR2_SIZE（别名: FEE_FLASH_SECTOR_SIZE = 65536；同族可选: FEE_FLASH_SECTOR_SIZE）",
+      "description": "FEE_SECTOR2_SIZE 参数",
       "default": 65536,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "SECTOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR2_ERASE_CYCLES": {
       "type": "integer",
-      "description": "FEE_SECTOR2_ERASE_CYCLES（别名: FEE_MAX_ERASE_CYCLES = 100000；同族可选: FEE_MAX_ERASE_CYCLES）",
+      "description": "FEE_SECTOR2_ERASE_CYCLES 参数",
       "default": 100000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "SECTOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR2_WRITABLE": {
       "type": "boolean",
       "description": "FEE_SECTOR2_WRITABLE 参数",
       "default": true,
-      "x-section": "SECTOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR2_ERASABLE": {
       "type": "boolean",
       "description": "FEE_SECTOR2_ERASABLE 参数",
       "default": true,
-      "x-section": "SECTOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR3_START_ADDR": {
       "type": "string",
       "description": "FEE_SECTOR3_START_ADDR（派生表达式: (FEE_FLASH_BASE_ADDR + 0x00030000U)）",
       "default": "(FEE_FLASH_BASE_ADDR + 0x00030000U)",
-      "x-section": "SECTOR CONFIGURATION",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "FEE_SECTOR3_SIZE": {
       "type": "integer",
-      "description": "FEE_SECTOR3_SIZE（别名: FEE_FLASH_SECTOR_SIZE = 65536；同族可选: FEE_FLASH_SECTOR_SIZE）",
+      "description": "FEE_SECTOR3_SIZE 参数",
       "default": 65536,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "SECTOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR3_ERASE_CYCLES": {
       "type": "integer",
-      "description": "FEE_SECTOR3_ERASE_CYCLES（别名: FEE_MAX_ERASE_CYCLES = 100000；同族可选: FEE_MAX_ERASE_CYCLES）",
+      "description": "FEE_SECTOR3_ERASE_CYCLES 参数",
       "default": 100000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "SECTOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR3_WRITABLE": {
       "type": "boolean",
       "description": "FEE_SECTOR3_WRITABLE 参数",
       "default": true,
-      "x-section": "SECTOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR3_ERASABLE": {
       "type": "boolean",
       "description": "FEE_SECTOR3_ERASABLE 参数",
       "default": true,
-      "x-section": "SECTOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_SIZE_8": {
       "type": "integer",
@@ -357,7 +357,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_SIZE_16": {
       "type": "integer",
@@ -365,7 +365,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_SIZE_32": {
       "type": "integer",
@@ -373,7 +373,7 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_SIZE_64": {
       "type": "integer",
@@ -381,7 +381,7 @@
       "default": 64,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_SIZE_128": {
       "type": "integer",
@@ -389,7 +389,7 @@
       "default": 128,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_SIZE_256": {
       "type": "integer",
@@ -397,7 +397,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_SIZE_512": {
       "type": "integer",
@@ -405,7 +405,7 @@
       "default": 512,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_SIZE_1024": {
       "type": "integer",
@@ -413,7 +413,7 @@
       "default": 1024,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_DEFAULT_WRITE_CYCLES": {
       "type": "integer",
@@ -421,15 +421,15 @@
       "default": 100000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_DATA_ALIGNMENT": {
       "type": "integer",
-      "description": "FEE_DATA_ALIGNMENT（别名: FEE_VIRTUAL_PAGE_SIZE = 8；同族可选: FEE_VIRTUAL_PAGE_SIZE）",
+      "description": "FEE_DATA_ALIGNMENT 参数",
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_NUMBER_OF_BLOCKS": {
       "type": "integer",
@@ -437,7 +437,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_NUMBER_OF_PAGES": {
       "type": "integer",
@@ -445,7 +445,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_NUMBER_OF_SECTORS": {
       "type": "integer",
@@ -453,27 +453,29 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_PAGE_SIZE": {
       "type": "integer",
-      "description": "FEE_PAGE_SIZE（别名: FEE_FLASH_SECTOR_SIZE = 65536；同族可选: FEE_FLASH_SECTOR_SIZE）",
+      "description": "FEE_PAGE_SIZE 参数",
       "default": 65536,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_PAGE_0_START_ADDRESS": {
       "type": "string",
-      "description": "FEE_PAGE_0_START_ADDRESS（别名: FEE_SECTOR0_START_ADDR = (FEE_FLASH_BASE_ADDR + 0x00000000U)；同族可选: FEE_SECTOR0_START_ADDR）",
+      "description": "FEE_PAGE_0_START_ADDRESS（派生表达式: (FEE_FLASH_BASE_ADDR + 0x00000000U)）",
       "default": "(FEE_FLASH_BASE_ADDR + 0x00000000U)",
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "expression"
     },
     "FEE_PAGE_1_START_ADDRESS": {
       "type": "string",
-      "description": "FEE_PAGE_1_START_ADDRESS（别名: FEE_SECTOR1_START_ADDR = (FEE_FLASH_BASE_ADDR + 0x00010000U)；同族可选: FEE_SECTOR1_START_ADDR）",
+      "description": "FEE_PAGE_1_START_ADDRESS（派生表达式: (FEE_FLASH_BASE_ADDR + 0x00010000U)）",
       "default": "(FEE_FLASH_BASE_ADDR + 0x00010000U)",
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "expression"
     },
     "FEE_GC_REPETITIONS": {
       "type": "integer",
@@ -481,13 +483,13 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_USE_ERASE_SUSPEND": {
       "type": "boolean",
       "description": "FEE_USE_ERASE_SUSPEND 参数",
       "default": true,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_NVM_CONFIG_ID": {
       "type": "integer",
@@ -495,7 +497,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_NVM_ADMIN_ID": {
       "type": "integer",
@@ -503,7 +505,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_ID_1": {
       "type": "integer",
@@ -511,7 +513,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_ID_2": {
       "type": "integer",
@@ -519,7 +521,7 @@
       "default": 17,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_ID_3": {
       "type": "integer",
@@ -527,7 +529,7 @@
       "default": 18,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_ID_4": {
       "type": "integer",
@@ -535,7 +537,7 @@
       "default": 19,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_ID_5": {
       "type": "integer",
@@ -543,7 +545,7 @@
       "default": 20,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_ID_6": {
       "type": "integer",
@@ -551,7 +553,7 @@
       "default": 21,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_ID_7": {
       "type": "integer",
@@ -559,7 +561,7 @@
       "default": 22,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_ID_8": {
       "type": "integer",
@@ -567,27 +569,27 @@
       "default": 23,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_JOB_END_NOTIFICATION_ENABLED": {
       "type": "boolean",
       "description": "FEE_JOB_END_NOTIFICATION_ENABLED 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_JOB_ERROR_NOTIFICATION_ENABLED": {
       "type": "boolean",
       "description": "FEE_JOB_ERROR_NOTIFICATION_ENABLED 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR_MAGIC_NUMBER": {
       "type": "integer",
-      "description": "\"FEEU\"",
+      "description": "FEE_SECTOR_MAGIC_NUMBER 参数",
       "default": 1178944853,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "INTERNAL DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_FLASH_EMPTY_VALUE": {
       "type": "integer",
@@ -595,7 +597,7 @@
       "default": 4294967295,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "INTERNAL DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_BLOCK_HEADER_SIZE": {
       "type": "integer",
@@ -603,7 +605,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INTERNAL DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_SECTOR_HEADER_SIZE": {
       "type": "integer",
@@ -611,7 +613,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INTERNAL DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FEE_E_INVALID_CANCEL": {
       "type": "integer",
@@ -619,7 +621,7 @@
       "default": 12,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INTERNAL DEFINES",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     }
   },
@@ -640,22 +642,19 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "Fee 块数应匹配 MemIf 设备数"
+    },
+    {
+      "sourceParam": "FEE_NUM_BLOCKS",
+      "module": "MemIf",
+      "param": "MEMIF_NUMBER_OF_DEVICES",
+      "relation": "required",
+      "severity": "error",
+      "description": "Fee 依赖 MemIf 设备，MemIf 必须配置"
     }
   ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/mcal/fee/include/Fee_Cfg.h",
-  "x-display-name": "Fee",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "FLASH HARDWARE CONFIGURATION",
-    "EEPROM EMULATION CONFIGURATION",
-    "OPERATION LIMITS",
-    "TIMEOUT CONFIGURATION",
-    "SECTOR CONFIGURATION",
-    "BLOCK CONFIGURATION",
-    "CALLBACK CONFIGURATION",
-    "INTERNAL DEFINES"
-  ]
+  "x-display-name": "Fee"
 }

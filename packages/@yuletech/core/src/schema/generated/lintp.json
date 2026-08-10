@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/lintp.json",
   "title": "LinTp Configuration",
-  "description": "LIN Transport Layer configuration header",
+  "description": "LinTp Configuration configuration header",
   "type": "object",
   "properties": {
     "LINTP_DEV_ERROR_DETECT": {
@@ -15,6 +15,60 @@
       "type": "boolean",
       "description": "LINTP_VERSION_INFO_API 参数",
       "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_N_AS_TIMEOUT_COUNT": {
+      "type": "string",
+      "description": "LINTP_N_AS_TIMEOUT_COUNT（派生表达式: (LINTP_DEFAULT_N_AS_MS / 5U)）",
+      "default": "(LINTP_DEFAULT_N_AS_MS / 5U)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "expression"
+    },
+    "LINTP_N_CR_TIMEOUT_COUNT": {
+      "type": "string",
+      "description": "LINTP_N_CR_TIMEOUT_COUNT（派生表达式: (LINTP_DEFAULT_N_CR_MS / 5U)）",
+      "default": "(LINTP_DEFAULT_N_CR_MS / 5U)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "expression"
+    },
+    "LINTP_PDU_TX_DIAGNOSTIC": {
+      "type": "integer",
+      "description": "LINTP_PDU_TX_DIAGNOSTIC 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_PDU_RX_DIAGNOSTIC": {
+      "type": "integer",
+      "description": "LINTP_PDU_RX_DIAGNOSTIC 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_PDU_TX_FUNCTIONAL": {
+      "type": "integer",
+      "description": "LINTP_PDU_TX_FUNCTIONAL 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_PDU_RX_FUNCTIONAL": {
+      "type": "integer",
+      "description": "LINTP_PDU_RX_FUNCTIONAL 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINTP_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "LINTP_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_CHANGE_PARAMETER_API": {
@@ -37,7 +91,7 @@
     },
     "LINTP_TC": {
       "type": "boolean",
-      "description": "!< Transport Protocol for Class C",
+      "description": "LINTP_TC 参数",
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
@@ -47,7 +101,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_NUMBER_OF_CONNECTIONS": {
       "type": "integer",
@@ -55,7 +109,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_NUMBER_OF_PDUS": {
       "type": "integer",
@@ -63,7 +117,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_CHANNEL_0": {
       "type": "integer",
@@ -71,7 +125,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_CONNECTION_0": {
       "type": "integer",
@@ -79,7 +133,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_CONNECTION_1": {
       "type": "integer",
@@ -87,39 +141,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINTP_PDU_TX_DIAGNOSTIC": {
-      "type": "integer",
-      "description": "LINTP_PDU_TX_DIAGNOSTIC 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINTP_PDU_RX_DIAGNOSTIC": {
-      "type": "integer",
-      "description": "LINTP_PDU_RX_DIAGNOSTIC 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINTP_PDU_TX_FUNCTIONAL": {
-      "type": "integer",
-      "description": "LINTP_PDU_TX_FUNCTIONAL 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
-    },
-    "LINTP_PDU_RX_FUNCTIONAL": {
-      "type": "integer",
-      "description": "LINTP_PDU_RX_FUNCTIONAL 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_NAD_BROADCAST": {
       "type": "integer",
@@ -127,7 +149,7 @@
       "default": 127,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NAD (NODE ADDRESS) CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_NAD_DIAGNOSTIC": {
       "type": "integer",
@@ -135,7 +157,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NAD (NODE ADDRESS) CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_NAD_FUNCTIONAL": {
       "type": "integer",
@@ -143,7 +165,7 @@
       "default": 126,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NAD (NODE ADDRESS) CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_NAD_DEFAULT": {
       "type": "integer",
@@ -151,7 +173,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NAD (NODE ADDRESS) CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_DEFAULT_N_AS_MS": {
       "type": "integer",
@@ -159,7 +181,7 @@
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMING CONFIGURATION (CONFIGURABLE)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_DEFAULT_N_CR_MS": {
       "type": "integer",
@@ -167,7 +189,7 @@
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMING CONFIGURATION (CONFIGURABLE)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_DEFAULT_STMIN_MS": {
       "type": "integer",
@@ -175,21 +197,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMING CONFIGURATION (CONFIGURABLE)"
-    },
-    "LINTP_N_AS_TIMEOUT_COUNT": {
-      "type": "string",
-      "description": "LINTP_N_AS_TIMEOUT_COUNT（派生表达式: (LINTP_DEFAULT_N_AS_MS / 5U)）",
-      "default": "(LINTP_DEFAULT_N_AS_MS / 5U)",
-      "x-section": "TIMING CONFIGURATION (CONFIGURABLE)",
-      "x-macro-kind": "expression"
-    },
-    "LINTP_N_CR_TIMEOUT_COUNT": {
-      "type": "string",
-      "description": "LINTP_N_CR_TIMEOUT_COUNT（派生表达式: (LINTP_DEFAULT_N_CR_MS / 5U)）",
-      "default": "(LINTP_DEFAULT_N_CR_MS / 5U)",
-      "x-section": "TIMING CONFIGURATION (CONFIGURABLE)",
-      "x-macro-kind": "expression"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_MAX_MESSAGE_LENGTH": {
       "type": "integer",
@@ -197,7 +205,7 @@
       "default": 4095,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "MESSAGE SIZE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_SF_MAX_DATA_LENGTH": {
       "type": "integer",
@@ -205,7 +213,7 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MESSAGE SIZE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_FF_DATA_LENGTH": {
       "type": "integer",
@@ -213,7 +221,7 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MESSAGE SIZE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_CF_DATA_LENGTH": {
       "type": "integer",
@@ -221,7 +229,7 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MESSAGE SIZE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_FRAME_SIZE": {
       "type": "integer",
@@ -229,7 +237,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MESSAGE SIZE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_PCI_SIZE": {
       "type": "integer",
@@ -237,15 +245,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MESSAGE SIZE CONFIGURATION"
-    },
-    "LINTP_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "LINTP_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MAIN FUNCTION PERIOD"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_PCI_MASK": {
       "type": "integer",
@@ -253,7 +253,7 @@
       "default": 240,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SF/FF/CF MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_PCI_SF": {
       "type": "integer",
@@ -261,7 +261,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SF/FF/CF MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_PCI_FF": {
       "type": "integer",
@@ -269,7 +269,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SF/FF/CF MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_PCI_CF": {
       "type": "integer",
@@ -277,7 +277,7 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SF/FF/CF MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_PCI_TYPE_MASK": {
       "type": "integer",
@@ -285,7 +285,7 @@
       "default": 240,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SF/FF/CF MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_PCI_DL_MASK": {
       "type": "integer",
@@ -293,7 +293,7 @@
       "default": 15,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SF/FF/CF MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_PCI_SN_MASK": {
       "type": "integer",
@@ -301,7 +301,7 @@
       "default": 15,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SF/FF/CF MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_SN_MAX": {
       "type": "integer",
@@ -309,7 +309,7 @@
       "default": 15,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SN (SEQUENCE NUMBER)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTP_SN_FIRST_CF": {
       "type": "integer",
@@ -317,7 +317,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SN (SEQUENCE NUMBER)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -325,15 +325,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/lntm/include/LinTp_Cfg.h",
-  "x-display-name": "LinTp",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "CHANNEL CONFIGURATION",
-    "NAD (NODE ADDRESS) CONFIGURATION",
-    "TIMING CONFIGURATION (CONFIGURABLE)",
-    "MESSAGE SIZE CONFIGURATION",
-    "MAIN FUNCTION PERIOD",
-    "SF/FF/CF MASKS",
-    "SN (SEQUENCE NUMBER)"
-  ]
+  "x-display-name": "LinTp"
 }

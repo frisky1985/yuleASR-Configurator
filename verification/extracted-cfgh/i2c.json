@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/i2c.json",
   "title": "I2c Configuration",
-  "description": "I2C Driver configuration header following AutoSAR Classic Platform 4.x standard",
+  "description": "I2c Configuration configuration header",
   "type": "object",
   "properties": {
     "I2C_DEV_ERROR_DETECT": {
@@ -17,15 +17,111 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "I2C_DMA_SUPPORTED": {
-      "type": "boolean",
-      "description": "I2C_DMA_SUPPORTED 参数",
-      "default": true,
+    "I2C_NUM_CHANNELS": {
+      "type": "integer",
+      "description": "I2C_NUM_CHANNELS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "I2C_NUM_HW_UNITS": {
+      "type": "integer",
+      "description": "I2C_NUM_HW_UNITS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "I2C_NUM_DMA_CHANNELS": {
+      "type": "integer",
+      "description": "I2C_NUM_DMA_CHANNELS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_INTERRUPT_SUPPORTED": {
       "type": "boolean",
       "description": "I2C_INTERRUPT_SUPPORTED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "I2C_INTERRUPT_PRIORITY": {
+      "type": "integer",
+      "description": "I2C_INTERRUPT_PRIORITY 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "I2C_ERROR_INTERRUPT_PRIORITY": {
+      "type": "integer",
+      "description": "I2C_ERROR_INTERRUPT_PRIORITY 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "I2C_DMA_TX_INTERRUPT_PRIORITY": {
+      "type": "integer",
+      "description": "I2C_DMA_TX_INTERRUPT_PRIORITY 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "I2C_DMA_RX_INTERRUPT_PRIORITY": {
+      "type": "integer",
+      "description": "I2C_DMA_RX_INTERRUPT_PRIORITY 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "I2C_BUS_BUSY_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "I2C_BUS_BUSY_TIMEOUT_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "I2C_TRANSFER_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "I2C_TRANSFER_TIMEOUT_MS 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "I2C_CLOCK_STRETCH_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "I2C_CLOCK_STRETCH_TIMEOUT_MS 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "I2C_SMBUS_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "I2C_SMBUS_TIMEOUT_MS 参数",
+      "default": 35,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "I2C_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "I2C_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "I2C_DMA_SUPPORTED": {
+      "type": "boolean",
+      "description": "I2C_DMA_SUPPORTED 参数",
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
@@ -77,125 +173,101 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "I2C_NUM_CHANNELS": {
-      "type": "integer",
-      "description": "I2C_NUM_CHANNELS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF CHANNELS"
-    },
-    "I2C_NUM_HW_UNITS": {
-      "type": "integer",
-      "description": "I2C_NUM_HW_UNITS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF CHANNELS"
-    },
-    "I2C_NUM_DMA_CHANNELS": {
-      "type": "integer",
-      "description": "I2C_NUM_DMA_CHANNELS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF CHANNELS"
-    },
     "I2C_CHANNEL_0": {
       "type": "integer",
-      "description": "I2C_CHANNEL_0（cast: I2c_ChannelType）",
+      "description": "I2C_CHANNEL_0 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_CHANNEL_1": {
       "type": "integer",
-      "description": "I2C_CHANNEL_1（cast: I2c_ChannelType）",
+      "description": "I2C_CHANNEL_1 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_CHANNEL_2": {
       "type": "integer",
-      "description": "I2C_CHANNEL_2（cast: I2c_ChannelType）",
+      "description": "I2C_CHANNEL_2 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_CHANNEL_3": {
       "type": "integer",
-      "description": "I2C_CHANNEL_3（cast: I2c_ChannelType）",
+      "description": "I2C_CHANNEL_3 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_CHANNEL_4": {
       "type": "integer",
-      "description": "I2C_CHANNEL_4（cast: I2c_ChannelType）",
+      "description": "I2C_CHANNEL_4 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_CHANNEL_5": {
       "type": "integer",
-      "description": "I2C_CHANNEL_5（cast: I2c_ChannelType）",
+      "description": "I2C_CHANNEL_5 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_CHANNEL_6": {
       "type": "integer",
-      "description": "I2C_CHANNEL_6（cast: I2c_ChannelType）",
+      "description": "I2C_CHANNEL_6 参数",
       "default": 6,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_CHANNEL_7": {
       "type": "integer",
-      "description": "I2C_CHANNEL_7（cast: I2c_ChannelType）",
+      "description": "I2C_CHANNEL_7 参数",
       "default": 7,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CHANNEL DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_HW_UNIT_0": {
       "type": "integer",
-      "description": "I2C_HW_UNIT_0（cast: I2c_HWUnitType）",
+      "description": "I2C_HW_UNIT_0 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "HW UNIT DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_HW_UNIT_1": {
       "type": "integer",
-      "description": "I2C_HW_UNIT_1（cast: I2c_HWUnitType）",
+      "description": "I2C_HW_UNIT_1 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "HW UNIT DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_HW_UNIT_2": {
       "type": "integer",
-      "description": "I2C_HW_UNIT_2（cast: I2c_HWUnitType）",
+      "description": "I2C_HW_UNIT_2 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "HW UNIT DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_HW_UNIT_3": {
       "type": "integer",
-      "description": "I2C_HW_UNIT_3（cast: I2c_HWUnitType）",
+      "description": "I2C_HW_UNIT_3 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "HW UNIT DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_PERIPHERAL_CLOCK_FREQ": {
       "type": "integer",
@@ -203,7 +275,7 @@
       "default": 24000000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_STANDARD_MODE_FREQ": {
       "type": "integer",
@@ -211,7 +283,7 @@
       "default": 100000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_FAST_MODE_FREQ": {
       "type": "integer",
@@ -219,7 +291,7 @@
       "default": 400000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_FAST_MODE_PLUS_FREQ": {
       "type": "integer",
@@ -227,7 +299,7 @@
       "default": 1000000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_HIGH_SPEED_MODE_FREQ": {
       "type": "integer",
@@ -235,7 +307,7 @@
       "default": 3400000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_MAX_BUFFER_SIZE": {
       "type": "integer",
@@ -243,7 +315,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_MAX_SLAVE_ADDRESSES": {
       "type": "integer",
@@ -251,83 +323,19 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CLOCK CONFIGURATION"
-    },
-    "I2C_BUS_BUSY_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "I2C_BUS_BUSY_TIMEOUT_MS 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMEOUT CONFIGURATION"
-    },
-    "I2C_TRANSFER_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "I2C_TRANSFER_TIMEOUT_MS 参数",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "TIMEOUT CONFIGURATION"
-    },
-    "I2C_CLOCK_STRETCH_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "I2C_CLOCK_STRETCH_TIMEOUT_MS 参数",
-      "default": 50,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMEOUT CONFIGURATION"
-    },
-    "I2C_INTERRUPT_PRIORITY": {
-      "type": "integer",
-      "description": "I2C_INTERRUPT_PRIORITY 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "INTERRUPT PRIORITY CONFIGURATION"
-    },
-    "I2C_ERROR_INTERRUPT_PRIORITY": {
-      "type": "integer",
-      "description": "I2C_ERROR_INTERRUPT_PRIORITY 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "INTERRUPT PRIORITY CONFIGURATION"
-    },
-    "I2C_DMA_TX_INTERRUPT_PRIORITY": {
-      "type": "integer",
-      "description": "I2C_DMA_TX_INTERRUPT_PRIORITY 参数",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "INTERRUPT PRIORITY CONFIGURATION"
-    },
-    "I2C_DMA_RX_INTERRUPT_PRIORITY": {
-      "type": "integer",
-      "description": "I2C_DMA_RX_INTERRUPT_PRIORITY 参数",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "INTERRUPT PRIORITY CONFIGURATION"
-    },
-    "I2C_SMBUS_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "I2C_SMBUS_TIMEOUT_MS 参数",
-      "default": 35,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "SMBUS CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_SMBUS_PEC_SUPPORTED": {
       "type": "boolean",
       "description": "I2C_SMBUS_PEC_SUPPORTED 参数",
       "default": true,
-      "x-section": "SMBUS CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_SMBUS_ALERT_SUPPORTED": {
       "type": "boolean",
       "description": "I2C_SMBUS_ALERT_SUPPORTED 参数",
       "default": true,
-      "x-section": "SMBUS CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_DEFAULT_ADDRESS_MODE": {
       "type": "enum",
@@ -338,7 +346,7 @@
         "I2C_ADDR_MODE_10BIT",
         "I2C_ADDR_MODE_16BIT"
       ],
-      "x-section": "ADDRESS MODE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "I2C_DEFAULT_TRANSFER_MODE": {
       "type": "enum",
@@ -349,15 +357,7 @@
         "I2C_MODE_MASTER",
         "I2C_MODE_SLAVE"
       ],
-      "x-section": "TRANSFER MODE"
-    },
-    "I2C_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "I2C_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MAIN FUNCTION PERIOD"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -365,18 +365,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/mcal/i2c/include/I2c_Cfg.h",
-  "x-display-name": "I2c",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "NUMBER OF CHANNELS",
-    "CHANNEL DEFINITIONS",
-    "HW UNIT DEFINITIONS",
-    "CLOCK CONFIGURATION",
-    "TIMEOUT CONFIGURATION",
-    "INTERRUPT PRIORITY CONFIGURATION",
-    "SMBUS CONFIGURATION",
-    "ADDRESS MODE CONFIGURATION",
-    "TRANSFER MODE",
-    "MAIN FUNCTION PERIOD"
-  ]
+  "x-display-name": "I2c"
 }

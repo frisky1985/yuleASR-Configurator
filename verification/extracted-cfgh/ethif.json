@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/ethif.json",
   "title": "EthIf Configuration",
-  "description": "Ethernet Interface configuration header",
+  "description": "EthIf Configuration configuration header",
   "type": "object",
   "properties": {
     "ETHIF_DEV_ERROR_DETECT": {
@@ -17,16 +17,36 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "ETHIF_ENABLE_WAKEUP_MODE_API": {
-      "type": "boolean",
-      "description": "ETHIF_ENABLE_WAKEUP_MODE_API 参数",
-      "default": true,
+    "ETHIF_NUM_CONTROLLERS": {
+      "type": "integer",
+      "description": "ETHIF_NUM_CONTROLLERS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "ETHIF_GET_WAKEUP_MODE_API": {
-      "type": "boolean",
-      "description": "ETHIF_GET_WAKEUP_MODE_API 参数",
-      "default": true,
+    "ETHIF_NUM_FRAME_OWNERS": {
+      "type": "integer",
+      "description": "ETHIF_NUM_FRAME_OWNERS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHIF_NUM_VLANS": {
+      "type": "integer",
+      "description": "ETHIF_NUM_VLANS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHIF_NUM_SWITCH_PORTS": {
+      "type": "integer",
+      "description": "ETHIF_NUM_SWITCH_PORTS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHIF_GET_CTRL_IDX_API": {
@@ -38,6 +58,42 @@
     "ETHIF_GET_VLAN_IDX_API": {
       "type": "boolean",
       "description": "ETHIF_GET_VLAN_IDX_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHIF_CONTROLLER_0": {
+      "type": "integer",
+      "description": "ETHIF_CONTROLLER_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHIF_CONTROLLER_1": {
+      "type": "integer",
+      "description": "ETHIF_CONTROLLER_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHIF_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "ETHIF_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHIF_ENABLE_WAKEUP_MODE_API": {
+      "type": "boolean",
+      "description": "ETHIF_ENABLE_WAKEUP_MODE_API 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHIF_GET_WAKEUP_MODE_API": {
+      "type": "boolean",
+      "description": "ETHIF_GET_WAKEUP_MODE_API 参数",
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
@@ -71,50 +127,12 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "ETHIF_NUM_CONTROLLERS": {
-      "type": "integer",
-      "description": "ETHIF_NUM_CONTROLLERS 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF CONTROLLERS"
-    },
-    "ETHIF_NUM_FRAME_OWNERS": {
-      "type": "integer",
-      "description": "ETHIF_NUM_FRAME_OWNERS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF CONTROLLERS"
-    },
-    "ETHIF_NUM_VLANS": {
-      "type": "integer",
-      "description": "ETHIF_NUM_VLANS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF CONTROLLERS"
-    },
-    "ETHIF_CONTROLLER_0": {
-      "type": "integer",
-      "description": "ETHIF_CONTROLLER_0 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CONTROLLER DEFINITIONS"
-    },
-    "ETHIF_CONTROLLER_1": {
-      "type": "integer",
-      "description": "ETHIF_CONTROLLER_1 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CONTROLLER DEFINITIONS"
-    },
     "ETHIF_DEFAULT_MAC_ADDR": {
       "type": "string",
-      "description": "ETHIF_DEFAULT_MAC_ADDR 参数（原始值: {0x00U, 0x01U, 0x02U, 0x03U, 0x04U, 0x05U}）",
-      "x-section": "MAC ADDRESS"
+      "description": "ETHIF_DEFAULT_MAC_ADDR 参数",
+      "default": "\"\"",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "string-literal"
     },
     "ETHIF_MTU_DEFAULT": {
       "type": "integer",
@@ -122,7 +140,7 @@
       "default": 1500,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "MTU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHIF_MTU_JUMBO": {
       "type": "integer",
@@ -130,55 +148,55 @@
       "default": 9000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "MTU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHIF_FRAMETYPE_IPV4": {
       "type": "integer",
-      "description": "ETHIF_FRAMETYPE_IPV4（cast: EthIf_FrameType）",
+      "description": "ETHIF_FRAMETYPE_IPV4 参数",
       "default": 2048,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "FRAME TYPES"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHIF_FRAMETYPE_IPV6": {
       "type": "integer",
-      "description": "ETHIF_FRAMETYPE_IPV6（cast: EthIf_FrameType）",
+      "description": "ETHIF_FRAMETYPE_IPV6 参数",
       "default": 34525,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "FRAME TYPES"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHIF_FRAMETYPE_ARP": {
       "type": "integer",
-      "description": "ETHIF_FRAMETYPE_ARP（cast: EthIf_FrameType）",
+      "description": "ETHIF_FRAMETYPE_ARP 参数",
       "default": 2054,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "FRAME TYPES"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHIF_FRAMETYPE_VLAN": {
       "type": "integer",
-      "description": "ETHIF_FRAMETYPE_VLAN（cast: EthIf_FrameType）",
+      "description": "ETHIF_FRAMETYPE_VLAN 参数",
       "default": 33024,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "FRAME TYPES"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHIF_FRAMETYPE_SOMEIP": {
       "type": "integer",
-      "description": "ETHIF_FRAMETYPE_SOMEIP（cast: EthIf_FrameType）",
+      "description": "ETHIF_FRAMETYPE_SOMEIP 参数",
       "default": 35040,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "FRAME TYPES"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHIF_FRAMETYPE_TSN": {
       "type": "integer",
-      "description": "ETHIF_FRAMETYPE_TSN（cast: EthIf_FrameType）",
+      "description": "ETHIF_FRAMETYPE_TSN 参数",
       "default": 35063,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "FRAME TYPES"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHIF_VLAN_ID_DEFAULT": {
       "type": "integer",
@@ -186,7 +204,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "VLAN CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHIF_VLAN_ID_DIAG": {
       "type": "integer",
@@ -194,7 +212,7 @@
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "VLAN CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHIF_VLAN_ID_ADAS": {
       "type": "integer",
@@ -202,7 +220,7 @@
       "default": 200,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "VLAN CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHIF_VLAN_ID_INFOTAINMENT": {
       "type": "integer",
@@ -210,47 +228,31 @@
       "default": 300,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "VLAN CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHIF_TIME_SYNC_ENABLED": {
       "type": "boolean",
       "description": "ETHIF_TIME_SYNC_ENABLED 参数",
       "default": true,
-      "x-section": "TIME SYNC"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHIF_GPTP_SUPPORT": {
       "type": "boolean",
       "description": "ETHIF_GPTP_SUPPORT 参数",
       "default": true,
-      "x-section": "TIME SYNC"
-    },
-    "ETHIF_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "ETHIF_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MAIN FUNCTION PERIOD"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHIF_WAKEUP_SUPPORT": {
       "type": "boolean",
       "description": "ETHIF_WAKEUP_SUPPORT 参数",
       "default": true,
-      "x-section": "WAKEUP SUPPORT"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHIF_SWITCH_SUPPORT": {
       "type": "boolean",
       "description": "ETHIF_SWITCH_SUPPORT 参数",
       "default": true,
-      "x-section": "SWITCH SUPPORT"
-    },
-    "ETHIF_NUM_SWITCH_PORTS": {
-      "type": "integer",
-      "description": "ETHIF_NUM_SWITCH_PORTS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "SWITCH SUPPORT"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -262,24 +264,19 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "EthIf 帧属主数不应超过 Eth 控制器数"
+    },
+    {
+      "sourceParam": "ETHIF_NUM_CONTROLLERS",
+      "module": "Eth",
+      "param": "ETH_MAX_CONTROLLERS",
+      "relation": "required",
+      "severity": "error",
+      "description": "EthIf 依赖 Eth 控制器，Eth 必须配置"
     }
   ],
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/ecual/ethif/include/EthIf_Cfg.h",
-  "x-display-name": "EthIf",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "NUMBER OF CONTROLLERS",
-    "CONTROLLER DEFINITIONS",
-    "MAC ADDRESS",
-    "MTU CONFIGURATION",
-    "FRAME TYPES",
-    "VLAN CONFIGURATION",
-    "TIME SYNC",
-    "MAIN FUNCTION PERIOD",
-    "WAKEUP SUPPORT",
-    "SWITCH SUPPORT"
-  ]
+  "x-display-name": "EthIf"
 }

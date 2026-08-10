@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/dcm.json",
   "title": "Dcm Configuration",
-  "description": "Diagnostic Communication Manager configuration header",
+  "description": "Dcm Configuration configuration header",
   "type": "object",
   "properties": {
     "DCM_DEV_ERROR_DETECT": {
@@ -17,6 +17,150 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
+    "DCM_NUM_PROTOCOLS": {
+      "type": "integer",
+      "description": "DCM_NUM_PROTOCOLS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_NUM_CONNECTIONS": {
+      "type": "integer",
+      "description": "DCM_NUM_CONNECTIONS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_NUM_RX_PDU_IDS": {
+      "type": "integer",
+      "description": "DCM_NUM_RX_PDU_IDS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_NUM_TX_PDU_IDS": {
+      "type": "integer",
+      "description": "DCM_NUM_TX_PDU_IDS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_NUM_SESSIONS": {
+      "type": "integer",
+      "description": "DCM_NUM_SESSIONS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_NUM_SECURITY_LEVELS": {
+      "type": "integer",
+      "description": "DCM_NUM_SECURITY_LEVELS 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_NUM_SERVICES": {
+      "type": "integer",
+      "description": "DCM_NUM_SERVICES 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_OBD_NUM_PIDS": {
+      "type": "integer",
+      "description": "DCM_OBD_NUM_PIDS 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_NUM_ROUTINES": {
+      "type": "integer",
+      "description": "DCM_NUM_ROUTINES 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_NUM_DIDS": {
+      "type": "integer",
+      "description": "DCM_NUM_DIDS 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_NUM_RIDS": {
+      "type": "integer",
+      "description": "DCM_NUM_RIDS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_RX_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "DCM_RX_BUFFER_SIZE 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_TX_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "DCM_TX_BUFFER_SIZE 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_SESSION_DEFAULT_TIMEOUT": {
+      "type": "integer",
+      "description": "DCM_SESSION_DEFAULT_TIMEOUT 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_SESSION_PROGRAMMING_TIMEOUT": {
+      "type": "integer",
+      "description": "DCM_SESSION_PROGRAMMING_TIMEOUT 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_SESSION_EXTENDED_TIMEOUT": {
+      "type": "integer",
+      "description": "DCM_SESSION_EXTENDED_TIMEOUT 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_SESSION_SAFETY_TIMEOUT": {
+      "type": "integer",
+      "description": "DCM_SESSION_SAFETY_TIMEOUT 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DCM_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "DCM_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
     "DCM_RESPOND_ALL_REQUEST": {
       "type": "boolean",
       "description": "DCM_RESPOND_ALL_REQUEST 参数",
@@ -29,45 +173,13 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "DCM_NUM_PROTOCOLS": {
-      "type": "integer",
-      "description": "DCM_NUM_PROTOCOLS 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
-    },
-    "DCM_NUM_CONNECTIONS": {
-      "type": "integer",
-      "description": "DCM_NUM_CONNECTIONS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
-    },
-    "DCM_NUM_RX_PDU_IDS": {
-      "type": "integer",
-      "description": "DCM_NUM_RX_PDU_IDS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
-    },
-    "DCM_NUM_TX_PDU_IDS": {
-      "type": "integer",
-      "description": "DCM_NUM_TX_PDU_IDS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PROTOCOL CONFIGURATION"
-    },
     "DCM_PROTOCOL_OBD_ON_CAN": {
       "type": "integer",
       "description": "DCM_PROTOCOL_OBD_ON_CAN 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_PROTOCOL_UDS_ON_CAN": {
       "type": "integer",
@@ -75,7 +187,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_PROTOCOL_UDS_ON_FLEXRAY": {
       "type": "integer",
@@ -83,7 +195,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_PROTOCOL_UDS_ON_IP": {
       "type": "integer",
@@ -91,15 +203,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PROTOCOL TYPES"
-    },
-    "DCM_NUM_SESSIONS": {
-      "type": "integer",
-      "description": "DCM_NUM_SESSIONS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "SESSION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_SESSION_DEFAULT": {
       "type": "enum",
@@ -111,7 +215,7 @@
         "DCM_EXTENDED_DIAGNOSTIC_SESSION",
         "DCM_SAFETY_SYSTEM_DIAGNOSTIC_SESSION"
       ],
-      "x-section": "SESSION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_SESSION_PROGRAMMING": {
       "type": "enum",
@@ -123,7 +227,7 @@
         "DCM_EXTENDED_DIAGNOSTIC_SESSION",
         "DCM_SAFETY_SYSTEM_DIAGNOSTIC_SESSION"
       ],
-      "x-section": "SESSION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_SESSION_EXTENDED": {
       "type": "enum",
@@ -135,7 +239,7 @@
         "DCM_EXTENDED_DIAGNOSTIC_SESSION",
         "DCM_SAFETY_SYSTEM_DIAGNOSTIC_SESSION"
       ],
-      "x-section": "SESSION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_SESSION_SAFETY": {
       "type": "enum",
@@ -147,47 +251,7 @@
         "DCM_EXTENDED_DIAGNOSTIC_SESSION",
         "DCM_SAFETY_SYSTEM_DIAGNOSTIC_SESSION"
       ],
-      "x-section": "SESSION CONFIGURATION"
-    },
-    "DCM_SESSION_DEFAULT_TIMEOUT": {
-      "type": "integer",
-      "description": "DCM_SESSION_DEFAULT_TIMEOUT 参数",
-      "default": 5000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "SESSION CONFIGURATION"
-    },
-    "DCM_SESSION_PROGRAMMING_TIMEOUT": {
-      "type": "integer",
-      "description": "DCM_SESSION_PROGRAMMING_TIMEOUT 参数",
-      "default": 5000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "SESSION CONFIGURATION"
-    },
-    "DCM_SESSION_EXTENDED_TIMEOUT": {
-      "type": "integer",
-      "description": "DCM_SESSION_EXTENDED_TIMEOUT 参数",
-      "default": 5000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "SESSION CONFIGURATION"
-    },
-    "DCM_SESSION_SAFETY_TIMEOUT": {
-      "type": "integer",
-      "description": "DCM_SESSION_SAFETY_TIMEOUT 参数",
-      "default": 5000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "SESSION CONFIGURATION"
-    },
-    "DCM_NUM_SECURITY_LEVELS": {
-      "type": "integer",
-      "description": "DCM_NUM_SECURITY_LEVELS 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "SECURITY LEVELS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_SEC_LEVEL_LOCKED": {
       "type": "integer",
@@ -195,7 +259,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SECURITY LEVELS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_SEC_LEVEL_1": {
       "type": "integer",
@@ -203,7 +267,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SECURITY LEVELS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_SEC_LEVEL_2": {
       "type": "integer",
@@ -211,7 +275,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SECURITY LEVELS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_SECURITY_MAX_ATTEMPTS": {
       "type": "integer",
@@ -219,7 +283,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SECURITY ATTEMPTS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_SECURITY_DELAY_TIME_MS": {
       "type": "integer",
@@ -227,15 +291,7 @@
       "default": 10000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "SECURITY ATTEMPTS"
-    },
-    "DCM_NUM_SERVICES": {
-      "type": "integer",
-      "description": "DCM_NUM_SERVICES 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "SERVICES CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_BUFFER_SIZE": {
       "type": "integer",
@@ -243,7 +299,7 @@
       "default": 4095,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "BUFFER SIZES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_MAX_REQUEST_SIZE": {
       "type": "integer",
@@ -251,7 +307,7 @@
       "default": 4095,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "BUFFER SIZES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_MAX_RESPONSE_SIZE": {
       "type": "integer",
@@ -259,7 +315,7 @@
       "default": 4095,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "BUFFER SIZES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_P2SERVER_MAX": {
       "type": "integer",
@@ -267,7 +323,7 @@
       "default": 50,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BUFFER SIZES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_P2STAR_SERVER_MAX": {
       "type": "integer",
@@ -275,7 +331,7 @@
       "default": 5000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "BUFFER SIZES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_S3SERVER": {
       "type": "integer",
@@ -283,49 +339,25 @@
       "default": 5000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "BUFFER SIZES"
-    },
-    "DCM_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "DCM_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MAIN FUNCTION PERIOD"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_OBD_SUPPORT": {
       "type": "boolean",
       "description": "DCM_OBD_SUPPORT 参数",
       "default": true,
-      "x-section": "OBD SUPPORT"
-    },
-    "DCM_OBD_NUM_PIDS": {
-      "type": "integer",
-      "description": "DCM_OBD_NUM_PIDS 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "OBD SUPPORT"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_ROUTINE_CONTROL_SUPPORT": {
       "type": "boolean",
       "description": "DCM_ROUTINE_CONTROL_SUPPORT 参数",
       "default": true,
-      "x-section": "ROUTINE CONTROL"
-    },
-    "DCM_NUM_ROUTINES": {
-      "type": "integer",
-      "description": "DCM_NUM_ROUTINES 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ROUTINE CONTROL"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_DATA_TRANSFER_SUPPORT": {
       "type": "boolean",
       "description": "DCM_DATA_TRANSFER_SUPPORT 参数",
       "default": true,
-      "x-section": "DATA TRANSFER"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_TRANSFER_BLOCK_SIZE": {
       "type": "integer",
@@ -333,7 +365,7 @@
       "default": 1024,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "DATA TRANSFER"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_TRANSFER_MAX_BLOCK_SIZE": {
       "type": "integer",
@@ -341,23 +373,7 @@
       "default": 4096,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "DATA TRANSFER"
-    },
-    "DCM_RX_BUFFER_SIZE": {
-      "type": "integer",
-      "description": "DCM_RX_BUFFER_SIZE 参数",
-      "default": 256,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "BUFFER SIZES"
-    },
-    "DCM_TX_BUFFER_SIZE": {
-      "type": "integer",
-      "description": "DCM_TX_BUFFER_SIZE 参数",
-      "default": 256,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "BUFFER SIZES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_SEED_SIZE": {
       "type": "integer",
@@ -365,7 +381,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SECURITY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_KEY_SIZE": {
       "type": "integer",
@@ -373,47 +389,31 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SECURITY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_MAX_SECURITY_ATTEMPTS": {
       "type": "integer",
-      "description": "DCM_MAX_SECURITY_ATTEMPTS（别名: DCM_SECURITY_MAX_ATTEMPTS = 3；同族可选: DCM_SECURITY_MAX_ATTEMPTS）",
+      "description": "DCM_MAX_SECURITY_ATTEMPTS 参数",
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SECURITY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_SECURITY_DELAY_TIME": {
       "type": "integer",
-      "description": "DCM_SECURITY_DELAY_TIME（别名: DCM_SECURITY_DELAY_TIME_MS = 10000；同族可选: DCM_SECURITY_DELAY_TIME_MS）",
+      "description": "DCM_SECURITY_DELAY_TIME 参数",
       "default": 10000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "SECURITY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DCM_SEC_LEV_LOCKED": {
       "type": "integer",
-      "description": "DCM_SEC_LEV_LOCKED（别名: DCM_SEC_LEVEL_LOCKED = 0；同族可选: DCM_SEC_LEVEL_1 / DCM_SEC_LEVEL_2 / DCM_SEC_LEVEL_LOCKED）",
+      "description": "DCM_SEC_LEV_LOCKED 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SECURITY CONFIGURATION"
-    },
-    "DCM_NUM_DIDS": {
-      "type": "integer",
-      "description": "DCM_NUM_DIDS 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "DID/RID CONFIGURATION"
-    },
-    "DCM_NUM_RIDS": {
-      "type": "integer",
-      "description": "DCM_NUM_RIDS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "DID/RID CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -433,27 +433,19 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "Dcm 连接数不应超过 CanTp 通道数"
+    },
+    {
+      "sourceParam": "DCM_NUM_CONNECTIONS",
+      "module": "PduR",
+      "param": "PDUR_NUMBER_OF_ROUTING_PATHS",
+      "relation": "required",
+      "severity": "error",
+      "description": "Dcm 依赖 PduR 路由路径，PduR 必须配置"
     }
   ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/dcm/include/Dcm_Cfg.h",
-  "x-display-name": "Dcm",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "PROTOCOL CONFIGURATION",
-    "PROTOCOL TYPES",
-    "SESSION CONFIGURATION",
-    "SECURITY LEVELS",
-    "SECURITY ATTEMPTS",
-    "SERVICES CONFIGURATION",
-    "BUFFER SIZES",
-    "MAIN FUNCTION PERIOD",
-    "OBD SUPPORT",
-    "ROUTINE CONTROL",
-    "DATA TRANSFER",
-    "SECURITY CONFIGURATION",
-    "DID/RID CONFIGURATION"
-  ]
+  "x-display-name": "Dcm"
 }

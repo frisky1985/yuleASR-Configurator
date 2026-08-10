@@ -2,44 +2,44 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/det.json",
   "title": "Det Configuration",
-  "description": "Enable/disable version info API",
+  "description": "Det Configuration configuration header",
   "type": "object",
   "properties": {
     "DET_VERSION_INFO_API": {
       "type": "boolean",
       "description": "DET_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_FORWARD_TO_DLT": {
       "type": "boolean",
       "description": "DET_FORWARD_TO_DLT 参数",
       "default": false,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_FORWARD_TO_DEM": {
       "type": "boolean",
       "description": "DET_FORWARD_TO_DEM 参数",
       "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_ERROR_HOOKS_ENABLED": {
       "type": "boolean",
       "description": "DET_ERROR_HOOKS_ENABLED 参数",
       "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_RUNTIME_ERROR_CALLOUTS": {
       "type": "boolean",
       "description": "DET_RUNTIME_ERROR_CALLOUTS 参数",
       "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_TRANSIENT_FAULT_CALLOUTS": {
       "type": "boolean",
       "description": "DET_TRANSIENT_FAULT_CALLOUTS 参数",
       "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_MAX_ERROR_HOOKS": {
       "type": "integer",
@@ -47,7 +47,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_MAX_RUNTIME_CALLOUTS": {
       "type": "integer",
@@ -55,7 +55,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_MAX_TRANSIENT_CALLOUTS": {
       "type": "integer",
@@ -63,25 +63,25 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_ENABLED": {
       "type": "boolean",
       "description": "DET_ENABLED 参数",
       "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_FREEZE_ON_ERROR": {
       "type": "boolean",
       "description": "DET_FREEZE_ON_ERROR 参数",
       "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_ERROR_LOGGING_ENABLED": {
       "type": "boolean",
       "description": "DET_ERROR_LOGGING_ENABLED 参数",
       "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_MAX_ERROR_ENTRIES": {
       "type": "integer",
@@ -89,37 +89,37 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_RUNTIME_ERROR_REPORTING": {
       "type": "boolean",
       "description": "DET_RUNTIME_ERROR_REPORTING 参数",
       "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_TRANSIENT_FAULT_REPORTING": {
       "type": "boolean",
       "description": "DET_TRANSIENT_FAULT_REPORTING 参数",
       "default": false,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_ERROR_HOOK_FORWARD": {
       "type": "boolean",
       "description": "DET_ERROR_HOOK_FORWARD 参数",
       "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_RUNTIME_ERROR_HOOK_FORWARD": {
       "type": "boolean",
       "description": "DET_RUNTIME_ERROR_HOOK_FORWARD 参数",
       "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_TRANSIENT_FAULT_HOOK_FORWARD": {
       "type": "boolean",
       "description": "DET_TRANSIENT_FAULT_HOOK_FORWARD 参数",
       "default": true,
-      "x-section": "PRE-COMPILE OPTIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_NUMBER_OF_ERROR_HOOKS": {
       "type": "integer",
@@ -127,7 +127,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "POST-BUILD CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_NUMBER_OF_RUNTIME_ERROR_HOOKS": {
       "type": "integer",
@@ -135,7 +135,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "POST-BUILD CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DET_NUMBER_OF_TRANSIENT_FAULT_HOOKS": {
       "type": "integer",
@@ -143,7 +143,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "POST-BUILD CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -154,9 +154,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/det/include/Det_Cfg.h",
-  "x-display-name": "Det",
-  "x-sections": [
-    "PRE-COMPILE OPTIONS",
-    "POST-BUILD CONFIGURATION"
-  ]
+  "x-display-name": "Det"
 }

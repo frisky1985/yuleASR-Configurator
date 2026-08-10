@@ -2,203 +2,20 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/tcpip.json",
   "title": "TcpIp Configuration",
-  "description": "TCP/IP Stack Pre-Compile Configuration",
+  "description": "TcpIp Configuration configuration header",
   "type": "object",
   "properties": {
     "TCPIP_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "TCPIP_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "DEVELOPMENT ERROR DETECT"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "TCPIP_VERSION_INFO_API": {
       "type": "boolean",
       "description": "TCPIP_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "DEVELOPMENT ERROR DETECT"
-    },
-    "TCPIP_MAX_SOCKETS": {
-      "type": "integer",
-      "description": "TCPIP_MAX_SOCKETS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "SOCKET CONFIGURATION"
-    },
-    "TCPIP_MAX_TCP_PBUFS": {
-      "type": "integer",
-      "description": "TCPIP_MAX_TCP_PBUFS 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "SOCKET CONFIGURATION"
-    },
-    "TCPIP_MAX_UDP_PBUFS": {
-      "type": "integer",
-      "description": "TCPIP_MAX_UDP_PBUFS 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "SOCKET CONFIGURATION"
-    },
-    "TCPIP_TCP_RCV_BUF_SIZE": {
-      "type": "integer",
-      "description": "TCPIP_TCP_RCV_BUF_SIZE 参数",
-      "default": 4096,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "SOCKET CONFIGURATION"
-    },
-    "TCPIP_TCP_SND_BUF_SIZE": {
-      "type": "integer",
-      "description": "TCPIP_TCP_SND_BUF_SIZE 参数",
-      "default": 4096,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "SOCKET CONFIGURATION"
-    },
-    "TCPIP_UDP_RCV_BUF_SIZE": {
-      "type": "integer",
-      "description": "TCPIP_UDP_RCV_BUF_SIZE 参数",
-      "default": 2048,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "SOCKET CONFIGURATION"
-    },
-    "TCPIP_DEFAULT_IPV4_ADDR": {
-      "type": "integer",
-      "description": "192.168.0.2（cast: uint32）",
-      "default": 3232235522,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "IP CONFIGURATION"
-    },
-    "TCPIP_DEFAULT_IPV4_MASK": {
-      "type": "integer",
-      "description": "255.255.255.0（cast: uint32）",
-      "default": 4294967040,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "IP CONFIGURATION"
-    },
-    "TCPIP_DEFAULT_IPV4_GW": {
-      "type": "integer",
-      "description": "192.168.0.1（cast: uint32）",
-      "default": 3232235521,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "IP CONFIGURATION"
-    },
-    "TCPIP_IPV6_LINKLOCAL": {
-      "type": "string",
-      "description": "TCPIP_IPV6_LINKLOCAL 参数（原始值: { { 0xFE800000UL, 0x00000000UL, 0x00000000UL, 0x00000001UL } }）",
-      "x-section": "IP CONFIGURATION"
-    },
-    "TCPIP_ETH_LINK_CHECK_INTERVAL_MS": {
-      "type": "integer",
-      "description": "TCPIP_ETH_LINK_CHECK_INTERVAL_MS 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "TCPIP_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "TCPIP_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "TCPIP_ARP_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "5 min",
-      "default": 300000,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "TCPIP_MAX_PENDING_CONNECTIONS": {
-      "type": "integer",
-      "description": "TCPIP_MAX_PENDING_CONNECTIONS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CONNECTION MANAGEMENT (B1)"
-    },
-    "TCPIP_MAX_RX_BUFFERS": {
-      "type": "integer",
-      "description": "TCPIP_MAX_RX_BUFFERS 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CONNECTION MANAGEMENT (B1)"
-    },
-    "TCPIP_MAX_TCP_OPTIONS": {
-      "type": "integer",
-      "description": "TCPIP_MAX_TCP_OPTIONS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CONNECTION MANAGEMENT (B1)"
-    },
-    "TCPIP_ENABLE_IPV4": {
-      "type": "boolean",
-      "description": "TCPIP_ENABLE_IPV4 参数",
-      "default": true,
-      "x-section": "FEATURE ENABLES"
-    },
-    "TCPIP_ENABLE_IPV6": {
-      "type": "boolean",
-      "description": "TCPIP_ENABLE_IPV6 参数",
-      "default": false,
-      "x-section": "FEATURE ENABLES"
-    },
-    "TCPIP_ENABLE_TCP": {
-      "type": "boolean",
-      "description": "TCPIP_ENABLE_TCP 参数",
-      "default": true,
-      "x-section": "FEATURE ENABLES"
-    },
-    "TCPIP_ENABLE_UDP": {
-      "type": "boolean",
-      "description": "TCPIP_ENABLE_UDP 参数",
-      "default": true,
-      "x-section": "FEATURE ENABLES"
-    },
-    "TCPIP_ENABLE_ARP": {
-      "type": "boolean",
-      "description": "TCPIP_ENABLE_ARP 参数",
-      "default": true,
-      "x-section": "FEATURE ENABLES"
-    },
-    "TCPIP_ENABLE_DHCP": {
-      "type": "boolean",
-      "description": "TCPIP_ENABLE_DHCP 参数",
-      "default": false,
-      "x-section": "FEATURE ENABLES"
-    },
-    "TCPIP_ENABLE_DNS": {
-      "type": "boolean",
-      "description": "TCPIP_ENABLE_DNS 参数",
-      "default": false,
-      "x-section": "FEATURE ENABLES"
-    },
-    "TCPIP_PBUF_POOL_SIZE": {
-      "type": "integer",
-      "description": "TCPIP_PBUF_POOL_SIZE 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BUFFER SIZES"
-    },
-    "TCPIP_PBUF_POOL_BUF_SIZE": {
-      "type": "integer",
-      "description": "TCPIP_PBUF_POOL_BUF_SIZE 参数",
-      "default": 1518,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "BUFFER SIZES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "TCPIP_MEMP_NUM_TCP_PCB": {
       "type": "integer",
@@ -206,7 +23,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BUFFER SIZES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "TCPIP_MEMP_NUM_TCP_SEG": {
       "type": "integer",
@@ -214,7 +31,7 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BUFFER SIZES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "TCPIP_MEMP_NUM_UDP_PCB": {
       "type": "integer",
@@ -222,13 +39,198 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BUFFER SIZES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_MAX_RX_BUFFERS": {
+      "type": "integer",
+      "description": "TCPIP_MAX_RX_BUFFERS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "TCPIP_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_ARP_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "TCPIP_ARP_TIMEOUT_MS 参数",
+      "default": 300000,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_MAX_SOCKETS": {
+      "type": "integer",
+      "description": "TCPIP_MAX_SOCKETS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_MAX_TCP_PBUFS": {
+      "type": "integer",
+      "description": "TCPIP_MAX_TCP_PBUFS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_MAX_UDP_PBUFS": {
+      "type": "integer",
+      "description": "TCPIP_MAX_UDP_PBUFS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_TCP_RCV_BUF_SIZE": {
+      "type": "integer",
+      "description": "TCPIP_TCP_RCV_BUF_SIZE 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_TCP_SND_BUF_SIZE": {
+      "type": "integer",
+      "description": "TCPIP_TCP_SND_BUF_SIZE 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_UDP_RCV_BUF_SIZE": {
+      "type": "integer",
+      "description": "TCPIP_UDP_RCV_BUF_SIZE 参数",
+      "default": 2048,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_DEFAULT_IPV4_ADDR": {
+      "type": "integer",
+      "description": "TCPIP_DEFAULT_IPV4_ADDR 参数",
+      "default": 3232235522,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_DEFAULT_IPV4_MASK": {
+      "type": "integer",
+      "description": "TCPIP_DEFAULT_IPV4_MASK 参数",
+      "default": 4294967040,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_DEFAULT_IPV4_GW": {
+      "type": "integer",
+      "description": "TCPIP_DEFAULT_IPV4_GW 参数",
+      "default": 3232235521,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_IPV6_LINKLOCAL": {
+      "type": "string",
+      "description": "TCPIP_IPV6_LINKLOCAL 参数",
+      "default": "\"\"",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "string-literal"
+    },
+    "TCPIP_ETH_LINK_CHECK_INTERVAL_MS": {
+      "type": "integer",
+      "description": "TCPIP_ETH_LINK_CHECK_INTERVAL_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_MAX_PENDING_CONNECTIONS": {
+      "type": "integer",
+      "description": "TCPIP_MAX_PENDING_CONNECTIONS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_MAX_TCP_OPTIONS": {
+      "type": "integer",
+      "description": "TCPIP_MAX_TCP_OPTIONS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_ENABLE_IPV4": {
+      "type": "boolean",
+      "description": "TCPIP_ENABLE_IPV4 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_ENABLE_IPV6": {
+      "type": "boolean",
+      "description": "TCPIP_ENABLE_IPV6 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_ENABLE_TCP": {
+      "type": "boolean",
+      "description": "TCPIP_ENABLE_TCP 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_ENABLE_UDP": {
+      "type": "boolean",
+      "description": "TCPIP_ENABLE_UDP 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_ENABLE_ARP": {
+      "type": "boolean",
+      "description": "TCPIP_ENABLE_ARP 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_ENABLE_DHCP": {
+      "type": "boolean",
+      "description": "TCPIP_ENABLE_DHCP 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_ENABLE_DNS": {
+      "type": "boolean",
+      "description": "TCPIP_ENABLE_DNS 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_PBUF_POOL_SIZE": {
+      "type": "integer",
+      "description": "TCPIP_PBUF_POOL_SIZE 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "TCPIP_PBUF_POOL_BUF_SIZE": {
+      "type": "integer",
+      "description": "TCPIP_PBUF_POOL_BUF_SIZE 参数",
+      "default": 1518,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "TCPIP_VLAN_SUPPORT": {
       "type": "boolean",
       "description": "TCPIP_VLAN_SUPPORT 参数",
       "default": true,
-      "x-section": "VLAN CONFIGURATION (B1)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "TCPIP_DEFAULT_VLAN_ID": {
       "type": "integer",
@@ -236,7 +238,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "VLAN CONFIGURATION (B1)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "TCPIP_DEFAULT_VLAN_PRIORITY": {
       "type": "integer",
@@ -244,13 +246,13 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "VLAN CONFIGURATION (B1)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "TCPIP_ENABLE_STATISTICS": {
       "type": "boolean",
       "description": "TCPIP_ENABLE_STATISTICS 参数",
       "default": true,
-      "x-section": "STATISTICS (B1)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -258,16 +260,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/tcpip/include/TcpIp_Cfg.h",
-  "x-display-name": "TcpIp",
-  "x-sections": [
-    "DEVELOPMENT ERROR DETECT",
-    "SOCKET CONFIGURATION",
-    "IP CONFIGURATION",
-    "TIMING CONFIGURATION",
-    "CONNECTION MANAGEMENT (B1)",
-    "FEATURE ENABLES",
-    "BUFFER SIZES",
-    "VLAN CONFIGURATION (B1)",
-    "STATISTICS (B1)"
-  ]
+  "x-display-name": "TcpIp"
 }

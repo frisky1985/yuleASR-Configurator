@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/soad.json",
   "title": "SoAd Configuration",
-  "description": "Socket Adapter configuration header - AutoSAR R22-11",
+  "description": "SoAd Configuration configuration header",
   "type": "object",
   "properties": {
     "SOAD_DEV_ERROR_DETECT": {
@@ -17,61 +17,13 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "SOAD_NUMBER_OF_SOCKETS": {
-      "type": "integer",
-      "description": "SOAD_NUMBER_OF_SOCKETS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "SOCKET CONFIGURATION"
-    },
-    "SOAD_NUMBER_OF_CONNECTION_GROUPS": {
-      "type": "integer",
-      "description": "SOAD_NUMBER_OF_CONNECTION_GROUPS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "SOCKET CONFIGURATION"
-    },
-    "SOAD_NUMBER_OF_CONNECTIONS": {
-      "type": "integer",
-      "description": "SOAD_NUMBER_OF_CONNECTIONS 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "SOCKET CONFIGURATION"
-    },
-    "SOAD_NUMBER_OF_PDU_ROUTES": {
-      "type": "integer",
-      "description": "SOAD_NUMBER_OF_PDU_ROUTES 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "SOCKET CONFIGURATION"
-    },
-    "SOAD_MAX_PDU_LENGTH": {
-      "type": "integer",
-      "description": "SOAD_MAX_PDU_LENGTH 参数",
-      "default": 1500,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "BUFFER CONFIGURATION"
-    },
-    "SOAD_MAX_HEADER_LENGTH": {
-      "type": "integer",
-      "description": "SOAD_MAX_HEADER_LENGTH 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BUFFER CONFIGURATION"
-    },
     "SOAD_RX_BUFFER_SIZE": {
       "type": "integer",
       "description": "SOAD_RX_BUFFER_SIZE 参数",
       "default": 8192,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "BUFFER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOAD_TX_BUFFER_SIZE": {
       "type": "integer",
@@ -79,7 +31,7 @@
       "default": 8192,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "BUFFER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOAD_CONNECT_TIMEOUT_MS": {
       "type": "integer",
@@ -87,7 +39,7 @@
       "default": 5000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOAD_DISCONNECT_TIMEOUT_MS": {
       "type": "integer",
@@ -95,7 +47,7 @@
       "default": 2000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOAD_ACK_TIMEOUT_MS": {
       "type": "integer",
@@ -103,123 +55,7 @@
       "default": 1000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "TIMEOUT CONFIGURATION"
-    },
-    "SOAD_RECONNECT_DELAY_MS": {
-      "type": "integer",
-      "description": "SOAD_RECONNECT_DELAY_MS 参数",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "TIMEOUT CONFIGURATION"
-    },
-    "SOAD_PDU_HEADER_ENABLE": {
-      "type": "boolean",
-      "description": "SOAD_PDU_HEADER_ENABLE 参数",
-      "default": true,
-      "x-section": "FEATURE CONFIGURATION"
-    },
-    "SOAD_PDU_HEADER_LENGTH": {
-      "type": "integer",
-      "description": "SOAD_PDU_HEADER_LENGTH 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "FEATURE CONFIGURATION"
-    },
-    "SOAD_ENABLE_TCP_KEEP_ALIVE": {
-      "type": "boolean",
-      "description": "SOAD_ENABLE_TCP_KEEP_ALIVE 参数",
-      "default": true,
-      "x-section": "FEATURE CONFIGURATION"
-    },
-    "SOAD_ENABLE_NAGLE_ALGORITHM": {
-      "type": "boolean",
-      "description": "SOAD_ENABLE_NAGLE_ALGORITHM 参数",
-      "default": false,
-      "x-section": "FEATURE CONFIGURATION"
-    },
-    "SOAD_ENABLE_SO_CON_MODE_CHANGE": {
-      "type": "boolean",
-      "description": "SOAD_ENABLE_SO_CON_MODE_CHANGE 参数",
-      "default": true,
-      "x-section": "FEATURE CONFIGURATION"
-    },
-    "SOAD_ENABLE_AUTO_CONNECTION_SETUP": {
-      "type": "boolean",
-      "description": "SOAD_ENABLE_AUTO_CONNECTION_SETUP 参数",
-      "default": true,
-      "x-section": "FEATURE CONFIGURATION"
-    },
-    "SOAD_ENABLE_IP_ADDR_CHANGE_NOTIFICATION": {
-      "type": "boolean",
-      "description": "SOAD_ENABLE_IP_ADDR_CHANGE_NOTIFICATION 参数",
-      "default": true,
-      "x-section": "FEATURE CONFIGURATION"
-    },
-    "SOAD_CONN_ID_TCP_SERVER_0": {
-      "type": "integer",
-      "description": "SOAD_CONN_ID_TCP_SERVER_0 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "FEATURE CONFIGURATION"
-    },
-    "SOAD_CONN_ID_TCP_CLIENT_0": {
-      "type": "integer",
-      "description": "SOAD_CONN_ID_TCP_CLIENT_0 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "FEATURE CONFIGURATION"
-    },
-    "SOAD_CONN_ID_UDP_UNICAST_0": {
-      "type": "integer",
-      "description": "SOAD_CONN_ID_UDP_UNICAST_0 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "FEATURE CONFIGURATION"
-    },
-    "SOAD_CONN_ID_UDP_MULTICAST_0": {
-      "type": "integer",
-      "description": "SOAD_CONN_ID_UDP_MULTICAST_0 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "FEATURE CONFIGURATION"
-    },
-    "SOAD_PDU_ID_SOMEIP_MSG": {
-      "type": "integer",
-      "description": "SOAD_PDU_ID_SOMEIP_MSG 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "FEATURE CONFIGURATION"
-    },
-    "SOAD_PDU_ID_SOMEIP_SD": {
-      "type": "integer",
-      "description": "SOAD_PDU_ID_SOMEIP_SD 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "FEATURE CONFIGURATION"
-    },
-    "SOAD_PDU_ID_DOIP_DIAG": {
-      "type": "integer",
-      "description": "SOAD_PDU_ID_DOIP_DIAG 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "FEATURE CONFIGURATION"
-    },
-    "SOAD_PDU_ID_DOIP_ANNOUNCE": {
-      "type": "integer",
-      "description": "SOAD_PDU_ID_DOIP_ANNOUNCE 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "FEATURE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SOAD_MAIN_FUNCTION_PERIOD_MS": {
       "type": "integer",
@@ -227,7 +63,171 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MAIN FUNCTION PERIOD"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_NUMBER_OF_SOCKETS": {
+      "type": "integer",
+      "description": "SOAD_NUMBER_OF_SOCKETS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_NUMBER_OF_CONNECTION_GROUPS": {
+      "type": "integer",
+      "description": "SOAD_NUMBER_OF_CONNECTION_GROUPS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_NUMBER_OF_CONNECTIONS": {
+      "type": "integer",
+      "description": "SOAD_NUMBER_OF_CONNECTIONS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_NUMBER_OF_PDU_ROUTES": {
+      "type": "integer",
+      "description": "SOAD_NUMBER_OF_PDU_ROUTES 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_MAX_PDU_LENGTH": {
+      "type": "integer",
+      "description": "SOAD_MAX_PDU_LENGTH 参数",
+      "default": 1500,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_MAX_HEADER_LENGTH": {
+      "type": "integer",
+      "description": "SOAD_MAX_HEADER_LENGTH 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_RECONNECT_DELAY_MS": {
+      "type": "integer",
+      "description": "SOAD_RECONNECT_DELAY_MS 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_PDU_HEADER_ENABLE": {
+      "type": "boolean",
+      "description": "SOAD_PDU_HEADER_ENABLE 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_PDU_HEADER_LENGTH": {
+      "type": "integer",
+      "description": "SOAD_PDU_HEADER_LENGTH 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_ENABLE_TCP_KEEP_ALIVE": {
+      "type": "boolean",
+      "description": "SOAD_ENABLE_TCP_KEEP_ALIVE 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_ENABLE_NAGLE_ALGORITHM": {
+      "type": "boolean",
+      "description": "SOAD_ENABLE_NAGLE_ALGORITHM 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_ENABLE_SO_CON_MODE_CHANGE": {
+      "type": "boolean",
+      "description": "SOAD_ENABLE_SO_CON_MODE_CHANGE 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_ENABLE_AUTO_CONNECTION_SETUP": {
+      "type": "boolean",
+      "description": "SOAD_ENABLE_AUTO_CONNECTION_SETUP 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_ENABLE_IP_ADDR_CHANGE_NOTIFICATION": {
+      "type": "boolean",
+      "description": "SOAD_ENABLE_IP_ADDR_CHANGE_NOTIFICATION 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_CONN_ID_TCP_SERVER_0": {
+      "type": "integer",
+      "description": "SOAD_CONN_ID_TCP_SERVER_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_CONN_ID_TCP_CLIENT_0": {
+      "type": "integer",
+      "description": "SOAD_CONN_ID_TCP_CLIENT_0 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_CONN_ID_UDP_UNICAST_0": {
+      "type": "integer",
+      "description": "SOAD_CONN_ID_UDP_UNICAST_0 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_CONN_ID_UDP_MULTICAST_0": {
+      "type": "integer",
+      "description": "SOAD_CONN_ID_UDP_MULTICAST_0 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_PDU_ID_SOMEIP_MSG": {
+      "type": "integer",
+      "description": "SOAD_PDU_ID_SOMEIP_MSG 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_PDU_ID_SOMEIP_SD": {
+      "type": "integer",
+      "description": "SOAD_PDU_ID_SOMEIP_SD 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_PDU_ID_DOIP_DIAG": {
+      "type": "integer",
+      "description": "SOAD_PDU_ID_DOIP_DIAG 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SOAD_PDU_ID_DOIP_ANNOUNCE": {
+      "type": "integer",
+      "description": "SOAD_PDU_ID_DOIP_ANNOUNCE 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -235,13 +235,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/soad/include/SoAd_Cfg.h",
-  "x-display-name": "SoAd",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "SOCKET CONFIGURATION",
-    "BUFFER CONFIGURATION",
-    "TIMEOUT CONFIGURATION",
-    "FEATURE CONFIGURATION",
-    "MAIN FUNCTION PERIOD"
-  ]
+  "x-display-name": "SoAd"
 }

@@ -2,247 +2,286 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/mqtt.json",
   "title": "Mqtt Configuration",
-  "description": "MQTT 模块配置头文件",
+  "description": "Mqtt Configuration configuration header",
   "type": "object",
   "properties": {
-    "MQTT_CFG_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "MQTT_CFG_MAJOR_VERSION 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "MQTT_CFG_MINOR_VERSION": {
-      "type": "integer",
-      "description": "MQTT_CFG_MINOR_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "MQTT_CFG_PATCH_VERSION": {
-      "type": "integer",
-      "description": "MQTT_CFG_PATCH_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
     "MQTT_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "MQTT_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MQTT_VERSION_INFO_API": {
       "type": "boolean",
       "description": "MQTT_VERSION_INFO_API 参数",
-      "default": true
-    },
-    "MQTT_DEBUG_MODE": {
-      "type": "boolean",
-      "description": "MQTT_DEBUG_MODE 参数",
-      "default": false
-    },
-    "MQTT_SUPPORT_V50": {
-      "type": "boolean",
-      "description": "MQTT_SUPPORT_V50 参数",
-      "default": true
-    },
-    "MQTT_SUPPORT_TLS": {
-      "type": "boolean",
-      "description": "MQTT_SUPPORT_TLS 参数",
-      "default": true
-    },
-    "MQTT_SUPPORT_MTLS": {
-      "type": "boolean",
-      "description": "MQTT_SUPPORT_MTLS 参数",
-      "default": true
-    },
-    "MQTT_SUPPORT_SSL_V30": {
-      "type": "boolean",
-      "description": "MQTT_SUPPORT_SSL_V30 参数",
-      "default": false
-    },
-    "MQTT_DEFAULT_TLS_VERSION": {
-      "type": "integer",
-      "description": "MQTT_DEFAULT_TLS_VERSION（别名: MQTT_TLS_VERSION_1_2 = 771；同族可选: MQTT_TLS_VERSION_1_2 / MQTT_TLS_VERSION_1_3）",
-      "default": 771,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "MQTT_SUPPORT_AUTO_RECONNECT": {
-      "type": "boolean",
-      "description": "MQTT_SUPPORT_AUTO_RECONNECT 参数",
-      "default": true
-    },
-    "MQTT_SUPPORT_CHANNEL_CALLBACKS": {
-      "type": "boolean",
-      "description": "MQTT_SUPPORT_CHANNEL_CALLBACKS 参数",
-      "default": true
-    },
-    "MQTT_SUPPORT_WILL_MESSAGE": {
-      "type": "boolean",
-      "description": "MQTT_SUPPORT_WILL_MESSAGE 参数",
-      "default": true
-    },
-    "MQTT_SUPPORT_LAST_WILL": {
-      "type": "boolean",
-      "description": "MQTT_SUPPORT_LAST_WILL 参数",
-      "default": true
-    },
-    "MQTT_MAX_CONNECTIONS": {
-      "type": "integer",
-      "description": "MQTT_MAX_CONNECTIONS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "MQTT_MAX_SUBSCRIPTIONS_PER_CONN": {
-      "type": "integer",
-      "description": "MQTT_MAX_SUBSCRIPTIONS_PER_CONN 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "MQTT_MAX_TOPIC_LENGTH": {
-      "type": "integer",
-      "description": "MQTT_MAX_TOPIC_LENGTH 参数",
-      "default": 128,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "MQTT_MAX_CLIENT_ID_LENGTH": {
-      "type": "integer",
-      "description": "MQTT_MAX_CLIENT_ID_LENGTH 参数",
-      "default": 64,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "MQTT_SEND_BUFFER_SIZE": {
-      "type": "integer",
-      "description": "MQTT_SEND_BUFFER_SIZE 参数",
-      "default": 2048,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "MQTT_RECV_BUFFER_SIZE": {
-      "type": "integer",
-      "description": "MQTT_RECV_BUFFER_SIZE 参数",
-      "default": 2048,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "MQTT_MESSAGE_QUEUE_DEPTH": {
-      "type": "integer",
-      "description": "MQTT_MESSAGE_QUEUE_DEPTH 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MQTT_MAIN_FUNCTION_PERIOD_MS": {
       "type": "integer",
       "description": "MQTT_MAIN_FUNCTION_PERIOD_MS 参数",
       "default": 10,
       "minimum": 0,
-      "maximum": 255
-    },
-    "MQTT_TLS_SEND_BUFFER_SIZE": {
-      "type": "integer",
-      "description": "MQTT_TLS_SEND_BUFFER_SIZE 参数",
-      "default": 4096,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "MQTT_TLS_RECV_BUFFER_SIZE": {
-      "type": "integer",
-      "description": "MQTT_TLS_RECV_BUFFER_SIZE 参数",
-      "default": 4096,
-      "minimum": 0,
-      "maximum": 65535
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MQTT_TLS_HANDSHAKE_TIMEOUT_MS": {
       "type": "integer",
       "description": "MQTT_TLS_HANDSHAKE_TIMEOUT_MS 参数",
       "default": 10000,
       "minimum": 0,
-      "maximum": 65535
-    },
-    "MQTT_TLS_SESSION_CACHE_SIZE": {
-      "type": "integer",
-      "description": "MQTT_TLS_SESSION_CACHE_SIZE 参数",
-      "default": 1024,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "MQTT_TLS_MAX_CERT_CHAIN_DEPTH": {
-      "type": "integer",
-      "description": "MQTT_TLS_MAX_CERT_CHAIN_DEPTH 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "MQTT_TLS_VERIFY_EXPIRY": {
-      "type": "boolean",
-      "description": "MQTT_TLS_VERIFY_EXPIRY 参数",
-      "default": true
-    },
-    "MQTT_TLS_VERIFY_HOSTNAME": {
-      "type": "boolean",
-      "description": "MQTT_TLS_VERIFY_HOSTNAME 参数",
-      "default": true
-    },
-    "MQTT_TLS_SECURE_RENEGOTIATION": {
-      "type": "boolean",
-      "description": "MQTT_TLS_SECURE_RENEGOTIATION 参数",
-      "default": true
-    },
-    "MQTT_TLS_SESSION_RESUMPTION": {
-      "type": "boolean",
-      "description": "MQTT_TLS_SESSION_RESUMPTION 参数",
-      "default": true
-    },
-    "MQTT_TLS_HW_ACCELERATION": {
-      "type": "boolean",
-      "description": "MQTT_TLS_HW_ACCELERATION 参数",
-      "default": false
-    },
-    "MQTT_DEFAULT_KEEP_ALIVE_S": {
-      "type": "integer",
-      "description": "MQTT_DEFAULT_KEEP_ALIVE_S 参数",
-      "default": 60,
-      "minimum": 0,
-      "maximum": 255
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MQTT_DEFAULT_CONNECT_TIMEOUT_MS": {
       "type": "integer",
       "description": "MQTT_DEFAULT_CONNECT_TIMEOUT_MS 参数",
       "default": 5000,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MQTT_DEFAULT_RECV_TIMEOUT_MS": {
       "type": "integer",
       "description": "MQTT_DEFAULT_RECV_TIMEOUT_MS 参数",
       "default": 1000,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_CFG_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "MQTT_CFG_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_CFG_MINOR_VERSION": {
+      "type": "integer",
+      "description": "MQTT_CFG_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_CFG_PATCH_VERSION": {
+      "type": "integer",
+      "description": "MQTT_CFG_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_DEBUG_MODE": {
+      "type": "boolean",
+      "description": "MQTT_DEBUG_MODE 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_SUPPORT_V50": {
+      "type": "boolean",
+      "description": "MQTT_SUPPORT_V50 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_SUPPORT_TLS": {
+      "type": "boolean",
+      "description": "MQTT_SUPPORT_TLS 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_SUPPORT_MTLS": {
+      "type": "boolean",
+      "description": "MQTT_SUPPORT_MTLS 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_SUPPORT_SSL_V30": {
+      "type": "boolean",
+      "description": "MQTT_SUPPORT_SSL_V30 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_DEFAULT_TLS_VERSION": {
+      "type": "integer",
+      "description": "MQTT_DEFAULT_TLS_VERSION 参数",
+      "default": 771,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_SUPPORT_AUTO_RECONNECT": {
+      "type": "boolean",
+      "description": "MQTT_SUPPORT_AUTO_RECONNECT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_SUPPORT_CHANNEL_CALLBACKS": {
+      "type": "boolean",
+      "description": "MQTT_SUPPORT_CHANNEL_CALLBACKS 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_SUPPORT_WILL_MESSAGE": {
+      "type": "boolean",
+      "description": "MQTT_SUPPORT_WILL_MESSAGE 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_SUPPORT_LAST_WILL": {
+      "type": "boolean",
+      "description": "MQTT_SUPPORT_LAST_WILL 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_MAX_CONNECTIONS": {
+      "type": "integer",
+      "description": "MQTT_MAX_CONNECTIONS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_MAX_SUBSCRIPTIONS_PER_CONN": {
+      "type": "integer",
+      "description": "MQTT_MAX_SUBSCRIPTIONS_PER_CONN 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_MAX_TOPIC_LENGTH": {
+      "type": "integer",
+      "description": "MQTT_MAX_TOPIC_LENGTH 参数",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_MAX_CLIENT_ID_LENGTH": {
+      "type": "integer",
+      "description": "MQTT_MAX_CLIENT_ID_LENGTH 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_SEND_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "MQTT_SEND_BUFFER_SIZE 参数",
+      "default": 2048,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_RECV_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "MQTT_RECV_BUFFER_SIZE 参数",
+      "default": 2048,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_MESSAGE_QUEUE_DEPTH": {
+      "type": "integer",
+      "description": "MQTT_MESSAGE_QUEUE_DEPTH 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_TLS_SEND_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "MQTT_TLS_SEND_BUFFER_SIZE 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_TLS_RECV_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "MQTT_TLS_RECV_BUFFER_SIZE 参数",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_TLS_SESSION_CACHE_SIZE": {
+      "type": "integer",
+      "description": "MQTT_TLS_SESSION_CACHE_SIZE 参数",
+      "default": 1024,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_TLS_MAX_CERT_CHAIN_DEPTH": {
+      "type": "integer",
+      "description": "MQTT_TLS_MAX_CERT_CHAIN_DEPTH 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_TLS_VERIFY_EXPIRY": {
+      "type": "boolean",
+      "description": "MQTT_TLS_VERIFY_EXPIRY 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_TLS_VERIFY_HOSTNAME": {
+      "type": "boolean",
+      "description": "MQTT_TLS_VERIFY_HOSTNAME 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_TLS_SECURE_RENEGOTIATION": {
+      "type": "boolean",
+      "description": "MQTT_TLS_SECURE_RENEGOTIATION 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_TLS_SESSION_RESUMPTION": {
+      "type": "boolean",
+      "description": "MQTT_TLS_SESSION_RESUMPTION 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_TLS_HW_ACCELERATION": {
+      "type": "boolean",
+      "description": "MQTT_TLS_HW_ACCELERATION 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MQTT_DEFAULT_KEEP_ALIVE_S": {
+      "type": "integer",
+      "description": "MQTT_DEFAULT_KEEP_ALIVE_S 参数",
+      "default": 60,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MQTT_DEFAULT_RECONNECT_INTERVAL_MS": {
       "type": "integer",
       "description": "MQTT_DEFAULT_RECONNECT_INTERVAL_MS 参数",
       "default": 5000,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MQTT_MAX_RECONNECT_ATTEMPTS": {
       "type": "integer",
       "description": "MQTT_MAX_RECONNECT_ATTEMPTS 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MQTT_CONST": {
       "type": "string",
       "description": "MQTT_CONST 参数",
-      "default": "const"
+      "default": "const",
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MQTT_TLS_VERSION_1_2": {
       "type": "integer",
@@ -250,6 +289,7 @@
       "default": 771,
       "minimum": 0,
       "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "MQTT_TLS_VERSION_1_3": {
@@ -258,6 +298,7 @@
       "default": 772,
       "minimum": 0,
       "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     }
   },

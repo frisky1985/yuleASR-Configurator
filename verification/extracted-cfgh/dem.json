@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/dem.json",
   "title": "Dem Configuration",
-  "description": "Diagnostic Event Manager configuration header",
+  "description": "Dem Configuration configuration header",
   "type": "object",
   "properties": {
     "DEM_DEV_ERROR_DETECT": {
@@ -15,6 +15,196 @@
       "type": "boolean",
       "description": "DEM_VERSION_INFO_API 参数",
       "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_NUM_EVENTS": {
+      "type": "integer",
+      "description": "DEM_NUM_EVENTS 参数",
+      "default": 128,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_NUM_DTCS": {
+      "type": "integer",
+      "description": "DEM_NUM_DTCS 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_NUM_FREEZE_FRAME_RECORDS": {
+      "type": "integer",
+      "description": "DEM_NUM_FREEZE_FRAME_RECORDS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_NUM_EXTENDED_DATA_RECORDS": {
+      "type": "integer",
+      "description": "DEM_NUM_EXTENDED_DATA_RECORDS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_NUM_INDICATORS": {
+      "type": "integer",
+      "description": "DEM_NUM_INDICATORS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_NUM_OPERATION_CYCLES": {
+      "type": "integer",
+      "description": "DEM_NUM_OPERATION_CYCLES 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_AGING_CYCLE_COUNTER_MAX": {
+      "type": "integer",
+      "description": "DEM_AGING_CYCLE_COUNTER_MAX 参数",
+      "default": 255,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_AGING_CYCLE_COUNTER_THRESHOLD": {
+      "type": "integer",
+      "description": "DEM_AGING_CYCLE_COUNTER_THRESHOLD 参数",
+      "default": 40,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_NUM_ENABLE_CONDITIONS": {
+      "type": "integer",
+      "description": "DEM_NUM_ENABLE_CONDITIONS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_NUM_STORAGE_CONDITIONS": {
+      "type": "integer",
+      "description": "DEM_NUM_STORAGE_CONDITIONS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_MAX_OCCURRENCE_COUNTER": {
+      "type": "integer",
+      "description": "DEM_MAX_OCCURRENCE_COUNTER 参数",
+      "default": 255,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_DEBOUNCE_COUNTER_BASED": {
+      "type": "boolean",
+      "description": "DEM_DEBOUNCE_COUNTER_BASED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_DEBOUNCE_COUNTER_FAILED_THRESHOLD": {
+      "type": "integer",
+      "description": "DEM_DEBOUNCE_COUNTER_FAILED_THRESHOLD 参数",
+      "default": 127,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_DEBOUNCE_COUNTER_PASSED_THRESHOLD": {
+      "type": "integer",
+      "description": "DEM_DEBOUNCE_COUNTER_PASSED_THRESHOLD 参数",
+      "default": -128,
+      "minimum": -128,
+      "maximum": 127,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_DEBOUNCE_COUNTER_INCREMENT": {
+      "type": "integer",
+      "description": "DEM_DEBOUNCE_COUNTER_INCREMENT 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_DEBOUNCE_COUNTER_DECREMENT": {
+      "type": "integer",
+      "description": "DEM_DEBOUNCE_COUNTER_DECREMENT 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_DEBOUNCE_COUNTER_INCREMENT_STEP": {
+      "type": "integer",
+      "description": "DEM_DEBOUNCE_COUNTER_INCREMENT_STEP 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_DEBOUNCE_COUNTER_DECREMENT_STEP": {
+      "type": "integer",
+      "description": "DEM_DEBOUNCE_COUNTER_DECREMENT_STEP 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_OBD_NUM_PIDS": {
+      "type": "integer",
+      "description": "DEM_OBD_NUM_PIDS 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_OBD_NUM_TIDS": {
+      "type": "integer",
+      "description": "DEM_OBD_NUM_TIDS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_OBD_NUM_INFOTYPES": {
+      "type": "integer",
+      "description": "DEM_OBD_NUM_INFOTYPES 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_J1939_NUM_FMI": {
+      "type": "integer",
+      "description": "DEM_J1939_NUM_FMI 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_J1939_NUM_OC": {
+      "type": "integer",
+      "description": "DEM_J1939_NUM_OC 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DEM_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "DEM_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_CLEAR_DTC_SUPPORTED": {
@@ -49,61 +239,45 @@
       "default": false,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "DEM_NUM_EVENTS": {
-      "type": "integer",
-      "description": "DEM_NUM_EVENTS 参数",
-      "default": 128,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "EVENT CONFIGURATION"
-    },
-    "DEM_NUM_DTCS": {
-      "type": "integer",
-      "description": "DEM_NUM_DTCS 参数",
-      "default": 64,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "EVENT CONFIGURATION"
-    },
     "DEM_EVENT_ID_MIN": {
       "type": "integer",
-      "description": "DEM_EVENT_ID_MIN（cast: Dem_EventIdType）",
+      "description": "DEM_EVENT_ID_MIN 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "EVENT CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_EVENT_ID_MAX": {
       "type": "integer",
-      "description": "DEM_EVENT_ID_MAX（cast: Dem_EventIdType）",
+      "description": "DEM_EVENT_ID_MAX 参数",
       "default": 127,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "EVENT CONFIGURATION"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_DTC_INVALID": {
       "type": "integer",
-      "description": "DEM_DTC_INVALID（cast: Dem_DtcType）",
+      "description": "DEM_DTC_INVALID 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DTC DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_DTC_MIN": {
       "type": "integer",
-      "description": "DEM_DTC_MIN（cast: Dem_DtcType）",
+      "description": "DEM_DTC_MIN 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "DTC DEFINITIONS"
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_DTC_MAX": {
       "type": "integer",
-      "description": "DEM_DTC_MAX（cast: Dem_DtcType）",
+      "description": "DEM_DTC_MAX 参数",
       "default": 16777215,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "DTC DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_DTC_PRIORITY_MIN": {
       "type": "integer",
@@ -111,7 +285,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DTC PRIORITY"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_DTC_PRIORITY_MAX": {
       "type": "integer",
@@ -119,15 +293,7 @@
       "default": 255,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DTC PRIORITY"
-    },
-    "DEM_NUM_FREEZE_FRAME_RECORDS": {
-      "type": "integer",
-      "description": "DEM_NUM_FREEZE_FRAME_RECORDS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "FREEZE FRAME CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_FREEZE_FRAME_MAX_DIDS": {
       "type": "integer",
@@ -135,7 +301,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "FREEZE FRAME CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_FREEZE_FRAME_MAX_SIZE": {
       "type": "integer",
@@ -143,15 +309,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "FREEZE FRAME CONFIGURATION"
-    },
-    "DEM_NUM_EXTENDED_DATA_RECORDS": {
-      "type": "integer",
-      "description": "DEM_NUM_EXTENDED_DATA_RECORDS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "EXTENDED DATA CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_EXTENDED_DATA_MAX_SIZE": {
       "type": "integer",
@@ -159,87 +317,71 @@
       "default": 128,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "EXTENDED DATA CONFIGURATION"
-    },
-    "DEM_NUM_INDICATORS": {
-      "type": "integer",
-      "description": "DEM_NUM_INDICATORS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "INDICATOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_INDICATOR_MIL": {
       "type": "integer",
-      "description": "Malfunction Indicator Lamp",
+      "description": "DEM_INDICATOR_MIL 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INDICATOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_INDICATOR_SVS": {
       "type": "integer",
-      "description": "Service Vehicle Soon",
+      "description": "DEM_INDICATOR_SVS 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INDICATOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_INDICATOR_AWLS": {
       "type": "integer",
-      "description": "Automatic Transmission Warning Lamp",
+      "description": "DEM_INDICATOR_AWLS 参数",
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INDICATOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_INDICATOR_PL": {
       "type": "integer",
-      "description": "Powertrain Lamp",
+      "description": "DEM_INDICATOR_PL 参数",
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INDICATOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_INDICATOR_SBL": {
       "type": "integer",
-      "description": "Service Brake Lamp",
+      "description": "DEM_INDICATOR_SBL 参数",
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INDICATOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_INDICATOR_AWLS2": {
       "type": "integer",
-      "description": "Automatic Transmission Warning Lamp 2",
+      "description": "DEM_INDICATOR_AWLS2 参数",
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INDICATOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_INDICATOR_RSL": {
       "type": "integer",
-      "description": "Restraint System Lamp",
+      "description": "DEM_INDICATOR_RSL 参数",
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INDICATOR CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_INDICATOR_ESL": {
       "type": "integer",
-      "description": "Electronic Stability Lamp",
+      "description": "DEM_INDICATOR_ESL 参数",
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INDICATOR CONFIGURATION"
-    },
-    "DEM_NUM_OPERATION_CYCLES": {
-      "type": "integer",
-      "description": "DEM_NUM_OPERATION_CYCLES 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "OPERATION CYCLE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_OPCYC_POWER": {
       "type": "integer",
@@ -247,7 +389,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "OPERATION CYCLE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_OPCYC_IGNITION": {
       "type": "integer",
@@ -255,7 +397,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "OPERATION CYCLE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_OPCYC_WARMUP": {
       "type": "integer",
@@ -263,7 +405,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "OPERATION CYCLE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_OPCYC_OBD_DCY": {
       "type": "integer",
@@ -271,7 +413,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "OPERATION CYCLE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_OPCYC_OTHER": {
       "type": "integer",
@@ -279,7 +421,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "OPERATION CYCLE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_AGING_CYCLE_THRESHOLD": {
       "type": "integer",
@@ -287,129 +429,35 @@
       "default": 40,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "AGING CYCLE CONFIGURATION"
-    },
-    "DEM_AGING_CYCLE_COUNTER_MAX": {
-      "type": "integer",
-      "description": "DEM_AGING_CYCLE_COUNTER_MAX 参数",
-      "default": 255,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "AGING CYCLE CONFIGURATION"
-    },
-    "DEM_AGING_CYCLE_COUNTER_THRESHOLD": {
-      "type": "integer",
-      "description": "DEM_AGING_CYCLE_COUNTER_THRESHOLD（别名: DEM_AGING_CYCLE_THRESHOLD = 40；同族可选: DEM_AGING_CYCLE_COUNTER_MAX / DEM_AGING_CYCLE_THRESHOLD）",
-      "default": 40,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "AGING CYCLE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_AGING_THRESHOLD": {
       "type": "integer",
-      "description": "DEM_AGING_THRESHOLD（别名: DEM_AGING_CYCLE_THRESHOLD = 40；同族可选: DEM_AGING_CYCLE_COUNTER_MAX / DEM_AGING_CYCLE_COUNTER_THRESHOLD / DEM_AGING_CYCLE_THRESHOLD）",
+      "description": "DEM_AGING_THRESHOLD 参数",
       "default": 40,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "AGING CYCLE CONFIGURATION"
-    },
-    "DEM_NUM_ENABLE_CONDITIONS": {
-      "type": "integer",
-      "description": "DEM_NUM_ENABLE_CONDITIONS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ENABLE / STORAGE CONDITIONS"
-    },
-    "DEM_NUM_STORAGE_CONDITIONS": {
-      "type": "integer",
-      "description": "DEM_NUM_STORAGE_CONDITIONS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ENABLE / STORAGE CONDITIONS"
-    },
-    "DEM_MAX_OCCURRENCE_COUNTER": {
-      "type": "integer",
-      "description": "DEM_MAX_OCCURRENCE_COUNTER 参数",
-      "default": 255,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "ENABLE / STORAGE CONDITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_DTC_GROUP_ALL": {
       "type": "integer",
-      "description": "DEM_DTC_GROUP_ALL（cast: Dem_DtcType）",
+      "description": "DEM_DTC_GROUP_ALL 参数",
       "default": 16777215,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "ENABLE / STORAGE CONDITIONS"
-    },
-    "DEM_DEBOUNCE_COUNTER_BASED": {
-      "type": "boolean",
-      "description": "DEM_DEBOUNCE_COUNTER_BASED 参数",
-      "default": true,
-      "x-section": "DEBOUNCE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_DEBOUNCE_TIME_BASED": {
       "type": "boolean",
       "description": "DEM_DEBOUNCE_TIME_BASED 参数",
       "default": true,
-      "x-section": "DEBOUNCE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_DEBOUNCE_MONITOR_INTERNAL": {
       "type": "boolean",
       "description": "DEM_DEBOUNCE_MONITOR_INTERNAL 参数",
       "default": true,
-      "x-section": "DEBOUNCE CONFIGURATION"
-    },
-    "DEM_DEBOUNCE_COUNTER_FAILED_THRESHOLD": {
-      "type": "integer",
-      "description": "DEM_DEBOUNCE_COUNTER_FAILED_THRESHOLD 参数",
-      "default": 127,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "COUNTER BASED DEBOUNCE"
-    },
-    "DEM_DEBOUNCE_COUNTER_PASSED_THRESHOLD": {
-      "type": "integer",
-      "description": "DEM_DEBOUNCE_COUNTER_PASSED_THRESHOLD 参数",
-      "default": -128,
-      "minimum": -128,
-      "maximum": 127,
-      "x-section": "COUNTER BASED DEBOUNCE"
-    },
-    "DEM_DEBOUNCE_COUNTER_INCREMENT": {
-      "type": "integer",
-      "description": "DEM_DEBOUNCE_COUNTER_INCREMENT 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "COUNTER BASED DEBOUNCE"
-    },
-    "DEM_DEBOUNCE_COUNTER_DECREMENT": {
-      "type": "integer",
-      "description": "DEM_DEBOUNCE_COUNTER_DECREMENT 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "COUNTER BASED DEBOUNCE"
-    },
-    "DEM_DEBOUNCE_COUNTER_INCREMENT_STEP": {
-      "type": "integer",
-      "description": "DEM_DEBOUNCE_COUNTER_INCREMENT_STEP（别名: DEM_DEBOUNCE_COUNTER_INCREMENT = 1；同族可选: DEM_DEBOUNCE_COUNTER_BASED / DEM_DEBOUNCE_COUNTER_DECREMENT / DEM_DEBOUNCE_COUNTER_DECREMENT_STEP / DEM_DEBOUNCE_COUNTER_FAILED_THRESHOLD / DEM_DEBOUNCE_COUNTER_INCREMENT / DEM_DEBOUNCE_COUNTER_PASSED_THRESHOLD）",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "COUNTER BASED DEBOUNCE"
-    },
-    "DEM_DEBOUNCE_COUNTER_DECREMENT_STEP": {
-      "type": "integer",
-      "description": "DEM_DEBOUNCE_COUNTER_DECREMENT_STEP（别名: DEM_DEBOUNCE_COUNTER_DECREMENT = 1；同族可选: DEM_DEBOUNCE_COUNTER_BASED / DEM_DEBOUNCE_COUNTER_DECREMENT / DEM_DEBOUNCE_COUNTER_FAILED_THRESHOLD / DEM_DEBOUNCE_COUNTER_INCREMENT / DEM_DEBOUNCE_COUNTER_INCREMENT_STEP / DEM_DEBOUNCE_COUNTER_PASSED_THRESHOLD）",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "COUNTER BASED DEBOUNCE"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_DEBOUNCE_TIME_FAILED_THRESHOLD_MS": {
       "type": "integer",
@@ -417,7 +465,7 @@
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIME BASED DEBOUNCE"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_DEBOUNCE_TIME_PASSED_THRESHOLD_MS": {
       "type": "integer",
@@ -425,7 +473,7 @@
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIME BASED DEBOUNCE"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_FDC_THRESHOLD": {
       "type": "integer",
@@ -433,7 +481,7 @@
       "default": 80,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "FDC CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_FDC_MAX": {
       "type": "integer",
@@ -441,7 +489,7 @@
       "default": 127,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "FDC CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_FDC_MIN": {
       "type": "integer",
@@ -449,15 +497,7 @@
       "default": -128,
       "minimum": -128,
       "maximum": 127,
-      "x-section": "FDC CONFIGURATION"
-    },
-    "DEM_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "DEM_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MAIN FUNCTION PERIOD"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_PRIMARY_MEMORY_SIZE": {
       "type": "integer",
@@ -465,7 +505,7 @@
       "default": 4096,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "MEMORY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_MIRROR_MEMORY_SIZE": {
       "type": "integer",
@@ -473,7 +513,7 @@
       "default": 2048,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "MEMORY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_PERMANENT_MEMORY_SIZE": {
       "type": "integer",
@@ -481,47 +521,7 @@
       "default": 1024,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "MEMORY CONFIGURATION"
-    },
-    "DEM_OBD_NUM_PIDS": {
-      "type": "integer",
-      "description": "DEM_OBD_NUM_PIDS 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "OBD CONFIGURATION"
-    },
-    "DEM_OBD_NUM_TIDS": {
-      "type": "integer",
-      "description": "DEM_OBD_NUM_TIDS 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "OBD CONFIGURATION"
-    },
-    "DEM_OBD_NUM_INFOTYPES": {
-      "type": "integer",
-      "description": "DEM_OBD_NUM_INFOTYPES 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "OBD CONFIGURATION"
-    },
-    "DEM_J1939_NUM_FMI": {
-      "type": "integer",
-      "description": "DEM_J1939_NUM_FMI 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "J1939 CONFIGURATION"
-    },
-    "DEM_J1939_NUM_OC": {
-      "type": "integer",
-      "description": "DEM_J1939_NUM_OC 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "J1939 CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -539,25 +539,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/dem/include/Dem_Cfg.h",
-  "x-display-name": "Dem",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "EVENT CONFIGURATION",
-    "DTC DEFINITIONS",
-    "DTC PRIORITY",
-    "FREEZE FRAME CONFIGURATION",
-    "EXTENDED DATA CONFIGURATION",
-    "INDICATOR CONFIGURATION",
-    "OPERATION CYCLE CONFIGURATION",
-    "AGING CYCLE CONFIGURATION",
-    "ENABLE / STORAGE CONDITIONS",
-    "DEBOUNCE CONFIGURATION",
-    "COUNTER BASED DEBOUNCE",
-    "TIME BASED DEBOUNCE",
-    "FDC CONFIGURATION",
-    "MAIN FUNCTION PERIOD",
-    "MEMORY CONFIGURATION",
-    "OBD CONFIGURATION",
-    "J1939 CONFIGURATION"
-  ]
+  "x-display-name": "Dem"
 }

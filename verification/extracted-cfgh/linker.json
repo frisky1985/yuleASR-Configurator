@@ -2,20 +2,30 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/linker.json",
   "title": "Linker Configuration",
-  "description": "Linker configuration (extracted from yuleASR Cfg.h)",
+  "description": "Linker Configuration configuration header",
   "type": "object",
   "properties": {
+    "MPU_REGION_COUNT": {
+      "type": "integer",
+      "description": "MPU_REGION_COUNT 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
     "FLASH_BASE_ADDR": {
       "type": "integer",
       "description": "FLASH_BASE_ADDR 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FLASH_SIZE": {
       "type": "string",
-      "description": "2 MB（派生表达式: (2UL * 1024UL * 1024UL)）",
+      "description": "FLASH_SIZE（派生表达式: (2UL * 1024UL * 1024UL)）",
       "default": "(2UL * 1024UL * 1024UL)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "FLASH_VECTOR_TABLE_ADDR": {
@@ -23,26 +33,30 @@
       "description": "FLASH_VECTOR_TABLE_ADDR 参数",
       "default": 1024,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FLASH_VECTOR_TABLE_SIZE": {
       "type": "integer",
-      "description": "256 bytes",
+      "description": "FLASH_VECTOR_TABLE_SIZE 参数",
       "default": 256,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FLASH_CODE_START": {
       "type": "integer",
       "description": "FLASH_CODE_START 参数",
       "default": 1280,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FLASH_CODE_SIZE": {
       "type": "string",
       "description": "FLASH_CODE_SIZE（派生表达式: (FLASH_SIZE - FLASH_CODE_START)）",
       "default": "(FLASH_SIZE - FLASH_CODE_START)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RAM_BASE_ADDR": {
@@ -50,12 +64,14 @@
       "description": "RAM_BASE_ADDR 参数",
       "default": 536870912,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAM_SIZE": {
       "type": "string",
-      "description": "512 KB（派生表达式: (512UL * 1024UL)）",
+      "description": "RAM_SIZE（派生表达式: (512UL * 1024UL)）",
       "default": "(512UL * 1024UL)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RAM_SAFE_START": {
@@ -63,18 +79,21 @@
       "description": "RAM_SAFE_START 参数",
       "default": 536870912,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAM_SAFE_SIZE": {
       "type": "string",
-      "description": "64 KB（派生表达式: (64UL * 1024UL)）",
+      "description": "RAM_SAFE_SIZE（派生表达式: (64UL * 1024UL)）",
       "default": "(64UL * 1024UL)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RAM_SAFE_END": {
       "type": "string",
       "description": "RAM_SAFE_END（派生表达式: (RAM_SAFE_START + RAM_SAFE_SIZE)）",
       "default": "(RAM_SAFE_START + RAM_SAFE_SIZE)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RAM_GENERAL_START": {
@@ -82,18 +101,21 @@
       "description": "RAM_GENERAL_START 参数",
       "default": 536936448,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAM_GENERAL_SIZE": {
       "type": "string",
-      "description": "384 KB（派生表达式: (384UL * 1024UL)）",
+      "description": "RAM_GENERAL_SIZE（派生表达式: (384UL * 1024UL)）",
       "default": "(384UL * 1024UL)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RAM_GENERAL_END": {
       "type": "string",
       "description": "RAM_GENERAL_END（派生表达式: (RAM_GENERAL_START + RAM_GENERAL_SIZE)）",
       "default": "(RAM_GENERAL_START + RAM_GENERAL_SIZE)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RAM_SHARED_START": {
@@ -101,18 +123,21 @@
       "description": "RAM_SHARED_START 参数",
       "default": 537329664,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "RAM_SHARED_SIZE": {
       "type": "string",
-      "description": "64 KB（派生表达式: (64UL * 1024UL)）",
+      "description": "RAM_SHARED_SIZE（派生表达式: (64UL * 1024UL)）",
       "default": "(64UL * 1024UL)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RAM_SHARED_END": {
       "type": "string",
       "description": "RAM_SHARED_END（派生表达式: (RAM_SHARED_START + RAM_SHARED_SIZE)）",
       "default": "(RAM_SHARED_START + RAM_SHARED_SIZE)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "RAM_END_ADDR": {
@@ -120,233 +145,259 @@
       "description": "RAM_END_ADDR 参数",
       "default": 537395200,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "STACK_TOP": {
       "type": "integer",
-      "description": "STACK_TOP（别名: RAM_END_ADDR = 537395200；同族可选: RAM_END_ADDR）",
+      "description": "STACK_TOP 参数",
       "default": 537395200,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "STACK_SIZE": {
       "type": "string",
-      "description": "128 KB（派生表达式: (128UL * 1024UL)）",
+      "description": "STACK_SIZE（派生表达式: (128UL * 1024UL)）",
       "default": "(128UL * 1024UL)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "STACK_BOTTOM": {
       "type": "string",
       "description": "STACK_BOTTOM（派生表达式: (STACK_TOP - STACK_SIZE)）",
       "default": "(STACK_TOP - STACK_SIZE)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "HEAP_SIZE": {
       "type": "string",
-      "description": "256 KB（派生表达式: (256UL * 1024UL)）",
+      "description": "HEAP_SIZE（派生表达式: (256UL * 1024UL)）",
       "default": "(256UL * 1024UL)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
-    },
-    "MPU_REGION_COUNT": {
-      "type": "integer",
-      "description": "MPU_REGION_COUNT 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255
     },
     "MPU_AP_NO_ACCESS": {
       "type": "integer",
       "description": "MPU_AP_NO_ACCESS 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_AP_PRIV_RW": {
       "type": "integer",
       "description": "MPU_AP_PRIV_RW 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_AP_PRIV_RW_USER_RO": {
       "type": "integer",
       "description": "MPU_AP_PRIV_RW_USER_RO 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_AP_FULL_ACCESS": {
       "type": "integer",
       "description": "MPU_AP_FULL_ACCESS 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_AP_PRIV_RO": {
       "type": "integer",
       "description": "MPU_AP_PRIV_RO 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_AP_RO": {
       "type": "integer",
       "description": "MPU_AP_RO 参数",
       "default": 6,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_32B": {
       "type": "integer",
       "description": "MPU_SIZE_32B 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_64B": {
       "type": "integer",
       "description": "MPU_SIZE_64B 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_128B": {
       "type": "integer",
       "description": "MPU_SIZE_128B 参数",
       "default": 6,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_256B": {
       "type": "integer",
       "description": "MPU_SIZE_256B 参数",
       "default": 7,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_512B": {
       "type": "integer",
       "description": "MPU_SIZE_512B 参数",
       "default": 8,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_1KB": {
       "type": "integer",
       "description": "MPU_SIZE_1KB 参数",
       "default": 9,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_2KB": {
       "type": "integer",
       "description": "MPU_SIZE_2KB 参数",
       "default": 10,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_4KB": {
       "type": "integer",
       "description": "MPU_SIZE_4KB 参数",
       "default": 11,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_8KB": {
       "type": "integer",
       "description": "MPU_SIZE_8KB 参数",
       "default": 12,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_16KB": {
       "type": "integer",
       "description": "MPU_SIZE_16KB 参数",
       "default": 13,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_32KB": {
       "type": "integer",
       "description": "MPU_SIZE_32KB 参数",
       "default": 14,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_64KB": {
       "type": "integer",
       "description": "MPU_SIZE_64KB 参数",
       "default": 15,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_128KB": {
       "type": "integer",
       "description": "MPU_SIZE_128KB 参数",
       "default": 16,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_256KB": {
       "type": "integer",
       "description": "MPU_SIZE_256KB 参数",
       "default": 17,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_512KB": {
       "type": "integer",
       "description": "MPU_SIZE_512KB 参数",
       "default": 18,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_1MB": {
       "type": "integer",
       "description": "MPU_SIZE_1MB 参数",
       "default": 19,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_2MB": {
       "type": "integer",
       "description": "MPU_SIZE_2MB 参数",
       "default": 20,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MPU_SIZE_4MB": {
       "type": "integer",
       "description": "MPU_SIZE_4MB 参数",
       "default": 21,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_ATTR_ECC_ENABLED": {
       "type": "integer",
       "description": "MEM_ATTR_ECC_ENABLED 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_ATTR_LOCKSTEP": {
       "type": "integer",
       "description": "MEM_ATTR_LOCKSTEP 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEM_ATTR_MPU_PROTECTED": {
       "type": "integer",
       "description": "MEM_ATTR_MPU_PROTECTED 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SEC_ATTR_SAFE": {
       "type": "string",
       "description": "SEC_ATTR_SAFE（派生表达式: (MEM_ATTR_ECC_ENABLED | MEM_ATTR_LOCKSTEP)）",
       "default": "(MEM_ATTR_ECC_ENABLED | MEM_ATTR_LOCKSTEP)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "SEC_ATTR_QM": {
@@ -354,14 +405,16 @@
       "description": "SEC_ATTR_QM 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SEC_ATTR_SHARED": {
       "type": "integer",
-      "description": "SEC_ATTR_SHARED（别名: MEM_ATTR_MPU_PROTECTED = 4；同族可选: MEM_ATTR_MPU_PROTECTED）",
+      "description": "SEC_ATTR_SHARED 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

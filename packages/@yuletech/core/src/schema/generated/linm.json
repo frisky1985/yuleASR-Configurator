@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/linm.json",
   "title": "LinM Configuration",
-  "description": "LIN Master Management configuration header",
+  "description": "LinM Configuration configuration header",
   "type": "object",
   "properties": {
     "LINM_DEV_ERROR_DETECT": {
@@ -15,6 +15,38 @@
       "type": "boolean",
       "description": "LINM_VERSION_INFO_API 参数",
       "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINM_WAKEUP_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "LINM_WAKEUP_TIMEOUT_MS 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINM_SLEEP_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "LINM_SLEEP_TIMEOUT_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINM_SLAVE_RESPONSE_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "LINM_SLAVE_RESPONSE_TIMEOUT_MS 参数",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINM_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "LINM_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_WAKEUP_SUPPORT": {
@@ -41,7 +73,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_NUMBER_OF_SCHEDULES": {
       "type": "integer",
@@ -49,7 +81,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_NUMBER_OF_ENTRIES": {
       "type": "integer",
@@ -57,7 +89,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_CHANNEL_0": {
       "type": "integer",
@@ -65,7 +97,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_SCHEDULE_NULL": {
       "type": "integer",
@@ -73,7 +105,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_SCHEDULE_MASTER": {
       "type": "integer",
@@ -81,7 +113,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_SCHEDULE_DIAGNOSTIC": {
       "type": "integer",
@@ -89,7 +121,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_SCHEDULE_TABLE_0": {
       "type": "integer",
@@ -97,7 +129,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_ENTRY_TYPE_UNCONDITIONAL": {
       "type": "integer",
@@ -105,7 +137,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SCHEDULE ENTRY TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_ENTRY_TYPE_EVENT_TRIGGERED": {
       "type": "integer",
@@ -113,7 +145,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SCHEDULE ENTRY TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_ENTRY_TYPE_SPORADIC": {
       "type": "integer",
@@ -121,7 +153,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SCHEDULE ENTRY TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_ENTRY_TYPE_DIAGNOSTIC": {
       "type": "integer",
@@ -129,7 +161,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SCHEDULE ENTRY TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_ENTRY_TYPE_SLAVE_TO_SLAVE": {
       "type": "integer",
@@ -137,7 +169,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SCHEDULE ENTRY TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_ENTRY_TYPE_EMPTY": {
       "type": "integer",
@@ -145,7 +177,7 @@
       "default": 255,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SCHEDULE ENTRY TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_FRAME_TYPE_PUBLISHER": {
       "type": "integer",
@@ -153,7 +185,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "FRAME TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_FRAME_TYPE_SUBSCRIBER": {
       "type": "integer",
@@ -161,7 +193,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "FRAME TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_FRAME_TYPE_SUBSCRIBER_AUTO": {
       "type": "integer",
@@ -169,7 +201,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "FRAME TYPES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_SCHEDULE_BASE_TIME_MS": {
       "type": "integer",
@@ -177,23 +209,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "LINM_WAKEUP_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "LINM_WAKEUP_TIMEOUT_MS 参数",
-      "default": 50,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "LINM_SLEEP_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "LINM_SLEEP_TIMEOUT_MS 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_MASTER_REQUEST_DELAY_MS": {
       "type": "integer",
@@ -201,15 +217,7 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "LINM_SLAVE_RESPONSE_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "LINM_SLAVE_RESPONSE_TIMEOUT_MS 参数",
-      "default": 20,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_ENTRY_DELAY_MASK": {
       "type": "integer",
@@ -217,7 +225,7 @@
       "default": 255,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SCHEDULE ENTRY MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_ENTRY_FRAME_MASK": {
       "type": "integer",
@@ -225,7 +233,7 @@
       "default": 65280,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "SCHEDULE ENTRY MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_ENTRY_TYPE_MASK": {
       "type": "integer",
@@ -233,7 +241,7 @@
       "default": 16711680,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "SCHEDULE ENTRY MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_ENTRY_DELAY_SHIFT": {
       "type": "integer",
@@ -241,7 +249,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SCHEDULE ENTRY MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_ENTRY_FRAME_SHIFT": {
       "type": "integer",
@@ -249,7 +257,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SCHEDULE ENTRY MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_ENTRY_TYPE_SHIFT": {
       "type": "integer",
@@ -257,7 +265,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SCHEDULE ENTRY MASKS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_SCHEDULE_PRIORITY_HIGH": {
       "type": "integer",
@@ -265,7 +273,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SCHEDULE PRIORITIES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_SCHEDULE_PRIORITY_NORMAL": {
       "type": "integer",
@@ -273,7 +281,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SCHEDULE PRIORITIES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_SCHEDULE_PRIORITY_LOW": {
       "type": "integer",
@@ -281,15 +289,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "SCHEDULE PRIORITIES"
-    },
-    "LINM_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "LINM_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "MAIN FUNCTION PERIOD"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINM_NULL_ENTRY": {
       "type": "integer",
@@ -297,7 +297,7 @@
       "default": 4294967295,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "NULL SCHEDULE ENTRY"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -305,16 +305,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/linm/include/LinM_Cfg.h",
-  "x-display-name": "LinM",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "CHANNEL CONFIGURATION",
-    "SCHEDULE ENTRY TYPES",
-    "FRAME TYPES",
-    "TIMING CONFIGURATION",
-    "SCHEDULE ENTRY MASKS",
-    "SCHEDULE PRIORITIES",
-    "MAIN FUNCTION PERIOD",
-    "NULL SCHEDULE ENTRY"
-  ]
+  "x-display-name": "LinM"
 }

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/mcu.json",
   "title": "Mcu Configuration",
-  "description": "MCU Driver configuration header",
+  "description": "Mcu Configuration configuration header",
   "type": "object",
   "properties": {
     "MCU_DEV_ERROR_DETECT": {
@@ -15,6 +15,38 @@
       "type": "boolean",
       "description": "MCU_VERSION_INFO_API 参数",
       "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MCU_NUM_CLOCK_CONFIGS": {
+      "type": "integer",
+      "description": "MCU_NUM_CLOCK_CONFIGS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MCU_NUM_RAM_SECTIONS": {
+      "type": "integer",
+      "description": "MCU_NUM_RAM_SECTIONS 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MCU_NUM_MODES": {
+      "type": "integer",
+      "description": "MCU_NUM_MODES 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "MCU_TIMEOUT_US": {
+      "type": "integer",
+      "description": "MCU_TIMEOUT_US 参数",
+      "default": 10000,
+      "minimum": 0,
+      "maximum": 65535,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_GET_RAM_STATE_API": {
@@ -43,59 +75,35 @@
     },
     "MCU_XTAL_FREQUENCY_HZ": {
       "type": "integer",
-      "description": "24MHz XTAL",
+      "description": "MCU_XTAL_FREQUENCY_HZ 参数",
       "default": 24000000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_SYSTEM_CLOCK_HZ": {
       "type": "integer",
-      "description": "1GHz System Clock",
+      "description": "MCU_SYSTEM_CLOCK_HZ 参数",
       "default": 1000000000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_BUS_CLOCK_HZ": {
       "type": "integer",
-      "description": "500MHz Bus Clock",
+      "description": "MCU_BUS_CLOCK_HZ 参数",
       "default": 500000000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CLOCK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_FLASH_CLOCK_HZ": {
       "type": "integer",
-      "description": "100MHz Flash Clock",
+      "description": "MCU_FLASH_CLOCK_HZ 参数",
       "default": 100000000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CLOCK CONFIGURATION"
-    },
-    "MCU_NUM_CLOCK_CONFIGS": {
-      "type": "integer",
-      "description": "MCU_NUM_CLOCK_CONFIGS 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF CLOCK CONFIGURATIONS"
-    },
-    "MCU_NUM_RAM_SECTIONS": {
-      "type": "integer",
-      "description": "MCU_NUM_RAM_SECTIONS 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF RAM SECTIONS"
-    },
-    "MCU_NUM_MODES": {
-      "type": "integer",
-      "description": "MCU_NUM_MODES 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NUMBER OF MCU MODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_MODE_NORMAL": {
       "type": "integer",
@@ -103,15 +111,15 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MCU MODE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_MODE_RUN": {
       "type": "integer",
-      "description": "alias for NORMAL, used in ECUC integration",
+      "description": "MCU_MODE_RUN 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MCU MODE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_MODE_SLEEP": {
       "type": "integer",
@@ -119,7 +127,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MCU MODE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_MODE_DEEP_SLEEP": {
       "type": "integer",
@@ -127,7 +135,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MCU MODE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_MODE_RESET": {
       "type": "integer",
@@ -135,7 +143,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MCU MODE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_RESET_UNDEFINED": {
       "type": "integer",
@@ -143,7 +151,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RESET REASON DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_RESET_POWER_ON": {
       "type": "integer",
@@ -151,7 +159,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RESET REASON DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_RESET_WATCHDOG": {
       "type": "integer",
@@ -159,7 +167,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RESET REASON DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_RESET_SW": {
       "type": "integer",
@@ -167,7 +175,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RESET REASON DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_RESET_EXT": {
       "type": "integer",
@@ -175,7 +183,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "RESET REASON DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_CLOCK_SOURCE_XTAL": {
       "type": "integer",
@@ -183,7 +191,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CLOCK SOURCE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_CLOCK_SOURCE_PLL": {
       "type": "integer",
@@ -191,7 +199,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CLOCK SOURCE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_CLOCK_SOURCE_RC": {
       "type": "integer",
@@ -199,7 +207,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CLOCK SOURCE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_PLL_PREDIV": {
       "type": "integer",
@@ -207,7 +215,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PLL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_PLL_MULTIPLIER": {
       "type": "integer",
@@ -215,7 +223,7 @@
       "default": 125,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PLL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MCU_PLL_POSTDIV": {
       "type": "integer",
@@ -223,15 +231,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PLL CONFIGURATION"
-    },
-    "MCU_TIMEOUT_US": {
-      "type": "integer",
-      "description": "10ms timeout",
-      "default": 10000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "TIMEOUT CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -249,17 +249,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/mcal/mcu/include/Mcu_Cfg.h",
-  "x-display-name": "Mcu",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "CLOCK CONFIGURATION",
-    "NUMBER OF CLOCK CONFIGURATIONS",
-    "NUMBER OF RAM SECTIONS",
-    "NUMBER OF MCU MODES",
-    "MCU MODE DEFINITIONS",
-    "RESET REASON DEFINITIONS",
-    "CLOCK SOURCE DEFINITIONS",
-    "PLL CONFIGURATION",
-    "TIMEOUT CONFIGURATION"
-  ]
+  "x-display-name": "Mcu"
 }

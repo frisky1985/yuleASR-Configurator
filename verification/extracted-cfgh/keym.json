@@ -2,112 +2,21 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/keym.json",
   "title": "KeyM Configuration",
-  "description": "Development error detection enable/disable",
+  "description": "KeyM Configuration configuration header",
   "type": "object",
   "properties": {
-    "KEYM_CFG_VENDOR_ID": {
-      "type": "integer",
-      "description": "KEYM_CFG_VENDOR_ID 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "KEYM_CFG_AR_RELEASE_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "KEYM_CFG_AR_RELEASE_MAJOR_VERSION 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "KEYM_CFG_AR_RELEASE_MINOR_VERSION": {
-      "type": "integer",
-      "description": "KEYM_CFG_AR_RELEASE_MINOR_VERSION 参数",
-      "default": 7,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "KEYM_CFG_AR_RELEASE_REVISION_VERSION": {
-      "type": "integer",
-      "description": "KEYM_CFG_AR_RELEASE_REVISION_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "KEYM_CFG_SW_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "KEYM_CFG_SW_MAJOR_VERSION 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "KEYM_CFG_SW_MINOR_VERSION": {
-      "type": "integer",
-      "description": "KEYM_CFG_SW_MINOR_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "KEYM_CFG_SW_PATCH_VERSION": {
-      "type": "integer",
-      "description": "KEYM_CFG_SW_PATCH_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
     "KEYM_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "KEYM_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "CONFIGURATION SWITCHES",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "KEYM_VERSION_INFO_API": {
       "type": "boolean",
       "description": "KEYM_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "CONFIGURATION SWITCHES",
-      "x-guarded": true
-    },
-    "KEYM_ASYNC_OPERATIONS": {
-      "type": "boolean",
-      "description": "KEYM_ASYNC_OPERATIONS 参数",
-      "default": true,
-      "x-section": "CONFIGURATION SWITCHES",
-      "x-guarded": true
-    },
-    "KEYM_NVM_STORAGE": {
-      "type": "boolean",
-      "description": "KEYM_NVM_STORAGE 参数",
-      "default": true,
-      "x-section": "CONFIGURATION SWITCHES",
-      "x-guarded": true
-    },
-    "KEYM_CERTIFICATE_MANAGEMENT": {
-      "type": "boolean",
-      "description": "KEYM_CERTIFICATE_MANAGEMENT 参数",
-      "default": true,
-      "x-section": "CONFIGURATION SWITCHES",
-      "x-guarded": true
-    },
-    "KEYM_KEY_DERIVATION": {
-      "type": "boolean",
-      "description": "KEYM_KEY_DERIVATION 参数",
-      "default": false,
-      "x-section": "CONFIGURATION SWITCHES",
-      "x-guarded": true
-    },
-    "KEYM_KEY_AGREEMENT": {
-      "type": "boolean",
-      "description": "KEYM_KEY_AGREEMENT 参数",
-      "default": false,
-      "x-section": "CONFIGURATION SWITCHES",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "KEYM_NUM_KEYS": {
@@ -116,25 +25,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CONFIGURATION PARAMETERS",
-      "x-guarded": true
-    },
-    "KEYM_MAX_KEY_ELEMENTS": {
-      "type": "integer",
-      "description": "KEYM_MAX_KEY_ELEMENTS 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "CONFIGURATION PARAMETERS",
-      "x-guarded": true
-    },
-    "KEYM_MAX_KEY_LENGTH": {
-      "type": "integer",
-      "description": "KEYM_MAX_KEY_LENGTH 参数",
-      "default": 256,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "KEYM_NUM_CERTIFICATES": {
@@ -143,7 +34,116 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "KEYM_CFG_VENDOR_ID": {
+      "type": "integer",
+      "description": "KEYM_CFG_VENDOR_ID 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "KEYM_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "KEYM_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "KEYM_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "KEYM_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "KEYM_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "KEYM_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "KEYM_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "KEYM_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "KEYM_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "KEYM_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "KEYM_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "KEYM_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "KEYM_ASYNC_OPERATIONS": {
+      "type": "boolean",
+      "description": "KEYM_ASYNC_OPERATIONS 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "KEYM_NVM_STORAGE": {
+      "type": "boolean",
+      "description": "KEYM_NVM_STORAGE 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "KEYM_CERTIFICATE_MANAGEMENT": {
+      "type": "boolean",
+      "description": "KEYM_CERTIFICATE_MANAGEMENT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "KEYM_KEY_DERIVATION": {
+      "type": "boolean",
+      "description": "KEYM_KEY_DERIVATION 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "KEYM_KEY_AGREEMENT": {
+      "type": "boolean",
+      "description": "KEYM_KEY_AGREEMENT 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "KEYM_MAX_KEY_ELEMENTS": {
+      "type": "integer",
+      "description": "KEYM_MAX_KEY_ELEMENTS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "KEYM_MAX_KEY_LENGTH": {
+      "type": "integer",
+      "description": "KEYM_MAX_KEY_LENGTH 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "KEYM_MAX_CERT_SIZE": {
@@ -152,7 +152,7 @@
       "default": 2048,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "KEYM_OPERATION_QUEUE_SIZE": {
@@ -161,7 +161,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "KEYM_DEFAULT_KEY_VALIDITY": {
@@ -170,16 +170,16 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "KEYM_MAX_KEY_LIFETIME": {
       "type": "integer",
-      "description": "1 year",
+      "description": "KEYM_MAX_KEY_LIFETIME 参数",
       "default": 31536000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CONFIGURATION PARAMETERS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "KEYM_KEY_ID_MASTER": {
@@ -188,7 +188,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_KEY_ID_AES_128": {
       "type": "integer",
@@ -196,7 +196,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_KEY_ID_AES_256": {
       "type": "integer",
@@ -204,7 +204,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_KEY_ID_HMAC_SHA256": {
       "type": "integer",
@@ -212,7 +212,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_KEY_ID_RSA_2048": {
       "type": "integer",
@@ -220,7 +220,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_KEY_ID_ECC_P256": {
       "type": "integer",
@@ -228,7 +228,7 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_KEY_ID_SESSION": {
       "type": "integer",
@@ -236,7 +236,7 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_KEY_ID_RESERVED": {
       "type": "integer",
@@ -244,7 +244,7 @@
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CSM_JOB_ID_ENCRYPT": {
       "type": "integer",
@@ -252,7 +252,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CSM JOB IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CSM_JOB_ID_DECRYPT": {
       "type": "integer",
@@ -260,7 +260,7 @@
       "default": 257,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CSM JOB IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CSM_JOB_ID_MAC_GENERATE": {
       "type": "integer",
@@ -268,7 +268,7 @@
       "default": 512,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CSM JOB IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CSM_JOB_ID_MAC_VERIFY": {
       "type": "integer",
@@ -276,7 +276,7 @@
       "default": 513,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CSM JOB IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CSM_JOB_ID_HASH": {
       "type": "integer",
@@ -284,7 +284,7 @@
       "default": 768,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CSM JOB IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CSM_JOB_ID_RANDOM": {
       "type": "integer",
@@ -292,7 +292,7 @@
       "default": 1024,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CSM JOB IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CSM_JOB_ID_KEY_DERIVE": {
       "type": "integer",
@@ -300,7 +300,7 @@
       "default": 1280,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CSM JOB IDENTIFIERS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CFG_KEY_MASTER_TYPE": {
       "type": "enum",
@@ -315,21 +315,21 @@
         "KEYM_KEY_TYPE_HMAC",
         "KEYM_KEY_TYPE_GENERIC"
       ],
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CFG_KEY_MASTER_LENGTH": {
       "type": "integer",
-      "description": "256 bits",
+      "description": "KEYM_CFG_KEY_MASTER_LENGTH 参数",
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CFG_KEY_MASTER_USAGE": {
       "type": "string",
       "description": "KEYM_CFG_KEY_MASTER_USAGE（派生表达式: (KEYM_KEY_USAGE_ENCRYPT | KEYM_KEY_USAGE_DECRYPT)）",
       "default": "(KEYM_KEY_USAGE_ENCRYPT | KEYM_KEY_USAGE_DECRYPT)",
-      "x-section": "KEY CONFIGURATION",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "KEYM_CFG_KEY_AES_128_TYPE": {
@@ -345,20 +345,22 @@
         "KEYM_KEY_TYPE_HMAC",
         "KEYM_KEY_TYPE_GENERIC"
       ],
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CFG_KEY_AES_128_LENGTH": {
       "type": "integer",
-      "description": "128 bits",
+      "description": "KEYM_CFG_KEY_AES_128_LENGTH 参数",
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CFG_KEY_AES_128_USAGE": {
-      "type": "object",
+      "type": "string",
       "description": "KEYM_CFG_KEY_AES_128_USAGE 参数",
-      "x-section": "KEY CONFIGURATION"
+      "default": "\"\"",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "string-literal"
     },
     "KEYM_CFG_KEY_AES_256_TYPE": {
       "type": "enum",
@@ -373,20 +375,22 @@
         "KEYM_KEY_TYPE_HMAC",
         "KEYM_KEY_TYPE_GENERIC"
       ],
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CFG_KEY_AES_256_LENGTH": {
       "type": "integer",
-      "description": "256 bits",
+      "description": "KEYM_CFG_KEY_AES_256_LENGTH 参数",
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CFG_KEY_AES_256_USAGE": {
-      "type": "object",
+      "type": "string",
       "description": "KEYM_CFG_KEY_AES_256_USAGE 参数",
-      "x-section": "KEY CONFIGURATION"
+      "default": "\"\"",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "string-literal"
     },
     "KEYM_CFG_KEY_HMAC_TYPE": {
       "type": "enum",
@@ -401,21 +405,21 @@
         "KEYM_KEY_TYPE_HMAC",
         "KEYM_KEY_TYPE_GENERIC"
       ],
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CFG_KEY_HMAC_LENGTH": {
       "type": "integer",
-      "description": "256 bits",
+      "description": "KEYM_CFG_KEY_HMAC_LENGTH 参数",
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CFG_KEY_HMAC_USAGE": {
       "type": "string",
       "description": "KEYM_CFG_KEY_HMAC_USAGE（派生表达式: (KEYM_KEY_USAGE_MAC_GENERATE | KEYM_KEY_USAGE_MAC_VERIFY)）",
       "default": "(KEYM_KEY_USAGE_MAC_GENERATE | KEYM_KEY_USAGE_MAC_VERIFY)",
-      "x-section": "KEY CONFIGURATION",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "KEYM_CFG_KEY_RSA_TYPE": {
@@ -431,21 +435,21 @@
         "KEYM_KEY_TYPE_HMAC",
         "KEYM_KEY_TYPE_GENERIC"
       ],
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CFG_KEY_RSA_LENGTH": {
       "type": "integer",
-      "description": "2048 bits",
+      "description": "KEYM_CFG_KEY_RSA_LENGTH 参数",
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CFG_KEY_RSA_USAGE": {
       "type": "string",
       "description": "KEYM_CFG_KEY_RSA_USAGE（派生表达式: (KEYM_KEY_USAGE_SIGN | KEYM_KEY_USAGE_VERIFY)）",
       "default": "(KEYM_KEY_USAGE_SIGN | KEYM_KEY_USAGE_VERIFY)",
-      "x-section": "KEY CONFIGURATION",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "KEYM_CFG_KEY_ECC_TYPE": {
@@ -461,28 +465,28 @@
         "KEYM_KEY_TYPE_HMAC",
         "KEYM_KEY_TYPE_GENERIC"
       ],
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CFG_KEY_ECC_LENGTH": {
       "type": "integer",
-      "description": "256 bits",
+      "description": "KEYM_CFG_KEY_ECC_LENGTH 参数",
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "KEY CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "KEYM_CFG_KEY_ECC_USAGE": {
       "type": "string",
       "description": "KEYM_CFG_KEY_ECC_USAGE（派生表达式: (KEYM_KEY_USAGE_SIGN | KEYM_KEY_USAGE_VERIFY)）",
       "default": "(KEYM_KEY_USAGE_SIGN | KEYM_KEY_USAGE_VERIFY)",
-      "x-section": "KEY CONFIGURATION",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "KEYM_NOTIFICATION_CALLBACK": {
       "type": "boolean",
       "description": "KEYM_NOTIFICATION_CALLBACK 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     }
   },
@@ -491,14 +495,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/keym/include/KeyM_Cfg.h",
-  "x-display-name": "KeyM",
-  "x-sections": [
-    "VERSION INFORMATION",
-    "CONFIGURATION SWITCHES",
-    "CONFIGURATION PARAMETERS",
-    "KEY IDENTIFIERS",
-    "CSM JOB IDENTIFIERS",
-    "KEY CONFIGURATION",
-    "CALLBACK CONFIGURATION"
-  ]
+  "x-display-name": "KeyM"
 }

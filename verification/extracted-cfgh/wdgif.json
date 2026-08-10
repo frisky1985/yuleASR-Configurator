@@ -2,20 +2,20 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/wdgif.json",
   "title": "WdgIf Configuration",
-  "description": "Watchdog Interface configuration header",
+  "description": "WdgIf Configuration configuration header",
   "type": "object",
   "properties": {
     "WDGIF_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "WDGIF_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDGIF_VERSION_INFO_API": {
       "type": "boolean",
       "description": "WDGIF_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDGIF_NUMBER_OF_DEVICES": {
       "type": "integer",
@@ -23,7 +23,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "GENERAL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDGIF_DEFAULT_DEVICE": {
       "type": "integer",
@@ -31,7 +31,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "GENERAL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDGIF_FAST_MODE_TIMEOUT": {
       "type": "integer",
@@ -39,7 +39,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "GENERAL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDGIF_SLOW_MODE_TIMEOUT": {
       "type": "integer",
@@ -47,7 +47,7 @@
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "GENERAL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDGIF_FAST_MODE_TRIGGER_MS": {
       "type": "integer",
@@ -55,7 +55,7 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "GENERAL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDGIF_SLOW_MODE_TRIGGER_MS": {
       "type": "integer",
@@ -63,19 +63,19 @@
       "default": 50,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "GENERAL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDGIF_MODE_CHANGE_CB_ENABLED": {
       "type": "boolean",
       "description": "WDGIF_MODE_CHANGE_CB_ENABLED 参数",
       "default": false,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDGIF_TRIGGER_CB_ENABLED": {
       "type": "boolean",
       "description": "WDGIF_TRIGGER_CB_ENABLED 参数",
       "default": false,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -93,9 +93,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/ecual/wdgif/include/WdgIf_Cfg.h",
-  "x-display-name": "WdgIf",
-  "x-sections": [
-    "GENERAL CONFIGURATION",
-    "CALLBACK CONFIGURATION"
-  ]
+  "x-display-name": "WdgIf"
 }

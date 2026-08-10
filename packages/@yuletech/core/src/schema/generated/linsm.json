@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/linsm.json",
   "title": "LinSM Configuration",
-  "description": "LIN State Manager configuration header",
+  "description": "LinSM Configuration configuration header",
   "type": "object",
   "properties": {
     "LINSM_DEV_ERROR_DETECT": {
@@ -15,6 +15,60 @@
       "type": "boolean",
       "description": "LINSM_VERSION_INFO_API 参数",
       "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINSM_REQUEST_TIMEOUT_COUNT": {
+      "type": "string",
+      "description": "LINSM_REQUEST_TIMEOUT_COUNT（派生表达式: (LINSM_REQUEST_TIMEOUT_MS / LINSM_MAIN_FUNCTION_PERIOD_MS)）",
+      "default": "(LINSM_REQUEST_TIMEOUT_MS / LINSM_MAIN_FUNCTION_PERIOD_MS)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "expression"
+    },
+    "LINSM_CONFIRMATION_TIMEOUT_COUNT": {
+      "type": "string",
+      "description": "LINSM_CONFIRMATION_TIMEOUT_COUNT（派生表达式: (LINSM_CONFIRMATION_TIMEOUT_MS / LINSM_MAIN_FUNCTION_PERIOD_MS)）",
+      "default": "(LINSM_CONFIRMATION_TIMEOUT_MS / LINSM_MAIN_FUNCTION_PERIOD_MS)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "expression"
+    },
+    "LINSM_REQUEST_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "LINSM_REQUEST_TIMEOUT_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINSM_CONFIRMATION_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "LINSM_CONFIRMATION_TIMEOUT_MS 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINSM_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "LINSM_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINSM_WAKEUP_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "LINSM_WAKEUP_TIMEOUT_MS 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINSM_GOTOSLEEP_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "LINSM_GOTOSLEEP_TIMEOUT_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_WAKEUP_SUPPORT": {
@@ -47,7 +101,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_NUMBER_OF_SCHEDULES": {
       "type": "integer",
@@ -55,7 +109,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_CHANNEL_0": {
       "type": "integer",
@@ -63,7 +117,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_SCHEDULE_NULL": {
       "type": "integer",
@@ -71,7 +125,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_SCHEDULE_MASTER": {
       "type": "integer",
@@ -79,7 +133,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_SCHEDULE_DIAGNOSTIC": {
       "type": "integer",
@@ -87,7 +141,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_SCHEDULE_TABLE_0": {
       "type": "integer",
@@ -95,55 +149,15 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CHANNEL CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_INITIAL_SCHEDULE": {
       "type": "integer",
-      "description": "LINSM_INITIAL_SCHEDULE（别名: LINSM_SCHEDULE_MASTER = 1；同族可选: LINSM_SCHEDULE_DIAGNOSTIC / LINSM_SCHEDULE_MASTER / LINSM_SCHEDULE_NULL / LINSM_SCHEDULE_REQUESTED / LINSM_SCHEDULE_RUNNING / LINSM_SCHEDULE_TABLE_0）",
+      "description": "LINSM_INITIAL_SCHEDULE 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INITIAL SCHEDULE"
-    },
-    "LINSM_REQUEST_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "LINSM_REQUEST_TIMEOUT_MS 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "LINSM_CONFIRMATION_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "LINSM_CONFIRMATION_TIMEOUT_MS 参数",
-      "default": 50,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "LINSM_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "LINSM_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "LINSM_WAKEUP_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "LINSM_WAKEUP_TIMEOUT_MS 参数",
-      "default": 50,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
-    },
-    "LINSM_GOTOSLEEP_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "LINSM_GOTOSLEEP_TIMEOUT_MS 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_MAX_SCHEDULE_SWITCHES": {
       "type": "integer",
@@ -151,7 +165,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMING CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_MODE_FULL_COM": {
       "type": "integer",
@@ -159,7 +173,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MODE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_MODE_NO_COM": {
       "type": "integer",
@@ -167,7 +181,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MODE DEFINITIONS"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_MODE_SILENT_COM": {
       "type": "integer",
@@ -175,21 +189,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MODE DEFINITIONS"
-    },
-    "LINSM_REQUEST_TIMEOUT_COUNT": {
-      "type": "string",
-      "description": "LINSM_REQUEST_TIMEOUT_COUNT（派生表达式: (LINSM_REQUEST_TIMEOUT_MS / LINSM_MAIN_FUNCTION_PERIOD_MS)）",
-      "default": "(LINSM_REQUEST_TIMEOUT_MS / LINSM_MAIN_FUNCTION_PERIOD_MS)",
-      "x-section": "TIMEOUT COUNTERS",
-      "x-macro-kind": "expression"
-    },
-    "LINSM_CONFIRMATION_TIMEOUT_COUNT": {
-      "type": "string",
-      "description": "LINSM_CONFIRMATION_TIMEOUT_COUNT（派生表达式: (LINSM_CONFIRMATION_TIMEOUT_MS / LINSM_MAIN_FUNCTION_PERIOD_MS)）",
-      "default": "(LINSM_CONFIRMATION_TIMEOUT_MS / LINSM_MAIN_FUNCTION_PERIOD_MS)",
-      "x-section": "TIMEOUT COUNTERS",
-      "x-macro-kind": "expression"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -197,13 +197,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/linsm/include/LinSM_Cfg.h",
-  "x-display-name": "LinSM",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "CHANNEL CONFIGURATION",
-    "INITIAL SCHEDULE",
-    "TIMING CONFIGURATION",
-    "MODE DEFINITIONS",
-    "TIMEOUT COUNTERS"
-  ]
+  "x-display-name": "LinSM"
 }

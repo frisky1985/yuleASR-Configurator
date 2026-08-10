@@ -2,114 +2,28 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/ethtrcv.json",
   "title": "EthTrcv Configuration",
-  "description": "Pre-compile option for Version Info API",
+  "description": "EthTrcv Configuration configuration header",
   "type": "object",
   "properties": {
     "ETHTRCV_VERSION_INFO_API": {
       "type": "boolean",
       "description": "ETHTRCV_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "MODULE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "ETHTRCV_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "MODULE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "ETHTRCV_WAKEUP_SUPPORT": {
-      "type": "boolean",
-      "description": "ETHTRCV_WAKEUP_SUPPORT 参数",
-      "default": true,
-      "x-section": "MODULE CONFIGURATION"
-    },
-    "ETHTRCV_CABLE_DIAGNOSTICS_SUPPORT": {
-      "type": "boolean",
-      "description": "ETHTRCV_CABLE_DIAGNOSTICS_SUPPORT 参数",
-      "default": true,
-      "x-section": "MODULE CONFIGURATION"
-    },
-    "ETHTRCV_SIGNAL_QUALITY_SUPPORT": {
-      "type": "boolean",
-      "description": "ETHTRCV_SIGNAL_QUALITY_SUPPORT 参数",
-      "default": true,
-      "x-section": "MODULE CONFIGURATION"
-    },
-    "ETHTRCV_AUTO_NEGOTIATION_SUPPORT": {
-      "type": "boolean",
-      "description": "ETHTRCV_AUTO_NEGOTIATION_SUPPORT 参数",
-      "default": true,
-      "x-section": "MODULE CONFIGURATION"
-    },
-    "ETHTRCV_DYNAMIC_INTERFACE_SWITCH": {
-      "type": "boolean",
-      "description": "ETHTRCV_DYNAMIC_INTERFACE_SWITCH 参数",
-      "default": false,
-      "x-section": "MODULE CONFIGURATION"
-    },
-    "ETHTRCV_MAX_TRCV_SUPPORTED": {
+    "ETHTRCV_TJA1100_COMM_POLARITY_DETECT": {
       "type": "integer",
-      "description": "ETHTRCV_MAX_TRCV_SUPPORTED 参数",
-      "default": 2,
+      "description": "ETHTRCV_TJA1100_COMM_POLARITY_DETECT 参数",
+      "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "GENERAL DEFINES"
-    },
-    "ETHTRCV_NUMBER_OF_TRCVS": {
-      "type": "integer",
-      "description": "ETHTRCV_NUMBER_OF_TRCVS 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GENERAL DEFINES"
-    },
-    "ETHTRCV_ACCESS_MII": {
-      "type": "integer",
-      "description": "ETHTRCV_ACCESS_MII 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GENERAL DEFINES"
-    },
-    "ETHTRCV_ACCESS_SPI": {
-      "type": "integer",
-      "description": "ETHTRCV_ACCESS_SPI 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GENERAL DEFINES"
-    },
-    "ETHTRCV_ACCESS_I2C": {
-      "type": "integer",
-      "description": "ETHTRCV_ACCESS_I2C 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GENERAL DEFINES"
-    },
-    "ETHTRCV_INSTANCE_ID": {
-      "type": "integer",
-      "description": "ETHTRCV_INSTANCE_ID 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GENERAL DEFINES"
-    },
-    "ETHTRCV_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "ETHTRCV_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GENERAL DEFINES"
-    },
-    "ETHTRCV_PHY_ACCESS_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "ETHTRCV_PHY_ACCESS_TIMEOUT_MS 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "GENERAL DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_LINK_DEBOUNCE_COUNT": {
       "type": "integer",
@@ -117,7 +31,165 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "GENERAL DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_TJA1100_REG_SYM_ERR_COUNTER": {
+      "type": "integer",
+      "description": "ETHTRCV_TJA1100_REG_SYM_ERR_COUNTER 参数",
+      "default": 20,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_TJA1100_REG_LINK_FAIL_COUNTER": {
+      "type": "integer",
+      "description": "ETHTRCV_TJA1100_REG_LINK_FAIL_COUNTER 参数",
+      "default": 26,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_TJA1100_COMM_TX_MODE": {
+      "type": "integer",
+      "description": "ETHTRCV_TJA1100_COMM_TX_MODE 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_TJA1100_COMM_RX_MODE": {
+      "type": "integer",
+      "description": "ETHTRCV_TJA1100_COMM_RX_MODE 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_MII_TX_CLK_DIV": {
+      "type": "integer",
+      "description": "ETHTRCV_MII_TX_CLK_DIV 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_MII_RX_CLK_DIV": {
+      "type": "integer",
+      "description": "ETHTRCV_MII_RX_CLK_DIV 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_RGMII_TX_CLK_DELAY_NS": {
+      "type": "integer",
+      "description": "ETHTRCV_RGMII_TX_CLK_DELAY_NS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_RGMII_RX_CLK_DELAY_NS": {
+      "type": "integer",
+      "description": "ETHTRCV_RGMII_RX_CLK_DELAY_NS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "ETHTRCV_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_PHY_ACCESS_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "ETHTRCV_PHY_ACCESS_TIMEOUT_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_WAKEUP_SUPPORT": {
+      "type": "boolean",
+      "description": "ETHTRCV_WAKEUP_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_CABLE_DIAGNOSTICS_SUPPORT": {
+      "type": "boolean",
+      "description": "ETHTRCV_CABLE_DIAGNOSTICS_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_SIGNAL_QUALITY_SUPPORT": {
+      "type": "boolean",
+      "description": "ETHTRCV_SIGNAL_QUALITY_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_AUTO_NEGOTIATION_SUPPORT": {
+      "type": "boolean",
+      "description": "ETHTRCV_AUTO_NEGOTIATION_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_DYNAMIC_INTERFACE_SWITCH": {
+      "type": "boolean",
+      "description": "ETHTRCV_DYNAMIC_INTERFACE_SWITCH 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_MAX_TRCV_SUPPORTED": {
+      "type": "integer",
+      "description": "ETHTRCV_MAX_TRCV_SUPPORTED 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_NUMBER_OF_TRCVS": {
+      "type": "integer",
+      "description": "ETHTRCV_NUMBER_OF_TRCVS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_ACCESS_MII": {
+      "type": "integer",
+      "description": "ETHTRCV_ACCESS_MII 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_ACCESS_SPI": {
+      "type": "integer",
+      "description": "ETHTRCV_ACCESS_SPI 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_ACCESS_I2C": {
+      "type": "integer",
+      "description": "ETHTRCV_ACCESS_I2C 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "ETHTRCV_INSTANCE_ID": {
+      "type": "integer",
+      "description": "ETHTRCV_INSTANCE_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV0_TYPE": {
       "type": "enum",
@@ -136,7 +208,7 @@
         "ETHTRCV_TYPE_RTL8211E",
         "ETHTRCV_TYPE_TJA1101"
       ],
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV0_PHY_ADDRESS": {
       "type": "integer",
@@ -144,7 +216,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV0_INTERFACE": {
       "type": "enum",
@@ -158,7 +230,7 @@
         "ETHTRCV_INTERFACE_SGMII",
         "ETHTRCV_INTERFACE_SMI"
       ],
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV0_DEFAULT_MODE": {
       "type": "enum",
@@ -170,13 +242,13 @@
         "ETHTRCV_MODE_SLEEP",
         "ETHTRCV_MODE_STANDBY"
       ],
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV0_AUTO_NEG_ENABLE": {
       "type": "boolean",
       "description": "ETHTRCV_TRCV0_AUTO_NEG_ENABLE 参数",
       "default": true,
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV0_FIXED_SPEED": {
       "type": "enum",
@@ -187,7 +259,7 @@
         "ETHTRCV_BAUD_RATE_1000MBIT",
         "ETHTRCV_BAUD_RATE_10MBIT"
       ],
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV0_FIXED_DUPLEX": {
       "type": "enum",
@@ -197,13 +269,13 @@
         "ETHTRCV_DUPLEX_MODE_FULL",
         "ETHTRCV_DUPLEX_MODE_HALF"
       ],
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV0_WAKEUP_SUPPORT": {
       "type": "boolean",
       "description": "ETHTRCV_TRCV0_WAKEUP_SUPPORT 参数",
       "default": true,
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV0_WAKEUP_MODE": {
       "type": "integer",
@@ -211,19 +283,19 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV0_CABLE_DIAG_ENABLE": {
       "type": "boolean",
       "description": "ETHTRCV_TRCV0_CABLE_DIAG_ENABLE 参数",
       "default": true,
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV0_SIGNAL_QUALITY_ENABLE": {
       "type": "boolean",
       "description": "ETHTRCV_TRCV0_SIGNAL_QUALITY_ENABLE 参数",
       "default": true,
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV1_TYPE": {
       "type": "enum",
@@ -242,7 +314,7 @@
         "ETHTRCV_TYPE_TJA1100",
         "ETHTRCV_TYPE_TJA1101"
       ],
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV1_PHY_ADDRESS": {
       "type": "integer",
@@ -250,7 +322,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV1_INTERFACE": {
       "type": "enum",
@@ -264,7 +336,7 @@
         "ETHTRCV_INTERFACE_SGMII",
         "ETHTRCV_INTERFACE_SMI"
       ],
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV1_DEFAULT_MODE": {
       "type": "enum",
@@ -276,13 +348,13 @@
         "ETHTRCV_MODE_SLEEP",
         "ETHTRCV_MODE_STANDBY"
       ],
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV1_AUTO_NEG_ENABLE": {
       "type": "boolean",
       "description": "ETHTRCV_TRCV1_AUTO_NEG_ENABLE 参数",
       "default": true,
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV1_FIXED_SPEED": {
       "type": "enum",
@@ -293,7 +365,7 @@
         "ETHTRCV_BAUD_RATE_100MBIT",
         "ETHTRCV_BAUD_RATE_10MBIT"
       ],
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV1_FIXED_DUPLEX": {
       "type": "enum",
@@ -303,13 +375,13 @@
         "ETHTRCV_DUPLEX_MODE_FULL",
         "ETHTRCV_DUPLEX_MODE_HALF"
       ],
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV1_WAKEUP_SUPPORT": {
       "type": "boolean",
       "description": "ETHTRCV_TRCV1_WAKEUP_SUPPORT 参数",
       "default": false,
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV1_WAKEUP_MODE": {
       "type": "integer",
@@ -317,19 +389,19 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV1_CABLE_DIAG_ENABLE": {
       "type": "boolean",
       "description": "ETHTRCV_TRCV1_CABLE_DIAG_ENABLE 参数",
       "default": false,
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV1_SIGNAL_QUALITY_ENABLE": {
       "type": "boolean",
       "description": "ETHTRCV_TRCV1_SIGNAL_QUALITY_ENABLE 参数",
       "default": false,
-      "x-section": "TRANSCEIVER CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_REG_BASIC_CTRL": {
       "type": "integer",
@@ -337,7 +409,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_REG_BASIC_STATUS": {
       "type": "integer",
@@ -345,7 +417,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_REG_PHY_ID1": {
       "type": "integer",
@@ -353,7 +425,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_REG_PHY_ID2": {
       "type": "integer",
@@ -361,7 +433,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_REG_EXTENDED_CTRL": {
       "type": "integer",
@@ -369,7 +441,7 @@
       "default": 17,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_REG_CONFIG1": {
       "type": "integer",
@@ -377,7 +449,7 @@
       "default": 18,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_REG_CONFIG2": {
       "type": "integer",
@@ -385,15 +457,7 @@
       "default": 19,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
-    },
-    "ETHTRCV_TJA1100_REG_SYM_ERR_COUNTER": {
-      "type": "integer",
-      "description": "ETHTRCV_TJA1100_REG_SYM_ERR_COUNTER 参数",
-      "default": 20,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_REG_INT_SOURCE": {
       "type": "integer",
@@ -401,7 +465,7 @@
       "default": 21,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_REG_INT_ENABLE": {
       "type": "integer",
@@ -409,7 +473,7 @@
       "default": 22,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_REG_COMM_STATUS": {
       "type": "integer",
@@ -417,7 +481,7 @@
       "default": 23,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_REG_GENERAL_STATUS": {
       "type": "integer",
@@ -425,7 +489,7 @@
       "default": 24,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_REG_EXTERNAL_STATUS": {
       "type": "integer",
@@ -433,15 +497,7 @@
       "default": 25,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
-    },
-    "ETHTRCV_TJA1100_REG_LINK_FAIL_COUNTER": {
-      "type": "integer",
-      "description": "ETHTRCV_TJA1100_REG_LINK_FAIL_COUNTER 参数",
-      "default": 26,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_EXT_CTRL_RESET": {
       "type": "integer",
@@ -449,7 +505,7 @@
       "default": 32768,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_EXT_CTRL_PWR_MODE_MASK": {
       "type": "integer",
@@ -457,7 +513,7 @@
       "default": 28672,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_EXT_CTRL_PWR_NORMAL": {
       "type": "integer",
@@ -465,7 +521,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_EXT_CTRL_PWR_SLEEP": {
       "type": "integer",
@@ -473,7 +529,7 @@
       "default": 4096,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_EXT_CTRL_PWR_STANDBY": {
       "type": "integer",
@@ -481,7 +537,7 @@
       "default": 8192,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_EXT_CTRL_PWR_DISABLE": {
       "type": "integer",
@@ -489,7 +545,7 @@
       "default": 16384,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_EXT_CTRL_SLAVE_JITTER_TEST": {
       "type": "integer",
@@ -497,7 +553,7 @@
       "default": 2048,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_EXT_CTRL_TRAINING_RESTART": {
       "type": "integer",
@@ -505,7 +561,7 @@
       "default": 1024,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_EXT_CTRL_CABLE_TEST": {
       "type": "integer",
@@ -513,7 +569,7 @@
       "default": 512,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_EXT_CTRL_LOOPBACK_MODE": {
       "type": "integer",
@@ -521,7 +577,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_EXT_CTRL_CONFIG_INH": {
       "type": "integer",
@@ -529,7 +585,7 @@
       "default": 128,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_EXT_CTRL_AUTO_PWD": {
       "type": "integer",
@@ -537,7 +593,7 @@
       "default": 64,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_COMM_LOC_REMFAULT": {
       "type": "integer",
@@ -545,7 +601,7 @@
       "default": 4096,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_COMM_REM_WUR": {
       "type": "integer",
@@ -553,7 +609,7 @@
       "default": 2048,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_COMM_REM_LWU": {
       "type": "integer",
@@ -561,7 +617,7 @@
       "default": 1024,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_COMM_PHY_STATE_MASK": {
       "type": "integer",
@@ -569,7 +625,7 @@
       "default": 896,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_COMM_PHY_STATE_IDLE_ERR": {
       "type": "integer",
@@ -577,7 +633,7 @@
       "default": 128,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_COMM_PHY_STATE_TRAINING": {
       "type": "integer",
@@ -585,7 +641,7 @@
       "default": 256,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_COMM_PHY_STATE_SLEEP_FAIL": {
       "type": "integer",
@@ -593,7 +649,7 @@
       "default": 384,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_COMM_PHY_STATE_SLEEP": {
       "type": "integer",
@@ -601,7 +657,7 @@
       "default": 512,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_COMM_PHY_STATE_ACTIVE": {
       "type": "integer",
@@ -609,7 +665,7 @@
       "default": 640,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_COMM_PHY_STATE_SLEEP_ACK": {
       "type": "integer",
@@ -617,7 +673,7 @@
       "default": 768,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_COMM_PHY_STATE_LWU": {
       "type": "integer",
@@ -625,7 +681,7 @@
       "default": 896,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_COMM_LINK_UP": {
       "type": "integer",
@@ -633,31 +689,7 @@
       "default": 64,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
-    },
-    "ETHTRCV_TJA1100_COMM_TX_MODE": {
-      "type": "integer",
-      "description": "ETHTRCV_TJA1100_COMM_TX_MODE 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
-    },
-    "ETHTRCV_TJA1100_COMM_RX_MODE": {
-      "type": "integer",
-      "description": "ETHTRCV_TJA1100_COMM_RX_MODE 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
-    },
-    "ETHTRCV_TJA1100_COMM_POLARITY_DETECT": {
-      "type": "integer",
-      "description": "ETHTRCV_TJA1100_COMM_POLARITY_DETECT 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_COMM_PHY_CONFIG": {
       "type": "integer",
@@ -665,7 +697,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TJA1100_COMM_TWEVENT": {
       "type": "integer",
@@ -673,7 +705,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_REG_PHYIDR1": {
       "type": "integer",
@@ -681,7 +713,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_REG_PHYIDR2": {
       "type": "integer",
@@ -689,7 +721,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_REG_ANAEG": {
       "type": "integer",
@@ -697,7 +729,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_REG_ANLPA": {
       "type": "integer",
@@ -705,7 +737,7 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_REG_ANE": {
       "type": "integer",
@@ -713,7 +745,7 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_REG_GBECSR": {
       "type": "integer",
@@ -721,7 +753,7 @@
       "default": 9,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_REG_GBESR": {
       "type": "integer",
@@ -729,7 +761,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_REG_PHYCR1": {
       "type": "integer",
@@ -737,7 +769,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_REG_PHYCR2": {
       "type": "integer",
@@ -745,7 +777,7 @@
       "default": 17,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_REG_PHYSR": {
       "type": "integer",
@@ -753,7 +785,7 @@
       "default": 17,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_REG_PHYSCR": {
       "type": "integer",
@@ -761,7 +793,7 @@
       "default": 18,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_REG_INSR": {
       "type": "integer",
@@ -769,7 +801,7 @@
       "default": 19,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_REG_PAGSR": {
       "type": "integer",
@@ -777,23 +809,23 @@
       "default": 31,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_PAGE_PCC": {
       "type": "integer",
-      "description": "Page Control Common",
+      "description": "ETHTRCV_RTL8211_PAGE_PCC 参数",
       "default": 2627,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_PAGE_PCG": {
       "type": "integer",
-      "description": "Page Control Green",
+      "description": "ETHTRCV_RTL8211_PAGE_PCG 参数",
       "default": 3336,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_PHYSR_SPEED_MASK": {
       "type": "integer",
@@ -801,7 +833,7 @@
       "default": 49152,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_PHYSR_SPEED_10": {
       "type": "integer",
@@ -809,7 +841,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_PHYSR_SPEED_100": {
       "type": "integer",
@@ -817,7 +849,7 @@
       "default": 32768,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_PHYSR_SPEED_1000": {
       "type": "integer",
@@ -825,7 +857,7 @@
       "default": 49152,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_PHYSR_DUPLEX": {
       "type": "integer",
@@ -833,7 +865,7 @@
       "default": 8192,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_PHYSR_LINK": {
       "type": "integer",
@@ -841,7 +873,7 @@
       "default": 1024,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_PHYSR_MDI_PLUG": {
       "type": "integer",
@@ -849,7 +881,7 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RTL8211_PHYSR_ALDPS": {
       "type": "integer",
@@ -857,7 +889,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_KSZ8081_REG_PC1R": {
       "type": "integer",
@@ -865,7 +897,7 @@
       "default": 30,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_KSZ8081_REG_PC2R": {
       "type": "integer",
@@ -873,7 +905,7 @@
       "default": 31,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_LAN8720_REG_SMR": {
       "type": "integer",
@@ -881,7 +913,7 @@
       "default": 18,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_LAN8720_REG_SCSR": {
       "type": "integer",
@@ -889,7 +921,7 @@
       "default": 31,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_LAN8720_SCSR_SPEED": {
       "type": "integer",
@@ -897,7 +929,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_LAN8720_SCSR_DUPLEX": {
       "type": "integer",
@@ -905,7 +937,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_LAN8720_SCSR_LINK": {
       "type": "integer",
@@ -913,23 +945,7 @@
       "default": 64,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PHY-SPECIFIC DEFINES"
-    },
-    "ETHTRCV_MII_TX_CLK_DIV": {
-      "type": "integer",
-      "description": "ETHTRCV_MII_TX_CLK_DIV 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "INTERFACE CONFIGURATION"
-    },
-    "ETHTRCV_MII_RX_CLK_DIV": {
-      "type": "integer",
-      "description": "ETHTRCV_MII_RX_CLK_DIV 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "INTERFACE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RMII_REF_CLK_FREQ_MHZ": {
       "type": "integer",
@@ -937,59 +953,43 @@
       "default": 50,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INTERFACE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RMII_CRS_DV_ENABLE": {
       "type": "boolean",
       "description": "ETHTRCV_RMII_CRS_DV_ENABLE 参数",
       "default": true,
-      "x-section": "INTERFACE CONFIGURATION"
-    },
-    "ETHTRCV_RGMII_TX_CLK_DELAY_NS": {
-      "type": "integer",
-      "description": "ETHTRCV_RGMII_TX_CLK_DELAY_NS 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "INTERFACE CONFIGURATION"
-    },
-    "ETHTRCV_RGMII_RX_CLK_DELAY_NS": {
-      "type": "integer",
-      "description": "ETHTRCV_RGMII_RX_CLK_DELAY_NS 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "INTERFACE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_RGMII_ID_ENABLE": {
       "type": "boolean",
       "description": "ETHTRCV_RGMII_ID_ENABLE 参数",
       "default": true,
-      "x-section": "INTERFACE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_LINK_STATE_CHG_CALLBACK": {
       "type": "boolean",
       "description": "ETHTRCV_LINK_STATE_CHG_CALLBACK 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_WAKEUP_IND_CALLBACK": {
       "type": "boolean",
       "description": "ETHTRCV_WAKEUP_IND_CALLBACK 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_DEBUG_ENABLE": {
       "type": "boolean",
       "description": "ETHTRCV_DEBUG_ENABLE 参数",
       "default": true,
-      "x-section": "DEBUG CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_STATS_ENABLE": {
       "type": "boolean",
       "description": "ETHTRCV_STATS_ENABLE 参数",
       "default": true,
-      "x-section": "DEBUG CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -997,14 +997,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/ecual/ethtrcv/include/EthTrcv_Cfg.h",
-  "x-display-name": "EthTrcv",
-  "x-sections": [
-    "MODULE CONFIGURATION",
-    "GENERAL DEFINES",
-    "TRANSCEIVER CONFIGURATION",
-    "PHY-SPECIFIC DEFINES",
-    "INTERFACE CONFIGURATION",
-    "CALLBACK CONFIGURATION",
-    "DEBUG CONFIGURATION"
-  ]
+  "x-display-name": "EthTrcv"
 }

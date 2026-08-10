@@ -2,131 +2,148 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/com.json",
   "title": "Com Configuration",
-  "description": "COM Configuration",
+  "description": "Com Configuration configuration header",
   "type": "object",
   "properties": {
     "COM_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "COM_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COM_VERSION_INFO_API": {
       "type": "boolean",
       "description": "COM_VERSION_INFO_API 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "COM_MAX_SIGNALS": {
+    "COM_NUM_OF_IPDUS": {
       "type": "integer",
-      "description": "COM_MAX_SIGNALS 参数",
+      "description": "COM_NUM_OF_IPDUS 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COM_NUM_OF_SIGNALS": {
+      "type": "integer",
+      "description": "COM_NUM_OF_SIGNALS 参数",
       "default": 256,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "COM_MAX_IPDUS": {
+    "COM_NUM_OF_IPDU_GROUPS": {
       "type": "integer",
-      "description": "COM_MAX_IPDUS 参数",
-      "default": 64,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COM_MAX_GROUPS": {
-      "type": "integer",
-      "description": "COM_MAX_GROUPS 参数",
+      "description": "COM_NUM_OF_IPDU_GROUPS 参数",
       "default": 16,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "COM_MAX_SIGNAL_LENGTH": {
+    "COM_NUM_IPDU_GROUPS": {
       "type": "integer",
-      "description": "COM_MAX_SIGNAL_LENGTH 参数",
-      "default": 64,
+      "description": "COM_NUM_IPDU_GROUPS（别名: COM_NUM_OF_IPDU_GROUPS = 16；同族可选: COM_NUM_OF_IPDU_GROUPS）",
+      "default": 16,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COM_NUM_OF_SIGNAL_GROUPS": {
+      "type": "integer",
+      "description": "COM_NUM_OF_SIGNAL_GROUPS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COM_TX_MODE_DIRECT": {
       "type": "integer",
       "description": "COM_TX_MODE_DIRECT 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COM_TX_MODE_PERIODIC": {
       "type": "integer",
       "description": "COM_TX_MODE_PERIODIC 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COM_TX_MODE_MIXED": {
       "type": "integer",
       "description": "COM_TX_MODE_MIXED 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COM_MAX_SIGNALS": {
+      "type": "integer",
+      "description": "COM_MAX_SIGNALS 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COM_MAX_IPDUS": {
+      "type": "integer",
+      "description": "COM_MAX_IPDUS 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COM_MAX_GROUPS": {
+      "type": "integer",
+      "description": "COM_MAX_GROUPS 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COM_MAX_SIGNAL_LENGTH": {
+      "type": "integer",
+      "description": "COM_MAX_SIGNAL_LENGTH 参数",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COM_LITTLE_ENDIAN": {
       "type": "integer",
       "description": "COM_LITTLE_ENDIAN 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COM_BIG_ENDIAN": {
       "type": "integer",
       "description": "COM_BIG_ENDIAN 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
-    },
-    "COM_NUM_OF_IPDUS": {
-      "type": "integer",
-      "description": "COM_NUM_OF_IPDUS（别名: COM_MAX_IPDUS = 64；同族可选: COM_MAX_GROUPS / COM_MAX_IPDUS / COM_MAX_IPDU_BUFFER_SIZE / COM_MAX_IPDU_LENGTH / COM_MAX_SIGNALS / COM_MAX_SIGNAL_LENGTH）",
-      "default": 64,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COM_NUM_OF_SIGNALS": {
-      "type": "integer",
-      "description": "COM_NUM_OF_SIGNALS（别名: COM_MAX_SIGNALS = 256；同族可选: COM_MAX_GROUPS / COM_MAX_IPDUS / COM_MAX_IPDU_BUFFER_SIZE / COM_MAX_IPDU_LENGTH / COM_MAX_SIGNALS / COM_MAX_SIGNAL_LENGTH）",
-      "default": 256,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "COM_NUM_OF_IPDU_GROUPS": {
-      "type": "integer",
-      "description": "COM_NUM_OF_IPDU_GROUPS（别名: COM_MAX_GROUPS = 16；同族可选: COM_MAX_GROUPS / COM_MAX_IPDUS / COM_MAX_IPDU_BUFFER_SIZE / COM_MAX_IPDU_LENGTH / COM_MAX_SIGNALS / COM_MAX_SIGNAL_LENGTH）",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COM_NUM_IPDU_GROUPS": {
-      "type": "enum",
-      "description": "COM_NUM_IPDU_GROUPS 参数",
-      "default": "COM_NUM_OF_IPDU_GROUPS",
-      "enum": [
-        "COM_NUM_OF_IPDU_GROUPS"
-      ]
-    },
-    "COM_NUM_OF_SIGNAL_GROUPS": {
-      "type": "integer",
-      "description": "COM_NUM_OF_SIGNAL_GROUPS（别名: COM_MAX_GROUPS = 16；同族可选: COM_MAX_GROUPS / COM_MAX_IPDUS / COM_MAX_IPDU_BUFFER_SIZE / COM_MAX_IPDU_LENGTH / COM_MAX_SIGNALS / COM_MAX_SIGNAL_LENGTH）",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COM_MAX_IPDU_BUFFER_SIZE": {
       "type": "integer",
       "description": "COM_MAX_IPDU_BUFFER_SIZE 参数",
       "default": 128,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COM_MAX_IPDU_LENGTH": {
       "type": "integer",
       "description": "COM_MAX_IPDU_LENGTH 参数",
       "default": 64,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/cansm.json",
   "title": "CanSm Configuration",
-  "description": "CAN State Management configuration header",
+  "description": "CanSm Configuration configuration header",
   "type": "object",
   "properties": {
     "CANSM_DEV_ERROR_DETECT": {
@@ -17,6 +17,14 @@
       "default": true,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
+    "CANSM_NUM_NETWORKS": {
+      "type": "integer",
+      "description": "CANSM_NUM_NETWORKS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
     "CANSM_SET_BAUDRATE_API": {
       "type": "boolean",
       "description": "CANSM_SET_BAUDRATE_API 参数",
@@ -27,6 +35,86 @@
       "type": "boolean",
       "description": "CANSM_GET_BAUDRATE_API 参数",
       "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANSM_BAUDRATE_125K": {
+      "type": "integer",
+      "description": "CANSM_BAUDRATE_125K 参数",
+      "default": 125,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANSM_BAUDRATE_250K": {
+      "type": "integer",
+      "description": "CANSM_BAUDRATE_250K 参数",
+      "default": 250,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANSM_BAUDRATE_500K": {
+      "type": "integer",
+      "description": "CANSM_BAUDRATE_500K 参数",
+      "default": 500,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANSM_BAUDRATE_1000K": {
+      "type": "integer",
+      "description": "CANSM_BAUDRATE_1000K 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANSM_DEFAULT_BAUDRATE": {
+      "type": "integer",
+      "description": "CANSM_DEFAULT_BAUDRATE 参数",
+      "default": 500,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANSM_CONTROLLER_CAN0": {
+      "type": "integer",
+      "description": "CANSM_CONTROLLER_CAN0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANSM_CONTROLLER_CAN1": {
+      "type": "integer",
+      "description": "CANSM_CONTROLLER_CAN1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANSM_MODE_CHANGE_REQUEST_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "CANSM_MODE_CHANGE_REQUEST_TIMEOUT_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANSM_NETWORK0_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "CANSM_NETWORK0_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CANSM_NETWORK1_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "CANSM_NETWORK1_MAIN_FUNCTION_PERIOD_MS 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANSM_BUSOFF_CHECK_ENABLED": {
@@ -45,14 +133,6 @@
       "type": "boolean",
       "description": "CANSM_WAKEUP_VALIDATION_ENABLED 参数",
       "default": true,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "CANSM_MODE_CHANGE_REQUEST_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "CANSM_MODE_CHANGE_REQUEST_TIMEOUT_MS 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANSM_BUSOFF_RECOVERY_L1_MS": {
@@ -87,21 +167,13 @@
       "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "CANSM_NUM_NETWORKS": {
-      "type": "integer",
-      "description": "CANSM_NUM_NETWORKS 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
     "CANSM_NETWORK_CAN0": {
       "type": "integer",
       "description": "CANSM_NETWORK_CAN0 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANSM_NETWORK_CAN1": {
       "type": "integer",
@@ -109,7 +181,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANSM_NETWORK_CAN2": {
       "type": "integer",
@@ -117,7 +189,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANSM_NETWORK_CAN3": {
       "type": "integer",
@@ -125,23 +197,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NETWORK CONFIGURATION"
-    },
-    "CANSM_CONTROLLER_CAN0": {
-      "type": "integer",
-      "description": "CANSM_CONTROLLER_CAN0 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NETWORK CONFIGURATION"
-    },
-    "CANSM_CONTROLLER_CAN1": {
-      "type": "integer",
-      "description": "CANSM_CONTROLLER_CAN1 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANSM_TRANSCEIVER_CAN0": {
       "type": "integer",
@@ -149,7 +205,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANSM_TRANSCEIVER_CAN1": {
       "type": "integer",
@@ -157,7 +213,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANSM_NETWORK0_BUSOFF_RECOVERY_TIME_MS": {
       "type": "integer",
@@ -165,7 +221,7 @@
       "default": 1000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANSM_NETWORK1_BUSOFF_RECOVERY_TIME_MS": {
       "type": "integer",
@@ -173,99 +229,43 @@
       "default": 1000,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "NETWORK CONFIGURATION"
-    },
-    "CANSM_NETWORK0_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "CANSM_NETWORK0_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NETWORK CONFIGURATION"
-    },
-    "CANSM_NETWORK1_MAIN_FUNCTION_PERIOD_MS": {
-      "type": "integer",
-      "description": "CANSM_NETWORK1_MAIN_FUNCTION_PERIOD_MS 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANSM_NETWORK0_WAKEUP_SUPPORT": {
       "type": "boolean",
       "description": "CANSM_NETWORK0_WAKEUP_SUPPORT 参数",
       "default": true,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANSM_NETWORK1_WAKEUP_SUPPORT": {
       "type": "boolean",
       "description": "CANSM_NETWORK1_WAKEUP_SUPPORT 参数",
       "default": true,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANSM_NETWORK0_BUSOFF_RECOVERY_ENABLED": {
       "type": "boolean",
       "description": "CANSM_NETWORK0_BUSOFF_RECOVERY_ENABLED 参数",
       "default": true,
-      "x-section": "NETWORK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANSM_NETWORK1_BUSOFF_RECOVERY_ENABLED": {
       "type": "boolean",
       "description": "CANSM_NETWORK1_BUSOFF_RECOVERY_ENABLED 参数",
       "default": true,
-      "x-section": "NETWORK CONFIGURATION"
-    },
-    "CANSM_BAUDRATE_125K": {
-      "type": "integer",
-      "description": "CANSM_BAUDRATE_125K 参数",
-      "default": 125,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BAUDRATE CONFIGURATION"
-    },
-    "CANSM_BAUDRATE_250K": {
-      "type": "integer",
-      "description": "CANSM_BAUDRATE_250K 参数",
-      "default": 250,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BAUDRATE CONFIGURATION"
-    },
-    "CANSM_BAUDRATE_500K": {
-      "type": "integer",
-      "description": "CANSM_BAUDRATE_500K 参数",
-      "default": 500,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "BAUDRATE CONFIGURATION"
-    },
-    "CANSM_BAUDRATE_1000K": {
-      "type": "integer",
-      "description": "CANSM_BAUDRATE_1000K 参数",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "BAUDRATE CONFIGURATION"
-    },
-    "CANSM_DEFAULT_BAUDRATE": {
-      "type": "integer",
-      "description": "CANSM_DEFAULT_BAUDRATE（别名: CANSM_BAUDRATE_500K = 500；同族可选: CANSM_BAUDRATE_1000K / CANSM_BAUDRATE_125K / CANSM_BAUDRATE_250K / CANSM_BAUDRATE_500K）",
-      "default": 500,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "BAUDRATE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANSM_BUSOFF_NOTIFICATION_ENABLED": {
       "type": "boolean",
       "description": "CANSM_BUSOFF_NOTIFICATION_ENABLED 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANSM_MODE_CHANGE_NOTIFICATION_ENABLED": {
       "type": "boolean",
       "description": "CANSM_MODE_CHANGE_NOTIFICATION_ENABLED 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -277,17 +277,19 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "CanSm 网络数不应超过 Can 控制器数"
+    },
+    {
+      "sourceParam": "CANSM_NUM_NETWORKS",
+      "module": "Can",
+      "param": "CAN_NUM_CONTROLLERS",
+      "relation": "required",
+      "severity": "error",
+      "description": "CanSm 依赖 Can 控制器，Can 必须配置"
     }
   ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/cansm/include/CanSm_Cfg.h",
-  "x-display-name": "CanSm",
-  "x-sections": [
-    "PRE-COMPILE CONFIGURATION",
-    "NETWORK CONFIGURATION",
-    "BAUDRATE CONFIGURATION",
-    "CALLBACK CONFIGURATION"
-  ]
+  "x-display-name": "CanSm"
 }

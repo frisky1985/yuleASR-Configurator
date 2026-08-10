@@ -2,346 +2,396 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/uart.json",
   "title": "Uart Configuration",
-  "description": "UART驱动配置头文件",
+  "description": "Uart Configuration configuration header",
   "type": "object",
   "properties": {
-    "UART_VENDOR_ID_CFG": {
-      "type": "integer",
-      "description": "UART_VENDOR_ID_CFG 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_MODULE_ID_CFG": {
-      "type": "integer",
-      "description": "UART_MODULE_ID_CFG 参数",
-      "default": 17,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_SW_MAJOR_VERSION_CFG": {
-      "type": "integer",
-      "description": "UART_SW_MAJOR_VERSION_CFG 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_SW_MINOR_VERSION_CFG": {
-      "type": "integer",
-      "description": "UART_SW_MINOR_VERSION_CFG 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_SW_PATCH_VERSION_CFG": {
-      "type": "integer",
-      "description": "UART_SW_PATCH_VERSION_CFG 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
     "UART_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "UART_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "UART_VERSION_INFO_API": {
       "type": "boolean",
       "description": "UART_VERSION_INFO_API 参数",
-      "default": true
-    },
-    "UART_DMA_SUPPORT": {
-      "type": "boolean",
-      "description": "UART_DMA_SUPPORT 参数",
-      "default": true
-    },
-    "UART_FIFO_SUPPORT": {
-      "type": "boolean",
-      "description": "UART_FIFO_SUPPORT 参数",
-      "default": true
-    },
-    "UART_HW_HANDSHAKE_SUPPORT": {
-      "type": "boolean",
-      "description": "UART_HW_HANDSHAKE_SUPPORT 参数",
-      "default": true
-    },
-    "UART_MULTI_PROCESSOR_MODE": {
-      "type": "boolean",
-      "description": "UART_MULTI_PROCESSOR_MODE 参数",
-      "default": false
-    },
-    "UART_CHANNEL_COUNT": {
-      "type": "integer",
-      "description": "UART_CHANNEL_COUNT 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_CHANNEL_0": {
-      "type": "integer",
-      "description": "UART1",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_CHANNEL_1": {
-      "type": "integer",
-      "description": "UART2",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_CHANNEL_2": {
-      "type": "integer",
-      "description": "UART3",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_CHANNEL_3": {
-      "type": "integer",
-      "description": "UART4",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_REF_CLOCK_HZ": {
-      "type": "integer",
-      "description": "UART_REF_CLOCK_HZ 参数",
-      "default": 80000000,
-      "minimum": 0,
-      "maximum": 4294967295
-    },
-    "UART0_DMA_TX_CHANNEL": {
-      "type": "integer",
-      "description": "UART0_DMA_TX_CHANNEL 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART0_DMA_RX_CHANNEL": {
-      "type": "integer",
-      "description": "UART0_DMA_RX_CHANNEL 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART1_DMA_TX_CHANNEL": {
-      "type": "integer",
-      "description": "UART1_DMA_TX_CHANNEL 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART1_DMA_RX_CHANNEL": {
-      "type": "integer",
-      "description": "UART1_DMA_RX_CHANNEL 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART2_DMA_TX_CHANNEL": {
-      "type": "integer",
-      "description": "UART2_DMA_TX_CHANNEL 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART2_DMA_RX_CHANNEL": {
-      "type": "integer",
-      "description": "UART2_DMA_RX_CHANNEL 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART3_DMA_TX_CHANNEL": {
-      "type": "integer",
-      "description": "UART3_DMA_TX_CHANNEL 参数",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART3_DMA_RX_CHANNEL": {
-      "type": "integer",
-      "description": "UART3_DMA_RX_CHANNEL 参数",
-      "default": 7,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_DMA_FIFO_THRESHOLD": {
-      "type": "integer",
-      "description": "UART_DMA_FIFO_THRESHOLD 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_IRQ_PRIORITY_LEVEL": {
-      "type": "integer",
-      "description": "UART_IRQ_PRIORITY_LEVEL 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_TX_IRQ_TYPE": {
-      "type": "integer",
-      "description": "UART_TX_IRQ_TYPE 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_RX_IRQ_TYPE": {
-      "type": "integer",
-      "description": "UART_RX_IRQ_TYPE 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_ERROR_IRQ_TYPE": {
-      "type": "integer",
-      "description": "UART_ERROR_IRQ_TYPE 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_TX_FIFO_THRESHOLD": {
-      "type": "integer",
-      "description": "小于8字节触发",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_RX_FIFO_THRESHOLD": {
-      "type": "integer",
-      "description": "大于8字节触发",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_FIFO_DEPTH": {
-      "type": "integer",
-      "description": "UART_FIFO_DEPTH 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_TX_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "UART_TX_TIMEOUT_MS 参数",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "UART_RX_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "UART_RX_TIMEOUT_MS 参数",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "UART_SERVICE_ID_INIT": {
-      "type": "integer",
-      "description": "UART_SERVICE_ID_INIT 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_SERVICE_ID_DEINIT": {
-      "type": "integer",
-      "description": "UART_SERVICE_ID_DEINIT 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_SERVICE_ID_SEND": {
-      "type": "integer",
-      "description": "UART_SERVICE_ID_SEND 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_SERVICE_ID_RECEIVE": {
-      "type": "integer",
-      "description": "UART_SERVICE_ID_RECEIVE 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_SERVICE_ID_GETSTATUS": {
-      "type": "integer",
-      "description": "UART_SERVICE_ID_GETSTATUS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "UART_SERVICE_ID_GETVERSIONINFO": {
       "type": "integer",
       "description": "UART_SERVICE_ID_GETVERSIONINFO 参数",
       "default": 5,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "UART_SERVICE_ID_SENDDMA": {
+    "UART_CHANNEL_COUNT": {
       "type": "integer",
-      "description": "UART_SERVICE_ID_SENDDMA 参数",
-      "default": 6,
+      "description": "UART_CHANNEL_COUNT 参数",
+      "default": 4,
       "minimum": 0,
-      "maximum": 255
-    },
-    "UART_SERVICE_ID_RECEIVEDMA": {
-      "type": "integer",
-      "description": "UART_SERVICE_ID_RECEIVEDMA 参数",
-      "default": 7,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_SERVICE_ID_ABORT": {
-      "type": "integer",
-      "description": "UART_SERVICE_ID_ABORT 参数",
-      "default": 8,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_SERVICE_ID_ENABLEINTERRUPT": {
-      "type": "integer",
-      "description": "UART_SERVICE_ID_ENABLEINTERRUPT 参数",
-      "default": 9,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_SERVICE_ID_DISABLEINTERRUPT": {
-      "type": "integer",
-      "description": "UART_SERVICE_ID_DISABLEINTERRUPT 参数",
-      "default": 10,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_SERVICE_ID_ENABLEDMA": {
-      "type": "integer",
-      "description": "UART_SERVICE_ID_ENABLEDMA 参数",
-      "default": 11,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_SERVICE_ID_DISABLEDMA": {
-      "type": "integer",
-      "description": "UART_SERVICE_ID_DISABLEDMA 参数",
-      "default": 12,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "UART_SERVICE_ID_CLEARFIFO": {
-      "type": "integer",
-      "description": "UART_SERVICE_ID_CLEARFIFO 参数",
-      "default": 13,
-      "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "UART_SERVICE_ID_SETBAUDRATE": {
       "type": "integer",
       "description": "UART_SERVICE_ID_SETBAUDRATE 参数",
       "default": 14,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_MULTI_PROCESSOR_MODE": {
+      "type": "boolean",
+      "description": "UART_MULTI_PROCESSOR_MODE 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_SERVICE_ID_ENABLEINTERRUPT": {
+      "type": "integer",
+      "description": "UART_SERVICE_ID_ENABLEINTERRUPT 参数",
+      "default": 9,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_SERVICE_ID_DISABLEINTERRUPT": {
+      "type": "integer",
+      "description": "UART_SERVICE_ID_DISABLEINTERRUPT 参数",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART0_DMA_TX_CHANNEL": {
+      "type": "integer",
+      "description": "UART0_DMA_TX_CHANNEL 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART0_DMA_RX_CHANNEL": {
+      "type": "integer",
+      "description": "UART0_DMA_RX_CHANNEL 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART1_DMA_TX_CHANNEL": {
+      "type": "integer",
+      "description": "UART1_DMA_TX_CHANNEL 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART1_DMA_RX_CHANNEL": {
+      "type": "integer",
+      "description": "UART1_DMA_RX_CHANNEL 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART2_DMA_TX_CHANNEL": {
+      "type": "integer",
+      "description": "UART2_DMA_TX_CHANNEL 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART2_DMA_RX_CHANNEL": {
+      "type": "integer",
+      "description": "UART2_DMA_RX_CHANNEL 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART3_DMA_TX_CHANNEL": {
+      "type": "integer",
+      "description": "UART3_DMA_TX_CHANNEL 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART3_DMA_RX_CHANNEL": {
+      "type": "integer",
+      "description": "UART3_DMA_RX_CHANNEL 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_TX_IRQ_TYPE": {
+      "type": "integer",
+      "description": "UART_TX_IRQ_TYPE 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_RX_IRQ_TYPE": {
+      "type": "integer",
+      "description": "UART_RX_IRQ_TYPE 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_TX_FIFO_THRESHOLD": {
+      "type": "integer",
+      "description": "UART_TX_FIFO_THRESHOLD 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_RX_FIFO_THRESHOLD": {
+      "type": "integer",
+      "description": "UART_RX_FIFO_THRESHOLD 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_TX_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "UART_TX_TIMEOUT_MS 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_RX_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "UART_RX_TIMEOUT_MS 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_VENDOR_ID_CFG": {
+      "type": "integer",
+      "description": "UART_VENDOR_ID_CFG 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_MODULE_ID_CFG": {
+      "type": "integer",
+      "description": "UART_MODULE_ID_CFG 参数",
+      "default": 17,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_SW_MAJOR_VERSION_CFG": {
+      "type": "integer",
+      "description": "UART_SW_MAJOR_VERSION_CFG 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_SW_MINOR_VERSION_CFG": {
+      "type": "integer",
+      "description": "UART_SW_MINOR_VERSION_CFG 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_SW_PATCH_VERSION_CFG": {
+      "type": "integer",
+      "description": "UART_SW_PATCH_VERSION_CFG 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_DMA_SUPPORT": {
+      "type": "boolean",
+      "description": "UART_DMA_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_FIFO_SUPPORT": {
+      "type": "boolean",
+      "description": "UART_FIFO_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_HW_HANDSHAKE_SUPPORT": {
+      "type": "boolean",
+      "description": "UART_HW_HANDSHAKE_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_CHANNEL_0": {
+      "type": "integer",
+      "description": "UART_CHANNEL_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_CHANNEL_1": {
+      "type": "integer",
+      "description": "UART_CHANNEL_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_CHANNEL_2": {
+      "type": "integer",
+      "description": "UART_CHANNEL_2 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_CHANNEL_3": {
+      "type": "integer",
+      "description": "UART_CHANNEL_3 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_REF_CLOCK_HZ": {
+      "type": "integer",
+      "description": "UART_REF_CLOCK_HZ 参数",
+      "default": 80000000,
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_DMA_FIFO_THRESHOLD": {
+      "type": "integer",
+      "description": "UART_DMA_FIFO_THRESHOLD 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_IRQ_PRIORITY_LEVEL": {
+      "type": "integer",
+      "description": "UART_IRQ_PRIORITY_LEVEL 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_ERROR_IRQ_TYPE": {
+      "type": "integer",
+      "description": "UART_ERROR_IRQ_TYPE 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_FIFO_DEPTH": {
+      "type": "integer",
+      "description": "UART_FIFO_DEPTH 参数",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_SERVICE_ID_INIT": {
+      "type": "integer",
+      "description": "UART_SERVICE_ID_INIT 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_SERVICE_ID_DEINIT": {
+      "type": "integer",
+      "description": "UART_SERVICE_ID_DEINIT 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_SERVICE_ID_SEND": {
+      "type": "integer",
+      "description": "UART_SERVICE_ID_SEND 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_SERVICE_ID_RECEIVE": {
+      "type": "integer",
+      "description": "UART_SERVICE_ID_RECEIVE 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_SERVICE_ID_GETSTATUS": {
+      "type": "integer",
+      "description": "UART_SERVICE_ID_GETSTATUS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_SERVICE_ID_SENDDMA": {
+      "type": "integer",
+      "description": "UART_SERVICE_ID_SENDDMA 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_SERVICE_ID_RECEIVEDMA": {
+      "type": "integer",
+      "description": "UART_SERVICE_ID_RECEIVEDMA 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_SERVICE_ID_ABORT": {
+      "type": "integer",
+      "description": "UART_SERVICE_ID_ABORT 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_SERVICE_ID_ENABLEDMA": {
+      "type": "integer",
+      "description": "UART_SERVICE_ID_ENABLEDMA 参数",
+      "default": 11,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_SERVICE_ID_DISABLEDMA": {
+      "type": "integer",
+      "description": "UART_SERVICE_ID_DISABLEDMA 参数",
+      "default": 12,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "UART_SERVICE_ID_CLEARFIFO": {
+      "type": "integer",
+      "description": "UART_SERVICE_ID_CLEARFIFO 参数",
+      "default": 13,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

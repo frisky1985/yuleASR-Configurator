@@ -2,276 +2,318 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/comm.json",
   "title": "ComM Configuration",
-  "description": "AUTOSAR Communication Manager Configuration Header",
+  "description": "ComM Configuration configuration header",
   "type": "object",
   "properties": {
     "COMM_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "COMM_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_VERSION_INFO_API": {
       "type": "boolean",
       "description": "COMM_VERSION_INFO_API 参数",
-      "default": true
-    },
-    "COMM_ENABLE_WAKEUP": {
-      "type": "boolean",
-      "description": "COMM_ENABLE_WAKEUP 参数",
-      "default": true
-    },
-    "COMM_WAKEUP_INHIBITION_ENABLED": {
-      "type": "boolean",
-      "description": "COMM_WAKEUP_INHIBITION_ENABLED 参数",
-      "default": true
-    },
-    "COMM_LIMIT_TO_NO_COM_ENABLED": {
-      "type": "boolean",
-      "description": "COMM_LIMIT_TO_NO_COM_ENABLED 参数",
-      "default": true
-    },
-    "COMM_PNC_SUPPORT": {
-      "type": "boolean",
-      "description": "COMM_PNC_SUPPORT 参数",
-      "default": true
-    },
-    "COMM_DCM_SUPPORT": {
-      "type": "boolean",
-      "description": "COMM_DCM_SUPPORT 参数",
-      "default": true
-    },
-    "COMM_ECUM_SUPPORT": {
-      "type": "boolean",
-      "description": "COMM_ECUM_SUPPORT 参数",
-      "default": true
-    },
-    "COMM_NVM_BLOCK_DESCRIPTOR": {
-      "type": "boolean",
-      "description": "COMM_NVM_BLOCK_DESCRIPTOR 参数",
-      "default": true
-    },
-    "COMM_NVM_STORAGE_ENABLED": {
-      "type": "boolean",
-      "description": "COMM_NVM_STORAGE_ENABLED 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_NUM_CHANNELS": {
       "type": "integer",
       "description": "COMM_NUM_CHANNELS 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_NUM_USERS": {
       "type": "integer",
       "description": "COMM_NUM_USERS 参数",
       "default": 8,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_NUM_PNCS": {
       "type": "integer",
       "description": "COMM_NUM_PNCS 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_CHANNEL_CAN0": {
-      "type": "integer",
-      "description": "COMM_CHANNEL_CAN0 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_CHANNEL_CAN1": {
-      "type": "integer",
-      "description": "COMM_CHANNEL_CAN1 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_CHANNEL_ETH0": {
-      "type": "integer",
-      "description": "COMM_CHANNEL_ETH0 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_CHANNEL_LIN0": {
-      "type": "integer",
-      "description": "COMM_CHANNEL_LIN0 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_USER_DCM": {
-      "type": "integer",
-      "description": "COMM_USER_DCM 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_USER_DEM": {
-      "type": "integer",
-      "description": "COMM_USER_DEM 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_USER_NVM": {
-      "type": "integer",
-      "description": "COMM_USER_NVM 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_USER_ECUM": {
-      "type": "integer",
-      "description": "COMM_USER_ECUM 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_USER_SWC0": {
-      "type": "integer",
-      "description": "COMM_USER_SWC0 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_USER_SWC1": {
-      "type": "integer",
-      "description": "COMM_USER_SWC1 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_USER_DIAG": {
-      "type": "integer",
-      "description": "COMM_USER_DIAG 参数",
-      "default": 6,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_USER_APPL": {
-      "type": "integer",
-      "description": "COMM_USER_APPL 参数",
-      "default": 7,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_PNC_0": {
-      "type": "integer",
-      "description": "COMM_PNC_0 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_PNC_1": {
-      "type": "integer",
-      "description": "COMM_PNC_1 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_MAIN_FUNCTION_PERIOD": {
       "type": "integer",
       "description": "COMM_MAIN_FUNCTION_PERIOD 参数",
       "default": 10,
       "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_MINIMUM_INHIBIT_TIME": {
-      "type": "integer",
-      "description": "COMM_MINIMUM_INHIBIT_TIME 参数",
-      "default": 5000,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "COMM_NVM_STORE_RETRY_TIME": {
-      "type": "integer",
-      "description": "COMM_NVM_STORE_RETRY_TIME 参数",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "COMM_T_MAX_NVM_STORE": {
-      "type": "integer",
-      "description": "COMM_T_MAX_NVM_STORE 参数",
-      "default": 500,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "COMM_T_WAKEUP": {
-      "type": "integer",
-      "description": "COMM_T_WAKEUP 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_BUS_WAKEUP_DELAY": {
-      "type": "integer",
-      "description": "COMM_BUS_WAKEUP_DELAY 参数",
-      "default": 50,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "COMM_WAKEUP_RETRY_LIMIT": {
-      "type": "integer",
-      "description": "COMM_WAKEUP_RETRY_LIMIT 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_CHANNEL_NOCOM_TIMEOUT": {
       "type": "integer",
       "description": "COMM_CHANNEL_NOCOM_TIMEOUT 参数",
       "default": 1000,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_CHANNEL_SILENT_TIMEOUT": {
       "type": "integer",
       "description": "COMM_CHANNEL_SILENT_TIMEOUT 参数",
       "default": 500,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_CHANNEL_FULLCOM_TIMEOUT": {
       "type": "integer",
       "description": "COMM_CHANNEL_FULLCOM_TIMEOUT 参数",
       "default": 200,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_PNC_PREPARE_SLEEP_TIMEOUT": {
       "type": "integer",
       "description": "COMM_PNC_PREPARE_SLEEP_TIMEOUT 参数",
       "default": 300,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_PNC_REQUEST_TIMEOUT": {
       "type": "integer",
       "description": "COMM_PNC_REQUEST_TIMEOUT 参数",
       "default": 100,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_ENABLE_WAKEUP": {
+      "type": "boolean",
+      "description": "COMM_ENABLE_WAKEUP 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_WAKEUP_INHIBITION_ENABLED": {
+      "type": "boolean",
+      "description": "COMM_WAKEUP_INHIBITION_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_LIMIT_TO_NO_COM_ENABLED": {
+      "type": "boolean",
+      "description": "COMM_LIMIT_TO_NO_COM_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_PNC_SUPPORT": {
+      "type": "boolean",
+      "description": "COMM_PNC_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_DCM_SUPPORT": {
+      "type": "boolean",
+      "description": "COMM_DCM_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_ECUM_SUPPORT": {
+      "type": "boolean",
+      "description": "COMM_ECUM_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_NVM_BLOCK_DESCRIPTOR": {
+      "type": "boolean",
+      "description": "COMM_NVM_BLOCK_DESCRIPTOR 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_NVM_STORAGE_ENABLED": {
+      "type": "boolean",
+      "description": "COMM_NVM_STORAGE_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_CHANNEL_CAN0": {
+      "type": "integer",
+      "description": "COMM_CHANNEL_CAN0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_CHANNEL_CAN1": {
+      "type": "integer",
+      "description": "COMM_CHANNEL_CAN1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_CHANNEL_ETH0": {
+      "type": "integer",
+      "description": "COMM_CHANNEL_ETH0 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_CHANNEL_LIN0": {
+      "type": "integer",
+      "description": "COMM_CHANNEL_LIN0 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_USER_DCM": {
+      "type": "integer",
+      "description": "COMM_USER_DCM 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_USER_DEM": {
+      "type": "integer",
+      "description": "COMM_USER_DEM 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_USER_NVM": {
+      "type": "integer",
+      "description": "COMM_USER_NVM 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_USER_ECUM": {
+      "type": "integer",
+      "description": "COMM_USER_ECUM 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_USER_SWC0": {
+      "type": "integer",
+      "description": "COMM_USER_SWC0 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_USER_SWC1": {
+      "type": "integer",
+      "description": "COMM_USER_SWC1 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_USER_DIAG": {
+      "type": "integer",
+      "description": "COMM_USER_DIAG 参数",
+      "default": 6,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_USER_APPL": {
+      "type": "integer",
+      "description": "COMM_USER_APPL 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_PNC_0": {
+      "type": "integer",
+      "description": "COMM_PNC_0 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_PNC_1": {
+      "type": "integer",
+      "description": "COMM_PNC_1 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_MINIMUM_INHIBIT_TIME": {
+      "type": "integer",
+      "description": "COMM_MINIMUM_INHIBIT_TIME 参数",
+      "default": 5000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_NVM_STORE_RETRY_TIME": {
+      "type": "integer",
+      "description": "COMM_NVM_STORE_RETRY_TIME 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_T_MAX_NVM_STORE": {
+      "type": "integer",
+      "description": "COMM_T_MAX_NVM_STORE 参数",
+      "default": 500,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_T_WAKEUP": {
+      "type": "integer",
+      "description": "COMM_T_WAKEUP 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_BUS_WAKEUP_DELAY": {
+      "type": "integer",
+      "description": "COMM_BUS_WAKEUP_DELAY 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "COMM_WAKEUP_RETRY_LIMIT": {
+      "type": "integer",
+      "description": "COMM_WAKEUP_RETRY_LIMIT 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_CHANNEL_WAKEUP_SUPPORT": {
       "type": "boolean",
       "description": "COMM_CHANNEL_WAKEUP_SUPPORT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_CHANNEL_DCM_SUPPORT": {
       "type": "boolean",
       "description": "COMM_CHANNEL_DCM_SUPPORT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_CHANNEL_PASSIVE_WAKEUP": {
       "type": "boolean",
       "description": "COMM_CHANNEL_PASSIVE_WAKEUP 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_DEFAULT_MODE": {
       "type": "enum",
@@ -279,7 +321,8 @@
       "default": "COMM_NO_COMMUNICATION",
       "enum": [
         "COMM_NO_COMMUNICATION"
-      ]
+      ],
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_DEFAULT_CHANNEL_STATE": {
       "type": "enum",
@@ -290,7 +333,8 @@
         "COMM_CHANNEL_STATE_FULLCOM",
         "COMM_CHANNEL_STATE_PENDING",
         "COMM_CHANNEL_STATE_SILENTCOM"
-      ]
+      ],
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_DEFAULT_PNC_MODE": {
       "type": "enum",
@@ -298,7 +342,8 @@
       "default": "COMM_PNC_NO_COMMUNICATION",
       "enum": [
         "COMM_PNC_NO_COMMUNICATION"
-      ]
+      ],
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

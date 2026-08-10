@@ -2,86 +2,98 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/linslave.json",
   "title": "LinSlave Configuration",
-  "description": "LinSlave 模块配置参数",
+  "description": "LinSlave Configuration configuration header",
   "type": "object",
   "properties": {
     "LINSLAVE_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "LINSLAVE_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSLAVE_VERSION_INFO_API": {
       "type": "boolean",
       "description": "LINSLAVE_VERSION_INFO_API 参数",
-      "default": true
-    },
-    "LINSLAVE_NODE_ID": {
-      "type": "integer",
-      "description": "从机节点ID: 0-59",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSLAVE_BAUDRATE": {
       "type": "integer",
-      "description": "0=9600, 1=19200",
+      "description": "LINSLAVE_BAUDRATE 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINSLAVE_UART_IRQ_HANDLER": {
+      "type": "string",
+      "description": "LINSLAVE_UART_IRQ_HANDLER 参数",
+      "default": "LinSlave_RxInterruptHandler",
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINSLAVE_FRAME_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "LINSLAVE_FRAME_TIMEOUT_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINSLAVE_INTERBYTE_TIMEOUT_US": {
+      "type": "integer",
+      "description": "LINSLAVE_INTERBYTE_TIMEOUT_US 参数",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINSLAVE_NODE_ID": {
+      "type": "integer",
+      "description": "LINSLAVE_NODE_ID 参数",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSLAVE_RESPONSE_LENGTH": {
       "type": "integer",
-      "description": "响应数据长度",
+      "description": "LINSLAVE_RESPONSE_LENGTH 参数",
       "default": 8,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSLAVE_CHECKSUM_TYPE": {
       "type": "integer",
-      "description": "0=经典, 1=增强",
+      "description": "LINSLAVE_CHECKSUM_TYPE 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSLAVE_MAX_DATA_LENGTH": {
       "type": "integer",
       "description": "LINSLAVE_MAX_DATA_LENGTH 参数",
       "default": 8,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSLAVE_MAX_FRAME_LENGTH": {
       "type": "integer",
-      "description": "最大报文长度",
+      "description": "LINSLAVE_MAX_FRAME_LENGTH 参数",
       "default": 12,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSLAVE_BREAK_THRESHOLD_US": {
       "type": "integer",
-      "description": "Break 检测阈值 (微秒)",
+      "description": "LINSLAVE_BREAK_THRESHOLD_US 参数",
       "default": 1000,
       "minimum": 0,
-      "maximum": 65535
-    },
-    "LINSLAVE_FRAME_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "报文超时 (毫秒)",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255
-    },
-    "LINSLAVE_INTERBYTE_TIMEOUT_US": {
-      "type": "integer",
-      "description": "字节间超时 (微秒)",
-      "default": 1000,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "LINSLAVE_UART_IRQ_HANDLER": {
-      "type": "string",
-      "description": "LINSLAVE_UART_IRQ_HANDLER 参数",
-      "default": "LinSlave_RxInterruptHandler"
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

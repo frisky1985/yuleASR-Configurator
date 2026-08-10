@@ -2,62 +2,30 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/lintrcv.json",
   "title": "LinTrcv Configuration",
-  "description": "LinTrcv configuration (extracted from yuleASR Cfg.h)",
+  "description": "LinTrcv Configuration configuration header",
   "type": "object",
   "properties": {
     "LINTRCV_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "LINTRCV_DEV_ERROR_DETECT 参数",
       "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINTRCV_VERSION_INFO_API": {
       "type": "boolean",
       "description": "LINTRCV_VERSION_INFO_API 参数",
       "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
-    "LINTRCV_WAKEUP_SUPPORTED": {
-      "type": "boolean",
-      "description": "LINTRCV_WAKEUP_SUPPORTED 参数",
-      "default": true,
-      "x-guarded": true
-    },
-    "LINTRCV_WAKEUP_BY_BUS_USED": {
-      "type": "boolean",
-      "description": "LINTRCV_WAKEUP_BY_BUS_USED 参数",
-      "default": true,
-      "x-guarded": true
-    },
-    "LINTRCV_WAKEUP_BY_PIN_USED": {
-      "type": "boolean",
-      "description": "LINTRCV_WAKEUP_BY_PIN_USED 参数",
-      "default": true,
-      "x-guarded": true
-    },
-    "LINTRCV_SPI_SUPPORT": {
-      "type": "boolean",
-      "description": "LINTRCV_SPI_SUPPORT 参数",
-      "default": false,
-      "x-guarded": true
-    },
-    "LINTRCV_I2C_SUPPORT": {
-      "type": "boolean",
-      "description": "LINTRCV_I2C_SUPPORT 参数",
-      "default": false,
-      "x-guarded": true
-    },
-    "LINTRCV_TJA1021_SUPPORT": {
-      "type": "boolean",
-      "description": "LINTRCV_TJA1021_SUPPORT 参数",
-      "default": true,
-      "x-guarded": true
-    },
-    "LINTRCV_TJA1022_SUPPORT": {
-      "type": "boolean",
-      "description": "LINTRCV_TJA1022_SUPPORT 参数",
-      "default": true,
-      "x-guarded": true
+    "LINTRCV_SPI_DEVICE_ID": {
+      "type": "integer",
+      "description": "LINTRCV_SPI_DEVICE_ID 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_NUM_CHANNELS": {
       "type": "integer",
@@ -65,6 +33,74 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "DIO_CHANNEL_TJA1021_0_TXD": {
+      "type": "integer",
+      "description": "DIO_CHANNEL_TJA1021_0_TXD 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "DIO_CHANNEL_TJA1021_0_RXD": {
+      "type": "integer",
+      "description": "DIO_CHANNEL_TJA1021_0_RXD 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "LINTRCV_WAKEUP_SUPPORTED": {
+      "type": "boolean",
+      "description": "LINTRCV_WAKEUP_SUPPORTED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "LINTRCV_WAKEUP_BY_BUS_USED": {
+      "type": "boolean",
+      "description": "LINTRCV_WAKEUP_BY_BUS_USED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "LINTRCV_WAKEUP_BY_PIN_USED": {
+      "type": "boolean",
+      "description": "LINTRCV_WAKEUP_BY_PIN_USED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "LINTRCV_SPI_SUPPORT": {
+      "type": "boolean",
+      "description": "LINTRCV_SPI_SUPPORT 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "LINTRCV_I2C_SUPPORT": {
+      "type": "boolean",
+      "description": "LINTRCV_I2C_SUPPORT 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "LINTRCV_TJA1021_SUPPORT": {
+      "type": "boolean",
+      "description": "LINTRCV_TJA1021_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
+    },
+    "LINTRCV_TJA1022_SUPPORT": {
+      "type": "boolean",
+      "description": "LINTRCV_TJA1022_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINTRCV_MAX_CHANNELS": {
@@ -72,74 +108,66 @@
       "description": "LINTRCV_MAX_CHANNELS 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_CHANNEL_0": {
       "type": "integer",
       "description": "LINTRCV_CHANNEL_0 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_CHANNEL_1": {
       "type": "integer",
       "description": "LINTRCV_CHANNEL_1 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_CHANNEL_2": {
       "type": "integer",
       "description": "LINTRCV_CHANNEL_2 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_CHANNEL_3": {
       "type": "integer",
       "description": "LINTRCV_CHANNEL_3 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DIO_CHANNEL_TJA1021_0_EN": {
       "type": "integer",
-      "description": "Enable pin - TJA1021 Pin 2",
+      "description": "DIO_CHANNEL_TJA1021_0_EN 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "DIO_CHANNEL_TJA1021_0_NWAKE": {
       "type": "integer",
-      "description": "Wake-up pin - TJA1021 Pin 6",
+      "description": "DIO_CHANNEL_TJA1021_0_NWAKE 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "DIO_CHANNEL_TJA1021_0_NERR": {
       "type": "integer",
-      "description": "Error pin - TJA1021 Pin 9",
+      "description": "DIO_CHANNEL_TJA1021_0_NERR 参数",
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-guarded": true
-    },
-    "DIO_CHANNEL_TJA1021_0_TXD": {
-      "type": "integer",
-      "description": "TXD pin - TJA1021 Pin 4",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-guarded": true
-    },
-    "DIO_CHANNEL_TJA1021_0_RXD": {
-      "type": "integer",
-      "description": "RXD pin - TJA1021 Pin 5",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "DIO_CHANNEL_TJA1021_1_EN": {
@@ -148,6 +176,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "DIO_CHANNEL_TJA1021_1_NWAKE": {
@@ -156,6 +185,7 @@
       "default": 11,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "DIO_CHANNEL_TJA1021_1_NERR": {
@@ -164,104 +194,120 @@
       "default": 12,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINTRCV_WAKEUP_SOURCE_0": {
       "type": "integer",
-      "description": "LIN Channel 0",
+      "description": "LINTRCV_WAKEUP_SOURCE_0 参数",
       "default": 16,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINTRCV_WAKEUP_SOURCE_1": {
       "type": "integer",
-      "description": "LIN Channel 1",
+      "description": "LINTRCV_WAKEUP_SOURCE_1 参数",
       "default": 32,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINTRCV_WAKEUP_SOURCE_2": {
       "type": "integer",
-      "description": "LIN Channel 2",
+      "description": "LINTRCV_WAKEUP_SOURCE_2 参数",
       "default": 64,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINTRCV_WAKEUP_SOURCE_3": {
       "type": "integer",
-      "description": "LIN Channel 3",
+      "description": "LINTRCV_WAKEUP_SOURCE_3 参数",
       "default": 128,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINTRCV_TJA1021_SLEEP_TO_NORMAL_US": {
       "type": "integer",
-      "description": "1ms max per datasheet",
+      "description": "LINTRCV_TJA1021_SLEEP_TO_NORMAL_US 参数",
       "default": 1000,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_TJA1021_STANDBY_TO_NORMAL_US": {
       "type": "integer",
-      "description": "100us typical",
+      "description": "LINTRCV_TJA1021_STANDBY_TO_NORMAL_US 参数",
       "default": 100,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_TJA1021_NORMAL_TO_STANDBY_US": {
       "type": "integer",
-      "description": "50us typical",
+      "description": "LINTRCV_TJA1021_NORMAL_TO_STANDBY_US 参数",
       "default": 50,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_TJA1021_NORMAL_TO_SLEEP_US": {
       "type": "integer",
-      "description": "50us typical",
+      "description": "LINTRCV_TJA1021_NORMAL_TO_SLEEP_US 参数",
       "default": 50,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_WAKEUP_DEBOUNCE_US": {
       "type": "integer",
       "description": "LINTRCV_WAKEUP_DEBOUNCE_US 参数",
       "default": 50,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_TJA1021_EN_HIGH": {
       "type": "boolean",
-      "description": "Normal mode",
-      "default": true
+      "description": "LINTRCV_TJA1021_EN_HIGH 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_TJA1021_EN_LOW": {
       "type": "boolean",
-      "description": "Standby/Sleep mode",
-      "default": false
+      "description": "LINTRCV_TJA1021_EN_LOW 参数",
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_TJA1021_NWAKE_ACTIVE": {
       "type": "boolean",
       "description": "LINTRCV_TJA1021_NWAKE_ACTIVE 参数",
-      "default": false
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_TJA1021_NWAKE_INACTIVE": {
       "type": "boolean",
       "description": "LINTRCV_TJA1021_NWAKE_INACTIVE 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_TJA1021_NERR_ERROR": {
       "type": "boolean",
       "description": "LINTRCV_TJA1021_NERR_ERROR 参数",
-      "default": false
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_TJA1021_NERR_NO_ERROR": {
       "type": "boolean",
       "description": "LINTRCV_TJA1021_NERR_NO_ERROR 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_DEFAULT_INITIAL_MODE": {
       "type": "enum",
@@ -271,36 +317,34 @@
         "LINTRCV_OPMODE_NORMAL",
         "LINTRCV_OPMODE_STANDBY",
         "LINTRCV_OPMODE_SLEEP"
-      ]
+      ],
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_DEFAULT_WAKEUP_BY_BUS": {
       "type": "boolean",
       "description": "LINTRCV_DEFAULT_WAKEUP_BY_BUS 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_DEFAULT_WAKEUP_BY_PIN": {
       "type": "boolean",
       "description": "LINTRCV_DEFAULT_WAKEUP_BY_PIN 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_SPI_CHANNEL": {
       "type": "integer",
       "description": "LINTRCV_SPI_CHANNEL 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
-    },
-    "LINTRCV_SPI_DEVICE_ID": {
-      "type": "integer",
-      "description": "LINTRCV_SPI_DEVICE_ID 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINTRCV_DIO_NOTIFICATION_API": {
       "type": "boolean",
       "description": "LINTRCV_DIO_NOTIFICATION_API 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

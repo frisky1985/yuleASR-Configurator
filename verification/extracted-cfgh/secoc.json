@@ -2,57 +2,9 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/secoc.json",
   "title": "SecOC Configuration",
-  "description": "Development error detection enable/disable",
+  "description": "SecOC Configuration configuration header",
   "type": "object",
   "properties": {
-    "SECOC_CFG_AR_RELEASE_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "SECOC_CFG_AR_RELEASE_MAJOR_VERSION 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "SECOC_CFG_AR_RELEASE_MINOR_VERSION": {
-      "type": "integer",
-      "description": "SECOC_CFG_AR_RELEASE_MINOR_VERSION 参数",
-      "default": 7,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "SECOC_CFG_AR_RELEASE_REVISION_VERSION": {
-      "type": "integer",
-      "description": "SECOC_CFG_AR_RELEASE_REVISION_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "SECOC_CFG_SW_MAJOR_VERSION": {
-      "type": "integer",
-      "description": "SECOC_CFG_SW_MAJOR_VERSION 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "SECOC_CFG_SW_MINOR_VERSION": {
-      "type": "integer",
-      "description": "SECOC_CFG_SW_MINOR_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
-    "SECOC_CFG_SW_PATCH_VERSION": {
-      "type": "integer",
-      "description": "SECOC_CFG_SW_PATCH_VERSION 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERSION INFORMATION"
-    },
     "SECOC_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "SECOC_DEV_ERROR_DETECT 参数",
@@ -63,6 +15,30 @@
       "type": "boolean",
       "description": "SECOC_VERSION_INFO_API 参数",
       "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SECOC_NUM_TX_PDUS": {
+      "type": "integer",
+      "description": "SECOC_NUM_TX_PDUS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SECOC_NUM_RX_PDUS": {
+      "type": "integer",
+      "description": "SECOC_NUM_RX_PDUS 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SECOC_VERIFICATION_RETRY_COUNT": {
+      "type": "integer",
+      "description": "SECOC_VERIFICATION_RETRY_COUNT 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_MAIN_FUNCTION_PERIOD_RX_MS": {
@@ -81,37 +57,13 @@
       "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
-    "SECOC_NUM_TX_PDUS": {
-      "type": "integer",
-      "description": "SECOC_NUM_TX_PDUS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "SECOC_NUM_RX_PDUS": {
-      "type": "integer",
-      "description": "SECOC_NUM_RX_PDUS 参数",
-      "default": 4,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
-    },
-    "SECOC_MAX_PDU_LENGTH": {
-      "type": "integer",
-      "description": "SECOC_MAX_PDU_LENGTH 参数",
-      "default": 256,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "PDU CONFIGURATION"
-    },
     "SECOC_TX_PDU_ID_0": {
       "type": "integer",
       "description": "SECOC_TX_PDU_ID_0 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_TX_PDU_ID_1": {
       "type": "integer",
@@ -119,7 +71,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_TX_PDU_ID_2": {
       "type": "integer",
@@ -127,7 +79,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_TX_PDU_ID_3": {
       "type": "integer",
@@ -135,7 +87,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_RX_PDU_ID_0": {
       "type": "integer",
@@ -143,7 +95,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_RX_PDU_ID_1": {
       "type": "integer",
@@ -151,7 +103,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_RX_PDU_ID_2": {
       "type": "integer",
@@ -159,7 +111,7 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_RX_PDU_ID_3": {
       "type": "integer",
@@ -167,7 +119,79 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PDU CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SECOC_FRESHNESS_VALUE_TX_LENGTH": {
+      "type": "integer",
+      "description": "SECOC_FRESHNESS_VALUE_TX_LENGTH 参数",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SECOC_VERIFICATION_TIMEOUT_MS": {
+      "type": "integer",
+      "description": "SECOC_VERIFICATION_TIMEOUT_MS 参数",
+      "default": 100,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SECOC_CFG_AR_RELEASE_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "SECOC_CFG_AR_RELEASE_MAJOR_VERSION 参数",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SECOC_CFG_AR_RELEASE_MINOR_VERSION": {
+      "type": "integer",
+      "description": "SECOC_CFG_AR_RELEASE_MINOR_VERSION 参数",
+      "default": 7,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SECOC_CFG_AR_RELEASE_REVISION_VERSION": {
+      "type": "integer",
+      "description": "SECOC_CFG_AR_RELEASE_REVISION_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SECOC_CFG_SW_MAJOR_VERSION": {
+      "type": "integer",
+      "description": "SECOC_CFG_SW_MAJOR_VERSION 参数",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SECOC_CFG_SW_MINOR_VERSION": {
+      "type": "integer",
+      "description": "SECOC_CFG_SW_MINOR_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SECOC_CFG_SW_PATCH_VERSION": {
+      "type": "integer",
+      "description": "SECOC_CFG_SW_PATCH_VERSION 参数",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "SECOC_MAX_PDU_LENGTH": {
+      "type": "integer",
+      "description": "SECOC_MAX_PDU_LENGTH 参数",
+      "default": 256,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_AUTH_ALGORITHM": {
       "type": "enum",
@@ -178,7 +202,7 @@
         "SECOC_HMAC_SHA256",
         "SECOC_HMAC_SHA512"
       ],
-      "x-section": "AUTHENTICATION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_AUTH_INFO_LENGTH": {
       "type": "integer",
@@ -186,7 +210,7 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "AUTHENTICATION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_FRESHNESS_VALUE_TYPE": {
       "type": "enum",
@@ -196,7 +220,7 @@
         "SECOC_COUNTER",
         "SECOC_TIMESTAMP"
       ],
-      "x-section": "AUTHENTICATION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_FRESHNESS_VALUE_LENGTH": {
       "type": "integer",
@@ -204,15 +228,7 @@
       "default": 32,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "AUTHENTICATION CONFIGURATION"
-    },
-    "SECOC_FRESHNESS_VALUE_TX_LENGTH": {
-      "type": "integer",
-      "description": "SECOC_FRESHNESS_VALUE_TX_LENGTH 参数",
-      "default": 16,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "AUTHENTICATION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_DATA_ID_LENGTH": {
       "type": "integer",
@@ -220,7 +236,7 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "AUTHENTICATION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_MAX_FRESHNESS_VALUE": {
       "type": "integer",
@@ -228,7 +244,7 @@
       "default": 4294967295,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "FRESHNESS VALUE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_FRESHNESS_RESET_THRESHOLD": {
       "type": "integer",
@@ -236,19 +252,19 @@
       "default": 4026531840,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "FRESHNESS VALUE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_ENABLE_FRESHNESS_SYNC": {
       "type": "boolean",
       "description": "SECOC_ENABLE_FRESHNESS_SYNC 参数",
       "default": true,
-      "x-section": "FRESHNESS VALUE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_OVERRIDE_STATUS_ALLOWED": {
       "type": "boolean",
       "description": "SECOC_OVERRIDE_STATUS_ALLOWED 参数",
       "default": true,
-      "x-section": "VERIFICATION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_DEFAULT_VERIFICATION_STATUS": {
       "type": "enum",
@@ -260,23 +276,7 @@
         "SECOC_VERIFICATIONFAILURE_STATUS",
         "SECOC_VERIFICATIONOVERRIDE"
       ],
-      "x-section": "VERIFICATION CONFIGURATION"
-    },
-    "SECOC_VERIFICATION_RETRY_COUNT": {
-      "type": "integer",
-      "description": "SECOC_VERIFICATION_RETRY_COUNT 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERIFICATION CONFIGURATION"
-    },
-    "SECOC_VERIFICATION_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "SECOC_VERIFICATION_TIMEOUT_MS 参数",
-      "default": 100,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "VERIFICATION CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_CSM_JOB_ID_AUTH": {
       "type": "enum",
@@ -285,7 +285,7 @@
       "enum": [
         "CSM_JOB_ID_MAC_GENERATE_1"
       ],
-      "x-section": "CRYPTO CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_CSM_JOB_ID_VERIFY": {
       "type": "enum",
@@ -294,7 +294,7 @@
       "enum": [
         "CSM_JOB_ID_MAC_VERIFY_1"
       ],
-      "x-section": "CRYPTO CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_MAX_CRYPTO_OPERATIONS": {
       "type": "integer",
@@ -302,7 +302,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CRYPTO CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_AUTH_LENGTH_4": {
       "type": "integer",
@@ -310,7 +310,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "AUTH / FRESHNESS LENGTHS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "SECOC_AUTH_LENGTH_8": {
@@ -319,7 +319,7 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "AUTH / FRESHNESS LENGTHS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "SECOC_FRESHNESS_LENGTH_3": {
@@ -328,7 +328,7 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "AUTH / FRESHNESS LENGTHS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "SECOC_FRESHNESS_LENGTH_4": {
@@ -337,16 +337,16 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "AUTH / FRESHNESS LENGTHS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "SECOC_MAX_PDUS": {
       "type": "integer",
-      "description": "SECOC_MAX_PDUS（别名: SECOC_NUM_TX_PDUS = 4；同族可选: SECOC_NUM_TX_PDUS）",
+      "description": "SECOC_MAX_PDUS 参数",
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "AUTH / FRESHNESS LENGTHS",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     }
   },
@@ -355,15 +355,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/services/secoc/include/SecOC_Cfg.h",
-  "x-display-name": "SecOC",
-  "x-sections": [
-    "VERSION INFORMATION",
-    "PRE-COMPILE CONFIGURATION",
-    "PDU CONFIGURATION",
-    "AUTHENTICATION CONFIGURATION",
-    "FRESHNESS VALUE CONFIGURATION",
-    "VERIFICATION CONFIGURATION",
-    "CRYPTO CONFIGURATION",
-    "AUTH / FRESHNESS LENGTHS"
-  ]
+  "x-display-name": "SecOC"
 }

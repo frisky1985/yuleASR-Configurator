@@ -2,26 +2,34 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/cddfvm.json",
   "title": "Cdd_Fvm Configuration",
-  "description": "Complex Driver — Flash Virtual Memory (FVM) Pre-Compile Configuration",
+  "description": "Cdd_Fvm Configuration configuration header",
   "type": "object",
   "properties": {
     "CDD_FVM_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "CDD_FVM_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "MODULE SWITCHES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_VERSION_INFO_API": {
       "type": "boolean",
       "description": "CDD_FVM_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "MODULE SWITCHES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "CDD_FVM_NUM_CONFIGURED_BANKS": {
+      "type": "integer",
+      "description": "CDD_FVM_NUM_CONFIGURED_BANKS 参数",
+      "default": 2,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_PERIODIC_CHECK_ENABLED": {
       "type": "boolean",
       "description": "CDD_FVM_PERIODIC_CHECK_ENABLED 参数",
       "default": true,
-      "x-section": "MODULE SWITCHES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_MAIN_FUNCTION_PERIOD": {
       "type": "integer",
@@ -29,7 +37,7 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "MODULE SWITCHES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_BACKEND_RAM": {
       "type": "integer",
@@ -37,7 +45,7 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BACKEND SELECTION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_BACKEND_FLS": {
       "type": "integer",
@@ -45,15 +53,15 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BACKEND SELECTION"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_BACKEND": {
       "type": "integer",
-      "description": "CDD_FVM_BACKEND（别名: CDD_FVM_BACKEND_RAM = 0；同族可选: CDD_FVM_BACKEND_FLS / CDD_FVM_BACKEND_RAM）",
+      "description": "CDD_FVM_BACKEND 参数",
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BACKEND SELECTION",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "CDD_FVM_MAX_BANKS": {
@@ -62,15 +70,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "BANK GEOMETRY"
-    },
-    "CDD_FVM_NUM_CONFIGURED_BANKS": {
-      "type": "integer",
-      "description": "CDD_FVM_NUM_CONFIGURED_BANKS 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "BANK GEOMETRY"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_BANK_0_START_ADDR": {
       "type": "integer",
@@ -78,15 +78,15 @@
       "default": 4194304,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "BANK GEOMETRY"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_BANK_0_SIZE": {
       "type": "integer",
-      "description": "256 KB",
+      "description": "CDD_FVM_BANK_0_SIZE 参数",
       "default": 262144,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "BANK GEOMETRY"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_BANK_1_START_ADDR": {
       "type": "integer",
@@ -94,15 +94,15 @@
       "default": 4456448,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "BANK GEOMETRY"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_BANK_1_SIZE": {
       "type": "integer",
-      "description": "256 KB",
+      "description": "CDD_FVM_BANK_1_SIZE 参数",
       "default": 262144,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "BANK GEOMETRY"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_BANK_2_START_ADDR": {
       "type": "integer",
@@ -110,15 +110,15 @@
       "default": 4718592,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "BANK GEOMETRY"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_BANK_2_SIZE": {
       "type": "integer",
-      "description": "256 KB",
+      "description": "CDD_FVM_BANK_2_SIZE 参数",
       "default": 262144,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "BANK GEOMETRY"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_BANK_3_START_ADDR": {
       "type": "integer",
@@ -126,15 +126,15 @@
       "default": 4980736,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "BANK GEOMETRY"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_BANK_3_SIZE": {
       "type": "integer",
-      "description": "256 KB",
+      "description": "CDD_FVM_BANK_3_SIZE 参数",
       "default": 262144,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "BANK GEOMETRY"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_ERASE_GRANULARITY": {
       "type": "integer",
@@ -142,7 +142,7 @@
       "default": 4096,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "BANK GEOMETRY"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_BANK_MAGIC": {
       "type": "integer",
@@ -150,7 +150,7 @@
       "default": 2784084190,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "INTEGRITY METADATA"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_SIGNATURE_SIZE": {
       "type": "integer",
@@ -158,7 +158,7 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INTEGRITY METADATA"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_RAM_BASE_ADDR": {
       "type": "integer",
@@ -166,95 +166,95 @@
       "default": 4194304,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "RAM BACKEND (TEST / NATIVE)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_RAM_POOL_SIZE": {
       "type": "integer",
-      "description": "512 KB",
+      "description": "CDD_FVM_RAM_POOL_SIZE 参数",
       "default": 524288,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "RAM BACKEND (TEST / NATIVE)"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_E_PARAM_POINTER": {
       "type": "integer",
-      "description": "NULL pointer argument",
+      "description": "CDD_FVM_E_PARAM_POINTER 参数",
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DET ERROR CODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_E_PARAM_BANK": {
       "type": "integer",
-      "description": "invalid / unregistered bank id",
+      "description": "CDD_FVM_E_PARAM_BANK 参数",
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DET ERROR CODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_E_PARAM_RANGE": {
       "type": "integer",
-      "description": "offset/length outside bank",
+      "description": "CDD_FVM_E_PARAM_RANGE 参数",
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DET ERROR CODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_E_UNINIT": {
       "type": "integer",
-      "description": "module not initialized",
+      "description": "CDD_FVM_E_UNINIT 参数",
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DET ERROR CODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_E_BUSY": {
       "type": "integer",
-      "description": "operation in progress",
+      "description": "CDD_FVM_E_BUSY 参数",
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DET ERROR CODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_E_WRITE_PROTECTED": {
       "type": "integer",
-      "description": "bank is write-protected",
+      "description": "CDD_FVM_E_WRITE_PROTECTED 参数",
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DET ERROR CODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_E_CORRUPT": {
       "type": "integer",
-      "description": "bank integrity check failed",
+      "description": "CDD_FVM_E_CORRUPT 参数",
       "default": 7,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DET ERROR CODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_E_NO_VALID_BANK": {
       "type": "integer",
-      "description": "no valid bank available",
+      "description": "CDD_FVM_E_NO_VALID_BANK 参数",
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DET ERROR CODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_E_COPY_VERIFY": {
       "type": "integer",
-      "description": "post-copy verification failed",
+      "description": "CDD_FVM_E_COPY_VERIFY 参数",
       "default": 9,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DET ERROR CODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CDD_FVM_E_HW": {
       "type": "integer",
-      "description": "hardware backend error",
+      "description": "CDD_FVM_E_HW 参数",
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "DET ERROR CODES"
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
@@ -262,13 +262,5 @@
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
   "x-source-file": "src/bsw/cdd/include/Cdd_Fvm_Cfg.h",
-  "x-display-name": "Cdd_Fvm",
-  "x-sections": [
-    "MODULE SWITCHES",
-    "BACKEND SELECTION",
-    "BANK GEOMETRY",
-    "INTEGRITY METADATA",
-    "RAM BACKEND (TEST / NATIVE)",
-    "DET ERROR CODES"
-  ]
+  "x-display-name": "Cdd_Fvm"
 }

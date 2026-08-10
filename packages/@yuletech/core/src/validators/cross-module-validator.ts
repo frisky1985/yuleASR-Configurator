@@ -44,7 +44,16 @@ export class CrossModuleValidator {
         for (const ref of param.crossReferences) {
           const targetConfig = configMap.get(ref.module);
           if (!targetConfig) {
-            // Target module not in this config set — skip, that's the YuleasrValidator's job
+            // required: 依赖模块必须存在（时钟/外设等基础设施缺失 → 报错）
+            if (ref.relation === 'required') {
+              errors.push({
+                path: `${config.module}.${param.name}`,
+                message: `依赖模块 ${ref.module} 未配置（${ref.description || `module ${ref.module} required`}）`,
+                severity: ref.severity,
+                code: 'CROSS_REF_REQUIRED',
+              });
+            }
+            // 其他关系: Target module not in this config set — skip, that's the YuleasrValidator's job
             continue;
           }
 
@@ -98,7 +107,18 @@ export class CrossModuleValidator {
           if (sourceValue === undefined || sourceValue === null) continue;
 
           const targetConfig = configMap.get(ref.module);
-          if (!targetConfig) continue;
+          if (!targetConfig) {
+            // required: 依赖模块必须存在（时钟/外设等基础设施缺失 → 报错）
+            if (ref.relation === 'required') {
+              errors.push({
+                path: `${config.module}.${ref.sourceParam}`,
+                message: `依赖模块 ${ref.module} 未配置（${ref.description || `module ${ref.module} required`}）`,
+                severity: ref.severity,
+                code: 'CROSS_REF_REQUIRED',
+              });
+            }
+            continue;
+          }
 
           const checkResult = this.checkReference(
             ref.sourceParam,
@@ -228,6 +248,14 @@ export class CrossModuleValidator {
         const validValues = targetParam.options.map(o => o.value);
         if (validValues.includes(actual as string | number | boolean)) return null;
         return `值 ${actual} 不在目标模块 ${targetSchema.name} 的允许值 [${validValues.join(', ')}] 中 (${ref?.description || ''})`;
+      }
+
+      case 'required': {
+        // 依赖必须存在：目标模块已配置（外层已保证），此处检查目标参数已配置
+        if (target === undefined || target === null) {
+          return `依赖参数 ${ref?.param} 未配置（${ref?.description || 'required parameter missing'}）`;
+        }
+        return null;
       }
 
       default:

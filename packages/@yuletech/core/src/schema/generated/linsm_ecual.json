@@ -2,52 +2,42 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/linsm_ecual.json",
   "title": "LinSM_Ecual Configuration",
-  "description": "Enable/Disable version information API",
+  "description": "LinSM_Ecual Configuration configuration header",
   "type": "object",
   "properties": {
     "LINSM_VERSION_INFO_API": {
       "type": "boolean",
       "description": "LINSM_VERSION_INFO_API 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "LINSM_DEV_ERROR_DETECT 参数",
-      "default": true
-    },
-    "LINSM_WAKEUP_SUPPORT": {
-      "type": "boolean",
-      "description": "LINSM_WAKEUP_SUPPORT 参数",
-      "default": true
-    },
-    "LINSM_SLEEP_SUPPORT": {
-      "type": "boolean",
-      "description": "LINSM_SLEEP_SUPPORT 参数",
-      "default": true
-    },
-    "LINSM_SCHEDULE_TABLE_SWITCHING": {
-      "type": "boolean",
-      "description": "LINSM_SCHEDULE_TABLE_SWITCHING 参数",
-      "default": true
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_CHANNEL_COUNT": {
       "type": "integer",
       "description": "LINSM_CHANNEL_COUNT 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_SCHEDULE_COUNT_PER_CHANNEL": {
       "type": "integer",
       "description": "LINSM_SCHEDULE_COUNT_PER_CHANNEL 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_TOTAL_SCHEDULE_COUNT": {
       "type": "string",
       "description": "LINSM_TOTAL_SCHEDULE_COUNT（派生表达式: (LINSM_CHANNEL_COUNT * LINSM_SCHEDULE_COUNT_PER_CHANNEL)）",
       "default": "(LINSM_CHANNEL_COUNT * LINSM_SCHEDULE_COUNT_PER_CHANNEL)",
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "expression"
     },
     "LINSM_WAKEUP_SOURCE_COUNT": {
@@ -55,119 +45,162 @@
       "description": "LINSM_WAKEUP_SOURCE_COUNT 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINSM_MAX_RETRY_COUNT": {
+      "type": "integer",
+      "description": "LINSM_MAX_RETRY_COUNT 参数",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_SCHEDULE_CONFIRMATION_TIMEOUT": {
       "type": "integer",
       "description": "LINSM_SCHEDULE_CONFIRMATION_TIMEOUT 参数",
       "default": 1000,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_WAKEUP_CONFIRMATION_TIMEOUT": {
       "type": "integer",
       "description": "LINSM_WAKEUP_CONFIRMATION_TIMEOUT 参数",
       "default": 5000,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_SLEEP_CONFIRMATION_TIMEOUT": {
       "type": "integer",
       "description": "LINSM_SLEEP_CONFIRMATION_TIMEOUT 参数",
       "default": 1000,
       "minimum": 0,
-      "maximum": 65535
-    },
-    "LINSM_MODE_REQUEST_REPETITION_TIME": {
-      "type": "integer",
-      "description": "LINSM_MODE_REQUEST_REPETITION_TIME 参数",
-      "default": 50,
-      "minimum": 0,
-      "maximum": 255
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_MAIN_FUNCTION_PERIOD_MS": {
       "type": "integer",
       "description": "LINSM_MAIN_FUNCTION_PERIOD_MS 参数",
       "default": 10,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINSM_WAKEUP_SUPPORT": {
+      "type": "boolean",
+      "description": "LINSM_WAKEUP_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINSM_SLEEP_SUPPORT": {
+      "type": "boolean",
+      "description": "LINSM_SLEEP_SUPPORT 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINSM_SCHEDULE_TABLE_SWITCHING": {
+      "type": "boolean",
+      "description": "LINSM_SCHEDULE_TABLE_SWITCHING 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "LINSM_MODE_REQUEST_REPETITION_TIME": {
+      "type": "integer",
+      "description": "LINSM_MODE_REQUEST_REPETITION_TIME 参数",
+      "default": 50,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_CHANNEL_0": {
       "type": "integer",
       "description": "LINSM_CHANNEL_0 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_CHANNEL_1": {
       "type": "integer",
       "description": "LINSM_CHANNEL_1 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_INVALID_CHANNEL": {
       "type": "integer",
       "description": "LINSM_INVALID_CHANNEL 参数",
       "default": 255,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_SCHEDULE_NULL": {
       "type": "integer",
       "description": "LINSM_SCHEDULE_NULL 参数",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_SCHEDULE_DIAG_REQUEST": {
       "type": "integer",
       "description": "LINSM_SCHEDULE_DIAG_REQUEST 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_SCHEDULE_DIAG_RESPONSE": {
       "type": "integer",
       "description": "LINSM_SCHEDULE_DIAG_RESPONSE 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_SCHEDULE_NORMAL": {
       "type": "integer",
       "description": "LINSM_SCHEDULE_NORMAL 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_SCHEDULE_MASTER": {
       "type": "integer",
       "description": "LINSM_SCHEDULE_MASTER 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_SCHEDULE_INVALID": {
       "type": "integer",
       "description": "LINSM_SCHEDULE_INVALID 参数",
       "default": 255,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_WKSOURCE_LIN_CH0": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_LIN_CH0 参数",
       "default": 32,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ECUM_WKSOURCE_LIN_CH1": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_LIN_CH1 参数",
       "default": 33,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_CHANNEL_LIN1": {
       "type": "integer",
@@ -175,21 +208,24 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },
     "LINSM_WAKEUP_SOURCE_CH0": {
       "type": "integer",
-      "description": "LINSM_WAKEUP_SOURCE_CH0（别名: ECUM_WKSOURCE_LIN_CH0 = 32；同族可选: ECUM_WKSOURCE_LIN_CH0 / ECUM_WKSOURCE_LIN_CH1）",
+      "description": "LINSM_WAKEUP_SOURCE_CH0 参数",
       "default": 32,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_WAKEUP_SOURCE_CH1": {
       "type": "integer",
-      "description": "LINSM_WAKEUP_SOURCE_CH1（别名: ECUM_WKSOURCE_LIN_CH1 = 33；同族可选: ECUM_WKSOURCE_LIN_CH0 / ECUM_WKSOURCE_LIN_CH1）",
+      "description": "LINSM_WAKEUP_SOURCE_CH1 参数",
       "default": 33,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_COMM_CHANNEL_0": {
       "type": "enum",
@@ -199,61 +235,62 @@
         "COMM_CHANNEL_LIN0",
         "COMM_CHANNEL_LIN1",
         "COMM_CHANNEL_STATE_NOCOM"
-      ]
+      ],
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_COMM_CHANNEL_1": {
       "type": "integer",
-      "description": "LINSM_COMM_CHANNEL_1（别名: COMM_CHANNEL_LIN1 = 1；同族可选: COMM_CHANNEL_LIN0 / COMM_CHANNEL_LIN1 / COMM_CHANNEL_STATE_NOCOM）",
+      "description": "LINSM_COMM_CHANNEL_1 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_MAX_TRANSITIONS_PER_CYCLE": {
       "type": "integer",
       "description": "LINSM_MAX_TRANSITIONS_PER_CYCLE 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 255
-    },
-    "LINSM_MAX_RETRY_COUNT": {
-      "type": "integer",
-      "description": "LINSM_MAX_RETRY_COUNT 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_POSTBUILD_VARIANT_SUPPORT": {
       "type": "boolean",
       "description": "LINSM_POSTBUILD_VARIANT_SUPPORT 参数",
-      "default": false
+      "default": false,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_CONFIG_VARIANT": {
       "type": "integer",
-      "description": "LINSM_CONFIG_VARIANT（别名: LINSM_VARIANT_PRECOMPILE = 1；同族可选: LINSM_VARIANT_LINKTIME / LINSM_VARIANT_POSTBUILD / LINSM_VARIANT_PRECOMPILE）",
+      "description": "LINSM_CONFIG_VARIANT 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_VARIANT_PRECOMPILE": {
       "type": "integer",
       "description": "LINSM_VARIANT_PRECOMPILE 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_VARIANT_LINKTIME": {
       "type": "integer",
       "description": "LINSM_VARIANT_LINKTIME 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINSM_VARIANT_POSTBUILD": {
       "type": "integer",
       "description": "LINSM_VARIANT_POSTBUILD 参数",
       "default": 3,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
