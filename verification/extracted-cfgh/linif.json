@@ -102,6 +102,14 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "LinIf 通道数不应超过 Lin 可用通道数"
+    },
+    {
+      "sourceParam": "LINIF_MAX_CHANNELS",
+      "module": "Lin",
+      "param": "LIN_MAX_CHANNELS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "LinIf 通道数不应超过 Lin 通道数"
     }
   ],
   "x-layer": "ECUAL",

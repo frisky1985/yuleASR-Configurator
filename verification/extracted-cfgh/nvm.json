@@ -359,6 +359,14 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "NvM ROM 块数不应超过 Ea 块数"
+    },
+    {
+      "sourceParam": "NVM_NUM_OF_NVRAM_BLOCKS",
+      "module": "MemIf",
+      "param": "MEMIF_NUMBER_OF_DEVICES",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "NvM 块数应匹配 MemIf 设备数"
     }
   ],
   "x-layer": "Service",

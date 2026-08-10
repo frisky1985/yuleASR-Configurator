@@ -337,6 +337,14 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "CanTp 通道数不应超过 Can 控制器数"
+    },
+    {
+      "sourceParam": "CANTP_NUM_CHANNELS",
+      "module": "PduR",
+      "param": "PDUR_NUMBER_OF_ROUTING_PATHS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "CanTp 通道数不应超过 PduR 路由路径数"
     }
   ],
   "x-layer": "ECUAL",

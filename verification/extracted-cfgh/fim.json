@@ -266,6 +266,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "FIM_NUM_FUNCTIONS",
+      "module": "Dem",
+      "param": "DEM_NUM_DTCS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "FiM 功能数不应超过 Dem DTC 数"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

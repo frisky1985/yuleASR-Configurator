@@ -425,6 +425,14 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "Dcm 连接数不应超过 PduR 路由路径数"
+    },
+    {
+      "sourceParam": "DCM_NUM_CONNECTIONS",
+      "module": "CanTp",
+      "param": "CANTP_NUM_CHANNELS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Dcm 连接数不应超过 CanTp 通道数"
     }
   ],
   "x-layer": "Service",

@@ -79,6 +79,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "WDGIF_NUMBER_OF_DEVICES",
+      "module": "WdgM",
+      "param": "WDGM_CFG_MAX_SUPERVISED_ENTITIES",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "WdgIf 设备数不应超过 WdgM 监督实体数"
+    }
+  ],
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

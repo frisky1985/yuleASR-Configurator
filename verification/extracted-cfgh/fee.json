@@ -632,6 +632,14 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "Fee 块大小不应超过 Fls 支持的最大读取大小"
+    },
+    {
+      "sourceParam": "FEE_NUM_BLOCKS",
+      "module": "MemIf",
+      "param": "MEMIF_NUMBER_OF_DEVICES",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Fee 块数应匹配 MemIf 设备数"
     }
   ],
   "x-layer": "MCAL",

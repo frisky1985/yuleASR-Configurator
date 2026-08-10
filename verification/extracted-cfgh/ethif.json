@@ -254,6 +254,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "ETHIF_NUM_FRAME_OWNERS",
+      "module": "Eth",
+      "param": "ETH_MAX_CONTROLLERS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "EthIf 帧属主数不应超过 Eth 控制器数"
+    }
+  ],
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

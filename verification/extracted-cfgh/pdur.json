@@ -209,6 +209,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "PDUR_NUMBER_OF_ROUTING_PATHS",
+      "module": "CanIf",
+      "param": "CANIF_NUM_RX_PDUS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "PduR 路由路径数不应超过 CanIf 接收 PDU 数"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

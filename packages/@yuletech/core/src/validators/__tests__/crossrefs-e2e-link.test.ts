@@ -1,4 +1,6 @@
 import { describe, it, expect } from 'vitest';
+import { readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 import { schemaExtractor } from '../../schema-extractor';
 import { loadModuleSchemas } from '../../schema/load-generated';
@@ -15,6 +17,22 @@ describe('P2-2 crossReferences end-to-end link', () => {
     const schemas = loadModuleSchemas();
     const withRefs = schemas.filter(s => s.crossReferences && s.crossReferences.length > 0);
     expect(withRefs.length).toBeGreaterThanOrEqual(15);
+
+    // 宏名版全集（extracted-cfgh）目标参数索引：宏名版引用（CfgH-Extracted 模块）
+    // 的目标参数（如 Dem.DEM_NUM_DTCS）只在宏名版 schema 存在；generated/ 中目标模块
+    // 可能是手写版（ARXML 参数名），故目标存在性需在两个全集中任一命中。
+    const macroParams = new Map<string, Set<string>>();
+    const macroContainers = new Map<string, Set<string>>();
+    const macroDir = join(__dirname, '../../../../../..', 'verification/extracted-cfgh');
+    for (const f of readdirSync(macroDir).filter(f => f.endsWith('.json'))) {
+      const j = JSON.parse(readFileSync(join(macroDir, f), 'utf8')) as {
+        'x-display-name'?: string;
+        properties?: Record<string, unknown>;
+      };
+      const key = (j['x-display-name'] || f.replace(/\.json$/, '')).toLowerCase();
+      macroParams.set(key, new Set(Object.keys(j.properties || {})));
+    }
+
     // Every crossReference must point to real params in the loaded schema set
     for (const s of withRefs) {
       for (const ref of s.crossReferences!) {
@@ -24,9 +42,12 @@ describe('P2-2 crossReferences end-to-end link', () => {
         const targetParams = new Set(target!.parameters.map(p => p.name));
         // container names also count as targets for in_enum refs
         const targetContainers = new Set((target!.containers || []).map(c => c.name));
+        const macroHits = macroParams.get(ref.module.toLowerCase());
         expect(
-          targetParams.has(ref.param) || targetContainers.has(ref.param),
-          `${ref.module}.${ref.param} should exist`
+          targetParams.has(ref.param) ||
+            targetContainers.has(ref.param) ||
+            (macroHits !== undefined && macroHits.has(ref.param)),
+          `${ref.module}.${ref.param} should exist (generated 或宏名版 extracted-cfgh)`
         ).toBe(true);
       }
     }

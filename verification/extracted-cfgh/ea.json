@@ -225,6 +225,14 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "Ea 块数应与 Eep 存储容量匹配"
+    },
+    {
+      "sourceParam": "EA_NUM_BLOCKS",
+      "module": "MemIf",
+      "param": "MEMIF_NUMBER_OF_DEVICES",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Ea 块数应匹配 MemIf 设备数"
     }
   ],
   "x-layer": "ECUAL",
