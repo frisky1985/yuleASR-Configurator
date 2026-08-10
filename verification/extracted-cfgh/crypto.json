@@ -870,6 +870,14 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "Crypto 通道数不应超过 CryIf 可用通道数"
+    },
+    {
+      "sourceParam": "CRYPTO_CFG_MAX_CHANNELS",
+      "module": "Csm",
+      "param": "CSM_CFG_MAX_CONCURRENT_JOBS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Crypto 通道数不应超过 Csm 并发任务数"
     }
   ],
   "x-layer": "MCAL",

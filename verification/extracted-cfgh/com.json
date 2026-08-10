@@ -146,6 +146,14 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "Com 信号数不应超过 PduR 路由路径数"
+    },
+    {
+      "sourceParam": "COM_MAX_SIGNALS",
+      "module": "CanIf",
+      "param": "CANIF_NUM_RX_PDUS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Com 信号数不应超过 CanIf 接收 PDU 数"
     }
   ],
   "x-layer": "Service",

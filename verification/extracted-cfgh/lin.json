@@ -109,6 +109,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "LIN_MAX_CHANNELS",
+      "module": "LinIf",
+      "param": "LINIF_MAX_CHANNELS",
+      "relation": "equals",
+      "severity": "warning",
+      "description": "Lin 通道数应等于 LinIf 通道数"
+    }
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

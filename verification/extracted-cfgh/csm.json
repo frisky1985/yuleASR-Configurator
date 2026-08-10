@@ -498,6 +498,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "CSM_CFG_MAX_CONCURRENT_JOBS",
+      "module": "Crypto",
+      "param": "CRYPTO_CFG_MAX_CHANNELS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Csm 并发任务数不应超过 Crypto 通道数"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

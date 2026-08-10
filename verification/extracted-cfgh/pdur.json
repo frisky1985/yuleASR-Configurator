@@ -217,6 +217,14 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "PduR 路由路径数不应超过 CanIf 接收 PDU 数"
+    },
+    {
+      "sourceParam": "PDUR_NUMBER_OF_ROUTING_PATHS",
+      "module": "Dcm",
+      "param": "DCM_NUM_CONNECTIONS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "PduR 路由路径数不应超过 Dcm 连接数"
     }
   ],
   "x-layer": "Service",

@@ -247,6 +247,14 @@
       "relation": "in_range",
       "severity": "warning",
       "description": "WdgM DEM 集成事件应在 Dem DTC 范围内"
+    },
+    {
+      "sourceParam": "WDGM_CFG_MAX_SUPERVISED_ENTITIES",
+      "module": "Dem",
+      "param": "DEM_NUM_DTCS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "WdgM 监督实体数不应超过 Dem DTC 数"
     }
   ],
   "x-layer": "Service",

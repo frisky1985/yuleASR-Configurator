@@ -367,6 +367,14 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "NvM 块数应匹配 MemIf 设备数"
+    },
+    {
+      "sourceParam": "NVM_NUM_OF_NVRAM_BLOCKS",
+      "module": "Fee",
+      "param": "FEE_NUM_BLOCKS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "NvM 块数不应超过 Fee 块数"
     }
   ],
   "x-layer": "Service",

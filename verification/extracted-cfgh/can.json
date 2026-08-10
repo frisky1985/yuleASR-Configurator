@@ -187,6 +187,14 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "CAN 波特率配置应与收发器支持能力匹配"
+    },
+    {
+      "sourceParam": "CAN_NUM_CONTROLLERS",
+      "module": "CanIf",
+      "param": "CANIF_NUM_TX_PDUS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Can 控制器数不应超过 CanIf 发送 PDU 数"
     }
   ],
   "x-layer": "MCAL",
