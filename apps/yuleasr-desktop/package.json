@@ -1,7 +1,7 @@
 {
   "name": "yuleasr-desktop",
   "version": "0.4.0",
-  "description": "yuleASR Configurator \u2014 Desktop Application",
+  "description": "yuleASR Configurator — Desktop Application",
   "author": "yuleTech <stefan@yuletech.com>",
   "homepage": "https://github.com/frisky1985/yuleASR-Configurator",
   "private": true,
@@ -79,5 +79,6 @@
         "deb"
       ]
     }
-  }
+  },
+  "license": "Proprietary"
 }

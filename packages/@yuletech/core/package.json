@@ -108,5 +108,6 @@
   ],
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "license": "Proprietary"
 }
