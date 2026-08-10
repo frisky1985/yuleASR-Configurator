@@ -540,6 +540,14 @@
     }
   },
   "additionalProperties": true,
+  "dependencies": [
+    {
+      "module": "Mcu",
+      "required": true,
+      "description": "EcuM requires Mcu",
+      "severity": "error"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

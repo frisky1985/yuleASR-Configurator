@@ -203,6 +203,14 @@
       "description": "Gpt 模块依赖 Mcu 系统时钟，时钟必须配置"
     }
   ],
+  "dependencies": [
+    {
+      "module": "Mcu",
+      "required": false,
+      "description": "Gpt should have Mcu",
+      "severity": "warning"
+    }
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

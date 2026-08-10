@@ -285,6 +285,24 @@
       "description": "CanIf 依赖 Can 控制器，Can 必须配置"
     }
   ],
+  "dependencies": [
+    {
+      "module": "Can",
+      "required": true,
+      "description": "CanIf requires Can driver",
+      "severity": "error"
+    },
+    {
+      "module": "Can",
+      "required": false,
+      "description": "CanIf requires at least one CAN controller configured",
+      "severity": "warning",
+      "paramCheck": {
+        "type": "container_not_empty",
+        "container": "CanController"
+      }
+    }
+  ],
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

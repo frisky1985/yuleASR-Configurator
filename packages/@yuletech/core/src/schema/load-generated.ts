@@ -14,6 +14,7 @@ import type {
   ModuleParameter,
   ContainerSchema,
   CrossModuleReference,
+  ModuleDependency,
   ModuleLayer,
 } from '../types';
 
@@ -53,6 +54,8 @@ interface GeneratedModuleJson {
   /** 手写头源路径（重名模块按此精确匹配，如 DoIP services/ecual 两版） */
   'x-source-file'?: string;
   crossReferences?: CrossModuleReference[];
+  /** 模块级依赖（统一管理 2026-08-10：原 dependencyRules 硬编码表数据化） */
+  dependencies?: ModuleDependency[];
 }
 
 /** 容器名后缀，用于识别"配置容器" (描述含"配置容器"或"容器") */
@@ -215,6 +218,11 @@ export function generatedJsonToModuleSchema(
 
   if (Array.isArray(json.crossReferences) && json.crossReferences.length > 0) {
     schema.crossReferences = json.crossReferences;
+  }
+
+  // 统一管理（2026-08-10）：模块级依赖数据化透传（原 dependencyRules 硬编码表迁移）
+  if (Array.isArray(json.dependencies) && json.dependencies.length > 0) {
+    schema.dependencies = json.dependencies;
   }
 
   return schema;

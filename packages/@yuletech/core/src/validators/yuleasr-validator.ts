@@ -30,12 +30,15 @@ export interface ModuleValidationRules {
 export class YuleasrValidator {
   private moduleRules: Map<string, ModuleValidationRules> = new Map();
   private crossModuleValidator: CrossModuleValidator | null = null;
+  /** 统一管理（2026-08-10）：schema 引用，模块级依赖从 schema.dependencies 读取 */
+  private schemaMap: Map<string, ModuleSchema> = new Map();
 
   /**
    * 设置跨模块验证器
    */
   setCrossModuleValidator(schemas: ModuleSchema[]): void {
-    this.crossModuleValidator = new CrossModuleValidator(new Map(schemas.map(s => [s.name, s])));
+    this.schemaMap = new Map(schemas.map(s => [s.name, s]));
+    this.crossModuleValidator = new CrossModuleValidator(this.schemaMap);
   }
 
   /**
@@ -162,107 +165,31 @@ export class YuleasrValidator {
       allErrors.push(...errors);
     }
 
-    // 检查模块间依赖
+    // 检查模块间依赖（统一管理 2026-08-10：从 schema.dependencies 数据读取，
+    // 替代原先硬编码在 yuleasr-validator.ts 的 dependencyRules 表）
     const moduleNames = new Set(configs.map(c => c.module));
-
-    // AUTOSAR BSW 标准依赖关系定义
-    interface DependencyParamCheck {
-      type: 'container_not_empty' | 'value_gt' | 'value_equals';
-      container?: string;
-      param?: string;
-      expected?: unknown;
-    }
-    interface DependencyEntry {
-      module: string;
-      severity: 'error' | 'warning';
-      message: string;
-      paramCheck?: DependencyParamCheck;
-    }
-
-    const dependencyRules: Record<string, DependencyEntry[]> = {
-      CanIf: [
-        { module: 'Can', severity: 'error', message: 'CanIf requires Can driver' },
-        {
-          module: 'Can',
-          severity: 'warning',
-          message: 'CanIf requires at least one CAN controller configured',
-          paramCheck: { type: 'container_not_empty', container: 'CanController' },
-        },
-      ],
-      CanNm: [
-        { module: 'CanIf', severity: 'error', message: 'CanNm requires CanIf' },
-        { module: 'Nm', severity: 'error', message: 'CanNm requires Nm' },
-      ],
-      CanSM: [
-        { module: 'CanIf', severity: 'error', message: 'CanSM requires CanIf' },
-        { module: 'ComM', severity: 'warning', message: 'CanSM should have ComM' },
-      ],
-      CanTp: [
-        { module: 'CanIf', severity: 'error', message: 'CanTp requires CanIf' },
-        { module: 'PduR', severity: 'error', message: 'CanTp requires PduR' },
-      ],
-      CanTrcv: [{ module: 'Can', severity: 'warning', message: 'CanTrcv should have Can' }],
-      Com: [{ module: 'PduR', severity: 'error', message: 'Com requires PduR' }],
-      ComM: [
-        { module: 'Com', severity: 'error', message: 'ComM requires Com' },
-        { module: 'Nm', severity: 'warning', message: 'ComM should have Nm' },
-      ],
-      Dcm: [
-        { module: 'Com', severity: 'error', message: 'Dcm requires Com' },
-        { module: 'PduR', severity: 'error', message: 'Dcm requires PduR' },
-        { module: 'Dem', severity: 'warning', message: 'Dcm should have Dem' },
-      ],
-      Dem: [
-        { module: 'Dcm', severity: 'error', message: 'Dem requires Dcm' },
-        { module: 'NvM', severity: 'warning', message: 'Dem should have NvM' },
-      ],
-      Det: [],
-      Dio: [
-        { module: 'Port', severity: 'error', message: 'Dio requires Port' },
-        { module: 'Mcu', severity: 'warning', message: 'Dio should have Mcu' },
-      ],
-      EcuM: [{ module: 'Mcu', severity: 'error', message: 'EcuM requires Mcu' }],
-      Fee: [
-        { module: 'Fls', severity: 'error', message: 'Fee requires Fls' },
-        { module: 'MemIf', severity: 'error', message: 'Fee requires MemIf' },
-      ],
-      Fls: [{ module: 'Mcu', severity: 'warning', message: 'Fls should have Mcu' }],
-      Gpt: [{ module: 'Mcu', severity: 'warning', message: 'Gpt should have Mcu' }],
-      Icu: [{ module: 'Mcu', severity: 'warning', message: 'Icu should have Mcu' }],
-      Mcl: [{ module: 'Mcu', severity: 'warning', message: 'Mcl should have Mcu' }],
-      MemIf: [{ module: 'Fee', severity: 'error', message: 'MemIf requires Fee or Ea' }],
-      Nm: [{ module: 'ComM', severity: 'error', message: 'Nm requires ComM' }],
-      NvM: [{ module: 'MemIf', severity: 'error', message: 'NvM requires MemIf' }],
-      Os: [{ module: 'EcuM', severity: 'warning', message: 'Os should have EcuM' }],
-      PduR: [{ module: 'CanIf', severity: 'error', message: 'PduR requires CanIf' }],
-      Rte: [
-        { module: 'Os', severity: 'error', message: 'Rte requires Os' },
-        { module: 'Com', severity: 'warning', message: 'Rte should have Com' },
-      ],
-      Spi: [{ module: 'Mcu', severity: 'warning', message: 'Spi should have Mcu' }],
-      Adc: [{ module: 'Mcu', severity: 'warning', message: 'Adc should have Mcu' }],
-      Port: [{ module: 'Mcu', severity: 'warning', message: 'Port should have Mcu' }],
-    };
-
     const configMap = new Map(configs.map(c => [c.module, c]));
 
     for (const config of configs) {
-      const rules = dependencyRules[config.module];
-      if (!rules) continue;
+      const schema = this.schemaMap.get(config.module);
+      const deps = schema?.dependencies;
+      if (!deps || deps.length === 0) continue;
 
-      for (const dep of rules) {
+      for (const dep of deps) {
+        const severity = dep.severity || (dep.required ? 'error' : 'warning');
+        const message = dep.description || `${config.module} depends on ${dep.module}`;
         if (!moduleNames.has(dep.module)) {
           allErrors.push({
             path: config.module,
-            message: dep.message,
-            severity: dep.severity,
+            message,
+            severity,
           });
         } else if (dep.paramCheck) {
           // Module exists — perform parameter-level check
           const depConfig = configMap.get(dep.module);
           if (!depConfig) continue;
 
-          const { paramCheck: pc } = dep;
+          const pc = dep.paramCheck;
           let paramFailed = false;
 
           switch (pc.type) {
@@ -286,8 +213,8 @@ export class YuleasrValidator {
           if (paramFailed) {
             allErrors.push({
               path: config.module,
-              message: dep.message,
-              severity: dep.severity,
+              message,
+              severity,
             });
           }
         }

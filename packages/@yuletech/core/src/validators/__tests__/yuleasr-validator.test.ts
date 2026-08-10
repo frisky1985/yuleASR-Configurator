@@ -1,7 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import { readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 import type { ModuleConfig } from '../../types';
 import { YuleasrValidator, yuleasrValidator } from '../yuleasr-validator';
+import { generatedJsonToModuleSchema } from '../../schema/load-generated';
 
 function makeConfig(module: string, params: Record<string, unknown> = {}): ModuleConfig {
   return {
@@ -11,11 +14,28 @@ function makeConfig(module: string, params: Record<string, unknown> = {}): Modul
   };
 }
 
+/** 加载宏名版 schemas（统一管理后依赖数据在 schema.dependencies，测试需注入） */
+function loadMacroSchemas() {
+  const dir = join(__dirname, '../../../../../..', 'verification/extracted-cfgh');
+  return readdirSync(dir)
+    .filter(f => f.endsWith('.json'))
+    .sort()
+    .map(f => {
+      const json = JSON.parse(readFileSync(join(dir, f), 'utf8')) as Record<string, unknown> & {
+        'x-display-name'?: string;
+      };
+      const name = json['x-display-name'] || f.replace(/\.json$/, '');
+      return generatedJsonToModuleSchema(name, json as never);
+    });
+}
+
 describe('YuleasrValidator', () => {
   let validator: YuleasrValidator;
 
   beforeEach(() => {
     validator = new YuleasrValidator();
+    // 统一管理后模块级依赖从 schema.dependencies 读取，测试注入宏名版 schemas
+    validator.setCrossModuleValidator(loadMacroSchemas());
     validator.registerModuleRules({
       module: 'Mcu',
       rules: [

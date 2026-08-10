@@ -299,6 +299,20 @@
     }
   },
   "additionalProperties": true,
+  "dependencies": [
+    {
+      "module": "CanIf",
+      "required": true,
+      "description": "CanNm requires CanIf",
+      "severity": "error"
+    },
+    {
+      "module": "Nm",
+      "required": true,
+      "description": "CanNm requires Nm",
+      "severity": "error"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

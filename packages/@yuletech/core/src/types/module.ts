@@ -36,6 +36,15 @@ export interface ModuleDependency {
   required: boolean;
   /** 依赖说明 */
   description?: string;
+  /** 违反严重级别（error/warning，2026-08-10 统一管理） */
+  severity?: 'error' | 'warning';
+  /** 参数级依赖检查（模块存在时进一步校验，2026-08-10 统一管理） */
+  paramCheck?: {
+    type: 'container_not_empty' | 'value_gt' | 'value_equals';
+    container?: string;
+    param?: string;
+    expected?: unknown;
+  };
 }
 
 /**

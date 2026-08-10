@@ -393,6 +393,14 @@
       "description": "NvM 依赖 MemIf 设备，MemIf 必须配置"
     }
   ],
+  "dependencies": [
+    {
+      "module": "MemIf",
+      "required": true,
+      "description": "NvM requires MemIf",
+      "severity": "error"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

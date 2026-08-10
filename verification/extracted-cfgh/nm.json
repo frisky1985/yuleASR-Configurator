@@ -200,6 +200,14 @@
     "#define NM_REMOTE_SLEEP_INDICATION(ch) \\\nAppl_Nm_RemoteSleepIndication(ch)",
     "#define NM_REMOTE_SLEEP_CANCELLATION(ch) \\\nAppl_Nm_RemoteSleepCancellation(ch)"
   ],
+  "dependencies": [
+    {
+      "module": "ComM",
+      "required": true,
+      "description": "Nm requires ComM",
+      "severity": "error"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

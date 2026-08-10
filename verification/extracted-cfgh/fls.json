@@ -254,6 +254,14 @@
       "description": "Fls 读取大小不应超过 Eep 容量"
     }
   ],
+  "dependencies": [
+    {
+      "module": "Mcu",
+      "required": false,
+      "description": "Fls should have Mcu",
+      "severity": "warning"
+    }
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

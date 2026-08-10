@@ -443,6 +443,26 @@
       "description": "Dcm 依赖 PduR 路由路径，PduR 必须配置"
     }
   ],
+  "dependencies": [
+    {
+      "module": "Com",
+      "required": true,
+      "description": "Dcm requires Com",
+      "severity": "error"
+    },
+    {
+      "module": "PduR",
+      "required": true,
+      "description": "Dcm requires PduR",
+      "severity": "error"
+    },
+    {
+      "module": "Dem",
+      "required": false,
+      "description": "Dcm should have Dem",
+      "severity": "warning"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

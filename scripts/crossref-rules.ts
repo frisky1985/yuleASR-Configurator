@@ -588,3 +588,71 @@ export const CROSSREF_RULES: CrossrefRule[] = [
     description: 'Dcm 依赖 PduR 路由路径，PduR 必须配置',
   },
 ];
+
+/**
+ * MODULE_DEPENDENCY_RULES — 模块级依赖（2026-08-10 统一管理）
+ *
+ * 背景：原先 35 条模块依赖硬编码在 yuleasr-validator.ts 的 dependencyRules 表，
+ * 本次迁移到数据文件统一管理（与 crossReferences 同源），由 F1 提取器注入
+ * extracted-cfgh/*.json 的 dependencies 字段，yuleasr-validator 改为从 schema 读取。
+ *
+ * 语义：sourceModule 被配置时，目标模块必须存在（required=error）或建议存在
+ * （required=false → warning）；paramCheck 支持模块存在时的进一步参数级校验。
+ */
+export interface ModuleDependencyRule {
+  sourceModule: string;
+  targetModule: string;
+  required: boolean;
+  message: string;
+  paramCheck?: {
+    type: 'container_not_empty' | 'value_gt' | 'value_equals';
+    container?: string;
+    param?: string;
+    expected?: unknown;
+  };
+}
+
+export const MODULE_DEPENDENCY_RULES: ModuleDependencyRule[] = [
+  { sourceModule: 'CanIf', targetModule: 'Can', required: true, message: 'CanIf requires Can driver' },
+  {
+    sourceModule: 'CanIf',
+    targetModule: 'Can',
+    required: false,
+    message: 'CanIf requires at least one CAN controller configured',
+    paramCheck: { type: 'container_not_empty', container: 'CanController' },
+  },
+  { sourceModule: 'CanNm', targetModule: 'CanIf', required: true, message: 'CanNm requires CanIf' },
+  { sourceModule: 'CanNm', targetModule: 'Nm', required: true, message: 'CanNm requires Nm' },
+  { sourceModule: 'CanSm', targetModule: 'CanIf', required: true, message: 'CanSM requires CanIf' },
+  { sourceModule: 'CanSm', targetModule: 'ComM', required: false, message: 'CanSM should have ComM' },
+  { sourceModule: 'CanTp', targetModule: 'CanIf', required: true, message: 'CanTp requires CanIf' },
+  { sourceModule: 'CanTp', targetModule: 'PduR', required: true, message: 'CanTp requires PduR' },
+  { sourceModule: 'CanTrcv', targetModule: 'Can', required: false, message: 'CanTrcv should have Can' },
+  { sourceModule: 'Com', targetModule: 'PduR', required: true, message: 'Com requires PduR' },
+  { sourceModule: 'ComM', targetModule: 'Com', required: true, message: 'ComM requires Com' },
+  { sourceModule: 'ComM', targetModule: 'Nm', required: false, message: 'ComM should have Nm' },
+  { sourceModule: 'Dcm', targetModule: 'Com', required: true, message: 'Dcm requires Com' },
+  { sourceModule: 'Dcm', targetModule: 'PduR', required: true, message: 'Dcm requires PduR' },
+  { sourceModule: 'Dcm', targetModule: 'Dem', required: false, message: 'Dcm should have Dem' },
+  { sourceModule: 'Dem', targetModule: 'Dcm', required: true, message: 'Dem requires Dcm' },
+  { sourceModule: 'Dem', targetModule: 'NvM', required: false, message: 'Dem should have NvM' },
+  { sourceModule: 'Dio', targetModule: 'Port', required: true, message: 'Dio requires Port' },
+  { sourceModule: 'Dio', targetModule: 'Mcu', required: false, message: 'Dio should have Mcu' },
+  { sourceModule: 'EcuM', targetModule: 'Mcu', required: true, message: 'EcuM requires Mcu' },
+  { sourceModule: 'Fee', targetModule: 'Fls', required: true, message: 'Fee requires Fls' },
+  { sourceModule: 'Fee', targetModule: 'MemIf', required: true, message: 'Fee requires MemIf' },
+  { sourceModule: 'Fls', targetModule: 'Mcu', required: false, message: 'Fls should have Mcu' },
+  { sourceModule: 'Gpt', targetModule: 'Mcu', required: false, message: 'Gpt should have Mcu' },
+  { sourceModule: 'Icu', targetModule: 'Mcu', required: false, message: 'Icu should have Mcu' },
+  { sourceModule: 'Mcl', targetModule: 'Mcu', required: false, message: 'Mcl should have Mcu' },
+  { sourceModule: 'MemIf', targetModule: 'Fee', required: true, message: 'MemIf requires Fee or Ea' },
+  { sourceModule: 'Nm', targetModule: 'ComM', required: true, message: 'Nm requires ComM' },
+  { sourceModule: 'NvM', targetModule: 'MemIf', required: true, message: 'NvM requires MemIf' },
+  { sourceModule: 'Os', targetModule: 'EcuM', required: false, message: 'Os should have EcuM' },
+  { sourceModule: 'PduR', targetModule: 'CanIf', required: true, message: 'PduR requires CanIf' },
+  { sourceModule: 'Rte', targetModule: 'Os', required: true, message: 'Rte requires Os' },
+  { sourceModule: 'Rte', targetModule: 'Com', required: false, message: 'Rte should have Com' },
+  { sourceModule: 'Spi', targetModule: 'Mcu', required: false, message: 'Spi should have Mcu' },
+  { sourceModule: 'Adc', targetModule: 'Mcu', required: false, message: 'Adc should have Mcu' },
+  { sourceModule: 'Port', targetModule: 'Mcu', required: false, message: 'Port should have Mcu' },
+];

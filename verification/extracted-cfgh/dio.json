@@ -625,6 +625,20 @@
       "description": "Dio 每端口通道数应等于 Port 每端口引脚数"
     }
   ],
+  "dependencies": [
+    {
+      "module": "Port",
+      "required": true,
+      "description": "Dio requires Port",
+      "severity": "error"
+    },
+    {
+      "module": "Mcu",
+      "required": false,
+      "description": "Dio should have Mcu",
+      "severity": "warning"
+    }
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

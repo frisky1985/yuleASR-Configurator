@@ -51,7 +51,16 @@ describe('ValidationPipeline', () => {
     it('should capture cross-module dependency errors', () => {
       // CanTp requires CanIf and PduR — neither is present
       const configs: ModuleConfig[] = [makeConfig('CanTp')];
-      const schemas: ModuleSchema[] = [makeSchema('CanTp')];
+      // 统一管理（2026-08-10）：模块级依赖从 schema.dependencies 数据读取
+      const schemas: ModuleSchema[] = [
+        {
+          ...makeSchema('CanTp'),
+          dependencies: [
+            { module: 'CanIf', required: true, severity: 'error', description: 'CanTp requires CanIf' },
+            { module: 'PduR', required: true, severity: 'error', description: 'CanTp requires PduR' },
+          ],
+        },
+      ];
 
       const result = pipeline.validate(configs, schemas);
 
@@ -63,7 +72,7 @@ describe('ValidationPipeline', () => {
       expect(result.crossModuleErrors).toHaveLength(0);
       // Combined
       expect(result.isValid).toBe(false);
-      expect(result.allErrors.filter(e => e.severity === 'error').length).toBeGreaterThanOrEqual(1);
+      expect(result.allErrors.filter(e => e.severity === 'error').length).toBeGreaterThanOrEqual(2);
       const msgs = result.allErrors.map(e => e.message).join(' ');
       expect(msgs).toMatch(/CanTp/);
     });

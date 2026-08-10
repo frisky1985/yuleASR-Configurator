@@ -472,6 +472,14 @@
   "x-verbatim-defines": [
     "#define PORT_CONFIGSET_NAME             (Port_ConfigSet)"
   ],
+  "dependencies": [
+    {
+      "module": "Mcu",
+      "required": false,
+      "description": "Port should have Mcu",
+      "severity": "warning"
+    }
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

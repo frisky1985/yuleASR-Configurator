@@ -173,6 +173,14 @@
       "description": "Com 信号数不应超过 CanIf 接收 PDU 数"
     }
   ],
+  "dependencies": [
+    {
+      "module": "PduR",
+      "required": true,
+      "description": "Com requires PduR",
+      "severity": "error"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

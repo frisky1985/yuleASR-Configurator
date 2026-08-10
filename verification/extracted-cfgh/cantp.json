@@ -355,6 +355,20 @@
       "description": "CanTp 依赖 Can 控制器，Can 必须配置"
     }
   ],
+  "dependencies": [
+    {
+      "module": "CanIf",
+      "required": true,
+      "description": "CanTp requires CanIf",
+      "severity": "error"
+    },
+    {
+      "module": "PduR",
+      "required": true,
+      "description": "CanTp requires PduR",
+      "severity": "error"
+    }
+  ],
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

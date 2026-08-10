@@ -270,6 +270,14 @@
       "description": "Icu 通道数不应超过 Port 引脚数"
     }
   ],
+  "dependencies": [
+    {
+      "module": "Mcu",
+      "required": false,
+      "description": "Icu should have Mcu",
+      "severity": "warning"
+    }
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

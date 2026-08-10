@@ -535,6 +535,20 @@
       "description": "Dem DTC 数量应与 Dcm 诊断协议容量匹配"
     }
   ],
+  "dependencies": [
+    {
+      "module": "Dcm",
+      "required": true,
+      "description": "Dem requires Dcm",
+      "severity": "error"
+    },
+    {
+      "module": "NvM",
+      "required": false,
+      "description": "Dem should have NvM",
+      "severity": "warning"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

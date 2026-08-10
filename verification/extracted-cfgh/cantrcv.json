@@ -455,6 +455,14 @@
     }
   },
   "additionalProperties": true,
+  "dependencies": [
+    {
+      "module": "Can",
+      "required": false,
+      "description": "CanTrcv should have Can",
+      "severity": "warning"
+    }
+  ],
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

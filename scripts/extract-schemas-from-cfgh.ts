@@ -28,7 +28,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
-import { CROSSREF_RULES } from './crossref-rules';
+import { CROSSREF_RULES, MODULE_DEPENDENCY_RULES } from './crossref-rules';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -812,6 +812,16 @@ function toGeneratedJson(mod: ModuleResult, sourceRel: string): Record<string, u
     description: r.description,
   }));
 
+  // 统一管理（2026-08-10）：模块级依赖数据化注入——原先硬编码在 yuleasr-validator.ts
+  // 的 dependencyRules 表迁移到 crossref-rules.ts，提取器注入 dependencies 字段
+  const moduleDeps = MODULE_DEPENDENCY_RULES.filter(r => r.sourceModule === mod.displayName).map(r => ({
+    module: r.targetModule,
+    required: r.required,
+    description: r.message,
+    ...(r.required ? { severity: 'error' as const } : { severity: 'warning' as const }),
+    ...(r.paramCheck ? { paramCheck: r.paramCheck } : {}),
+  }));
+
   return {
     $schema: 'https://json-schema.org/draft/2020-12/schema',
     $id: `https://yuletech.io/schemas/modules/${mod.fileName}.json`,
@@ -822,6 +832,7 @@ function toGeneratedJson(mod: ModuleResult, sourceRel: string): Record<string, u
     additionalProperties: true,
     ...(mod.verbatimDefines.length > 0 ? { 'x-verbatim-defines': mod.verbatimDefines } : {}),
     ...(crossRefs.length > 0 ? { crossReferences: crossRefs } : {}),
+    ...(moduleDeps.length > 0 ? { dependencies: moduleDeps } : {}),
     'x-layer': mod.layer,
     'x-version': mod.version,
     'x-source': 'CfgH-Extracted',

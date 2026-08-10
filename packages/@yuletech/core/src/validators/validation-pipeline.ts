@@ -63,6 +63,8 @@ export class ValidationPipeline {
     const moduleErrors: ValidationError[] = [];
     if (configs.length > 0) {
       const validator = new YuleasrValidator();
+      // 统一管理（2026-08-10）：模块级依赖从 schema.dependencies 数据读取，需注入 schemas
+      if (schemas.length > 0) validator.setCrossModuleValidator(schemas);
       moduleErrors.push(...validator.validateModules(configs));
     }
 

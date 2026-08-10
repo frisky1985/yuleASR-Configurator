@@ -397,6 +397,14 @@
     }
   },
   "additionalProperties": true,
+  "dependencies": [
+    {
+      "module": "EcuM",
+      "required": false,
+      "description": "Os should have EcuM",
+      "severity": "warning"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

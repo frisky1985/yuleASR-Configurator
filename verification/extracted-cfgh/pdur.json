@@ -227,6 +227,14 @@
       "description": "PduR 路由路径数不应超过 Dcm 连接数"
     }
   ],
+  "dependencies": [
+    {
+      "module": "CanIf",
+      "required": true,
+      "description": "PduR requires CanIf",
+      "severity": "error"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

@@ -256,6 +256,14 @@
     "#if (MEMIF_FEE_USED == STD_ON)\n    #ifndef Fee_Read\n        #define Fee_Read(BlockNumber, BlockOffset, DataBufferPtr, Length) \\\n            Fee_Read(BlockNumber, BlockOffset, DataBufferPtr, Length)\n    #endif\n    \n    #ifndef Fee_Write\n        #define Fee_Write(BlockNumber, DataBufferPtr) \\\n            Fee_Write(BlockNumber, DataBufferPtr)\n    #endif\n    \n    #ifndef Fee_Cancel\n        #define Fee_Cancel() Fee_Cancel()\n    #endif\n    \n    #ifndef Fee_GetStatus\n        #define Fee_GetStatus() Fee_GetStatus()\n    #endif\n    \n    #ifndef Fee_GetJobResult\n        #define Fee_GetJobResult() Fee_GetJobResult()\n    #endif\n#endif",
     "#if (MEMIF_EA_USED == STD_ON)\n    #ifndef Ea_Read\n        #define Ea_Read(BlockNumber, DataBufferPtr) \\\n            Ea_Read(BlockNumber, DataBufferPtr)\n    #endif\n    \n    #ifndef Ea_Write\n        #define Ea_Write(BlockNumber, DataBufferPtr) \\\n            Ea_Write(BlockNumber, DataBufferPtr)\n    #endif\n    \n    #ifndef Ea_Cancel\n        #define Ea_Cancel() Ea_Cancel()\n    #endif\n    \n    #ifndef Ea_GetStatus\n        #define Ea_GetStatus() Ea_GetStatus()\n    #endif\n    \n    #ifndef Ea_GetJobResult\n        #define Ea_GetJobResult() Ea_GetJobResult()\n    #endif\n#endif"
   ],
+  "dependencies": [
+    {
+      "module": "Fee",
+      "required": true,
+      "description": "MemIf requires Fee or Ea",
+      "severity": "error"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

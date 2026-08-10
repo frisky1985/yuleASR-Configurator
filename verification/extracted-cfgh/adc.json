@@ -361,6 +361,14 @@
       "description": "Adc 组数不应超过 Port 引脚数"
     }
   ],
+  "dependencies": [
+    {
+      "module": "Mcu",
+      "required": false,
+      "description": "Adc should have Mcu",
+      "severity": "warning"
+    }
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

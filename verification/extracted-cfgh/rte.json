@@ -1611,6 +1611,20 @@
     }
   },
   "additionalProperties": true,
+  "dependencies": [
+    {
+      "module": "Os",
+      "required": true,
+      "description": "Rte requires Os",
+      "severity": "error"
+    },
+    {
+      "module": "Com",
+      "required": false,
+      "description": "Rte should have Com",
+      "severity": "warning"
+    }
+  ],
   "x-layer": "RTE",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
