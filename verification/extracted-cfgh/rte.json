@@ -5,61 +5,6 @@
   "description": "RTE Configuration header",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "RTE_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "RTE_DEV_ERROR_DETECT 参数",
@@ -975,158 +920,158 @@
       "x-section": "RTE TIMEOUT CONFIGURATION"
     },
     "RTE_PORT_EC_RPM_H": {
-      "type": "integer",
-      "description": "RTE_PORT_EC_RPM_H（派生表达式: ((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_RPM)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_EC_RPM_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_RPM))）",
+      "default": "(((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_RPM))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_EC_SPEED_H": {
-      "type": "integer",
-      "description": "RTE_PORT_EC_SPEED_H（派生表达式: ((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_SPEED)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_EC_SPEED_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_SPEED))）",
+      "default": "(((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_SPEED))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_EC_TEMPERATURE_H": {
-      "type": "integer",
-      "description": "RTE_PORT_EC_TEMPERATURE_H（派生表达式: ((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_TEMPERATURE)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_EC_TEMPERATURE_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_TEMPERATURE))）",
+      "default": "(((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_TEMPERATURE))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_EC_THROTTLE_H": {
-      "type": "integer",
-      "description": "RTE_PORT_EC_THROTTLE_H（派生表达式: ((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_THROTTLE)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_EC_THROTTLE_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_THROTTLE))）",
+      "default": "(((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_THROTTLE))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_EC_FUEL_INJECTION_H": {
-      "type": "integer",
-      "description": "RTE_PORT_EC_FUEL_INJECTION_H（派生表达式: ((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_FUEL_INJECTION)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_EC_FUEL_INJECTION_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_FUEL_INJECTION))）",
+      "default": "(((RTE_COMPONENT_ASW_ENGINE_CONTROL << 8) | RTE_PORT_EC_FUEL_INJECTION))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_VD_YAW_RATE_H": {
-      "type": "integer",
-      "description": "RTE_PORT_VD_YAW_RATE_H（派生表达式: ((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_YAW_RATE)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_VD_YAW_RATE_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_YAW_RATE))）",
+      "default": "(((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_YAW_RATE))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_VD_WHEEL_SPEED_H": {
-      "type": "integer",
-      "description": "RTE_PORT_VD_WHEEL_SPEED_H（派生表达式: ((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_WHEEL_SPEED)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_VD_WHEEL_SPEED_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_WHEEL_SPEED))）",
+      "default": "(((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_WHEEL_SPEED))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_VD_STEERING_ANGLE_H": {
-      "type": "integer",
-      "description": "RTE_PORT_VD_STEERING_ANGLE_H（派生表达式: ((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_STEERING_ANGLE)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_VD_STEERING_ANGLE_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_STEERING_ANGLE))）",
+      "default": "(((RTE_COMPONENT_ASW_VEHICLE_DYNAMICS << 8) | RTE_PORT_VD_STEERING_ANGLE))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_DM_DTC_STATUS_H": {
-      "type": "integer",
-      "description": "RTE_PORT_DM_DTC_STATUS_H（派生表达式: ((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_DTC_STATUS)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_DM_DTC_STATUS_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_DTC_STATUS))）",
+      "default": "(((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_DTC_STATUS))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_DM_CLEAR_DTC_H": {
-      "type": "integer",
-      "description": "RTE_PORT_DM_CLEAR_DTC_H（派生表达式: ((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_CLEAR_DTC)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_DM_CLEAR_DTC_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_CLEAR_DTC))）",
+      "default": "(((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_CLEAR_DTC))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_DM_READ_DTC_H": {
-      "type": "integer",
-      "description": "RTE_PORT_DM_READ_DTC_H（派生表达式: ((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_READ_DTC)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_DM_READ_DTC_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_READ_DTC))）",
+      "default": "(((RTE_COMPONENT_ASW_DIAGNOSTIC_MANAGER << 8) | RTE_PORT_DM_READ_DTC))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_CM_VEHICLE_SPEED_H": {
-      "type": "integer",
-      "description": "RTE_PORT_CM_VEHICLE_SPEED_H（派生表达式: ((RTE_COMPONENT_ASW_COMMUNICATION_MANAGER << 8) | RTE_PORT_CM_VEHICLE_SPEED)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_CM_VEHICLE_SPEED_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_COMMUNICATION_MANAGER << 8) | RTE_PORT_CM_VEHICLE_SPEED))）",
+      "default": "(((RTE_COMPONENT_ASW_COMMUNICATION_MANAGER << 8) | RTE_PORT_CM_VEHICLE_SPEED))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_CM_STATUS_H": {
-      "type": "integer",
-      "description": "RTE_PORT_CM_STATUS_H（派生表达式: ((RTE_COMPONENT_ASW_COMMUNICATION_MANAGER << 8) | RTE_PORT_CM_STATUS)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_CM_STATUS_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_COMMUNICATION_MANAGER << 8) | RTE_PORT_CM_STATUS))）",
+      "default": "(((RTE_COMPONENT_ASW_COMMUNICATION_MANAGER << 8) | RTE_PORT_CM_STATUS))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_SM_DATA_READ_H": {
-      "type": "integer",
-      "description": "RTE_PORT_SM_DATA_READ_H（派生表达式: ((RTE_COMPONENT_ASW_STORAGE_MANAGER << 8) | RTE_PORT_SM_DATA_READ)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_SM_DATA_READ_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_STORAGE_MANAGER << 8) | RTE_PORT_SM_DATA_READ))）",
+      "default": "(((RTE_COMPONENT_ASW_STORAGE_MANAGER << 8) | RTE_PORT_SM_DATA_READ))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_SM_DATA_WRITE_H": {
-      "type": "integer",
-      "description": "RTE_PORT_SM_DATA_WRITE_H（派生表达式: ((RTE_COMPONENT_ASW_STORAGE_MANAGER << 8) | RTE_PORT_SM_DATA_WRITE)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_SM_DATA_WRITE_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_STORAGE_MANAGER << 8) | RTE_PORT_SM_DATA_WRITE))）",
+      "default": "(((RTE_COMPONENT_ASW_STORAGE_MANAGER << 8) | RTE_PORT_SM_DATA_WRITE))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_IO_INPUT_H": {
-      "type": "integer",
-      "description": "RTE_PORT_IO_INPUT_H（派生表达式: ((RTE_COMPONENT_ASW_IO_CONTROL << 8) | RTE_PORT_IO_INPUT)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_IO_INPUT_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_IO_CONTROL << 8) | RTE_PORT_IO_INPUT))）",
+      "default": "(((RTE_COMPONENT_ASW_IO_CONTROL << 8) | RTE_PORT_IO_INPUT))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_IO_OUTPUT_H": {
-      "type": "integer",
-      "description": "RTE_PORT_IO_OUTPUT_H（派生表达式: ((RTE_COMPONENT_ASW_IO_CONTROL << 8) | RTE_PORT_IO_OUTPUT)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_IO_OUTPUT_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_IO_CONTROL << 8) | RTE_PORT_IO_OUTPUT))）",
+      "default": "(((RTE_COMPONENT_ASW_IO_CONTROL << 8) | RTE_PORT_IO_OUTPUT))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_MM_CURRENT_MODE_H": {
-      "type": "integer",
-      "description": "RTE_PORT_MM_CURRENT_MODE_H（派生表达式: ((RTE_COMPONENT_ASW_MODE_MANAGER << 8) | RTE_PORT_MM_CURRENT_MODE)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_MM_CURRENT_MODE_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_MODE_MANAGER << 8) | RTE_PORT_MM_CURRENT_MODE))）",
+      "default": "(((RTE_COMPONENT_ASW_MODE_MANAGER << 8) | RTE_PORT_MM_CURRENT_MODE))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_MM_TARGET_MODE_H": {
-      "type": "integer",
-      "description": "RTE_PORT_MM_TARGET_MODE_H（派生表达式: ((RTE_COMPONENT_ASW_MODE_MANAGER << 8) | RTE_PORT_MM_TARGET_MODE)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_MM_TARGET_MODE_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_MODE_MANAGER << 8) | RTE_PORT_MM_TARGET_MODE))）",
+      "default": "(((RTE_COMPONENT_ASW_MODE_MANAGER << 8) | RTE_PORT_MM_TARGET_MODE))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_WM_STATUS_H": {
-      "type": "integer",
-      "description": "RTE_PORT_WM_STATUS_H（派生表达式: ((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_STATUS)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_WM_STATUS_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_STATUS))）",
+      "default": "(((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_STATUS))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_WM_RESET_H": {
-      "type": "integer",
-      "description": "RTE_PORT_WM_RESET_H（派生表达式: ((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_RESET)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_WM_RESET_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_RESET))）",
+      "default": "(((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_RESET))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_PORT_WM_TRIGGER_H": {
-      "type": "integer",
-      "description": "RTE_PORT_WM_TRIGGER_H（派生表达式: ((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_TRIGGER)）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "RTE ASW PORT HANDLES"
+      "type": "string",
+      "description": "RTE_PORT_WM_TRIGGER_H（派生表达式: ((Rte_PortHandleType)((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_TRIGGER))）",
+      "default": "(((RTE_COMPONENT_ASW_WATCHDOG_MANAGER << 8) | RTE_PORT_WM_TRIGGER))",
+      "x-section": "RTE ASW PORT HANDLES",
+      "x-macro-kind": "expression"
     },
     "RTE_DE_ENGINE_RPM": {
       "type": "integer",

@@ -5,61 +5,6 @@
   "description": "FiM configuration (extracted from yuleASR Cfg.h)",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "FIM_CFG_AR_RELEASE_MAJOR_VERSION": {
       "type": "integer",
       "description": "FIM_CFG_AR_RELEASE_MAJOR_VERSION 参数",
@@ -112,10 +57,10 @@
       "maximum": 255
     },
     "FIM_CFG_MAX_FID": {
-      "type": "integer",
-      "description": "FIM_CFG_MAX_FID（派生表达式: FIM_CFG_NUMBER_OF_FIDS - 1u）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "FIM_CFG_MAX_FID（派生表达式: (FIM_CFG_NUMBER_OF_FIDS - 1u)）",
+      "default": "(FIM_CFG_NUMBER_OF_FIDS - 1u)",
+      "x-macro-kind": "expression"
     },
     "FIM_CFG_NUMBER_OF_EVENTS": {
       "type": "integer",
@@ -125,10 +70,10 @@
       "maximum": 255
     },
     "FIM_CFG_MAX_EVENT": {
-      "type": "integer",
-      "description": "FIM_CFG_MAX_EVENT（派生表达式: FIM_CFG_NUMBER_OF_EVENTS - 1u）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "FIM_CFG_MAX_EVENT（派生表达式: (FIM_CFG_NUMBER_OF_EVENTS - 1u)）",
+      "default": "(FIM_CFG_NUMBER_OF_EVENTS - 1u)",
+      "x-macro-kind": "expression"
     },
     "FIM_CFG_MAX_INHIBITION_CONFIG": {
       "type": "integer",
@@ -418,16 +363,14 @@
       "maximum": 255
     },
     "FIM_CFG_CONST": {
-      "type": "integer",
-      "description": "FIM_CFG_CONST（派生表达式: const）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "FIM_CFG_CONST 参数",
+      "default": "const"
     },
     "FIM_CFG_CONST_ROOT": {
-      "type": "integer",
-      "description": "FIM_CFG_CONST_ROOT（派生表达式: const）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "FIM_CFG_CONST_ROOT 参数",
+      "default": "const"
     }
   },
   "additionalProperties": true,

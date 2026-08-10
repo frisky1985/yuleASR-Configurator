@@ -5,61 +5,6 @@
   "description": "FlexRay Transport Protocol configuration header",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "FRTP_CFG_VENDOR_ID": {
       "type": "integer",
       "description": "FRTP_CFG_VENDOR_ID 参数",
@@ -120,13 +65,15 @@
       "type": "boolean",
       "description": "FRTP_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_VERSION_INFO_API": {
       "type": "boolean",
       "description": "FRTP_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_MAX_CONNECTIONS": {
       "type": "integer",
@@ -134,7 +81,8 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_MAX_PAYLOAD_PER_FRAME": {
       "type": "integer",
@@ -142,7 +90,8 @@
       "default": 254,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_MAX_SF_PAYLOAD": {
       "type": "integer",
@@ -150,7 +99,8 @@
       "default": 254,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_MAX_FF_PAYLOAD": {
       "type": "integer",
@@ -158,7 +108,8 @@
       "default": 254,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_MAX_CF_PAYLOAD": {
       "type": "integer",
@@ -166,7 +117,8 @@
       "default": 254,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_DEFAULT_NAS_TIMEOUT": {
       "type": "integer",
@@ -174,7 +126,8 @@
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_DEFAULT_NBS_TIMEOUT": {
       "type": "integer",
@@ -182,7 +135,8 @@
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_DEFAULT_NCS_TIMEOUT": {
       "type": "integer",
@@ -190,7 +144,8 @@
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_DEFAULT_NAR_TIMEOUT": {
       "type": "integer",
@@ -198,7 +153,8 @@
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_DEFAULT_NBR_TIMEOUT": {
       "type": "integer",
@@ -206,7 +162,8 @@
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_DEFAULT_NCR_TIMEOUT": {
       "type": "integer",
@@ -214,7 +171,8 @@
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_DEFAULT_BLOCK_SIZE": {
       "type": "integer",
@@ -222,7 +180,8 @@
       "default": 8,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_DEFAULT_STMIN": {
       "type": "integer",
@@ -230,7 +189,8 @@
       "default": 10,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_MAX_RETRY_COUNT": {
       "type": "integer",
@@ -238,13 +198,15 @@
       "default": 3,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_FLOW_CONTROL_ENABLED": {
       "type": "boolean",
       "description": "FRTP_FLOW_CONTROL_ENABLED 参数",
       "default": true,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_MAIN_FUNCTION_PERIOD": {
       "type": "integer",
@@ -252,7 +214,8 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "FRTP_PCI_TYPE_MASK": {
       "type": "integer",

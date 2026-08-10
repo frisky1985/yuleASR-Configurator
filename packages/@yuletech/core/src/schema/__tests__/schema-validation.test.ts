@@ -45,6 +45,13 @@ describe('JSON Schema Validation', () => {
     const content = fs.readFileSync(path.join(GENERATED_DIR, file), 'utf8');
     const schema = JSON.parse(content);
     const cpi = schema.properties?.CommonPublishedInformation;
+    // D 类修复（2026-08-10）：CfgH-Extracted 提取版不再强制附加 CPI 容器——
+    // 手写头版本宏（AR_RELEASE_*/MODULE_ID/SW_*/VENDOR_ID）由普通参数 rawMacroNames
+    // 原样保留；强加 8 个版本宏会与模块 .h 重复定义 / 抢占 #ifndef 守卫（V5 D 类 7 模块根因）。
+    if (schema['x-source'] === 'CfgH-Extracted') {
+      expect(cpi, `${file} CfgH-Extracted 不应附加 CPI 容器（D 类修复，版本宏由普通参数保留）`).toBeUndefined();
+      return;
+    }
     expect(cpi, `${file} 缺 CommonPublishedInformation (AUTOSAR ECUC 标准容器)`).toBeDefined();
     expect(cpi.type).toBe('object');
     // AUTOSAR 标准 8 字段

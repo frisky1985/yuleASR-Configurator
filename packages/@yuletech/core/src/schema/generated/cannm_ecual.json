@@ -5,61 +5,6 @@
   "description": "CAN Network Management configuration header file",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "CANNM_VENDOR_ID_CFG": {
       "type": "integer",
       "description": "CANNM_VENDOR_ID_CFG（cast: uint16）",
@@ -261,14 +206,16 @@
     "CANNM_CHANNEL_0_NAME": {
       "type": "string",
       "description": "CANNM_CHANNEL_0_NAME 参数",
-      "default": "CanNm_Channel_0",
-      "x-section": "CHANNEL CONFIGURATION"
+      "default": "\"CanNm_Channel_0\"",
+      "x-section": "CHANNEL CONFIGURATION",
+      "x-macro-kind": "string-literal"
     },
     "CANNM_CHANNEL_1_NAME": {
       "type": "string",
       "description": "CANNM_CHANNEL_1_NAME 参数",
-      "default": "CanNm_Channel_1",
-      "x-section": "CHANNEL CONFIGURATION"
+      "default": "\"CanNm_Channel_1\"",
+      "x-section": "CHANNEL CONFIGURATION",
+      "x-macro-kind": "string-literal"
     },
     "CANNM_NM_TIMEOUT_TIME_DEFAULT": {
       "type": "integer",
@@ -425,20 +372,23 @@
     "CANNM_STATE_CHANGE_IND_FCT": {
       "type": "string",
       "description": "CANNM_STATE_CHANGE_IND_FCT 参数",
-      "default": "Nm_StateChangeNotification",
-      "x-section": "CALLBACK CONFIGURATION"
+      "default": "\"Nm_StateChangeNotification\"",
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-macro-kind": "string-literal"
     },
     "CANNM_REMOTE_SLEEP_IND_FCT": {
       "type": "string",
       "description": "CANNM_REMOTE_SLEEP_IND_FCT 参数",
-      "default": "Nm_RemoteSleepIndication",
-      "x-section": "CALLBACK CONFIGURATION"
+      "default": "\"Nm_RemoteSleepIndication\"",
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-macro-kind": "string-literal"
     },
     "CANNM_REMOTE_SLEEP_CANCEL_FCT": {
       "type": "string",
       "description": "CANNM_REMOTE_SLEEP_CANCEL_FCT 参数",
-      "default": "Nm_RemoteSleepCancellation",
-      "x-section": "CALLBACK CONFIGURATION"
+      "default": "\"Nm_RemoteSleepCancellation\"",
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-macro-kind": "string-literal"
     },
     "CANNM_MAIN_FUNCTION_PERIOD": {
       "type": "number",

@@ -5,61 +5,6 @@
   "description": "Network Management Configuration",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "NM_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "NM_DEV_ERROR_DETECT 参数",
@@ -223,6 +168,11 @@
     }
   },
   "additionalProperties": true,
+  "x-verbatim-defines": [
+    "#define NM_STATE_CHANGE_NOTIFICATION(ch, prev, curr) \\\nAppl_Nm_StateChangeNotification(ch, prev, curr)",
+    "#define NM_REMOTE_SLEEP_INDICATION(ch) \\\nAppl_Nm_RemoteSleepIndication(ch)",
+    "#define NM_REMOTE_SLEEP_CANCELLATION(ch) \\\nAppl_Nm_RemoteSleepCancellation(ch)"
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

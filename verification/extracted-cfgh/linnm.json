@@ -5,61 +5,6 @@
   "description": "LIN Network Management module configuration following AutoSAR Classic Platform 4.x",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "LINNM_CFG_VENDOR_ID": {
       "type": "integer",
       "description": "LINNM_CFG_VENDOR_ID 参数",
@@ -128,79 +73,92 @@
       "type": "boolean",
       "description": "LINNM_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "CONFIGURATION PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_VERSION_INFO_API": {
       "type": "boolean",
       "description": "LINNM_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "CONFIGURATION PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_COM_CONTROL_ENABLED": {
       "type": "boolean",
       "description": "LINNM_COM_CONTROL_ENABLED 参数",
       "default": true,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "CONFIGURATION PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_PASSIVE_MODE_ENABLED": {
       "type": "boolean",
       "description": "LINNM_PASSIVE_MODE_ENABLED 参数",
       "default": false,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "CONFIGURATION PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_STATE_CHANGE_IND_ENABLED": {
       "type": "boolean",
       "description": "LINNM_STATE_CHANGE_IND_ENABLED 参数",
       "default": true,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "CONFIGURATION PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_REMOTE_SLEEP_IND_ENABLED": {
       "type": "boolean",
       "description": "LINNM_REMOTE_SLEEP_IND_ENABLED 参数",
       "default": true,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "CONFIGURATION PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_NODE_DETECTION_ENABLED": {
       "type": "boolean",
       "description": "LINNM_NODE_DETECTION_ENABLED 参数",
       "default": false,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "CONFIGURATION PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_NODE_ID_ENABLED": {
       "type": "boolean",
       "description": "LINNM_NODE_ID_ENABLED 参数",
       "default": true,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "CONFIGURATION PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_USER_DATA_ENABLED": {
       "type": "boolean",
       "description": "LINNM_USER_DATA_ENABLED 参数",
       "default": true,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "CONFIGURATION PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_COM_CONTROL_SYNCHRONIZED": {
       "type": "boolean",
       "description": "LINNM_COM_CONTROL_SYNCHRONIZED 参数",
       "default": false,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "CONFIGURATION PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_COORDINATOR_SYNC_SUPPORT": {
       "type": "boolean",
       "description": "LINNM_COORDINATOR_SYNC_SUPPORT 参数",
       "default": false,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "CONFIGURATION PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_BUS_SYNCHRONIZATION_ENABLED": {
       "type": "boolean",
       "description": "LINNM_BUS_SYNCHRONIZATION_ENABLED 参数",
       "default": true,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "CONFIGURATION PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_BUSLOAD_REDUCTION_ENABLED": {
       "type": "boolean",
       "description": "LINNM_BUSLOAD_REDUCTION_ENABLED 参数",
       "default": false,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "CONFIGURATION PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_NUMBER_OF_CHANNELS": {
       "type": "integer",
@@ -208,7 +166,8 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "CONFIGURATION PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_MAX_NODES_PER_CHANNEL": {
       "type": "integer",
@@ -216,7 +175,8 @@
       "default": 16,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CONFIGURATION PARAMETERS"
+      "x-section": "CONFIGURATION PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_TIMEOUT_TIME": {
       "type": "integer",
@@ -224,7 +184,8 @@
       "default": 100,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMEOUT PARAMETERS"
+      "x-section": "TIMEOUT PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_WAIT_BUSSLEEP_TIME": {
       "type": "integer",
@@ -232,7 +193,8 @@
       "default": 50,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMEOUT PARAMETERS"
+      "x-section": "TIMEOUT PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_REMOTE_SLEEP_IND_TIME": {
       "type": "integer",
@@ -240,7 +202,8 @@
       "default": 500,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "TIMEOUT PARAMETERS"
+      "x-section": "TIMEOUT PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_MSG_CYCLE_TIME": {
       "type": "integer",
@@ -248,7 +211,8 @@
       "default": 20,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMEOUT PARAMETERS"
+      "x-section": "TIMEOUT PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_MSG_REDUCED_TIME": {
       "type": "integer",
@@ -256,7 +220,8 @@
       "default": 50,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMEOUT PARAMETERS"
+      "x-section": "TIMEOUT PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_MSG_CYCLE_OFFSET": {
       "type": "integer",
@@ -264,7 +229,8 @@
       "default": 5,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMEOUT PARAMETERS"
+      "x-section": "TIMEOUT PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_REPEAT_MESSAGE_TIME": {
       "type": "integer",
@@ -272,7 +238,8 @@
       "default": 150,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "TIMEOUT PARAMETERS"
+      "x-section": "TIMEOUT PARAMETERS",
+      "x-guarded": true
     },
     "LINNM_CHANNEL_0": {
       "type": "integer",
@@ -698,43 +665,30 @@
       "type": "boolean",
       "description": "LINNM_STATE_CHANGE_NOTIFICATION 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-guarded": true
     },
     "LINNM_REMOTE_SLEEP_CALLBACK": {
       "type": "boolean",
       "description": "LINNM_REMOTE_SLEEP_CALLBACK 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-guarded": true
     },
     "LINNM_SYNC_POINT_CALLBACK": {
       "type": "boolean",
       "description": "LINNM_SYNC_POINT_CALLBACK 参数",
       "default": true,
-      "x-section": "CALLBACK CONFIGURATION"
-    },
-    "LINNM_CALL_REMOTE_SLEEP_INDICATION": {
-      "type": "integer",
-      "description": "LINNM_CALL_REMOTE_SLEEP_INDICATION（派生表达式: networkHandle）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CALLBACK FUNCTION DEFINITIONS"
-    },
-    "LINNM_CALL_REMOTE_SLEEP_CANCELLATION": {
-      "type": "integer",
-      "description": "LINNM_CALL_REMOTE_SLEEP_CANCELLATION（派生表达式: networkHandle）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CALLBACK FUNCTION DEFINITIONS"
-    },
-    "LINNM_CALL_SYNC_POINT": {
-      "type": "integer",
-      "description": "LINNM_CALL_SYNC_POINT（派生表达式: networkHandle）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "CALLBACK FUNCTION DEFINITIONS"
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-guarded": true
     }
   },
   "additionalProperties": true,
+  "x-verbatim-defines": [
+    "#if (LINNM_STATE_CHANGE_NOTIFICATION == STD_ON)\n#define LINNM_CALL_STATE_CHANGE_NOTIFICATION(networkHandle, prevState, currState) \\\n    Nm_StateChangeNotification((networkHandle), (prevState), (currState))\n#else\n#define LINNM_CALL_STATE_CHANGE_NOTIFICATION(networkHandle, prevState, currState)\n#endif",
+    "#if (LINNM_REMOTE_SLEEP_CALLBACK == STD_ON)\n#define LINNM_CALL_REMOTE_SLEEP_INDICATION(networkHandle) \\\n    Nm_RemoteSleepIndication((networkHandle))\n#define LINNM_CALL_REMOTE_SLEEP_CANCELLATION(networkHandle) \\\n    Nm_RemoteSleepCancellation((networkHandle))\n#else\n#define LINNM_CALL_REMOTE_SLEEP_INDICATION(networkHandle)\n#define LINNM_CALL_REMOTE_SLEEP_CANCELLATION(networkHandle)\n#endif",
+    "#if (LINNM_SYNC_POINT_CALLBACK == STD_ON)\n#define LINNM_CALL_SYNC_POINT(networkHandle) \\\n    Nm_SynchronizationPoint((networkHandle))\n#else\n#define LINNM_CALL_SYNC_POINT(networkHandle)\n#endif"
+  ],
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
@@ -746,7 +700,6 @@
     "TIMEOUT PARAMETERS",
     "CHANNEL CONFIGURATION",
     "PDU CONFIGURATION",
-    "CALLBACK CONFIGURATION",
-    "CALLBACK FUNCTION DEFINITIONS"
+    "CALLBACK CONFIGURATION"
   ]
 }

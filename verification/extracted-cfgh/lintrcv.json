@@ -5,112 +5,67 @@
   "description": "LinTrcv configuration (extracted from yuleASR Cfg.h)",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "LINTRCV_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "LINTRCV_DEV_ERROR_DETECT 参数",
-      "default": true
+      "default": true,
+      "x-guarded": true
     },
     "LINTRCV_VERSION_INFO_API": {
       "type": "boolean",
       "description": "LINTRCV_VERSION_INFO_API 参数",
-      "default": true
+      "default": true,
+      "x-guarded": true
     },
     "LINTRCV_WAKEUP_SUPPORTED": {
       "type": "boolean",
       "description": "LINTRCV_WAKEUP_SUPPORTED 参数",
-      "default": true
+      "default": true,
+      "x-guarded": true
     },
     "LINTRCV_WAKEUP_BY_BUS_USED": {
       "type": "boolean",
       "description": "LINTRCV_WAKEUP_BY_BUS_USED 参数",
-      "default": true
+      "default": true,
+      "x-guarded": true
     },
     "LINTRCV_WAKEUP_BY_PIN_USED": {
       "type": "boolean",
       "description": "LINTRCV_WAKEUP_BY_PIN_USED 参数",
-      "default": true
+      "default": true,
+      "x-guarded": true
     },
     "LINTRCV_SPI_SUPPORT": {
       "type": "boolean",
       "description": "LINTRCV_SPI_SUPPORT 参数",
-      "default": false
+      "default": false,
+      "x-guarded": true
     },
     "LINTRCV_I2C_SUPPORT": {
       "type": "boolean",
       "description": "LINTRCV_I2C_SUPPORT 参数",
-      "default": false
+      "default": false,
+      "x-guarded": true
     },
     "LINTRCV_TJA1021_SUPPORT": {
       "type": "boolean",
       "description": "LINTRCV_TJA1021_SUPPORT 参数",
-      "default": true
+      "default": true,
+      "x-guarded": true
     },
     "LINTRCV_TJA1022_SUPPORT": {
       "type": "boolean",
       "description": "LINTRCV_TJA1022_SUPPORT 参数",
-      "default": true
+      "default": true,
+      "x-guarded": true
     },
     "LINTRCV_NUM_CHANNELS": {
       "type": "integer",
       "description": "LINTRCV_NUM_CHANNELS 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "LINTRCV_MAX_CHANNELS": {
       "type": "integer",
@@ -152,84 +107,96 @@
       "description": "Enable pin - TJA1021 Pin 2",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "DIO_CHANNEL_TJA1021_0_NWAKE": {
       "type": "integer",
       "description": "Wake-up pin - TJA1021 Pin 6",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "DIO_CHANNEL_TJA1021_0_NERR": {
       "type": "integer",
       "description": "Error pin - TJA1021 Pin 9",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "DIO_CHANNEL_TJA1021_0_TXD": {
       "type": "integer",
       "description": "TXD pin - TJA1021 Pin 4",
       "default": 3,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "DIO_CHANNEL_TJA1021_0_RXD": {
       "type": "integer",
       "description": "RXD pin - TJA1021 Pin 5",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "DIO_CHANNEL_TJA1021_1_EN": {
       "type": "integer",
       "description": "DIO_CHANNEL_TJA1021_1_EN 参数",
       "default": 10,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "DIO_CHANNEL_TJA1021_1_NWAKE": {
       "type": "integer",
       "description": "DIO_CHANNEL_TJA1021_1_NWAKE 参数",
       "default": 11,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "DIO_CHANNEL_TJA1021_1_NERR": {
       "type": "integer",
       "description": "DIO_CHANNEL_TJA1021_1_NERR 参数",
       "default": 12,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "LINTRCV_WAKEUP_SOURCE_0": {
       "type": "integer",
       "description": "LIN Channel 0",
       "default": 16,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "LINTRCV_WAKEUP_SOURCE_1": {
       "type": "integer",
       "description": "LIN Channel 1",
       "default": 32,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "LINTRCV_WAKEUP_SOURCE_2": {
       "type": "integer",
       "description": "LIN Channel 2",
       "default": 64,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "LINTRCV_WAKEUP_SOURCE_3": {
       "type": "integer",
       "description": "LIN Channel 3",
       "default": 128,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "LINTRCV_TJA1021_SLEEP_TO_NORMAL_US": {
       "type": "integer",

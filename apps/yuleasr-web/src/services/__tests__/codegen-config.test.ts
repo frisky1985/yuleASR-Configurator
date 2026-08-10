@@ -109,6 +109,8 @@ describe('buildSchemaCoverage（117 模块覆盖展示）', () => {
     const flash = rows.find(r => r.name.toLowerCase() === 'flash');
     expect(flash?.layer).toBe('MCAL');
     expect(flash?.paramCount).toBeGreaterThan(50);
-    expect(flash?.containerCount).toBeGreaterThan(0);
+    // D 类修复（2026-08-10）：提取版 schema 不再附加 CommonPublishedInformation 容器
+    // （版本宏由手写头普通参数 rawMacroNames 原样保留，避免强加 8 个版本宏冲突）
+    expect(flash?.containerCount).toBe(0);
   });
 });

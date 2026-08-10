@@ -5,61 +5,6 @@
   "description": "MQTT 模块配置头文件",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "MQTT_CFG_MAJOR_VERSION": {
       "type": "integer",
       "description": "MQTT_CFG_MAJOR_VERSION 参数",
@@ -295,24 +240,25 @@
       "maximum": 255
     },
     "MQTT_CONST": {
-      "type": "integer",
-      "description": "MQTT_CONST（派生表达式: const）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "MQTT_CONST 参数",
+      "default": "const"
     },
     "MQTT_TLS_VERSION_1_2": {
       "type": "integer",
       "description": "MQTT_TLS_VERSION_1_2 参数",
       "default": 771,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-guarded": true
     },
     "MQTT_TLS_VERSION_1_3": {
       "type": "integer",
       "description": "MQTT_TLS_VERSION_1_3 参数",
       "default": 772,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-guarded": true
     }
   },
   "additionalProperties": true,

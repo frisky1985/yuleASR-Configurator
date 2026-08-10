@@ -249,6 +249,29 @@ export function extractNonMacroSegment(headerContent: string): NonMacroSegment |
   });
   if (idxs.length === 0) return null;
 
+  // 切片起点向前扩展：若首个非宏行位于条件块内（前方有未闭合 #if/#ifdef/#ifndef），
+  // 纳入该块起点——否则块内 #endif 悬空被剔除、块后 #if 失去配对（Fls_Cfg.h 案例）
+  let start = idxs[0];
+  if (start > 0) {
+    let bal = 0;
+    for (let i = start - 1; i >= 0; i--) {
+      const t = lines[i].trim();
+      if (/^#\s*endif\b/.test(t)) {
+        bal++;
+      } else if (/^#\s*if(?:def|ndef)?\b/.test(t)) {
+        if (bal === 0) {
+          // 该 #if 包裹 idxs[0]；排除 include guard（#ifndef X_H + 下一行 #define X_H）
+          const isGuard =
+            /^#\s*ifndef\s+[A-Za-z_][A-Za-z0-9_]*\s*$/.test(t) &&
+            /^#\s*define\s+[A-Za-z_][A-Za-z0-9_]*\s*$/.test((lines[i + 1] || '').trim());
+          if (!isGuard) start = i;
+          break;
+        }
+        bal--;
+      }
+    }
+  }
+
   // 末个非宏语句完整闭合（修截断）
   let end = findStatementEnd(lines, idxs[idxs.length - 1]);
   // 尾部 MemMap 段标记对（含其间空行）：保证切片内段 pragma 开合平衡
@@ -260,7 +283,7 @@ export function extractNonMacroSegment(headerContent: string): NonMacroSegment |
   // 条件编译平衡：切片内未闭合的 #if/#ifdef/#ifndef（如 Swc 的 #if (SWC_PB_CONFIG == STD_ON)）
   // → 前向补足配对 #endif，避免拼接产物 #if 悬空吞掉生成头尾部 #endif
   let cppBalance = 0;
-  for (let i = idxs[0]; i <= end; i++) {
+  for (let i = start; i <= end; i++) {
     const t = lines[i].trim();
     if (/^#\s*if(?:def|ndef)?\b/.test(t)) cppBalance++;
     else if (/^#\s*endif\b/.test(t)) cppBalance--;
@@ -272,7 +295,7 @@ export function extractNonMacroSegment(headerContent: string): NonMacroSegment |
     else if (/^#\s*endif\b/.test(t)) cppBalance--;
   }
 
-  const slice = lines.slice(idxs[0], end + 1);
+  const slice = lines.slice(start, end + 1);
 
   // 剔除 extern "C" 闭合块：#ifdef __cplusplus 内含裸 `}`（其配对 extern "C" { 在切片外）
   // 以及悬空 #endif（配对 #if 在切片外，如切片起始于条件块内部）
@@ -396,7 +419,15 @@ export function spliceGeneratedWithNonMacro(
   const guardName = headerName.replace(/\./g, '_').toUpperCase();
   const lines = generatedContent.split('\n');
   const guardIdx = lines.findIndex(l => l.trim() === `#define ${guardName}`);
-  const endifIdx = lines.findIndex(l => l.trim().startsWith('#endif'));
+  // 末尾 guard #endif（文件级），而非第一个 #endif（可能命中 guarded 宏 #ifndef 块内，
+  // 如 Os_TimingProtection 的 OS_TASK_COUNT/OS_RESOURCE_COUNT——非宏段插到块内会把后续宏排到 extern 之后）
+  let endifIdx = -1;
+  for (let i = lines.length - 1; i >= 0; i--) {
+    if (lines[i].trim().startsWith('#endif')) {
+      endifIdx = i;
+      break;
+    }
+  }
   if (guardIdx < 0 || endifIdx < 0) {
     throw new Error(
       `[codegen] 生成头结构异常（找不到 guard/#endif），拒绝拼接: ${headerName}`
@@ -448,9 +479,94 @@ export interface SpliceOptions {
 }
 
 /**
+ * 提取手写头中的**条件 include 块**（如 MemIf_Cfg.h 的
+ * `#if (MEMIF_FEE_USED == STD_ON) / #include "Fee.h" / #endif`）。
+ *
+ * 背景（B 类修复，2026-08-10）：MemIf_Cfg.h 在宏定义之前条件 include Fee.h/Ea.h——
+ * Fee.h 先声明 Fee_Read/Ea_GetJobResult 函数，随后 MemIf_Cfg.h 的
+ * `#ifndef Fee_Read #define Fee_Read(...)` 才定义函数式宏。若丢失该条件 include，
+ * 宏定义先于 Fee.h 声明生效 → Fee.h 函数声明被宏展开（too few/many arguments）。
+ * 故条件 include 块必须原样保留到生成头（宏段之前）。
+ */
+function extractConditionalIncludeBlocks(headerContent: string): string[] {
+  const lines = headerContent.split('\n');
+  const out: string[] = [];
+  let i = 0;
+  while (i < lines.length) {
+    const t = lines[i].trim();
+    if (!/^#\s*if(?:def|ndef)?\b/.test(t)) {
+      i++;
+      continue;
+    }
+    // 同深度扫描到匹配 #endif
+    let depth = 0;
+    let j = i;
+    let hasInclude = false;
+    let hasDefine = false;
+    for (; j < lines.length; j++) {
+      const tj = lines[j].trim();
+      if (/^#\s*if(?:def|ndef)?\b/.test(tj)) depth++;
+      else if (/^#\s*endif\b/.test(tj)) {
+        depth--;
+        if (depth === 0) break;
+      } else if (depth === 1 && tj.startsWith('#include')) {
+        hasInclude = true;
+      } else if (depth === 1 && /^#\s*define\b/.test(tj)) {
+        hasDefine = true;
+      }
+    }
+    // 仅纯条件 include 块（无 #define——函数式宏条件块由 verbatim 处理）
+    if (hasInclude && !hasDefine && depth === 0 && j < lines.length) {
+      out.push(lines.slice(i, j + 1).join('\n'));
+      i = j + 1;
+      continue;
+    }
+    i++;
+  }
+  return out;
+}
+
+/**
+ * 提取手写头中**无条件顶层** `#include` 行（类型依赖，如 Std_Types.h / NvM_EccHandler.h）。
+ * 生成头必须保留这些 include，否则消费方 .c 缺类型定义（NvM_EccHandler 案例）。
+ * 仅提取条件编译深度为 0 的 include：条件块内（如 #if BOOT_DEBUG_ENABLE 内的 SchM.h）
+ * 由 verbatim 条件块原样保留，若无条件提取到顶部会导致依赖缺失模块的编译失败（Boot 案例）。
+ */
+function extractHeaderIncludes(headerContent: string): string[] {
+  const out: string[] = [];
+  const lines = headerContent.split('\n');
+  let depth = 0;
+  for (let i = 0; i < lines.length; i++) {
+    const t = lines[i].trim();
+    if (/^#\s*if(?:def|ndef)?\b/.test(t)) {
+      // include guard（#ifndef X + 下一行 #define X）不计入条件深度——guard 内 include 视为顶层
+      const isGuard =
+        /^#\s*ifndef\s+[A-Za-z_][A-Za-z0-9_]*\s*$/.test(t) &&
+        /^#\s*define\s+[A-Za-z_][A-Za-z0-9_]*\s*$/.test((lines[i + 1] || '').trim());
+      if (!isGuard) depth++;
+      continue;
+    }
+    if (/^#\s*endif\b/.test(t)) {
+      depth = Math.max(0, depth - 1);
+      continue;
+    }
+    if (depth > 0) continue; // 条件块内 include 不提取（verbatim 保留）
+    if (!t.startsWith('#include')) continue;
+    if (/"[^"]*_MemMap\.h"/.test(t)) continue;
+    if (/<[^>]*_MemMap\.h>/.test(t)) continue;
+    out.push(t);
+  }
+  return out;
+}
+
+/**
  * Format a JS value as a C macro literal.
+ * C 类修复（reference null → (NULL_PTR)）：null 回调指针原样输出，不再 String(null)。
  */
 function formatMacroValue(value: unknown): string {
+  if (value === null) {
+    return '(NULL_PTR)'; // reference 回调指针（Ocu OCU_CHANNEL_*_NOTIFICATION 等）
+  }
   if (typeof value === 'boolean') {
     return value ? 'STD_ON' : 'STD_OFF';
   }
@@ -462,6 +578,14 @@ function formatMacroValue(value: unknown): string {
   }
   // Fix 18/22 (W5): 枚举标识符原样输出；自由文本加引号并转义，防止裸引号/换行注入 .h 文件
   if (typeof value === 'string') {
+    // 已带引号的字符串字面量（F1 string-literal，如 DLT_ECU_ID "ECU1"）原样输出
+    if (value.startsWith('"') && value.endsWith('"') && value.length >= 2) {
+      return value;
+    }
+    // 派生表达式（F1 expression，如 (A / B)）原样输出，不加引号
+    if (value.startsWith('(') && value.endsWith(')')) {
+      return value;
+    }
     return C_IDENTIFIER_RE.test(value) ? value : `"${escapeCString(value)}"`;
   }
   return String(value);
@@ -494,9 +618,16 @@ function generateMacroOnlyHeader(
   moduleDisplayName: string,
   version: string,
   parameters: Record<string, unknown>,
-  options: { rawMacroNames?: boolean } = {}
+  options: {
+    rawMacroNames?: boolean;
+    verbatimDefines?: string[];
+    includes?: string[];
+    conditionalIncludeBlocks?: string[];
+    /** 生成头文件名覆盖（重名副版对齐手写源文件名，guard 随之对齐） */
+    filename?: string;
+  } = {}
 ): string {
-  const headerName = getHeaderFilename(moduleId);
+  const headerName = options.filename || getHeaderFilename(moduleId);
   const guardName = headerName.replace(/\./g, '_').toUpperCase();
   const shortName = getModuleShortName(moduleId);
   const prefix = shortName.toUpperCase();
@@ -514,6 +645,15 @@ function generateMacroOnlyHeader(
 
   content += `#ifndef ${guardName}\n`;
   content += `#define ${guardName}\n\n`;
+
+  // 类型依赖 include 透传（Std_Types.h / NvM_EccHandler.h 等）：手写头顶层 include 原样保留
+  const includes = options.includes || [];
+  if (includes.length > 0) {
+    for (const inc of includes) {
+      content += `${inc}\n`;
+    }
+    content += `\n`;
+  }
 
   content += `/*==================================================================================================\n`;
   content += `*                                    PRE-COMPILE CONFIGURATION\n`;
@@ -574,14 +714,76 @@ function generateMacroOnlyHeader(
     content += `*                                    ${sectionLabel}\n`;
     content += `*================================================================================================*/\n`;
     for (const p of params) {
-      content += `#define ${p.name}    ${formatMacroValue(p.value)}\n`;
+      // #ifndef 默认值保护宏（CDD_FVM_BACKEND 等）：保留 #ifndef/#endif 结构，允许外部覆盖
+      // （F1 提取 x-guarded 标记；手写头用 #ifndef 保护，生成头丢失会与命令行 -D 定义冲突）
+      if ((p.value as any)?.__guarded) {
+        content += `#ifndef ${p.name}\n`;
+        content += `#define ${p.name}    ${formatMacroValue((p.value as any).__value)}\n`;
+        content += `#endif\n`;
+      } else {
+        content += `#define ${p.name}    ${formatMacroValue(p.value)}\n`;
+      }
     }
   }
 
+  // B 类修复（函数式宏原样透传）：F1 提取的不可配置函数式宏（J1939TP_CAN_ID /
+  // UDPNM_*_ENTRY / XCP_*_RESOURCE_PROTECTION / LINNM_CALL_* 等）原样输出到宏段之后、
+  // guard 闭合之前（必须位于 #ifndef guard 内，否则重复 include 时宏重复定义）
+  const verbatim = options.verbatimDefines || [];
+
+  // 条件 include 块（如 MemIf 的 #if (MEMIF_FEE_USED == STD_ON) / #include "Fee.h" / #endif）
+  // 必须在宏段之后（MEMIF_FEE_USED 等条件宏已定义，条件才成立）、函数式宏定义之前——
+  // Fee.h/Ea.h 先声明函数，随后 #ifndef Fee_Read #define Fee_Read(...) 才定义转发宏，
+  // 顺序颠倒会污染 Fee.h/Ea.h 函数声明（too few/many arguments）
+  const condIncludes = options.conditionalIncludeBlocks || [];
+  if (condIncludes.length > 0) {
+    content += `/*==================================================================================================\n`;
+    content += `*                                    CONDITIONAL INCLUDES\n`;
+    content += `*================================================================================================*/\n`;
+    for (const block of condIncludes) {
+      content += `${block}\n`;
+    }
+    content += `\n`;
+  }
+
+  if (verbatim.length > 0) {
+    content += `/*==================================================================================================\n`;
+    content += `*                                    FUNCTION-LIKE MACROS (VERBATIM)\n`;
+    content += `*================================================================================================*/\n`;
+    for (const v of verbatim) {
+      content += `${v}\n`;
+    }
+    content += `\n`;
+  }
+
   content += `\n#endif /* ${guardName} */\n\n`;
+
   content += `/*==================[end of file]===========================================*/\n`;
 
   return content;
+}
+
+/**
+ * 手写头查找（大小写/下划线不敏感）：生成头文件名（如 Canif_Cfg.h / Nvmecchandler_Cfg.h）
+ * 与手写头实际文件名（CanIf_Cfg.h / NvM_EccHandler_Cfg.h）可能大小写、下划线不同——
+ * 先精确匹配，再大小写归一，最后去非字母数字归一（Nvmecchandler ↔ NvM_EccHandler）。
+ */
+function findHandwrittenHeader(
+  map: Map<string, string> | undefined,
+  filename: string
+): string | undefined {
+  if (!map) return undefined;
+  const exact = map.get(filename);
+  if (exact !== undefined) return exact;
+  const lower = filename.toLowerCase();
+  const byLower = map.get(lower);
+  if (byLower !== undefined) return byLower;
+  const norm = lower.replace(/[^a-z0-9]/g, '');
+  for (const [k, v] of map) {
+    if (k.toLowerCase() === lower) return v;
+    if (k.toLowerCase().replace(/[^a-z0-9]/g, '') === norm) return v;
+  }
+  return undefined;
 }
 
 /**
@@ -595,6 +797,11 @@ function schemaParamToMacroName(moduleShortName: string, param: ModuleParameter)
   const raw = param.name;
   // 已是 UPPER_SNAKE 宏名（CfgH-Extracted: 参数名即宏名）
   if (/^[A-Z][A-Z0-9_]*$/.test(raw)) return raw;
+  // B 类修复（PascalCase 混合宏名，如 OsTask_Init/OsAlarm_BswM_MainFunction）:
+  // 参数名含下划线且非纯 PascalCase 配置名（CfgH 提取的宏名允许小写）→ 原样使用
+  if (/^[A-Za-z][A-Za-z0-9_]*_[A-Za-z0-9_]*$/.test(raw) && !/^[A-Z][a-z]+(?:[A-Z][a-z]+)+$/.test(raw)) {
+    return raw;
+  }
   // 去除 PascalCase 模块名前缀，避免 WDG_WDG_* 双重前缀
   let stripped = raw;
   if (stripped.startsWith(moduleShortName) && stripped.length > moduleShortName.length) {
@@ -625,11 +832,19 @@ function schemaParamValue(param: ModuleParameter): unknown {
 /**
  * Schema 驱动 — 将扁平 ModuleSchema.parameters（已含递归展平的容器参数）
  * 转为宏名 → 宏值的映射。
+ *
+ * B 类修复：CfgH-Extracted schema（参数名即宏名）参数一律原样使用（含 PascalCase 混合宏名
+ * 如 OsTask_Init）；非提取 schema（ARXML 风格参数名）走 schemaParamToMacroName 转换。
+ * guarded 参数（#ifndef 默认值保护）包装为 { __guarded, __value } 供生成头输出保护结构。
  */
 function schemaToMacroParams(moduleShortName: string, schema: ModuleSchema): Record<string, unknown> {
   const params: Record<string, unknown> = {};
+  const extracted = (schema as unknown as Record<string, unknown>)['xSource'] === 'CfgH-Extracted';
   for (const p of schema.parameters || []) {
-    params[schemaParamToMacroName(moduleShortName, p)] = schemaParamValue(p);
+    const name = extracted ? p.name : schemaParamToMacroName(moduleShortName, p);
+    const value = schemaParamValue(p);
+    const guarded = (p as unknown as Record<string, unknown>)['guarded'];
+    params[name] = guarded ? { __guarded: true, __value: value } : value;
   }
   return params;
 }
@@ -816,7 +1031,23 @@ export async function generateHeadersFromSchemas(
   for (const schema of schemas) {
     const shortName = getModuleShortName(schema.name);
     const displayName = schema.label || schema.name;
-    const filename = getHeaderFilename(schema.name);
+    const moduleKey = schema.name.toLowerCase();
+    // 先解析手写头（拼接路径 + include 透传都需要）：
+    // 1) 重名模块按 x-source-file 精确匹配（DoIP services/ecual 两版共享 basename）
+    // 2) 兜底按生成头文件名大小写/下划线归一匹配
+    const sourceFile = (schema as unknown as Record<string, unknown>)['sourceFile'] as
+      | string
+      | undefined;
+    // 重名副版（fim_ecual 等）：生成头文件名/guard 必须与手写源一致
+    // （CMake include 路径同时含 config/input 模板与 src 版，guard 不同则 typedef 双份冲突）
+    const srcBase = sourceFile && /\.[hH]$/.test(sourceFile) ? sourceFile.split('/').pop()! : undefined;
+    const filename = srcBase || getHeaderFilename(schema.name);
+    let handwritten = sourceFile
+      ? options.handwrittenHeaders?.get(sourceFile)
+      : undefined;
+    if (handwritten === undefined) {
+      handwritten = findHandwrittenHeader(options.handwrittenHeaders, filename);
+    }
 
     let content = generateMacroOnlyHeader(
       schema.name,
@@ -826,12 +1057,19 @@ export async function generateHeadersFromSchemas(
       schemaToMacroParams(shortName, schema),
       {
         rawMacroNames: true,
+        filename,
+        verbatimDefines: (schema as unknown as Record<string, unknown>)['verbatimDefines'] as
+          | string[]
+          | undefined,
+        // 类型依赖 include 透传（手写头顶层 #include 原样保留）
+        includes: handwritten !== undefined ? extractHeaderIncludes(handwritten) : undefined,
+        // 条件 include 块（MemIf 的 #if (MEMIF_FEE_USED == STD_ON) / #include "Fee.h"）
+        conditionalIncludeBlocks:
+          handwritten !== undefined ? extractConditionalIncludeBlocks(handwritten) : undefined,
       }
     );
 
     const warnings: string[] = [];
-    const moduleKey = schema.name.toLowerCase();
-    const handwritten = options.handwrittenHeaders?.get(filename);
     if (handwritten !== undefined) {
       // 混合头探测护栏（规则 1）：手写头含 typedef/struct/extern 配置表 → 拼接路径
       if (hasNonMacroContent(handwritten)) {

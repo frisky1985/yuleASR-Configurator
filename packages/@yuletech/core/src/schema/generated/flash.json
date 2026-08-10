@@ -5,61 +5,6 @@
   "description": "Flash configuration (extracted from yuleASR Cfg.h)",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "FLS_CFG_VENDOR_ID": {
       "type": "integer",
       "description": "FLS_CFG_VENDOR_ID（cast: uint16）",
@@ -1102,10 +1047,10 @@
       "maximum": 65535
     },
     "FLASH_CR": {
-      "type": "integer",
-      "description": "FLASH_CR（派生表达式: *((volatile uint32*)0x40023C14U)）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "FLASH_CR（派生表达式: (*((volatile uint32*)0x40023C14U))）",
+      "default": "(*((volatile uint32*)0x40023C14U))",
+      "x-macro-kind": "expression"
     },
     "FLASH_CR_PG": {
       "type": "integer",
@@ -1157,10 +1102,10 @@
       "maximum": 4294967295
     },
     "FLASH_SR": {
-      "type": "integer",
-      "description": "FLASH_SR（派生表达式: *((volatile uint32*)0x40023C0CU)）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "FLASH_SR（派生表达式: (*((volatile uint32*)0x40023C0CU))）",
+      "default": "(*((volatile uint32*)0x40023C0CU))",
+      "x-macro-kind": "expression"
     },
     "FLASH_SR_BSY": {
       "type": "integer",
@@ -1212,10 +1157,10 @@
       "maximum": 65535
     },
     "FLASH_KEYR": {
-      "type": "integer",
-      "description": "FLASH_KEYR（派生表达式: *((volatile uint32*)0x40023C04U)）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "FLASH_KEYR（派生表达式: (*((volatile uint32*)0x40023C04U))）",
+      "default": "(*((volatile uint32*)0x40023C04U))",
+      "x-macro-kind": "expression"
     },
     "FLASH_KEY_1": {
       "type": "integer",

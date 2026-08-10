@@ -5,61 +5,6 @@
   "description": "Diagnostic over IP configuration header - ISO 13400-2 compliant",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "DOIP_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "DOIP_DEV_ERROR_DETECT 参数",
@@ -138,7 +83,8 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-guarded": true
     },
     "DOIP_MAX_ROUTING_ACTIVATIONS": {
       "type": "integer",
@@ -669,7 +615,8 @@
       "default": 300000,
       "minimum": 0,
       "maximum": 4294967295,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-guarded": true
     },
     "DOIP_DEFAULT_ACTIVATION_TYPE": {
       "type": "integer",
@@ -677,7 +624,8 @@
       "default": 1,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-guarded": true
     },
     "DOIP_WWH_OBD_ACTIVATION_TYPE": {
       "type": "integer",
@@ -685,7 +633,8 @@
       "default": 2,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-guarded": true
     },
     "DOIP_CENTRAL_SECURITY_TYPE": {
       "type": "integer",
@@ -693,7 +642,8 @@
       "default": 4,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-guarded": true
     },
     "DOIP_VIN_LENGTH": {
       "type": "integer",
@@ -701,7 +651,8 @@
       "default": 17,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-guarded": true
     },
     "DOIP_EID_LENGTH": {
       "type": "integer",
@@ -709,7 +660,8 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-guarded": true
     },
     "DOIP_GID_LENGTH": {
       "type": "integer",
@@ -717,7 +669,8 @@
       "default": 6,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-guarded": true
     },
     "DOIP_LOGICAL_ADDRESS": {
       "type": "integer",
@@ -725,7 +678,8 @@
       "default": 3584,
       "minimum": 0,
       "maximum": 65535,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-guarded": true
     },
     "DOIP_FURTHER_ACTION": {
       "type": "integer",
@@ -733,23 +687,28 @@
       "default": 0,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-guarded": true
     },
     "DOIP_VIN": {
       "type": "string",
       "description": "DOIP_VIN 参数",
-      "default": "YULETECHASR000001",
-      "x-section": "CALLBACK CONFIGURATION"
+      "default": "\"YULETECHASR000001\"",
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-macro-kind": "string-literal",
+      "x-guarded": true
     },
     "DOIP_EID": {
       "type": "string",
       "description": "DOIP_EID 参数（原始值: {0x00, 0x1A, 0x2B, 0x3C, 0x4D, 0x5E}）",
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-guarded": true
     },
     "DOIP_GID": {
       "type": "string",
       "description": "DOIP_GID 参数（原始值: {0x00, 0x00, 0x00, 0x00, 0x00, 0x00}）",
-      "x-section": "CALLBACK CONFIGURATION"
+      "x-section": "CALLBACK CONFIGURATION",
+      "x-guarded": true
     }
   },
   "additionalProperties": true,

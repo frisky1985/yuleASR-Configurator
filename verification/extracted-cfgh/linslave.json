@@ -5,61 +5,6 @@
   "description": "LinSlave 模块配置参数",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "LINSLAVE_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "LINSLAVE_DEV_ERROR_DETECT 参数",
@@ -134,10 +79,9 @@
       "maximum": 65535
     },
     "LINSLAVE_UART_IRQ_HANDLER": {
-      "type": "integer",
-      "description": "LINSLAVE_UART_IRQ_HANDLER（派生表达式: LinSlave_RxInterruptHandler）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "LINSLAVE_UART_IRQ_HANDLER 参数",
+      "default": "LinSlave_RxInterruptHandler"
     }
   },
   "additionalProperties": true,

@@ -105,6 +105,12 @@ interface RawParam {
   cast?: string;
   /** 是否为多行初始化宏 */
   multilineObject?: boolean;
+  /** 是否为函数式宏（带参数列表，不可配置，原样透传） */
+  functionLike?: boolean;
+  /** 函数式宏完整原始定义（含参数列表/函数体/续行） */
+  rawDefine?: string;
+  /** 是否为 #ifndef 默认值保护宏（生成头保留 #ifndef/#endif 结构，允许外部覆盖） */
+  guarded?: boolean;
   line: number;
 }
 
@@ -118,6 +124,10 @@ interface TypedParam {
   options?: string[];
   referenceTarget?: string;
   section: string;
+  /** 原样输出标记：expression（派生表达式）/ string-literal（带引号字符串字面量） */
+  kind?: 'expression' | 'string-literal';
+  /** #ifndef 默认值保护宏（生成头保留 #ifndef/#endif 结构） */
+  guarded?: boolean;
 }
 
 interface ModuleResult {
@@ -130,6 +140,10 @@ interface ModuleResult {
   description: string;
   params: TypedParam[];
   sections: string[];
+  /** 函数式宏完整原始定义（不可配置，原样透传输出到生成头） */
+  verbatimDefines: string[];
+  /** 手写头是否含版本宏（决定是否附加 CPI 容器，D 类修复） */
+  hasVersionMacros: boolean;
 }
 
 /* ------------------------------------------------------------------ */
@@ -170,10 +184,13 @@ function isFunctionLike(rest: string): boolean {
   const inner = g.inner.trim();
   if (inner === '') return true; // `()` 空参
   if (inner.includes(',')) return true; // 多参 (a, b)
-  // 单参: 全小写参数名 → 函数式；类型名 → cast
+  // 单参: 全小写参数名 → 函数式；类型名 → cast；
+  // 混合大小写标识符（含小写，如 networkHandle/prevState）→ 参数名 → 函数式宏（修复 LinNm 值化）；
+  // 全大写标识符（STD_ON/TRUE/NULL_PTR 等值）→ 视作值，非函数式
   if (/^[a-z][a-z0-9_]*$/.test(inner)) return !isTypeToken(inner);
   if (isTypeToken(inner)) return false;
-  // 其它（含大写/嵌套）→ 视作值
+  if (/^[A-Za-z_][A-Za-z0-9_]*$/.test(inner) && /[a-z]/.test(inner)) return true;
+  // 其它（含数字/嵌套/全大写）→ 视作值
   return false;
 }
 
@@ -261,8 +278,64 @@ interface ParsedFile {
   guards: number;
   empty: number;
   functionLike: string[];
+  /** 函数式宏完整原始定义（含续行，原样透传） */
+  verbatimDefines: string[];
   multilineObjects: number;
   skippedOther: number;
+}
+
+/**
+ * 条件块预扫描：找出含函数式宏的 `#if/#ifdef/#ifndef ... #endif` 整块区间。
+ *
+ * 背景（B 类修复，2026-08-10）：CryIf_Cfg.h 的 CRYIF_DBG_PRINT 在
+ * `#if (CRYIF_DEBUG_ENABLED == STD_ON)` / `#else` / `#endif` 双分支中各定义一次——
+ * 若逐 define 拍平提取，生成头会同时出现两个 `#define CRYIF_DBG_PRINT`（重复定义，-Werror）。
+ * 正确做法：含函数式宏的条件块整体原样透传（含 #if/#else/#endif 结构），块内 define 不再入参。
+ *
+ * 返回区间 [start, end]（行号，含 #if 行与 #endif 行），按 start 升序，嵌套块取最外层。
+ */
+function findFunctionLikeCondBlocks(lines: string[]): Array<[number, number]> {
+  // 1) 配对全部条件块（栈式匹配 #if/#ifdef/#ifndef ... #endif，支持嵌套）
+  const stack: number[] = [];
+  const blocks: Array<[number, number]> = [];
+  for (let i = 0; i < lines.length; i++) {
+    const t = lines[i].trim();
+    if (/^#\s*if(?:def|ndef)?\b/.test(t)) {
+      stack.push(i);
+    } else if (/^#\s*endif\b/.test(t)) {
+      const s = stack.pop();
+      if (s !== undefined) blocks.push([s, i]);
+    }
+  }
+
+  // 2) 过滤：仅保留含函数式宏的条件块；排除 include guard 块
+  //    （`#ifndef X_CFG_H` 后紧跟 `#define X_CFG_H` —— guard 包裹全文件，非函数式宏条件块）
+  const isGuardBlock = (s: number): boolean => {
+    const open = lines[s].trim();
+    const mOpen = open.match(/^#\s*ifndef\s+([A-Za-z_][A-Za-z0-9_]*)\s*$/);
+    if (!mOpen) return false;
+    const next = (lines[s + 1] || '').trim();
+    const mNext = next.match(/^#\s*define\s+([A-Za-z_][A-Za-z0-9_]*)\s*$/);
+    return !!mNext && mNext[1] === mOpen[1];
+  };
+  const withFuncLike = blocks.filter(([s, e]) => {
+    if (isGuardBlock(s)) return false;
+    for (let i = s; i <= e; i++) {
+      const m = lines[i].match(DEFINE_RE);
+      if (!m) continue;
+      if (isFunctionLike(m[2].trim())) return true;
+    }
+    return false;
+  });
+
+  // 3) 去嵌套：嵌套块取最外层（内层块被外层整块覆盖，避免重复捕获）
+  const sorted = withFuncLike.sort((a, b) => a[0] - b[0]);
+  const outer: Array<[number, number]> = [];
+  for (const [s, e] of sorted) {
+    const covered = outer.some(([os, oe]) => s >= os && e <= oe);
+    if (!covered) outer.push([s, e]);
+  }
+  return outer;
 }
 
 function parseCfgHeader(content: string): ParsedFile {
@@ -273,14 +346,44 @@ function parseCfgHeader(content: string): ParsedFile {
     guards: 0,
     empty: 0,
     functionLike: [],
+    verbatimDefines: [],
     multilineObjects: 0,
     skippedOther: 0,
   };
 
+  // 条件块预扫描：找到含函数式宏的 #if/#ifdef/#ifndef ... #endif 整块区间
+  // （如 CryIf 的 CRYIF_DBG_PRINT debug/release 双分支），整块原样捕获，避免拍平后重复定义
+  const captureRanges = findFunctionLikeCondBlocks(lines);
+
   let currentSection = 'General';
+
+  // `#ifndef X / #define X value / #endif` 默认值保护模式识别（如 CDD_FVM_BACKEND）：
+  // 手写头用 #ifndef 允许外部（命令行 -D / 其他头）覆盖，生成头必须保留保护结构
+  const guardedDefines = new Set<string>();
+  for (let i = 0; i + 2 < lines.length; i++) {
+    const open = lines[i].trim().match(/^#\s*ifndef\s+([A-Za-z_][A-Za-z0-9_]*)\s*$/);
+    if (!open) continue;
+    const defLine = lines[i + 1];
+    const close = lines[i + 2].trim();
+    const defM = defLine.match(DEFINE_RE);
+    if (defM && defM[1] === open[1] && /^#\s*endif\b/.test(close)) {
+      guardedDefines.add(open[1]);
+      i += 2;
+    }
+  }
+
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
+
+    // 条件块整块捕获（含函数式宏的 #if..#endif）：块内所有行原样透传，
+    // 块内 define 不再作为参数提取（避免生成头里重复定义）
+    const cap = captureRanges.find(([s]) => s === i);
+    if (cap) {
+      result.verbatimDefines.push(lines.slice(cap[0], cap[1] + 1).join('\n'));
+      i = cap[1];
+      continue;
+    }
 
     // --- 分节横幅识别 ---
     // 形态: `/*=====...` + `* TITLE` + `====...*/`（开+闭都要成立，避免误判版权头）
@@ -308,10 +411,18 @@ function parseCfgHeader(content: string): ParsedFile {
       continue;
     }
 
-    // 函数式宏（含多行续行，如 LINNM_CALL_*）
+    // 默认值保护宏（#ifndef 包裹）：标记 guarded，codegen 输出时保留 #ifndef/#endif 结构
+    const guarded = guardedDefines.has(name);
+
+    // 函数式宏（含多行续行，如 LINNM_CALL_*）→ 原样保留（不可配置，透传到 verbatim）
     if (isFunctionLike(rest)) {
       result.functionLike.push(name);
-      while (i + 1 < lines.length && lines[i + 1].trimEnd().endsWith('\\')) i++;
+      let rawDefine = line.slice(line.indexOf('define') + 6).trim();
+      while (rawDefine.endsWith('\\') && i + 1 < lines.length) {
+        i++;
+        rawDefine += '\n' + lines[i].trim();
+      }
+      result.verbatimDefines.push(`#define ${rawDefine}`);
       continue;
     }
 
@@ -356,6 +467,7 @@ function parseCfgHeader(content: string): ParsedFile {
       comment,
       cast,
       section: currentSection,
+      guarded,
       line: i + 1,
     });
   }
@@ -452,10 +564,18 @@ function inferParamType(
     type: 'string',
     section: p.section,
     description: p.comment || `${p.name} 参数`,
+    guarded: p.guarded,
   };
 
   if (p.multilineObject) {
     base.type = 'object';
+    return base;
+  }
+
+  // 函数式宏（不可配置）→ 不进 schema 参数（原样透传由 verbatim 输出）
+  if (p.functionLike) {
+    base.type = 'string';
+    base.description = `${p.name}（函数式宏，原样透传）`;
     return base;
   }
 
@@ -477,10 +597,11 @@ function inferParamType(
     return base;
   }
 
-  // 字符串
+  // 字符串（保留原始带引号字面量，供 codegen 原样输出；F1 提取不再丢引号）
   if (v.startsWith('"') && v.endsWith('"')) {
     base.type = 'string';
-    base.default = v.slice(1, -1);
+    base.default = v; // 保留 "ECU1" 完整字面量（修复 Dlt DLT_ECU_ID 引号丢失）
+    base.kind = 'string-literal';
     return base;
   }
 
@@ -575,12 +696,20 @@ function inferParamType(
     return base;
   }
 
-  // 表达式（位或/算术/宏派生）→ integer（描述记录原式）
-  if (/^[0-9A-Za-z_().*&|+\-<>\s]+$/.test(v)) {
-    base.type = 'integer';
-    base.min = 0;
-    base.max = MAX_U32;
-    base.description = `${p.comment || p.name}（派生表达式: ${v}）`;
+  // 纯标识符（如 const / FIM_CFG_NUMBER_OF_FIDS）→ 原样输出（不可加括号，否则展开后语法错误）
+  if (/^[A-Za-z_][A-Za-z0-9_]*$/.test(v)) {
+    base.type = 'string';
+    base.default = v;
+    return base;
+  }
+
+  // 表达式（含运算符/括号，如 FIM_CFG_MAX_FID = FIM_CFG_NUMBER_OF_FIDS - 1u）
+  // → 保留原始表达式作为默认值（修复 LinSM LINSM_REQUEST_TIMEOUT_COUNT 生成 ""）
+  if (/^[0-9A-Za-z_().*&|+\-<>/\s]+$/.test(v) && /[*&|+\-<>/()]/.test(v)) {
+    base.type = 'string';
+    base.default = `(${v})`; // 输出原表达式（如 (A / B)），codegen 原样透传
+    base.kind = 'expression';
+    base.description = `${p.comment || p.name}（派生表达式: ${p.raw}）`;
     return base;
   }
 
@@ -653,7 +782,11 @@ function cfiFieldsSafe(fields: string[]): string[] {
 
 function toGeneratedJson(mod: ModuleResult, sourceRel: string): Record<string, unknown> {
   const properties: Record<string, unknown> = {};
-  properties.CommonPublishedInformation = cpiContainer();
+  // D 类修复（2026-08-10）：提取版 schema 一律不附加 CPI 容器。
+  // 手写头版本宏（AR_RELEASE_*/MODULE_ID/SW_*/VENDOR_ID）已由 F1 作为普通参数提取，
+  // rawMacroNames 原样输出（含 CFG 前缀如 CRYIF_CFG_AR_RELEASE_*）；
+  // 若再附加 CPI 容器，会额外生成 <SHORT>_AR_RELEASE_*（值 0）与模块 .h 重复定义
+  // 或抢占 #ifndef 守卫（V5 D 类 7 模块根因），故提取版不附加。
   for (const p of mod.params) {
     const prop: Record<string, unknown> = { type: p.type, description: p.description || `${p.name} 参数` };
     if (p.default !== undefined) prop.default = p.default;
@@ -662,6 +795,8 @@ function toGeneratedJson(mod: ModuleResult, sourceRel: string): Record<string, u
     if (p.options && p.options.length > 0) prop.enum = p.options;
     if (p.referenceTarget) prop['x-reference-target'] = p.referenceTarget;
     if (p.section && p.section !== 'General') prop['x-section'] = p.section;
+    if (p.kind) prop['x-macro-kind'] = p.kind;
+    if (p.guarded) prop['x-guarded'] = true;
     properties[p.name] = prop;
   }
 
@@ -673,6 +808,7 @@ function toGeneratedJson(mod: ModuleResult, sourceRel: string): Record<string, u
     type: 'object',
     properties,
     additionalProperties: true,
+    ...(mod.verbatimDefines.length > 0 ? { 'x-verbatim-defines': mod.verbatimDefines } : {}),
     'x-layer': mod.layer,
     'x-version': mod.version,
     'x-source': 'CfgH-Extracted',
@@ -763,6 +899,11 @@ function main(): void {
     }
 
     const brief = extractBrief(content);
+    // D 类修复：仅当手写头含版本宏（AR_RELEASE_*/MODULE_ID/SW_*/VENDOR_ID）时才附加 CPI 容器
+    const hasVersionMacros =
+      /(?:^|_)(?:AR_RELEASE_(?:MAJOR|MINOR|REVISION)_VERSION|MODULE_ID|SW_(?:MAJOR|MINOR|PATCH)_VERSION|VENDOR_ID)\b/.test(
+        content
+      );
     const mod: ModuleResult = {
       displayName,
       fileName: displayName.toLowerCase().replace(/[^a-z0-9]/g, ''),
@@ -772,6 +913,8 @@ function main(): void {
       description: brief || `${displayName} configuration (extracted from yuleASR Cfg.h)`,
       params: typed,
       sections,
+      verbatimDefines: parsed.verbatimDefines,
+      hasVersionMacros,
     };
     results.push(mod);
   }
@@ -834,11 +977,8 @@ function main(): void {
   fs.rmSync(VERIFY_DIR, { recursive: true, force: true });
   fs.mkdirSync(VERIFY_DIR, { recursive: true });
   for (const mod of all) {
-    fs.writeFileSync(
-      path.join(VERIFY_DIR, `${mod.fileName}.json`),
-      JSON.stringify(toGeneratedJson(mod, mod.sourceFile), null, 2) + '\n',
-      'utf8'
-    );
+    const json = JSON.stringify(toGeneratedJson(mod, mod.sourceFile), null, 2) + '\n';
+    fs.writeFileSync(path.join(VERIFY_DIR, `${mod.fileName}.json`), json, 'utf8');
   }
   const verifyCount = fs.readdirSync(VERIFY_DIR).filter(f => f.endsWith('.json')).length;
   console.log(`[F1] verification/extracted-cfgh: ${verifyCount} 个提取版 schema`);
@@ -871,7 +1011,11 @@ function main(): void {
       keptList.push(mod.displayName);
       continue;
     }
-    fs.writeFileSync(target, JSON.stringify(toGeneratedJson(mod, mod.sourceFile), null, 2) + '\n', 'utf8');
+    fs.writeFileSync(
+      target,
+      JSON.stringify(toGeneratedJson(mod, mod.sourceFile), null, 2) + '\n',
+      'utf8'
+    );
     written++;
   }
   console.log(`[F1] 合并结果: 新增写入 generated/ ${written} 个; 与现有重名保留现有 ${keptExisting} 个 → ${keptList.join(', ')}`);

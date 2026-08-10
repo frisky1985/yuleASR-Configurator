@@ -5,61 +5,6 @@
   "description": "ECU State Manager Configuration - Multi-Phase Startup Support",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "ECUM_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "ECUM_DEV_ERROR_DETECT 参数",
@@ -106,126 +51,144 @@
       "description": "ECUM_WKSOURCE_POWER 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_RESET": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_RESET 参数",
       "default": 2,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_INTERNAL_RESET": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_INTERNAL_RESET 参数",
       "default": 4,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_INTERNAL_WDG": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_INTERNAL_WDG 参数",
       "default": 8,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_EXTERNAL_WDG": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_EXTERNAL_WDG 参数",
       "default": 16,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_TIMER": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_TIMER 参数",
       "default": 32,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_CAN": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_CAN 参数",
       "default": 64,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_CAN0": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_CAN0 参数",
       "default": 64,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_CAN1": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_CAN1 参数",
       "default": 128,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_CAN2": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_CAN2 参数",
       "default": 256,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_CAN3": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_CAN3 参数",
       "default": 512,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_LIN": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_LIN 参数",
       "default": 1024,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_ETH": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_ETH 参数",
       "default": 2048,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_FLEXRAY": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_FLEXRAY 参数",
       "default": 4096,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_GPIO": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_GPIO 参数",
       "default": 8192,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_SPI": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_SPI 参数",
       "default": 16384,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_I2C": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_I2C 参数",
       "default": 32768,
       "minimum": 0,
-      "maximum": 65535
+      "maximum": 65535,
+      "x-guarded": true
     },
     "ECUM_WKSOURCE_ADC": {
       "type": "integer",
       "description": "ECUM_WKSOURCE_ADC 参数",
       "default": 65536,
       "minimum": 0,
-      "maximum": 4294967295
+      "maximum": 4294967295,
+      "x-guarded": true
     },
     "ECUM_CONFIGURED_WAKEUP_SOURCES": {
       "type": "object",
@@ -366,7 +329,8 @@
       "description": "ECUM_DEFAULT_RESET_TYPE（别名: ECUM_RESET_MCU = 0；同族可选: ECUM_RESET_IO / ECUM_RESET_MCU / ECUM_RESET_SW / ECUM_RESET_TYPE_DEFINED / ECUM_RESET_WDG）",
       "default": 0,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_SLEEP_TRANSITION_TIMEOUT": {
       "type": "integer",
@@ -421,77 +385,88 @@
       "description": "ECUM_STARTUPONE_SID 参数",
       "default": 15,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_STARTUPTWO_SID": {
       "type": "integer",
       "description": "ECUM_STARTUPTWO_SID 参数",
       "default": 16,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_SLEEP_SID": {
       "type": "integer",
       "description": "ECUM_SLEEP_SID 参数",
       "default": 17,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_HALT_SID": {
       "type": "integer",
       "description": "ECUM_HALT_SID 参数",
       "default": 18,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_POLL_SID": {
       "type": "integer",
       "description": "ECUM_POLL_SID 参数",
       "default": 19,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_WAKEUPRESTART_SID": {
       "type": "integer",
       "description": "ECUM_WAKEUPRESTART_SID 参数",
       "default": 20,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_CLEARWAKEUPEVENT_SID": {
       "type": "integer",
       "description": "ECUM_CLEARWAKEUPEVENT_SID 参数",
       "default": 21,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_CHECKWAKEUP_SID": {
       "type": "integer",
       "description": "ECUM_CHECKWAKEUP_SID 参数",
       "default": 22,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_ENABLEWAKEUPSOURCES_SID": {
       "type": "integer",
       "description": "ECUM_ENABLEWAKEUPSOURCES_SID 参数",
       "default": 23,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_DISABLEWAKEUPSOURCES_SID": {
       "type": "integer",
       "description": "ECUM_DISABLEWAKEUPSOURCES_SID 参数",
       "default": 24,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "ECUM_GETSTATUSOFWAKEUPSOURCE_SID": {
       "type": "integer",
       "description": "ECUM_GETSTATUSOFWAKEUPSOURCE_SID 参数",
       "default": 25,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     }
   },
   "additionalProperties": true,

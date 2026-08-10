@@ -33,6 +33,10 @@ interface JsonProp {
   'x-choice-container'?: boolean;
   'x-choice-params'?: string[];
   'x-choice-description'?: string;
+  /** F1 提取原样输出标记：expression / string-literal */
+  'x-macro-kind'?: string;
+  /** #ifndef 默认值保护宏（生成头保留 #ifndef/#endif 结构） */
+  'x-guarded'?: boolean;
 }
 
 interface GeneratedModuleJson {
@@ -44,6 +48,10 @@ interface GeneratedModuleJson {
   'x-layer'?: string;
   'x-version'?: string;
   'x-source'?: string;
+  /** F1 函数式宏原样透传（不可配置） */
+  'x-verbatim-defines'?: string[];
+  /** 手写头源路径（重名模块按此精确匹配，如 DoIP services/ecual 两版） */
+  'x-source-file'?: string;
   crossReferences?: CrossModuleReference[];
 }
 
@@ -78,6 +86,14 @@ function jsonPropToParameter(
   }
   if (Array.isArray(prop.required)) {
     param.required = prop.required.length > 0;
+  }
+  if (prop['x-macro-kind']) {
+    // F1 提取原样输出标记（expression/string-literal）——透传到 ModuleParameter
+    (param as unknown as Record<string, unknown>)['xMacroKind'] = prop['x-macro-kind'];
+  }
+  if (prop['x-guarded']) {
+    // #ifndef 默认值保护宏——透传到 ModuleParameter（codegen 输出保留保护结构）
+    (param as unknown as Record<string, unknown>)['guarded'] = true;
   }
 
   return param;
@@ -182,6 +198,20 @@ export function generatedJsonToModuleSchema(
     parameters,
     containers,
   };
+
+  if (Array.isArray(json['x-verbatim-defines']) && json['x-verbatim-defines'].length > 0) {
+    // F1 函数式宏原样透传（不可配置，codegen 输出到生成头）
+    (schema as unknown as Record<string, unknown>)['verbatimDefines'] = json['x-verbatim-defines'];
+  }
+
+  // F1 来源标记（CfgH-Extracted）——codegen 据此判定参数名已是最终宏名（rawMacroNames）
+  if (json['x-source']) {
+    (schema as unknown as Record<string, unknown>)['xSource'] = json['x-source'];
+  }
+  // 手写头源路径（重名模块按 sourceFile 精确匹配手写头，如 DoIP services/ecual 两版）
+  if (json['x-source-file']) {
+    (schema as unknown as Record<string, unknown>)['sourceFile'] = json['x-source-file'];
+  }
 
   if (Array.isArray(json.crossReferences) && json.crossReferences.length > 0) {
     schema.crossReferences = json.crossReferences;

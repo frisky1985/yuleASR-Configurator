@@ -5,61 +5,6 @@
   "description": "SOME/IP Configuration Header",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "SOMEIP_CFG_AR_RELEASE_MAJOR_VERSION": {
       "type": "integer",
       "description": "SOMEIP_CFG_AR_RELEASE_MAJOR_VERSION 参数",
@@ -171,11 +116,11 @@
       "x-section": "MESSAGE BUFFER CONFIGURATION"
     },
     "SOMEIP_TOTAL_NUM_BUFFERS": {
-      "type": "integer",
-      "description": "SOMEIP_TOTAL_NUM_BUFFERS（派生表达式: SOMEIP_NUM_RX_BUFFERS + SOMEIP_NUM_TX_BUFFERS）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "MESSAGE BUFFER CONFIGURATION"
+      "type": "string",
+      "description": "SOMEIP_TOTAL_NUM_BUFFERS（派生表达式: (SOMEIP_NUM_RX_BUFFERS + SOMEIP_NUM_TX_BUFFERS)）",
+      "default": "(SOMEIP_NUM_RX_BUFFERS + SOMEIP_NUM_TX_BUFFERS)",
+      "x-section": "MESSAGE BUFFER CONFIGURATION",
+      "x-macro-kind": "expression"
     },
     "SOMEIP_RX_BUFFER_SIZE": {
       "type": "integer",

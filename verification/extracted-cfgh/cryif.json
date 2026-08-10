@@ -5,61 +5,6 @@
   "description": "Crypto Interface Configuration Header",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "CRYIF_CFG_AR_RELEASE_MAJOR_VERSION": {
       "type": "integer",
       "description": "CRYIF_CFG_AR_RELEASE_MAJOR_VERSION 参数",
@@ -112,25 +57,29 @@
       "type": "boolean",
       "description": "CRYIF_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "CRYIF_VERSION_INFO_API": {
       "type": "boolean",
       "description": "CRYIF_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "CRYIF_KEY_ELEMENT_COPY_API": {
       "type": "boolean",
       "description": "CRYIF_KEY_ELEMENT_COPY_API 参数",
       "default": true,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "CRYIF_KEY_VALID_CHECK_API": {
       "type": "boolean",
       "description": "CRYIF_KEY_VALID_CHECK_API 参数",
       "default": true,
-      "x-section": "PRE-COMPILE CONFIGURATION"
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-guarded": true
     },
     "CRYIF_CFG_MAX_CHANNEL_COUNT": {
       "type": "integer",
@@ -563,27 +512,31 @@
       "x-section": "CALLBACK CONFIGURATION"
     },
     "CRYIF_CFG_JOB_CALLBACK": {
-      "type": "integer",
-      "description": "CRYIF_CFG_JOB_CALLBACK（派生表达式: CryIf_JobNotificationCallback）",
-      "minimum": 0,
-      "maximum": 4294967295,
+      "type": "string",
+      "description": "CRYIF_CFG_JOB_CALLBACK 参数",
+      "default": "CryIf_JobNotificationCallback",
       "x-section": "CALLBACK CONFIGURATION"
     },
     "CRYIF_CFG_KEY_CALLBACK": {
-      "type": "integer",
-      "description": "CRYIF_CFG_KEY_CALLBACK（派生表达式: CryIf_KeyNotificationCallback）",
-      "minimum": 0,
-      "maximum": 4294967295,
+      "type": "string",
+      "description": "CRYIF_CFG_KEY_CALLBACK 参数",
+      "default": "CryIf_KeyNotificationCallback",
       "x-section": "CALLBACK CONFIGURATION"
     },
     "CRYIF_DEBUG_ENABLED": {
       "type": "boolean",
       "description": "CRYIF_DEBUG_ENABLED 参数",
       "default": false,
-      "x-section": "DEBUG CONFIGURATION"
+      "x-section": "DEBUG CONFIGURATION",
+      "x-guarded": true
     }
   },
   "additionalProperties": true,
+  "x-verbatim-defines": [
+    "#define CRYIF_CFG_SEC_LEVEL_TO_CSM(level)       ((level) * 0x10U)",
+    "#define CRYIF_CFG_IS_VALID_SEC_LEVEL(level)     \\\n(((level) >= CRYIF_SEC_LEVEL_NONE) && ((level) <= CRYIF_SEC_LEVEL_7))",
+    "#if (CRYIF_DEBUG_ENABLED == STD_ON)\n    #include <stdio.h>\n    #define CRYIF_DBG_PRINT(fmt, ...)           printf(\"[CRYIF] \" fmt \"\\n\", ##__VA_ARGS__)\n#else\n    #define CRYIF_DBG_PRINT(fmt, ...)           ((void)0)\n#endif"
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

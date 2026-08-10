@@ -5,61 +5,6 @@
   "description": "Linker configuration (extracted from yuleASR Cfg.h)",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "FLASH_BASE_ADDR": {
       "type": "integer",
       "description": "FLASH_BASE_ADDR 参数",
@@ -68,10 +13,10 @@
       "maximum": 255
     },
     "FLASH_SIZE": {
-      "type": "integer",
-      "description": "2 MB（派生表达式: 2UL * 1024UL * 1024UL）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "2 MB（派生表达式: (2UL * 1024UL * 1024UL)）",
+      "default": "(2UL * 1024UL * 1024UL)",
+      "x-macro-kind": "expression"
     },
     "FLASH_VECTOR_TABLE_ADDR": {
       "type": "integer",
@@ -95,10 +40,10 @@
       "maximum": 65535
     },
     "FLASH_CODE_SIZE": {
-      "type": "integer",
-      "description": "FLASH_CODE_SIZE（派生表达式: FLASH_SIZE - FLASH_CODE_START）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "FLASH_CODE_SIZE（派生表达式: (FLASH_SIZE - FLASH_CODE_START)）",
+      "default": "(FLASH_SIZE - FLASH_CODE_START)",
+      "x-macro-kind": "expression"
     },
     "RAM_BASE_ADDR": {
       "type": "integer",
@@ -108,10 +53,10 @@
       "maximum": 4294967295
     },
     "RAM_SIZE": {
-      "type": "integer",
-      "description": "512 KB（派生表达式: 512UL * 1024UL）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "512 KB（派生表达式: (512UL * 1024UL)）",
+      "default": "(512UL * 1024UL)",
+      "x-macro-kind": "expression"
     },
     "RAM_SAFE_START": {
       "type": "integer",
@@ -121,16 +66,16 @@
       "maximum": 4294967295
     },
     "RAM_SAFE_SIZE": {
-      "type": "integer",
-      "description": "64 KB（派生表达式: 64UL * 1024UL）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "64 KB（派生表达式: (64UL * 1024UL)）",
+      "default": "(64UL * 1024UL)",
+      "x-macro-kind": "expression"
     },
     "RAM_SAFE_END": {
-      "type": "integer",
-      "description": "RAM_SAFE_END（派生表达式: RAM_SAFE_START + RAM_SAFE_SIZE）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "RAM_SAFE_END（派生表达式: (RAM_SAFE_START + RAM_SAFE_SIZE)）",
+      "default": "(RAM_SAFE_START + RAM_SAFE_SIZE)",
+      "x-macro-kind": "expression"
     },
     "RAM_GENERAL_START": {
       "type": "integer",
@@ -140,16 +85,16 @@
       "maximum": 4294967295
     },
     "RAM_GENERAL_SIZE": {
-      "type": "integer",
-      "description": "384 KB（派生表达式: 384UL * 1024UL）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "384 KB（派生表达式: (384UL * 1024UL)）",
+      "default": "(384UL * 1024UL)",
+      "x-macro-kind": "expression"
     },
     "RAM_GENERAL_END": {
-      "type": "integer",
-      "description": "RAM_GENERAL_END（派生表达式: RAM_GENERAL_START + RAM_GENERAL_SIZE）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "RAM_GENERAL_END（派生表达式: (RAM_GENERAL_START + RAM_GENERAL_SIZE)）",
+      "default": "(RAM_GENERAL_START + RAM_GENERAL_SIZE)",
+      "x-macro-kind": "expression"
     },
     "RAM_SHARED_START": {
       "type": "integer",
@@ -159,16 +104,16 @@
       "maximum": 4294967295
     },
     "RAM_SHARED_SIZE": {
-      "type": "integer",
-      "description": "64 KB（派生表达式: 64UL * 1024UL）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "64 KB（派生表达式: (64UL * 1024UL)）",
+      "default": "(64UL * 1024UL)",
+      "x-macro-kind": "expression"
     },
     "RAM_SHARED_END": {
-      "type": "integer",
-      "description": "RAM_SHARED_END（派生表达式: RAM_SHARED_START + RAM_SHARED_SIZE）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "RAM_SHARED_END（派生表达式: (RAM_SHARED_START + RAM_SHARED_SIZE)）",
+      "default": "(RAM_SHARED_START + RAM_SHARED_SIZE)",
+      "x-macro-kind": "expression"
     },
     "RAM_END_ADDR": {
       "type": "integer",
@@ -185,22 +130,22 @@
       "maximum": 4294967295
     },
     "STACK_SIZE": {
-      "type": "integer",
-      "description": "128 KB（派生表达式: 128UL * 1024UL）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "128 KB（派生表达式: (128UL * 1024UL)）",
+      "default": "(128UL * 1024UL)",
+      "x-macro-kind": "expression"
     },
     "STACK_BOTTOM": {
-      "type": "integer",
-      "description": "STACK_BOTTOM（派生表达式: STACK_TOP - STACK_SIZE）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "STACK_BOTTOM（派生表达式: (STACK_TOP - STACK_SIZE)）",
+      "default": "(STACK_TOP - STACK_SIZE)",
+      "x-macro-kind": "expression"
     },
     "HEAP_SIZE": {
-      "type": "integer",
-      "description": "256 KB（派生表达式: 256UL * 1024UL）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "256 KB（派生表达式: (256UL * 1024UL)）",
+      "default": "(256UL * 1024UL)",
+      "x-macro-kind": "expression"
     },
     "MPU_REGION_COUNT": {
       "type": "integer",
@@ -399,10 +344,10 @@
       "maximum": 255
     },
     "SEC_ATTR_SAFE": {
-      "type": "integer",
-      "description": "SEC_ATTR_SAFE（派生表达式: MEM_ATTR_ECC_ENABLED | MEM_ATTR_LOCKSTEP）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "SEC_ATTR_SAFE（派生表达式: (MEM_ATTR_ECC_ENABLED | MEM_ATTR_LOCKSTEP)）",
+      "default": "(MEM_ATTR_ECC_ENABLED | MEM_ATTR_LOCKSTEP)",
+      "x-macro-kind": "expression"
     },
     "SEC_ATTR_QM": {
       "type": "integer",
@@ -420,6 +365,12 @@
     }
   },
   "additionalProperties": true,
+  "x-verbatim-defines": [
+    "#define SECTION_START(sym)      ((uint32_t)&(sym))",
+    "#define SECTION_END(sym)        ((uint32_t)&(sym))",
+    "#define SECTION_SIZE(start, end) ((uint32_t)&(end) - (uint32_t)&(start))",
+    "#define LOAD_ADDR(sym)          ((uint32_t)&(sym))"
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

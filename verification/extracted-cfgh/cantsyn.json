@@ -5,61 +5,6 @@
   "description": "CAN Time Synchronization Configuration - AutoSAR R22-11 Service Layer",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "CANTSYN_CFG_VENDOR_ID": {
       "type": "integer",
       "description": "YuleTech Vendor ID",
@@ -442,8 +387,10 @@
     },
     "CANTSYN_TICKS_PER_SYNC": {
       "type": "string",
-      "description": "CANTSYN_TICKS_PER_SYNC 参数（原始值: (CANTSYN_SYNC_PERIOD_MS / CANTSYN_MAIN_FUNCTION_PERIOD_MS)）",
-      "x-section": "MAIN FUNCTION CONFIGURATION"
+      "description": "CANTSYN_TICKS_PER_SYNC（派生表达式: (CANTSYN_SYNC_PERIOD_MS / CANTSYN_MAIN_FUNCTION_PERIOD_MS)）",
+      "default": "(CANTSYN_SYNC_PERIOD_MS / CANTSYN_MAIN_FUNCTION_PERIOD_MS)",
+      "x-section": "MAIN FUNCTION CONFIGURATION",
+      "x-macro-kind": "expression"
     },
     "CANTSYN_TIMEBASE_GLOBAL_ID": {
       "type": "integer",

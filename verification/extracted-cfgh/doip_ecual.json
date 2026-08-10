@@ -5,90 +5,40 @@
   "description": "DoIP configuration (extracted from yuleASR Cfg.h)",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "DOIP_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "DOIP_DEV_ERROR_DETECT 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION OPTIONS"
+      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-guarded": true
     },
     "DOIP_VERSION_INFO_API": {
       "type": "boolean",
       "description": "DOIP_VERSION_INFO_API 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION OPTIONS"
+      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-guarded": true
     },
     "DOIP_ROUTING_ACTIVATION_AUTHENTICATION": {
       "type": "boolean",
       "description": "DOIP_ROUTING_ACTIVATION_AUTHENTICATION 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION OPTIONS"
+      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-guarded": true
     },
     "DOIP_ROUTING_ACTIVATION_CONFIRMATION": {
       "type": "boolean",
       "description": "DOIP_ROUTING_ACTIVATION_CONFIRMATION 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION OPTIONS"
+      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-guarded": true
     },
     "DOIP_ALIVE_CHECK_SUPPORT": {
       "type": "boolean",
       "description": "DOIP_ALIVE_CHECK_SUPPORT 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION OPTIONS"
+      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-guarded": true
     },
     "DOIP_NODE_TYPE": {
       "type": "enum",
@@ -98,25 +48,29 @@
         "DOIP_NODE_TYPE_GATEWAY",
         "DOIP_NODE_TYPE_NODE"
       ],
-      "x-section": "GENERAL CONFIGURATION OPTIONS"
+      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-guarded": true
     },
     "DOIP_VEHICLE_ANNOUNCEMENT": {
       "type": "boolean",
       "description": "DOIP_VEHICLE_ANNOUNCEMENT 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION OPTIONS"
+      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-guarded": true
     },
     "DOIP_USE_EID_AS_VIN": {
       "type": "boolean",
       "description": "DOIP_USE_EID_AS_VIN 参数",
       "default": false,
-      "x-section": "GENERAL CONFIGURATION OPTIONS"
+      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-guarded": true
     },
     "DOIP_OBD_SUPPORT": {
       "type": "boolean",
       "description": "DOIP_OBD_SUPPORT 参数",
       "default": true,
-      "x-section": "GENERAL CONFIGURATION OPTIONS"
+      "x-section": "GENERAL CONFIGURATION OPTIONS",
+      "x-guarded": true
     },
     "DOIP_PROTOCOL_VERSION": {
       "type": "integer",

@@ -5,61 +5,6 @@
   "description": "Enable/Disable version information API",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "LINSM_VERSION_INFO_API": {
       "type": "boolean",
       "description": "LINSM_VERSION_INFO_API 参数",
@@ -100,10 +45,10 @@
       "maximum": 255
     },
     "LINSM_TOTAL_SCHEDULE_COUNT": {
-      "type": "integer",
-      "description": "LINSM_TOTAL_SCHEDULE_COUNT（派生表达式: LINSM_CHANNEL_COUNT * LINSM_SCHEDULE_COUNT_PER_CHANNEL）",
-      "minimum": 0,
-      "maximum": 4294967295
+      "type": "string",
+      "description": "LINSM_TOTAL_SCHEDULE_COUNT（派生表达式: (LINSM_CHANNEL_COUNT * LINSM_SCHEDULE_COUNT_PER_CHANNEL)）",
+      "default": "(LINSM_CHANNEL_COUNT * LINSM_SCHEDULE_COUNT_PER_CHANNEL)",
+      "x-macro-kind": "expression"
     },
     "LINSM_WAKEUP_SOURCE_COUNT": {
       "type": "integer",
@@ -229,7 +174,8 @@
       "description": "COMM_CHANNEL_LIN1 参数",
       "default": 1,
       "minimum": 0,
-      "maximum": 255
+      "maximum": 255,
+      "x-guarded": true
     },
     "LINSM_WAKEUP_SOURCE_CH0": {
       "type": "integer",

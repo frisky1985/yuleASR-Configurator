@@ -5,61 +5,6 @@
   "description": "Development error detection enable/disable",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "FEE_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "FEE_DEV_ERROR_DETECT 参数",
@@ -267,11 +212,11 @@
       "x-section": "TIMEOUT CONFIGURATION"
     },
     "FEE_SECTOR0_START_ADDR": {
-      "type": "integer",
-      "description": "FEE_SECTOR0_START_ADDR（派生表达式: FEE_FLASH_BASE_ADDR + 0x00000000U）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "SECTOR CONFIGURATION"
+      "type": "string",
+      "description": "FEE_SECTOR0_START_ADDR（派生表达式: (FEE_FLASH_BASE_ADDR + 0x00000000U)）",
+      "default": "(FEE_FLASH_BASE_ADDR + 0x00000000U)",
+      "x-section": "SECTOR CONFIGURATION",
+      "x-macro-kind": "expression"
     },
     "FEE_SECTOR0_SIZE": {
       "type": "integer",
@@ -302,11 +247,11 @@
       "x-section": "SECTOR CONFIGURATION"
     },
     "FEE_SECTOR1_START_ADDR": {
-      "type": "integer",
-      "description": "FEE_SECTOR1_START_ADDR（派生表达式: FEE_FLASH_BASE_ADDR + 0x00010000U）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "SECTOR CONFIGURATION"
+      "type": "string",
+      "description": "FEE_SECTOR1_START_ADDR（派生表达式: (FEE_FLASH_BASE_ADDR + 0x00010000U)）",
+      "default": "(FEE_FLASH_BASE_ADDR + 0x00010000U)",
+      "x-section": "SECTOR CONFIGURATION",
+      "x-macro-kind": "expression"
     },
     "FEE_SECTOR1_SIZE": {
       "type": "integer",
@@ -337,11 +282,11 @@
       "x-section": "SECTOR CONFIGURATION"
     },
     "FEE_SECTOR2_START_ADDR": {
-      "type": "integer",
-      "description": "FEE_SECTOR2_START_ADDR（派生表达式: FEE_FLASH_BASE_ADDR + 0x00020000U）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "SECTOR CONFIGURATION"
+      "type": "string",
+      "description": "FEE_SECTOR2_START_ADDR（派生表达式: (FEE_FLASH_BASE_ADDR + 0x00020000U)）",
+      "default": "(FEE_FLASH_BASE_ADDR + 0x00020000U)",
+      "x-section": "SECTOR CONFIGURATION",
+      "x-macro-kind": "expression"
     },
     "FEE_SECTOR2_SIZE": {
       "type": "integer",
@@ -372,11 +317,11 @@
       "x-section": "SECTOR CONFIGURATION"
     },
     "FEE_SECTOR3_START_ADDR": {
-      "type": "integer",
-      "description": "FEE_SECTOR3_START_ADDR（派生表达式: FEE_FLASH_BASE_ADDR + 0x00030000U）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "SECTOR CONFIGURATION"
+      "type": "string",
+      "description": "FEE_SECTOR3_START_ADDR（派生表达式: (FEE_FLASH_BASE_ADDR + 0x00030000U)）",
+      "default": "(FEE_FLASH_BASE_ADDR + 0x00030000U)",
+      "x-section": "SECTOR CONFIGURATION",
+      "x-macro-kind": "expression"
     },
     "FEE_SECTOR3_SIZE": {
       "type": "integer",
@@ -519,21 +464,15 @@
       "x-section": "BLOCK CONFIGURATION"
     },
     "FEE_PAGE_0_START_ADDRESS": {
-      "type": "enum",
-      "description": "FEE_PAGE_0_START_ADDRESS 参数",
-      "default": "FEE_SECTOR0_START_ADDR",
-      "enum": [
-        "FEE_SECTOR0_START_ADDR"
-      ],
+      "type": "string",
+      "description": "FEE_PAGE_0_START_ADDRESS（别名: FEE_SECTOR0_START_ADDR = (FEE_FLASH_BASE_ADDR + 0x00000000U)；同族可选: FEE_SECTOR0_START_ADDR）",
+      "default": "(FEE_FLASH_BASE_ADDR + 0x00000000U)",
       "x-section": "BLOCK CONFIGURATION"
     },
     "FEE_PAGE_1_START_ADDRESS": {
-      "type": "enum",
-      "description": "FEE_PAGE_1_START_ADDRESS 参数",
-      "default": "FEE_SECTOR1_START_ADDR",
-      "enum": [
-        "FEE_SECTOR1_START_ADDR"
-      ],
+      "type": "string",
+      "description": "FEE_PAGE_1_START_ADDRESS（别名: FEE_SECTOR1_START_ADDR = (FEE_FLASH_BASE_ADDR + 0x00010000U)；同族可选: FEE_SECTOR1_START_ADDR）",
+      "default": "(FEE_FLASH_BASE_ADDR + 0x00010000U)",
       "x-section": "BLOCK CONFIGURATION"
     },
     "FEE_GC_REPETITIONS": {
@@ -680,7 +619,8 @@
       "default": 12,
       "minimum": 0,
       "maximum": 255,
-      "x-section": "INTERNAL DEFINES"
+      "x-section": "INTERNAL DEFINES",
+      "x-guarded": true
     }
   },
   "additionalProperties": true,

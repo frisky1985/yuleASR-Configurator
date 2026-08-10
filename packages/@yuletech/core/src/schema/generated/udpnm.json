@@ -5,61 +5,6 @@
   "description": "UDP Network Management Configuration",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "UDPNM_CFG_AR_RELEASE_MAJOR_VERSION": {
       "type": "integer",
       "description": "UDPNM_CFG_AR_RELEASE_MAJOR_VERSION 参数",
@@ -490,6 +435,15 @@
     }
   },
   "additionalProperties": true,
+  "x-verbatim-defines": [
+    "#define UDPNM_STATE_CHANGE_NOTIFICATION(channel, prev_state, curr_state) \\\nAppl_UdpNm_StateChangeNotification((channel), (prev_state), (curr_state))",
+    "#define UDPNM_REMOTE_SLEEP_INDICATION(channel) \\\nAppl_UdpNm_RemoteSleepIndication(channel)",
+    "#define UDPNM_REMOTE_SLEEP_CANCELLATION(channel) \\\nAppl_UdpNm_RemoteSleepCancellation(channel)",
+    "#define UDPNM_NETWORK_START_INDICATION(channel) \\\nAppl_UdpNm_NetworkStartIndication(channel)",
+    "#define UDPNM_NETWORK_MODE_ENTRY(channel) \\\nAppl_UdpNm_NetworkModeEntry(channel)",
+    "#define UDPNM_BUS_SLEEP_MODE_ENTRY(channel) \\\nAppl_UdpNm_BusSleepModeEntry(channel)",
+    "#define UDPNM_PREPARE_BUS_SLEEP_MODE_ENTRY(channel) \\\nAppl_UdpNm_PrepareBusSleepModeEntry(channel)"
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

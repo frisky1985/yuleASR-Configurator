@@ -5,61 +5,6 @@
   "description": "PORT Driver configuration header",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "PORT_DEV_ERROR_DETECT": {
       "type": "boolean",
       "description": "PORT_DEV_ERROR_DETECT 参数",
@@ -521,16 +466,12 @@
       "minimum": 0,
       "maximum": 4294967295,
       "x-section": "PORT PIN DEFINITIONS"
-    },
-    "PORT_CONFIGSET_NAME": {
-      "type": "integer",
-      "description": "PORT_CONFIGSET_NAME（派生表达式: Port_ConfigSet）",
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PORT CONFIGURATION SET"
     }
   },
   "additionalProperties": true,
+  "x-verbatim-defines": [
+    "#define PORT_CONFIGSET_NAME             (Port_ConfigSet)"
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
@@ -541,7 +482,6 @@
     "NUMBER OF PORTS",
     "PORT DEFINITIONS",
     "PORT MODE DEFINITIONS",
-    "PORT PIN DEFINITIONS",
-    "PORT CONFIGURATION SET"
+    "PORT PIN DEFINITIONS"
   ]
 }

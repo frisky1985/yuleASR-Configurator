@@ -269,13 +269,17 @@ describe('V3.2 — 混合头拼接（codegen splice）', () => {
       const gen = files[0].content;
       const genDefs = parseDefines(gen);
       const v31Defs = parseDefines(MERGED_V31);
+      // D 类修复（2026-08-10）：生成器不再强加 8 个 CPI 版本宏（AR_RELEASE_*/MODULE_ID/
+      // SW_*/VENDOR_ID）——V3.1 fixture 是旧生成器产物含这些宏，对比时从 V3.1 侧过滤
+      const CPI_VERSION_RE = /_(?:AR_RELEASE_(?:MAJOR|MINOR|REVISION)_VERSION|MODULE_ID|SW_(?:MAJOR|MINOR|PATCH)_VERSION|VENDOR_ID)$/;
+      const v31Filtered = new Map([...v31Defs].filter(([k]) => !CPI_VERSION_RE.test(k)));
       // 宏名集合一致
-      expect([...genDefs.keys()].sort()).toEqual([...v31Defs.keys()].sort());
+      expect([...genDefs.keys()].sort()).toEqual([...v31Filtered.keys()].sort());
       // 值语义等价（别名/hex↔dec/cast 归一）
       const diffs: string[] = [];
-      for (const [name, v31Value] of v31Defs) {
-        const g = normalizeValue(genDefs.get(name)!, v31Defs);
-        const v = normalizeValue(v31Value, v31Defs);
+      for (const [name, v31Value] of v31Filtered) {
+        const g = normalizeValue(genDefs.get(name)!, v31Filtered);
+        const v = normalizeValue(v31Value, v31Filtered);
         if (g !== v) diffs.push(`${name}: v31 ${v31Value} → ${v}，gen ${genDefs.get(name)} → ${g}`);
       }
       expect(diffs, `宏语义差异: ${diffs.join('; ')}`).toEqual([]);

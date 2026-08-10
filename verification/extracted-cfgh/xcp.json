@@ -5,61 +5,6 @@
   "description": "XCP Configuration File",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "XCP_CFG_VENDOR_ID": {
       "type": "integer",
       "description": "XCP_CFG_VENDOR_ID 参数",
@@ -715,49 +660,50 @@
       "x-section": "MEMORY RANGES CONFIGURATION"
     },
     "XCP_FLASH_ERASE_CALLBACK": {
-      "type": "integer",
-      "description": "XCP_FLASH_ERASE_CALLBACK（派生表达式: Xcp_FlashErase）",
-      "minimum": 0,
-      "maximum": 4294967295,
+      "type": "string",
+      "description": "XCP_FLASH_ERASE_CALLBACK 参数",
+      "default": "Xcp_FlashErase",
       "x-section": "CALLBACK FUNCTIONS"
     },
     "XCP_FLASH_PROGRAM_CALLBACK": {
-      "type": "integer",
-      "description": "XCP_FLASH_PROGRAM_CALLBACK（派生表达式: Xcp_FlashProgram）",
-      "minimum": 0,
-      "maximum": 4294967295,
+      "type": "string",
+      "description": "XCP_FLASH_PROGRAM_CALLBACK 参数",
+      "default": "Xcp_FlashProgram",
       "x-section": "CALLBACK FUNCTIONS"
     },
     "XCP_FLASH_READ_CALLBACK": {
-      "type": "integer",
-      "description": "XCP_FLASH_READ_CALLBACK（派生表达式: Xcp_FlashRead）",
-      "minimum": 0,
-      "maximum": 4294967295,
+      "type": "string",
+      "description": "XCP_FLASH_READ_CALLBACK 参数",
+      "default": "Xcp_FlashRead",
       "x-section": "CALLBACK FUNCTIONS"
     },
     "XCP_GET_SEED_CALLBACK": {
-      "type": "integer",
-      "description": "XCP_GET_SEED_CALLBACK（派生表达式: Xcp_GetSeed）",
-      "minimum": 0,
-      "maximum": 4294967295,
+      "type": "string",
+      "description": "XCP_GET_SEED_CALLBACK 参数",
+      "default": "Xcp_GetSeed",
       "x-section": "CALLBACK FUNCTIONS"
     },
     "XCP_COMPARE_KEY_CALLBACK": {
-      "type": "integer",
-      "description": "XCP_COMPARE_KEY_CALLBACK（派生表达式: Xcp_CompareKey）",
-      "minimum": 0,
-      "maximum": 4294967295,
+      "type": "string",
+      "description": "XCP_COMPARE_KEY_CALLBACK 参数",
+      "default": "Xcp_CompareKey",
       "x-section": "CALLBACK FUNCTIONS"
     },
     "XCP_GET_TIMESTAMP_CALLBACK": {
-      "type": "integer",
-      "description": "XCP_GET_TIMESTAMP_CALLBACK（派生表达式: Xcp_GetTimestamp）",
-      "minimum": 0,
-      "maximum": 4294967295,
+      "type": "string",
+      "description": "XCP_GET_TIMESTAMP_CALLBACK 参数",
+      "default": "Xcp_GetTimestamp",
       "x-section": "CALLBACK FUNCTIONS"
     }
   },
   "additionalProperties": true,
+  "x-verbatim-defines": [
+    "#define XCP_AG_TO_BYTES(x)                  ((x) << XCP_ADDRESS_GRANULARITY)",
+    "#define XCP_BYTES_TO_AG(x)                  ((x) >> XCP_ADDRESS_GRANULARITY)",
+    "#define XCP_IS_RESOURCE_PROTECTED(res, prot)    (((prot) & (res)) != 0U)",
+    "#define XCP_SET_RESOURCE_PROTECTION(res, prot)  ((prot) |= (res))",
+    "#define XCP_CLEAR_RESOURCE_PROTECTION(res, prot) ((prot) &= ~(res))"
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

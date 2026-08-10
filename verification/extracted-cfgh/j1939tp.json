@@ -5,61 +5,6 @@
   "description": "J1939Tp Pre-compile Configuration",
   "type": "object",
   "properties": {
-    "CommonPublishedInformation": {
-      "description": "CommonPublishedInformation 配置容器",
-      "type": "object",
-      "properties": {
-        "ArReleaseMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMajorVersion 参数"
-        },
-        "ArReleaseMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseMinorVersion 参数"
-        },
-        "ArReleaseRevisionVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ArReleaseRevisionVersion 参数"
-        },
-        "ModuleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ModuleId 参数"
-        },
-        "SwMajorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMajorVersion 参数"
-        },
-        "SwMinorVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwMinorVersion 参数"
-        },
-        "SwPatchVersion": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SwPatchVersion 参数"
-        },
-        "VendorId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "VendorId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "J1939TP_VERSION_INFO_API": {
       "type": "boolean",
       "description": "J1939TP_VERSION_INFO_API 参数",
@@ -277,6 +222,14 @@
     }
   },
   "additionalProperties": true,
+  "x-verbatim-defines": [
+    "#define J1939TP_CAN_ID(prio, pgn, sa)   ((((uint32)(prio) & 0x07U) << 26) | \\\n(((uint32)(pgn) & 0x03FFFFU) << 8) | \\\n((uint32)(sa) & 0xFFU))",
+    "#define J1939TP_GET_SA(canid)           ((uint8)((canid) & 0xFFU))",
+    "#define J1939TP_GET_PGN(canid)          (((canid) >> 8) & 0x03FFFFU)",
+    "#define J1939TP_GET_PRIO(canid)         (((canid) >> 26) & 0x07U)",
+    "#define J1939TP_IS_PDU1(pgn)            (((pgn) & 0x00F000U) < 0x00F000U)",
+    "#define J1939TP_IS_PDU2(pgn)            (((pgn) & 0x00F000U) >= 0x00F000U)"
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
