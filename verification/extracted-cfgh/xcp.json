@@ -704,6 +704,16 @@
     "#define XCP_SET_RESOURCE_PROTECTION(res, prot)  ((prot) |= (res))",
     "#define XCP_CLEAR_RESOURCE_PROTECTION(res, prot) ((prot) &= ~(res))"
   ],
+  "crossReferences": [
+    {
+      "sourceParam": "XCP_CAN_BAUDRATE",
+      "module": "Can",
+      "param": "CAN_BAUDRATE_500K",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Xcp CAN 波特率不应超过 Can 控制器波特率"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

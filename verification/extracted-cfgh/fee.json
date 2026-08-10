@@ -624,6 +624,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "FEE_BLOCK_SIZE_512",
+      "module": "Fls",
+      "param": "FLS_MAX_READ_NORMAL_MODE",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Fee 块大小不应超过 Fls 支持的最大读取大小"
+    }
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

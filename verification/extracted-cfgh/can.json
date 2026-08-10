@@ -179,6 +179,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "CAN_BAUDRATE_500K",
+      "module": "CanTrcv",
+      "param": "CANTRCV_MAX_TRANSCEIVERS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "CAN 波特率配置应与收发器支持能力匹配"
+    }
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

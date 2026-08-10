@@ -105,6 +105,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "ETH_MAX_CONTROLLERS",
+      "module": "EthIf",
+      "param": "ETHIF_NUM_CONTROLLERS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Eth 控制器数应匹配 EthIf"
+    }
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

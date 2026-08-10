@@ -28,6 +28,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
+import { CROSSREF_RULES } from './crossref-rules';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -800,6 +801,17 @@ function toGeneratedJson(mod: ModuleResult, sourceRel: string): Record<string, u
     properties[p.name] = prop;
   }
 
+  // T2（2026-08-10）：跨模块依赖校验注入——按 displayName 匹配 CROSSREF_RULES，
+  // 输出宏名版 crossReferences（源/目标参数均为宏名版实际参数，validator 可消费）
+  const crossRefs = CROSSREF_RULES.filter(r => r.sourceModule === mod.displayName).map(r => ({
+    sourceParam: r.sourceParam,
+    module: r.targetModule,
+    param: r.targetParam,
+    relation: r.relation,
+    severity: r.severity,
+    description: r.description,
+  }));
+
   return {
     $schema: 'https://json-schema.org/draft/2020-12/schema',
     $id: `https://yuletech.io/schemas/modules/${mod.fileName}.json`,
@@ -809,6 +821,7 @@ function toGeneratedJson(mod: ModuleResult, sourceRel: string): Record<string, u
     properties,
     additionalProperties: true,
     ...(mod.verbatimDefines.length > 0 ? { 'x-verbatim-defines': mod.verbatimDefines } : {}),
+    ...(crossRefs.length > 0 ? { crossReferences: crossRefs } : {}),
     'x-layer': mod.layer,
     'x-version': mod.version,
     'x-source': 'CfgH-Extracted',

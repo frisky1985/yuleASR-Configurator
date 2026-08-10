@@ -417,6 +417,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "DCM_NUM_CONNECTIONS",
+      "module": "PduR",
+      "param": "PDUR_NUMBER_OF_ROUTING_PATHS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Dcm 连接数不应超过 PduR 路由路径数"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

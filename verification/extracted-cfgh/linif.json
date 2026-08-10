@@ -94,6 +94,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "LINIF_MAX_CHANNELS",
+      "module": "Lin",
+      "param": "LIN_MAX_CHANNELS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "LinIf 通道数不应超过 Lin 可用通道数"
+    }
+  ],
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

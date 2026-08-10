@@ -217,6 +217,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "EA_NUM_BLOCKS",
+      "module": "Eep",
+      "param": "EEP_SIZE",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Ea 块数应与 Eep 存储容量匹配"
+    }
+  ],
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

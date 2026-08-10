@@ -862,6 +862,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "CRYPTO_CFG_MAX_CHANNELS",
+      "module": "CryIf",
+      "param": "CRYIF_CFG_MAX_CHANNEL_COUNT",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Crypto 通道数不应超过 CryIf 可用通道数"
+    }
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

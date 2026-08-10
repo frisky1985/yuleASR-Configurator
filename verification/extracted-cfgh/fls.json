@@ -244,6 +244,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "FLS_MAX_READ_NORMAL_MODE",
+      "module": "Eep",
+      "param": "EEP_SIZE",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Fls 读取大小不应超过 Eep 容量"
+    }
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

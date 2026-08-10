@@ -231,6 +231,24 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "WDGM_CFG_MAX_SUPERVISED_ENTITIES",
+      "module": "WdgIf",
+      "param": "WDGIF_NUMBER_OF_DEVICES",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "WdgM 监控实体数不应超过 WdgIf 设备数"
+    },
+    {
+      "sourceParam": "WDGM_CFG_DEM_INTEGRATION",
+      "module": "Dem",
+      "param": "DEM_NUM_DTCS",
+      "relation": "in_range",
+      "severity": "warning",
+      "description": "WdgM DEM 集成事件应在 Dem DTC 范围内"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

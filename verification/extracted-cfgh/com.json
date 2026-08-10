@@ -130,6 +130,24 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "COM_MAX_IPDUS",
+      "module": "PduR",
+      "param": "PDUR_NUMBER_OF_ROUTING_PATHS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Com IPDU 数不应超过 PduR 路由路径数"
+    },
+    {
+      "sourceParam": "COM_MAX_SIGNALS",
+      "module": "PduR",
+      "param": "PDUR_NUMBER_OF_ROUTING_PATHS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Com 信号数不应超过 PduR 路由路径数"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

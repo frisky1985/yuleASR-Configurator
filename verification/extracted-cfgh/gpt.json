@@ -185,6 +185,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "GPT_NUM_CHANNELS",
+      "module": "Mcu",
+      "param": "MCU_NUM_CLOCK_CONFIGS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Gpt 通道数应匹配 Mcu 时钟配置"
+    }
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

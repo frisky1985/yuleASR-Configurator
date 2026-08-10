@@ -525,6 +525,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "DEM_NUM_DTCS",
+      "module": "Dcm",
+      "param": "DCM_NUM_PROTOCOLS",
+      "relation": "in_range",
+      "severity": "warning",
+      "description": "Dem DTC 数量应与 Dcm 诊断协议容量匹配"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

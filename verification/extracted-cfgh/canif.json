@@ -219,6 +219,24 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "CANIF_NUM_TX_PDUS",
+      "module": "Can",
+      "param": "CAN_NUM_HOH",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "CanIf 发送 PDU 数不应超过 Can 硬件对象数"
+    },
+    {
+      "sourceParam": "CANIF_NUM_RX_PDUS",
+      "module": "Can",
+      "param": "CAN_NUM_HOH",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "CanIf 接收 PDU 数不应超过 Can 硬件对象数"
+    }
+  ],
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

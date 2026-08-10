@@ -343,6 +343,24 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "NVM_NUM_OF_NVRAM_BLOCKS",
+      "module": "Fee",
+      "param": "FEE_NUM_BLOCKS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "NvM 块数不应超过 Fee 可配置块数"
+    },
+    {
+      "sourceParam": "NVM_NUM_OF_ROM_BLOCKS",
+      "module": "Ea",
+      "param": "EA_NUM_BLOCKS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "NvM ROM 块数不应超过 Ea 块数"
+    }
+  ],
   "x-layer": "Service",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",
