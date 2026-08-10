@@ -23,6 +23,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // File read（R8/E4：菜单打开配置 → 渲染进程读内容解析）
   readFile: (filePath) => ipcRenderer.invoke('file:read', filePath),
 
+  // yuleASR 全量替换（可追溯：dry-run/apply/rollback）
+  replaceCfgh: (payload) => ipcRenderer.invoke('cfgh:replace', payload),
+
   // Platform info
   platform: process.platform,
   isElectron: true,

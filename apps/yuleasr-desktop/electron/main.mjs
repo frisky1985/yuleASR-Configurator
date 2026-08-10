@@ -4,6 +4,7 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 import { readFile } from 'fs/promises';
+import { spawn } from 'child_process';
 
 import { app, BrowserWindow, Menu, dialog, ipcMain, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
@@ -138,6 +139,49 @@ ipcMain.handle('file:read', async (_event, filePath) => {
   } catch (err) {
     return { success: false, error: err instanceof Error ? err.message : 'Read failed' };
   }
+});
+
+
+// ── yuleASR 全量替换（cfgh:replace）─────────────────────
+// 可追溯替换：dry-run（生成替换包）/ apply（替换工作树）/ rollback（回滚）
+// 通过 vitest 执行 replace-cfgh-run.test.ts（codegen 依赖 Vite import.meta.glob，
+// 无法在纯 Node 主进程直接 import），解析 stdout 的 REPLACE_CFGH_RESULT=JSON。
+const CFGH_REPLACE_TEST = 'apps/yuleasr-web/src/services/__tests__/replace-cfgh-run.test.ts';
+
+ipcMain.handle('cfgh:replace', async (_event, payload) => {
+  const mode = payload && typeof payload.mode === 'string'
+    ? ['dry-run', 'apply', 'rollback'].includes(payload.mode) ? payload.mode : 'dry-run'
+    : 'dry-run';
+  const yuleasrDir = payload && typeof payload.yuleasrDir === 'string' ? payload.yuleasrDir : '';
+  const outDir = payload && typeof payload.outDir === 'string' ? payload.outDir : '/tmp/replace-cfgh';
+  const projectRoot = join(__dirname, '..');
+  return new Promise((resolve) => {
+    const env = {
+      ...process.env,
+      YULEASR_DIR: yuleasrDir,
+      REPLACE_OUT: outDir,
+      REPLACE_MODE: mode,
+    };
+    const child = spawn('npx', ['vitest', 'run', CFGH_REPLACE_TEST], {
+      cwd: projectRoot,
+      env,
+      shell: false,
+    });
+    let stdout = '';
+    let stderr = '';
+    child.stdout.on('data', (d) => { stdout += d.toString(); });
+    child.stderr.on('data', (d) => { stderr += d.toString(); });
+    child.on('error', (err) => resolve({ success: false, mode, error: String(err) }));
+    child.on('close', (code) => {
+      const m = stdout.match(/REPLACE_CFGH_RESULT=({[^\n]+})/);
+      if (m) {
+        try { resolve({ success: true, mode, result: JSON.parse(m[1]) }); }
+        catch { resolve({ success: false, mode, error: 'result parse failed', stdout, stderr }); }
+      } else {
+        resolve({ success: false, mode, error: `vitest exit ${code}`, stdout: stdout.slice(-2000), stderr: stderr.slice(-2000) });
+      }
+    });
+  });
 });
 
 // ── External links ─────────────────────────────────────────

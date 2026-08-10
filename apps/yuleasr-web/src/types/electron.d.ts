@@ -27,6 +27,28 @@ interface ReadFileResult {
   error?: string;
 }
 
+/** yuleASR 全量替换结果（replace-cfgh 工具） */
+interface ReplaceCfghResult {
+  mode: 'dry-run' | 'apply' | 'rollback';
+  pkgDir?: string;
+  total?: number;
+  ok?: number;
+  failed?: number;
+  applied?: number;
+  rolledBack?: number;
+  skipped?: number;
+  errors?: string[];
+  manifest?: string;
+  backupMd5?: string;
+}
+
+interface ReplaceCfghResponse {
+  success: boolean;
+  mode: string;
+  result?: ReplaceCfghResult;
+  error?: string;
+}
+
 interface ElectronAPI {
   onFileOpened(callback: (filePath: string) => void): void;
   onExportCode(callback: () => void): void;
@@ -38,6 +60,8 @@ interface ElectronAPI {
     files: Array<{ filename: string; content: string; language: string }>
   ): Promise<GCCResult[]>;
   saveFiles(files: Array<{ filename: string; content: string }>): Promise<SaveResult>;
+  /** yuleASR 全量替换（可追溯：dry-run/apply/rollback） */
+  replaceCfgh(payload: { mode: string; yuleasrDir: string }): Promise<ReplaceCfghResponse>;
   platform: string;
   isElectron: boolean;
   openExternal(url: string): Promise<{ success: boolean; error?: string }>;

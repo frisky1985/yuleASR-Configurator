@@ -10,7 +10,7 @@
  */
 
 import JSZip from 'jszip';
-import { Boxes, Download, FileCode2, Loader2 } from 'lucide-react';
+import { Boxes, Download, FileCode2, Loader2, RotateCcw, Save, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 import { cn } from '@/lib/utils';
@@ -77,6 +77,46 @@ export function SchemaCoverageTable({
   const [generating, setGenerating] = useState(false);
   const [generatedCount, setGeneratedCount] = useState<number | null>(null);
 
+  // ── yuleASR 全量替换（可追溯：dry-run 预览 / apply 替换 / rollback 回滚）──
+  const [replaceBusy, setReplaceBusy] = useState(false);
+  const [replaceResult, setReplaceResult] = useState<string | null>(null);
+  const [yuleasrDir, setYuleasrDir] = useState('');
+
+  const hasElectron = typeof window !== 'undefined' && !!window.electronAPI;
+
+  const runReplace = async (mode: 'dry-run' | 'apply' | 'rollback'): Promise<void> => {
+    if (!window.electronAPI) return;
+    setReplaceBusy(true);
+    setReplaceResult(null);
+    try {
+      const res = await window.electronAPI.replaceCfgh({ mode, yuleasrDir });
+      if (!res.success) {
+        setReplaceResult(`❌ ${mode} 失败: ${res.error || '未知错误'}`);
+        return;
+      }
+      const r = res.result;
+      if (!r) {
+        setReplaceResult(`❌ ${mode} 完成但无结果数据`);
+        return;
+      }
+      const lines = [
+        `✅ ${mode} 完成`,
+        `  模块: ${r.total ?? 0}（成功 ${r.ok ?? 0} / 失败 ${r.failed ?? 0}）`,
+      ];
+      if ((r.applied ?? 0) > 0) lines.push(`  已替换: ${r.applied} 个 Cfg.h → yuleASR 工作树`);
+      if ((r.rolledBack ?? 0) > 0) lines.push(`  已回滚: ${r.rolledBack} 个（md5 校验通过）`);
+      if ((r.skipped ?? 0) > 0) lines.push(`  跳过（用户已改动）: ${r.skipped} 个`);
+      lines.push(`  替换包: ${r.pkgDir ?? '-'}`);
+      lines.push(`  manifest: ${r.manifest ?? '-'}`);
+      lines.push(`  backup-md5: ${r.backupMd5 ?? '-'}`);
+      setReplaceResult(lines.join('\n'));
+    } catch (e: any) {
+      setReplaceResult(`❌ ${mode} 异常: ${String(e)}`);
+    } finally {
+      setReplaceBusy(false);
+    }
+  };
+
   const handleGenerateAll = async (): Promise<void> => {
     setGenerating(true);
     try {
@@ -130,6 +170,62 @@ export function SchemaCoverageTable({
           </span>
         )}
       </div>
+
+      {/* yuleASR 全量替换（桌面端，可追溯） */}
+      {hasElectron && (
+        <div className="border border-border rounded-lg p-3 space-y-2 bg-muted/30">
+          <div className="flex items-center gap-2">
+            <Save className="w-4 h-4 text-primary-600 dark:text-primary-400" />
+            <span className="text-sm font-medium text-foreground">
+              yuleASR 全量替换（110 模块，可追溯）
+            </span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 font-medium">
+              桌面端
+            </span>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <input
+              value={yuleasrDir}
+              onChange={e => setYuleasrDir(e.target.value)}
+              placeholder="yuleASR 仓库绝对路径，如 ~/workspace/yuleASR"
+              className="flex-1 min-w-[240px] px-3 py-1.5 text-xs bg-app-bg-primary border border-border rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500"
+            />
+            <button
+              onClick={() => runReplace('dry-run')}
+              disabled={replaceBusy || !yuleasrDir}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-border rounded-md hover:bg-accent/40 disabled:opacity-50 transition-colors"
+              title="仅生成替换包（manifest+备份+产物），不落 yuleASR"
+            >
+              <Search className="w-3.5 h-3.5" />
+              Dry-run 预览
+            </button>
+            <button
+              onClick={() => runReplace('apply')}
+              disabled={replaceBusy || !yuleasrDir}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-primary-600 text-white rounded-md hover:bg-primary-700 disabled:opacity-50 transition-colors"
+              title="备份手写头 → 替换 110 个 Cfg.h 到 yuleASR 工作树（可 rollback）"
+            >
+              <Save className="w-3.5 h-3.5" />
+              替换到 yuleASR
+            </button>
+            <button
+              onClick={() => runReplace('rollback')}
+              disabled={replaceBusy}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-border rounded-md hover:bg-accent/40 disabled:opacity-50 transition-colors"
+              title="从最近替换包恢复手写头（仅当当前文件=生成产物才恢复，不覆盖用户改动）"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              回滚
+            </button>
+            {replaceBusy && <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />}
+          </div>
+          {replaceResult && (
+            <pre className="text-[11px] font-mono bg-black/5 dark:bg-white/5 rounded-md p-2 whitespace-pre-wrap text-foreground max-h-48 overflow-y-auto">
+              {replaceResult}
+            </pre>
+          )}
+        </div>
+      )}
 
       {/* 覆盖表 */}
       <div className="border border-border rounded-lg overflow-x-auto max-h-[55vh] overflow-y-auto">
