@@ -11,6 +11,38 @@ described in the [Versioning Policy](#versioning-policy) below.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-08-10
+
+### Added
+
+- **跨模块依赖校验体系**（宏名版 schema `crossReferences` 0 → 61 条）：
+  - 手写 22 条 ARXML 引用按宏名版实际参数名重写（`scripts/crossref-rules.ts`），
+    F1 提取器注入 `extracted-cfgh/*.json`
+  - 四批高频依赖 49 条值关系（Can/Lin/Eth 总线链、存储链、诊断链、看门狗、加密、IO/驱动层）
+  - **新增 `required` 关系类型**：依赖必须存在（如 Can 依赖 Mcu 时钟未配置 →
+    `CROSS_REF_REQUIRED` 报错），12 条规则全部 error 级
+  - UI 实时校验链路打通：`ValidationPanel` + `configStore.validateCrossModuleChanges`
+    （热路径 `validateAffectedBy` 模块级 A2 分支）
+- **replace-cfgh 可追溯替换工具**（`scripts/replace-cfgh.ts`）：
+  - dry-run / apply / rollback 三模式，替换包 = manifest + backup + backup-md5 + generated
+  - Electron IPC `cfgh:replace` + SchemaCoverageTable UI 挂接（预览/替换/回滚三按钮）
+  - rollback 安全：md5 校验保护用户改动，统一 git 仓库护栏
+
+### Fixed
+
+- **codegen A/B/C/D 类 27 模块清零**（110/110 全量生成可替换，构建 0 error + ctest 45/45）：
+  - A 类 splice 边界：语句闭合扩展、MemMap 段宏豁免、非段宏剔除、序部 include 携带
+  - B 类 F1 提取：函数式宏 verbatim 透传、条件块整块捕获、混合大小写参数名、派生表达式保留
+  - C 类 reference：null → `(NULL_PTR)`；D 类版本宏/`#ifndef` 保护宏
+- **replace-cfgh 评审修复**（小马验收 + 小克审查）：main.mjs cwd、默认路径 git 护栏、
+  rollback md5 缺失跳过、并发互斥锁、isPackaged 拒绝、stdout 截断解析
+- **core e2e 目标校验对齐宏名版**：generated/ 混合集宏名模块引用目标存在性扩展到
+  extracted-cfgh 全集
+
+### Changed
+
+- codegen schema 源切换宏名版优先（V2.2）；混合头拼接固化进 codegen（V3.2）
+
 ## [0.3.0] - 2026-08-09
 
 ### Added
