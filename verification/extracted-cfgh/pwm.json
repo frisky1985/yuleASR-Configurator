@@ -165,6 +165,16 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "PWM_NUM_CHANNELS",
+      "module": "Port",
+      "param": "PORT_TOTAL_NUM_PINS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "Pwm 通道数不应超过 Port 引脚数"
+    }
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

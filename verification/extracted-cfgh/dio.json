@@ -607,6 +607,24 @@
     }
   },
   "additionalProperties": true,
+  "crossReferences": [
+    {
+      "sourceParam": "DIO_NUM_PORTS",
+      "module": "Port",
+      "param": "PORT_NUM_PORTS",
+      "relation": "equals",
+      "severity": "warning",
+      "description": "Dio 端口数应等于 Port 端口数"
+    },
+    {
+      "sourceParam": "DIO_NUM_CHANNELS_PER_PORT",
+      "module": "Port",
+      "param": "PORT_NUM_PINS_PER_PORT",
+      "relation": "equals",
+      "severity": "warning",
+      "description": "Dio 每端口通道数应等于 Port 每端口引脚数"
+    }
+  ],
   "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "CfgH-Extracted",

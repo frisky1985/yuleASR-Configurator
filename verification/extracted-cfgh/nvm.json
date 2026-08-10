@@ -375,6 +375,14 @@
       "relation": "less_than",
       "severity": "warning",
       "description": "NvM 块数不应超过 Fee 块数"
+    },
+    {
+      "sourceParam": "NVM_NUM_OF_NVRAM_BLOCKS",
+      "module": "Mcu",
+      "param": "MCU_NUM_RAM_SECTIONS",
+      "relation": "less_than",
+      "severity": "warning",
+      "description": "NvM 块数不应超过 Mcu RAM 段数"
     }
   ],
   "x-layer": "Service",
