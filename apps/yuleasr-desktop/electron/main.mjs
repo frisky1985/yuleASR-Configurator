@@ -147,14 +147,27 @@ ipcMain.handle('file:read', async (_event, filePath) => {
 // 通过 vitest 执行 replace-cfgh-run.test.ts（codegen 依赖 Vite import.meta.glob，
 // 无法在纯 Node 主进程直接 import），解析 stdout 的 REPLACE_CFGH_RESULT=JSON。
 const CFGH_REPLACE_TEST = 'apps/yuleasr-web/src/services/__tests__/replace-cfgh-run.test.ts';
+const CFGH_REPLACE_TIMEOUT_MS = 10 * 60 * 1000; // 10 分钟超时
+let cfghReplaceRunning = false; // 进程内互斥锁（P2 加固）：防止双击/多窗口并发写 yuleASR 工作树
 
 ipcMain.handle('cfgh:replace', async (_event, payload) => {
+  // P2 加固（2026-08-10）：打包版未内置替换执行器（scripts/verification/vitest 不进包），
+  // 明示拒绝而非静默失败
+  if (app.isPackaged) {
+    return { success: false, mode: 'packaged', error: 'yuleASR 全量替换仅开发模式可用（打包版未内置替换执行器）' };
+  }
+  if (cfghReplaceRunning) {
+    return { success: false, mode: 'busy', error: '已有替换任务进行中，请等待完成' };
+  }
   const mode = payload && typeof payload.mode === 'string'
     ? ['dry-run', 'apply', 'rollback'].includes(payload.mode) ? payload.mode : 'dry-run'
     : 'dry-run';
   const yuleasrDir = payload && typeof payload.yuleasrDir === 'string' ? payload.yuleasrDir : '';
   const outDir = payload && typeof payload.outDir === 'string' ? payload.outDir : '/tmp/replace-cfgh';
-  const projectRoot = join(__dirname, '..');
+  // P0 修复（小马验收 2026-08-10）：cwd 必须指向仓库根——测试路径是仓库根相对路径，
+  // join(__dirname,'..') 指向 apps/yuleasr-desktop 会导致 vitest exit 1 / No test files found
+  const projectRoot = join(__dirname, '../../..');
+  cfghReplaceRunning = true;
   return new Promise((resolve) => {
     const env = {
       ...process.env,
@@ -169,17 +182,34 @@ ipcMain.handle('cfgh:replace', async (_event, payload) => {
     });
     let stdout = '';
     let stderr = '';
-    child.stdout.on('data', (d) => { stdout += d.toString(); });
-    child.stderr.on('data', (d) => { stderr += d.toString(); });
-    child.on('error', (err) => resolve({ success: false, mode, error: String(err) }));
+    let settled = false;
+    const done = (result) => {
+      if (settled) return;
+      settled = true;
+      cfghReplaceRunning = false;
+      clearTimeout(timer);
+      resolve(result);
+    };
+    // 超时保护（P2 加固）：vitest 挂起时 kill 子进程，避免 UI 永久 spinner
+    const timer = setTimeout(() => {
+      try { child.kill('SIGKILL'); } catch { /* 已退出 */ }
+      done({ success: false, mode, error: `vitest 超时（>${CFGH_REPLACE_TIMEOUT_MS / 60000} 分钟）已终止` });
+    }, CFGH_REPLACE_TIMEOUT_MS);
+    child.stdout.on('data', (d) => { stdout = (stdout + d.toString()).slice(-200000); });
+    child.stderr.on('data', (d) => { stderr = (stderr + d.toString()).slice(-200000); });
+    child.on('error', (err) => done({ success: false, mode, error: String(err) }));
     child.on('close', (code) => {
-      const m = stdout.match(/REPLACE_CFGH_RESULT=({[^\n]+})/);
-      if (m) {
-        try { resolve({ success: true, mode, result: JSON.parse(m[1]) }); }
-        catch { resolve({ success: false, mode, error: 'result parse failed', stdout, stderr }); }
-      } else {
-        resolve({ success: false, mode, error: `vitest exit ${code}`, stdout: stdout.slice(-2000), stderr: stderr.slice(-2000) });
+      // P2 加固：解析**最后一行** REPLACE_CFGH_RESULT=...（错误消息可能含换行导致跨行 JSON 失配）
+      const lines = stdout.split('\n').filter(l => l.startsWith('REPLACE_CFGH_RESULT='));
+      const last = lines[lines.length - 1];
+      if (last) {
+        const m = last.match(/REPLACE_CFGH_RESULT=({.*})$/s);
+        if (m) {
+          try { done({ success: true, mode, result: JSON.parse(m[1]) }); return; }
+          catch { /* fallthrough */ }
+        }
       }
+      done({ success: false, mode, error: `vitest exit ${code}`, stdout: stdout.slice(-2000), stderr: stderr.slice(-2000) });
     });
   });
 });

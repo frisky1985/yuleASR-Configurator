@@ -29,13 +29,30 @@ import { generateHeadersFromSchemas } from '../apps/yuleasr-web/src/services/cod
 
 const CFGH_DIR = join(__dirname, '../verification/extracted-cfgh');
 
-/** 惰性取 YULEASR 路径（支持运行时 env 覆盖；模块加载时固化会导致测试/UI 传参不生效） */
+/** 惰性取 YULEASR 路径（支持运行时 env 覆盖；模块加载时固化会导致测试/UI 传参不生效）
+ *  P1 修复（小马验收 2026-08-10）：默认路径须指向 workspace/yuleASR——
+ *  scripts/ 的 __dirname 是 <repo>/scripts，.. 才是 workspace 上级。
+ *  P2 加固（2026-08-10）：~ 展开 + 绝对路径校验，避免 UI 输入 ~/workspace/yuleASR 时落字面 ~ 目录 */
 function yuleasrDir(): string {
-  return process.env.YULEASR_DIR || join(__dirname, '../../..', 'yuleASR');
+  const raw = process.env.YULEASR_DIR || join(__dirname, '..', '..', 'yuleASR');
+  const expanded = raw.startsWith('~/') ? join(process.env.HOME || '/', raw.slice(2)) : raw;
+  return expanded;
 }
 /** 惰性取替换包根目录 */
 function outRoot(): string {
   return process.env.REPLACE_OUT || '/tmp/replace-cfgh';
+}
+
+/**
+ * 统一 git 仓库护栏（P2 加固 2026-08-10）：apply/rollback 前必须确认 yuleASR 是 git 仓库，
+ * 空/错误路径（如非 git 草稿树 ~/.openclaw/yuleASR）拒绝执行，防止静默写错目标。
+ */
+function assertYuleasrGitRepo(mode: 'dry-run' | 'apply' | 'rollback'): string {
+  const yDir = yuleasrDir();
+  if (!yDir || !existsSync(join(yDir, '.git'))) {
+    throw new Error(`yuleASR 路径无效（非 git 仓库，${mode} 拒绝执行）: ${yDir || '(空)'}`);
+  }
+  return yDir;
 }
 
 /** md5 */
@@ -98,6 +115,9 @@ export async function runReplace(
 ): Promise<Record<string, unknown>> {
   // rollback 模式：从替换包恢复（读取包内 manifest/backup，不重新生成——工作树可能已被替换）
   if (mode === 'rollback') {
+    // P1 修复（小马验收 2026-08-10）：回滚前强制校验 yuleASR 路径是 git 仓库——
+    // 空/错误路径会静默写向草稿树（~/.openclaw/yuleASR）导致真实仓库未恢复
+    const yDir = assertYuleasrGitRepo(mode);
     const pkgDirs = existsSync(outRoot())
       ? readdirSync(outRoot()).filter(d => existsSync(join(outRoot(), d, 'backup-md5.json'))).sort()
       : [];
@@ -116,15 +136,17 @@ export async function runReplace(
     for (const [src, expected] of Object.entries(latestBackupMd5)) {
       const bak = join(bakRoot, src);
       if (!existsSync(bak)) continue;
-      const cur = existsSync(join(yuleasrDir(), src)) ? readFileSync(join(yuleasrDir(), src), 'utf8') : '';
+      const cur = existsSync(join(yDir, src)) ? readFileSync(join(yDir, src), 'utf8') : '';
       const curMd5 = md5(cur);
       // 仅当当前文件与生成产物一致（或文件缺失）才回滚，避免覆盖用户新改动
       const genMd5 = genMd5BySrc.get(src);
-      if (genMd5 && curMd5 !== genMd5) {
-        skipped.push(src); // 用户已改动，跳过
+      // P2 加固（2026-08-10）：genMd5 缺失（manifest 无该 sourcePath）也跳过——
+      // 避免无条件恢复覆盖用户改动
+      if (!genMd5 || curMd5 !== genMd5) {
+        skipped.push(src); // 用户已改动或无法溯源，跳过
         continue;
       }
-      copyFileSync(bak, join(yuleasrDir(), src));
+      copyFileSync(bak, join(yDir, src));
       rolledBack.push(src);
     }
     return {
@@ -142,10 +164,15 @@ export async function runReplace(
     };
   }
 
-  const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-  const pkgDir = join(outRoot(), ts);
+  // 时间戳 + 模式后缀（P2 加固 2026-08-10）：dry-run/apply 同秒执行会写同一包目录，
+  // 第二次 backup 会录成生成内容 → 回滚错乱；加模式后缀 + 毫秒彻底隔离
+  const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19) + '-' + String(Date.now() % 1000).padStart(3, '0');
+  const pkgDir = join(outRoot(), `${ts}-${mode}`);
   const backupDir = join(pkgDir, 'backup');
   const genDir = join(pkgDir, 'generated');
+
+  // apply 前 git 仓库护栏（P2 加固 2026-08-10）——dry-run 只写替换包，可豁免但同样校验
+  const yDir = assertYuleasrGitRepo(mode);
 
   // 0) 生成 + 备份
   const { files, errors } = await generateAll();
@@ -156,7 +183,7 @@ export async function runReplace(
 
   for (const [module, { content, sourcePath }] of files) {
     if (!sourcePath) continue;
-    const hwPath = join(yuleasrDir(), sourcePath);
+    const hwPath = join(yDir, sourcePath);
     const hwContent = existsSync(hwPath) ? readFileSync(hwPath, 'utf8') : '';
     const entry: any = {
       module,
@@ -184,7 +211,7 @@ export async function runReplace(
     const gen = join(genDir, sourcePath);
     mkdirSync(join(bak, '..'), { recursive: true });
     mkdirSync(join(gen, '..'), { recursive: true });
-    const hwPath = join(yuleasrDir(), sourcePath);
+    const hwPath = join(yDir, sourcePath);
     if (existsSync(hwPath)) copyFileSync(hwPath, bak);
     writeFileSync(gen, content, 'utf8');
   }
@@ -200,7 +227,7 @@ export async function runReplace(
   if (mode === 'apply') {
     for (const [module, { content, sourcePath }] of files) {
       if (!sourcePath) continue;
-      const dst = join(yuleasrDir(), sourcePath);
+      const dst = join(yDir, sourcePath);
       mkdirSync(join(dst, '..'), { recursive: true });
       writeFileSync(dst, content, 'utf8');
       applied.push(sourcePath);

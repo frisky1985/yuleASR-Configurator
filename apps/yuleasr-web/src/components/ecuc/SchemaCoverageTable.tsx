@@ -110,8 +110,8 @@ export function SchemaCoverageTable({
       lines.push(`  manifest: ${r.manifest ?? '-'}`);
       lines.push(`  backup-md5: ${r.backupMd5 ?? '-'}`);
       setReplaceResult(lines.join('\n'));
-    } catch (e: any) {
-      setReplaceResult(`❌ ${mode} 异常: ${String(e)}`);
+    } catch (e: unknown) {
+      setReplaceResult(`❌ ${mode} 异常: ${e instanceof Error ? e.message : String(e)}`);
     } finally {
       setReplaceBusy(false);
     }
@@ -182,6 +182,9 @@ export function SchemaCoverageTable({
             <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 font-medium">
               桌面端
             </span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-medium">
+              仅开发模式
+            </span>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <input
@@ -210,7 +213,7 @@ export function SchemaCoverageTable({
             </button>
             <button
               onClick={() => runReplace('rollback')}
-              disabled={replaceBusy}
+              disabled={replaceBusy || !yuleasrDir}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-border rounded-md hover:bg-accent/40 disabled:opacity-50 transition-colors"
               title="从最近替换包恢复手写头（仅当当前文件=生成产物才恢复，不覆盖用户改动）"
             >

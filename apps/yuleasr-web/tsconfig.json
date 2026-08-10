@@ -17,7 +17,9 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@yuletech/core": ["../../packages/@yuletech/core/src/index.ts"],
+      "@yuletech/core/*": ["../../packages/@yuletech/core/src/*"]
     }
   },
   "include": ["src"],
