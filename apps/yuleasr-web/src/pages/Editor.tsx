@@ -18,6 +18,7 @@ import {
   FileJson,
   Cloud,
   CloudOff,
+  Clock,
   Boxes,
 } from 'lucide-react';
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
@@ -470,41 +471,38 @@ export function Editor() {
             <div className="flex items-center gap-2">
               <h1 className="text-xl font-bold text-app-text-primary">{currentConfig.name}</h1>
               {isDirty ? (
-                <span className="px-2 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-800 rounded-full">
-                  {t('common.unsaved')}
+                <span
+                  className="flex items-center px-1.5 py-0.5 rounded-full bg-yellow-100"
+                  title={t('common.unsaved')}
+                >
+                  <Clock className="w-3.5 h-3.5 text-yellow-700" />
                 </span>
               ) : (
-                <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded-full">
-                  <CheckCircle className="w-3 h-3" />
-                  {t('common.saved')}
+                <span
+                  className="flex items-center px-1.5 py-0.5 rounded-full bg-green-100"
+                  title={t('common.saved')}
+                >
+                  <CheckCircle className="w-3.5 h-3.5 text-green-700" />
                 </span>
               )}
               {/* Fix C4: 云同步状态指示 — 失败时红色+错误详情，未同步时灰色，成功后不再误报 */}
               {!isDirty && isCloudSynced && (
-                <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded-full">
-                  <Cloud className="w-3 h-3" />
-                  {t('common.sync')}
+                <span
+                  className="flex items-center px-1.5 py-0.5 rounded-full bg-green-100"
+                  title={t('common.sync')}
+                >
+                  <Cloud className="w-3.5 h-3.5 text-green-700" />
                 </span>
               )}
               {!isDirty && !isCloudSynced && (
                 <span
-                  className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full"
-                  title={syncError ?? undefined}
+                  className="flex items-center px-1.5 py-0.5 rounded-full"
+                  title={syncError ? `${t('common.syncFailed')}${syncError ? `: ${syncError}` : ''}` : t('common.syncPending')}
                 >
                   {syncError ? (
-                    <>
-                      <AlertCircle className="w-3 h-3" />
-                      <span className="bg-red-100 text-red-800 px-1.5 py-0.5 rounded-full">
-                        {t('common.syncFailed')}
-                      </span>
-                    </>
+                    <AlertCircle className="w-3.5 h-3.5 text-red-700" />
                   ) : (
-                    <>
-                      <CloudOff className="w-3 h-3" />
-                      <span className="bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-full">
-                        {t('common.syncPending')}
-                      </span>
-                    </>
+                    <CloudOff className="w-3.5 h-3.5 text-gray-500" />
                   )}
                 </span>
               )}
