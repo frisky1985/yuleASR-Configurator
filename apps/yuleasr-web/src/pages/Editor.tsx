@@ -16,6 +16,7 @@ import {
   Share2,
   Eye,
   FileJson,
+  X,
   Boxes,
 } from 'lucide-react';
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
@@ -115,6 +116,7 @@ export function Editor() {
     validationDegraded,
     isDirty,
     isLoading,
+    syncError,
     loadConfig,
     setSelectedPath,
     updateParameter,
@@ -122,6 +124,22 @@ export function Editor() {
     validateConfig,
     toggleModuleEnabled,
   } = useConfigStore();
+
+  // 同步失败 toast（本地优先，但云同步异常不能静默；一次性提示，几秒后消失）
+  const [syncErrorToast, setSyncErrorToast] = useState<string | null>(null);
+  const syncToastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    if (syncError) {
+      setSyncErrorToast(syncError);
+      if (syncToastTimerRef.current) clearTimeout(syncToastTimerRef.current);
+      syncToastTimerRef.current = setTimeout(() => setSyncErrorToast(null), 6000);
+    }
+  }, [syncError]);
+  useEffect(() => {
+    return () => {
+      if (syncToastTimerRef.current) clearTimeout(syncToastTimerRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     if (configId) {
@@ -453,6 +471,26 @@ export function Editor() {
 
   return (
     <div className="space-y-4">
+      {/* 同步失败 toast（一次性提示，6 秒自动消失；不占标题栏） */}
+      {syncErrorToast && (
+        <div
+          className="fixed bottom-6 right-6 z-[100] flex items-start gap-2.5 max-w-sm px-4 py-3 rounded-lg shadow-lg bg-red-600 text-white text-sm"
+          role="alert"
+        >
+          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+          <div className="min-w-0">
+            <p className="font-medium">{t('common.syncFailed')}</p>
+            <p className="text-white/90 text-xs mt-0.5 break-words">{syncErrorToast}</p>
+          </div>
+          <button
+            onClick={() => setSyncErrorToast(null)}
+            className="shrink-0 ml-1 text-white/70 hover:text-white transition-colors"
+            aria-label="关闭"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
