@@ -16,9 +16,7 @@ import {
   Share2,
   Eye,
   FileJson,
-  Cloud,
   CloudOff,
-  Clock,
   Boxes,
 } from 'lucide-react';
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
@@ -46,7 +44,7 @@ import { PipelineStatusPanel } from '@/components/PipelineStatusPanel';
 import { ShareDialog } from '@/components/ShareDialog';
 import { useTheme } from '@/components/ThemeProvider';
 import { ValidationPanel } from '@/components/ValidationPanel';
-import { cn, formatDate } from '@/lib/utils';
+import { cn, formatDate, formatRelativeTime } from '@/lib/utils';
 import {
   DEFAULT_SCHEMA_VERSION,
   generateArxml,
@@ -470,40 +468,38 @@ export function Editor() {
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-xl font-bold text-app-text-primary">{currentConfig.name}</h1>
+              {/* 单状态徽章：颜色点 + 短文字 + 悬停详情（替代多徽章堆叠） */}
               {isDirty ? (
                 <span
-                  className="flex items-center px-1.5 py-0.5 rounded-full bg-yellow-100"
-                  title={t('common.unsaved')}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300"
+                  title={t('common.unsavedChanges')}
                 >
-                  <Clock className="w-3.5 h-3.5 text-yellow-700" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                  {t('common.unsavedChanges')}
+                </span>
+              ) : syncError ? (
+                <span
+                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300"
+                  title={syncError}
+                >
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  {t('common.syncFailed')}
+                </span>
+              ) : !isCloudSynced ? (
+                <span
+                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800/60 dark:text-gray-400"
+                  title={t('common.syncPending')}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
+                  {t('common.syncPending')}
                 </span>
               ) : (
                 <span
-                  className="flex items-center px-1.5 py-0.5 rounded-full bg-green-100"
-                  title={t('common.saved')}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300"
+                  title={`${t('common.saved')} · ${formatRelativeTime(currentConfig.updatedAt, t)}`}
                 >
-                  <CheckCircle className="w-3.5 h-3.5 text-green-700" />
-                </span>
-              )}
-              {/* Fix C4: 云同步状态指示 — 失败时红色+错误详情，未同步时灰色，成功后不再误报 */}
-              {!isDirty && isCloudSynced && (
-                <span
-                  className="flex items-center px-1.5 py-0.5 rounded-full bg-green-100"
-                  title={t('common.sync')}
-                >
-                  <Cloud className="w-3.5 h-3.5 text-green-700" />
-                </span>
-              )}
-              {!isDirty && !isCloudSynced && (
-                <span
-                  className="flex items-center px-1.5 py-0.5 rounded-full"
-                  title={syncError ? `${t('common.syncFailed')}${syncError ? `: ${syncError}` : ''}` : t('common.syncPending')}
-                >
-                  {syncError ? (
-                    <AlertCircle className="w-3.5 h-3.5 text-red-700" />
-                  ) : (
-                    <CloudOff className="w-3.5 h-3.5 text-gray-500" />
-                  )}
+                  <CheckCircle className="w-3.5 h-3.5" />
+                  {t('common.saved')}
                 </span>
               )}
               {validationIssues.length > 0 && (
