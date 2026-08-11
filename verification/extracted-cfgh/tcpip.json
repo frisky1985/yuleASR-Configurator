@@ -139,10 +139,10 @@
     },
     "TCPIP_IPV6_LINKLOCAL": {
       "type": "string",
-      "description": "TCPIP_IPV6_LINKLOCAL 参数",
-      "default": "\"\"",
+      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "default": "{ { 0xFE800000UL, 0x00000000UL, 0x00000000UL, 0x00000001UL } }",
       "x-section": "PRE-COMPILE CONFIGURATION",
-      "x-macro-kind": "string-literal"
+      "x-macro-kind": "object-literal"
     },
     "TCPIP_ETH_LINK_CHECK_INTERVAL_MS": {
       "type": "integer",

@@ -700,18 +700,18 @@
     },
     "DOIP_EID": {
       "type": "string",
-      "description": "DOIP_EID 参数",
-      "default": "\"\"",
+      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "default": "{0x00, 0x1A, 0x2B, 0x3C, 0x4D, 0x5E}",
       "x-section": "PRE-COMPILE CONFIGURATION",
-      "x-macro-kind": "string-literal",
+      "x-macro-kind": "object-literal",
       "x-guarded": true
     },
     "DOIP_GID": {
       "type": "string",
-      "description": "DOIP_GID 参数",
-      "default": "\"\"",
+      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "default": "{0x00, 0x00, 0x00, 0x00, 0x00, 0x00}",
       "x-section": "PRE-COMPILE CONFIGURATION",
-      "x-macro-kind": "string-literal",
+      "x-macro-kind": "object-literal",
       "x-guarded": true
     }
   },

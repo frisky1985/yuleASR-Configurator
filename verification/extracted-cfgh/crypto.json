@@ -495,52 +495,52 @@
     },
     "CRYPTO_ALG_ECDSA_SECP256R1": {
       "type": "string",
-      "description": "CRYPTO_ALG_ECDSA_SECP256R1 参数",
-      "default": "\"\"",
+      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "default": "\\\n{ \\\n.family = CRYPTO_ALGOFAM_ECDSA, \\\n.mode = 0, \\\n.keyLength = 256, \\\n.curve = CRYPTO_ECC_CURVE_SECP256R1 \\\n}",
       "x-section": "PRE-COMPILE CONFIGURATION",
-      "x-macro-kind": "string-literal"
+      "x-macro-kind": "object-literal"
     },
     "CRYPTO_ALG_ECDH_SECP256R1": {
       "type": "string",
-      "description": "CRYPTO_ALG_ECDH_SECP256R1 参数",
-      "default": "\"\"",
+      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "default": "\\\n{ \\\n.family = CRYPTO_ALGOFAM_ECDH, \\\n.mode = 0, \\\n.keyLength = 256, \\\n.curve = CRYPTO_ECC_CURVE_SECP256R1 \\\n}",
       "x-section": "PRE-COMPILE CONFIGURATION",
-      "x-macro-kind": "string-literal"
+      "x-macro-kind": "object-literal"
     },
     "CRYPTO_ALG_AES128_GCM": {
       "type": "string",
-      "description": "CRYPTO_ALG_AES128_GCM 参数",
-      "default": "\"\"",
+      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "default": "\\\n{ \\\n.family = CRYPTO_ALGOFAM_AES, \\\n.mode = CRYPTO_ALGOMODE_GCM, \\\n.keyLength = 128, \\\n.curve = 0 \\\n}",
       "x-section": "PRE-COMPILE CONFIGURATION",
-      "x-macro-kind": "string-literal"
+      "x-macro-kind": "object-literal"
     },
     "CRYPTO_ALG_AES256_GCM": {
       "type": "string",
-      "description": "CRYPTO_ALG_AES256_GCM 参数",
-      "default": "\"\"",
+      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "default": "\\\n{ \\\n.family = CRYPTO_ALGOFAM_AES, \\\n.mode = CRYPTO_ALGOMODE_GCM, \\\n.keyLength = 256, \\\n.curve = 0 \\\n}",
       "x-section": "PRE-COMPILE CONFIGURATION",
-      "x-macro-kind": "string-literal"
+      "x-macro-kind": "object-literal"
     },
     "CRYPTO_ALG_SHA256": {
       "type": "string",
-      "description": "CRYPTO_ALG_SHA256 参数",
-      "default": "\"\"",
+      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "default": "\\\n{ \\\n.family = CRYPTO_ALGOFAM_SHA2_256, \\\n.mode = 0, \\\n.keyLength = 0, \\\n.curve = 0 \\\n}",
       "x-section": "PRE-COMPILE CONFIGURATION",
-      "x-macro-kind": "string-literal"
+      "x-macro-kind": "object-literal"
     },
     "CRYPTO_ALG_HMAC_SHA256": {
       "type": "string",
-      "description": "CRYPTO_ALG_HMAC_SHA256 参数",
-      "default": "\"\"",
+      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "default": "\\\n{ \\\n.family = CRYPTO_ALGOFAM_HMAC, \\\n.mode = CRYPTO_ALGOFAM_SHA2_256, \\\n.keyLength = 256, \\\n.curve = 0 \\\n}",
       "x-section": "PRE-COMPILE CONFIGURATION",
-      "x-macro-kind": "string-literal"
+      "x-macro-kind": "object-literal"
     },
     "CRYPTO_ALG_HKDF_SHA256": {
       "type": "string",
-      "description": "CRYPTO_ALG_HKDF_SHA256 参数",
-      "default": "\"\"",
+      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "default": "\\\n{ \\\n.family = CRYPTO_ALGOFAM_HKDF, \\\n.mode = CRYPTO_ALGOFAM_SHA2_256, \\\n.keyLength = 256, \\\n.curve = 0 \\\n}",
       "x-section": "PRE-COMPILE CONFIGURATION",
-      "x-macro-kind": "string-literal"
+      "x-macro-kind": "object-literal"
     },
     "CRYPTO_CFG_CALLBACK_ON_COMPLETE": {
       "type": "boolean",

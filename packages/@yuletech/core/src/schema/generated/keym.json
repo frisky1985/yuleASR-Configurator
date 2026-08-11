@@ -357,10 +357,10 @@
     },
     "KEYM_CFG_KEY_AES_128_USAGE": {
       "type": "string",
-      "description": "KEYM_CFG_KEY_AES_128_USAGE 参数",
-      "default": "\"\"",
+      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "default": "(KEYM_KEY_USAGE_ENCRYPT | KEYM_KEY_USAGE_DECRYPT | \\\nKEYM_KEY_USAGE_MAC_GENERATE | KEYM_KEY_USAGE_MAC_VERIFY)",
       "x-section": "PRE-COMPILE CONFIGURATION",
-      "x-macro-kind": "string-literal"
+      "x-macro-kind": "object-literal"
     },
     "KEYM_CFG_KEY_AES_256_TYPE": {
       "type": "enum",
@@ -387,10 +387,10 @@
     },
     "KEYM_CFG_KEY_AES_256_USAGE": {
       "type": "string",
-      "description": "KEYM_CFG_KEY_AES_256_USAGE 参数",
-      "default": "\"\"",
+      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "default": "(KEYM_KEY_USAGE_ENCRYPT | KEYM_KEY_USAGE_DECRYPT | \\\nKEYM_KEY_USAGE_MAC_GENERATE | KEYM_KEY_USAGE_MAC_VERIFY)",
       "x-section": "PRE-COMPILE CONFIGURATION",
-      "x-macro-kind": "string-literal"
+      "x-macro-kind": "object-literal"
     },
     "KEYM_CFG_KEY_HMAC_TYPE": {
       "type": "enum",

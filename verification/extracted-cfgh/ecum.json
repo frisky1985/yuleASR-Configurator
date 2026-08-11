@@ -296,10 +296,10 @@
     },
     "ECUM_CONFIGURED_WAKEUP_SOURCES": {
       "type": "string",
-      "description": "ECUM_CONFIGURED_WAKEUP_SOURCES 参数",
-      "default": "\"\"",
+      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "default": "\\\n(ECUM_WKSOURCE_POWER | ECUM_WKSOURCE_RESET | ECUM_WKSOURCE_TIMER | \\\nECUM_WKSOURCE_CAN | ECUM_WKSOURCE_CAN0 | ECUM_WKSOURCE_GPIO)",
       "x-section": "PRE-COMPILE CONFIGURATION",
-      "x-macro-kind": "string-literal"
+      "x-macro-kind": "object-literal"
     },
     "ECUM_CHECK_WAKEUP_ENABLED": {
       "type": "boolean",
