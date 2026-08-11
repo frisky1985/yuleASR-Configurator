@@ -441,6 +441,31 @@ function parseCfgHeader(content: string): ParsedFile {
         .join('\n')
         .slice(0, 2000);
       const isObject = body.includes('{');
+      // P0-1（2026-08-11）：多行对象/数组初始化宏（CRYPTO_ALG_SHA256 等 struct 字面量）
+      // 不再丢弃为 ''（此前 schema default 丢失 → codegen 输出 ""，DoIP_Eid[6] = "" 语义错误）。
+      // 提取完整原始文本（含续行）作为 default，codegen formatMacroValue 原样输出。
+      if (isObject) {
+        // 从 `#define NAME` 之后取值：去掉宏名前缀，保留 `{ ... }` 字面量本身
+        const afterName = line.slice(line.indexOf('define') + 6).trim();
+        let rawText = afterName.slice(afterName.indexOf(' ') >= 0 ? afterName.indexOf(' ') + 1 : 0).trim();
+        let j = i;
+        while (rawText.endsWith('\\') && j + 1 < lines.length) {
+          j++;
+          rawText += '\n' + lines[j].trim();
+        }
+        result.multilineObjects++;
+        params.push({
+          name,
+          value: rawText,
+          raw: rest,
+          section: currentSection,
+          multilineObject: true,
+          line: i + 1,
+          comment: '多行初始化宏（对象/数组字面量，提取器不展开）',
+        });
+        i = j;
+        continue;
+      }
       result.multilineObjects++;
       params.push({
         name,
@@ -449,9 +474,26 @@ function parseCfgHeader(content: string): ParsedFile {
         section: currentSection,
         multilineObject: true,
         line: i + 1,
-        comment: isObject ? '多行初始化宏（对象/数组字面量，提取器不展开）' : undefined,
       });
       while (i + 1 < lines.length && lines[i + 1].trimEnd().endsWith('\\')) i++;
+      continue;
+    }
+
+    // P0-1（2026-08-11）：单行对象/数组字面量宏（DOIP_EID {0x00, ...} / ETH_CTRL0_MAC_ADDR
+    // {0x00, 0x01, ...} / TCPIP_IPV6_LINKLOCAL { { 0xFE80... } }）——值以 `{` 开头，
+    // 此前落入兕底 string 类型无 default → codegen 输出 ""，编译过但语义错误。
+    // 提取原始文本作为 default，kind=object-literal，codegen 原样输出。
+    if (rest.startsWith('{')) {
+      result.multilineObjects++;
+      params.push({
+        name,
+        value: rest,
+        raw: rest,
+        section: currentSection,
+        multilineObject: true,
+        line: i + 1,
+        comment: '对象/数组字面量宏（初始化器，提取器不展开）',
+      });
       continue;
     }
 
@@ -569,7 +611,13 @@ function inferParamType(
   };
 
   if (p.multilineObject) {
-    base.type = 'object';
+    // P0-1（2026-08-11）：对象/数组字面量宏——default 保留原始文本，kind=object-literal
+    // （此前 type=object 无 default，codegen 输出 ""，DoIP_Eid[6] = "" 语义错误）。
+    base.type = 'string';
+    if (p.value) {
+      base.default = p.value;
+      base.kind = 'object-literal';
+    }
     return base;
   }
 

@@ -346,9 +346,12 @@ describe('V3.2 — 混合头拼接（codegen splice）', () => {
     });
 
     it('generateHeadersFromConfig 拼接选项贯通', async () => {
+      // P0-1（2026-08-11）：schema 收窄到 canif——护栏已补齐 27 个拼接模块，
+      // 全量 110 schema + 仅 CanIf 手写头会正确触发“缺手写头”报错（防残缺纯宏头）。
+      const schemas = loadPreferredSchemas().filter(s => s.name.toLowerCase() === 'canif');
       const files = await generateHeadersFromConfig(
         [{ name: 'canif', enabled: true }],
-        undefined,
+        schemas,
         { handwrittenHeaders: new Map([['CanIf_Cfg.h', HANDWRITTEN_CANIF]]) }
       );
       const canif = files.find(f => f.filename === 'CanIf_Cfg.h')!;

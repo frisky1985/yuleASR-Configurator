@@ -143,7 +143,38 @@ function getModuleId(moduleName: string): number {
  * 直接抛错（护栏兜底），而不是静默产出纯宏头。
  * 可随探测发现的模块追加；探测规则对清单外模块同样生效（自动拼接）。
  */
-const KNOWN_MIXED_HEADERS = new Set(['canif']);
+const KNOWN_MIXED_HEADERS = new Set([
+  // P0-1 全模块闭环验证（2026-08-11）：从 110 模块真实 codegen 拼接结果（manifest
+  // spliced=true，27 模块）数据化补齐——此前仅 canif 在册，其余 26 个拼接模块在
+  // 手写头缺失时会静默产出残缺纯宏头（无 typedef/struct/extern），替换后编译失败。
+  'canif',
+  'cantrcv',
+  'comm',
+  'crc',
+  'cryif',
+  'crypto',
+  'csm',
+  'dio',
+  'dlt',
+  'doip',
+  'doip_ecual',
+  'ecum',
+  'fim_ecual',
+  'flash',
+  'fls',
+  'linker',
+  'linslave',
+  'lintrcv',
+  'mqtt',
+  'ostimingprotection',
+  'ramsafety',
+  'someip',
+  'someipsd',
+  'spi',
+  'swc',
+  'wdgm',
+  'xcp_ecual',
+]);
 
 /**
  * 非宏内容探测正则：行首 typedef / struct / extern（extern 排除 extern "C" 链接声明）。
@@ -584,6 +615,12 @@ function formatMacroValue(value: unknown): string {
     }
     // 派生表达式（F1 expression，如 (A / B)）原样输出，不加引号
     if (value.startsWith('(') && value.endsWith(')')) {
+      return value;
+    }
+    // P0-1（2026-08-11）：对象/数组字面量宏（F1 object-literal，如 DOIP_EID {0x00, ...}
+    // / CRYPTO_ALG_SHA256 多行 struct 初始化）原样输出——此前 formatMacroValue 将
+    // 非标识符值加引号转义成 ""，DoIP_Eid[6] = "" 编译过但语义错误（真实 EID 丢失）。
+    if (value.startsWith('{') || value.includes('\n')) {
       return value;
     }
     return C_IDENTIFIER_RE.test(value) ? value : `"${escapeCString(value)}"`;
