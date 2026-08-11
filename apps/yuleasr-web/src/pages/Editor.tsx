@@ -16,7 +16,6 @@ import {
   Share2,
   Eye,
   FileJson,
-  CloudOff,
   Boxes,
 } from 'lucide-react';
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
@@ -44,7 +43,7 @@ import { PipelineStatusPanel } from '@/components/PipelineStatusPanel';
 import { ShareDialog } from '@/components/ShareDialog';
 import { useTheme } from '@/components/ThemeProvider';
 import { ValidationPanel } from '@/components/ValidationPanel';
-import { cn, formatDate, formatRelativeTime } from '@/lib/utils';
+import { cn, formatDate } from '@/lib/utils';
 import {
   DEFAULT_SCHEMA_VERSION,
   generateArxml,
@@ -116,8 +115,6 @@ export function Editor() {
     validationDegraded,
     isDirty,
     isLoading,
-    isCloudSynced,
-    syncError,
     loadConfig,
     setSelectedPath,
     updateParameter,
@@ -468,38 +465,14 @@ export function Editor() {
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-xl font-bold text-app-text-primary">{currentConfig.name}</h1>
-              {/* 单状态徽章：颜色点 + 短文字 + 悬停详情（替代多徽章堆叠） */}
-              {isDirty ? (
+              {/* 仅保留高价值提示：未保存更改（防数据丢失）；已保存/同步状态为正常态不提示 */}
+              {isDirty && (
                 <span
                   className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300"
                   title={t('common.unsavedChanges')}
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
                   {t('common.unsavedChanges')}
-                </span>
-              ) : syncError ? (
-                <span
-                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300"
-                  title={syncError}
-                >
-                  <AlertCircle className="w-3.5 h-3.5" />
-                  {t('common.syncFailed')}
-                </span>
-              ) : !isCloudSynced ? (
-                <span
-                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800/60 dark:text-gray-400"
-                  title={t('common.syncPending')}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400" />
-                  {t('common.syncPending')}
-                </span>
-              ) : (
-                <span
-                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300"
-                  title={`${t('common.saved')} · ${formatRelativeTime(currentConfig.updatedAt, t)}`}
-                >
-                  <CheckCircle className="w-3.5 h-3.5" />
-                  {t('common.saved')}
                 </span>
               )}
               {validationIssues.length > 0 && (

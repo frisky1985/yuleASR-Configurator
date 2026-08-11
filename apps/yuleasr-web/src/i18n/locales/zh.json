@@ -47,10 +47,7 @@
   "saved": "已保存",
   "syncFailed": "云同步失败",
   "syncPending": "未同步",
-  "unsavedChanges": "未保存更改",
-  "justNow": "刚刚",
-  "minutesAgo": "{{count}} 分钟前",
-  "hoursAgo": "{{count}} 小时前"
+  "unsavedChanges": "未保存更改"
  },
  "dashboard": {
   "title": "配置管理",

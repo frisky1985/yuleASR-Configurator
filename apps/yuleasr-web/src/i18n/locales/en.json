@@ -47,10 +47,7 @@
   "saved": "Saved",
   "syncFailed": "Sync failed",
   "syncPending": "Not synced",
-  "unsavedChanges": "Unsaved changes",
-  "justNow": "just now",
-  "minutesAgo": "{{count}} min ago",
-  "hoursAgo": "{{count}} hr ago"
+  "unsavedChanges": "Unsaved changes"
  },
  "dashboard": {
   "title": "Configurations",
