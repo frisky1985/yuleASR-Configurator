@@ -15,6 +15,7 @@ import {
   ChevronDown,
   ChevronRight,
   GripVertical,
+  Power,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -84,12 +85,14 @@ export function OSEditor({ className }: OSEditorProps) {
           <div className="flex items-center gap-2">
             <span
               className={cn(
-                'px-2 py-1 text-xs font-medium rounded-full',
+                'inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full',
                 os.enabled
                   ? 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300'
                   : 'bg-app-bg-tertiary text-app-text-secondary'
               )}
+              title={os.enabled ? 'Module enabled' : 'Module disabled'}
             >
+              <Power className={cn('w-3.5 h-3.5', os.enabled ? 'text-green-600' : 'text-app-text-tertiary')} />
               {os.enabled ? 'Enabled' : 'Disabled'}
             </span>
           </div>

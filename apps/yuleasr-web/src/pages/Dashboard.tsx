@@ -963,13 +963,16 @@ export function Dashboard() {
                 onClick={() => setActivePipelineJobId(run.job_id)}
               >
                 <div className="flex items-center gap-3">
-                  <div className={cn(
-                    'w-2 h-2 rounded-full',
-                    run.status === 'passed' && 'bg-green-500',
-                    run.status === 'failed' && 'bg-red-500',
-                    run.status === 'running' && 'bg-blue-500 animate-pulse',
-                    run.status === 'queued' && 'bg-yellow-500'
-                  )} />
+                  <div
+                    title={run.status}
+                    className={cn(
+                      'w-2.5 h-2.5 rounded-full',
+                      run.status === 'passed' && 'bg-green-500',
+                      run.status === 'failed' && 'bg-red-500',
+                      run.status === 'running' && 'bg-blue-500 animate-pulse',
+                      run.status === 'queued' && 'bg-yellow-500'
+                    )}
+                  />
                   <div>
                     <span className="text-sm font-medium text-primary">{run.job_id}</span>
                     <span className="text-xs text-app-text-tertiary ml-2">{run.type}</span>
@@ -983,15 +986,6 @@ export function Dashboard() {
                   {run.started_at && (
                     <span>{new Date(run.started_at).toLocaleTimeString()}</span>
                   )}
-                  <span className={cn(
-                    'px-2 py-0.5 rounded-full text-xs font-medium',
-                    run.status === 'passed' && 'bg-green-100 text-green-700',
-                    run.status === 'failed' && 'bg-red-100 text-red-700',
-                    run.status === 'running' && 'bg-blue-100 text-blue-700',
-                    run.status === 'queued' && 'bg-yellow-100 text-yellow-700'
-                  )}>
-                    {run.status}
-                  </span>
                 </div>
               </div>
             ))}
