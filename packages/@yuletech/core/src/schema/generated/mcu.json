@@ -600,6 +600,120 @@
         }
       },
       "additionalProperties": true
+    },
+    "McuGeneralConfiguration": {
+      "description": "McuGeneralConfiguration 配置容器 - This container contains the configuration (parameters) of the MCU driver.",
+      "type": "object",
+      "properties": {
+        "McuDevErrorDetect": {
+          "description": "McuDevErrorDetect 参数 - Switches the development error detection and notification on or off.",
+          "type": "boolean",
+          "default": false
+        },
+        "McuGetRamStateApi": {
+          "description": "McuGetRamStateApi 参数 - Pre-processor switch to enable/disable the API Mcu_GetRamState.",
+          "type": "boolean"
+        },
+        "McuInitClock": {
+          "description": "McuInitClock 参数 - If this parameter is set to FALSE, the clock initialization has to be disabled from the MCU driver. This concept applies when there are some write once clock registers and a bootloader is present. If this parameter is set to TRUE, the MCU driver is responsible of the clock initialization.",
+          "type": "boolean",
+          "default": true
+        },
+        "McuNoPll": {
+          "description": "McuNoPll 参数 - This parameter shall be set True, if the H/W does not have a PLL or the PLL circuitry is enabled after the power on without S/W intervention. In this case MCU_DistributePllClock has to be disabled and  MCU_GetPllStatus has to return MCU_PLL_STATUS_UNDEFINED. Otherwise this parameters has to be set False",
+          "type": "boolean",
+          "default": true
+        },
+        "McuPerformResetApi": {
+          "description": "McuPerformResetApi 参数 - Pre-processor switch to enable / disable the use of the function Mcu_PerformReset()",
+          "type": "boolean"
+        },
+        "McuVersionInfoApi": {
+          "description": "McuVersionInfoApi 参数 - Pre-processor switch to enable / disable the API to read out the modules version information.",
+          "type": "boolean",
+          "default": false
+        },
+        "McuEcucPartitionRef": {
+          "type": "string",
+          "description": "McuEcucPartitionRef 引用 - Maps the MCU driver to zero or multiple ECUC partition to make the driver API available in this partition."
+        }
+      },
+      "additionalProperties": true
+    },
+    "McuModuleConfiguration": {
+      "description": "McuModuleConfiguration 配置容器 - This container contains the configuration (parameters) of the MCU driver",
+      "type": "object",
+      "properties": {
+        "McuClockSrcFailureNotification": {
+          "description": "McuClockSrcFailureNotification 参数 - Enables/Disables clock failure notification. In case this feature is not supported by HW the setting should be disabled.",
+          "type": "string",
+          "enum": [
+            "DISABLED",
+            "ENABLED"
+          ]
+        },
+        "McuNumberOfMcuModes": {
+          "description": "McuNumberOfMcuModes 参数 - This parameter shall represent the number of Modes available for the MCU.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 255
+        },
+        "McuRamSectors": {
+          "description": "McuRamSectors 参数 - This parameter shall represent the number of RAM sectors available for the MCU.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "McuResetSetting": {
+          "description": "McuResetSetting 参数 - This parameter relates to the MCU specific reset configuration. This applies to the function Mcu_PerformReset, which performs a microcontroller reset using the hardware feature of the microcontroller.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 255
+        }
+      },
+      "additionalProperties": true
+    },
+    "McuClockReferencePoint": {
+      "description": "McuClockReferencePoint 配置容器 - This container defines a reference point in the Mcu Clock tree. It defines the frequency which then can be used by other modules as an input value. Lower multiplicity is 1, as even in the simplest case (only one frequency is used), there is one frequency to be defined.",
+      "type": "object",
+      "properties": {
+        "McuClockReferencePointFrequency": {
+          "description": "McuClockReferencePointFrequency 参数 - This is the frequency for the specific instance of the McuClockReferencePoint container. It shall be given in Hz.",
+          "type": "number",
+          "minimum": 0.0
+        }
+      },
+      "additionalProperties": true
+    },
+    "McuDemEventParameterRefs": {
+      "description": "McuDemEventParameterRefs 配置容器 - Container for the references to DemEventParameter elements which shall be invoked using the API Dem_SetEventStatus in case the corresponding error occurs. The EventId is taken from the referenced DemEventParameter's DemEventId symbolic value. The standardized errors are provided in this container and can be extended by vendor-specific error references.",
+      "type": "object",
+      "properties": {
+        "MCU_E_CLOCK_FAILURE": {
+          "type": "string",
+          "description": "MCU_E_CLOCK_FAILURE 引用 - Reference to configured DEM event to report \"Clock source failure\"."
+        }
+      },
+      "additionalProperties": true
+    },
+    "McuPublishedInformation": {
+      "description": "McuPublishedInformation 配置容器 - Container holding all MCU specific published information parameters",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": true
+    },
+    "McuResetReasonConf": {
+      "description": "McuResetReasonConf 配置容器 - This container contains the configuration for the different type of reset reason that can be retrieved from Mcu_GetResetReason Api.",
+      "type": "object",
+      "properties": {
+        "McuResetReason": {
+          "description": "McuResetReason 参数 - The parameter represents the different type of reset that a Micro supports. This parameter is referenced by the parameter EcuMResetReason in the ECU State manager module.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [

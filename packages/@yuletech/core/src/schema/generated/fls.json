@@ -554,6 +554,18 @@
         }
       },
       "additionalProperties": true
+    },
+    "FlsExternalDriver": {
+      "description": "FlsExternalDriver 配置容器",
+      "type": "object",
+      "properties": {
+        "FlsSpiReference": {
+          "description": "FlsSpiReference 参数（引用）",
+          "type": "string",
+          "maxLength": 255
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [

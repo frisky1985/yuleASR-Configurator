@@ -222,6 +222,313 @@
         }
       },
       "additionalProperties": true
+    },
+    "FrMultipleConfiguration": {
+      "description": "FrMultipleConfiguration 配置容器",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": true
+    },
+    "FrController": {
+      "description": "FrController 配置容器",
+      "type": "object",
+      "properties": {
+        "FrCtrlIdx": {
+          "type": "integer",
+          "description": "FrCtrlIdx 参数",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "FrPAllowHaltDueToClock": {
+          "type": "boolean",
+          "description": "FrPAllowHaltDueToClock 参数"
+        },
+        "FrPAllowPassiveToActive": {
+          "type": "integer",
+          "description": "FrPAllowPassiveToActive 参数",
+          "minimum": 0,
+          "maximum": 31
+        },
+        "FrPChannels": {
+          "type": "string",
+          "description": "FrPChannels 参数",
+          "enum": [
+            "FR_CHANNEL_A",
+            "FR_CHANNEL_AB",
+            "FR_CHANNEL_B"
+          ]
+        },
+        "FrPClusterDriftDamping": {
+          "type": "integer",
+          "description": "FrPClusterDriftDamping 参数",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "FrPdAcceptedStartupRange": {
+          "type": "integer",
+          "description": "FrPdAcceptedStartupRange 参数",
+          "minimum": 0,
+          "maximum": 2743
+        },
+        "FrPDecodingCorrection": {
+          "type": "integer",
+          "description": "FrPDecodingCorrection 参数",
+          "minimum": 12,
+          "maximum": 143
+        },
+        "FrPDelayCompensationA": {
+          "type": "integer",
+          "description": "FrPDelayCompensationA 参数",
+          "minimum": 0,
+          "maximum": 211
+        },
+        "FrPDelayCompensationB": {
+          "type": "integer",
+          "description": "FrPDelayCompensationB 参数",
+          "minimum": 0,
+          "maximum": 211
+        },
+        "FrPdListenTimeout": {
+          "type": "integer",
+          "description": "FrPdListenTimeout 参数",
+          "minimum": 1284,
+          "maximum": 2567692
+        },
+        "FrPdMicrotick": {
+          "type": "string",
+          "description": "FrPdMicrotick 参数",
+          "enum": [
+            "T100NS",
+            "T12_5NS",
+            "T200NS",
+            "T25NS",
+            "T50NS"
+          ]
+        },
+        "FrPExternalSync": {
+          "type": "boolean",
+          "description": "FrPExternalSync 参数"
+        },
+        "FrPFallBackInternal": {
+          "type": "boolean",
+          "description": "FrPFallBackInternal 参数"
+        },
+        "FrPKeySlotId": {
+          "type": "integer",
+          "description": "FrPKeySlotId 参数",
+          "minimum": 0,
+          "maximum": 1023
+        },
+        "FrPKeySlotOnlyEnabled": {
+          "type": "boolean",
+          "description": "FrPKeySlotOnlyEnabled 参数"
+        },
+        "FrPKeySlotUsedForStartup": {
+          "type": "boolean",
+          "description": "FrPKeySlotUsedForStartup 参数"
+        },
+        "FrPKeySlotUsedForSync": {
+          "type": "boolean",
+          "description": "FrPKeySlotUsedForSync 参数"
+        },
+        "FrPLatestTx": {
+          "type": "integer",
+          "description": "FrPLatestTx 参数",
+          "minimum": 0,
+          "maximum": 7988
+        },
+        "FrPMacroInitialOffsetA": {
+          "type": "integer",
+          "description": "FrPMacroInitialOffsetA 参数",
+          "minimum": 2,
+          "maximum": 68
+        },
+        "FrPMacroInitialOffsetB": {
+          "type": "integer",
+          "description": "FrPMacroInitialOffsetB 参数",
+          "minimum": 2,
+          "maximum": 68
+        },
+        "FrPMicroInitialOffsetA": {
+          "type": "integer",
+          "description": "FrPMicroInitialOffsetA 参数",
+          "minimum": 0,
+          "maximum": 239
+        },
+        "FrPMicroInitialOffsetB": {
+          "type": "integer",
+          "description": "FrPMicroInitialOffsetB 参数",
+          "minimum": 0,
+          "maximum": 239
+        },
+        "FrPMicroPerCycle": {
+          "type": "integer",
+          "description": "FrPMicroPerCycle 参数",
+          "minimum": 640,
+          "maximum": 1280000
+        },
+        "FrPNmVectorEarlyUpdate": {
+          "type": "boolean",
+          "description": "FrPNmVectorEarlyUpdate 参数"
+        },
+        "FrPOffsetCorrectionOut": {
+          "type": "integer",
+          "description": "FrPOffsetCorrectionOut 参数",
+          "minimum": 13,
+          "maximum": 16082
+        },
+        "FrPOffsetCorrectionStart": {
+          "type": "integer",
+          "description": "FrPOffsetCorrectionStart 参数",
+          "minimum": 7,
+          "maximum": 15999
+        },
+        "FrPPayloadLengthDynMax": {
+          "type": "integer",
+          "description": "FrPPayloadLengthDynMax 参数",
+          "minimum": 0,
+          "maximum": 127
+        },
+        "FrPRateCorrectionOut": {
+          "type": "integer",
+          "description": "FrPRateCorrectionOut 参数",
+          "minimum": 2,
+          "maximum": 3846
+        },
+        "FrPSamplesPerMicrotick": {
+          "type": "string",
+          "description": "FrPSamplesPerMicrotick 参数",
+          "enum": [
+            "N1SAMPLES",
+            "N2SAMPLES",
+            "N4SAMPLES"
+          ]
+        },
+        "FrPSecondKeySlotId": {
+          "type": "integer",
+          "description": "FrPSecondKeySlotId 参数",
+          "minimum": 0,
+          "maximum": 1023
+        },
+        "FrPTwoKeySlotMode": {
+          "type": "boolean",
+          "description": "FrPTwoKeySlotMode 参数"
+        },
+        "FrPWakeupChannel": {
+          "type": "string",
+          "description": "FrPWakeupChannel 参数",
+          "enum": [
+            "FR_CHANNEL_A",
+            "FR_CHANNEL_B"
+          ]
+        },
+        "FrPWakeupPattern": {
+          "type": "integer",
+          "description": "FrPWakeupPattern 参数",
+          "minimum": 0,
+          "maximum": 63
+        },
+        "FrCtrlEcucPartitionRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FrCtrlEcucPartitionRef 引用"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FrAbsoluteTimer": {
+      "description": "FrAbsoluteTimer 配置容器",
+      "type": "object",
+      "properties": {
+        "FrAbsTimerIdx": {
+          "type": "integer",
+          "description": "FrAbsTimerIdx 参数",
+          "minimum": 0,
+          "maximum": 254
+        }
+      },
+      "additionalProperties": true
+    },
+    "FrControllerDemEventParameterRefs": {
+      "description": "FrControllerDemEventParameterRefs 配置容器",
+      "type": "object",
+      "properties": {
+        "FR_E_CTRL_TESTRESULT": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "FR_E_CTRL_TESTRESULT 引用"
+        }
+      },
+      "additionalProperties": true
+    },
+    "FrFifo": {
+      "description": "FrFifo 配置容器",
+      "type": "object",
+      "properties": {
+        "FrAdmitWithoutMessageId": {
+          "type": "boolean",
+          "description": "FrAdmitWithoutMessageId 参数"
+        },
+        "FrBaseCycle": {
+          "type": "integer",
+          "description": "FrBaseCycle 参数",
+          "minimum": 0,
+          "maximum": 63
+        },
+        "FrChannels": {
+          "type": "string",
+          "description": "FrChannels 参数",
+          "enum": [
+            "FR_CHANNEL_A",
+            "FR_CHANNEL_AB",
+            "FR_CHANNEL_B"
+          ]
+        },
+        "FrCycleRepetition": {
+          "type": "integer",
+          "description": "FrCycleRepetition 参数",
+          "minimum": 1,
+          "maximum": 64
+        },
+        "FrFifoDepth": {
+          "type": "integer",
+          "description": "FrFifoDepth 参数",
+          "minimum": 1,
+          "maximum": 2048
+        },
+        "FrMsgIdMask": {
+          "type": "integer",
+          "description": "FrMsgIdMask 参数",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "FrMsgIdMatch": {
+          "type": "integer",
+          "description": "FrMsgIdMatch 参数",
+          "minimum": 0,
+          "maximum": 65535
+        }
+      },
+      "additionalProperties": true
+    },
+    "FrRange": {
+      "description": "FrRange 配置容器",
+      "type": "object",
+      "properties": {
+        "FrRangeMax": {
+          "type": "integer",
+          "description": "FrRangeMax 参数",
+          "minimum": 0,
+          "maximum": 2047
+        },
+        "FrRangeMin": {
+          "type": "integer",
+          "description": "FrRangeMin 参数",
+          "minimum": 0,
+          "maximum": 2047
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [

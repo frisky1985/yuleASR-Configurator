@@ -451,6 +451,169 @@
       "minimum": 0,
       "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "OcuConfigSet": {
+      "description": "OcuConfigSet 配置容器 - This container is the base of a Configuration Set, which contains the configured OCU channels. This way, different configuration sets can be defined for post-build process.",
+      "type": "object",
+      "properties": {
+        "OcuCountdirection": {
+          "description": "OcuCountdirection 参数 - This parameter indicates the count direction for the whole OCU driver.",
+          "type": "string",
+          "enum": [
+            "OCU_DOWNCOUNTING",
+            "OCU_UPCOUNTING"
+          ],
+          "default": "OCU_UPCOUNTING"
+        }
+      },
+      "additionalProperties": true
+    },
+    "OcuChannel": {
+      "description": "OcuChannel 配置容器 - Configuration of an individual OCU channel.",
+      "type": "object",
+      "properties": {
+        "OcuAssignedHardwareChannel": {
+          "description": "OcuAssignedHardwareChannel 参数 - The physical hardware channel that is assigned to this logical channel.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "OcuChannelId": {
+          "description": "OcuChannelId 参数 - Channel Id of the OCU channel. This value will be assigned to the symbolic name derived from the OcuChannel container short name. It defines the assignment of the channel to the physical OCU hardware channel.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "OcuChannelTickDuration": {
+          "description": "OcuChannelTickDuration 参数 - Specifies the number of input clock edges (rising or falling edges) required to increase the channel counter by one (i.e. one counter tick). The value range depends on the used HW, not all values may be relevant",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32768
+        },
+        "OcuDefaultThreshold": {
+          "description": "OcuDefaultThreshold 参数 - Value of comparison threshold used for Initialization.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "OcuHardwareTriggeredAdc": {
+          "description": "OcuHardwareTriggeredAdc 参数 - This parameter is used to allow the OCU channel to trigger an ADC channel upon compare match, if this is supported by hardware. The value of the parameter represents the ADC physical channel to trigger.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255,
+          "default": 0
+        },
+        "OcuHardwareTriggeredDMA": {
+          "description": "OcuHardwareTriggeredDMA 参数 - This parameter is used to allow the OCU channel to trigger a DMA channel upon compare match, if this is supported by hardware. The value of the parameter represents the DMA physical channel to trigger.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255,
+          "default": 0
+        },
+        "OcuMaxCounterValue": {
+          "description": "OcuMaxCounterValue 参数 - Maximum value in ticks, the counter of the OCU channel is able to count.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295
+        },
+        "OcuNotification": {
+          "description": "OcuNotification 参数 - Definition of a function pointer to a Callback function.",
+          "type": "string",
+          "maxLength": 255
+        },
+        "OcuOuptutPinUsed": {
+          "description": "OcuOuptutPinUsed 参数 - Information about the usage of an output pin on this channel.",
+          "type": "boolean"
+        },
+        "OcuOutputPinDefaultState": {
+          "description": "OcuOutputPinDefaultState 参数 - The parameter OcuOutputPinDefaultState represents the state that a pin associated with a channel shall be set to after initialisation.",
+          "type": "string",
+          "enum": [
+            "OCU_HIGH",
+            "OCU_LOW"
+          ]
+        },
+        "OcuChannelEcucPartitionRef": {
+          "type": "string",
+          "description": "OcuChannelEcucPartitionRef 引用 - Maps an OCU channel to zero or multiple ECUC partitions to limit the access to this channel. The ECUC partitions referenced are a subset of the ECUC partitions where the OCU driver is mapped to."
+        }
+      },
+      "additionalProperties": true
+    },
+    "OcuHWSpecificSettings": {
+      "description": "OcuHWSpecificSettings 配置容器 - This container contains Ocu-specific parameters for selecting the clock source and setting optional prescalers if supported by hardware.",
+      "type": "object",
+      "properties": {
+        "OcuClockSource": {
+          "description": "OcuClockSource 参数 - The OCU driver specific clock input for the unit can statically be configured to select different clock sources if provided by hardware. Enumeration literals are defined vendor specific.",
+          "type": "string"
+        },
+        "OcuPrescale": {
+          "description": "OcuPrescale 参数 - Optional OCU driver specific clock prescale factor, if supported by hardware. Implementation is defined vendor specific.",
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "OcuConfigurationOfOptionalApis": {
+      "description": "OcuConfigurationOfOptionalApis 配置容器 - Configuration of optional APIs.",
+      "type": "object",
+      "properties": {
+        "OcuDeInitApi": {
+          "description": "OcuDeInitApi 参数 - Adds / removes the service Ocu_DeInit() from the code.",
+          "type": "boolean"
+        },
+        "OcuGetCounterApi": {
+          "description": "OcuGetCounterApi 参数 - Adds / removes the service Ocu_GetCounter() from the code.",
+          "type": "boolean"
+        },
+        "OcuNotificationSupported": {
+          "description": "OcuNotificationSupported 参数 - Adds / removes the services Ocu_EnableNotification() and Ocu_DisableNotification() from the code.",
+          "type": "boolean"
+        },
+        "OcuSetAbsoluteThresholdApi": {
+          "description": "OcuSetAbsoluteThresholdApi 参数 - Adds / removes the service Ocu_SetAbsoluteThreshold() from the code.",
+          "type": "boolean"
+        },
+        "OcuSetPinActionApi": {
+          "description": "OcuSetPinActionApi 参数 - Adds / removes the service Ocu_SetPinAction() from the code.",
+          "type": "boolean"
+        },
+        "OcuSetPinStateApi": {
+          "description": "OcuSetPinStateApi 参数 - Adds / removes the service Ocu_SetPinState() from the code.",
+          "type": "boolean"
+        },
+        "OcuSetRelativeThresholdApi": {
+          "description": "OcuSetRelativeThresholdApi 参数 - Adds / removes the service Ocu_SetRelativeThreshold() from the code.",
+          "type": "boolean"
+        },
+        "OcuVersionInfoApi": {
+          "description": "OcuVersionInfoApi 参数 - Switch to indicate that the Ocu_GetVersionInfo() is supported.",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "OcuGeneral": {
+      "description": "OcuGeneral 配置容器 - This container contains the module-wide configuration parameters of the OCU Driver.",
+      "type": "object",
+      "properties": {
+        "OcuDevErrorDetect": {
+          "description": "OcuDevErrorDetect 参数 - Switches the development error detection and notification on or off.",
+          "type": "boolean",
+          "default": false
+        },
+        "OcuEcucPartitionRef": {
+          "type": "string",
+          "description": "OcuEcucPartitionRef 引用 - Maps the OCU driver to zero or multiple ECUC partitions to make the driver API available in the according partition."
+        },
+        "OcuKernelEcucPartitionRef": {
+          "type": "string",
+          "description": "OcuKernelEcucPartitionRef 引用 - Maps the OCU kernel to zero or one ECUC partitions to assign the driver kernel to a certain core. The ECUC partition referenced is a subset of the ECUC partitions where the OCU driver is mapped to."
+        }
+      },
+      "additionalProperties": true
     }
   },
   "additionalProperties": true,

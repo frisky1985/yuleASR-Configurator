@@ -247,6 +247,19 @@
         }
       },
       "additionalProperties": true
+    },
+    "PortContainer": {
+      "description": "PortContainer 配置容器",
+      "type": "object",
+      "properties": {
+        "PortNumberOfPortPins": {
+          "description": "PortNumberOfPortPins 参数",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [

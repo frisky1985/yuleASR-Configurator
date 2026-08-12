@@ -440,6 +440,28 @@
         }
       },
       "additionalProperties": true
+    },
+    "GptWakeupConfiguration": {
+      "description": "GptWakeupConfiguration 配置容器 - Function pointer to callback function (for wakeup notification).",
+      "type": "object",
+      "properties": {
+        "GptWakeupSourceRef": {
+          "type": "string",
+          "description": "GptWakeupSourceRef 引用 - In case the wakeup-capability is true this value is transmitted to the Ecu State Manager."
+        }
+      },
+      "additionalProperties": true
+    },
+    "GptClockReferencePoint": {
+      "description": "GptClockReferencePoint 配置容器 - This container contains a parameter, which represents a reference to a container of the type McuClockReferencePoint (defined in module MCU).",
+      "type": "object",
+      "properties": {
+        "GptClockReference": {
+          "type": "string",
+          "description": "GptClockReference 引用 - Reference to a container of the type McuClockReferencePoint, to select an input clock."
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [

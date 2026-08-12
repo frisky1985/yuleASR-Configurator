@@ -527,6 +527,19 @@
         }
       },
       "additionalProperties": true
+    },
+    "AdcPowerStateConfig": {
+      "description": "AdcPowerStateConfig 配置容器",
+      "type": "object",
+      "properties": {
+        "AdcPowerState": {
+          "description": "AdcPowerState 参数",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [

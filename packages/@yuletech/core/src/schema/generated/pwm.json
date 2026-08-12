@@ -274,6 +274,62 @@
         }
       },
       "additionalProperties": true
+    },
+    "PwmChannelConfigSet": {
+      "description": "PwmChannelConfigSet 配置容器 - This container contains the configuration parameters and sub containers of the AUTOSAR Pwm module.",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": true
+    },
+    "PwmConfigurationOfOptApiServices": {
+      "description": "PwmConfigurationOfOptApiServices 配置容器",
+      "type": "object",
+      "properties": {
+        "PwmDeInitApi": {
+          "description": "PwmDeInitApi 参数 - Adds / removes the service Pwm_DeInit() from the code.",
+          "type": "boolean"
+        },
+        "PwmGetOutputState": {
+          "description": "PwmGetOutputState 参数",
+          "type": "boolean"
+        },
+        "PwmSetDutyCycle": {
+          "description": "PwmSetDutyCycle 参数",
+          "type": "boolean"
+        },
+        "PwmSetOutputToIdle": {
+          "description": "PwmSetOutputToIdle 参数",
+          "type": "boolean"
+        },
+        "PwmSetPeriodAndDuty": {
+          "description": "PwmSetPeriodAndDuty 参数",
+          "type": "boolean"
+        },
+        "PwmVersionInfoApi": {
+          "description": "PwmVersionInfoApi 参数 - Switch to indicate that the Pwm_ GetVersionInfo is supported",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "PwmPowerStateConfig": {
+      "description": "PwmPowerStateConfig 配置容器 - Each instance of this parameter defines a power state and the callback to be called when this power state is reached.",
+      "type": "object",
+      "properties": {
+        "PwmPowerState": {
+          "description": "PwmPowerState 参数 - Each instance of this parameter describes a different power state supported by the PWM HW. It should be defined by the HW supplier and used by the PWMDriver to reference specific HW configurations which set the PWM HW module in the referenced power state.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 18446744073709551615
+        },
+        "PwmPowerStateReadyCbkRef": {
+          "description": "PwmPowerStateReadyCbkRef 参数 - Each instance of this parameter contains a reference to a power mode callback defined in a CDD or IoHwAbs component.",
+          "type": "string",
+          "maxLength": 255
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [

@@ -135,6 +135,82 @@
         }
       },
       "additionalProperties": true
+    },
+    "WdgDemEventParameterRefs": {
+      "description": "WdgDemEventParameterRefs 配置容器 - Container for the references to DemEventParameter elements which shall be invoked using the API Dem_SetEventStatus in case the corresponding error occurs. The EventId is taken from the referenced DemEventParameter's DemEventId symbolic value. The standardized errors are provided in this container and can be extended by vendor-specific error references.",
+      "type": "object",
+      "properties": {
+        "WDG_E_DISABLE_REJECTED": {
+          "type": "string",
+          "description": "WDG_E_DISABLE_REJECTED 引用 - Reference to the DemEventParameter which shall be issued when the error \"Initialization or mode switch failed because it would disable the watchdog\" has occurred."
+        },
+        "WDG_E_MODE_FAILED": {
+          "type": "string",
+          "description": "WDG_E_MODE_FAILED 引用 - Reference to the DemEventParameter which shall be issued when the error \"Setting a watchdog mode failed (during initialization or mode switch)\" has occurred."
+        }
+      },
+      "additionalProperties": true
+    },
+    "WdgPublishedInformation": {
+      "description": "WdgPublishedInformation 配置容器 - Container holding all Wdg specific published information parameters",
+      "type": "object",
+      "properties": {
+        "WdgTriggerMode": {
+          "description": "WdgTriggerMode 参数 - Watchdog trigger mode (toggle/window/both)",
+          "type": "string",
+          "enum": [
+            "WDG_BOTH",
+            "WDG_TOGGLE",
+            "WDG_WINDOW"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "WdgSettingsConfig": {
+      "description": "WdgSettingsConfig 配置容器 - Configuration items for the different watchdog settings, including those for external watchdog hardware.",
+      "type": "object",
+      "properties": {
+        "WdgDefaultMode": {
+          "description": "WdgDefaultMode 参数 - Default mode for watchdog driver initialization.",
+          "type": "string",
+          "enum": [
+            "WDGIF_FAST_MODE",
+            "WDGIF_OFF_MODE",
+            "WDGIF_SLOW_MODE"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "WdgExternalConfiguration": {
+      "description": "WdgExternalConfiguration 配置容器 - Configuration items for an external watchdog hardware",
+      "type": "object",
+      "properties": {
+        "WdgExternalContainerRef": {
+          "type": "string",
+          "description": "WdgExternalContainerRef 引用 - Reference to either"
+        }
+      },
+      "additionalProperties": true
+    },
+    "WdgSettingsFast": {
+      "description": "WdgSettingsFast 配置容器 - Hardware dependent settings for the watchdog driver's \"fast\" mode.",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": true
+    },
+    "WdgSettingsOff": {
+      "description": "WdgSettingsOff 配置容器 - Hardware dependent settings for the watchdog driver's \"off\" mode.",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": true
+    },
+    "WdgSettingsSlow": {
+      "description": "WdgSettingsSlow 配置容器 - Hardware dependent settings for the watchdog driver's \"slow\" mode.",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": true
     }
   },
   "required": [

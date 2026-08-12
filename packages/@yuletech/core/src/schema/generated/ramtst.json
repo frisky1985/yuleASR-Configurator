@@ -96,6 +96,260 @@
       "minimum": 0,
       "maximum": 4294967295,
       "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "RamTstCommon": {
+      "description": "RamTstCommon 配置容器",
+      "type": "object",
+      "properties": {
+        "RamTstAllowApi": {
+          "description": "RamTstAllowApi 参数",
+          "type": "boolean"
+        },
+        "RamTstChangeNumOfTestedCellsApi": {
+          "description": "RamTstChangeNumOfTestedCellsApi 参数",
+          "type": "boolean"
+        },
+        "RamTstDevErrorDetect": {
+          "description": "RamTstDevErrorDetect 参数",
+          "type": "boolean",
+          "default": false
+        },
+        "RamTstGetAlgParamsApi": {
+          "description": "RamTstGetAlgParamsApi 参数",
+          "type": "boolean"
+        },
+        "RamTstGetExecutionStatusApi": {
+          "description": "RamTstGetExecutionStatusApi 参数",
+          "type": "boolean"
+        },
+        "RamTstGetNumberOfTestedCellsApi": {
+          "description": "RamTstGetNumberOfTestedCellsApi 参数",
+          "type": "boolean"
+        },
+        "RamTstGetTestAlgorithmApi": {
+          "description": "RamTstGetTestAlgorithmApi 参数",
+          "type": "boolean"
+        },
+        "RamTstGetTestResultApi": {
+          "description": "RamTstGetTestResultApi 参数",
+          "type": "boolean"
+        },
+        "RamTstGetTestResultPerBlockApi": {
+          "description": "RamTstGetTestResultPerBlockApi 参数",
+          "type": "boolean"
+        },
+        "RamTstResumeApi": {
+          "description": "RamTstResumeApi 参数",
+          "type": "boolean"
+        },
+        "RamTstRunFullTestApi": {
+          "description": "RamTstRunFullTestApi 参数",
+          "type": "boolean"
+        },
+        "RamTstRunPartialTestApi": {
+          "description": "RamTstRunPartialTestApi 参数",
+          "type": "boolean"
+        },
+        "RamTstSelectAlgParamsApi": {
+          "description": "RamTstSelectAlgParamsApi 参数",
+          "type": "boolean"
+        },
+        "RamTstStopApi": {
+          "description": "RamTstStopApi 参数",
+          "type": "boolean"
+        },
+        "RamTstSuspendApi": {
+          "description": "RamTstSuspendApi 参数",
+          "type": "boolean"
+        },
+        "RamTstVersionInfoApi": {
+          "description": "RamTstVersionInfoApi 参数",
+          "type": "boolean",
+          "default": false
+        },
+        "RamTstEcucPartitionRef": {
+          "description": "RamTstEcucPartitionRef 参数（引用）",
+          "type": "string",
+          "maxLength": 255
+        }
+      },
+      "additionalProperties": true
+    },
+    "RamTstAlgorithms": {
+      "description": "RamTstAlgorithms 配置容器",
+      "type": "object",
+      "properties": {
+        "RamTstAbrahamTestSelected": {
+          "description": "RamTstAbrahamTestSelected 参数",
+          "type": "boolean"
+        },
+        "RamTstCheckerboardTestSelected": {
+          "description": "RamTstCheckerboardTestSelected 参数",
+          "type": "boolean"
+        },
+        "RamTstGalpatTestSelected": {
+          "description": "RamTstGalpatTestSelected 参数",
+          "type": "boolean"
+        },
+        "RamTstMarchTestSelected": {
+          "description": "RamTstMarchTestSelected 参数",
+          "type": "boolean"
+        },
+        "RamTstTranspGalpatTestSelected": {
+          "description": "RamTstTranspGalpatTestSelected 参数",
+          "type": "boolean"
+        },
+        "RamTstWalkPathTestSelected": {
+          "description": "RamTstWalkPathTestSelected 参数",
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "RamTstConfigParams": {
+      "description": "RamTstConfigParams 配置容器",
+      "type": "object",
+      "properties": {
+        "RamTstDefaultAlgParamsId": {
+          "description": "RamTstDefaultAlgParamsId 参数",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "RamTstMinNumberOfTestedCells": {
+          "description": "RamTstMinNumberOfTestedCells 参数",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "RamTstNumberOfAlgParamSets": {
+          "description": "RamTstNumberOfAlgParamSets 参数",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        }
+      },
+      "additionalProperties": true
+    },
+    "RamTstAlgParams": {
+      "description": "RamTstAlgParams 配置容器",
+      "type": "object",
+      "properties": {
+        "RamTstAlgorithm": {
+          "description": "RamTstAlgorithm 参数",
+          "type": "string",
+          "maxLength": 255,
+          "enum": [
+            "RAMTST_ABRAHAM_TEST",
+            "RAMTST_CHECKERBOARD_TEST",
+            "RAMTST_GALPAT_TEST",
+            "RAMTST_MARCH_TEST",
+            "RAMTST_TRANSP_GALPAT_TEST",
+            "RAMTST_WALK_PATH_TEST"
+          ]
+        },
+        "RamTstAlgParamsId": {
+          "description": "RamTstAlgParamsId 参数",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "RamTstExtNumberOfTestedCells": {
+          "description": "RamTstExtNumberOfTestedCells 参数",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "RamTstMaxNumberOfTestedCells": {
+          "description": "RamTstMaxNumberOfTestedCells 参数",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "RamTstNumberOfBlocks": {
+          "description": "RamTstNumberOfBlocks 参数",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "RamTstNumberOfTestedCells": {
+          "description": "RamTstNumberOfTestedCells 参数",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "RamTstBlockParamsEcucPartitionRef": {
+          "description": "RamTstBlockParamsEcucPartitionRef 参数（引用）",
+          "type": "string",
+          "maxLength": 255
+        }
+      },
+      "additionalProperties": true
+    },
+    "RamTstBlockParams": {
+      "description": "RamTstBlockParams 配置容器",
+      "type": "object",
+      "properties": {
+        "RamTstBlockId": {
+          "description": "RamTstBlockId 参数",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "RamTstEndAddress": {
+          "description": "RamTstEndAddress 参数",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "RamTstFillPattern": {
+          "description": "RamTstFillPattern 参数",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "RamTstStartAddress": {
+          "description": "RamTstStartAddress 参数",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "RamTstTestPolicy": {
+          "description": "RamTstTestPolicy 参数",
+          "type": "string",
+          "maxLength": 255,
+          "enum": [
+            "RAMTEST_DESTRUCTIVE",
+            "RAMTEST_NON_DESTRUCTIVE"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "RamTstDemEventParameterRefs": {
+      "description": "RamTstDemEventParameterRefs 配置容器",
+      "type": "object",
+      "properties": {
+        "RAMTST_E_RAM_FAILURE": {
+          "description": "RAMTST_E_RAM_FAILURE 参数（引用）",
+          "type": "string",
+          "maxLength": 255
+        }
+      },
+      "additionalProperties": true
+    },
+    "RamTstPublishedInformation": {
+      "description": "RamTstPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "RamTstCellSize": {
+          "description": "RamTstCellSize 参数",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        }
+      },
+      "additionalProperties": true
     }
   },
   "additionalProperties": true,

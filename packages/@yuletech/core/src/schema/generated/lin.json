@@ -171,6 +171,24 @@
         }
       },
       "additionalProperties": true
+    },
+    "LinDemEventParameterRefs": {
+      "description": "LinDemEventParameterRefs 配置容器",
+      "type": "object",
+      "properties": {
+        "LIN_E_TIMEOUT": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "LIN_E_TIMEOUT 引用"
+        }
+      },
+      "additionalProperties": true
+    },
+    "LinGlobalConfig": {
+      "description": "LinGlobalConfig 配置容器",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": true
     }
   },
   "required": [

@@ -187,6 +187,263 @@
         }
       },
       "additionalProperties": true
+    },
+    "EthCtrlConfig": {
+      "description": "EthCtrlConfig 配置容器",
+      "type": "object",
+      "properties": {
+        "EthCtrlEnableMii": {
+          "type": "boolean",
+          "description": "EthCtrlEnableMii 参数"
+        },
+        "EthCtrlEnableRxInterrupt": {
+          "type": "boolean",
+          "description": "EthCtrlEnableRxInterrupt 参数"
+        },
+        "EthCtrlEnableTxInterrupt": {
+          "type": "boolean",
+          "description": "EthCtrlEnableTxInterrupt 参数"
+        },
+        "EthCtrlIdx": {
+          "type": "integer",
+          "description": "EthCtrlIdx 参数",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "EthCtrlMacLayerSpeed": {
+          "type": "string",
+          "description": "EthCtrlMacLayerSpeed 参数",
+          "enum": [
+            "ETH_MAC_LAYER_SPEED_100M",
+            "ETH_MAC_LAYER_SPEED_10G",
+            "ETH_MAC_LAYER_SPEED_10M",
+            "ETH_MAC_LAYER_SPEED_1G"
+          ]
+        },
+        "EthCtrlMacLayerSubType": {
+          "type": "string",
+          "description": "EthCtrlMacLayerSubType 参数",
+          "enum": [
+            "REDUCED",
+            "REVERSED",
+            "SERIAL",
+            "STANDARD",
+            "UNIVERSAL_SERIAL"
+          ]
+        },
+        "EthCtrlMacLayerType": {
+          "type": "string",
+          "description": "EthCtrlMacLayerType 参数",
+          "enum": [
+            "ETH_MAC_LAYER_TYPE_XGMII",
+            "ETH_MAC_LAYER_TYPE_XMII",
+            "ETH_MAC_LAYER_TYPE_XXGMII"
+          ]
+        },
+        "EthCtrlPhyAddress": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EthCtrlPhyAddress 参数"
+        },
+        "EthCtrlEcucPartitionRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EthCtrlEcucPartitionRef 引用"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EthCtrlConfigEgress": {
+      "description": "EthCtrlConfigEgress 配置容器",
+      "type": "object",
+      "properties": {
+        "EthCtrlConfigEgressLastSchedulerRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EthCtrlConfigEgressLastSchedulerRef 引用"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EthCtrlConfigEgressFifo": {
+      "description": "EthCtrlConfigEgressFifo 配置容器",
+      "type": "object",
+      "properties": {
+        "EthCtrlConfigEgressFifoBufLenByte": {
+          "type": "integer",
+          "description": "EthCtrlConfigEgressFifoBufLenByte 参数",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "EthCtrlConfigEgressFifoBufTotal": {
+          "type": "integer",
+          "description": "EthCtrlConfigEgressFifoBufTotal 参数",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "EthCtrlConfigEgressFifoIdx": {
+          "type": "integer",
+          "description": "EthCtrlConfigEgressFifoIdx 参数",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "EthCtrlConfigEgressFifoPriorityAssignment": {
+          "type": "integer",
+          "description": "EthCtrlConfigEgressFifoPriorityAssignment 参数",
+          "minimum": 0,
+          "maximum": 7
+        }
+      },
+      "additionalProperties": true
+    },
+    "EthCtrlConfigScheduler": {
+      "description": "EthCtrlConfigScheduler 配置容器",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": true
+    },
+    "EthCtrlConfigSchedulerPredecessor": {
+      "description": "EthCtrlConfigSchedulerPredecessor 配置容器",
+      "type": "object",
+      "properties": {
+        "EthCtrlConfigSchedulerPredecessorOrder": {
+          "type": "integer",
+          "description": "EthCtrlConfigSchedulerPredecessorOrder 参数",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "additionalProperties": true
+    },
+    "EthCtrlConfigShaper": {
+      "description": "EthCtrlConfigShaper 配置容器",
+      "type": "object",
+      "properties": {
+        "EthCtrlConfigShaperIdleSlope": {
+          "type": "integer",
+          "description": "EthCtrlConfigShaperIdleSlope 参数",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "EthCtrlConfigShaperPredecessorFifoRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "EthCtrlConfigShaperPredecessorFifoRef 引用"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EthCtrlConfigIngress": {
+      "description": "EthCtrlConfigIngress 配置容器",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": true
+    },
+    "EthCtrlConfigIngressFifo": {
+      "description": "EthCtrlConfigIngressFifo 配置容器",
+      "type": "object",
+      "properties": {
+        "EthCtrlConfigIngressFifoBufLenByte": {
+          "type": "integer",
+          "description": "EthCtrlConfigIngressFifoBufLenByte 参数",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "EthCtrlConfigIngressFifoBufTotal": {
+          "type": "integer",
+          "description": "EthCtrlConfigIngressFifoBufTotal 参数",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "EthCtrlConfigIngressFifoIdx": {
+          "type": "integer",
+          "description": "EthCtrlConfigIngressFifoIdx 参数",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "EthCtrlConfigIngressFifoPriorityAssignment": {
+          "type": "integer",
+          "description": "EthCtrlConfigIngressFifoPriorityAssignment 参数",
+          "minimum": 0,
+          "maximum": 7
+        }
+      },
+      "additionalProperties": true
+    },
+    "EthDemEventParameterRefs": {
+      "description": "EthDemEventParameterRefs 配置容器",
+      "type": "object",
+      "properties": {
+        "ETH_E_ACCESS": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ETH_E_ACCESS 引用"
+        },
+        "ETH_E_ALIGNMENT": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ETH_E_ALIGNMENT 引用"
+        },
+        "ETH_E_CRC": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ETH_E_CRC 引用"
+        },
+        "ETH_E_LATECOLLISION": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ETH_E_LATECOLLISION 引用"
+        },
+        "ETH_E_MULTIPLECOLLISION": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ETH_E_MULTIPLECOLLISION 引用"
+        },
+        "ETH_E_OVERSIZEFRAME": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ETH_E_OVERSIZEFRAME 引用"
+        },
+        "ETH_E_RX_FRAMES_LOST": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ETH_E_RX_FRAMES_LOST 引用"
+        },
+        "ETH_E_SINGLECOLLISION": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ETH_E_SINGLECOLLISION 引用"
+        },
+        "ETH_E_UNDERSIZEFRAME": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "ETH_E_UNDERSIZEFRAME 引用"
+        }
+      },
+      "additionalProperties": true
+    },
+    "EthCtrlOffloading": {
+      "description": "EthCtrlOffloading 配置容器",
+      "type": "object",
+      "properties": {
+        "EthCtrlEnableOffloadChecksumICMP": {
+          "type": "boolean",
+          "description": "EthCtrlEnableOffloadChecksumICMP 参数"
+        },
+        "EthCtrlEnableOffloadChecksumIPv4": {
+          "type": "boolean",
+          "description": "EthCtrlEnableOffloadChecksumIPv4 参数"
+        },
+        "EthCtrlEnableOffloadChecksumTCP": {
+          "type": "boolean",
+          "description": "EthCtrlEnableOffloadChecksumTCP 参数"
+        },
+        "EthCtrlEnableOffloadChecksumUDP": {
+          "type": "boolean",
+          "description": "EthCtrlEnableOffloadChecksumUDP 参数"
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [
