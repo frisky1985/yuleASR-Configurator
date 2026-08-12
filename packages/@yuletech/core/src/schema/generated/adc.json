@@ -531,8 +531,8 @@
   },
   "required": [
     "AdcConfigSet",
-    "AdcHwUnit_0",
-    "Adc_A8_BAT"
+    "AdcHwUnit",
+    "AdcChannel"
   ],
   "additionalProperties": false,
   "x-layer": "MCAL",

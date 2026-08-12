@@ -155,7 +155,7 @@
       },
       "additionalProperties": true
     },
-    "DKMM_LHBDCANFD_a9ca9096": {
+    "ComMChannel": {
       "description": "DKMM_LHBDCANFD_a9ca9096 配置容器",
       "type": "object",
       "properties": {
@@ -220,7 +220,7 @@
       },
       "additionalProperties": true
     },
-    "DKMM_LHBDCANFD_49934aba": {
+    "ComMUser": {
       "description": "DKMM_LHBDCANFD_49934aba 配置容器",
       "type": "object",
       "properties": {
@@ -289,6 +289,31 @@
           "minimum": 0,
           "maximum": 65535,
           "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "ComMPublishedInformation": {
+      "description": "ComM PublishedInformation 容器",
+      "type": "object",
+      "properties": {
+        "ComMNumberOfChannels": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ComM 通道数"
+        },
+        "ComMNumberOfUsers": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ComM 用户数"
+        },
+        "ComMNumberOfNetworks": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ComM 网络数"
         }
       },
       "additionalProperties": true

@@ -702,8 +702,8 @@
   },
   "required": [
     "CommonPublishedInformation",
-    "SpiChannelList_0",
-    "SpiChannel_Flash"
+    "SpiChannelList",
+    "SpiChannel"
   ],
   "additionalProperties": false,
   "x-layer": "MCAL",

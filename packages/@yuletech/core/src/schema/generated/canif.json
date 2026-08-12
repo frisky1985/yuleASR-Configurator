@@ -5,8 +5,8 @@
   "description": "CanIf Configuration",
   "type": "object",
   "properties": {
-    "BPEPS_100ms_PDU02_abbd7f87_Tx": {
-      "description": "BPEPS_100ms_PDU02_abbd7f87_Tx 配置容器",
+    "CanIfTxPdu": {
+      "description": "CanIfTxPdu 配置容器",
       "type": "object",
       "properties": {
         "CanIfTxPduCanId": {
@@ -60,772 +60,110 @@
       },
       "additionalProperties": true
     },
-    "BPEPS_100ms_PDU11_51eccb66_Tx": {
-      "description": "BPEPS_100ms_PDU11_51eccb66_Tx 配置容器",
+    "CanIfGeneral": {
+      "description": "CanIfGeneral 配置容器",
       "type": "object",
       "properties": {
-        "CanIfTxPduCanId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduCanId 参数"
-        },
-        "CanIfTxPduDlc": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduDlc 参数"
-        },
-        "CanIfTxPduId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduId 参数"
-        },
-        "CanIfTxPduReadNotifyStatus": {
+        "CanIfDevErrorDetect": {
           "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduReadNotifyStatus 参数"
+          "description": "CanIfDevErrorDetect 参数",
+          "default": true
         },
-        "CanIfTxPduTruncation": {
+        "CanIfVersionInfoApi": {
           "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduTruncation 参数"
+          "description": "CanIfVersionInfoApi 参数",
+          "default": true
         },
-        "CanIfTxPduCanIdType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduCanIdType 参数"
+        "CanIfTransmitCancellation": {
+          "type": "boolean",
+          "description": "CanIfTransmitCancellation 参数",
+          "default": false
         },
-        "CanIfTxPduUserTxConfirmationName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationName 参数"
+        "CanIfWakeupSupport": {
+          "type": "boolean",
+          "description": "CanIfWakeupSupport 参数",
+          "default": true
         },
-        "CanIfTxPduUserTxConfirmationUL": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationUL 参数"
+        "CanIfPublicDlcSupport": {
+          "type": "boolean",
+          "description": "CanIfPublicDlcSupport 参数",
+          "default": true
         },
-        "CanIfTxPduType": {
+        "CanIfPublicCanIdType": {
           "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduType 参数"
+          "description": "CanIfPublicCanIdType 参数",
+          "enum": [
+            "CANIF_PUBLIC_CAN_ID_TYPE_STANDARD",
+            "CANIF_PUBLIC_CAN_ID_TYPE_EXTENDED"
+          ]
+        },
+        "CanIfMainFunctionPeriod": {
+          "type": "integer",
+          "description": "CanIfMainFunctionPeriod 参数",
+          "minimum": 0,
+          "maximum": 65535
         }
       },
       "additionalProperties": true
     },
-    "BPEPS_20ms_PDU38_60524887_Tx": {
-      "description": "BPEPS_20ms_PDU38_60524887_Tx 配置容器",
+    "CanIfInitCfg": {
+      "description": "CanIfInitCfg 配置容器",
       "type": "object",
       "properties": {
-        "CanIfTxPduCanId": {
+        "CanIfNumberOfControllers": {
           "type": "integer",
+          "description": "CanIfNumberOfControllers 参数",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduCanId 参数"
+          "maximum": 65535
         },
-        "CanIfTxPduDlc": {
+        "CanIfNumberOfTransceivers": {
           "type": "integer",
+          "description": "CanIfNumberOfTransceivers 参数",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduDlc 参数"
+          "maximum": 65535
         },
-        "CanIfTxPduId": {
+        "CanIfNumberOfTxPdus": {
           "type": "integer",
+          "description": "CanIfNumberOfTxPdus 参数",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduId 参数"
+          "maximum": 65535
         },
-        "CanIfTxPduReadNotifyStatus": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduReadNotifyStatus 参数"
-        },
-        "CanIfTxPduTruncation": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduTruncation 参数"
-        },
-        "CanIfTxPduCanIdType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduCanIdType 参数"
-        },
-        "CanIfTxPduUserTxConfirmationName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationName 参数"
-        },
-        "CanIfTxPduUserTxConfirmationUL": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationUL 参数"
-        },
-        "CanIfTxPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduType 参数"
+        "CanIfNumberOfRxPdus": {
+          "type": "integer",
+          "description": "CanIfNumberOfRxPdus 参数",
+          "minimum": 0,
+          "maximum": 65535
         }
       },
       "additionalProperties": true
     },
-    "BPEPS_50ms_PDU06_ca77ee1e_Tx": {
-      "description": "BPEPS_50ms_PDU06_ca77ee1e_Tx 配置容器",
+    "CanIfPublishedInformation": {
+      "description": "CanIfPublishedInformation 配置容器",
       "type": "object",
       "properties": {
-        "CanIfTxPduCanId": {
+        "CanIfNumberOfHoh": {
           "type": "integer",
+          "description": "CanIfNumberOfHoh 参数",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduCanId 参数"
+          "maximum": 65535
         },
-        "CanIfTxPduDlc": {
+        "CanIfNumberOfHth": {
           "type": "integer",
+          "description": "CanIfNumberOfHth 参数",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduDlc 参数"
+          "maximum": 65535
         },
-        "CanIfTxPduId": {
+        "CanIfNumberOfHrh": {
           "type": "integer",
+          "description": "CanIfNumberOfHrh 参数",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduId 参数"
+          "maximum": 65535
         },
-        "CanIfTxPduReadNotifyStatus": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduReadNotifyStatus 参数"
-        },
-        "CanIfTxPduTruncation": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduTruncation 参数"
-        },
-        "CanIfTxPduCanIdType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduCanIdType 参数"
-        },
-        "CanIfTxPduUserTxConfirmationName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationName 参数"
-        },
-        "CanIfTxPduUserTxConfirmationUL": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationUL 参数"
-        },
-        "CanIfTxPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduType 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU25_7832a9d5_Tx": {
-      "description": "BPEPS_Sporadic_PDU25_7832a9d5_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "CanIfTxPduCanId": {
+        "CanIfNumberOfLpdu": {
           "type": "integer",
+          "description": "CanIfNumberOfLpdu 参数",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduCanId 参数"
-        },
-        "CanIfTxPduDlc": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduDlc 参数"
-        },
-        "CanIfTxPduId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduId 参数"
-        },
-        "CanIfTxPduReadNotifyStatus": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduReadNotifyStatus 参数"
-        },
-        "CanIfTxPduTruncation": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduTruncation 参数"
-        },
-        "CanIfTxPduCanIdType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduCanIdType 参数"
-        },
-        "CanIfTxPduUserTxConfirmationName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationName 参数"
-        },
-        "CanIfTxPduUserTxConfirmationUL": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationUL 参数"
-        },
-        "CanIfTxPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduType 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU26_4e7d5009_Tx": {
-      "description": "BPEPS_Sporadic_PDU26_4e7d5009_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "CanIfTxPduCanId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduCanId 参数"
-        },
-        "CanIfTxPduDlc": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduDlc 参数"
-        },
-        "CanIfTxPduId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduId 参数"
-        },
-        "CanIfTxPduReadNotifyStatus": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduReadNotifyStatus 参数"
-        },
-        "CanIfTxPduTruncation": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduTruncation 参数"
-        },
-        "CanIfTxPduCanIdType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduCanIdType 参数"
-        },
-        "CanIfTxPduUserTxConfirmationName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationName 参数"
-        },
-        "CanIfTxPduUserTxConfirmationUL": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationUL 参数"
-        },
-        "CanIfTxPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduType 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU27_5c47f8bd_Tx": {
-      "description": "BPEPS_Sporadic_PDU27_5c47f8bd_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "CanIfTxPduCanId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduCanId 参数"
-        },
-        "CanIfTxPduDlc": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduDlc 参数"
-        },
-        "CanIfTxPduId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduId 参数"
-        },
-        "CanIfTxPduReadNotifyStatus": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduReadNotifyStatus 参数"
-        },
-        "CanIfTxPduTruncation": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduTruncation 参数"
-        },
-        "CanIfTxPduCanIdType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduCanIdType 参数"
-        },
-        "CanIfTxPduUserTxConfirmationName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationName 参数"
-        },
-        "CanIfTxPduUserTxConfirmationUL": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationUL 参数"
-        },
-        "CanIfTxPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduType 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU28_b337e611_Tx": {
-      "description": "BPEPS_Sporadic_PDU28_b337e611_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "CanIfTxPduCanId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduCanId 参数"
-        },
-        "CanIfTxPduDlc": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduDlc 参数"
-        },
-        "CanIfTxPduId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduId 参数"
-        },
-        "CanIfTxPduReadNotifyStatus": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduReadNotifyStatus 参数"
-        },
-        "CanIfTxPduTruncation": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduTruncation 参数"
-        },
-        "CanIfTxPduCanIdType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduCanIdType 参数"
-        },
-        "CanIfTxPduUserTxConfirmationName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationName 参数"
-        },
-        "CanIfTxPduUserTxConfirmationUL": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationUL 参数"
-        },
-        "CanIfTxPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduType 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU29_a10d4ea5_Tx": {
-      "description": "BPEPS_Sporadic_PDU29_a10d4ea5_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "CanIfTxPduCanId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduCanId 参数"
-        },
-        "CanIfTxPduDlc": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduDlc 参数"
-        },
-        "CanIfTxPduId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduId 参数"
-        },
-        "CanIfTxPduReadNotifyStatus": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduReadNotifyStatus 参数"
-        },
-        "CanIfTxPduTruncation": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduTruncation 参数"
-        },
-        "CanIfTxPduCanIdType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduCanIdType 参数"
-        },
-        "CanIfTxPduUserTxConfirmationName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationName 参数"
-        },
-        "CanIfTxPduUserTxConfirmationUL": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationUL 参数"
-        },
-        "CanIfTxPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduType 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU30_eefcee8c_Tx": {
-      "description": "BPEPS_Sporadic_PDU30_eefcee8c_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "CanIfTxPduCanId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduCanId 参数"
-        },
-        "CanIfTxPduDlc": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduDlc 参数"
-        },
-        "CanIfTxPduId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduId 参数"
-        },
-        "CanIfTxPduReadNotifyStatus": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduReadNotifyStatus 参数"
-        },
-        "CanIfTxPduTruncation": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduTruncation 参数"
-        },
-        "CanIfTxPduCanIdType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduCanIdType 参数"
-        },
-        "CanIfTxPduUserTxConfirmationName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationName 参数"
-        },
-        "CanIfTxPduUserTxConfirmationUL": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationUL 参数"
-        },
-        "CanIfTxPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduType 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU31_fcc64638_Tx": {
-      "description": "BPEPS_Sporadic_PDU31_fcc64638_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "CanIfTxPduCanId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduCanId 参数"
-        },
-        "CanIfTxPduDlc": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduDlc 参数"
-        },
-        "CanIfTxPduId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduId 参数"
-        },
-        "CanIfTxPduReadNotifyStatus": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduReadNotifyStatus 参数"
-        },
-        "CanIfTxPduTruncation": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduTruncation 参数"
-        },
-        "CanIfTxPduCanIdType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduCanIdType 参数"
-        },
-        "CanIfTxPduUserTxConfirmationName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationName 参数"
-        },
-        "CanIfTxPduUserTxConfirmationUL": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationUL 参数"
-        },
-        "CanIfTxPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduType 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU32_ca89bfe4_Tx": {
-      "description": "BPEPS_Sporadic_PDU32_ca89bfe4_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "CanIfTxPduCanId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduCanId 参数"
-        },
-        "CanIfTxPduDlc": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduDlc 参数"
-        },
-        "CanIfTxPduId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduId 参数"
-        },
-        "CanIfTxPduReadNotifyStatus": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduReadNotifyStatus 参数"
-        },
-        "CanIfTxPduTruncation": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduTruncation 参数"
-        },
-        "CanIfTxPduCanIdType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduCanIdType 参数"
-        },
-        "CanIfTxPduUserTxConfirmationName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationName 参数"
-        },
-        "CanIfTxPduUserTxConfirmationUL": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationUL 参数"
-        },
-        "CanIfTxPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduType 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU33_d8b31750_Tx": {
-      "description": "BPEPS_Sporadic_PDU33_d8b31750_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "CanIfTxPduCanId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduCanId 参数"
-        },
-        "CanIfTxPduDlc": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduDlc 参数"
-        },
-        "CanIfTxPduId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduId 参数"
-        },
-        "CanIfTxPduReadNotifyStatus": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduReadNotifyStatus 参数"
-        },
-        "CanIfTxPduTruncation": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduTruncation 参数"
-        },
-        "CanIfTxPduCanIdType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduCanIdType 参数"
-        },
-        "CanIfTxPduUserTxConfirmationName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationName 参数"
-        },
-        "CanIfTxPduUserTxConfirmationUL": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationUL 参数"
-        },
-        "CanIfTxPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduType 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU34_a6164c5c_Tx": {
-      "description": "BPEPS_Sporadic_PDU34_a6164c5c_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "CanIfTxPduCanId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduCanId 参数"
-        },
-        "CanIfTxPduDlc": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduDlc 参数"
-        },
-        "CanIfTxPduId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduId 参数"
-        },
-        "CanIfTxPduReadNotifyStatus": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduReadNotifyStatus 参数"
-        },
-        "CanIfTxPduTruncation": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduTruncation 参数"
-        },
-        "CanIfTxPduCanIdType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduCanIdType 参数"
-        },
-        "CanIfTxPduUserTxConfirmationName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationName 参数"
-        },
-        "CanIfTxPduUserTxConfirmationUL": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationUL 参数"
-        },
-        "CanIfTxPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduType 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU37_9059b580_Tx": {
-      "description": "BPEPS_Sporadic_PDU37_9059b580_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "CanIfTxPduCanId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduCanId 参数"
-        },
-        "CanIfTxPduDlc": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduDlc 参数"
-        },
-        "CanIfTxPduId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanIfTxPduId 参数"
-        },
-        "CanIfTxPduReadNotifyStatus": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduReadNotifyStatus 参数"
-        },
-        "CanIfTxPduTruncation": {
-          "type": "boolean",
-          "default": false,
-          "description": "CanIfTxPduTruncation 参数"
-        },
-        "CanIfTxPduCanIdType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduCanIdType 参数"
-        },
-        "CanIfTxPduUserTxConfirmationName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationName 参数"
-        },
-        "CanIfTxPduUserTxConfirmationUL": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduUserTxConfirmationUL 参数"
-        },
-        "CanIfTxPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CanIfTxPduType 参数"
+          "maximum": 65535
         }
       },
       "additionalProperties": true
@@ -887,9 +225,9 @@
     }
   },
   "required": [
-    "BPEPS_100ms_PDU02_abbd7f87_Tx",
-    "BPEPS_100ms_PDU11_51eccb66_Tx",
-    "BPEPS_20ms_PDU38_60524887_Tx"
+    "CanIfTxPdu",
+    "CanIfGeneral",
+    "CanIfInitCfg"
   ],
   "additionalProperties": false,
   "x-layer": "Service",

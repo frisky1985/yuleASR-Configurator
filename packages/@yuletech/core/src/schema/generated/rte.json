@@ -74,9 +74,7 @@
     }
   },
   "required": [
-    "ADC_EXCLUSIVE_AREA_00",
-    "ADC_EXCLUSIVE_AREA_01",
-    "ADC_EXCLUSIVE_AREA_02"
+    "ADC_EXCLUSIVE_AREA"
   ],
   "additionalProperties": false,
   "x-layer": "RTE",

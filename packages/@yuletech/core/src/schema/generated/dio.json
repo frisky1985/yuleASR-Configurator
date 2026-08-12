@@ -219,7 +219,7 @@
     }
   },
   "required": [
-    "CAN_RX",
+    "DioChannel",
     "CommonPublishedInformation",
     "DioConfig"
   ],

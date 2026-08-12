@@ -445,7 +445,7 @@
   "required": [
     "CommonPublishedInformation",
     "GptChannelConfigSet",
-    "GptChannelConfiguration_4"
+    "GptChannelConfiguration"
   ],
   "additionalProperties": false,
   "x-layer": "MCAL",

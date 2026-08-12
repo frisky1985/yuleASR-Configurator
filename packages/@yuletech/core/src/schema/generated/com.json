@@ -5,8 +5,8 @@
   "description": "Com Configuration",
   "type": "object",
   "properties": {
-    "BPEPS_100ms_PDU02_6c6b86b4_Tx": {
-      "description": "BPEPS_100ms_PDU02_6c6b86b4_Tx 配置容器",
+    "ComIPdu": {
+      "description": "ComIPdu 配置容器",
       "type": "object",
       "properties": {
         "ComIPduHandleId": {
@@ -66,197 +66,18 @@
           "type": "string",
           "maxLength": 255,
           "description": "ComTxModeMode 参数"
+        },
+        "ComTxModeNumberOfRepetitions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ComTxModeNumberOfRepetitions 参数"
         }
       },
       "additionalProperties": true
     },
-    "BPEPS_100ms_PDU11_ec79e64f_Tx": {
-      "description": "BPEPS_100ms_PDU11_ec79e64f_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "ComIPduHandleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComIPduHandleId 参数"
-        },
-        "ComIPduCancellationSupport": {
-          "type": "boolean",
-          "default": false,
-          "description": "ComIPduCancellationSupport 参数"
-        },
-        "ComTxIPduUnusedAreasDefault": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxIPduUnusedAreasDefault 参数"
-        },
-        "ComMinimumDelayTime": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComMinimumDelayTime 参数"
-        },
-        "ComTxModeTimePeriod": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeTimePeriod 参数"
-        },
-        "ComTxModeTimeOffset": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeTimeOffset 参数"
-        },
-        "ComIPduDirection": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduDirection 参数"
-        },
-        "ComIPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduType 参数"
-        },
-        "ComIPduSignalProcessing": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduSignalProcessing 参数"
-        },
-        "ComTxModeMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeMode 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_20ms_PDU38_7d518cc7_Tx": {
-      "description": "BPEPS_20ms_PDU38_7d518cc7_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "ComIPduHandleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComIPduHandleId 参数"
-        },
-        "ComIPduCancellationSupport": {
-          "type": "boolean",
-          "default": false,
-          "description": "ComIPduCancellationSupport 参数"
-        },
-        "ComTxIPduUnusedAreasDefault": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxIPduUnusedAreasDefault 参数"
-        },
-        "ComMinimumDelayTime": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComMinimumDelayTime 参数"
-        },
-        "ComTxModeTimePeriod": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeTimePeriod 参数"
-        },
-        "ComTxModeTimeOffset": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeTimeOffset 参数"
-        },
-        "ComIPduDirection": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduDirection 参数"
-        },
-        "ComIPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduType 参数"
-        },
-        "ComIPduSignalProcessing": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduSignalProcessing 参数"
-        },
-        "ComIPduCallout": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduCallout 参数"
-        },
-        "ComTxModeMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeMode 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_50ms_PDU06_5318e97a_Tx": {
-      "description": "BPEPS_50ms_PDU06_5318e97a_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "ComIPduHandleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComIPduHandleId 参数"
-        },
-        "ComIPduCancellationSupport": {
-          "type": "boolean",
-          "default": false,
-          "description": "ComIPduCancellationSupport 参数"
-        },
-        "ComTxIPduUnusedAreasDefault": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxIPduUnusedAreasDefault 参数"
-        },
-        "ComMinimumDelayTime": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComMinimumDelayTime 参数"
-        },
-        "ComTxModeTimePeriod": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeTimePeriod 参数"
-        },
-        "ComTxModeTimeOffset": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeTimeOffset 参数"
-        },
-        "ComIPduDirection": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduDirection 参数"
-        },
-        "ComIPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduType 参数"
-        },
-        "ComIPduSignalProcessing": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduSignalProcessing 参数"
-        },
-        "ComTxModeMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeMode 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_LHBDCANFD_Rx_5db50b44": {
-      "description": "BPEPS_LHBDCANFD_Rx_5db50b44 配置容器",
+    "ComIPduGroup": {
+      "description": "ComIPduGroup 配置容器",
       "type": "object",
       "properties": {
         "ComIPduGroupHandleId": {
@@ -268,519 +89,130 @@
       },
       "additionalProperties": true
     },
-    "BPEPS_LHBDCANFD_Tx_0befacc2": {
-      "description": "BPEPS_LHBDCANFD_Tx_0befacc2 配置容器",
+    "ComGeneral": {
+      "description": "ComGeneral 配置容器",
       "type": "object",
       "properties": {
-        "ComIPduGroupHandleId": {
+        "ComDevErrorDetect": {
+          "type": "boolean",
+          "description": "ComDevErrorDetect 参数",
+          "default": true
+        },
+        "ComVersionInfoApi": {
+          "type": "boolean",
+          "description": "ComVersionInfoApi 参数",
+          "default": true
+        },
+        "ComSupportedIPduGroups": {
           "type": "integer",
+          "description": "ComSupportedIPduGroups 参数",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "ComIPduGroupHandleId 参数"
+          "maximum": 65535
+        },
+        "ComSupportedSignalGroups": {
+          "type": "integer",
+          "description": "ComSupportedSignalGroups 参数",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "ComSignalEndianness": {
+          "type": "string",
+          "description": "ComSignalEndianness 参数",
+          "default": "COM_LITTLE_ENDIAN",
+          "enum": [
+            "COM_LITTLE_ENDIAN",
+            "COM_BIG_ENDIAN"
+          ]
+        },
+        "ComMainFunctionPeriod": {
+          "type": "integer",
+          "description": "ComMainFunctionPeriod 参数",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "ComTimeoutDuration": {
+          "type": "integer",
+          "description": "ComTimeoutDuration 参数",
+          "minimum": 0,
+          "maximum": 4294967295
         }
       },
       "additionalProperties": true
     },
-    "BPEPS_Sporadic_PDU25_919eb00c_Tx": {
-      "description": "BPEPS_Sporadic_PDU25_919eb00c_Tx 配置容器",
+    "ComConfig": {
+      "description": "ComConfig 配置容器",
+      "type": "object",
+      "properties": {},
+      "additionalProperties": true
+    },
+    "ComSignal": {
+      "description": "ComSignal 配置容器",
       "type": "object",
       "properties": {
-        "ComIPduHandleId": {
+        "ComBitPosition": {
           "type": "integer",
+          "description": "ComBitPosition 参数",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "ComIPduHandleId 参数"
+          "maximum": 65535
         },
-        "ComIPduCancellationSupport": {
-          "type": "boolean",
-          "default": false,
-          "description": "ComIPduCancellationSupport 参数"
-        },
-        "ComTxIPduUnusedAreasDefault": {
+        "ComBitSize": {
           "type": "integer",
+          "description": "ComBitSize 参数",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxIPduUnusedAreasDefault 参数"
+          "maximum": 65535
         },
-        "ComMinimumDelayTime": {
+        "ComSignalType": {
+          "type": "string",
+          "description": "ComSignalType 参数",
+          "enum": [
+            "COM_SIGNAL_TYPE_DEFAULT",
+            "COM_SIGNAL_TYPE_UNDEFINED"
+          ]
+        },
+        "ComSignalEndianness": {
+          "type": "string",
+          "description": "ComSignalEndianness 参数",
+          "enum": [
+            "COM_LITTLE_ENDIAN",
+            "COM_BIG_ENDIAN"
+          ]
+        },
+        "ComHandleId": {
           "type": "integer",
+          "description": "ComHandleId 参数",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "ComMinimumDelayTime 参数"
-        },
-        "ComTxModeNumberOfRepetitions": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxModeNumberOfRepetitions 参数"
-        },
-        "ComIPduDirection": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduDirection 参数"
-        },
-        "ComIPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduType 参数"
-        },
-        "ComIPduSignalProcessing": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduSignalProcessing 参数"
-        },
-        "ComTxModeMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeMode 参数"
+          "maximum": 65535
         }
       },
       "additionalProperties": true
     },
-    "BPEPS_Sporadic_PDU26_0897e1b6_Tx": {
-      "description": "BPEPS_Sporadic_PDU26_0897e1b6_Tx 配置容器",
+    "ComPublishedInformation": {
+      "description": "ComPublishedInformation 配置容器",
       "type": "object",
       "properties": {
-        "ComIPduHandleId": {
+        "ComNumberOfIpdus": {
           "type": "integer",
+          "description": "ComNumberOfIpdus 参数",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "ComIPduHandleId 参数"
+          "maximum": 65535
         },
-        "ComIPduCancellationSupport": {
-          "type": "boolean",
-          "default": false,
-          "description": "ComIPduCancellationSupport 参数"
-        },
-        "ComTxIPduUnusedAreasDefault": {
+        "ComNumberOfSignals": {
           "type": "integer",
+          "description": "ComNumberOfSignals 参数",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxIPduUnusedAreasDefault 参数"
+          "maximum": 65535
         },
-        "ComMinimumDelayTime": {
+        "ComNumberOfIPduGroups": {
           "type": "integer",
+          "description": "ComNumberOfIPduGroups 参数",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "ComMinimumDelayTime 参数"
+          "maximum": 65535
         },
-        "ComTxModeNumberOfRepetitions": {
+        "ComNumberOfSignalGroups": {
           "type": "integer",
+          "description": "ComNumberOfSignalGroups 参数",
           "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxModeNumberOfRepetitions 参数"
-        },
-        "ComIPduDirection": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduDirection 参数"
-        },
-        "ComIPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduType 参数"
-        },
-        "ComIPduSignalProcessing": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduSignalProcessing 参数"
-        },
-        "ComTxModeMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeMode 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU27_7f90d120_Tx": {
-      "description": "BPEPS_Sporadic_PDU27_7f90d120_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "ComIPduHandleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComIPduHandleId 参数"
-        },
-        "ComIPduCancellationSupport": {
-          "type": "boolean",
-          "default": false,
-          "description": "ComIPduCancellationSupport 参数"
-        },
-        "ComTxIPduUnusedAreasDefault": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxIPduUnusedAreasDefault 参数"
-        },
-        "ComMinimumDelayTime": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComMinimumDelayTime 参数"
-        },
-        "ComTxModeNumberOfRepetitions": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxModeNumberOfRepetitions 参数"
-        },
-        "ComIPduDirection": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduDirection 参数"
-        },
-        "ComIPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduType 参数"
-        },
-        "ComIPduSignalProcessing": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduSignalProcessing 参数"
-        },
-        "ComTxModeMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeMode 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU28_ef2fccb1_Tx": {
-      "description": "BPEPS_Sporadic_PDU28_ef2fccb1_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "ComIPduHandleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComIPduHandleId 参数"
-        },
-        "ComIPduCancellationSupport": {
-          "type": "boolean",
-          "default": false,
-          "description": "ComIPduCancellationSupport 参数"
-        },
-        "ComTxIPduUnusedAreasDefault": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxIPduUnusedAreasDefault 参数"
-        },
-        "ComMinimumDelayTime": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComMinimumDelayTime 参数"
-        },
-        "ComTxModeNumberOfRepetitions": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxModeNumberOfRepetitions 参数"
-        },
-        "ComIPduDirection": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduDirection 参数"
-        },
-        "ComIPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduType 参数"
-        },
-        "ComIPduSignalProcessing": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduSignalProcessing 参数"
-        },
-        "ComTxModeMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeMode 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU29_9828fc27_Tx": {
-      "description": "BPEPS_Sporadic_PDU29_9828fc27_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "ComIPduHandleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComIPduHandleId 参数"
-        },
-        "ComIPduCancellationSupport": {
-          "type": "boolean",
-          "default": false,
-          "description": "ComIPduCancellationSupport 参数"
-        },
-        "ComTxIPduUnusedAreasDefault": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxIPduUnusedAreasDefault 参数"
-        },
-        "ComMinimumDelayTime": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComMinimumDelayTime 参数"
-        },
-        "ComTxModeNumberOfRepetitions": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxModeNumberOfRepetitions 参数"
-        },
-        "ComIPduDirection": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduDirection 参数"
-        },
-        "ComIPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduType 参数"
-        },
-        "ComIPduSignalProcessing": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduSignalProcessing 参数"
-        },
-        "ComTxModeMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeMode 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU30_f8ef75c2_Tx": {
-      "description": "BPEPS_Sporadic_PDU30_f8ef75c2_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "ComIPduHandleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComIPduHandleId 参数"
-        },
-        "ComIPduCancellationSupport": {
-          "type": "boolean",
-          "default": false,
-          "description": "ComIPduCancellationSupport 参数"
-        },
-        "ComTxIPduUnusedAreasDefault": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxIPduUnusedAreasDefault 参数"
-        },
-        "ComMinimumDelayTime": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComMinimumDelayTime 参数"
-        },
-        "ComTxModeNumberOfRepetitions": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxModeNumberOfRepetitions 参数"
-        },
-        "ComIPduDirection": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduDirection 参数"
-        },
-        "ComIPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduType 参数"
-        },
-        "ComIPduSignalProcessing": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduSignalProcessing 参数"
-        },
-        "ComTxModeMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeMode 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU31_8fe84554_Tx": {
-      "description": "BPEPS_Sporadic_PDU31_8fe84554_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "ComIPduHandleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComIPduHandleId 参数"
-        },
-        "ComIPduCancellationSupport": {
-          "type": "boolean",
-          "default": false,
-          "description": "ComIPduCancellationSupport 参数"
-        },
-        "ComTxIPduUnusedAreasDefault": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxIPduUnusedAreasDefault 参数"
-        },
-        "ComMinimumDelayTime": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComMinimumDelayTime 参数"
-        },
-        "ComTxModeNumberOfRepetitions": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxModeNumberOfRepetitions 参数"
-        },
-        "ComIPduDirection": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduDirection 参数"
-        },
-        "ComIPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduType 参数"
-        },
-        "ComIPduSignalProcessing": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduSignalProcessing 参数"
-        },
-        "ComTxModeMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeMode 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU32_16e114ee_Tx": {
-      "description": "BPEPS_Sporadic_PDU32_16e114ee_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "ComIPduHandleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComIPduHandleId 参数"
-        },
-        "ComIPduCancellationSupport": {
-          "type": "boolean",
-          "default": false,
-          "description": "ComIPduCancellationSupport 参数"
-        },
-        "ComTxIPduUnusedAreasDefault": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxIPduUnusedAreasDefault 参数"
-        },
-        "ComMinimumDelayTime": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComMinimumDelayTime 参数"
-        },
-        "ComTxModeNumberOfRepetitions": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxModeNumberOfRepetitions 参数"
-        },
-        "ComIPduDirection": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduDirection 参数"
-        },
-        "ComIPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduType 参数"
-        },
-        "ComIPduSignalProcessing": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduSignalProcessing 参数"
-        },
-        "ComTxModeMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeMode 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "BPEPS_Sporadic_PDU33_61e62478_Tx": {
-      "description": "BPEPS_Sporadic_PDU33_61e62478_Tx 配置容器",
-      "type": "object",
-      "properties": {
-        "ComIPduHandleId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComIPduHandleId 参数"
-        },
-        "ComIPduCancellationSupport": {
-          "type": "boolean",
-          "default": false,
-          "description": "ComIPduCancellationSupport 参数"
-        },
-        "ComTxIPduUnusedAreasDefault": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxIPduUnusedAreasDefault 参数"
-        },
-        "ComMinimumDelayTime": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComMinimumDelayTime 参数"
-        },
-        "ComTxModeNumberOfRepetitions": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "ComTxModeNumberOfRepetitions 参数"
-        },
-        "ComIPduDirection": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduDirection 参数"
-        },
-        "ComIPduType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduType 参数"
-        },
-        "ComIPduSignalProcessing": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComIPduSignalProcessing 参数"
-        },
-        "ComTxModeMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "ComTxModeMode 参数"
+          "maximum": 65535
         }
       },
       "additionalProperties": true
@@ -842,9 +274,9 @@
     }
   },
   "required": [
-    "BPEPS_100ms_PDU02_6c6b86b4_Tx",
-    "BPEPS_100ms_PDU11_ec79e64f_Tx",
-    "BPEPS_20ms_PDU38_7d518cc7_Tx"
+    "ComIPdu",
+    "ComIPduGroup",
+    "ComGeneral"
   ],
   "additionalProperties": false,
   "x-layer": "Service",

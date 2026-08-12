@@ -194,26 +194,8 @@
       },
       "additionalProperties": true
     },
-    "CsmKeys": {
+    "CsmKey": {
       "description": "CsmKeys 配置容器",
-      "type": "object",
-      "properties": {
-        "CsmKeyId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CsmKeyId 参数"
-        },
-        "CsmKeyUsePort": {
-          "type": "boolean",
-          "default": false,
-          "description": "CsmKeyUsePort 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "CsmKey_CryIfKey": {
-      "description": "CsmKey_CryIfKey 配置容器",
       "type": "object",
       "properties": {
         "CsmKeyId": {
@@ -242,7 +224,7 @@
       },
       "additionalProperties": true
     },
-    "CsmJobs": {
+    "CsmJob": {
       "description": "CsmJobs 配置容器",
       "type": "object",
       "properties": {
@@ -276,41 +258,7 @@
       },
       "additionalProperties": true
     },
-    "CsmJob": {
-      "description": "CsmJob 配置容器",
-      "type": "object",
-      "properties": {
-        "CsmJobId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CsmJobId 参数"
-        },
-        "CsmJobPriority": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CsmJobPriority 参数"
-        },
-        "CsmJobUsePort": {
-          "type": "boolean",
-          "default": false,
-          "description": "CsmJobUsePort 参数"
-        },
-        "CsmProcessingMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CsmProcessingMode 参数"
-        },
-        "CsmJobInterfaceUsePort": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CsmJobInterfaceUsePort 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "CsmQueues": {
+    "CsmQueue": {
       "description": "CsmQueues 配置容器",
       "type": "object",
       "properties": {
@@ -343,79 +291,8 @@
       },
       "additionalProperties": true
     },
-    "CsmQueue": {
-      "description": "CsmQueue 配置容器",
-      "type": "object",
-      "properties": {
-        "CsmQueueSize": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CsmQueueSize 参数"
-        },
-        "CsmTriggerAsynchJobsInCallback": {
-          "type": "boolean",
-          "default": false,
-          "description": "CsmTriggerAsynchJobsInCallback 参数"
-        },
-        "CsmJobSharing": {
-          "type": "boolean",
-          "default": false,
-          "description": "CsmJobSharing 参数"
-        },
-        "CsmOperationModeLimitation": {
-          "type": "boolean",
-          "default": false,
-          "description": "CsmOperationModeLimitation 参数"
-        },
-        "CsmQueueProcessingMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CsmQueueProcessingMode 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "CsmPrimitives": {
+    "CsmPrimitive": {
       "description": "CsmPrimitives 配置容器",
-      "type": "object",
-      "properties": {
-        "CsmHashResultLength": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CsmHashResultLength 参数"
-        },
-        "CsmHashAlgorithmFamiliy": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CsmHashAlgorithmFamiliy 参数"
-        },
-        "CsmHashAlgorithmFamily": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CsmHashAlgorithmFamily 参数"
-        },
-        "CsmHashAlgorithmMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CsmHashAlgorithmMode 参数"
-        },
-        "CsmHashAlgorithmSecondaryFamily": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CsmHashAlgorithmSecondaryFamily 参数"
-        },
-        "CsmHashProcessing": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "CsmHashProcessing 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "CsmHash": {
-      "description": "CsmHash 配置容器",
       "type": "object",
       "properties": {
         "CsmHashResultLength": {
@@ -503,6 +380,37 @@
           "minimum": 0,
           "maximum": 65535,
           "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmPublishedInformation": {
+      "description": "Csm PublishedInformation 容器",
+      "type": "object",
+      "properties": {
+        "CsmNumberOfJobs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "Csm 作业数"
+        },
+        "CsmNumberOfQueues": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "Csm 队列数"
+        },
+        "CsmNumberOfPrimitives": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "Csm 原语数"
+        },
+        "CsmNumberOfKeys": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "Csm 密钥数"
         }
       },
       "additionalProperties": true

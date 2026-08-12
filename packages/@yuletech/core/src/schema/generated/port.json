@@ -250,9 +250,7 @@
     }
   },
   "required": [
-    "BLE_3V3",
-    "CAN_SPI_CLK",
-    "CAN_SPI_CS"
+    "PortPin"
   ],
   "additionalProperties": false,
   "x-layer": "MCAL",

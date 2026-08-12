@@ -294,7 +294,7 @@
       },
       "additionalProperties": true
     },
-    "LHBDCANFD_Cluster_43c3a476": {
+    "CanNmCluster": {
       "description": "LHBDCANFD_Cluster_43c3a476 配置容器",
       "type": "object",
       "properties": {
@@ -441,7 +441,7 @@
       },
       "additionalProperties": true
     },
-    "NmPDU_LHBDCANFD_DKMM_3336d6fc_Tx": {
+    "CanNmTxPdu": {
       "description": "NmPDU_LHBDCANFD_DKMM_3336d6fc_Tx 配置容器",
       "type": "object",
       "properties": {
@@ -450,14 +450,7 @@
           "minimum": 0,
           "maximum": 65535,
           "description": "CanNmTxConfirmationPduId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "NmPDU_LHBDCANFD_DKMM_0ffad24c": {
-      "description": "NmPDU_LHBDCANFD_DKMM_0ffad24c 配置容器",
-      "type": "object",
-      "properties": {
+        },
         "CanNmTxUserDataPduId": {
           "type": "integer",
           "minimum": 0,
@@ -467,7 +460,7 @@
       },
       "additionalProperties": true
     },
-    "LHBDCANFD_Cluster_43c3a476_Rx": {
+    "CanNmRxPdu": {
       "description": "LHBDCANFD_Cluster_43c3a476_Rx 配置容器",
       "type": "object",
       "properties": {
@@ -534,12 +527,37 @@
         }
       },
       "additionalProperties": true
+    },
+    "CanNmPublishedInformation": {
+      "description": "CanNm PublishedInformation 容器",
+      "type": "object",
+      "properties": {
+        "CanNmNumberOfClusters": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNm 集群数"
+        },
+        "CanNmNumberOfPnFilter": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNm PN 过滤器数"
+        },
+        "CanNmNumberOfChannels": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNm 通道数"
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [
     "CanNmGlobalConfig",
     "CanNmGeneration",
-    "LHBDCANFD_Cluster_43c3a476"
+    "CanNmCluster"
   ],
   "additionalProperties": false,
   "x-layer": "ECUAL",

@@ -637,7 +637,6 @@
   },
   "required": [
     "FeeBlockConfiguration",
-    "FeeBlockConfiguration_01",
     "FeeBlockDescriptor"
   ],
   "additionalProperties": false,

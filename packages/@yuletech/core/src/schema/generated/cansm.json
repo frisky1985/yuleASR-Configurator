@@ -51,7 +51,7 @@
       },
       "additionalProperties": true
     },
-    "LHBDCANFD_1e9b6ab9": {
+    "CanSMController": {
       "description": "LHBDCANFD_1e9b6ab9 配置容器",
       "type": "object",
       "properties": {
@@ -204,11 +204,30 @@
         }
       },
       "additionalProperties": true
+    },
+    "CanSMPublishedInformation": {
+      "description": "CanSM PublishedInformation 容器",
+      "type": "object",
+      "properties": {
+        "CanSMNumberOfControllers": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanSM 控制器数"
+        },
+        "CanSMNumberOfChannels": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanSM 通道数"
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [
     "CanSMConfiguration",
-    "LHBDCANFD_1e9b6ab9",
+    "CanSMController",
     "CanSMGeneral"
   ],
   "additionalProperties": false,

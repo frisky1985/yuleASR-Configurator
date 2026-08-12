@@ -339,8 +339,7 @@
   },
   "required": [
     "CommonPublishedInformation",
-    "IcuChannel_CANRx",
-    "IcuChannel_SBCINT"
+    "IcuChannel"
   ],
   "additionalProperties": false,
   "x-layer": "MCAL",
