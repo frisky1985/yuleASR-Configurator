@@ -233,8 +233,9 @@ def fix_module(module: str, d: dict) -> dict:
             'properties': merged['properties'],
             'additionalProperties': src_node.get('additionalProperties', True),
         }
-        # 保留 choice 标注（若来源容器有）
-        for xk in ('x-choice-container', 'x-choice-params', 'x-choice-description'):
+        # 保留 choice / multiplicity / config-class 等元数据（若来源容器有）
+        for xk in ('x-choice-container', 'x-choice-params', 'x-choice-description',
+                   'x-multiplicity', 'x-config-class', 'x-min-instances', 'x-max-instances'):
             if xk in src_node:
                 new_node[xk] = src_node[xk]
         new_props[target] = new_node

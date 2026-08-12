@@ -304,7 +304,8 @@
           "description": "CanClockSelection 参数"
         }
       },
-      "additionalProperties": true
+      "additionalProperties": true,
+      "x-multiplicity": "1..*"
     },
     "CanControllerFdBaudrateConfig": {
       "description": "CanControllerFdBaudrateConfig 配置容器",

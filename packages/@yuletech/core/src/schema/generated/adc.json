@@ -9,11 +9,7 @@
       "description": "AdcConfigSet 配置集容器（参数见 AdcHwUnit/AdcGroup/AdcChannel 实例容器）",
       "type": "object",
       "properties": {},
-      "additionalProperties": true,
-      "x-choice-container": true,
-      "x-choice-params": [
-        "AdcHwUnit"
-      ]
+      "additionalProperties": true
     },
     "AdcHwUnit": {
       "description": "AdcHwUnit_0 配置容器",
