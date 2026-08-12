@@ -419,7 +419,16 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 65535,
-          "description": "McuResetReason 参数"
+          "description": "McuResetReason 参数",
+          "enum": [
+            "MCU_RST_UNDEFINED",
+            "MCU_RST_POWER_ON",
+            "MCU_RST_WATCHDOG",
+            "MCU_RST_SOFTWARE",
+            "MCU_RST_EXTERNAL",
+            "MCU_RST_BROWN_OUT",
+            "MCU_RST_LOCKUP"
+          ]
         }
       },
       "additionalProperties": true

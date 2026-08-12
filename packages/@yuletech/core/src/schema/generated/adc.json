@@ -84,7 +84,13 @@
         "AdcResolution": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcResolution 参数"
+          "description": "AdcResolution 参数",
+          "enum": [
+            "ADC_RESOLUTION_6BIT",
+            "ADC_RESOLUTION_8BIT",
+            "ADC_RESOLUTION_10BIT",
+            "ADC_RESOLUTION_12BIT"
+          ]
         },
         "AdcTransferType": {
           "type": "string",
@@ -109,7 +115,17 @@
         "AdcSampleTimeSelect": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcSampleTimeSelect 参数"
+          "description": "AdcSampleTimeSelect 参数",
+          "enum": [
+            "ADC_SAMPLING_TIME_3CYCLES",
+            "ADC_SAMPLING_TIME_15CYCLES",
+            "ADC_SAMPLING_TIME_28CYCLES",
+            "ADC_SAMPLING_TIME_56CYCLES",
+            "ADC_SAMPLING_TIME_84CYCLES",
+            "ADC_SAMPLING_TIME_112CYCLES",
+            "ADC_SAMPLING_TIME_144CYCLES",
+            "ADC_SAMPLING_TIME_480CYCLES"
+          ]
         },
         "AdcExtraNotification": {
           "type": "string",
@@ -119,12 +135,20 @@
         "AdcGroupAccessMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcGroupAccessMode 参数"
+          "description": "AdcGroupAccessMode 参数",
+          "enum": [
+            "ADC_ACCESS_MODE_SINGLE",
+            "ADC_ACCESS_MODE_STREAMING"
+          ]
         },
         "AdcGroupConversionMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcGroupConversionMode 参数"
+          "description": "AdcGroupConversionMode 参数",
+          "enum": [
+            "ADC_CONV_MODE_ONESHOT",
+            "ADC_CONV_MODE_CONTINUOUS"
+          ]
         },
         "AdcGroupConversionType": {
           "type": "string",
@@ -134,12 +158,20 @@
         "AdcGroupTriggSrc": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcGroupTriggSrc 参数"
+          "description": "AdcGroupTriggSrc 参数",
+          "enum": [
+            "ADC_TRIGG_SRC_SW",
+            "ADC_TRIGG_SRC_HW"
+          ]
         },
         "AdcStreamingBufferMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcStreamingBufferMode 参数"
+          "description": "AdcStreamingBufferMode 参数",
+          "enum": [
+            "ADC_STREAM_BUFFER_LINEAR",
+            "ADC_STREAM_BUFFER_CIRCULAR"
+          ]
         }
       },
       "additionalProperties": true
@@ -223,7 +255,13 @@
         "AdcResolution": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcResolution 参数"
+          "description": "AdcResolution 参数",
+          "enum": [
+            "ADC_RESOLUTION_6BIT",
+            "ADC_RESOLUTION_8BIT",
+            "ADC_RESOLUTION_10BIT",
+            "ADC_RESOLUTION_12BIT"
+          ]
         },
         "AdcTransferType": {
           "type": "string",
@@ -248,7 +286,17 @@
         "AdcSampleTimeSelect": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcSampleTimeSelect 参数"
+          "description": "AdcSampleTimeSelect 参数",
+          "enum": [
+            "ADC_SAMPLING_TIME_3CYCLES",
+            "ADC_SAMPLING_TIME_15CYCLES",
+            "ADC_SAMPLING_TIME_28CYCLES",
+            "ADC_SAMPLING_TIME_56CYCLES",
+            "ADC_SAMPLING_TIME_84CYCLES",
+            "ADC_SAMPLING_TIME_112CYCLES",
+            "ADC_SAMPLING_TIME_144CYCLES",
+            "ADC_SAMPLING_TIME_480CYCLES"
+          ]
         },
         "AdcExtraNotification": {
           "type": "string",
@@ -258,12 +306,20 @@
         "AdcGroupAccessMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcGroupAccessMode 参数"
+          "description": "AdcGroupAccessMode 参数",
+          "enum": [
+            "ADC_ACCESS_MODE_SINGLE",
+            "ADC_ACCESS_MODE_STREAMING"
+          ]
         },
         "AdcGroupConversionMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcGroupConversionMode 参数"
+          "description": "AdcGroupConversionMode 参数",
+          "enum": [
+            "ADC_CONV_MODE_ONESHOT",
+            "ADC_CONV_MODE_CONTINUOUS"
+          ]
         },
         "AdcGroupConversionType": {
           "type": "string",
@@ -273,12 +329,20 @@
         "AdcGroupTriggSrc": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcGroupTriggSrc 参数"
+          "description": "AdcGroupTriggSrc 参数",
+          "enum": [
+            "ADC_TRIGG_SRC_SW",
+            "ADC_TRIGG_SRC_HW"
+          ]
         },
         "AdcStreamingBufferMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcStreamingBufferMode 参数"
+          "description": "AdcStreamingBufferMode 参数",
+          "enum": [
+            "ADC_STREAM_BUFFER_LINEAR",
+            "ADC_STREAM_BUFFER_CIRCULAR"
+          ]
         }
       },
       "additionalProperties": true
@@ -306,7 +370,17 @@
         "AdcSampleTimeSelect": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcSampleTimeSelect 参数"
+          "description": "AdcSampleTimeSelect 参数",
+          "enum": [
+            "ADC_SAMPLING_TIME_3CYCLES",
+            "ADC_SAMPLING_TIME_15CYCLES",
+            "ADC_SAMPLING_TIME_28CYCLES",
+            "ADC_SAMPLING_TIME_56CYCLES",
+            "ADC_SAMPLING_TIME_84CYCLES",
+            "ADC_SAMPLING_TIME_112CYCLES",
+            "ADC_SAMPLING_TIME_144CYCLES",
+            "ADC_SAMPLING_TIME_480CYCLES"
+          ]
         }
       },
       "additionalProperties": true
@@ -362,12 +436,20 @@
         "AdcGroupAccessMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcGroupAccessMode 参数"
+          "description": "AdcGroupAccessMode 参数",
+          "enum": [
+            "ADC_ACCESS_MODE_SINGLE",
+            "ADC_ACCESS_MODE_STREAMING"
+          ]
         },
         "AdcGroupConversionMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcGroupConversionMode 参数"
+          "description": "AdcGroupConversionMode 参数",
+          "enum": [
+            "ADC_CONV_MODE_ONESHOT",
+            "ADC_CONV_MODE_CONTINUOUS"
+          ]
         },
         "AdcGroupConversionType": {
           "type": "string",
@@ -377,12 +459,20 @@
         "AdcGroupTriggSrc": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcGroupTriggSrc 参数"
+          "description": "AdcGroupTriggSrc 参数",
+          "enum": [
+            "ADC_TRIGG_SRC_SW",
+            "ADC_TRIGG_SRC_HW"
+          ]
         },
         "AdcStreamingBufferMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "AdcStreamingBufferMode 参数"
+          "description": "AdcStreamingBufferMode 参数",
+          "enum": [
+            "ADC_STREAM_BUFFER_LINEAR",
+            "ADC_STREAM_BUFFER_CIRCULAR"
+          ]
         }
       },
       "additionalProperties": true

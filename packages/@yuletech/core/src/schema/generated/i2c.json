@@ -113,7 +113,11 @@
         "I2cOperationMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "I2cOperationMode 参数"
+          "description": "I2cOperationMode 参数",
+          "enum": [
+            "I2C_MODE_MASTER",
+            "I2C_MODE_SLAVE"
+          ]
         }
       },
       "additionalProperties": true
@@ -222,7 +226,11 @@
         "I2cOperationMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "I2cOperationMode 参数"
+          "description": "I2cOperationMode 参数",
+          "enum": [
+            "I2C_MODE_MASTER",
+            "I2C_MODE_SLAVE"
+          ]
         }
       },
       "additionalProperties": true

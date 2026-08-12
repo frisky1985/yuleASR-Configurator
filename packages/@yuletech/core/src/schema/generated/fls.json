@@ -222,7 +222,11 @@
         "FlsDefaultMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "FlsDefaultMode 参数"
+          "description": "FlsDefaultMode 参数",
+          "enum": [
+            "FLS_MODE_NORMAL",
+            "FLS_MODE_FAST"
+          ]
         },
         "FlsJobEndNotification": {
           "type": "string",

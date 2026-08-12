@@ -58,7 +58,11 @@
         "PortPinLevelValue": {
           "type": "string",
           "maxLength": 255,
-          "description": "PortPinLevelValue 参数"
+          "description": "PortPinLevelValue 参数",
+          "enum": [
+            "PORT_PIN_LEVEL_LOW",
+            "PORT_PIN_LEVEL_HIGH"
+          ]
         },
         "PortPinMode": {
           "type": "string",

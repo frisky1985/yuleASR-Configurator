@@ -78,7 +78,12 @@
         "PwmChannelClass": {
           "type": "string",
           "maxLength": 255,
-          "description": "PwmChannelClass 参数"
+          "description": "PwmChannelClass 参数",
+          "enum": [
+            "PWM_VARIABLE_PERIOD",
+            "PWM_FIXED_PERIOD",
+            "PWM_FIXED_PERIOD_SHIFTED"
+          ]
         },
         "PwmDefaultPeriod": {
           "type": "integer",
@@ -95,7 +100,11 @@
         "PwmIdleState": {
           "type": "string",
           "maxLength": 255,
-          "description": "PwmIdleState 参数"
+          "description": "PwmIdleState 参数",
+          "enum": [
+            "PWM_IDLE_LOW",
+            "PWM_IDLE_HIGH"
+          ]
         },
         "PwmPolarity": {
           "type": "string",
@@ -209,7 +218,12 @@
         "PwmChannelClass": {
           "type": "string",
           "maxLength": 255,
-          "description": "PwmChannelClass 参数"
+          "description": "PwmChannelClass 参数",
+          "enum": [
+            "PWM_VARIABLE_PERIOD",
+            "PWM_FIXED_PERIOD",
+            "PWM_FIXED_PERIOD_SHIFTED"
+          ]
         },
         "PwmDefaultPeriod": {
           "type": "integer",
@@ -226,7 +240,11 @@
         "PwmIdleState": {
           "type": "string",
           "maxLength": 255,
-          "description": "PwmIdleState 参数"
+          "description": "PwmIdleState 参数",
+          "enum": [
+            "PWM_IDLE_LOW",
+            "PWM_IDLE_HIGH"
+          ]
         },
         "PwmPolarity": {
           "type": "string",

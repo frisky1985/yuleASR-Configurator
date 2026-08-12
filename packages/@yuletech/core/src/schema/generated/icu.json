@@ -83,7 +83,13 @@
         "IcuDefaultStartEdge": {
           "type": "string",
           "maxLength": 255,
-          "description": "IcuDefaultStartEdge 参数"
+          "description": "IcuDefaultStartEdge 参数",
+          "enum": [
+            "ICU_EDGE_NONE",
+            "ICU_EDGE_RISING",
+            "ICU_EDGE_FALLING",
+            "ICU_EDGE_BOTH"
+          ]
         },
         "IcuHwIP": {
           "type": "string",
@@ -93,7 +99,13 @@
         "IcuMeasurementMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "IcuMeasurementMode 参数"
+          "description": "IcuMeasurementMode 参数",
+          "enum": [
+            "ICU_MODE_SIGNAL_EDGE_DETECT",
+            "ICU_MODE_SIGNAL_MEASUREMENT",
+            "ICU_MODE_TIMESTAMP",
+            "ICU_MODE_EDGE_COUNTER"
+          ]
         },
         "IcuOverflowNotification": {
           "type": "string",
@@ -142,7 +154,13 @@
         "IcuDefaultStartEdge": {
           "type": "string",
           "maxLength": 255,
-          "description": "IcuDefaultStartEdge 参数"
+          "description": "IcuDefaultStartEdge 参数",
+          "enum": [
+            "ICU_EDGE_NONE",
+            "ICU_EDGE_RISING",
+            "ICU_EDGE_FALLING",
+            "ICU_EDGE_BOTH"
+          ]
         },
         "IcuHwIP": {
           "type": "string",
@@ -152,7 +170,13 @@
         "IcuMeasurementMode": {
           "type": "string",
           "maxLength": 255,
-          "description": "IcuMeasurementMode 参数"
+          "description": "IcuMeasurementMode 参数",
+          "enum": [
+            "ICU_MODE_SIGNAL_EDGE_DETECT",
+            "ICU_MODE_SIGNAL_MEASUREMENT",
+            "ICU_MODE_TIMESTAMP",
+            "ICU_MODE_EDGE_COUNTER"
+          ]
         },
         "IcuOverflowNotification": {
           "type": "string",

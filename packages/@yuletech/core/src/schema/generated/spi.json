@@ -87,7 +87,12 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 65535,
-          "description": "SpiDataWidth 参数"
+          "description": "SpiDataWidth 参数",
+          "enum": [
+            "SPI_DATA_MODE_8BIT",
+            "SPI_DATA_MODE_16BIT",
+            "SPI_DATA_MODE_32BIT"
+          ]
         },
         "SpiEbMaxLength": {
           "type": "integer",
@@ -146,7 +151,12 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 65535,
-          "description": "SpiDataWidth 参数"
+          "description": "SpiDataWidth 参数",
+          "enum": [
+            "SPI_DATA_MODE_8BIT",
+            "SPI_DATA_MODE_16BIT",
+            "SPI_DATA_MODE_32BIT"
+          ]
         },
         "SpiEbMaxLength": {
           "type": "integer",
@@ -279,7 +289,13 @@
         "SpiShiftClockIdleLevel": {
           "type": "string",
           "maxLength": 255,
-          "description": "SpiShiftClockIdleLevel 参数"
+          "description": "SpiShiftClockIdleLevel 参数",
+          "enum": [
+            "SPI_CLOCK_MODE_0",
+            "SPI_CLOCK_MODE_1",
+            "SPI_CLOCK_MODE_2",
+            "SPI_CLOCK_MODE_3"
+          ]
         }
       },
       "additionalProperties": true,
@@ -373,7 +389,13 @@
         "SpiShiftClockIdleLevel": {
           "type": "string",
           "maxLength": 255,
-          "description": "SpiShiftClockIdleLevel 参数"
+          "description": "SpiShiftClockIdleLevel 参数",
+          "enum": [
+            "SPI_CLOCK_MODE_0",
+            "SPI_CLOCK_MODE_1",
+            "SPI_CLOCK_MODE_2",
+            "SPI_CLOCK_MODE_3"
+          ]
         }
       },
       "additionalProperties": true

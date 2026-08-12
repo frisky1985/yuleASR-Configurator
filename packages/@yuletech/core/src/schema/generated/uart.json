@@ -83,12 +83,23 @@
         "UartStopBits": {
           "type": "string",
           "maxLength": 255,
-          "description": "UartStopBits 参数"
+          "description": "UartStopBits 参数",
+          "enum": [
+            "UART_STOP_BITS_1",
+            "UART_STOP_BITS_1_5",
+            "UART_STOP_BITS_2"
+          ]
         },
         "UartDataBits": {
           "type": "string",
           "maxLength": 255,
-          "description": "UartDataBits 参数"
+          "description": "UartDataBits 参数",
+          "enum": [
+            "UART_DATA_BITS_5",
+            "UART_DATA_BITS_6",
+            "UART_DATA_BITS_7",
+            "UART_DATA_BITS_8"
+          ]
         },
         "UartClockSource": {
           "type": "string",
@@ -98,7 +109,13 @@
         "UartHardwareFlowControl": {
           "type": "string",
           "maxLength": 255,
-          "description": "UartHardwareFlowControl 参数"
+          "description": "UartHardwareFlowControl 参数",
+          "enum": [
+            "UART_HW_HANDSHAKE_NONE",
+            "UART_HW_HANDSHAKE_RTS",
+            "UART_HW_HANDSHAKE_CTS",
+            "UART_HW_HANDSHAKE_RTS_CTS"
+          ]
         },
         "UartChannelId": {
           "type": "integer",
@@ -195,12 +212,23 @@
         "UartStopBits": {
           "type": "string",
           "maxLength": 255,
-          "description": "UartStopBits 参数"
+          "description": "UartStopBits 参数",
+          "enum": [
+            "UART_STOP_BITS_1",
+            "UART_STOP_BITS_1_5",
+            "UART_STOP_BITS_2"
+          ]
         },
         "UartDataBits": {
           "type": "string",
           "maxLength": 255,
-          "description": "UartDataBits 参数"
+          "description": "UartDataBits 参数",
+          "enum": [
+            "UART_DATA_BITS_5",
+            "UART_DATA_BITS_6",
+            "UART_DATA_BITS_7",
+            "UART_DATA_BITS_8"
+          ]
         },
         "UartClockSource": {
           "type": "string",
@@ -210,7 +238,13 @@
         "UartHardwareFlowControl": {
           "type": "string",
           "maxLength": 255,
-          "description": "UartHardwareFlowControl 参数"
+          "description": "UartHardwareFlowControl 参数",
+          "enum": [
+            "UART_HW_HANDSHAKE_NONE",
+            "UART_HW_HANDSHAKE_RTS",
+            "UART_HW_HANDSHAKE_CTS",
+            "UART_HW_HANDSHAKE_RTS_CTS"
+          ]
         },
         "UartChannelId": {
           "type": "integer",
