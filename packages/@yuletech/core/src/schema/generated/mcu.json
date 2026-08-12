@@ -432,6 +432,174 @@
         }
       },
       "additionalProperties": true
+    },
+    "McuClockSettingConfig": {
+      "description": "McuClockSettingConfig 配置容器",
+      "type": "object",
+      "properties": {
+        "McuClockSettingId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "McuClockSettingId 参数"
+        },
+        "McuClockReferencePoint": {
+          "type": "string",
+          "maximum": 255,
+          "description": "McuClockReferencePoint 参数"
+        },
+        "McuClockSource": {
+          "type": "string",
+          "description": "McuClockSource 参数",
+          "enum": [
+            "MCU_CLOCK_SOURCE_XTAL",
+            "MCU_CLOCK_SOURCE_PLL",
+            "MCU_CLOCK_SOURCE_RC"
+          ]
+        },
+        "McuPllBaseAddr": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "McuPllBaseAddr 参数"
+        },
+        "McuPllPrediv": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "McuPllPrediv 参数"
+        },
+        "McuPllMultiplier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "McuPllMultiplier 参数"
+        },
+        "McuPllPostdiv": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "McuPllPostdiv 参数"
+        },
+        "McuArmDiv": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "McuArmDiv 参数"
+        },
+        "McuAxiDiv": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "McuAxiDiv 参数"
+        },
+        "McuAhbDiv": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "McuAhbDiv 参数"
+        },
+        "McuClockFrequency": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000,
+          "description": "McuClockFrequency 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "McuModeSettingConf": {
+      "description": "McuModeSettingConf 配置容器",
+      "type": "object",
+      "properties": {
+        "McuModeSettingId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "McuModeSettingId 参数"
+        },
+        "McuModeSettingMode": {
+          "type": "string",
+          "description": "McuModeSettingMode 参数",
+          "enum": [
+            "MCU_MODE_NORMAL",
+            "MCU_MODE_RUN",
+            "MCU_MODE_SLEEP",
+            "MCU_MODE_DEEP_SLEEP",
+            "MCU_MODE_RESET"
+          ]
+        },
+        "McuModeSettingClockReference": {
+          "type": "string",
+          "maximum": 255,
+          "description": "McuModeSettingClockReference 参数"
+        },
+        "McuModeSettingRamSector": {
+          "type": "string",
+          "maximum": 255,
+          "description": "McuModeSettingRamSector 参数"
+        },
+        "McuModeSettingStartupMode": {
+          "type": "boolean",
+          "description": "McuModeSettingStartupMode 参数",
+          "default": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "McuRamSectorSettingConf": {
+      "description": "McuRamSectorSettingConf 配置容器",
+      "type": "object",
+      "properties": {
+        "McuRamSectorSettingId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "McuRamSectorSettingId 参数"
+        },
+        "McuRamSectorSize": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "McuRamSectorSize 参数"
+        },
+        "McuRamSectorStartAddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "McuRamSectorStartAddress 参数"
+        },
+        "McuRamDefaultValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255,
+          "description": "McuRamDefaultValue 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "McuPowerModeSetting": {
+      "description": "McuPowerModeSetting 配置容器",
+      "type": "object",
+      "properties": {
+        "McuPowerModeSettingId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "McuPowerModeSettingId 参数"
+        },
+        "McuPowerModeSettingPowerMode": {
+          "type": "string",
+          "description": "McuPowerModeSettingPowerMode 参数",
+          "enum": [
+            "MCU_MODE_NORMAL",
+            "MCU_MODE_SLEEP",
+            "MCU_MODE_DEEP_SLEEP",
+            "MCU_MODE_RESET"
+          ]
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [

@@ -433,6 +433,325 @@
         }
       },
       "additionalProperties": true
+    },
+    "CanGeneral": {
+      "description": "CanGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "CanDevErrorDetect": {
+          "type": "boolean",
+          "description": "CanDevErrorDetect 参数",
+          "default": false
+        },
+        "CanVersionInfoApi": {
+          "type": "boolean",
+          "description": "CanVersionInfoApi 参数",
+          "default": false
+        },
+        "CanTimeoutDuration": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanTimeoutDuration 参数"
+        },
+        "CanMainFunctionPeriod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanMainFunctionPeriod 参数"
+        },
+        "CanPublicDlcSupport": {
+          "type": "boolean",
+          "description": "CanPublicDlcSupport 参数",
+          "default": false
+        },
+        "CanMultiPduSupport": {
+          "type": "boolean",
+          "description": "CanMultiPduSupport 参数",
+          "default": false
+        },
+        "CanExtendedIdSupport": {
+          "type": "boolean",
+          "description": "CanExtendedIdSupport 参数",
+          "default": false
+        },
+        "CanWakeupSupport": {
+          "type": "boolean",
+          "description": "CanWakeupSupport 参数",
+          "default": false
+        },
+        "CanRxProcessing": {
+          "type": "string",
+          "description": "CanRxProcessing 参数",
+          "enum": [
+            "CAN_PROCESSING_INTERRUPT",
+            "CAN_PROCESSING_POLLING"
+          ]
+        },
+        "CanTxProcessing": {
+          "type": "string",
+          "description": "CanTxProcessing 参数",
+          "enum": [
+            "CAN_PROCESSING_INTERRUPT",
+            "CAN_PROCESSING_POLLING"
+          ]
+        },
+        "CanBusOffProcessing": {
+          "type": "string",
+          "description": "CanBusOffProcessing 参数",
+          "enum": [
+            "CAN_PROCESSING_INTERRUPT",
+            "CAN_PROCESSING_POLLING"
+          ]
+        },
+        "CanWakeupProcessing": {
+          "type": "string",
+          "description": "CanWakeupProcessing 参数",
+          "enum": [
+            "CAN_PROCESSING_INTERRUPT",
+            "CAN_PROCESSING_POLLING"
+          ]
+        },
+        "CanIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanIndex 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanController": {
+      "description": "CanController 配置容器",
+      "type": "object",
+      "properties": {
+        "CanControllerActivation": {
+          "type": "boolean",
+          "description": "CanControllerActivation 参数",
+          "default": false
+        },
+        "CanControllerBaseAddress": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "CanControllerBaseAddress 参数"
+        },
+        "CanControllerBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000,
+          "description": "CanControllerBaudRate 参数"
+        },
+        "CanControllerBaudRateConfigID": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanControllerBaudRateConfigID 参数"
+        },
+        "CanControllerFdBaudRate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000,
+          "description": "CanControllerFdBaudRate 参数"
+        },
+        "CanControllerId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanControllerId 参数"
+        },
+        "CanControllerPropSeg": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanControllerPropSeg 参数"
+        },
+        "CanControllerSeg1": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanControllerSeg1 参数"
+        },
+        "CanControllerSeg2": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanControllerSeg2 参数"
+        },
+        "CanControllerSyncJumpWidth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanControllerSyncJumpWidth 参数"
+        },
+        "CanControllerTxBitRateSwitch": {
+          "type": "boolean",
+          "description": "CanControllerTxBitRateSwitch 参数",
+          "default": false
+        },
+        "CanControllerWakeupCapability": {
+          "type": "boolean",
+          "description": "CanControllerWakeupCapability 参数",
+          "default": false
+        },
+        "CanControllerWakeupSource": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanControllerWakeupSource 参数"
+        },
+        "CanControllerRxProcessing": {
+          "type": "string",
+          "description": "CanControllerRxProcessing 参数",
+          "enum": [
+            "CAN_PROCESSING_INTERRUPT",
+            "CAN_PROCESSING_POLLING"
+          ]
+        },
+        "CanControllerTxProcessing": {
+          "type": "string",
+          "description": "CanControllerTxProcessing 参数",
+          "enum": [
+            "CAN_PROCESSING_INTERRUPT",
+            "CAN_PROCESSING_POLLING"
+          ]
+        },
+        "CanControllerBusOffProcessing": {
+          "type": "string",
+          "description": "CanControllerBusOffProcessing 参数",
+          "enum": [
+            "CAN_PROCESSING_INTERRUPT",
+            "CAN_PROCESSING_POLLING"
+          ]
+        },
+        "CanControllerWakeupProcessing": {
+          "type": "string",
+          "description": "CanControllerWakeupProcessing 参数",
+          "enum": [
+            "CAN_PROCESSING_INTERRUPT",
+            "CAN_PROCESSING_POLLING"
+          ]
+        },
+        "CanControllerDefaultBaudrate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanControllerDefaultBaudrate 参数"
+        },
+        "CanControllerNumBaudrateConfigs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanControllerNumBaudrateConfigs 参数"
+        },
+        "CanControllerNumHardwareObjects": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanControllerNumHardwareObjects 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanHardwareObject": {
+      "description": "CanHardwareObject 配置容器",
+      "type": "object",
+      "properties": {
+        "CanHardwareObjectCanIdType": {
+          "type": "string",
+          "description": "CanHardwareObjectCanIdType 参数",
+          "enum": [
+            "CAN_ID_TYPE_STANDARD",
+            "CAN_ID_TYPE_EXTENDED"
+          ]
+        },
+        "CanHardwareObjectFilterMask": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "CanHardwareObjectFilterMask 参数"
+        },
+        "CanHardwareObjectHohCondition": {
+          "type": "string",
+          "description": "CanHardwareObjectHohCondition 参数",
+          "enum": [
+            "CAN_HOH_RX_INTERRUPT",
+            "CAN_HOH_RX_POLLING",
+            "CAN_HOH_TX_INTERRUPT",
+            "CAN_HOH_TX_POLLING"
+          ]
+        },
+        "CanHardwareObjectHohType": {
+          "type": "string",
+          "description": "CanHardwareObjectHohType 参数",
+          "enum": [
+            "CAN_HOH_TYPE_RECEIVE",
+            "CAN_HOH_TYPE_TRANSMIT"
+          ]
+        },
+        "CanHardwareObjectId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanHardwareObjectId 参数"
+        },
+        "CanHardwareObjectObjectId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanHardwareObjectObjectId 参数"
+        },
+        "CanHardwareObjectUsage": {
+          "type": "string",
+          "description": "CanHardwareObjectUsage 参数",
+          "enum": [
+            "CAN_HOH_USAGE_RX",
+            "CAN_HOH_USAGE_TX"
+          ]
+        },
+        "CanHardwareObjectFirstId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "CanHardwareObjectFirstId 参数"
+        },
+        "CanHardwareObjectLastId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "CanHardwareObjectLastId 参数"
+        },
+        "CanHardwareObjectFiltering": {
+          "type": "boolean",
+          "description": "CanHardwareObjectFiltering 参数",
+          "default": false
+        },
+        "CanHardwareObjectControllerRef": {
+          "type": "string",
+          "maximum": 255,
+          "description": "CanHardwareObjectControllerRef 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanPublishedInformation": {
+      "description": "CanPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "CanNumberOfControllers": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNumberOfControllers 参数"
+        },
+        "CanNumberOfHardwareObjects": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "CanNumberOfHardwareObjects 参数"
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [

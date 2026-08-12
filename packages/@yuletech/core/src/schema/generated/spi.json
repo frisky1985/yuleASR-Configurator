@@ -505,6 +505,199 @@
         }
       },
       "additionalProperties": true
+    },
+    "SpiSequence": {
+      "description": "SpiSequence 配置容器",
+      "type": "object",
+      "properties": {
+        "SpiSeqId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiSeqId 参数"
+        },
+        "SpiDefaultJobList": {
+          "type": "string",
+          "maximum": 255,
+          "description": "SpiDefaultJobList 参数"
+        },
+        "SpiInterruptibleSequence": {
+          "type": "boolean",
+          "description": "SpiInterruptibleSequence 参数",
+          "default": false
+        },
+        "SpiSequencePriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiSequencePriority 参数"
+        },
+        "SpiSequenceType": {
+          "type": "string",
+          "description": "SpiSequenceType 参数",
+          "enum": [
+            "SPI_SEQUENCE_BASIC",
+            "SPI_SEQUENCE_OS_TASK",
+            "SPI_SEQUENCE_OPTIONAL"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "SpiHwUnit": {
+      "description": "SpiHwUnit 配置容器",
+      "type": "object",
+      "properties": {
+        "SpiHwUnitBaudrateDivisor": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiHwUnitBaudrateDivisor 参数"
+        },
+        "SpiHwUnitBaudrate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000,
+          "description": "SpiHwUnitBaudrate 参数"
+        },
+        "SpiHwUnitChannelSelect": {
+          "type": "string",
+          "maximum": 255,
+          "description": "SpiHwUnitChannelSelect 参数"
+        },
+        "SpiHwUnitClockMode": {
+          "type": "string",
+          "description": "SpiHwUnitClockMode 参数",
+          "enum": [
+            "SPI_CLOCK_MODE_0",
+            "SPI_CLOCK_MODE_1",
+            "SPI_CLOCK_MODE_2",
+            "SPI_CLOCK_MODE_3"
+          ]
+        },
+        "SpiHwUnitDataShiftEdge": {
+          "type": "string",
+          "description": "SpiHwUnitDataShiftEdge 参数",
+          "enum": [
+            "SPI_MSB_FIRST",
+            "SPI_LSB_FIRST"
+          ]
+        },
+        "SpiHwUnitEndianness": {
+          "type": "string",
+          "description": "SpiHwUnitEndianness 参数",
+          "enum": [
+            "SPI_MSB_FIRST",
+            "SPI_LSB_FIRST"
+          ]
+        },
+        "SpiHwUnitFifoDepth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiHwUnitFifoDepth 参数"
+        },
+        "SpiHwUnitHandshake": {
+          "type": "boolean",
+          "description": "SpiHwUnitHandshake 参数",
+          "default": false
+        },
+        "SpiHwUnitMode": {
+          "type": "string",
+          "description": "SpiHwUnitMode 参数",
+          "enum": [
+            "SPI_MASTER",
+            "SPI_SLAVE"
+          ]
+        },
+        "SpiHwUnitRamThreshold": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiHwUnitRamThreshold 参数"
+        },
+        "SpiHwUnitRxFifoThreshold": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiHwUnitRxFifoThreshold 参数"
+        },
+        "SpiHwUnitShiftClockIdleLevel": {
+          "type": "string",
+          "description": "SpiHwUnitShiftClockIdleLevel 参数",
+          "enum": [
+            "SPI_LOW",
+            "SPI_HIGH"
+          ]
+        },
+        "SpiHwUnitTxFifoThreshold": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiHwUnitTxFifoThreshold 参数"
+        },
+        "SpiHwUnitWakeup": {
+          "type": "boolean",
+          "description": "SpiHwUnitWakeup 参数",
+          "default": false
+        },
+        "SpiHwUnitNumberOfChipSelects": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiHwUnitNumberOfChipSelects 参数"
+        },
+        "SpiHwUnitDmaTxChannel": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiHwUnitDmaTxChannel 参数"
+        },
+        "SpiHwUnitDmaRxChannel": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiHwUnitDmaRxChannel 参数"
+        },
+        "SpiHwUnitDefaultBaudrate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000,
+          "description": "SpiHwUnitDefaultBaudrate 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SpiPublishedInformation": {
+      "description": "SpiPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "SpiNumberOfChannels": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiNumberOfChannels 参数"
+        },
+        "SpiNumberOfExternalDevices": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiNumberOfExternalDevices 参数"
+        },
+        "SpiNumberOfJobs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiNumberOfJobs 参数"
+        },
+        "SpiNumberOfSequences": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SpiNumberOfSequences 参数"
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [

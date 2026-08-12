@@ -146,6 +146,107 @@
         }
       },
       "additionalProperties": true
+    },
+    "PortGeneral": {
+      "description": "PortGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "PortDevErrorDetect": {
+          "type": "boolean",
+          "description": "PortDevErrorDetect 参数",
+          "default": false
+        },
+        "PortSetPinDirectionApi": {
+          "type": "boolean",
+          "description": "PortSetPinDirectionApi 参数",
+          "default": false
+        },
+        "PortSetPinModeApi": {
+          "type": "boolean",
+          "description": "PortSetPinModeApi 参数",
+          "default": false
+        },
+        "PortVersionInfoApi": {
+          "type": "boolean",
+          "description": "PortVersionInfoApi 参数",
+          "default": false
+        },
+        "PortDeInitApi": {
+          "type": "boolean",
+          "description": "PortDeInitApi 参数",
+          "default": false
+        },
+        "PortUserModeSupport": {
+          "type": "boolean",
+          "description": "PortUserModeSupport 参数",
+          "default": false
+        },
+        "PortNumPorts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortNumPorts 参数"
+        },
+        "PortNumPinsPerPort": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortNumPinsPerPort 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PortConfigSet": {
+      "description": "PortConfigSet 配置容器",
+      "type": "object",
+      "properties": {
+        "PortNumberOfPortPins": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "PortNumberOfPortPins 参数"
+        },
+        "PortPinReference": {
+          "type": "string",
+          "maximum": 255,
+          "description": "PortPinReference 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "PortPublishedInformation": {
+      "description": "PortPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "PortPinDirectionUnchangeable": {
+          "type": "boolean",
+          "description": "PortPinDirectionUnchangeable 参数",
+          "default": false
+        },
+        "PortPinModeUnchangeable": {
+          "type": "boolean",
+          "description": "PortPinModeUnchangeable 参数",
+          "default": false
+        },
+        "PortPinModeAvailable": {
+          "type": "string",
+          "description": "PortPinModeAvailable 参数",
+          "enum": [
+            "PORT_PIN_MODE_GPIO",
+            "PORT_PIN_MODE_CAN",
+            "PORT_PIN_MODE_SPI",
+            "PORT_PIN_MODE_UART",
+            "PORT_PIN_MODE_I2C",
+            "PORT_PIN_MODE_PWM",
+            "PORT_PIN_MODE_ADC",
+            "PORT_PIN_MODE_ETH",
+            "PORT_PIN_MODE_USB",
+            "PORT_PIN_MODE_FLEXIO",
+            "PORT_PIN_MODE_DISABLED"
+          ]
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [

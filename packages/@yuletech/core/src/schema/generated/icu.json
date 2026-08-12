@@ -261,6 +261,80 @@
         }
       },
       "additionalProperties": true
+    },
+    "IcuHwTriggerConfig": {
+      "description": "IcuHwTriggerConfig 配置容器",
+      "type": "object",
+      "properties": {
+        "IcuHwTriggerGtmModule": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "IcuHwTriggerGtmModule 参数"
+        },
+        "IcuHwTriggerGtmTimer": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "IcuHwTriggerGtmTimer 参数"
+        },
+        "IcuHwTriggerPwmChannel": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "IcuHwTriggerPwmChannel 参数"
+        },
+        "IcuHwTriggerPwmChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "IcuHwTriggerPwmChannelId 参数"
+        },
+        "IcuHwTriggerPwmModule": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "IcuHwTriggerPwmModule 参数"
+        },
+        "IcuHwTriggerPwmTimer": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "IcuHwTriggerPwmTimer 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "IcuPublishedInformation": {
+      "description": "IcuPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "IcuNumberOfChannels": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "IcuNumberOfChannels 参数"
+        },
+        "IcuNumberOfInterrupts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "IcuNumberOfInterrupts 参数"
+        },
+        "IcuMaxEdgeCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "IcuMaxEdgeCount 参数"
+        },
+        "IcuClockFrequency": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000,
+          "description": "IcuClockFrequency 参数"
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [

@@ -367,6 +367,79 @@
         }
       },
       "additionalProperties": true
+    },
+    "GptGeneral": {
+      "description": "GptGeneral 配置容器",
+      "type": "object",
+      "properties": {
+        "GptDevErrorDetect": {
+          "type": "boolean",
+          "description": "GptDevErrorDetect 参数",
+          "default": false
+        },
+        "GptVersionInfoApi": {
+          "type": "boolean",
+          "description": "GptVersionInfoApi 参数",
+          "default": false
+        },
+        "GptWakeupFunctionalityApi": {
+          "type": "boolean",
+          "description": "GptWakeupFunctionalityApi 参数",
+          "default": false
+        },
+        "GptPredefTimerFunctionalityApi": {
+          "type": "boolean",
+          "description": "GptPredefTimerFunctionalityApi 参数",
+          "default": false
+        },
+        "GptPredefTimer1usEnablingGrade": {
+          "type": "boolean",
+          "description": "GptPredefTimer1usEnablingGrade 参数",
+          "default": false
+        },
+        "GptPredefTimer100us32bitEnable": {
+          "type": "boolean",
+          "description": "GptPredefTimer100us32bitEnable 参数",
+          "default": false
+        },
+        "GptReportWakeupSource": {
+          "type": "boolean",
+          "description": "GptReportWakeupSource 参数",
+          "default": false
+        },
+        "GptMainFunctionPeriod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "GptMainFunctionPeriod 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "GptPublishedInformation": {
+      "description": "GptPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "GptMaxChannelId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "GptMaxChannelId 参数"
+        },
+        "GptMaxTimerCountValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "GptMaxTimerCountValue 参数"
+        },
+        "GptMaxTimerFrequency": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000000,
+          "description": "GptMaxTimerFrequency 参数"
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [

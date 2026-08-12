@@ -152,6 +152,70 @@
         }
       },
       "additionalProperties": true
+    },
+    "DioChannelGroup": {
+      "description": "DioChannelGroup 配置容器",
+      "type": "object",
+      "properties": {
+        "DioChannelGroupIdentification": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioChannelGroupIdentification 参数"
+        },
+        "DioPortMask": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "DioPortMask 参数"
+        },
+        "DioPortOffset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioPortOffset 参数"
+        },
+        "DioPortReference": {
+          "type": "string",
+          "maximum": 255,
+          "description": "DioPortReference 参数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DioPublishedInformation": {
+      "description": "DioPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "DioNumberOfChannelGroups": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioNumberOfChannelGroups 参数"
+        },
+        "DioNumberOfChannels": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioNumberOfChannels 参数"
+        },
+        "DioNumberOfPorts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "DioNumberOfPorts 参数"
+        },
+        "DioWidthAccess": {
+          "type": "string",
+          "description": "DioWidthAccess 参数",
+          "enum": [
+            "DIO_WIDTH_ACCESS_8BIT",
+            "DIO_WIDTH_ACCESS_16BIT",
+            "DIO_WIDTH_ACCESS_32BIT"
+          ]
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [
