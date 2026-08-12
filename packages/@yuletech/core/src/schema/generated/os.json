@@ -94,560 +94,492 @@
     },
     "OsTask": {
       "description": "OS 任务配置容器 (可多实例)",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "OsTaskName": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "任务名称 (唯一标识)"
-          },
-          "OsTaskPriority": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 255,
-            "default": 1,
-            "description": "任务优先级"
-          },
-          "OsTaskSchedule": {
-            "type": "string",
-            "enum": [
-              "FULL",
-              "NON",
-              "MIXED"
-            ],
-            "default": "FULL",
-            "description": "调度策略: FULL(完全抢占), NON(非抢占), MIXED(混合)"
-          },
-          "OsTaskStackSize": {
-            "type": "integer",
-            "minimum": 64,
-            "maximum": 65535,
-            "default": 1024,
-            "description": "任务栈大小 (bytes)"
-          },
-          "OsTaskActivationLimit": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 255,
-            "default": 1,
-            "description": "最大激活次数限制"
-          },
-          "OsTaskType": {
-            "type": "string",
-            "enum": [
-              "BCC",
-              "ECC"
-            ],
-            "default": "BCC",
-            "description": "任务类型: BCC(基础任务), ECC(扩展任务-支持事件)"
-          },
-          "OsTaskAutostart": {
-            "type": "boolean",
-            "default": false,
-            "description": "是否自动启动"
-          },
-          "OsTaskUsesFpu": {
-            "type": "boolean",
-            "default": false,
-            "description": "是否使用 FPU"
-          },
-          "OsTaskTrusted": {
-            "type": "boolean",
-            "default": false,
-            "description": "是否可信任务"
-          },
-          "OsTaskAppModeMask": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 65535,
-            "default": 1,
-            "description": "应用模式掩码位"
-          },
-          "OsTaskStackSharing": {
-            "type": "boolean",
-            "default": false,
-            "description": "是否共享栈"
-          }
+      "type": "object",
+      "properties": {
+        "OsTaskName": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "任务名称 (唯一标识)"
         },
-        "required": [
-          "OsTaskName",
-          "OsTaskPriority",
-          "OsTaskSchedule",
-          "OsTaskStackSize"
-        ],
-        "additionalProperties": true
-      }
+        "OsTaskPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255,
+          "default": 1,
+          "description": "任务优先级"
+        },
+        "OsTaskSchedule": {
+          "type": "string",
+          "enum": [
+            "FULL",
+            "NON",
+            "MIXED"
+          ],
+          "default": "FULL",
+          "description": "调度策略: FULL(完全抢占), NON(非抢占), MIXED(混合)"
+        },
+        "OsTaskStackSize": {
+          "type": "integer",
+          "minimum": 64,
+          "maximum": 65535,
+          "default": 1024,
+          "description": "任务栈大小 (bytes)"
+        },
+        "OsTaskActivationLimit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 255,
+          "default": 1,
+          "description": "最大激活次数限制"
+        },
+        "OsTaskType": {
+          "type": "string",
+          "enum": [
+            "BCC",
+            "ECC"
+          ],
+          "default": "BCC",
+          "description": "任务类型: BCC(基础任务), ECC(扩展任务-支持事件)"
+        },
+        "OsTaskAutostart": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否自动启动"
+        },
+        "OsTaskUsesFpu": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否使用 FPU"
+        },
+        "OsTaskTrusted": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否可信任务"
+        },
+        "OsTaskAppModeMask": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "default": 1,
+          "description": "应用模式掩码位"
+        },
+        "OsTaskStackSharing": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否共享栈"
+        }
+      },
+      "additionalProperties": true
     },
     "OsIsr": {
       "description": "OS 中断服务函数配置容器 (可多实例)",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "OsIsrName": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "ISR 名称 (唯一标识)"
-          },
-          "OsIsrCategory": {
-            "type": "integer",
-            "enum": [
-              1,
-              2
-            ],
-            "default": 2,
-            "description": "ISR 分类: 1(Category 1 - 不使用OS服务), 2(Category 2 - 可使用OS服务)"
-          },
-          "OsIsrInterruptPriority": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 255,
-            "default": 1,
-            "description": "中断优先级"
-          },
-          "OsIsrInterruptSource": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 65535,
-            "description": "中断源编号"
-          },
-          "OsIsrStackSize": {
-            "type": "integer",
-            "minimum": 64,
-            "maximum": 65535,
-            "default": 512,
-            "description": "中断栈大小 (bytes)"
-          },
-          "OsIsrEnableNesting": {
-            "type": "boolean",
-            "default": false,
-            "description": "是否允许嵌套中断"
-          },
-          "OsIsrUsesFpu": {
-            "type": "boolean",
-            "default": false,
-            "description": "是否使用 FPU"
-          },
-          "OsIsrInterruptType": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "中断类型"
-          },
-          "OsIsrSpecialFunctionName": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "中断处理函数名"
-          }
+      "type": "object",
+      "properties": {
+        "OsIsrName": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "ISR 名称 (唯一标识)"
         },
-        "required": [
-          "OsIsrName",
-          "OsIsrCategory",
-          "OsIsrInterruptPriority"
-        ],
-        "additionalProperties": true
-      }
+        "OsIsrCategory": {
+          "type": "integer",
+          "enum": [
+            1,
+            2
+          ],
+          "default": 2,
+          "description": "ISR 分类: 1(Category 1 - 不使用OS服务), 2(Category 2 - 可使用OS服务)"
+        },
+        "OsIsrInterruptPriority": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255,
+          "default": 1,
+          "description": "中断优先级"
+        },
+        "OsIsrInterruptSource": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "中断源编号"
+        },
+        "OsIsrStackSize": {
+          "type": "integer",
+          "minimum": 64,
+          "maximum": 65535,
+          "default": 512,
+          "description": "中断栈大小 (bytes)"
+        },
+        "OsIsrEnableNesting": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否允许嵌套中断"
+        },
+        "OsIsrUsesFpu": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否使用 FPU"
+        },
+        "OsIsrInterruptType": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "中断类型"
+        },
+        "OsIsrSpecialFunctionName": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "中断处理函数名"
+        }
+      },
+      "additionalProperties": true
     },
     "OsCounter": {
       "description": "OS 计数器配置容器 (可多实例)",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "OsCounterName": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "计数器名称 (唯一标识)"
-          },
-          "OsCounterTicksPerBase": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 4294967295,
-            "default": 1000,
-            "description": "每分钟最大 ticks (分辨率)"
-          },
-          "OsCounterMaxAllowedValue": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 4294967295,
-            "default": 65535,
-            "description": "最大允许计数值"
-          },
-          "OsCounterMinCycle": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 4294967295,
-            "default": 1,
-            "description": "最小周期 (ticks)"
-          },
-          "OsCounterIsHardware": {
-            "type": "boolean",
-            "default": false,
-            "description": "是否为硬件计数器"
-          },
-          "OsCounterHardwareReference": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "硬件引用 (如 GPT 通道名)"
-          }
+      "type": "object",
+      "properties": {
+        "OsCounterName": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "计数器名称 (唯一标识)"
         },
-        "required": [
-          "OsCounterName",
-          "OsCounterTicksPerBase",
-          "OsCounterMaxAllowedValue"
-        ],
-        "additionalProperties": true
-      }
+        "OsCounterTicksPerBase": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295,
+          "default": 1000,
+          "description": "每分钟最大 ticks (分辨率)"
+        },
+        "OsCounterMaxAllowedValue": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295,
+          "default": 65535,
+          "description": "最大允许计数值"
+        },
+        "OsCounterMinCycle": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295,
+          "default": 1,
+          "description": "最小周期 (ticks)"
+        },
+        "OsCounterIsHardware": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否为硬件计数器"
+        },
+        "OsCounterHardwareReference": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "硬件引用 (如 GPT 通道名)"
+        }
+      },
+      "additionalProperties": true
     },
     "OsAlarm": {
       "description": "OS 告警配置容器 (可多实例)",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "OsAlarmName": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "告警名称 (唯一标识)"
-          },
-          "OsAlarmCounterRef": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "关联计数器名称引用"
-          },
-          "OsAlarmActionType": {
-            "type": "string",
-            "enum": [
-              "ActivateTask",
-              "SetEvent",
-              "Callback"
-            ],
-            "default": "ActivateTask",
-            "description": "到期动作类型"
-          },
-          "OsAlarmActionTaskRef": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "目标任务引用 (ActivateTask/SetEvent)"
-          },
-          "OsAlarmActionEventMask": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 4294967295,
-            "description": "事件掩码 (SetEvent)"
-          },
-          "OsAlarmActionCallback": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "回调函数名 (Callback)"
-          },
-          "OsAlarmStartValue": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 4294967295,
-            "default": 0,
-            "description": "首次触发时间 (ticks)"
-          },
-          "OsAlarmCycleValue": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 4294967295,
-            "default": 0,
-            "description": "周期触发时间 (0=单次)"
-          },
-          "OsAlarmAutostart": {
-            "type": "boolean",
-            "default": false,
-            "description": "是否自动启动"
-          },
-          "OsAlarmAppModeMask": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 65535,
-            "default": 1,
-            "description": "应用模式掩码位"
-          }
+      "type": "object",
+      "properties": {
+        "OsAlarmName": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "告警名称 (唯一标识)"
         },
-        "required": [
-          "OsAlarmName",
-          "OsAlarmCounterRef",
-          "OsAlarmActionType",
-          "OsAlarmStartValue"
-        ],
-        "additionalProperties": true
-      }
+        "OsAlarmCounterRef": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "关联计数器名称引用"
+        },
+        "OsAlarmActionType": {
+          "type": "string",
+          "enum": [
+            "ActivateTask",
+            "SetEvent",
+            "Callback"
+          ],
+          "default": "ActivateTask",
+          "description": "到期动作类型"
+        },
+        "OsAlarmActionTaskRef": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "目标任务引用 (ActivateTask/SetEvent)"
+        },
+        "OsAlarmActionEventMask": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "description": "事件掩码 (SetEvent)"
+        },
+        "OsAlarmActionCallback": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "回调函数名 (Callback)"
+        },
+        "OsAlarmStartValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "default": 0,
+          "description": "首次触发时间 (ticks)"
+        },
+        "OsAlarmCycleValue": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295,
+          "default": 0,
+          "description": "周期触发时间 (0=单次)"
+        },
+        "OsAlarmAutostart": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否自动启动"
+        },
+        "OsAlarmAppModeMask": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "default": 1,
+          "description": "应用模式掩码位"
+        }
+      },
+      "additionalProperties": true
     },
     "OsScheduleTable": {
       "description": "OS 调度表配置容器 (可多实例)",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "OsScheduleTableName": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "调度表名称 (唯一标识)"
-          },
-          "OsScheduleTableDuration": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 4294967295,
-            "default": 1000,
-            "description": "调度表总时长 (ticks)"
-          },
-          "OsScheduleTableSyncStrategy": {
-            "type": "string",
-            "enum": [
-              "NONE",
-              "SINGLE",
-              "IMPLICIT"
-            ],
-            "default": "NONE",
-            "description": "同步策略: NONE(无), SINGLE(单次), IMPLICIT(隐式)"
-          },
-          "OsScheduleTableAutostart": {
-            "type": "boolean",
-            "default": false,
-            "description": "是否自动启动"
-          },
-          "OsScheduleTableAppModeMask": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 65535,
-            "default": 1,
-            "description": "应用模式掩码位"
-          },
-          "OsScheduleTableExpiryPoints": {
-            "type": "array",
-            "description": "到期点列表",
-            "items": {
-              "type": "object",
-              "properties": {
-                "ExpiryPointOffset": {
-                  "type": "integer",
-                  "minimum": 0,
-                  "maximum": 4294967295,
-                  "description": "到期时间偏移 (ticks)"
-                },
-                "ExpiryPointActionType": {
-                  "type": "string",
-                  "enum": [
-                    "ActivateTask",
-                    "SetEvent",
-                    "Callback"
-                  ],
-                  "default": "ActivateTask",
-                  "description": "到期动作类型"
-                },
-                "ExpiryPointTaskRef": {
-                  "type": "string",
-                  "maxLength": 128,
-                  "description": "目标任务引用"
-                },
-                "ExpiryPointCallback": {
-                  "type": "string",
-                  "maxLength": 128,
-                  "description": "回调函数名"
-                },
-                "ExpiryPointEventMask": {
-                  "type": "integer",
-                  "description": "事件掩码"
-                }
-              },
-              "required": [
-                "ExpiryPointOffset"
-              ],
-              "additionalProperties": true
-            }
-          }
+      "type": "object",
+      "properties": {
+        "OsScheduleTableName": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "调度表名称 (唯一标识)"
         },
-        "required": [
-          "OsScheduleTableName",
-          "OsScheduleTableDuration"
-        ],
-        "additionalProperties": true
-      }
+        "OsScheduleTableDuration": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295,
+          "default": 1000,
+          "description": "调度表总时长 (ticks)"
+        },
+        "OsScheduleTableSyncStrategy": {
+          "type": "string",
+          "enum": [
+            "NONE",
+            "SINGLE",
+            "IMPLICIT"
+          ],
+          "default": "NONE",
+          "description": "同步策略: NONE(无), SINGLE(单次), IMPLICIT(隐式)"
+        },
+        "OsScheduleTableAutostart": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否自动启动"
+        },
+        "OsScheduleTableAppModeMask": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "default": 1,
+          "description": "应用模式掩码位"
+        },
+        "OsScheduleTableExpiryPoints": {
+          "type": "array",
+          "description": "到期点列表",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ExpiryPointOffset": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 4294967295,
+                "description": "到期时间偏移 (ticks)"
+              },
+              "ExpiryPointActionType": {
+                "type": "string",
+                "enum": [
+                  "ActivateTask",
+                  "SetEvent",
+                  "Callback"
+                ],
+                "default": "ActivateTask",
+                "description": "到期动作类型"
+              },
+              "ExpiryPointTaskRef": {
+                "type": "string",
+                "maxLength": 128,
+                "description": "目标任务引用"
+              },
+              "ExpiryPointCallback": {
+                "type": "string",
+                "maxLength": 128,
+                "description": "回调函数名"
+              },
+              "ExpiryPointEventMask": {
+                "type": "integer",
+                "description": "事件掩码"
+              }
+            },
+            "required": [
+              "ExpiryPointOffset"
+            ],
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
     },
     "OsEvent": {
       "description": "OS 事件配置容器 (可多实例，用于 ECC 任务同步)",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "OsEventName": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "事件名称 (唯一标识)"
-          },
-          "OsEventTaskRef": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "关联任务引用 (ECC 任务)"
-          },
-          "OsEventMask": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 4294967295,
-            "default": 1,
-            "description": "事件掩码 (位掩码, 2^n)"
-          }
+      "type": "object",
+      "properties": {
+        "OsEventName": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "事件名称 (唯一标识)"
         },
-        "required": [
-          "OsEventName",
-          "OsEventTaskRef",
-          "OsEventMask"
-        ],
-        "additionalProperties": true
-      }
+        "OsEventTaskRef": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "关联任务引用 (ECC 任务)"
+        },
+        "OsEventMask": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967295,
+          "default": 1,
+          "description": "事件掩码 (位掩码, 2^n)"
+        }
+      },
+      "additionalProperties": true
     },
     "OsResource": {
       "description": "OS 资源配置容器 (可多实例，用于任务同步)",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "OsResourceName": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "资源名称 (唯一标识)"
-          },
-          "OsResourcePriority": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 255,
-            "default": 1,
-            "description": "资源优先级上限"
-          },
-          "OsResourceIsInternal": {
-            "type": "boolean",
-            "default": false,
-            "description": "是否内部资源"
-          }
+      "type": "object",
+      "properties": {
+        "OsResourceName": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "资源名称 (唯一标识)"
         },
-        "required": [
-          "OsResourceName",
-          "OsResourcePriority"
-        ],
-        "additionalProperties": true
-      }
+        "OsResourcePriority": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 255,
+          "default": 1,
+          "description": "资源优先级上限"
+        },
+        "OsResourceIsInternal": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否内部资源"
+        }
+      },
+      "additionalProperties": true
     },
     "OsApplication": {
       "description": "OS 应用配置容器 (可多实例，用于内存保护/分区)",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "OsApplicationName": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "应用名称 (唯一标识)"
-          },
-          "OsApplicationTrusted": {
-            "type": "boolean",
-            "default": false,
-            "description": "是否为可信应用"
-          },
-          "OsApplicationTasks": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "maxLength": 128
-            },
-            "description": "应用包含的任务引用列表"
-          },
-          "OsApplicationIsrs": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "maxLength": 128
-            },
-            "description": "应用包含的 ISR 引用列表"
-          },
-          "OsApplicationScheduleTables": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "maxLength": 128
-            },
-            "description": "应用包含的调度表引用列表"
-          },
-          "OsApplicationHooks": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "maxLength": 256
-            },
-            "description": "应用关联的 hook 函数列表"
-          }
+      "type": "object",
+      "properties": {
+        "OsApplicationName": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "应用名称 (唯一标识)"
         },
-        "required": [
-          "OsApplicationName"
-        ],
-        "additionalProperties": true
-      }
+        "OsApplicationTrusted": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否为可信应用"
+        },
+        "OsApplicationTasks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "description": "应用包含的任务引用列表"
+        },
+        "OsApplicationIsrs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "description": "应用包含的 ISR 引用列表"
+        },
+        "OsApplicationScheduleTables": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "description": "应用包含的调度表引用列表"
+        },
+        "OsApplicationHooks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 256
+          },
+          "description": "应用关联的 hook 函数列表"
+        }
+      },
+      "additionalProperties": true
     },
     "OsPhysicalCore": {
       "description": "OS 物理核配置容器 (可多实例，多核系统)",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "OsPhysicalCoreId": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 15,
-            "description": "物理核 ID"
-          },
-          "OsPhysicalCoreIsAutostart": {
-            "type": "boolean",
-            "default": true,
-            "description": "是否自动启动"
-          },
-          "OsPhysicalCoreType": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "内核类型"
-          },
-          "OsPhysicalCoreMasterStartAllowed": {
-            "type": "boolean",
-            "default": false,
-            "description": "是否允许主核启动从核"
-          },
-          "OsPhysicalCorePrivelegedHwAccess": {
-            "type": "boolean",
-            "default": false,
-            "description": "是否允许特权硬件访问"
-          },
-          "OsPhysicalCoreDefaultEntrySymbol": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "默认入口符号"
-          },
-          "OsPhysicalCoreExceptionSources": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 65535,
-            "description": "异常源掩码"
-          },
-          "OsPhysicalCoreMpuMaxRegions": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 64,
-            "default": 8,
-            "description": "MPU 最大区域数"
-          },
-          "OsPhysicalCoreMpuType": {
-            "type": "string",
-            "maxLength": 128,
-            "description": "MPU 类型"
-          }
+      "type": "object",
+      "properties": {
+        "OsPhysicalCoreId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 15,
+          "description": "物理核 ID"
         },
-        "required": [
-          "OsPhysicalCoreId"
-        ],
-        "additionalProperties": true
-      }
+        "OsPhysicalCoreIsAutostart": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否自动启动"
+        },
+        "OsPhysicalCoreType": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "内核类型"
+        },
+        "OsPhysicalCoreMasterStartAllowed": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否允许主核启动从核"
+        },
+        "OsPhysicalCorePrivelegedHwAccess": {
+          "type": "boolean",
+          "default": false,
+          "description": "是否允许特权硬件访问"
+        },
+        "OsPhysicalCoreDefaultEntrySymbol": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "默认入口符号"
+        },
+        "OsPhysicalCoreExceptionSources": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "异常源掩码"
+        },
+        "OsPhysicalCoreMpuMaxRegions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64,
+          "default": 8,
+          "description": "MPU 最大区域数"
+        },
+        "OsPhysicalCoreMpuType": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "MPU 类型"
+        }
+      },
+      "additionalProperties": true
     },
     "CommonPublishedInformation": {
       "description": "CommonPublishedInformation 配置容器",
