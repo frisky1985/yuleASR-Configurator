@@ -46,47 +46,6 @@
       },
       "additionalProperties": true
     },
-    "FeeBlockConfiguration_01": {
-      "description": "FeeBlockConfiguration_01 配置容器",
-      "type": "object",
-      "properties": {
-        "FeeBlockNumber": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "FeeBlockNumber 参数"
-        },
-        "FeeBlockSize": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "FeeBlockSize 参数"
-        },
-        "FeeImmediateData": {
-          "type": "boolean",
-          "default": false,
-          "description": "FeeImmediateData 参数"
-        },
-        "FeeNumberOfWriteCycles": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "FeeNumberOfWriteCycles 参数"
-        },
-        "FeeBlockId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "FeeBlockId 参数"
-        },
-        "FeeIsLookupTableBlock": {
-          "type": "boolean",
-          "default": false,
-          "description": "FeeIsLookupTableBlock 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "FeeBlockDescriptor": {
       "description": "FeeBlockDescriptor 配置容器",
       "type": "object",
@@ -694,5 +653,6 @@
       "severity": "warning",
       "description": "Fee 块大小不应超过 Fls 支持的最大读取大小"
     }
-  ]
+  ],
+  "_fix_renamed": 1
 }

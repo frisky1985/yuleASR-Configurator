@@ -612,7 +612,7 @@
       },
       "additionalProperties": true
     },
-    "CanTpTxNPdu_37436734": {
+    "CanTpTxNPdu": {
       "description": "CanTpTxNPdu_37436734 配置容器",
       "type": "object",
       "properties": {
@@ -625,7 +625,7 @@
       },
       "additionalProperties": true
     },
-    "CanTpRxFcNPdu_37436734": {
+    "CanTpRxFcNPdu": {
       "description": "CanTpRxFcNPdu_37436734 配置容器",
       "type": "object",
       "properties": {
@@ -870,5 +870,6 @@
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "_fix_renamed": 2
 }

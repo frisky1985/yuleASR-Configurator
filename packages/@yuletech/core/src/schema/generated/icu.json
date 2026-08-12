@@ -60,56 +60,8 @@
       },
       "additionalProperties": true
     },
-    "IcuChannel_CANRx": {
+    "IcuChannel": {
       "description": "IcuChannel_CANRx 配置容器",
-      "type": "object",
-      "properties": {
-        "IcuChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "IcuChannelId 参数"
-        },
-        "IcuDMAChannelEnable": {
-          "type": "boolean",
-          "default": false,
-          "description": "IcuDMAChannelEnable 参数"
-        },
-        "IcuWakeupCapability": {
-          "type": "boolean",
-          "default": false,
-          "description": "IcuWakeupCapability 参数"
-        },
-        "IcuDefaultStartEdge": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "IcuDefaultStartEdge 参数"
-        },
-        "IcuHwIP": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "IcuHwIP 参数"
-        },
-        "IcuMeasurementMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "IcuMeasurementMode 参数"
-        },
-        "IcuOverflowNotification": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "IcuOverflowNotification 参数"
-        },
-        "IcuSignalNotification": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "IcuSignalNotification 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "IcuChannel_SBCINT": {
-      "description": "IcuChannel_SBCINT 配置容器",
       "type": "object",
       "properties": {
         "IcuChannelId": {
@@ -252,7 +204,7 @@
       },
       "additionalProperties": true
     },
-    "IcuGpioChannels_0": {
+    "IcuGpioChannel": {
       "description": "IcuGpioChannels_0 配置容器",
       "type": "object",
       "properties": {
@@ -260,143 +212,17 @@
           "type": "string",
           "maxLength": 255,
           "description": "IcuGpioChannel 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "IcuGpioChannels_1": {
-      "description": "IcuGpioChannels_1 配置容器",
-      "type": "object",
-      "properties": {
-        "IcuGpioChannel": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "IcuGpioChannel 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "IcuGpio_0": {
-      "description": "IcuGpio_0 配置容器",
-      "type": "object",
-      "properties": {
+        },
         "IcuGpioModule": {
           "type": "string",
           "maxLength": 255,
           "description": "IcuGpioModule 参数"
-        },
-        "IcuGpioChannel": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "IcuGpioChannel 参数"
         }
       },
       "additionalProperties": true
     },
-    "IcuHwInterruptConfigList_0": {
+    "IcuHwInterruptConfig": {
       "description": "IcuHwInterruptConfigList_0 配置容器",
-      "type": "object",
-      "properties": {
-        "IcuIsrEnable": {
-          "type": "boolean",
-          "default": false,
-          "description": "IcuIsrEnable 参数"
-        },
-        "IcuIsrHwId": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "IcuIsrHwId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "IcuHwInterruptConfigList_1": {
-      "description": "IcuHwInterruptConfigList_1 配置容器",
-      "type": "object",
-      "properties": {
-        "IcuIsrEnable": {
-          "type": "boolean",
-          "default": false,
-          "description": "IcuIsrEnable 参数"
-        },
-        "IcuIsrHwId": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "IcuIsrHwId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "IcuHwInterruptConfigList_2": {
-      "description": "IcuHwInterruptConfigList_2 配置容器",
-      "type": "object",
-      "properties": {
-        "IcuIsrEnable": {
-          "type": "boolean",
-          "default": false,
-          "description": "IcuIsrEnable 参数"
-        },
-        "IcuIsrHwId": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "IcuIsrHwId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "IcuHwInterruptConfigList_3": {
-      "description": "IcuHwInterruptConfigList_3 配置容器",
-      "type": "object",
-      "properties": {
-        "IcuIsrEnable": {
-          "type": "boolean",
-          "default": false,
-          "description": "IcuIsrEnable 参数"
-        },
-        "IcuIsrHwId": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "IcuIsrHwId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "IcuHwInterruptConfigList_4": {
-      "description": "IcuHwInterruptConfigList_4 配置容器",
-      "type": "object",
-      "properties": {
-        "IcuIsrEnable": {
-          "type": "boolean",
-          "default": false,
-          "description": "IcuIsrEnable 参数"
-        },
-        "IcuIsrHwId": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "IcuIsrHwId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "IcuHwInterruptConfigList_5": {
-      "description": "IcuHwInterruptConfigList_5 配置容器",
-      "type": "object",
-      "properties": {
-        "IcuIsrEnable": {
-          "type": "boolean",
-          "default": false,
-          "description": "IcuIsrEnable 参数"
-        },
-        "IcuIsrHwId": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "IcuIsrHwId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "IcuHwInterruptConfigList_6": {
-      "description": "IcuHwInterruptConfigList_6 配置容器",
       "type": "object",
       "properties": {
         "IcuIsrEnable": {
@@ -421,5 +247,6 @@
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "_fix_renamed": 12
 }

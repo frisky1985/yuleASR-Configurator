@@ -65,7 +65,7 @@
       },
       "additionalProperties": true
     },
-    "CryptoDriverObject_0": {
+    "CryptoDriverObject": {
       "description": "CryptoDriverObject_0 配置容器",
       "type": "object",
       "properties": {
@@ -1022,5 +1022,6 @@
       "severity": "warning",
       "description": "Crypto 驱动对象应与 CryIf 通道匹配"
     }
-  ]
+  ],
+  "_fix_renamed": 1
 }

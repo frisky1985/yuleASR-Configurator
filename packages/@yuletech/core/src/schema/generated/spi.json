@@ -60,7 +60,7 @@
       },
       "additionalProperties": true
     },
-    "SpiChannelList_0": {
+    "SpiChannelList": {
       "description": "SpiChannelList_0 配置容器",
       "type": "object",
       "properties": {
@@ -73,90 +73,8 @@
       },
       "additionalProperties": true
     },
-    "SpiChannel_Flash": {
+    "SpiChannel": {
       "description": "SpiChannel_Flash 配置容器",
-      "type": "object",
-      "properties": {
-        "SpiChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiChannelId 参数"
-        },
-        "SpiDataWidth": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiDataWidth 参数"
-        },
-        "SpiEbMaxLength": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiEbMaxLength 参数"
-        },
-        "SpiIbNBuffers": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiIbNBuffers 参数"
-        },
-        "SpiChannelType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiChannelType 参数"
-        },
-        "SpiTransferStart": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiTransferStart 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "SpiChannel_SE": {
-      "description": "SpiChannel_SE 配置容器",
-      "type": "object",
-      "properties": {
-        "SpiChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiChannelId 参数"
-        },
-        "SpiDataWidth": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiDataWidth 参数"
-        },
-        "SpiEbMaxLength": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiEbMaxLength 参数"
-        },
-        "SpiIbNBuffers": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiIbNBuffers 参数"
-        },
-        "SpiChannelType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiChannelType 参数"
-        },
-        "SpiTransferStart": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiTransferStart 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "SpiChannel_UWB": {
-      "description": "SpiChannel_UWB 配置容器",
       "type": "object",
       "properties": {
         "SpiChannelId": {
@@ -371,186 +289,8 @@
       ],
       "x-choice-description": "SPI 通道类型互斥 (SPI_MASTER/SPI_SLAVE 二选一)"
     },
-    "SpiExternalDevice_FLASH": {
+    "SpiExternalDevice": {
       "description": "SpiExternalDevice_FLASH 配置容器",
-      "type": "object",
-      "properties": {
-        "SpiBaudrate": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiBaudrate 参数"
-        },
-        "SpiBaudrateAlternate": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiBaudrateAlternate 参数"
-        },
-        "SpiEnableCs": {
-          "type": "boolean",
-          "default": false,
-          "description": "SpiEnableCs 参数"
-        },
-        "SpiSlaveMode": {
-          "type": "boolean",
-          "default": false,
-          "description": "SpiSlaveMode 参数"
-        },
-        "SpiTimeClk2Cs": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiTimeClk2Cs 参数"
-        },
-        "SpiTimeCs2Clk": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiTimeCs2Clk 参数"
-        },
-        "SpiTimeCs2Cs": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiTimeCs2Cs 参数"
-        },
-        "SpiByteSwap": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiByteSwap 参数"
-        },
-        "SpiCsContinous": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiCsContinous 参数"
-        },
-        "SpiCsIdentifier": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiCsIdentifier 参数"
-        },
-        "SpiCsPolarity": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiCsPolarity 参数"
-        },
-        "SpiCsSelection": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiCsSelection 参数"
-        },
-        "SpiDataShiftEdge": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiDataShiftEdge 参数"
-        },
-        "SpiHwUnit": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiHwUnit 参数"
-        },
-        "SpiPinConfig": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiPinConfig 参数"
-        },
-        "SpiShiftClockIdleLevel": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiShiftClockIdleLevel 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "SpiExternalDevice_SE": {
-      "description": "SpiExternalDevice_SE 配置容器",
-      "type": "object",
-      "properties": {
-        "SpiBaudrate": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiBaudrate 参数"
-        },
-        "SpiBaudrateAlternate": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiBaudrateAlternate 参数"
-        },
-        "SpiEnableCs": {
-          "type": "boolean",
-          "default": false,
-          "description": "SpiEnableCs 参数"
-        },
-        "SpiSlaveMode": {
-          "type": "boolean",
-          "default": false,
-          "description": "SpiSlaveMode 参数"
-        },
-        "SpiTimeClk2Cs": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiTimeClk2Cs 参数"
-        },
-        "SpiTimeCs2Clk": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiTimeCs2Clk 参数"
-        },
-        "SpiTimeCs2Cs": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiTimeCs2Cs 参数"
-        },
-        "SpiByteSwap": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiByteSwap 参数"
-        },
-        "SpiCsContinous": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiCsContinous 参数"
-        },
-        "SpiCsIdentifier": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiCsIdentifier 参数"
-        },
-        "SpiCsPolarity": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiCsPolarity 参数"
-        },
-        "SpiCsSelection": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiCsSelection 参数"
-        },
-        "SpiDataShiftEdge": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiDataShiftEdge 参数"
-        },
-        "SpiHwUnit": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiHwUnit 参数"
-        },
-        "SpiPinConfig": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiPinConfig 参数"
-        },
-        "SpiShiftClockIdleLevel": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "SpiShiftClockIdleLevel 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "SpiExternalDevice_UWB": {
-      "description": "SpiExternalDevice_UWB 配置容器",
       "type": "object",
       "properties": {
         "SpiBaudrate": {
@@ -765,58 +505,8 @@
       },
       "additionalProperties": true
     },
-    "SpiJob_Flash": {
+    "SpiJob": {
       "description": "SpiJob_Flash 配置容器",
-      "type": "object",
-      "properties": {
-        "SpiJobId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiJobId 参数"
-        },
-        "SpiJobPriority": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiJobPriority 参数"
-        },
-        "SpiChannelIndex": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiChannelIndex 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "SpiJob_SE": {
-      "description": "SpiJob_SE 配置容器",
-      "type": "object",
-      "properties": {
-        "SpiJobId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiJobId 参数"
-        },
-        "SpiJobPriority": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiJobPriority 参数"
-        },
-        "SpiChannelIndex": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "SpiChannelIndex 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "SpiJob_UWB": {
-      "description": "SpiJob_UWB 配置容器",
       "type": "object",
       "properties": {
         "SpiJobId": {
@@ -877,7 +567,7 @@
       },
       "additionalProperties": true
     },
-    "SpiPhyUnit_0": {
+    "SpiPhyUnit": {
       "description": "SpiPhyUnit_0 配置容器",
       "type": "object",
       "properties": {
@@ -941,7 +631,7 @@
     "SpiChannel_Flash"
   ],
   "additionalProperties": false,
-  "x-layer": "Service",
+  "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "ARXML-Extracted",
   "crossReferences": [
@@ -953,5 +643,6 @@
       "severity": "warning",
       "description": "SPI 波特率不应超过 MCU 主时钟参考频率"
     }
-  ]
+  ],
+  "_fix_renamed": 11
 }

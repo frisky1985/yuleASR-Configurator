@@ -144,7 +144,7 @@
       },
       "additionalProperties": true
     },
-    "AdcHwUnit_0": {
+    "AdcHwUnit": {
       "description": "AdcHwUnit_0 配置容器",
       "type": "object",
       "properties": {
@@ -283,7 +283,7 @@
       },
       "additionalProperties": true
     },
-    "Adc_A8_BAT": {
+    "AdcChannel": {
       "description": "Adc_A8_BAT 配置容器",
       "type": "object",
       "properties": {
@@ -311,7 +311,7 @@
       },
       "additionalProperties": true
     },
-    "AdcGroup_0": {
+    "AdcGroup": {
       "description": "AdcGroup_0 配置容器",
       "type": "object",
       "properties": {
@@ -461,25 +461,8 @@
       },
       "additionalProperties": true
     },
-    "AdcInterrupt_0": {
+    "AdcInterrupt": {
       "description": "AdcInterrupt_0 配置容器",
-      "type": "object",
-      "properties": {
-        "AdcInterruptEnable": {
-          "type": "boolean",
-          "default": false,
-          "description": "AdcInterruptEnable 参数"
-        },
-        "AdcInterruptSource": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "AdcInterruptSource 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "AdcInterrupt_1": {
-      "description": "AdcInterrupt_1 配置容器",
       "type": "object",
       "properties": {
         "AdcInterruptEnable": {
@@ -627,7 +610,7 @@
     "Adc_A8_BAT"
   ],
   "additionalProperties": false,
-  "x-layer": "Service",
+  "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "ARXML-Extracted",
   "crossReferences": [
@@ -639,5 +622,6 @@
       "severity": "warning",
       "description": "ADC 上电延迟值不应超过 MCU 主时钟参考频率"
     }
-  ]
+  ],
+  "_fix_renamed": 5
 }

@@ -180,7 +180,7 @@
     "LinGeneral"
   ],
   "additionalProperties": false,
-  "x-layer": "ECUAL",
+  "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "ARXML-Extracted"
 }

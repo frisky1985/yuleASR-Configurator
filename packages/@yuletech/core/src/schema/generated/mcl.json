@@ -559,161 +559,8 @@
       },
       "additionalProperties": true
     },
-    "MclIsrAvailable": {
+    "MclIsr": {
       "description": "MclIsrAvailable 配置容器",
-      "type": "object",
-      "properties": {
-        "MclIsrEnabled": {
-          "type": "boolean",
-          "default": false,
-          "description": "MclIsrEnabled 参数"
-        },
-        "MclIsrName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "MclIsrName 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "MclIsrAvailable_1": {
-      "description": "MclIsrAvailable_1 配置容器",
-      "type": "object",
-      "properties": {
-        "MclIsrEnabled": {
-          "type": "boolean",
-          "default": false,
-          "description": "MclIsrEnabled 参数"
-        },
-        "MclIsrName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "MclIsrName 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "MclIsrAvailable_10": {
-      "description": "MclIsrAvailable_10 配置容器",
-      "type": "object",
-      "properties": {
-        "MclIsrEnabled": {
-          "type": "boolean",
-          "default": false,
-          "description": "MclIsrEnabled 参数"
-        },
-        "MclIsrName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "MclIsrName 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "MclIsrAvailable_11": {
-      "description": "MclIsrAvailable_11 配置容器",
-      "type": "object",
-      "properties": {
-        "MclIsrEnabled": {
-          "type": "boolean",
-          "default": false,
-          "description": "MclIsrEnabled 参数"
-        },
-        "MclIsrName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "MclIsrName 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "MclIsrAvailable_12": {
-      "description": "MclIsrAvailable_12 配置容器",
-      "type": "object",
-      "properties": {
-        "MclIsrEnabled": {
-          "type": "boolean",
-          "default": false,
-          "description": "MclIsrEnabled 参数"
-        },
-        "MclIsrName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "MclIsrName 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "MclIsrAvailable_13": {
-      "description": "MclIsrAvailable_13 配置容器",
-      "type": "object",
-      "properties": {
-        "MclIsrEnabled": {
-          "type": "boolean",
-          "default": false,
-          "description": "MclIsrEnabled 参数"
-        },
-        "MclIsrName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "MclIsrName 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "MclIsrAvailable_14": {
-      "description": "MclIsrAvailable_14 配置容器",
-      "type": "object",
-      "properties": {
-        "MclIsrEnabled": {
-          "type": "boolean",
-          "default": false,
-          "description": "MclIsrEnabled 参数"
-        },
-        "MclIsrName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "MclIsrName 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "MclIsrAvailable_15": {
-      "description": "MclIsrAvailable_15 配置容器",
-      "type": "object",
-      "properties": {
-        "MclIsrEnabled": {
-          "type": "boolean",
-          "default": false,
-          "description": "MclIsrEnabled 参数"
-        },
-        "MclIsrName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "MclIsrName 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "MclIsrAvailable_2": {
-      "description": "MclIsrAvailable_2 配置容器",
-      "type": "object",
-      "properties": {
-        "MclIsrEnabled": {
-          "type": "boolean",
-          "default": false,
-          "description": "MclIsrEnabled 参数"
-        },
-        "MclIsrName": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "MclIsrName 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "MclIsrAvailable_3": {
-      "description": "MclIsrAvailable_3 配置容器",
       "type": "object",
       "properties": {
         "MclIsrEnabled": {
@@ -730,9 +577,14 @@
       "additionalProperties": true
     }
   },
-  "required": ["CommonPublishedInformation", "DmaChannel", "DmaInstance"],
+  "required": [
+    "CommonPublishedInformation",
+    "DmaChannel",
+    "DmaInstance"
+  ],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "_fix_renamed": 10
 }

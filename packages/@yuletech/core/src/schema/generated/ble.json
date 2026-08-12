@@ -431,88 +431,8 @@
       },
       "additionalProperties": true
     },
-    "GattDBAtt_0": {
+    "GattDBAtt": {
       "description": "GattDBAtt_0 配置容器",
-      "type": "object",
-      "properties": {
-        "AttCharacteristicProperties": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "AttCharacteristicProperties 参数"
-        },
-        "AttPermissions": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "AttPermissions 参数"
-        },
-        "AttValueMaxLength": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "AttValueMaxLength 参数"
-        },
-        "AttType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "AttType 参数"
-        },
-        "AttUuid": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "AttUuid 参数"
-        },
-        "AttValue": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "AttValue 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "GattDBAtt_1": {
-      "description": "GattDBAtt_1 配置容器",
-      "type": "object",
-      "properties": {
-        "AttCharacteristicProperties": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "AttCharacteristicProperties 参数"
-        },
-        "AttPermissions": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "AttPermissions 参数"
-        },
-        "AttValueMaxLength": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "AttValueMaxLength 参数"
-        },
-        "AttType": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "AttType 参数"
-        },
-        "AttUuid": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "AttUuid 参数"
-        },
-        "AttValue": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "AttValue 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "GattDBAtt_2": {
-      "description": "GattDBAtt_2 配置容器",
       "type": "object",
       "properties": {
         "AttCharacteristicProperties": {
@@ -748,5 +668,6 @@
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "_fix_renamed": 3
 }

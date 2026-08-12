@@ -304,8 +304,7 @@
           "description": "CanClockSelection 参数"
         }
       },
-      "additionalProperties": true,
-      "x-multiplicity": "1..*"
+      "additionalProperties": true
     },
     "CanControllerFdBaudrateConfig": {
       "description": "CanControllerFdBaudrateConfig 配置容器",
@@ -355,272 +354,8 @@
       },
       "additionalProperties": true
     },
-    "CanFilterMask0": {
+    "CanFilterMask": {
       "description": "CanFilterMask0 配置容器",
-      "type": "object",
-      "properties": {
-        "CanFilterMaskValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterMaskValue 参数"
-        },
-        "CanFilterCodeValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterCodeValue 参数"
-        },
-        "IsLocked": {
-          "type": "boolean",
-          "default": false,
-          "description": "IsLocked 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "CanFilterMask_001": {
-      "description": "CanFilterMask_001 配置容器",
-      "type": "object",
-      "properties": {
-        "CanFilterMaskValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterMaskValue 参数"
-        },
-        "CanFilterCodeValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterCodeValue 参数"
-        },
-        "IsLocked": {
-          "type": "boolean",
-          "default": false,
-          "description": "IsLocked 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "CanFilterMask_002": {
-      "description": "CanFilterMask_002 配置容器",
-      "type": "object",
-      "properties": {
-        "CanFilterMaskValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterMaskValue 参数"
-        },
-        "CanFilterCodeValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterCodeValue 参数"
-        },
-        "IsLocked": {
-          "type": "boolean",
-          "default": false,
-          "description": "IsLocked 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "CanFilterMask_003": {
-      "description": "CanFilterMask_003 配置容器",
-      "type": "object",
-      "properties": {
-        "CanFilterMaskValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterMaskValue 参数"
-        },
-        "CanFilterCodeValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterCodeValue 参数"
-        },
-        "IsLocked": {
-          "type": "boolean",
-          "default": false,
-          "description": "IsLocked 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "CanFilterMask_004": {
-      "description": "CanFilterMask_004 配置容器",
-      "type": "object",
-      "properties": {
-        "CanFilterMaskValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterMaskValue 参数"
-        },
-        "CanFilterCodeValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterCodeValue 参数"
-        },
-        "IsLocked": {
-          "type": "boolean",
-          "default": false,
-          "description": "IsLocked 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "CanFilterMask_005": {
-      "description": "CanFilterMask_005 配置容器",
-      "type": "object",
-      "properties": {
-        "CanFilterMaskValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterMaskValue 参数"
-        },
-        "CanFilterCodeValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterCodeValue 参数"
-        },
-        "IsLocked": {
-          "type": "boolean",
-          "default": false,
-          "description": "IsLocked 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "CanFilterMask_006": {
-      "description": "CanFilterMask_006 配置容器",
-      "type": "object",
-      "properties": {
-        "CanFilterMaskValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterMaskValue 参数"
-        },
-        "CanFilterCodeValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterCodeValue 参数"
-        },
-        "IsLocked": {
-          "type": "boolean",
-          "default": false,
-          "description": "IsLocked 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "CanFilterMask_007": {
-      "description": "CanFilterMask_007 配置容器",
-      "type": "object",
-      "properties": {
-        "CanFilterMaskValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterMaskValue 参数"
-        },
-        "CanFilterCodeValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterCodeValue 参数"
-        },
-        "IsLocked": {
-          "type": "boolean",
-          "default": false,
-          "description": "IsLocked 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "CanFilterMask_008": {
-      "description": "CanFilterMask_008 配置容器",
-      "type": "object",
-      "properties": {
-        "CanFilterMaskValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterMaskValue 参数"
-        },
-        "CanFilterCodeValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterCodeValue 参数"
-        },
-        "IsLocked": {
-          "type": "boolean",
-          "default": false,
-          "description": "IsLocked 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "CanFilterMask_009": {
-      "description": "CanFilterMask_009 配置容器",
-      "type": "object",
-      "properties": {
-        "CanFilterMaskValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterMaskValue 参数"
-        },
-        "CanFilterCodeValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterCodeValue 参数"
-        },
-        "IsLocked": {
-          "type": "boolean",
-          "default": false,
-          "description": "IsLocked 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "CanFilterMask_010": {
-      "description": "CanFilterMask_010 配置容器",
-      "type": "object",
-      "properties": {
-        "CanFilterMaskValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterMaskValue 参数"
-        },
-        "CanFilterCodeValue": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "CanFilterCodeValue 参数"
-        },
-        "IsLocked": {
-          "type": "boolean",
-          "default": false,
-          "description": "IsLocked 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "CanFilterMask_011": {
-      "description": "CanFilterMask_011 配置容器",
       "type": "object",
       "properties": {
         "CanFilterMaskValue": {
@@ -705,7 +440,7 @@
     "CanControllerFdBaudrateConfig"
   ],
   "additionalProperties": false,
-  "x-layer": "Service",
+  "x-layer": "MCAL",
   "x-version": "4.4.0",
   "x-source": "ARXML-Extracted",
   "crossReferences": [
@@ -725,5 +460,6 @@
       "severity": "warning",
       "description": "CAN FD 数据波特率不应超过收发器最大波特率"
     }
-  ]
+  ],
+  "_fix_renamed": 12
 }

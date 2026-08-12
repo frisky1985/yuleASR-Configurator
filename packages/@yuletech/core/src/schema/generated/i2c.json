@@ -174,167 +174,8 @@
       },
       "additionalProperties": true
     },
-    "I2cChannel_0": {
+    "I2cChannel": {
       "description": "I2cChannel_0 配置容器",
-      "type": "object",
-      "properties": {
-        "I2cBaudRate": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 4294967295,
-          "description": "I2cBaudRate 参数"
-        },
-        "I2cClockSource": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "I2cClockSource 参数"
-        },
-        "I2cSlaveAddress": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "I2cSlaveAddress 参数"
-        },
-        "I2cBusTimeout": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 4294967295,
-          "description": "I2cBusTimeout 参数"
-        },
-        "I2cDataSetupTime": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "I2cDataSetupTime 参数"
-        },
-        "I2cDataHoldTime": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "I2cDataHoldTime 参数"
-        },
-        "I2cChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "I2cChannelId 参数"
-        },
-        "I2cOperationMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "I2cOperationMode 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "I2cChannel_1": {
-      "description": "I2cChannel_1 配置容器",
-      "type": "object",
-      "properties": {
-        "I2cBaudRate": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 4294967295,
-          "description": "I2cBaudRate 参数"
-        },
-        "I2cClockSource": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "I2cClockSource 参数"
-        },
-        "I2cSlaveAddress": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "I2cSlaveAddress 参数"
-        },
-        "I2cBusTimeout": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 4294967295,
-          "description": "I2cBusTimeout 参数"
-        },
-        "I2cDataSetupTime": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "I2cDataSetupTime 参数"
-        },
-        "I2cDataHoldTime": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "I2cDataHoldTime 参数"
-        },
-        "I2cChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "I2cChannelId 参数"
-        },
-        "I2cOperationMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "I2cOperationMode 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "I2cChannel_2": {
-      "description": "I2cChannel_2 配置容器",
-      "type": "object",
-      "properties": {
-        "I2cBaudRate": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 4294967295,
-          "description": "I2cBaudRate 参数"
-        },
-        "I2cClockSource": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "I2cClockSource 参数"
-        },
-        "I2cSlaveAddress": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "I2cSlaveAddress 参数"
-        },
-        "I2cBusTimeout": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 4294967295,
-          "description": "I2cBusTimeout 参数"
-        },
-        "I2cDataSetupTime": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "I2cDataSetupTime 参数"
-        },
-        "I2cDataHoldTime": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "I2cDataHoldTime 参数"
-        },
-        "I2cChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "I2cChannelId 参数"
-        },
-        "I2cOperationMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "I2cOperationMode 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "I2cChannel_3": {
-      "description": "I2cChannel_3 配置容器",
       "type": "object",
       "properties": {
         "I2cBaudRate": {
@@ -387,9 +228,14 @@
       "additionalProperties": true
     }
   },
-  "required": ["CommonPublishedInformation", "I2cConfigSet", "I2cGeneral"],
+  "required": [
+    "CommonPublishedInformation",
+    "I2cConfigSet",
+    "I2cGeneral"
+  ],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "_fix_renamed": 4
 }

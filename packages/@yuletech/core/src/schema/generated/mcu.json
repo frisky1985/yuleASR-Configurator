@@ -86,7 +86,8 @@
           "default": true,
           "description": "McuVersionInfoApi 参数 - 版本信息 API"
         }
-      }
+      },
+      "additionalProperties": true
     },
     "ActiveModePowerSetting": {
       "description": "ActiveModePowerSetting 配置容器",
@@ -410,73 +411,8 @@
       },
       "additionalProperties": true
     },
-    "MCU_DAP_RESET": {
+    "McuResetSetting": {
       "description": "MCU_DAP_RESET 配置容器",
-      "type": "object",
-      "properties": {
-        "McuResetReason": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "McuResetReason 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "MCU_FATAL_RESET": {
-      "description": "MCU_FATAL_RESET 配置容器",
-      "type": "object",
-      "properties": {
-        "McuResetReason": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "McuResetReason 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "MCU_HVD_RESET": {
-      "description": "MCU_HVD_RESET 配置容器",
-      "type": "object",
-      "properties": {
-        "McuResetReason": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "McuResetReason 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "MCU_JTAG_SYSTEM_RESET": {
-      "description": "MCU_JTAG_SYSTEM_RESET 配置容器",
-      "type": "object",
-      "properties": {
-        "McuResetReason": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "McuResetReason 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "MCU_LOCKUP_RESET": {
-      "description": "MCU_LOCKUP_RESET 配置容器",
-      "type": "object",
-      "properties": {
-        "McuResetReason": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "McuResetReason 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "MCU_LOW_POWER_ACKNOWLEDGE_TIMEOUT_RESET": {
-      "description": "MCU_LOW_POWER_ACKNOWLEDGE_TIMEOUT_RESET 配置容器",
       "type": "object",
       "properties": {
         "McuResetReason": {
@@ -495,7 +431,8 @@
     "CommonPublishedInformation"
   ],
   "additionalProperties": false,
-  "x-layer": "Service",
+  "x-layer": "MCAL",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "_fix_renamed": 6
 }

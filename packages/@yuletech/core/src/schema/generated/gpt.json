@@ -150,7 +150,7 @@
       },
       "additionalProperties": true
     },
-    "GptChannelConfiguration_4": {
+    "GptChannelConfiguration": {
       "description": "GptChannelConfiguration_4 配置容器",
       "type": "object",
       "properties": {
@@ -240,181 +240,6 @@
       },
       "additionalProperties": true
     },
-    "GptChannelConfiguration_LPIT": {
-      "description": "GptChannelConfiguration_LPIT 配置容器",
-      "type": "object",
-      "properties": {
-        "GptChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "GptChannelId 参数"
-        },
-        "GptChannelTickFrequency": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "GptChannelTickFrequency 参数"
-        },
-        "GptChannelTickValueMax": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "GptChannelTickValueMax 参数"
-        },
-        "GptEnableWakeup": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptEnableWakeup 参数"
-        },
-        "GptFreezeEnable": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptFreezeEnable 参数"
-        },
-        "GptLPitEnReloadOnTrigger": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptLPitEnReloadOnTrigger 参数"
-        },
-        "GptLPitEnStartOnTrigger": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptLPitEnStartOnTrigger 参数"
-        },
-        "GptLPitEnStopOnInterrupt": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptLPitEnStopOnInterrupt 参数"
-        },
-        "GptLPitIsExternalTrigger": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptLPitIsExternalTrigger 参数"
-        },
-        "GptLptmrPrescaler": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "GptLptmrPrescaler 参数"
-        },
-        "GptWakeupEnableNotification": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptWakeupEnableNotification 参数"
-        },
-        "GptChannelMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "GptChannelMode 参数",
-          "enum": [
-            "GPT_CHANNEL_MODE_CONTINUOUS",
-            "GPT_CHANNEL_MODE_ONESHOT"
-          ]
-        },
-        "GptHwChannel": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "GptHwChannel 参数"
-        },
-        "GptLptmrChannelClkSrc": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "GptLptmrChannelClkSrc 参数"
-        },
-        "GptNotification": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "GptNotification 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "GptChannelConfiguration_5": {
-      "description": "GptChannelConfiguration_5 配置容器",
-      "type": "object",
-      "properties": {
-        "GptChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "GptChannelId 参数"
-        },
-        "GptChannelTickFrequency": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "GptChannelTickFrequency 参数"
-        },
-        "GptChannelTickValueMax": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "GptChannelTickValueMax 参数"
-        },
-        "GptEnableWakeup": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptEnableWakeup 参数"
-        },
-        "GptFreezeEnable": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptFreezeEnable 参数"
-        },
-        "GptLPitEnReloadOnTrigger": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptLPitEnReloadOnTrigger 参数"
-        },
-        "GptLPitEnStartOnTrigger": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptLPitEnStartOnTrigger 参数"
-        },
-        "GptLPitEnStopOnInterrupt": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptLPitEnStopOnInterrupt 参数"
-        },
-        "GptLPitIsExternalTrigger": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptLPitIsExternalTrigger 参数"
-        },
-        "GptLptmrPrescaler": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "GptLptmrPrescaler 参数"
-        },
-        "GptWakeupEnableNotification": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptWakeupEnableNotification 参数"
-        },
-        "GptChannelMode": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "GptChannelMode 参数",
-          "enum": [
-            "GPT_CHANNEL_MODE_CONTINUOUS",
-            "GPT_CHANNEL_MODE_ONESHOT"
-          ]
-        },
-        "GptHwChannel": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "GptHwChannel 参数"
-        },
-        "GptLptmrChannelClkSrc": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "GptLptmrChannelClkSrc 参数"
-        }
-      },
-      "additionalProperties": true
-    },
     "GptConfigurationOfOptApiServices": {
       "description": "GptConfigurationOfOptApiServices 配置容器",
       "type": "object",
@@ -489,52 +314,8 @@
       },
       "additionalProperties": true
     },
-    "GptHwConfiguration_0": {
+    "GptHwConfiguration": {
       "description": "GptHwConfiguration_0 配置容器",
-      "type": "object",
-      "properties": {
-        "GptIsrEnable": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptIsrEnable 参数"
-        },
-        "GptModuleIsUsed": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptModuleIsUsed 参数"
-        },
-        "GptIsrHwId": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "GptIsrHwId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "GptHwConfiguration_1": {
-      "description": "GptHwConfiguration_1 配置容器",
-      "type": "object",
-      "properties": {
-        "GptIsrEnable": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptIsrEnable 参数"
-        },
-        "GptModuleIsUsed": {
-          "type": "boolean",
-          "default": false,
-          "description": "GptModuleIsUsed 参数"
-        },
-        "GptIsrHwId": {
-          "type": "string",
-          "maxLength": 255,
-          "description": "GptIsrHwId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "GptHwConfiguration_2": {
-      "description": "GptHwConfiguration_2 配置容器",
       "type": "object",
       "properties": {
         "GptIsrEnable": {
@@ -606,5 +387,6 @@
       "severity": "warning",
       "description": "Gpt 通道时钟频率不应超过 MCU 主时钟参考频率"
     }
-  ]
+  ],
+  "_fix_renamed": 6
 }

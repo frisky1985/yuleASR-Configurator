@@ -5,7 +5,7 @@
   "description": "Dio Configuration",
   "type": "object",
   "properties": {
-    "CAN_RX": {
+    "DioChannel": {
       "description": "CAN_RX 配置容器",
       "type": "object",
       "properties": {
@@ -134,7 +134,7 @@
       },
       "additionalProperties": true
     },
-    "DioPort_A": {
+    "DioPort": {
       "description": "DioPort_A 配置容器",
       "type": "object",
       "properties": {
@@ -152,159 +152,16 @@
         }
       },
       "additionalProperties": true
-    },
-    "DioPort_B": {
-      "description": "DioPort_B 配置容器",
-      "type": "object",
-      "properties": {
-        "DioPortId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "DioPortId 参数"
-        },
-        "DioChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "DioChannelId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "DioPort_C": {
-      "description": "DioPort_C 配置容器",
-      "type": "object",
-      "properties": {
-        "DioPortId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "DioPortId 参数"
-        },
-        "DioChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "DioChannelId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "DioPort_D": {
-      "description": "DioPort_D 配置容器",
-      "type": "object",
-      "properties": {
-        "DioPortId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "DioPortId 参数"
-        },
-        "DioChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "DioChannelId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "FLASH_SPI_CS": {
-      "description": "FLASH_SPI_CS 配置容器",
-      "type": "object",
-      "properties": {
-        "DioChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "DioChannelId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "SBC_CLK": {
-      "description": "SBC_CLK 配置容器",
-      "type": "object",
-      "properties": {
-        "DioChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "DioChannelId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "SBC_INT": {
-      "description": "SBC_INT 配置容器",
-      "type": "object",
-      "properties": {
-        "DioChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "DioChannelId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "SBC_MOSI": {
-      "description": "SBC_MOSI 配置容器",
-      "type": "object",
-      "properties": {
-        "DioChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "DioChannelId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "SBC_RST": {
-      "description": "SBC_RST 配置容器",
-      "type": "object",
-      "properties": {
-        "DioChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "DioChannelId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "SE_IRQ": {
-      "description": "SE_IRQ 配置容器",
-      "type": "object",
-      "properties": {
-        "DioChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "DioChannelId 参数"
-        }
-      },
-      "additionalProperties": true
-    },
-    "SWD_DIO": {
-      "description": "SWD_DIO 配置容器",
-      "type": "object",
-      "properties": {
-        "DioChannelId": {
-          "type": "integer",
-          "minimum": 0,
-          "maximum": 65535,
-          "description": "DioChannelId 参数"
-        }
-      },
-      "additionalProperties": true
     }
   },
-  "required": ["CAN_RX", "CommonPublishedInformation", "DioConfig"],
+  "required": [
+    "CAN_RX",
+    "CommonPublishedInformation",
+    "DioConfig"
+  ],
   "additionalProperties": false,
-  "x-layer": "Service",
+  "x-layer": "MCAL",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "_fix_renamed": 12
 }
