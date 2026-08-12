@@ -3,9 +3,13 @@
  * F1 — 提取结果独立验证
  *
  * 独立解析器（不复用 extractor 内部函数）:
- *   1) 全量: 110 个 yuleASR *_Cfg.h 的每个非 guard 对象式宏，都必须在
- *      verification/extracted-cfgh/ 对应 schema 的 properties 中出现，
- *      且类型一致（STD_ON→boolean、整型字面量→integer、字符串→string）
+ *   1) 全量: 110 个 yuleASR *_Cfg.h 的每个非 guard 宏，都必须被
+ *      verification/extracted-cfgh/ 对应 schema 覆盖——覆盖途径二选一:
+ *      a) properties 中出现，且类型一致（STD_ON→boolean、整型字面量→integer、字符串→string）
+ *      b) x-verbatim-defines 原样透传（函数式宏/别名引用宏，不可配置，按 C 语法判定:
+ *         `#define F(...)` NAME 与 ( 之间无空白 → 函数式宏；别名宏如
+ *         PORT_CONFIGSET_NAME (Port_ConfigSet) / DET_DEM_EVENT_ID (...) 由提取器
+ *         原样透传，保证生成头与手写头逐字一致）
  *   2) 抽查 5 个模块（Wdg/Flash/Crypto/Com/EcuM）逐宏一一对应
  *   3) generated/ 合并目录: JSON 数量 + index.ts 导出数量 + 无重复导出名
  *
@@ -38,10 +42,15 @@ interface Macro {
   line: number;
 }
 
-function expectTypeOf(rest: string): string {
+function expectTypeOf(rest: string, line: string): string {
   let s = rest.replace(/\/\*.*?\*\//g, ' ').trim();
   if (s === '') return 'empty';
   if (s.endsWith('\\')) return 'multiline';
+  // C 语法判定（2026-08-12 修复 LinNm 基线 FAIL）: `#define NAME(...)` 中
+  // NAME 与 ( 之间无空白 → 函数式宏（LINNM_CALL_* 等回调钩子，#else 分支空体
+  // 如 `#define LINNM_CALL_REMOTE_SLEEP_INDICATION(networkHandle)` 之前被误判为
+  // expression → 覆盖缺失）。提取器按条件块整块透传到 x-verbatim-defines。
+  if (/^[ \t]*#[ \t]*define[ \t]+[A-Za-z_][A-Za-z0-9_]*\(/.test(line)) return 'functionlike';
   if (/^\([^)]*,[^)]*\)/.test(s) || /^\(\)/.test(s) || /^\([a-z][a-z0-9_]*\)\s*[^=]/.test(s)) return 'functionlike';
   // 去外层括号
   while (/^\(.*\)$/.test(s) && balanced(s)) s = s.slice(1, -1).trim();
@@ -83,6 +92,22 @@ interface VerifyResult {
   macros: number;
   missed: string[];
   typeMismatch: string[];
+  /** 宏在 schema 的 x-verbatim-defines 中原样透传（函数式宏/别名宏，视为覆盖） */
+  verbatimCovered: string[];
+}
+
+/** 从 schema 的 x-verbatim-defines 文本块中提取被透传的宏名集合 */
+function verbatimDefineNames(schema: any): Set<string> {
+  const out = new Set<string>();
+  const defs = schema['x-verbatim-defines'];
+  if (!Array.isArray(defs)) return out;
+  for (const block of defs) {
+    if (typeof block !== 'string') continue;
+    for (const m of block.matchAll(/^[ \t]*#[ \t]*define[ \t]+([A-Za-z_][A-Za-z0-9_]*)/gm)) {
+      out.add(m[1]);
+    }
+  }
+  return out;
 }
 
 function main(): number {
@@ -106,17 +131,19 @@ function main(): number {
   let totalMacros = 0;
   let totalMissed = 0;
   let totalMismatch = 0;
+  let totalVerbatim = 0;
 
   for (const f of files) {
     const rel = path.relative(yuleasrRoot, f).replace(/\\/g, '/');
     const schema = bySource.get(rel);
-    const res: VerifyResult = { file: rel, macros: 0, missed: [], typeMismatch: [] };
+    const res: VerifyResult = { file: rel, macros: 0, missed: [], typeMismatch: [], verbatimCovered: [] };
     if (!schema) {
       res.missed.push('(schema 缺失)');
       results.push(res);
       continue;
     }
     const props = schema.properties || {};
+    const verbatimNames = verbatimDefineNames(schema);
     const content = fs.readFileSync(f, 'utf8');
     const lines = content.split('\n');
     const macros: Macro[] = [];
@@ -126,7 +153,7 @@ function main(): number {
       const name = m[1];
       const rest = m[2].trim();
       if (GUARD_RE.test(name)) continue;
-      const t = expectTypeOf(rest);
+      const t = expectTypeOf(rest, lines[i]);
       if (t === 'empty' || t === 'multiline' || t === 'functionlike') continue;
       macros.push({ name, expectType: t, line: i + 1 });
     }
@@ -136,6 +163,13 @@ function main(): number {
     for (const mc of macros) {
       const prop = props[mc.name];
       if (!prop) {
+        // 覆盖途径 b: x-verbatim-defines 原样透传（函数式宏/别名引用宏）——
+        // 提取器保证生成头与手写头逐字一致，不要求其出现在 properties
+        if (verbatimNames.has(mc.name)) {
+          res.verbatimCovered.push(mc.name);
+          totalVerbatim++;
+          continue;
+        }
         res.missed.push(mc.name);
         totalMissed++;
         continue;
@@ -172,7 +206,7 @@ function main(): number {
   // 汇总
   const missFiles = results.filter(r => r.missed.length > 0);
   const mismatchFiles = results.filter(r => r.typeMismatch.length > 0);
-  console.log(`[F1-verify] 宏总数: ${totalMacros}; 覆盖缺失: ${totalMissed}; 类型不一致: ${totalMismatch}`);
+  console.log(`[F1-verify] 宏总数: ${totalMacros}; properties 覆盖: ${totalMacros - totalMissed - totalVerbatim}; verbatim 透传覆盖: ${totalVerbatim}; 覆盖缺失: ${totalMissed}; 类型不一致: ${totalMismatch}`);
   console.log(`[F1-verify] 缺失宏的文件数: ${missFiles.length}; 类型不一致的文件数: ${mismatchFiles.length}`);
   for (const r of missFiles) {
     console.log(`  [miss] ${r.file}: ${r.missed.slice(0, 8).join(', ')}${r.missed.length > 8 ? '...' : ''}`);
@@ -196,6 +230,9 @@ function main(): number {
     const layer = schema?.['x-layer'] ?? '?';
     const verdict = r.missed.length === 0 && r.typeMismatch.length === 0 ? '✓' : '✗';
     console.log(`  ${verdict} ${mod} (${rel}, layer=${layer}): ${r.macros} 个宏全部对应，类型一致`);
+    if (r.verbatimCovered.length) {
+      console.log(`      verbatim 透传覆盖: ${r.verbatimCovered.join(', ')}`);
+    }
     if (r.missed.length || r.typeMismatch.length) {
       console.log(`      missed: ${r.missed.slice(0, 5).join(', ')}; type: ${r.typeMismatch.slice(0, 5).join(', ')}`);
     }
@@ -215,7 +252,7 @@ function main(): number {
   console.log('  ✓ 无重复导出');
 
   const pass = missFiles.length === 0 && mismatchFiles.length === 0 && files.length === bySource.size;
-  console.log(`\n[F1-verify] 结论: ${pass ? 'PASS — 110 模块全覆盖，类型一致' : 'FAIL — 见上方缺失/不一致清单'}`);
+  console.log(`\n[F1-verify] 结论: ${pass ? 'PASS — 110 模块全覆盖（properties + verbatim 透传），类型一致' : 'FAIL — 见上方缺失/不一致清单'}`);
   return pass ? 0 : 1;
 }
 
