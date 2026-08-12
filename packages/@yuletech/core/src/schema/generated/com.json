@@ -142,7 +142,16 @@
     "ComConfig": {
       "description": "ComConfig 配置容器",
       "type": "object",
-      "properties": {},
+      "properties": {
+        "ComDataMemSize": {
+          "type": "integer",
+          "description": "信号数据内存总字节数"
+        },
+        "ComMaxIPduCnt": {
+          "type": "integer",
+          "description": "最大 IPDU 数"
+        }
+      },
       "additionalProperties": true
     },
     "ComSignal": {

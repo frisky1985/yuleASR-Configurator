@@ -133,6 +133,210 @@
           "description": "CanIfNumberOfRxPdus 参数",
           "minimum": 0,
           "maximum": 65535
+        },
+        "CanIfInitCfgSet": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "配置集名"
+        },
+        "CanIfMaxBufferSize": {
+          "type": "integer",
+          "description": "最大缓冲字节数"
+        },
+        "CanIfMaxRxPduCfg": {
+          "type": "integer",
+          "description": "最大接收 PDU 配置数"
+        },
+        "CanIfMaxTxPduCfg": {
+          "type": "integer",
+          "description": "最大发送 PDU 配置数"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanIfTxPduCfg": {
+      "description": "CanIfInitCfg 子容器（发送 PDU 配置）",
+      "type": "object",
+      "properties": {
+        "CanIfTxPduCanId": {
+          "type": "integer",
+          "description": "发送 PDU CAN ID"
+        },
+        "CanIfTxPduCanIdMask": {
+          "type": "integer",
+          "default": 3758096383,
+          "description": "CAN ID 掩码"
+        },
+        "CanIfTxPduCanIdType": {
+          "type": "string",
+          "enum": [
+            "EXTENDED_CAN",
+            "EXTENDED_FD_CAN",
+            "STANDARD_CAN",
+            "STANDARD_FD_CAN"
+          ],
+          "description": "CAN ID 类型"
+        },
+        "CanIfTxPduId": {
+          "type": "integer",
+          "description": "发送 PDU ID"
+        },
+        "CanIfTxPduPnFilterPdu": {
+          "type": "boolean",
+          "default": false,
+          "description": "PN 过滤 PDU"
+        },
+        "CanIfTxPduReadNotifyStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "读通知状态 API"
+        },
+        "CanIfTxPduTriggerTransmit": {
+          "type": "boolean",
+          "default": false,
+          "description": "触发发送 API"
+        },
+        "CanIfTxPduTruncation": {
+          "type": "boolean",
+          "default": true,
+          "description": "发送截断"
+        },
+        "CanIfTxPduType": {
+          "type": "string",
+          "enum": [
+            "DYNAMIC",
+            "STATIC"
+          ],
+          "description": "PDU 类型"
+        },
+        "CanIfTxPduUserTriggerTransmitName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "用户触发发送回调名"
+        },
+        "CanIfTxPduUserTxConfirmationName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "用户发送确认回调名"
+        },
+        "CanIfTxPduUserTxConfirmationUL": {
+          "type": "string",
+          "enum": [
+            "CAN_NM",
+            "CAN_TP",
+            "CAN_TSYN",
+            "CDD",
+            "J1939NM",
+            "J1939TP",
+            "PDUR",
+            "XCP"
+          ],
+          "description": "上层模块"
+        },
+        "CanIfTxPduBufferRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanIfTxPduBufferRef 引用（ECUC-REFERENCE-DEF）"
+        },
+        "CanIfTxPduRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanIfTxPduRef 引用（ECUC-REFERENCE-DEF）"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CanIfRxPduCfg": {
+      "description": "CanIfInitCfg 子容器（接收 PDU 配置）",
+      "type": "object",
+      "properties": {
+        "CanIfRxPduCanId": {
+          "type": "integer",
+          "description": "接收 PDU CAN ID"
+        },
+        "CanIfRxPduCanIdMask": {
+          "type": "integer",
+          "default": 536870911,
+          "description": "CAN ID 掩码"
+        },
+        "CanIfRxPduCanIdType": {
+          "type": "string",
+          "enum": [
+            "EXTENDED_CAN",
+            "EXTENDED_FD_CAN",
+            "EXTENDED_NO_FD_CAN",
+            "STANDARD_CAN",
+            "STANDARD_FD_CAN",
+            "STANDARD_NO_FD_CAN"
+          ],
+          "description": "CAN ID 类型"
+        },
+        "CanIfRxPduDataLength": {
+          "type": "integer",
+          "description": "接收数据长度"
+        },
+        "CanIfRxPduDataLengthCheck": {
+          "type": "boolean",
+          "default": true,
+          "description": "长度校验"
+        },
+        "CanIfRxPduId": {
+          "type": "integer",
+          "description": "接收 PDU ID"
+        },
+        "CanIfRxPduReadData": {
+          "type": "boolean",
+          "default": false,
+          "description": "读数据 API"
+        },
+        "CanIfRxPduReadNotifyStatus": {
+          "type": "boolean",
+          "default": false,
+          "description": "读通知状态 API"
+        },
+        "CanIfRxPduUserRxIndicationName": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "用户接收指示回调名"
+        },
+        "CanIfRxPduUserRxIndicationUL": {
+          "type": "string",
+          "enum": [
+            "CAN_NM",
+            "CAN_TP",
+            "CAN_TSYN",
+            "CDD",
+            "J1939NM",
+            "J1939TP",
+            "PDUR",
+            "XCP"
+          ],
+          "description": "上层模块"
+        },
+        "CanIfRxPduHrhIdRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanIfRxPduHrhIdRef 引用（ECUC-REFERENCE-DEF）"
+        },
+        "CanIfRxPduRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "CanIfRxPduRef 引用（ECUC-REFERENCE-DEF）"
+        },
+        "CanIfRxPduCanIdRange": {
+          "description": "CanIfRxPduCfg 子容器（接收 CAN ID 范围）",
+          "type": "object",
+          "properties": {
+            "CanIfRxPduCanIdRangeLowerCanId": {
+              "type": "integer",
+              "description": "范围下界 CAN ID"
+            },
+            "CanIfRxPduCanIdRangeUpperCanId": {
+              "type": "integer",
+              "description": "范围上界 CAN ID"
+            }
+          },
+          "additionalProperties": true
         }
       },
       "additionalProperties": true

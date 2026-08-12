@@ -28,8 +28,37 @@
         },
         "BswMActionListExecution": {
           "type": "string",
-          "maxLength": 255,
-          "description": "BswMActionListExecution 参数"
+          "enum": [
+            "BSWM_CONDITION",
+            "BSWM_TRIGGER"
+          ],
+          "description": "动作列表执行方式（BSWM_CONDITION/BSWM_TRIGGER）"
+        },
+        "BswMActionListItem": {
+          "description": "BswMActionList 子容器（动作列表项）",
+          "type": "object",
+          "properties": {
+            "BswMAbortOnFail": {
+              "type": "boolean",
+              "default": false,
+              "description": "失败即中止"
+            },
+            "BswMActionListItemIndex": {
+              "type": "integer",
+              "description": "动作列表项序号"
+            },
+            "BswMReportFailRuntimeErrorId": {
+              "type": "integer",
+              "default": 128,
+              "description": "失败上报 RuntimeError ID"
+            },
+            "BswMActionListItemRef": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "BswMActionListItemRef 引用（ECUC-REFERENCE-DEF）"
+            }
+          },
+          "additionalProperties": true
         }
       },
       "additionalProperties": true
@@ -142,6 +171,208 @@
       },
       "additionalProperties": true
     },
+    "BswMConfig": {
+      "description": "BswMConfig 配置容器（AUTOSAR BswM 标准根容器）",
+      "type": "object",
+      "properties": {
+        "BswMPartitionRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BswMPartitionRef 引用（ECUC-REFERENCE-DEF）"
+        },
+        "BswMArbitration": {
+          "description": "BswMConfig 子容器（仲裁配置）",
+          "type": "object",
+          "properties": {
+            "BswMEventRequestPort": {
+              "description": "BswMArbitration 子容器（事件请求端口）",
+              "type": "object",
+              "properties": {
+                "BswMEventRequestProcessing": {
+                  "type": "string",
+                  "enum": [
+                    "BSWM_DEFERRED",
+                    "BSWM_IMMEDIATE"
+                  ],
+                  "description": "事件请求处理方式"
+                }
+              },
+              "additionalProperties": true
+            },
+            "BswMLogicalExpression": {
+              "description": "BswMArbitration 子容器（逻辑表达式）",
+              "type": "object",
+              "properties": {
+                "BswMLogicalOperator": {
+                  "type": "string",
+                  "enum": [
+                    "BSWM_AND",
+                    "BSWM_NAND",
+                    "BSWM_NOT",
+                    "BSWM_OR",
+                    "BSWM_XOR"
+                  ],
+                  "description": "逻辑运算符"
+                },
+                "BswMArgumentRef": {
+                  "type": "string",
+                  "maxLength": 255,
+                  "description": "BswMArgumentRef 引用（ECUC-REFERENCE-DEF）"
+                }
+              },
+              "additionalProperties": true
+            },
+            "BswMModeCondition": {
+              "description": "BswMArbitration 子容器（模式条件）",
+              "type": "object",
+              "properties": {
+                "BswMConditionType": {
+                  "type": "string",
+                  "enum": [
+                    "BSWM_EQUALS",
+                    "BSWM_EQUALS_NOT",
+                    "BSWM_EVENT_IS_CLEARED",
+                    "BSWM_EVENT_IS_SET"
+                  ],
+                  "description": "条件比较类型"
+                },
+                "BswMConditionMode": {
+                  "type": "string",
+                  "maxLength": 255,
+                  "description": "BswMConditionMode 引用（ECUC-REFERENCE-DEF）"
+                }
+              },
+              "additionalProperties": true
+            },
+            "BswMModeRequestPort": {
+              "description": "BswMArbitration 子容器（模式请求端口）",
+              "type": "object",
+              "properties": {
+                "BswMRequestProcessing": {
+                  "type": "string",
+                  "enum": [
+                    "BSWM_DEFERRED",
+                    "BSWM_IMMEDIATE"
+                  ],
+                  "description": "模式请求处理方式"
+                },
+                "BswMModeInitValue": {
+                  "description": "BswMModeRequestPort 子容器（模式初值）",
+                  "type": "object",
+                  "properties": {
+                    "BswMBswModeInitValue": {
+                      "type": "string",
+                      "maxLength": 255,
+                      "description": "模式初始化值"
+                    },
+                    "BswMCompuScaleModeValue": {
+                      "description": "BswMModeInitValue 子容器（标定模式值）",
+                      "type": "object",
+                      "properties": {
+                        "BswMCompuConstText": {
+                          "type": "string",
+                          "maxLength": 255,
+                          "description": "计算常量文本"
+                        },
+                        "BswMCompuMethodRef": {
+                          "type": "string",
+                          "maxLength": 255,
+                          "description": "BswMCompuMethodRef 引用（ECUC-REFERENCE-DEF）"
+                        }
+                      },
+                      "additionalProperties": true
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              },
+              "additionalProperties": true
+            },
+            "BswMRule": {
+              "description": "BswMArbitration 子容器（仲裁规则）",
+              "type": "object",
+              "properties": {
+                "BswMNestedExecutionOnly": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "仅允许嵌套执行"
+                },
+                "BswMRuleInitState": {
+                  "type": "string",
+                  "enum": [
+                    "BSWM_FALSE",
+                    "BSWM_TRUE",
+                    "BSWM_UNDEFINED"
+                  ],
+                  "description": "规则初始状态"
+                },
+                "BswMRuleExpressionRef": {
+                  "type": "string",
+                  "maxLength": 255,
+                  "description": "BswMRuleExpressionRef 引用（ECUC-REFERENCE-DEF）"
+                },
+                "BswMRuleFalseActionList": {
+                  "type": "string",
+                  "maxLength": 255,
+                  "description": "BswMRuleFalseActionList 引用（ECUC-REFERENCE-DEF）"
+                },
+                "BswMRuleTrueActionList": {
+                  "type": "string",
+                  "maxLength": 255,
+                  "description": "BswMRuleTrueActionList 引用（ECUC-REFERENCE-DEF）"
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        },
+        "BswMDataTypeMappingSets": {
+          "description": "BswMConfig 子容器（数据类型映射集）",
+          "type": "object",
+          "properties": {
+            "BswMDataTypeMappingSetRef": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "BswMDataTypeMappingSetRef 引用（ECUC-REFERENCE-DEF）"
+            }
+          },
+          "additionalProperties": true
+        },
+        "BswMModeControl": {
+          "description": "BswMConfig 子容器（模式控制）",
+          "type": "object",
+          "properties": {
+            "BswMAction": {
+              "description": "BswMModeControl 子容器（动作，纯分组容器）",
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true
+            },
+            "BswMActionList": {
+              "description": "BswMModeControl 子容器（动作列表，纯分组容器）",
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true
+            },
+            "BswMRteModeRequestPort": {
+              "description": "BswMModeControl 子容器（RTE 模式请求端口，纯分组容器）",
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true
+            },
+            "BswMSwitchPort": {
+              "description": "BswMModeControl 子容器（开关端口，纯分组容器）",
+              "type": "object",
+              "properties": {},
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
     "BswMModeRequestPort": {
       "description": "BswMModeRequestPort 配置容器",
       "type": "object",
@@ -162,9 +393,231 @@
       "additionalProperties": true
     },
     "BswMArbitration": {
-      "description": "BswMArbitration 配置容器",
+      "description": "BswMArbitration 配置容器（官方 5 子容器）",
       "type": "object",
-      "properties": {},
+      "properties": {
+        "BswMEventRequestPort": {
+          "description": "BswMArbitration 子容器（事件请求端口）",
+          "type": "object",
+          "properties": {
+            "BswMEventRequestProcessing": {
+              "type": "string",
+              "enum": [
+                "BSWM_DEFERRED",
+                "BSWM_IMMEDIATE"
+              ],
+              "description": "事件请求处理方式"
+            }
+          },
+          "additionalProperties": true
+        },
+        "BswMLogicalExpression": {
+          "description": "BswMArbitration 子容器（逻辑表达式）",
+          "type": "object",
+          "properties": {
+            "BswMLogicalOperator": {
+              "type": "string",
+              "enum": [
+                "BSWM_AND",
+                "BSWM_NAND",
+                "BSWM_NOT",
+                "BSWM_OR",
+                "BSWM_XOR"
+              ],
+              "description": "逻辑运算符"
+            },
+            "BswMArgumentRef": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "BswMArgumentRef 引用（ECUC-REFERENCE-DEF）"
+            }
+          },
+          "additionalProperties": true
+        },
+        "BswMModeCondition": {
+          "description": "BswMArbitration 子容器（模式条件）",
+          "type": "object",
+          "properties": {
+            "BswMConditionType": {
+              "type": "string",
+              "enum": [
+                "BSWM_EQUALS",
+                "BSWM_EQUALS_NOT",
+                "BSWM_EVENT_IS_CLEARED",
+                "BSWM_EVENT_IS_SET"
+              ],
+              "description": "条件比较类型"
+            },
+            "BswMConditionMode": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "BswMConditionMode 引用（ECUC-REFERENCE-DEF）"
+            }
+          },
+          "additionalProperties": true
+        },
+        "BswMModeRequestPort": {
+          "description": "BswMArbitration 子容器（模式请求端口）",
+          "type": "object",
+          "properties": {
+            "BswMRequestProcessing": {
+              "type": "string",
+              "enum": [
+                "BSWM_DEFERRED",
+                "BSWM_IMMEDIATE"
+              ],
+              "description": "模式请求处理方式"
+            },
+            "BswMModeInitValue": {
+              "description": "BswMModeRequestPort 子容器（模式初值）",
+              "type": "object",
+              "properties": {
+                "BswMBswModeInitValue": {
+                  "type": "string",
+                  "maxLength": 255,
+                  "description": "模式初始化值"
+                },
+                "BswMCompuScaleModeValue": {
+                  "description": "BswMModeInitValue 子容器（标定模式值）",
+                  "type": "object",
+                  "properties": {
+                    "BswMCompuConstText": {
+                      "type": "string",
+                      "maxLength": 255,
+                      "description": "计算常量文本"
+                    },
+                    "BswMCompuMethodRef": {
+                      "type": "string",
+                      "maxLength": 255,
+                      "description": "BswMCompuMethodRef 引用（ECUC-REFERENCE-DEF）"
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        },
+        "BswMRule": {
+          "description": "BswMArbitration 子容器（仲裁规则）",
+          "type": "object",
+          "properties": {
+            "BswMNestedExecutionOnly": {
+              "type": "boolean",
+              "default": false,
+              "description": "仅允许嵌套执行"
+            },
+            "BswMRuleInitState": {
+              "type": "string",
+              "enum": [
+                "BSWM_FALSE",
+                "BSWM_TRUE",
+                "BSWM_UNDEFINED"
+              ],
+              "description": "规则初始状态"
+            },
+            "BswMRuleExpressionRef": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "BswMRuleExpressionRef 引用（ECUC-REFERENCE-DEF）"
+            },
+            "BswMRuleFalseActionList": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "BswMRuleFalseActionList 引用（ECUC-REFERENCE-DEF）"
+            },
+            "BswMRuleTrueActionList": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "BswMRuleTrueActionList 引用（ECUC-REFERENCE-DEF）"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "BswMLogicalExpression": {
+      "description": "BswMArbitration 子容器（逻辑表达式）",
+      "type": "object",
+      "properties": {
+        "BswMLogicalOperator": {
+          "type": "string",
+          "enum": [
+            "BSWM_AND",
+            "BSWM_NAND",
+            "BSWM_NOT",
+            "BSWM_OR",
+            "BSWM_XOR"
+          ],
+          "description": "逻辑运算符"
+        },
+        "BswMArgumentRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BswMArgumentRef 引用（ECUC-REFERENCE-DEF）"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BswMModeCondition": {
+      "description": "BswMArbitration 子容器（模式条件）",
+      "type": "object",
+      "properties": {
+        "BswMConditionType": {
+          "type": "string",
+          "enum": [
+            "BSWM_EQUALS",
+            "BSWM_EQUALS_NOT",
+            "BSWM_EVENT_IS_CLEARED",
+            "BSWM_EVENT_IS_SET"
+          ],
+          "description": "条件比较类型"
+        },
+        "BswMConditionMode": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BswMConditionMode 引用（ECUC-REFERENCE-DEF）"
+        }
+      },
+      "additionalProperties": true
+    },
+    "BswMRule": {
+      "description": "BswMArbitration 子容器（仲裁规则）",
+      "type": "object",
+      "properties": {
+        "BswMNestedExecutionOnly": {
+          "type": "boolean",
+          "default": false,
+          "description": "仅允许嵌套执行"
+        },
+        "BswMRuleInitState": {
+          "type": "string",
+          "enum": [
+            "BSWM_FALSE",
+            "BSWM_TRUE",
+            "BSWM_UNDEFINED"
+          ],
+          "description": "规则初始状态"
+        },
+        "BswMRuleExpressionRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BswMRuleExpressionRef 引用（ECUC-REFERENCE-DEF）"
+        },
+        "BswMRuleFalseActionList": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BswMRuleFalseActionList 引用（ECUC-REFERENCE-DEF）"
+        },
+        "BswMRuleTrueActionList": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "BswMRuleTrueActionList 引用（ECUC-REFERENCE-DEF）"
+        }
+      },
       "additionalProperties": true
     },
     "BswMPublishedInformation": {

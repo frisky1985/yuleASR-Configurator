@@ -348,6 +348,43 @@
       },
       "additionalProperties": true
     },
+    "DemDidClass": {
+      "description": "DemGeneral 子容器（DID 分类）",
+      "type": "object",
+      "properties": {
+        "DemDidIdentifier": {
+          "type": "integer",
+          "description": "DID 标识符"
+        },
+        "DemDidDataElementClassRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemDidDataElementClassRef 引用（ECUC-REFERENCE-DEF）"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DemOperationCycle": {
+      "description": "DemGeneral 子容器（操作循环）",
+      "type": "object",
+      "properties": {
+        "DemOperationCycleAutostart": {
+          "type": "boolean",
+          "default": false,
+          "description": "上电自动启动"
+        },
+        "DemOperationCycleId": {
+          "type": "integer",
+          "description": "操作循环 ID"
+        },
+        "DemLeadingCycleRef": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "DemLeadingCycleRef 引用（ECUC-REFERENCE-DEF）"
+        }
+      },
+      "additionalProperties": true
+    },
     "DemPublishedInformation": {
       "description": "DemPublishedInformation 配置容器",
       "type": "object",

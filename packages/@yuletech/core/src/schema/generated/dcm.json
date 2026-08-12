@@ -387,6 +387,396 @@
       "properties": {},
       "additionalProperties": true
     },
+    "DcmConfigSet": {
+      "description": "DcmConfigSet 配置容器（AUTOSAR Dcm 标准根容器）",
+      "type": "object",
+      "properties": {
+        "DcmDsd": {
+          "description": "DcmConfigSet 子容器（服务分发，纯分组容器）",
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true
+        },
+        "DcmDsl": {
+          "description": "DcmConfigSet 子容器（会话层，纯分组容器）",
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true
+        },
+        "DcmDsp": {
+          "description": "DcmConfigSet 子容器（服务处理）",
+          "type": "object",
+          "properties": {
+            "DcmDspDataDefaultEndianness": {
+              "type": "string",
+              "enum": [
+                "BIG_ENDIAN",
+                "LITTLE_ENDIAN",
+                "OPAQUE"
+              ],
+              "description": "DID/RID/PID 默认字节序"
+            },
+            "DcmDspDDDIDcheckPerSourceDID": {
+              "type": "boolean",
+              "description": "0x22 按源 DID 检查会话/安全/模式依赖"
+            },
+            "DcmDspEnableObdMirror": {
+              "type": "boolean",
+              "default": false,
+              "description": "OBD 范围 DID 镜像使能"
+            },
+            "DcmDspMaxDidToRead": {
+              "type": "integer",
+              "description": "单次 ReadDataByIdentifier 最大 DID 数"
+            },
+            "DcmDspMaxPeriodicDidToRead": {
+              "type": "integer",
+              "description": "单次周期性读最大 DID 数"
+            },
+            "DcmDspPowerDownTime": {
+              "type": "integer",
+              "description": "掉电序列最小驻留时间"
+            }
+          },
+          "additionalProperties": true
+        },
+        "DcmPageBufferCfg": {
+          "description": "DcmConfigSet 子容器（分页缓冲配置）",
+          "type": "object",
+          "properties": {
+            "DcmPagedBufferEnabled": {
+              "type": "boolean",
+              "description": "分页缓冲机制使能"
+            }
+          },
+          "additionalProperties": true
+        },
+        "DcmProcessingConditions": {
+          "description": "DcmConfigSet 子容器（模式仲裁，纯分组容器）",
+          "type": "object",
+          "properties": {},
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "DcmDsdServiceTable": {
+      "description": "DcmDsd 子容器（诊断服务表，DcmDsdSidTabId 标识）",
+      "type": "object",
+      "properties": {
+        "DcmDsdSidTabId": {
+          "type": "integer",
+          "description": "服务表唯一标识"
+        },
+        "DcmDsdService": {
+          "description": "DcmDsdServiceTable 子容器（单个诊断服务）",
+          "type": "object",
+          "properties": {
+            "DcmDsdServiceRole": {
+              "type": "integer",
+              "description": "角色位域（bit=1 允许执行）"
+            },
+            "DcmDsdServiceUsed": {
+              "type": "boolean",
+              "default": true,
+              "description": "服务启用开关"
+            },
+            "DcmDsdSidTabFnc": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "DcmDsdSidTabFnc 回调函数名（ECUC-FUNCTION-NAME-DEF）"
+            },
+            "DcmDsdSidTabServiceId": {
+              "type": "integer",
+              "description": "服务 SID"
+            },
+            "DcmDsdSidTabSubfuncAvail": {
+              "type": "boolean",
+              "description": "是否支持子功能"
+            },
+            "DcmDsdSidTabModeRuleRef": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "DcmDsdSidTabModeRuleRef 引用（ECUC-REFERENCE-DEF）"
+            },
+            "DcmDsdSidTabSecurityLevelRef": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "DcmDsdSidTabSecurityLevelRef 引用（ECUC-REFERENCE-DEF）"
+            },
+            "DcmDsdSidTabSessionLevelRef": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "DcmDsdSidTabSessionLevelRef 引用（ECUC-REFERENCE-DEF）"
+            },
+            "DcmDsdSubService": {
+              "description": "DcmDsdService 子容器（诊断子功能）",
+              "type": "object",
+              "properties": {
+                "DcmDsdSubServiceFnc": {
+                  "type": "string",
+                  "maxLength": 255,
+                  "description": "DcmDsdSubServiceFnc 回调函数名（ECUC-FUNCTION-NAME-DEF）"
+                },
+                "DcmDsdSubServiceId": {
+                  "type": "integer",
+                  "description": "子功能 ID"
+                },
+                "DcmDsdSubServiceRole": {
+                  "type": "integer",
+                  "description": "角色位域"
+                },
+                "DcmDsdSubServiceUsed": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "子功能启用开关"
+                },
+                "DcmDsdSubServiceModeRuleRef": {
+                  "type": "string",
+                  "maxLength": 255,
+                  "description": "DcmDsdSubServiceModeRuleRef 引用（ECUC-REFERENCE-DEF）"
+                },
+                "DcmDsdSubServiceSecurityLevelRef": {
+                  "type": "string",
+                  "maxLength": 255,
+                  "description": "DcmDsdSubServiceSecurityLevelRef 引用（ECUC-REFERENCE-DEF）"
+                },
+                "DcmDsdSubServiceSessionLevelRef": {
+                  "type": "string",
+                  "maxLength": 255,
+                  "description": "DcmDsdSubServiceSessionLevelRef 引用（ECUC-REFERENCE-DEF）"
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "DcmDslProtocol": {
+      "description": "DcmDsl 子容器（诊断协议配置）",
+      "type": "object",
+      "properties": {
+        "DcmDslProtocolRow": {
+          "description": "DcmDslProtocol 子容器（单条协议配置）",
+          "type": "object",
+          "properties": {
+            "DcmDslProtocolMaximumResponseSize": {
+              "type": "integer",
+              "default": 4095,
+              "description": "最大响应长度（分页缓冲使能时）"
+            },
+            "DcmDslProtocolPriority": {
+              "type": "integer",
+              "description": "协议优先级（抢占用）"
+            },
+            "DcmDslProtocolRowUsed": {
+              "type": "boolean",
+              "default": true,
+              "description": "协议启用开关"
+            },
+            "DcmDslProtocolTransType": {
+              "type": "string",
+              "enum": [
+                "TYPE1",
+                "TYPE2"
+              ],
+              "description": "ROE 协议传输类型"
+            },
+            "DcmDslProtocolType": {
+              "type": "string",
+              "enum": [
+                "DCM_OBD_ON_CAN",
+                "DCM_OBD_ON_FLEXRAY",
+                "DCM_OBD_ON_IP",
+                "DCM_PERIODICTRANS_ON_CAN",
+                "DCM_PERIODICTRANS_ON_FLEXRAY",
+                "DCM_PERIODICTRANS_ON_IP",
+                "DCM_ROE_ON_CAN",
+                "DCM_ROE_ON_FLEXRAY",
+                "DCM_ROE_ON_IP",
+                "DCM_SUPPLIER_1",
+                "DCM_SUPPLIER_10",
+                "DCM_SUPPLIER_11",
+                "DCM_SUPPLIER_12",
+                "DCM_SUPPLIER_13",
+                "DCM_SUPPLIER_14",
+                "DCM_SUPPLIER_15",
+                "DCM_SUPPLIER_2",
+                "DCM_SUPPLIER_3",
+                "DCM_SUPPLIER_4",
+                "DCM_SUPPLIER_5",
+                "DCM_SUPPLIER_6",
+                "DCM_SUPPLIER_7",
+                "DCM_SUPPLIER_8",
+                "DCM_SUPPLIER_9",
+                "DCM_UDS_ON_CAN",
+                "DCM_UDS_ON_FLEXRAY",
+                "DCM_UDS_ON_IP",
+                "DCM_UDS_ON_LIN"
+              ],
+              "description": "诊断协议类型"
+            },
+            "DcmDspProtocolEcuAddr": {
+              "type": "integer",
+              "description": "ECU 源地址（通用连接必需）"
+            },
+            "DcmSendRespPendOnRestart": {
+              "type": "boolean",
+              "default": true,
+              "description": "复位前发送 NRC 0x78"
+            },
+            "DcmTimStrP2ServerAdjust": {
+              "type": "number",
+              "description": "P2ServerMax 调整值（秒）"
+            },
+            "DcmTimStrP2StarServerAdjust": {
+              "type": "number",
+              "description": "P2*ServerMax 调整值（秒）"
+            },
+            "DcmDemClientRef": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "DcmDemClientRef 引用（ECUC-REFERENCE-DEF）"
+            },
+            "DcmDslProtocolRxBufferRef": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "DcmDslProtocolRxBufferRef 引用（ECUC-REFERENCE-DEF）"
+            },
+            "DcmDslProtocolSIDTable": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "DcmDslProtocolSIDTable 引用（ECUC-REFERENCE-DEF）"
+            },
+            "DcmDslProtocolTxBufferRef": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "DcmDslProtocolTxBufferRef 引用（ECUC-REFERENCE-DEF）"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "DcmDspSession": {
+      "description": "DcmDsp 子容器（诊断会话配置）",
+      "type": "object",
+      "properties": {
+        "DcmDspSessionRow": {
+          "description": "DcmDspSession 子容器（单条会话配置）",
+          "type": "object",
+          "properties": {
+            "DcmDspSessionForBoot": {
+              "type": "string",
+              "enum": [
+                "DCM_NO_BOOT",
+                "DCM_OEM_BOOT",
+                "DCM_OEM_BOOT_RESPAPP",
+                "DCM_SYS_BOOT",
+                "DCM_SYS_BOOT_RESPAPP"
+              ],
+              "description": "会话是否允许跳转 Bootloader"
+            },
+            "DcmDspSessionLevel": {
+              "type": "integer",
+              "description": "诊断会话 subFunction 值"
+            },
+            "DcmDspSessionP2ServerMax": {
+              "type": "number",
+              "description": "会话级 P2ServerMax（秒）"
+            },
+            "DcmDspSessionP2StarServerMax": {
+              "type": "number",
+              "description": "会话级 P2*ServerMax（秒）"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "DcmDspSecurity": {
+      "description": "DcmDsp 子容器（安全访问配置）",
+      "type": "object",
+      "properties": {
+        "DcmDspSecurityMaxAttemptCounterReadoutTime": {
+          "type": "number",
+          "description": "启动后读取 AttemptCounter 的最大允许延迟（秒）"
+        },
+        "DcmDspSecurityRow": {
+          "description": "DcmDspSecurity 子容器（单条安全等级配置）",
+          "type": "object",
+          "properties": {
+            "DcmDspSecurityADRSize": {
+              "type": "integer",
+              "description": "GetSeed 中 AccessDataRecord 字节数"
+            },
+            "DcmDspSecurityAttemptCounterEnabled": {
+              "type": "boolean",
+              "description": "使能 Set/Get AttemptCounter API"
+            },
+            "DcmDspSecurityCompareKeyFnc": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "DcmDspSecurityCompareKeyFnc 回调函数名（ECUC-FUNCTION-NAME-DEF）"
+            },
+            "DcmDspSecurityDelayTime": {
+              "type": "number",
+              "description": "安全访问失败后延迟（秒）"
+            },
+            "DcmDspSecurityDelayTimeOnBoot": {
+              "type": "number",
+              "description": "上电时延迟定时器值（秒）"
+            },
+            "DcmDspSecurityGetAttemptCounterFnc": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "DcmDspSecurityGetAttemptCounterFnc 回调函数名（ECUC-FUNCTION-NAME-DEF）"
+            },
+            "DcmDspSecurityGetSeedFnc": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "DcmDspSecurityGetSeedFnc 回调函数名（ECUC-FUNCTION-NAME-DEF）"
+            },
+            "DcmDspSecurityKeySize": {
+              "type": "integer",
+              "description": "安全密钥长度（字节）"
+            },
+            "DcmDspSecurityLevel": {
+              "type": "integer",
+              "description": "安全等级值"
+            },
+            "DcmDspSecurityNumAttDelay": {
+              "type": "integer",
+              "description": "失败次数阈值（之后激活延迟）"
+            },
+            "DcmDspSecuritySeedSize": {
+              "type": "integer",
+              "description": "种子长度（字节）"
+            },
+            "DcmDspSecuritySetAttemptCounterFnc": {
+              "type": "string",
+              "maxLength": 255,
+              "description": "DcmDspSecuritySetAttemptCounterFnc 回调函数名（ECUC-FUNCTION-NAME-DEF）"
+            },
+            "DcmDspSecurityUsePort": {
+              "type": "string",
+              "enum": [
+                "USE_ASYNCH_CLIENT_SERVER",
+                "USE_ASYNCH_FNC"
+              ],
+              "description": "安全访问接口类型"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
     "DcmPublishedInformation": {
       "description": "DcmPublishedInformation 配置容器",
       "type": "object",

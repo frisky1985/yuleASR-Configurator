@@ -329,6 +329,395 @@
       },
       "additionalProperties": true
     },
+    "CsmHashConfig": {
+      "description": "CsmPrimitives 子容器（Hash 算法配置）",
+      "type": "object",
+      "properties": {
+        "CsmHashAlgorithmFamily": {
+          "type": "string",
+          "enum": [
+            "CRYPTO_ALGOFAM_BLAKE_1_256",
+            "CRYPTO_ALGOFAM_BLAKE_1_512",
+            "CRYPTO_ALGOFAM_BLAKE_2s_256",
+            "CRYPTO_ALGOFAM_BLAKE_2s_512",
+            "CRYPTO_ALGOFAM_CUSTOM",
+            "CRYPTO_ALGOFAM_RIPEMD160",
+            "CRYPTO_ALGOFAM_SHA1",
+            "CRYPTO_ALGOFAM_SHA2_224",
+            "CRYPTO_ALGOFAM_SHA2_256",
+            "CRYPTO_ALGOFAM_SHA2_384",
+            "CRYPTO_ALGOFAM_SHA2_512",
+            "CRYPTO_ALGOFAM_SHA2_512_224",
+            "CRYPTO_ALGOFAM_SHA2_512_256",
+            "CRYPTO_ALGOFAM_SHA3_224",
+            "CRYPTO_ALGOFAM_SHA3_256",
+            "CRYPTO_ALGOFAM_SHA3_384",
+            "CRYPTO_ALGOFAM_SHA3_512",
+            "CRYPTO_ALGOFAM_SHA3_SHAKE128",
+            "CRYPTO_ALGOFAM_SHA3_SHAKE256"
+          ],
+          "description": "哈希算法族"
+        },
+        "CsmHashAlgorithmFamilyCustom": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "自定义算法族名"
+        },
+        "CsmHashAlgorithmMode": {
+          "type": "string",
+          "default": "CRYPTO_ALGOMODE_NOT_SET",
+          "enum": [
+            "CRYPTO_ALGOMODE_CUSTOM",
+            "CRYPTO_ALGOMODE_NOT_SET"
+          ],
+          "description": "算法模式"
+        },
+        "CsmHashAlgorithmModeCustom": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "自定义算法模式名"
+        },
+        "CsmHashAlgorithmSecondaryFamily": {
+          "type": "string",
+          "default": "CRYPTO_ALGOFAM_NOT_SET",
+          "enum": [
+            "CRYPTO_ALGOFAM_CUSTOM",
+            "CRYPTO_ALGOFAM_NOT_SET"
+          ],
+          "description": "次级算法族"
+        },
+        "CsmHashAlgorithmSecondaryFamilyCustom": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "自定义次级算法族名"
+        },
+        "CsmHashDataMaxLength": {
+          "type": "integer",
+          "description": "数据最大长度"
+        },
+        "CsmHashResultLength": {
+          "type": "integer",
+          "description": "哈希结果长度"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmEncryptConfig": {
+      "description": "CsmPrimitives 子容器（Encrypt 算法配置）",
+      "type": "object",
+      "properties": {
+        "CsmEncryptAlgorithmFamily": {
+          "type": "string",
+          "enum": [
+            "CRYPTO_ALGOFAM_3DES",
+            "CRYPTO_ALGOFAM_AES",
+            "CRYPTO_ALGOFAM_CHACHA",
+            "CRYPTO_ALGOFAM_CUSTOM",
+            "CRYPTO_ALGOFAM_ECIES",
+            "CRYPTO_ALGOFAM_RSA"
+          ],
+          "description": "算法族"
+        },
+        "CsmEncryptAlgorithmFamilyCustom": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "自定义算法族名"
+        },
+        "CsmEncryptAlgorithmKeyLength": {
+          "type": "integer",
+          "description": "密钥长度"
+        },
+        "CsmEncryptAlgorithmMode": {
+          "type": "string",
+          "enum": [
+            "CRYPTO_ALGOMODE_12ROUNDS",
+            "CRYPTO_ALGOMODE_20ROUNDS",
+            "CRYPTO_ALGOMODE_8ROUNDS",
+            "CRYPTO_ALGOMODE_CBC",
+            "CRYPTO_ALGOMODE_CFB",
+            "CRYPTO_ALGOMODE_CTR",
+            "CRYPTO_ALGOMODE_CUSTOM",
+            "CRYPTO_ALGOMODE_ECB",
+            "CRYPTO_ALGOMODE_NOT_SET",
+            "CRYPTO_ALGOMODE_OFB",
+            "CRYPTO_ALGOMODE_RSAES_OAEP",
+            "CRYPTO_ALGOMODE_RSAES_PKCS1_v1_5",
+            "CRYPTO_ALGOMODE_XTS"
+          ],
+          "description": "算法模式"
+        },
+        "CsmEncryptAlgorithmModeCustom": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "自定义算法模式名"
+        },
+        "CsmEncryptAlgorithmSecondaryFamily": {
+          "type": "string",
+          "default": "CRYPTO_ALGOFAM_NOT_SET",
+          "enum": [
+            "CRYPTO_ALGOFAM_CUSTOM",
+            "CRYPTO_ALGOFAM_NOT_SET"
+          ],
+          "description": "次级算法族"
+        },
+        "CsmEncryptAlgorithmSecondaryFamilyCustom": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "自定义次级算法族名"
+        },
+        "CsmEncryptDataMaxLength": {
+          "type": "integer",
+          "description": "数据最大长度"
+        },
+        "CsmEncryptResultMaxLength": {
+          "type": "integer",
+          "description": "结果最大长度"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmDecryptConfig": {
+      "description": "CsmPrimitives 子容器（Decrypt 算法配置）",
+      "type": "object",
+      "properties": {
+        "CsmDecryptAlgorithmFamily": {
+          "type": "string",
+          "enum": [
+            "CRYPTO_ALGOFAM_3DES",
+            "CRYPTO_ALGOFAM_AES",
+            "CRYPTO_ALGOFAM_CHACHA",
+            "CRYPTO_ALGOFAM_CUSTOM",
+            "CRYPTO_ALGOFAM_ECIES",
+            "CRYPTO_ALGOFAM_RSA"
+          ],
+          "description": "算法族"
+        },
+        "CsmDecryptAlgorithmFamilyCustom": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "自定义算法族名"
+        },
+        "CsmDecryptAlgorithmKeyLength": {
+          "type": "integer",
+          "description": "密钥长度"
+        },
+        "CsmDecryptAlgorithmMode": {
+          "type": "string",
+          "enum": [
+            "CRYPTO_ALGOMODE_12ROUNDS",
+            "CRYPTO_ALGOMODE_20ROUNDS",
+            "CRYPTO_ALGOMODE_8ROUNDS",
+            "CRYPTO_ALGOMODE_CBC",
+            "CRYPTO_ALGOMODE_CFB",
+            "CRYPTO_ALGOMODE_CTR",
+            "CRYPTO_ALGOMODE_CUSTOM",
+            "CRYPTO_ALGOMODE_ECB",
+            "CRYPTO_ALGOMODE_OFB",
+            "CRYPTO_ALGOMODE_RSAES_OAEP",
+            "CRYPTO_ALGOMODE_RSAES_PKCS1_v1_5",
+            "CRYPTO_ALGOMODE_XTS"
+          ],
+          "description": "算法模式"
+        },
+        "CsmDecryptAlgorithmModeCustom": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "自定义算法模式名"
+        },
+        "CsmDecryptAlgorithmSecondaryFamily": {
+          "type": "string",
+          "default": "CRYPTO_ALGOFAM_NOT_SET",
+          "enum": [
+            "CRYPTO_ALGOFAM_CUSTOM",
+            "CRYPTO_ALGOFAM_NOT_SET"
+          ],
+          "description": "次级算法族"
+        },
+        "CsmDecryptAlgorithmSecondaryFamilyCustom": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "自定义次级算法族名"
+        },
+        "CsmDecryptDataMaxLength": {
+          "type": "integer",
+          "description": "数据最大长度"
+        },
+        "CsmDecryptResultMaxLength": {
+          "type": "integer",
+          "description": "结果最大长度"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmMacGenerateConfig": {
+      "description": "CsmPrimitives 子容器（MAC 生成算法配置）",
+      "type": "object",
+      "properties": {
+        "CsmMacGenerateAlgorithmFamily": {
+          "type": "string",
+          "enum": [
+            "CRYPTO_ALGOFAM_3DES",
+            "CRYPTO_ALGOFAM_AES",
+            "CRYPTO_ALGOFAM_BLAKE_1_256",
+            "CRYPTO_ALGOFAM_BLAKE_1_512",
+            "CRYPTO_ALGOFAM_BLAKE_2s_256",
+            "CRYPTO_ALGOFAM_BLAKE_2s_512",
+            "CRYPTO_ALGOFAM_CHACHA",
+            "CRYPTO_ALGOFAM_CUSTOM",
+            "CRYPTO_ALGOFAM_RIPEMD160",
+            "CRYPTO_ALGOFAM_RNG",
+            "CRYPTO_ALGOFAM_SHA1",
+            "CRYPTO_ALGOFAM_SHA2_224",
+            "CRYPTO_ALGOFAM_SHA2_256",
+            "CRYPTO_ALGOFAM_SHA2_384",
+            "CRYPTO_ALGOFAM_SHA2_512",
+            "CRYPTO_ALGOFAM_SHA2_512_224",
+            "CRYPTO_ALGOFAM_SHA2_512_256",
+            "CRYPTO_ALGOFAM_SHA3_224",
+            "CRYPTO_ALGOFAM_SHA3_256",
+            "CRYPTO_ALGOFAM_SHA3_384",
+            "CRYPTO_ALGOFAM_SHA3_512",
+            "CRYPTO_ALGOFAM_SHA3_SHAKE128",
+            "CRYPTO_ALGOFAM_SHA3_SHAKE256",
+            "CRYPTO_ALGOFAM_SIPHASH"
+          ],
+          "description": "MAC 算法族"
+        },
+        "CsmMacGenerateAlgorithmFamilyCustom": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "自定义算法族名"
+        },
+        "CsmMacGenerateAlgorithmKeyLength": {
+          "type": "integer",
+          "description": "密钥长度"
+        },
+        "CsmMacGenerateAlgorithmMode": {
+          "type": "string",
+          "enum": [
+            "CRYPTO_ALGOMODE_CMAC",
+            "CRYPTO_ALGOMODE_CTRDRBG",
+            "CRYPTO_ALGOMODE_CUSTOM",
+            "CRYPTO_ALGOMODE_GMAC",
+            "CRYPTO_ALGOMODE_HMAC",
+            "CRYPTO_ALGOMODE_NOT_SET",
+            "CRYPTO_ALGOMODE_SIPHASH_2_4",
+            "CRYPTO_ALGOMODE_SIPHASH_4_8"
+          ],
+          "description": "算法模式"
+        },
+        "CsmMacGenerateAlgorithmModeCustom": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "自定义算法模式名"
+        },
+        "CsmMacGenerateAlgorithmSecondaryFamily": {
+          "type": "string",
+          "default": "CRYPTO_ALGOFAM_NOT_SET",
+          "enum": [
+            "CRYPTO_ALGOFAM_NOT_SET",
+            "CRYPTO_ALGOMODE_CUSTOM"
+          ],
+          "description": "次级算法族"
+        },
+        "CsmMacGenerateAlgorithmSecondaryFamilyCustom": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "自定义次级算法族名"
+        },
+        "CsmMacGenerateDataMaxLength": {
+          "type": "integer",
+          "description": "数据最大长度"
+        },
+        "CsmMacGenerateResultLength": {
+          "type": "integer",
+          "description": "MAC 结果长度"
+        }
+      },
+      "additionalProperties": true
+    },
+    "CsmSignatureGenerateConfig": {
+      "description": "CsmPrimitives 子容器（签名生成算法配置）",
+      "type": "object",
+      "properties": {
+        "CsmSignatureGenerateAlgorithmFamily": {
+          "type": "string",
+          "enum": [
+            "CRYPTO_ALGOFAM_BRAINPOOL",
+            "CRYPTO_ALGOFAM_CUSTOM",
+            "CRYPTO_ALGOFAM_ECCNIST",
+            "CRYPTO_ALGOFAM_ED25519",
+            "CRYPTO_ALGOFAM_RSA"
+          ],
+          "description": "签名算法族"
+        },
+        "CsmSignatureGenerateAlgorithmFamilyCustom": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "自定义算法族名"
+        },
+        "CsmSignatureGenerateAlgorithmMode": {
+          "type": "string",
+          "enum": [
+            "CRYPTO_ALGOMODE_CUSTOM",
+            "CRYPTO_ALGOMODE_NOT_SET",
+            "CRYPTO_ALGOMODE_RSASSA_PKCS1_v1_5",
+            "CRYPTO_ALGOMODE_RSASSA_PSS"
+          ],
+          "description": "签名算法模式"
+        },
+        "CsmSignatureGenerateAlgorithmModeCustom": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "自定义算法模式名"
+        },
+        "CsmSignatureGenerateAlgorithmSecondaryFamily": {
+          "type": "string",
+          "default": "CRYPTO_ALGOFAM_NOT_SET",
+          "enum": [
+            "CRYPTO_ALGOFAM_BLAKE_1_256",
+            "CRYPTO_ALGOFAM_BLAKE_1_512",
+            "CRYPTO_ALGOFAM_BLAKE_2s_256",
+            "CRYPTO_ALGOFAM_BLAKE_2s_512",
+            "CRYPTO_ALGOFAM_CUSTOM",
+            "CRYPTO_ALGOFAM_NOT_SET",
+            "CRYPTO_ALGOFAM_RIPEMD160",
+            "CRYPTO_ALGOFAM_SHA1",
+            "CRYPTO_ALGOFAM_SHA2_224",
+            "CRYPTO_ALGOFAM_SHA2_256",
+            "CRYPTO_ALGOFAM_SHA2_384",
+            "CRYPTO_ALGOFAM_SHA2_512",
+            "CRYPTO_ALGOFAM_SHA2_512_224",
+            "CRYPTO_ALGOFAM_SHA2_512_256",
+            "CRYPTO_ALGOFAM_SHA3_224",
+            "CRYPTO_ALGOFAM_SHA3_256",
+            "CRYPTO_ALGOFAM_SHA3_384",
+            "CRYPTO_ALGOFAM_SHA3_512",
+            "CRYPTO_ALGOFAM_SHA3_SHAKE128",
+            "CRYPTO_ALGOFAM_SHA3_SHAKE256"
+          ],
+          "description": "次级算法族（哈希）"
+        },
+        "CsmSignatureGenerateAlgorithmSecondaryFamilyCustom": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "自定义次级算法族名"
+        },
+        "CsmSignatureGenerateDataMaxLength": {
+          "type": "integer",
+          "description": "数据最大长度"
+        },
+        "CsmSignatureGenerateKeyLength": {
+          "type": "integer",
+          "description": "密钥长度"
+        },
+        "CsmSignatureGenerateResultLength": {
+          "type": "integer",
+          "description": "签名结果长度"
+        }
+      },
+      "additionalProperties": true
+    },
     "CommonPublishedInformation": {
       "description": "CommonPublishedInformation 配置容器",
       "type": "object",
