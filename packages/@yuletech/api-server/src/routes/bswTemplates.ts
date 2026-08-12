@@ -98,12 +98,12 @@ function isAdminUser(user: { role?: string } | undefined): boolean {
 }
 
 /** 模板是否公开可见（published + isPublic + visibility=public） */
-function templateIsPublic(t: { status: string; isPublic: boolean; visibility: string }): boolean {
+export function templateIsPublic(t: { status: string; isPublic: boolean; visibility: string }): boolean {
   return t.status === 'published' && t.isPublic === true && t.visibility === 'public';
 }
 
 /** 非公开模板仅作者/admin 可读，其余 404（IDOR 修复） */
-function canViewTemplate(
+export function canViewTemplate(
   t: { authorId: number; status: string; isPublic: boolean; visibility: string },
   user: { id?: number; role?: string } | undefined
 ): boolean {
@@ -111,6 +111,14 @@ function canViewTemplate(
   if (!user) return false;
   if (isAdminUser(user)) return true;
   return user.id === t.authorId;
+}
+
+/**
+ * Fix 30: 列表 status 解析 —— 非 admin 请求一律强制 'published'，
+ * 杜绝未认证/普通用户通过 ?status=draft 读取未发布模板。
+ */
+export function resolveListStatus(userIsAdmin: boolean, queryStatus?: string): string {
+  return userIsAdmin && queryStatus ? queryStatus : 'published';
 }
 
 // ── Routes ────────────────────────────────────────────────────────────────────
@@ -138,7 +146,7 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     // Fix 30: 非 published 查询必须 admin 认证；否则强制 'published' + isPublic 过滤
     const user = await tryGetUser(request);
     const userIsAdmin = isAdminUser(user);
-    const conditions: any[] = [eq(bswTemplates.status, userIsAdmin && query.status ? query.status : 'published')];
+    const conditions: any[] = [eq(bswTemplates.status, resolveListStatus(userIsAdmin, query.status))];
 
     // 匿名/非 admin：只显示公开模板；admin 无 status 参数时也保持公开过滤
     if (!query.status || !userIsAdmin) {

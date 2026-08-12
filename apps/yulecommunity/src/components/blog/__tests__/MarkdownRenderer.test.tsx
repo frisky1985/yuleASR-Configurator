@@ -194,4 +194,60 @@ describe('MarkdownRenderer', () => {
 
     expect(handleTocGenerated).not.toHaveBeenCalled();
   });
+
+  // ── Fix 29: XSS 防护（URL 协议白名单）──────────────────────────────
+
+  it('javascript: 协议的 markdown 链接不渲染 href（无脚本执行面）', () => {
+    const { container } = render(<MarkdownRenderer content="[x](javascript:alert(1))" />);
+
+    const link = container.querySelector('a');
+    expect(link).not.toBeNull();
+    // 协议白名单校验失败 → href 为 undefined → React 不输出 href 属性
+    expect(link?.getAttribute('href')).toBeNull();
+  });
+
+  it('data:/vbscript: 等危险协议同样被拦截', () => {
+    const { container } = render(
+      <MarkdownRenderer content="[a](data:text/html;base64,PHNjcmlwdD4=) [b](vbscript:msgbox(1))" />
+    );
+
+    const links = container.querySelectorAll('a');
+    expect(links.length).toBe(2);
+    links.forEach(link => {
+      expect(link.getAttribute('href')).toBeNull();
+    });
+  });
+
+  it('DOMPurify 清理原始 HTML 中的 javascript: 链接（不产生可点击元素）', () => {
+    const { container } = render(
+      <MarkdownRenderer content='<a href="javascript:alert(1)">evil</a>' />
+    );
+
+    // 无 rehype-raw：原始 HTML 不渲染为 DOM 元素，且 DOMPurify 已剥离 javascript: href
+    expect(container.querySelector('a[href*="javascript"]')).toBeNull();
+    expect(container.innerHTML).not.toContain('javascript:');
+  });
+
+  it('https:/mailto:/tel: 合法协议正常渲染 href', () => {
+    const { container } = render(
+      <MarkdownRenderer content="[web](https://example.com) [mail](mailto:a@b.com) [tel](tel:+8613800000000)" />
+    );
+
+    const links = container.querySelectorAll('a');
+    expect(links.length).toBe(3);
+    expect(links[0].getAttribute('href')).toBe('https://example.com');
+    expect(links[1].getAttribute('href')).toBe('mailto:a@b.com');
+    expect(links[2].getAttribute('href')).toBe('tel:+8613800000000');
+  });
+
+  it('javascript: 协议的图片 src 不渲染', () => {
+    const { container } = render(
+      <MarkdownRenderer content="![x](javascript:alert(1))" />
+    );
+
+    const img = container.querySelector('img');
+    // img 组件在协议校验失败时渲染 safeSrc=undefined
+    expect(img).not.toBeNull();
+    expect(img?.getAttribute('src')).toBeNull();
+  });
 });

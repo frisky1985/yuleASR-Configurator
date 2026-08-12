@@ -322,7 +322,14 @@ export function MarkdownRenderer({
   return (
     <>
       <div className={cn('prose prose-neutral dark:prose-invert max-w-none', className)}>
-        <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={components}
+          // Fix 29: URL 协议白名单收敛为组件内单一权威 —— 与 SAFE_URL_RE 一致，
+          // react-markdown 默认 urlTransform 不含 tel:，这里显式收紧为 https?:|mailto:|tel:，
+          // javascript:/data:/vbscript: 等在解析阶段即被剥离（返回空串 → href 缺失）。
+          urlTransform={url => (SAFE_URL_RE.test(url) ? url : '')}
+        >
           {sanitizedContent}
         </ReactMarkdown>
       </div>

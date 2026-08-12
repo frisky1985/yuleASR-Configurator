@@ -29,6 +29,15 @@ const querySchema = z.object({
 
 // ── Helper ────────────────────────────────────────────────────────────────────
 
+/**
+ * Fix 30: like toggle 决策 —— (configId, userId) 唯一约束下，
+ * 插入命中（inserted>0）→ 点赞 +1；冲突（inserted=0）→ 取消赞 -1。
+ * 纯函数便于单测验证「连续 like 同一配置 +1 再 -1」的 toggle 语义。
+ */
+export function likeToggleDecision(insertedCount: number): { liked: boolean; delta: 1 | -1 } {
+  return insertedCount > 0 ? { liked: true, delta: 1 } : { liked: false, delta: -1 };
+}
+
 function jsonParseSafe(val: string | null | undefined, fallback: any = null): any {
   if (!val) return fallback;
   try {
@@ -242,7 +251,7 @@ export async function sharedConfigsRoutes(app: FastifyInstance) {
           .set({ likeCount: sql`${sharedConfigs.likeCount} + 1` })
           .where(eq(sharedConfigs.id, configId))
           .returning({ likeCount: sharedConfigs.likeCount });
-        return { likeCount: updated.likeCount, liked: true };
+        return { likeCount: updated.likeCount, liked: likeToggleDecision(inserted.length).liked };
       }
 
       const [updated] = await tx
@@ -250,7 +259,7 @@ export async function sharedConfigsRoutes(app: FastifyInstance) {
         .set({ likeCount: sql`GREATEST(${sharedConfigs.likeCount} - 1, 0)` })
         .where(eq(sharedConfigs.id, configId))
         .returning({ likeCount: sharedConfigs.likeCount });
-      return { likeCount: updated.likeCount, liked: false };
+      return { likeCount: updated.likeCount, liked: likeToggleDecision(inserted.length).liked };
     });
   });
 }

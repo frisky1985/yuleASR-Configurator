@@ -54,7 +54,7 @@ async function getOrCreateBrandSettings() {
 
 // ── Fix 30: CSS 注入转义（/preview 输出的自定义属性会被注入到 <style>）──
 // 剔除 CSS 语法字符：\ ( ) " ' ; 换行，防止 ");background:red 之类的注入载荷
-function cssEscape(s: unknown): string {
+export function cssEscape(s: unknown): string {
   return String(s ?? '').replace(/[\\(\)"';\n\\]/g, '');
 }
 
