@@ -189,6 +189,66 @@
       "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
+    },
+    "OtaSecurity": {
+      "description": "OtaSecurity 配置容器 - OTA 信息安全配置（GB 44496-2024 / UN R156 对齐，对应 OTA 安全 4 层信任链：L1 签名/HSM、L3 验签+版本绑定、L4 Secure Boot 抗回滚）",
+      "type": "object",
+      "properties": {
+        "SecureBootEnable": {
+          "type": "boolean",
+          "default": true,
+          "description": "SecureBootEnable 参数 - 使能 Secure Boot 信任链校验（Boot ROM→BL→App，L4）"
+        },
+        "SignatureAlgorithm": {
+          "type": "string",
+          "enum": ["ECDSA_P256", "SM2", "RSA2048"],
+          "default": "ECDSA_P256",
+          "description": "SignatureAlgorithm 参数 - 固件签名算法（经 Csm 调度，对应 AUTOSAR CSM 签名作业算法族，L1/L3）"
+        },
+        "AntiRollbackEnable": {
+          "type": "boolean",
+          "default": true,
+          "description": "AntiRollbackEnable 参数 - 使能抗回滚计数器（NVM 单调递增，旧版本号低于计数器拒绝启动，L4）"
+        },
+        "CertChainMaxDepth": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4,
+          "default": 2,
+          "description": "CertChainMaxDepth 参数 - 证书链最大验证深度，对齐 AUTOSAR KeyM KeyMCertificateChainMaxDepth"
+        },
+        "KeyRotationPeriod": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 365,
+          "description": "KeyRotationPeriod 参数 - 密钥轮换周期（单位：天），对应 Csm_KeySetValid/KeyGenerate 轮换调度"
+        },
+        "UserConfirmRequired": {
+          "type": "boolean",
+          "default": true,
+          "description": "UserConfirmRequired 参数 - 升级前用户告知/确认使能（GB 44496 §6.3），未确认不得开始升级写入"
+        },
+        "UserConfirmTimeout": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 30,
+          "description": "UserConfirmTimeout 参数 - 用户确认超时（单位：秒），超时自动取消升级"
+        },
+        "UpgradeLogEnable": {
+          "type": "boolean",
+          "default": true,
+          "description": "UpgradeLogEnable 参数 - 升级日志记录使能（GB 44496 §7.2 / R156 SUMS 可追溯），含时间戳/版本/来源/签名结果"
+        },
+        "UpgradeLogMaxEntries": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 255,
+          "default": 16,
+          "description": "UpgradeLogMaxEntries 参数 - 升级日志循环缓冲最大条数"
+        }
+      },
+      "additionalProperties": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,
