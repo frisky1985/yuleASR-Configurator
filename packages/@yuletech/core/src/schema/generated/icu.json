@@ -335,6 +335,149 @@
         }
       },
       "additionalProperties": true
+    },
+    "IcuSignalEdgeDetection": {
+      "description": "IcuSignalEdgeDetection 配置容器（边沿检测模式参数，IcuChannel 子容器）",
+      "type": "object",
+      "properties": {
+        "IcuSignalNotification": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "信号通知回调函数名（ECUC-FUNCTION-NAME-DEF）"
+        }
+      },
+      "additionalProperties": true,
+      "x-choice-container": true,
+      "x-choice-params": [
+        "IcuSignalNotification"
+      ],
+      "x-choice-description": "边沿检测模式通知回调"
+    },
+    "IcuSignalMeasurement": {
+      "description": "IcuSignalMeasurement 配置容器（信号测量模式参数，IcuChannel 子容器）",
+      "type": "object",
+      "properties": {
+        "IcuSignalMeasurementProperty": {
+          "type": "string",
+          "enum": [
+            "ICU_DUTY_CYCLE",
+            "ICU_HIGH_TIME",
+            "ICU_LOW_TIME",
+            "ICU_PERIOD_TIME"
+          ],
+          "description": "信号测量属性（占空比/高电平时间/低电平时间/周期）"
+        }
+      },
+      "additionalProperties": true,
+      "x-choice-container": true,
+      "x-choice-params": [
+        "IcuSignalMeasurementProperty"
+      ],
+      "x-choice-description": "信号测量属性四选一"
+    },
+    "IcuTimestampMeasurement": {
+      "description": "IcuTimestampMeasurement 配置容器（时间戳测量模式参数，IcuChannel 子容器）",
+      "type": "object",
+      "properties": {
+        "IcuTimestampMeasurementProperty": {
+          "type": "string",
+          "enum": [
+            "ICU_CIRCULAR_BUFFER",
+            "ICU_LINEAR_BUFFER"
+          ],
+          "description": "时间戳缓冲模式（环形/线性）"
+        }
+      },
+      "additionalProperties": true,
+      "x-choice-container": true,
+      "x-choice-params": [
+        "IcuTimestampMeasurementProperty"
+      ],
+      "x-choice-description": "时间戳缓冲模式二选一"
+    },
+    "IcuWakeup": {
+      "description": "IcuWakeup 配置容器（唤醒通道参数，IcuChannel 子容器）",
+      "type": "object",
+      "properties": {
+        "IcuChannelWakeupInfo": {
+          "type": "string",
+          "maxLength": 255,
+          "description": "唤醒源引用（EcuM_WakeupSourceType，ECUC-REFERENCE-DEF）"
+        }
+      },
+      "additionalProperties": true
+    },
+    "IcuOptionalApis": {
+      "description": "IcuOptionalApis 配置容器（模块级可选 API 开关）",
+      "type": "object",
+      "properties": {
+        "IcuDeInitApi": {
+          "type": "boolean",
+          "default": true,
+          "description": "Icu_DeInit API 使能"
+        },
+        "IcuDisableWakeupApi": {
+          "type": "boolean",
+          "default": true,
+          "description": "Icu_DisableWakeup API 使能"
+        },
+        "IcuEdgeCountApi": {
+          "type": "boolean",
+          "default": true,
+          "description": "Icu_GetEdgeCount API 使能"
+        },
+        "IcuEdgeDetectApi": {
+          "type": "boolean",
+          "default": true,
+          "description": "边沿检测 API 使能"
+        },
+        "IcuEnableWakeupApi": {
+          "type": "boolean",
+          "default": true,
+          "description": "Icu_EnableWakeup API 使能"
+        },
+        "IcuGetDutyCycleValuesApi": {
+          "type": "boolean",
+          "default": true,
+          "description": "Icu_GetDutyCycleValues API 使能"
+        },
+        "IcuGetInputStateApi": {
+          "type": "boolean",
+          "default": true,
+          "description": "Icu_GetInputState API 使能"
+        },
+        "IcuGetTimeElapsedApi": {
+          "type": "boolean",
+          "default": true,
+          "description": "Icu_GetTimeElapsed API 使能"
+        },
+        "IcuGetVersionInfoApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "Icu_GetVersionInfo API 使能"
+        },
+        "IcuSetModeApi": {
+          "type": "boolean",
+          "default": true,
+          "description": "Icu_SetMode API 使能"
+        },
+        "IcuSignalMeasurementApi": {
+          "type": "boolean",
+          "default": true,
+          "description": "信号测量 API 使能"
+        },
+        "IcuTimestampApi": {
+          "type": "boolean",
+          "default": true,
+          "description": "时间戳 API 使能"
+        },
+        "IcuWakeupFunctionalityApi": {
+          "type": "boolean",
+          "default": false,
+          "description": "唤醒功能 API 使能"
+        }
+      },
+      "additionalProperties": true
     }
   },
   "required": [
