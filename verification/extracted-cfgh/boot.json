@@ -1,203 +1,274 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://yuletech.io/schemas/modules/boot.json",
-  "title": "Boot Configuration",
-  "description": "Boot Configuration configuration header",
-  "type": "object",
-  "properties": {
-    "BOOT_WDG_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "BOOT_WDG_TIMEOUT_MS 参数",
-      "default": 5000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_VERIFY_TIMEOUT_MS": {
-      "type": "integer",
-      "description": "BOOT_VERIFY_TIMEOUT_MS 参数",
-      "default": 10000,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_FLASH_BASE": {
-      "type": "integer",
-      "description": "BOOT_FLASH_BASE 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_PBL_ADDR": {
-      "type": "integer",
-      "description": "BOOT_PBL_ADDR 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_PBL_SIZE": {
-      "type": "integer",
-      "description": "BOOT_PBL_SIZE 参数",
-      "default": 4096,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_SBL_ADDR": {
-      "type": "integer",
-      "description": "BOOT_SBL_ADDR 参数",
-      "default": 8192,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_SBL_SIZE": {
-      "type": "integer",
-      "description": "BOOT_SBL_SIZE 参数",
-      "default": 65536,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_APP_SLOT_A_ADDR": {
-      "type": "integer",
-      "description": "BOOT_APP_SLOT_A_ADDR 参数",
-      "default": 73728,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_APP_SLOT_A_SIZE": {
-      "type": "integer",
-      "description": "BOOT_APP_SLOT_A_SIZE 参数",
-      "default": 974848,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_APP_SLOT_B_ADDR": {
-      "type": "integer",
-      "description": "BOOT_APP_SLOT_B_ADDR 参数",
-      "default": 1048576,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_APP_SLOT_B_SIZE": {
-      "type": "integer",
-      "description": "BOOT_APP_SLOT_B_SIZE 参数",
-      "default": 917504,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_BIB_ADDR": {
-      "type": "integer",
-      "description": "BOOT_BIB_ADDR 参数",
-      "default": 1966080,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_BIB_SIZE": {
-      "type": "integer",
-      "description": "BOOT_BIB_SIZE 参数",
-      "default": 65536,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_NVM_ADDR": {
-      "type": "integer",
-      "description": "BOOT_NVM_ADDR 参数",
-      "default": 2031616,
-      "minimum": 0,
-      "maximum": 4294967295,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_NVM_SIZE": {
-      "type": "integer",
-      "description": "BOOT_NVM_SIZE 参数",
-      "default": 32768,
-      "minimum": 0,
-      "maximum": 65535,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_MAX_RETRIES": {
-      "type": "integer",
-      "description": "BOOT_MAX_RETRIES 参数",
-      "default": 3,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_MAX_BOOT_ATTEMPTS": {
-      "type": "integer",
-      "description": "BOOT_MAX_BOOT_ATTEMPTS 参数",
-      "default": 5,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_HASH_SIZE": {
-      "type": "integer",
-      "description": "BOOT_HASH_SIZE 参数",
-      "default": 32,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_SIGNATURE_SIZE": {
-      "type": "integer",
-      "description": "BOOT_SIGNATURE_SIZE 参数",
-      "default": 64,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_HSM_KEY_SLOT_PBL": {
-      "type": "integer",
-      "description": "BOOT_HSM_KEY_SLOT_PBL 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_HSM_KEY_SLOT_SBL": {
-      "type": "integer",
-      "description": "BOOT_HSM_KEY_SLOT_SBL 参数",
-      "default": 1,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_HSM_KEY_SLOT_APP": {
-      "type": "integer",
-      "description": "BOOT_HSM_KEY_SLOT_APP 参数",
-      "default": 2,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION"
-    },
-    "BOOT_DEBUG_ENABLE": {
-      "type": "integer",
-      "description": "BOOT_DEBUG_ENABLE 参数",
-      "default": 0,
-      "minimum": 0,
-      "maximum": 255,
-      "x-section": "PRE-COMPILE CONFIGURATION",
-      "x-guarded": true
-    }
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://yuletech.io/schemas/modules/boot.json",
+ "title": "Boot Configuration",
+ "description": "Boot Configuration configuration header",
+ "type": "object",
+ "properties": {
+  "BOOT_WDG_TIMEOUT_MS": {
+   "type": "integer",
+   "description": "BOOT_WDG_TIMEOUT_MS 参数",
+   "default": 5000,
+   "minimum": 0,
+   "maximum": 65535,
+   "x-section": "PRE-COMPILE CONFIGURATION"
   },
-  "additionalProperties": true,
-  "x-verbatim-defines": [
-    "#if BOOT_DEBUG_ENABLE\n#include \"SchM.h\"\n#define BOOT_TRACE(fmt, ...)  SchM_Log(0, fmt, ##__VA_ARGS__)\n#else\n#define BOOT_TRACE(fmt, ...)\n#endif"
-  ],
-  "x-layer": "Service",
-  "x-version": "4.4.0",
-  "x-source": "CfgH-Extracted",
-  "x-source-file": "src/bsw/boot/include/Boot_Cfg.h",
-  "x-display-name": "Boot"
+  "BOOT_VERIFY_TIMEOUT_MS": {
+   "type": "integer",
+   "description": "BOOT_VERIFY_TIMEOUT_MS 参数",
+   "default": 10000,
+   "minimum": 0,
+   "maximum": 65535,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_FLASH_BASE": {
+   "type": "integer",
+   "description": "BOOT_FLASH_BASE 参数",
+   "default": 0,
+   "minimum": 0,
+   "maximum": 255,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_PBL_ADDR": {
+   "type": "integer",
+   "description": "BOOT_PBL_ADDR 参数",
+   "default": 0,
+   "minimum": 0,
+   "maximum": 255,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_PBL_SIZE": {
+   "type": "integer",
+   "description": "BOOT_PBL_SIZE 参数",
+   "default": 4096,
+   "minimum": 0,
+   "maximum": 65535,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_SBL_ADDR": {
+   "type": "integer",
+   "description": "BOOT_SBL_ADDR 参数",
+   "default": 8192,
+   "minimum": 0,
+   "maximum": 65535,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_SBL_SIZE": {
+   "type": "integer",
+   "description": "BOOT_SBL_SIZE 参数",
+   "default": 65536,
+   "minimum": 0,
+   "maximum": 4294967295,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_APP_SLOT_A_ADDR": {
+   "type": "integer",
+   "description": "BOOT_APP_SLOT_A_ADDR 参数",
+   "default": 73728,
+   "minimum": 0,
+   "maximum": 4294967295,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_APP_SLOT_A_SIZE": {
+   "type": "integer",
+   "description": "BOOT_APP_SLOT_A_SIZE 参数",
+   "default": 974848,
+   "minimum": 0,
+   "maximum": 4294967295,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_APP_SLOT_B_ADDR": {
+   "type": "integer",
+   "description": "BOOT_APP_SLOT_B_ADDR 参数",
+   "default": 1048576,
+   "minimum": 0,
+   "maximum": 4294967295,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_APP_SLOT_B_SIZE": {
+   "type": "integer",
+   "description": "BOOT_APP_SLOT_B_SIZE 参数",
+   "default": 917504,
+   "minimum": 0,
+   "maximum": 4294967295,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_BIB_ADDR": {
+   "type": "integer",
+   "description": "BOOT_BIB_ADDR 参数",
+   "default": 1966080,
+   "minimum": 0,
+   "maximum": 4294967295,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_BIB_SIZE": {
+   "type": "integer",
+   "description": "BOOT_BIB_SIZE 参数",
+   "default": 65536,
+   "minimum": 0,
+   "maximum": 4294967295,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_NVM_ADDR": {
+   "type": "integer",
+   "description": "BOOT_NVM_ADDR 参数",
+   "default": 2031616,
+   "minimum": 0,
+   "maximum": 4294967295,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_NVM_SIZE": {
+   "type": "integer",
+   "description": "BOOT_NVM_SIZE 参数",
+   "default": 32768,
+   "minimum": 0,
+   "maximum": 65535,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_MAX_RETRIES": {
+   "type": "integer",
+   "description": "BOOT_MAX_RETRIES 参数",
+   "default": 3,
+   "minimum": 0,
+   "maximum": 255,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_MAX_BOOT_ATTEMPTS": {
+   "type": "integer",
+   "description": "BOOT_MAX_BOOT_ATTEMPTS 参数",
+   "default": 5,
+   "minimum": 0,
+   "maximum": 255,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_HASH_SIZE": {
+   "type": "integer",
+   "description": "BOOT_HASH_SIZE 参数",
+   "default": 32,
+   "minimum": 0,
+   "maximum": 255,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_SIGNATURE_SIZE": {
+   "type": "integer",
+   "description": "BOOT_SIGNATURE_SIZE 参数",
+   "default": 64,
+   "minimum": 0,
+   "maximum": 255,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_HSM_KEY_SLOT_PBL": {
+   "type": "integer",
+   "description": "BOOT_HSM_KEY_SLOT_PBL 参数",
+   "default": 0,
+   "minimum": 0,
+   "maximum": 255,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_HSM_KEY_SLOT_SBL": {
+   "type": "integer",
+   "description": "BOOT_HSM_KEY_SLOT_SBL 参数",
+   "default": 1,
+   "minimum": 0,
+   "maximum": 255,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_HSM_KEY_SLOT_APP": {
+   "type": "integer",
+   "description": "BOOT_HSM_KEY_SLOT_APP 参数",
+   "default": 2,
+   "minimum": 0,
+   "maximum": 255,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  },
+  "BOOT_DEBUG_ENABLE": {
+   "type": "integer",
+   "description": "BOOT_DEBUG_ENABLE 参数",
+   "default": 0,
+   "minimum": 0,
+   "maximum": 255,
+   "x-section": "PRE-COMPILE CONFIGURATION",
+   "x-guarded": true
+  },
+  "OtaSecurity": {
+   "description": "OtaSecurity 配置容器 - OTA 信息安全配置（GB 44496-2024 / UN R156 对齐，对应 OTA 安全 4 层信任链：L1 签名/HSM、L3 验签+版本绑定、L4 Secure Boot 抗回滚）",
+   "type": "object",
+   "properties": {
+    "BOOT_SECURE_BOOT_ENABLE": {
+     "type": "boolean",
+     "default": true,
+     "description": "SecureBootEnable 参数 - 使能 Secure Boot 信任链校验（Boot ROM→BL→App，L4）"
+    },
+    "BOOT_SIGNATURE_ALGORITHM": {
+     "type": "string",
+     "enum": [
+      "ECDSA_P256",
+      "SM2",
+      "RSA2048"
+     ],
+     "default": "ECDSA_P256",
+     "description": "SignatureAlgorithm 参数 - 固件签名算法（经 Csm 调度，对应 AUTOSAR CSM 签名作业算法族，L1/L3）"
+    },
+    "BOOT_ANTI_ROLLBACK_ENABLE": {
+     "type": "boolean",
+     "default": true,
+     "description": "AntiRollbackEnable 参数 - 使能抗回滚计数器（NVM 单调递增，旧版本号低于计数器拒绝启动，L4）"
+    },
+    "BOOT_CERT_CHAIN_MAX_DEPTH": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 4,
+     "default": 4,
+     "description": "CertChainMaxDepth 参数 - 证书链最大验证深度，对齐 AUTOSAR KeyM KeyMCertificateChainMaxDepth"
+    },
+    "BOOT_KEY_ROTATION_PERIOD": {
+     "type": "integer",
+     "minimum": 1,
+     "default": 365,
+     "description": "KeyRotationPeriod 参数 - 密钥轮换周期（单位：天），对应 Csm_KeySetValid/KeyGenerate 轮换调度"
+    },
+    "BOOT_USER_CONFIRM_REQUIRED": {
+     "type": "boolean",
+     "default": true,
+     "description": "UserConfirmRequired 参数 - 升级前用户告知/确认使能（GB 44496 §6.3），未确认不得开始升级写入"
+    },
+    "BOOT_USER_CONFIRM_TIMEOUT_MS": {
+     "type": "integer",
+     "minimum": 1,
+     "default": 30000,
+     "description": "UserConfirmTimeout 参数 - 用户确认超时（单位：毫秒），超时自动取消升级"
+    },
+    "BOOT_UPGRADE_LOG_ENABLE": {
+     "type": "boolean",
+     "default": true,
+     "description": "UpgradeLogEnable 参数 - 升级日志记录使能（GB 44496 §7.2 / R156 SUMS 可追溯），含时间戳/版本/来源/签名结果"
+    },
+    "BOOT_UPGRADE_LOG_MAX_ENTRIES": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 255,
+     "default": 16,
+     "description": "UpgradeLogMaxEntries 参数 - 升级日志循环缓冲最大条数"
+    },
+    "BOOT_ROLLBACK_CONFIRM_BOOTS": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 255,
+     "default": 3,
+     "description": "BOOT_ROLLBACK_CONFIRM_BOOTS 参数 - 抗回滚延后递增阈值 N: 新版本成功启动 N 次后提交计数器（P1-4）"
+    }
+   },
+   "additionalProperties": true,
+   "x-section": "PRE-COMPILE CONFIGURATION"
+  }
+ },
+ "additionalProperties": true,
+ "x-verbatim-defines": [
+  "#if BOOT_DEBUG_ENABLE\n#include \"SchM.h\"\n#define BOOT_TRACE(fmt, ...)  SchM_Log(0, fmt, ##__VA_ARGS__)\n#else\n#define BOOT_TRACE(fmt, ...)\n#endif"
+ ],
+ "x-layer": "Service",
+ "x-version": "4.4.0",
+ "x-source": "CfgH-Extracted",
+ "x-source-file": "src/bsw/boot/include/Boot_Cfg.h",
+ "x-display-name": "Boot"
 }
