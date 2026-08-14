@@ -17,3 +17,4 @@ test-results/
 playwright-report/
 *.tsbuildinfo
 apps/yuleasr-vscode/out/
+.qoder/
