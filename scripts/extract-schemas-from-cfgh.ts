@@ -45,7 +45,7 @@ const LAYER_DIRS: Array<[string, string]> = [
   ['bsw/ecual', 'ECUAL'],
   ['bsw/services', 'Service'],
   ['bsw/os', 'Service'],
-  ['rte', 'RTE'],
+  ['middleware/rte', 'RTE'],
   ['bsw/cdd', 'ECUAL'],
   ['bsw/boot', 'Service'],
   ['platform', 'MCAL'],
