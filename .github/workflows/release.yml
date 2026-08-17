@@ -81,7 +81,7 @@ jobs:
         run: cp apps/yuleasr-web/dist/index.html apps/yuleasr-web/dist/404.html
 
       - name: Upload to GitHub Pages
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: apps/yuleasr-web/dist
 
