@@ -7,7 +7,12 @@ import { readFile } from 'fs/promises';
 import { spawn } from 'child_process';
 
 import { app, BrowserWindow, Menu, dialog, ipcMain, shell } from 'electron';
-import { autoUpdater } from 'electron-updater';
+// GH #49 修复：electron-updater 是 CommonJS（out/main.js 用 exports.xxx 导出，autoUpdater
+// 为 Object.defineProperty getter），ESM named import 无法静态识别 → 打包后 Electron
+// main 进程启动即崩（SyntaxError: Named export 'autoUpdater' not found）。
+// CJS default import 由 Node/Electron ESM 互操作提供 module.exports，运行期取值即可。
+import electronUpdater from 'electron-updater';
+const { autoUpdater } = electronUpdater;
 
 import { isGccAvailable, verifyFiles, saveFilesToDir, getGccVersion, sanitizeFiles } from './desktop-utils.mjs';
 
