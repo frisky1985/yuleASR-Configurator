@@ -61,7 +61,7 @@ beforeAll(() => {
       `-m "scratch baseline (YAC-KNOWN-006)"`,
     { stdio: 'pipe' }
   );
-});
+}, 120_000); // hook 超时显式放宽至 120s（YAC-CI-002：并行下基线 tar+git init 实测 ~11s）
 
 /** 恢复 scratch 工作树（无论断言成败；只操作 scratch，绝不触碰真实仓库） */
 afterEach(() => {
