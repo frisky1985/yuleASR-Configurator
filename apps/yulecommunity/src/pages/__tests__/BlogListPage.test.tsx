@@ -108,7 +108,9 @@ describe('BlogListPage', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('技术博客')).toBeInTheDocument();
+      // 页面标题是 <h1>；getByText 会同时命中徽标 <span>技术博客</span> → 多元素报错，
+      // 用 heading role 精确定位（YAC-KNOWN-002 顺带修复，既有多元素匹配 bug）
+      expect(screen.getByRole('heading', { level: 1, name: '技术博客' })).toBeInTheDocument();
     });
   });
 
