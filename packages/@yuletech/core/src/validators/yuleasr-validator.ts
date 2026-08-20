@@ -29,6 +29,8 @@ export interface ModuleValidationRules {
  */
 export class YuleasrValidator {
   private moduleRules: Map<string, ModuleValidationRules> = new Map();
+  // TODO(#11)：跨模块验证器单例持有（多配置并行编辑时有状态污染风险，见 ADR-003），
+  // 届时改为 Config 实例绑定 + createCrossModuleValidator 工厂按需创建
   private crossModuleValidator: CrossModuleValidator | null = null;
   /** 统一管理（2026-08-10）：schema 引用，模块级依赖从 schema.dependencies 读取 */
   private schemaMap: Map<string, ModuleSchema> = new Map();
