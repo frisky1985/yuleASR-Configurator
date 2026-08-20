@@ -32,13 +32,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # TODO(YAC-CI-001): typescript-eslint 8.x 硬性拒绝 TS 7（index.js 硬编码 versionMajor>=7 throw，
-      # 上游跟踪 typescript-eslint/typescript-eslint#10940，支持 TS>=7.1 后恢复门禁）。
-      # 止血：lint 失败不再阻塞 CI（步骤级 continue-on-error，job 仍成功、format:check 照跑、
-      # needs 依赖的 build-vscode 不受影响）。见 GitHub issue 恢复 lint 门禁。
+      # YAC-CI-002 已落地：typescript-eslint 通过 root TS6 peer 侧载真实运行（0 error），
+      # lint 门禁恢复（撤销 YAC-CI-001 止血 continue-on-error）。
+      # typescript-eslint 原生支持 TS7 后升级即可移除 TS6 侧载（跟踪 #54）。
       - name: Lint
         run: pnpm lint:ci
-        continue-on-error: true
 
       - name: Format check
         run: pnpm format:check
