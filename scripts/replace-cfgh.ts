@@ -22,8 +22,12 @@ import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, rmSync, copyFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
-import { generatedJsonToModuleSchema } from '@yuletech/core/schema/load-generated';
-import type { ModuleSchema } from '@yuletech/core';
+// YAC-KNOWN-003 修复：根目录脚本不能用裸包名导入 @yuletech/core —— 仓库根 node_modules
+// 没有 @yuletech 作用域链接（根 package.json 无 dependencies，pnpm 只在各 app/package 下建链），
+// 从 scripts/ 解析会 Cannot find package。对齐仓库既有约定（verify-schema-arxml-roundtrip.ts /
+// utils/schema-parser.ts 同款）：相对路径直达 core 源码。
+import { generatedJsonToModuleSchema } from '../packages/@yuletech/core/src/schema/load-generated';
+import type { ModuleSchema } from '../packages/@yuletech/core/src';
 
 import { generateHeadersFromSchemas } from '../apps/yuleasr-web/src/services/codegen';
 
