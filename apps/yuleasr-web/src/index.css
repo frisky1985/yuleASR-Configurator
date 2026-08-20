@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+/* Tailwind v4 兼容旧版 JS 配置（tailwind.config.js：主题扩展/颜色板等） */
+@config "../tailwind.config.js";
 
 @layer base {
   :root {
@@ -127,7 +127,9 @@
 
   /* Stats card style */
   .stat-card {
-    @apply bg-app-bg-primary border border-app-border-primary rounded-xl p-5 card-hover;
+    /* Tailwind v4：@apply 不再支持引用 @layer components 内自定义类（card-hover），
+       将其工具类内联（行为等价：transition-all duration-200 ease-in-out） */
+    @apply bg-app-bg-primary border border-app-border-primary rounded-xl p-5 transition-all duration-200 ease-in-out;
   }
 
   /* Gradient backgrounds for stats cards */
