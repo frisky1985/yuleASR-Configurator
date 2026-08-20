@@ -2,7 +2,9 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    workspace: [
+    // Vitest 4 迁移（YAC-KNOWN-002）：test.workspace 已在 Vitest 4 移除，
+    // 等价改名为 test.projects（语义与 glob 不变，见 https://vitest.dev/guide/projects）
+    projects: [
       'packages/*/vitest.config.ts',
       'packages/@yuletech/*/vitest.config.ts',
       // Fix 32: 接入 apps 单测（yuleasr-web / yulecommunity）到全仓 vitest。
