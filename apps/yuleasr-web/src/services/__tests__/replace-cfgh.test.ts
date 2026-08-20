@@ -1,41 +1,108 @@
-import { describe, expect, it, afterEach } from 'vitest';
+import { describe, expect, it, beforeAll, afterAll, afterEach } from 'vitest';
 import { execSync } from 'node:child_process';
-import { writeFileSync, readFileSync, existsSync } from 'node:fs';
+import { writeFileSync, readFileSync, existsSync, rmSync, mkdirSync, copyFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { tmpdir } from 'node:os';
 import { runReplace } from '../../../../../scripts/replace-cfgh';
 
-// 路径可被 env 覆盖（P2 加固：CI 可移植，不硬编码本机路径）
-const Y = process.env.YULEASR_AUDIT_DIR || '/Users/stefan/.openclaw/workspace/yuleASR';
-const OUT = process.env.REPLACE_AUDIT_OUT || '/tmp/replace-cfgh-test';
+// 真实 yuleASR 仓库 = 只读基准（YAC-KNOWN-006 纪律：测试绝不写入真实工作树）。
+// 全闭环（dry-run → apply → rollback）在 /tmp 下的 scratch 副本上执行——副本保留 .git
+// 才能验证"工作树归零"，且真实仓库全程保持干净。
+// 注：yuleASR 是 partial clone（promisor remote，blob:limit=204800），离线环境下 git clone
+// 会因惰性拉取缺失对象失败 → 用"已跟踪文件 tar 复制 + 全新 git init"建副本（等价 rsync 副本）。
+// 路径可被 env 覆盖（CI 可移植，不硬编码本机路径）。
+const REAL = process.env.YULEASR_AUDIT_DIR || '/Users/stefan/.openclaw/workspace/yuleASR';
+const SCRATCH = join(tmpdir(), `yuleasr-cfgh-scratch-${process.pid}`);
+const OUT = process.env.REPLACE_AUDIT_OUT || join(tmpdir(), `replace-cfgh-test-${process.pid}`);
 
-/** 恢复 yuleASR 工作树（无论断言成败，防止遗留脏工作树） */
+/** 真实仓库起始工作树脏数（afterAll 差值校验：测试不得制造增量污染） */
+let realDirtyBefore = '0';
+
+/**
+ * 从真实仓库复制当前头内容到 scratch 的 schema 路径并入库（seed）。
+ * 背景：rte.json / dlt_ecual.json 的 x-source-file 仍是 yuleASR 重构前路径
+ * （src/rte/、src/bsw/ecual/dlt/），真实仓库当前不存在这两条路径 → apply 会新建
+ * untracked 文件 → rollback 无备份可恢复 → 树无法归零。在 scratch 内补齐这两条
+ * 路径（内容取自真实仓库当前对应头），使闭环可验证"工作树归零"。
+ */
+function seedHeader(scratchRel: string, realRel: string): void {
+  const src = join(REAL, realRel);
+  if (!existsSync(src)) throw new Error(`seed 源缺失: ${realRel}`);
+  const dst = join(SCRATCH, scratchRel);
+  mkdirSync(join(dst, '..'), { recursive: true });
+  copyFileSync(src, dst);
+}
+
+beforeAll(() => {
+  // 0) 真实仓库必须是 git 仓库（只读基准；路径错误/非 git 立即失败），记录起始脏数
+  execSync(`git -C ${REAL} rev-parse --is-inside-work-tree`, { stdio: 'pipe' });
+  realDirtyBefore = execSync(`git -C ${REAL} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
+
+  // 1) 建 scratch 副本：只复制真实仓库已跟踪文件（工作树干净 = 基线），全新 git init
+  //    （保留 .git 供"工作树归零"校验；partial clone 无法离线 git clone）
+  rmSync(SCRATCH, { recursive: true, force: true });
+  rmSync(OUT, { recursive: true, force: true });
+  mkdirSync(SCRATCH, { recursive: true });
+  mkdirSync(OUT, { recursive: true });
+  execSync(`git -C ${REAL} ls-files | tar -T - -C ${REAL} -cf - | tar -C ${SCRATCH} -xf -`, { stdio: 'pipe' });
+  execSync(`git init -q ${SCRATCH}`, { stdio: 'pipe' });
+
+  // 2) 补齐两条 schema 旧路径（见 seedHeader 注释），随基线一并入库
+  seedHeader('src/rte/include/Rte_Cfg.h', 'src/middleware/rte/include/Rte_Cfg.h');
+  seedHeader('src/bsw/ecual/dlt/include/Dlt_Cfg.h', 'config/input/ecual/Dlt_Cfg.h');
+  execSync(`git -C ${SCRATCH} add -A`, { stdio: 'pipe' });
+  // 仓库级 user.name/email 不随副本继承（本机 yuleASR 为 repo-local 配置），显式注入
+  const gitName = execSync(`git -C ${REAL} config user.name`, { encoding: 'utf8' }).trim();
+  const gitEmail = execSync(`git -C ${REAL} config user.email`, { encoding: 'utf8' }).trim();
+  execSync(
+    `git -C ${SCRATCH} -c user.name='${gitName}' -c user.email='${gitEmail}' commit --quiet ` +
+      `-m "scratch baseline (YAC-KNOWN-006)"`,
+    { stdio: 'pipe' }
+  );
+});
+
+/** 恢复 scratch 工作树（无论断言成败；只操作 scratch，绝不触碰真实仓库） */
 afterEach(() => {
   try {
-    execSync(`git -C ${Y} checkout -- src/`, { stdio: 'pipe' });
+    execSync(`git -C ${SCRATCH} checkout -- src/`, { stdio: 'pipe' });
+  } catch { /* 已干净 */ }
+  try {
+    execSync(`git -C ${SCRATCH} clean -fd src/rte src/bsw/ecual/dlt`, { stdio: 'pipe' });
   } catch { /* 已干净 */ }
 });
 
+afterAll(() => {
+  try {
+    // 纪律校验：真实 yuleASR 仓库工作树脏数与测试前一致（测试全程只读，不得制造增量污染）
+    const realDirty = execSync(`git -C ${REAL} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
+    expect(realDirty, '真实 yuleASR 仓库工作树被测试污染（应与测试前一致）').toBe(realDirtyBefore);
+  } finally {
+    rmSync(SCRATCH, { recursive: true, force: true });
+    rmSync(OUT, { recursive: true, force: true });
+  }
+});
+
 /**
- * replace-cfgh 可追溯替换工具闭环（单文件串行，避免并行共享 yuleASR 工作树冲突）：
- * dry-run（生成替换包）→ apply（替换工作树）→ rollback（恢复，md5 校验）。
+ * replace-cfgh 可追溯替换工具闭环（单文件串行；scratch 副本隔离，YAC-KNOWN-006）：
+ * dry-run（生成替换包）→ apply（替换 scratch 工作树）→ rollback（恢复，md5 校验）。
  */
 describe('replace-cfgh（可追溯替换工具）', () => {
-  it('dry-run → apply → rollback 全闭环，工作树归零 + 替换包证据齐全', async () => {
-    process.env.YULEASR_DIR = Y;
+  it('dry-run → apply → rollback 全闭环，工作树归零 + 替换包证据齐全（scratch 副本）', async () => {
+    process.env.YULEASR_DIR = SCRATCH;
     process.env.REPLACE_OUT = OUT;
 
-    // 0) 前置：yuleASR 工作树干净
-    const before = execSync(`git -C ${Y} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
+    // 0) 前置：scratch 工作树干净（clone + seed 后基线）
+    const before = execSync(`git -C ${SCRATCH} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
     expect(before).toBe('0');
 
-    // 1) dry-run：生成替换包，不落 yuleASR
+    // 1) dry-run：生成替换包，不落工作树
     const dry = await runReplace('dry-run');
     console.log(`[dry-run] total=${dry.total} ok=${dry.ok} failed=${dry.failed} pkg=${dry.pkgDir}`);
     expect(dry.total).toBeGreaterThanOrEqual(106);
     expect(dry.ok).toBe(dry.total);
     expect(dry.failed).toBe(0);
     expect(dry.applied).toBe(0);
-    const dryDirty = execSync(`git -C ${Y} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
+    const dryDirty = execSync(`git -C ${SCRATCH} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
     expect(dryDirty).toBe('0');
 
     // 2) apply：备份 + 替换
@@ -43,8 +110,8 @@ describe('replace-cfgh（可追溯替换工具）', () => {
     console.log(`[apply] total=${r.total} ok=${r.ok} applied=${r.applied} pkg=${r.pkgDir}`);
     expect(r.ok).toBe(r.total);
     expect(r.applied).toBeGreaterThan(100);
-    const dirty = execSync(`git -C ${Y} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
-    console.log(`[apply] yuleASR 改动文件数: ${dirty}`);
+    const dirty = execSync(`git -C ${SCRATCH} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
+    console.log(`[apply] scratch 改动文件数: ${dirty}`);
     // 2026-08-10：yuleASR 已入库生成头（3902399e）后，再 apply 是增量差异（仅内容变化文件），
     // 不再要求 >100；核心断言是 applied>100（工具替换数）+ rollback 后工作树归零。
     expect(Number(dirty)).toBeGreaterThan(0);
@@ -52,8 +119,8 @@ describe('replace-cfgh（可追溯替换工具）', () => {
     // 3) rollback：恢复手写头
     const rb = await runReplace('rollback');
     console.log(`[rollback] rolledBack=${rb.rolledBack} skipped=${rb.skipped ?? 0} pkg=${rb.pkgDir}`);
-    const clean = execSync(`git -C ${Y} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
-    console.log(`[rollback] yuleASR 剩余改动: ${clean}`);
+    const clean = execSync(`git -C ${SCRATCH} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
+    console.log(`[rollback] scratch 剩余改动: ${clean}`);
     expect(clean).toBe('0');
 
     // 4) 替换包产物完整（可追溯证据）
@@ -64,8 +131,8 @@ describe('replace-cfgh（可追溯替换工具）', () => {
     expect(existsSync(`${pkgDir}/generated`)).toBe(true);
   });
 
-  it('rollback 跳过用户改动（md5 校验保护）——P2 加固回归', async () => {
-    process.env.YULEASR_DIR = Y;
+  it('rollback 跳过用户改动（md5 校验保护）——P2 加固回归（scratch 副本）', async () => {
+    process.env.YULEASR_DIR = SCRATCH;
     process.env.REPLACE_OUT = OUT;
 
     // apply 替换
@@ -74,7 +141,7 @@ describe('replace-cfgh（可追溯替换工具）', () => {
 
     // 手工改一个生成产物（模拟用户改动）
     const victim = 'src/bsw/services/det/include/Det_Cfg.h';
-    const victimPath = join(Y, victim);
+    const victimPath = join(SCRATCH, victim);
     const orig = readFileSync(victimPath, 'utf8');
     writeFileSync(victimPath, orig + '\n// USER-EDIT-MARKER\n', 'utf8');
 
