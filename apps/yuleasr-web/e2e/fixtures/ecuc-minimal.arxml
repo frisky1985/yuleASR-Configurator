@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0">
+  <AR-PACKAGES>
+    <AR-PACKAGE>
+      <SHORT-NAME>EcucValues</SHORT-NAME>
+      <ELEMENTS>
+        <ECUC-MODULE-CONFIGURATION-VALUES>
+          <SHORT-NAME>Can</SHORT-NAME>
+          <DEFINITION-REF DEST="ECUC-MODULE-DEF">/4.4.0/Can/Can</DEFINITION-REF>
+          <PARAMETER-VALUES>
+            <ECUC-NUMERICAL-PARAM-VALUE>
+              <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/Can/CanMainFunctionPeriod</DEFINITION-REF>
+              <VALUE>10</VALUE>
+            </ECUC-NUMERICAL-PARAM-VALUE>
+            <ECUC-TEXTUAL-PARAM-VALUE>
+              <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/Can/CanControllerMode</DEFINITION-REF>
+              <VALUE>HW</VALUE>
+            </ECUC-TEXTUAL-PARAM-VALUE>
+          </PARAMETER-VALUES>
+          <CONTAINERS>
+            <ECUC-CONTAINER-VALUE>
+              <SHORT-NAME>CanController</SHORT-NAME>
+              <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/Can/Can/CanController</DEFINITION-REF>
+              <PARAMETER-VALUES>
+                <ECUC-NUMERICAL-PARAM-VALUE>
+                  <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/Can/Can/CanController/CanControllerBaudRate</DEFINITION-REF>
+                  <VALUE>500000</VALUE>
+                </ECUC-NUMERICAL-PARAM-VALUE>
+              </PARAMETER-VALUES>
+            </ECUC-CONTAINER-VALUE>
+          </CONTAINERS>
+        </ECUC-MODULE-CONFIGURATION-VALUES>
+      </ELEMENTS>
+    </AR-PACKAGE>
+    <AR-PACKAGE>
+      <SHORT-NAME>EcucDefs</SHORT-NAME>
+      <ELEMENTS>
+        <ECUC-MODULE-DEF>
+          <SHORT-NAME>Can</SHORT-NAME>
+          <PARAMETER-DEFS>
+            <ECUC-INTEGER-PARAM-DEF>
+              <SHORT-NAME>CanMainFunctionPeriod</SHORT-NAME>
+            </ECUC-INTEGER-PARAM-DEF>
+            <ECUC-STRING-PARAM-DEF>
+              <SHORT-NAME>CanControllerMode</SHORT-NAME>
+            </ECUC-STRING-PARAM-DEF>
+          </PARAMETER-DEFS>
+          <CONTAINER-DEFS>
+            <ECUC-CONTAINER-DEF>
+              <SHORT-NAME>CanController</SHORT-NAME>
+              <PARAMETER-DEFS>
+                <ECUC-INTEGER-PARAM-DEF>
+                  <SHORT-NAME>CanControllerBaudRate</SHORT-NAME>
+                </ECUC-INTEGER-PARAM-DEF>
+              </PARAMETER-DEFS>
+            </ECUC-CONTAINER-DEF>
+          </CONTAINER-DEFS>
+        </ECUC-MODULE-DEF>
+      </ELEMENTS>
+    </AR-PACKAGE>
+  </AR-PACKAGES>
+</AUTOSAR>

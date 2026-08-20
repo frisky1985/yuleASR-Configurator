@@ -52,7 +52,8 @@ export class EditorPage {
       .filter({ has: page.locator('svg.lucide-arrow-left') })
       .first();
     this.configName = page.locator('h1').first();
-    this.statusBadge = page.getByText(/Saved|Unsaved/i);
+    // 状态徽标：设计为脏状态才提示（已保存为正常态不提示，见 Editor.tsx isDirty 逻辑）
+    this.statusBadge = page.getByText(/未保存更改|Saved|Unsaved/i);
     this.configSubtitle = page
       .locator('header + div p, main p')
       .filter({ hasText: /Last modified/i })

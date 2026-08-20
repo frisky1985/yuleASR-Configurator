@@ -29,8 +29,9 @@ test.describe('Editor', () => {
       expect(name?.length).toBeGreaterThan(0);
     });
 
-    test('should display status badge', async () => {
-      await expect(editor.statusBadge).toBeVisible();
+    test('clean 状态下不显示状态徽标（脏状态才提示）', async () => {
+      // 设计变更（已保存为正常态不提示）：加载干净的配置后不应出现 Saved/Unsaved 徽标
+      await expect(editor.statusBadge).toHaveCount(0);
     });
 
     test('should display toolbar buttons', async () => {
