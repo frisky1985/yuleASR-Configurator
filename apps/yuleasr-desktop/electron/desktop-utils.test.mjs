@@ -2,9 +2,9 @@
  * Fix 5 单测：desktop-utils 的文件载荷校验（防命令注入 + 路径遍历）
  * 运行: node --test apps/yuleasr-desktop/electron/desktop-utils.test.mjs
  */
-import { test } from 'node:test';
+import { mkdtempSync, existsSync, rmSync } from 'fs';
 import assert from 'node:assert/strict';
-import { mkdtempSync, existsSync, readFileSync, rmSync } from 'fs';
+import { test } from 'node:test';
 import { tmpdir } from 'os';
 import { join } from 'path';
 
@@ -71,7 +71,7 @@ test('saveFilesToDir: 恶意载荷整体拒绝，不产生目录外文件', () =
     assert.equal(existsSync(outside), false);
   } finally {
     rmSync(dir, { recursive: true, force: true });
-    try { rmSync(outside, { force: true }); } catch {}
+    try { rmSync(outside, { force: true }); } catch { /* 不存在则忽略 */ }
   }
 });
 

@@ -27,7 +27,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.29.1",
     "prettier": "^3.9.6",
-    "typescript": "^7.0.2",
+    "typescript": "6.0.3",
     "typescript-eslint": "^8.66.0",
     "vitest": "^4.1.10"
   },
@@ -63,6 +63,9 @@
       "dompurify": "^3.4.12",
       "launch-editor": "^2.12.0",
       "esbuild": "^0.28.1"
+    },
+    "patchedDependencies": {
+      "eslint-plugin-import@2.32.0": "patches/eslint-plugin-import@2.32.0.patch"
     }
   },
   "license": "Proprietary"

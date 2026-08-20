@@ -1,10 +1,10 @@
-/* eslint-env node */
-/* global console, process */
+// ESLint 10 已移除 env 注释；node 全局由下方 global 注释显式声明
+/* global console, process, clearTimeout, setTimeout */
+import { spawn } from 'child_process';
+import { readFile } from 'fs/promises';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-import { readFile } from 'fs/promises';
-import { spawn } from 'child_process';
 
 import { app, BrowserWindow, Menu, dialog, ipcMain, shell } from 'electron';
 // GH #49 修复：electron-updater 是 CommonJS（out/main.js 用 exports.xxx 导出，autoUpdater

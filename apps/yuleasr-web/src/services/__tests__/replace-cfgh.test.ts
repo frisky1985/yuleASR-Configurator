@@ -34,6 +34,8 @@ function seedHeader(scratchRel: string, realRel: string): void {
 }
 
 beforeAll(() => {
+  // hook 默认超时 10s 不够：基线 tar 拷贝 + git init + commit 实测 ~11s（机器负载敏感），
+  // 显式放宽至 120s，避免 CI 并行下 flaky 超时（YAC-CI-002）
   // 0) 真实仓库必须是 git 仓库（只读基准；路径错误/非 git 立即失败），记录起始脏数
   execSync(`git -C ${REAL} rev-parse --is-inside-work-tree`, { stdio: 'pipe' });
   realDirtyBefore = execSync(`git -C ${REAL} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
@@ -69,9 +71,10 @@ afterEach(() => {
   try {
     execSync(`git -C ${SCRATCH} clean -fd src/rte src/bsw/ecual/dlt`, { stdio: 'pipe' });
   } catch { /* 已干净 */ }
-});
+}, 120_000);
 
 afterAll(() => {
+
   try {
     // 纪律校验：真实 yuleASR 仓库工作树脏数与测试前一致（测试全程只读，不得制造增量污染）
     const realDirty = execSync(`git -C ${REAL} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();

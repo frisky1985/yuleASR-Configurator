@@ -2,8 +2,9 @@
  * Desktop utilities for yuleASR Configurator
  * File I/O, gcc verification, temp directory management
  */
+/* global Buffer */
 
-import { execFileSync } from 'child_process';
+import { execFileSync, execSync } from 'child_process';
 import { mkdtempSync, writeFileSync, rmSync, existsSync, mkdirSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
