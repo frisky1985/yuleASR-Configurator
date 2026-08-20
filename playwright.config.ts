@@ -8,7 +8,9 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [['html', { outputFolder: 'playwright-report' }]],
   use: {
-    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:5173',
+    // YAC-KNOWN-007：vite dev server 端口 3000（apps/yuleasr-web/vite.config.ts），
+    // app 挂在 vite base=/configurator/ 下（页面路径需带 /configurator 前缀）。
+    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
     trace: 'on-first-retry',
   },
   projects: [
