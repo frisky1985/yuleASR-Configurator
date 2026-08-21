@@ -10,7 +10,7 @@
     "url": "https://github.com/frisky1985/yuleASR-Configurator.git"
   },
   "engines": {
-    "vscode": "^1.80.0"
+    "vscode": "^1.125.0"
   },
   "categories": [
     "Other",
