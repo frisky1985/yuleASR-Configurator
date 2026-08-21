@@ -180,7 +180,9 @@ jobs:
           REAL="$GITHUB_WORKSPACE/yuleASR"; SCRATCH="$RUNNER_TEMP/yuleasr-scratch"
           rm -rf "$SCRATCH"; mkdir -p "$SCRATCH"
           # 路径含空格/中文时 git ls-files 默认 C-quote 会致 tar 失配，须 -z/--null（YAC-CI-003 实测踩坑）
-          git -C "$REAL" ls-files -z | tar --null -T - -C "$REAL" -cf - | tar -C "$SCRATCH" -xf -
+          # GNU tar 的 -C 在 -T - 之后是 positional（对 stdin 列表无效，CI ubuntu 实测报错），
+          # 须用子 shell cd 方式保证可移植（macOS bsdtar 与 GNU tar 行为一致）。
+          (cd "$REAL" && git ls-files -z | tar --null -T - -cf -) | (cd "$SCRATCH" && tar -xf -)
           git init -q "$SCRATCH" && git -C "$SCRATCH" add -A
           git -C "$SCRATCH" -c user.name="ci" -c user.email="ci@users.noreply.github.com" commit -q -m "scratch baseline (YAC-CI-003)"
 
