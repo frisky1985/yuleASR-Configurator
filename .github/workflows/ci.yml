@@ -254,12 +254,13 @@ jobs:
         run: |
           cmake -B "$RUNNER_TEMP/yuleasr-build" -S "$RUNNER_TEMP/yuleasr-scratch" -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DCMAKE_EXE_LINKER_FLAGS="-Wl,--allow-multiple-definition -no-pie -Wl,--defsym=sp=0"
           set +e
-          cmake --build "$RUNNER_TEMP/yuleasr-build" -j"$(nproc)" -k > "$RUNNER_TEMP/yuleasr-build.log" 2>&1
+          cmake --build "$RUNNER_TEMP/yuleasr-build" -j"$(nproc)" -- -k > "$RUNNER_TEMP/yuleasr-build.log" 2>&1
           BUILD_RC=$?
           set -e
           echo "BUILD_RC=$BUILD_RC"
           echo "静态库数: $(find "$RUNNER_TEMP/yuleasr-build/lib" -name '*.a' | wc -l)"
-          grep -E '\[.*\] Error' "$RUNNER_TEMP/yuleasr-build.log" | sort -u | head -20 || true
+          echo "=== 链接失败目标清单（yuleASR 既有 GNU-ld 问题白名单比对） ==="
+          grep -E ': \*\*\* \[.*\] (Error|错误)' "$RUNNER_TEMP/yuleasr-build.log" | sort -u || true
 
       - name: ctest 全绿（0 failed）
         if: steps.checkout-yuleasr.outcome == 'success'
