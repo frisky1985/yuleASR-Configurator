@@ -15,10 +15,11 @@ function getSchemaFiles(): string[] {
 describe('JSON Schema Validation', () => {
   const files = getSchemaFiles();
 
-  it('should have exactly 119 schema files (54 existing + 63 CfgH-extracted − 3 deleted: ble/mcl/sbc + 5 补全: ethtsyn/ldcom/tm/dds/microdds)', () => {
+  it('should have exactly 118 schema files (54 existing + 63 CfgH-extracted − 3 deleted: ble/mcl/sbc + 5 补全: ethtsyn/ldcom/tm/dds/microdds − 1: dlt_ecual 并入 dlt)', () => {
     // 2026-08-01: 39 → 54; 2026-08-09 (F1): 54 → 117 (+63 yuleASR Cfg.h 自动提取)
     // YAC-MAP-002（2026-08-21 老板裁决）：ble/mcl/sbc 删除（无实现），ethtsyn/ldcom/tm/dds/microdds 补全（有代码无 schema）
-    expect(files.length).toBe(119);
+    // YAC-MAP-003（2026-08-21）：dlt_ecual 删除（yuleASR ecual/dlt 并入 services/dlt）→ 119 → 118
+    expect(files.length).toBe(118);
   });
 
   it.each(files)('should parse %s as valid JSON', file => {
@@ -123,7 +124,6 @@ describe('JSON Schema Validation', () => {
       'det',
       'dio',
       'dlt',
-      'dlt_ecual',
       'docan',
       'doip',
       'doip_ecual',

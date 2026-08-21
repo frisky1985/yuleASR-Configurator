@@ -4,6 +4,9 @@
 > 上游：`docs/planning/2026-08-21-module-mapping-audit.md`（小明初版审计）
 > 数据源：yuleASR 仓库实际 `find src` 全仓扫描 + Configurator `schema/generated/`、`verification/extracted-cfgh/`、`apps/yuleasr-web/src/services/codegen.ts`、`packages/@yuletech/core/src/plugins/builtins/`
 > 排期表：https://jhepa4n0x5.feishu.cn/base/RwCWb1povaJlFCsMMyTc5kcjnjd（原子10）
+> 📌 计数勘误（YAC-MAP-003，2026-08-21）：本文件中"extracted-cfgh 110 个"系 YAC-MAP-002 时点快照。
+> 2026-08-21 重跑 F1 后 `verification/extracted-cfgh/` 为 **109 个**（dlt_ecual 随 yuleASR ecual/dlt→services/dlt
+> 重构并入 dlt，见 `2026-08-21-module-mapping-f1-resync.md`），文中涉及计数一并更新为 109；结论不变。
 
 ---
 
@@ -11,9 +14,9 @@
 
 | # | 初版审计结论 | 文件级核实结论 | 修正依据 |
 |---|-------------|---------------|---------|
-| 1 | A 缺口 14 项中 7 项"无目录" | **仅 4 项真实缺失**（arti/ble/mcl/sbc）；7 项实际有代码（cddfvm/dem_legacy/linker/linmaster/linslave/nvmecchandler/ostimingprotection） | `verification/extracted-cfgh/` 110 个文件全部是从 yuleASR `*_Cfg.h` 提取（F1 脚本），其中含上述 7 项 schema → 源 Cfg.h 必然存在；find 初筛因命名变体（LinMaster_*、NvM_EccHandler_*、Os_TimingProtection_*、Linker_Cfg.h、Cdd_Fvm_*、dem/legacy/ 目录）漏匹配 |
+| 1 | A 缺口 14 项中 7 项"无目录" | **仅 4 项真实缺失**（arti/ble/mcl/sbc）；7 项实际有代码（cddfvm/dem_legacy/linker/linmaster/linslave/nvmecchandler/ostimingprotection） | `verification/extracted-cfgh/` 109 个文件全部是从 yuleASR `*_Cfg.h` 提取（F1 脚本；YAC-MAP-003 起 110→109），其中含上述 7 项 schema → 源 Cfg.h 必然存在；find 初筛因命名变体（LinMaster_*、NvM_EccHandler_*、Os_TimingProtection_*、Linker_Cfg.h、Cdd_Fvm_*、dem/legacy/ 目录）漏匹配 |
 | 2 | B 缺口 10 项中 6 项"真实缺 schema" | **确认 6 项真实缺 schema**（dds/microdds/ethtsyn/ldcom/lntm/tm），canm/cdd 为命名差异 | `schema/generated/` + `extracted-cfgh/` 均无这 6 项；canm→`cannm.json`+`cannm_ecual.json` 已存在；cdd 家族仅 `cddfvm.json` |
-| 3 | 工具链 codegen 仅覆盖 ~25 模块、78 个无生成 | **codegen 是 schema 驱动全量生成（117 全可生成）**，"78 无生成"结论作废 | `generateHeadersFromSchemas`（codegen.ts:1062）对任意 ModuleSchema 无白名单全量生成；`generateHeadersFromConfig`（codegen.ts:1265）生成集合=全部 schema；`scripts/replace-cfgh.ts` 已对 110 个宏名版 schema 全量生成验证（V2 139/139 编译通过） |
+| 3 | 工具链 codegen 仅覆盖 ~25 模块、78 个无生成 | **codegen 是 schema 驱动全量生成（117 全可生成）**，"78 无生成"结论作废 | `generateHeadersFromSchemas`（codegen.ts:1062）对任意 ModuleSchema 无白名单全量生成；`generateHeadersFromConfig`（codegen.ts:1265）生成集合=全部 schema；`scripts/replace-cfgh.ts` 已对 109 个宏名版 schema 全量生成验证（YAC-MAP-003 起 110→109）（V2 139/139 编译通过） |
 
 **最终缺口盘点：**
 - 配置了但 yuleASR 无代码（应清理）：**4 项**（arti、ble、mcl、sbc）
@@ -97,7 +100,7 @@
 
 - `MODULE_IDS`（13 项：Mcu/Port/Dio/Can/Adc/Icu/Gpt/Pwm/Wdg/Lin/Spi/Fr/Eth）仅用于**头文件名推导**（`getHeaderFilename`）与 AUTOSAR 模块 ID 数字，**不是生成白名单**。
 - `getModuleShortName` known 表 22 项（can/mcu/port/dio/adc/icu/gpt/pwm/wdg/lin/spi/fr/eth/os/rte/boot/crypto/e2e/flash/secoc/someip/tcpip/udpnm）是 PascalCase 别名映射，**不是覆盖清单**。
-- **实锤**：`scripts/replace-cfgh.ts`（V2 全量闭环验证）用 `generateHeadersFromSchemas` 对 `verification/extracted-cfgh/` **110 个宏名版 schema 全部生成**，manifest 记录拼接结果（27 模块 spliced=true），V2 验证 139/139 编译通过、ctest 45/45。
+- **实锤**：`scripts/replace-cfgh.ts`（V2 全量闭环验证）用 `generateHeadersFromSchemas` 对 `verification/extracted-cfgh/` **109 个宏名版 schema 全部生成**（YAC-MAP-003 起 110→109），manifest 记录拼接结果（27 模块 spliced=true），V2 验证 139/139 编译通过、ctest 45/45。
 
 ### 3.2 builtins 插件
 
@@ -115,16 +118,16 @@
 **维度定义：**
 - **有 schema**：`schema/generated/` 117 个（含变体 14 个：`*_ecual`/`*_service`，去变体 103 核心模块）
 - **可生成**：codegen 对 117 全部可生成（3.1 实锤）
-- **可落地**：生成的 `<Module>_Cfg.h` 能在 yuleASR 找到对应手写头替换 → **有宏名版 schema（extracted-cfgh 110 个）** 才可落地；7 个回退 generated/ 的模块 yuleASR 无对应 Cfg.h
+- **可落地**：生成的 `<Module>_Cfg.h` 能在 yuleASR 找到对应手写头替换 → **有宏名版 schema（extracted-cfgh 109 个，YAC-MAP-003 起）** 才可落地；7 个回退 generated/ 的模块 yuleASR 无对应 Cfg.h
 
 | 分类 | 数量 | 模块 | 配置→生成→落地闭环 |
 |------|------|------|-------------------|
-| ✅ **完整闭环**（schema+codegen+yuleASR 代码+Cfg.h） | **103** | extracted-cfgh 110 − 7 个无代码模块 = 103 核心模块（含变体后 110） | ✅ 配置 → 生成（宏名版）→ 替换 yuleASR Cfg.h 编译验证通过（139/139） |
+| ✅ **完整闭环**（schema+codegen+yuleASR 代码+Cfg.h） | **102** | extracted-cfgh 109 − 7 个无代码模块 = 102 核心模块（含变体后 109；YAC-MAP-003 起 110→109） | ✅ 配置 → 生成（宏名版）→ 替换 yuleASR Cfg.h 编译验证通过（139/139） |
 | ⚠️ **配置可生成但 yuleASR 无落地** | **7** | appswc、arti、ble、compswc、fr、mcl、sbc（仅 generated/，无 extracted） | ⚠️ 可配置 → 可生成宏头 → **yuleASR 无对应 Cfg.h，生成产物无法落地** |
 | ❌ **yuleASR 有代码但无 schema 无法配置/生成** | **6** | dds、microdds、ethtsyn、ldcom、lntm、tm | ❌ 无 schema → 无法配置 → 无法生成（配置→生成→落地全断） |
 
 **最大断层修正：**
-- 初版审计说"78 个配置了但无法生成" → **错误**。实际 codegen 全量可生成，103 个已完整闭环。
+- 初版审计说"78 个配置了但无法生成" → **错误**。实际 codegen 全量可生成，103 个已完整闭环（YAC-MAP-003 起 110→109，闭环数 103→102）。
 - **真正的最大断层** = 6 个"有代码无 schema"模块（配置/生成/落地全断）+ 7 个"配置可生成但落地为空"模块（生成产物无意义）。
 - 次断层 = cdd 家族 5 子模块（Cdd_Hsm/Lockstep/RamEcc/Safety/Boot 有代码无 schema，未计入 103 因 Configurator 从未建 schema）。
 
@@ -159,7 +162,7 @@
 
 | 项 | 现状证据 | 建议动作 | 工作量 |
 |----|---------|---------|--------|
-| **103 闭环模块** | replace-cfgh 110 宏名版全量生成验证通过（V2 139/139 编译 + ctest 45/45） | **维持现状，无需补**。建议把 replace-cfgh 纳入 CI 门禁（YAC-CI 已有先例）防回归 | **S** |
+| **102 闭环模块**（YAC-MAP-003 起 103→102） | replace-cfgh 109 宏名版全量生成验证通过（YAC-MAP-003 起）（V2 139/139 编译 + ctest 45/45） | **维持现状，无需补**。建议把 replace-cfgh 纳入 CI 门禁（YAC-CI 已有先例）防回归 | **S** |
 | **7 个"仅配置不生成"模块** | appswc/arti/ble/compswc/fr/mcl/sbc 有 schema 可配置，生成产物无落地 | **声明"仅配置不生成"**：codegen.ts 加显式 NOLANDING_MODULES 集合（或 UI 禁用生成按钮），生成时跳过并提示；fr 待 S32K312 FlexRay 决策 | **S**（0.5-1h） |
 | **fr 模块决策** | S32K312 无 FlexRay 外设；frif/frtp 协议层代码实装 | 老板决策：a) fr schema 标记"硬件不支持-仅配置" b) 移除 fr/frif/frtp schema（保守建议 a，代码保留） | **决策项** |
 | **appswc/compswc** | ASW 层组件实存（src/application），无 Cfg.h | 声明"ASW 组件配置-仅配置不生成"（当前 schema 即组件描述型，与生成语义一致）；后续如出 RTE 生成再联动 | **S** |
@@ -170,7 +173,7 @@
 
 | 类别 | 数量 | 明细 |
 |------|------|------|
-| ✅ 完整闭环（配置→生成→落地） | 103 | extracted-cfgh 110 − 7 无代码模块 |
+| ✅ 完整闭环（配置→生成→落地） | 102 | extracted-cfgh 109 − 7 无代码模块（YAC-MAP-003 起 103→102） |
 | ⚠️ 可配置可生成、落地为空（建议"仅配置不生成"） | 7 | appswc、arti、ble、compswc、fr、mcl、sbc |
 | ❌ 有代码无 schema（P0 补） | 6 | ethtsyn、ldcom、lntm、tm、dds、microdds |
 | ⚠️ 部分映射（P1 登记） | 2 组 | canm↔cannm（已映射待文档化）、cdd 家族（cddfvm 已映射 + 5 子模块未映射） |

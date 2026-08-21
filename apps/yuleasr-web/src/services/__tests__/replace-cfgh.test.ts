@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeAll, afterAll, afterEach } from 'vitest';
 import { execSync } from 'node:child_process';
-import { writeFileSync, readFileSync, existsSync, rmSync, mkdirSync, copyFileSync } from 'node:fs';
+import { writeFileSync, readFileSync, existsSync, rmSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { runReplace } from '../../../../../scripts/replace-cfgh';
@@ -19,19 +19,11 @@ const OUT = process.env.REPLACE_AUDIT_OUT || join(tmpdir(), `replace-cfgh-test-$
 let realDirtyBefore = '0';
 
 /**
- * 从真实仓库复制当前头内容到 scratch 的 schema 路径并入库（seed）。
- * 背景：rte.json / dlt_ecual.json 的 x-source-file 仍是 yuleASR 重构前路径
- * （src/rte/、src/bsw/ecual/dlt/），真实仓库当前不存在这两条路径 → apply 会新建
- * untracked 文件 → rollback 无备份可恢复 → 树无法归零。在 scratch 内补齐这两条
- * 路径（内容取自真实仓库当前对应头），使闭环可验证"工作树归零"。
+ * 注（YAC-MAP-003，2026-08-21）：rte.json 的 x-source-file 已随 yuleASR 目录重构同步为
+ * src/middleware/rte/include/Rte_Cfg.h（e81eceb7 后 F1 重跑自动对齐）；dlt_ecual.json 已删除
+ * （ecual/dlt 并入 services/dlt）。全部 109 个 schema 的 x-source-file 均指向 yuleASR 当前
+ * 存在的头，scratch 副本直接可闭环，无需再 seed 旧路径。
  */
-function seedHeader(scratchRel: string, realRel: string): void {
-  const src = join(REAL, realRel);
-  if (!existsSync(src)) throw new Error(`seed 源缺失: ${realRel}`);
-  const dst = join(SCRATCH, scratchRel);
-  mkdirSync(join(dst, '..'), { recursive: true });
-  copyFileSync(src, dst);
-}
 
 beforeAll(() => {
   // hook 默认超时 10s 不够：基线 tar 拷贝 + git init + commit 实测 ~11s（机器负载敏感），
@@ -48,10 +40,6 @@ beforeAll(() => {
   mkdirSync(OUT, { recursive: true });
   execSync(`git -C ${REAL} ls-files | tar -T - -C ${REAL} -cf - | tar -C ${SCRATCH} -xf -`, { stdio: 'pipe' });
   execSync(`git init -q ${SCRATCH}`, { stdio: 'pipe' });
-
-  // 2) 补齐两条 schema 旧路径（见 seedHeader 注释），随基线一并入库
-  seedHeader('src/rte/include/Rte_Cfg.h', 'src/middleware/rte/include/Rte_Cfg.h');
-  seedHeader('src/bsw/ecual/dlt/include/Dlt_Cfg.h', 'config/input/ecual/Dlt_Cfg.h');
   execSync(`git -C ${SCRATCH} add -A`, { stdio: 'pipe' });
   // 仓库级 user.name/email 不随副本继承（本机 yuleASR 为 repo-local 配置），显式注入
   const gitName = execSync(`git -C ${REAL} config user.name`, { encoding: 'utf8' }).trim();

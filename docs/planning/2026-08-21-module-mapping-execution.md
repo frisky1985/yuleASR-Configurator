@@ -31,12 +31,12 @@
 | typecheck（pnpm -r） | ✅ 全绿 0 error |
 | 全仓 vitest | ✅ 1616/1616（core 991 + web 322 + community 235 + ui 16 + editor-core 16 + api-server 36）≥ 基线 1598 |
 | core 单测 | ✅ 991 ≥ 985 |
-| replace-cfgh 相关 | ✅ replace-cfgh.test.ts dry-run→apply→rollback 110/110 全闭环（extracted-cfgh 不受 NOLANDING 影响） |
+| replace-cfgh 相关 | ✅ replace-cfgh.test.ts dry-run→apply→rollback 110/110 全闭环（extracted-cfgh 不受 NOLANDING 影响；YAC-MAP-003 重跑后为 109/109，见 f1-resync.md） |
 | vite build（yuleasr-web） | ✅ built in 2.27s |
 
 ## §4 遗留项
 
-1. **F1 脚本/yuleASR 漂移未提交**：复跑 extract-schemas-from-cfgh.ts 与基线 diff（rte.json 表达式归一化、boot.json 新宏、dlt_ecual.json 因 yuleASR ecual/dlt 目录重构消失等 14 文件）——建议单独开任务按 replace-cfgh V2 验证流程重新生成入库（110→109 涉及审计文档计数更新）
+1. **F1 脚本/yuleASR 漂移未提交**：~~复跑 extract-schemas-from-cfgh.ts 与基线 diff（rte.json 表达式归一化、boot.json 新宏、dlt_ecual.json 因 yuleASR ecual/dlt 目录重构消失等 14 文件）——建议单独开任务按 replace-cfgh V2 验证流程重新生成入库（110→109 涉及审计文档计数更新）~~ **✅ 已完成（YAC-MAP-003，2026-08-21）**：14 文件逐项裁决入库，extracted-cfgh 110→109，脚本根因修复 6 项防再漂移，验证全绿，详见 `2026-08-21-module-mapping-f1-resync.md`
 2. **cdd 5 子模块**（Cdd_Hsm/Lockstep/RamEcc/Safety/Boot）：已登记映射表"未映射-低优先"；功能安全交付需要则按需补 schema（无独立 Cfg.h，需先拆 Cfg.h 或手写）
 3. **fr 决策保守落地**：schema 保留 + 标注"硬件不支持-仅配置"（frif/frtp 协议层代码保留）；后续芯片支持 FlexRay 时再评估
 4. **dds/microdds 完整配置**：走代码直连（middleware 32554 行非 AUTOSAR 标准 BSW），最小 schema 仅打通闭环
