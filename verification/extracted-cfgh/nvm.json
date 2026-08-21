@@ -41,6 +41,28 @@
       "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
+    "NVM_REDUNDANT_STORAGE_ENABLED": {
+      "type": "boolean",
+      "description": "NVM_REDUNDANT_STORAGE_ENABLED 参数",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "NVM_NUM_REDUNDANT_BLOCKS": {
+      "type": "integer",
+      "description": "NVM_NUM_REDUNDANT_BLOCKS 参数",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "NVM_MAX_BLOCK_SIZE": {
+      "type": "integer",
+      "description": "NVM_MAX_BLOCK_SIZE 参数",
+      "default": 1024,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
     "NVM_MAIN_FUNCTION_PERIOD_MS": {
       "type": "integer",
       "description": "NVM_MAIN_FUNCTION_PERIOD_MS 参数",

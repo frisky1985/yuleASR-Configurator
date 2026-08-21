@@ -79,7 +79,7 @@
     },
     "ETH_CTRL0_MAC_ADDR": {
       "type": "string",
-      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "description": "对象/数组字面量宏（初始化器，提取器不展开）",
       "default": "{0x00, 0x01, 0x02, 0x03, 0x04, 0x05}",
       "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "object-literal"

@@ -357,7 +357,7 @@
     },
     "KEYM_CFG_KEY_AES_128_USAGE": {
       "type": "string",
-      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "description": "多行表达式宏（续行原样透传，提取器不展开）",
       "default": "(KEYM_KEY_USAGE_ENCRYPT | KEYM_KEY_USAGE_DECRYPT | \\\nKEYM_KEY_USAGE_MAC_GENERATE | KEYM_KEY_USAGE_MAC_VERIFY)",
       "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "object-literal"
@@ -387,7 +387,7 @@
     },
     "KEYM_CFG_KEY_AES_256_USAGE": {
       "type": "string",
-      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "description": "多行表达式宏（续行原样透传，提取器不展开）",
       "default": "(KEYM_KEY_USAGE_ENCRYPT | KEYM_KEY_USAGE_DECRYPT | \\\nKEYM_KEY_USAGE_MAC_GENERATE | KEYM_KEY_USAGE_MAC_VERIFY)",
       "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "object-literal"

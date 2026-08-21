@@ -7,7 +7,7 @@
  *   YULEASR_DIR=~/.../yuleASR npx vitest run scripts/replace-cfgh.test.ts
  *
  * 产出替换包（默认 /tmp/replace-cfgh/<timestamp>/）：
- *   manifest.json     — 110 模块逐条：module / sourcePath / 手写 md5 / 生成 md5 / 宏数 / 拼接标记 / 状态
+ *   manifest.json     — 109 模块逐条（YAC-MAP-003 起；110→109，dlt_ecual 并入 dlt）：module / sourcePath / 手写 md5 / 生成 md5 / 宏数 / 拼接标记 / 状态
  *   backup/           — 替换前手写头快照（按 sourcePath 镜像）
  *   backup-md5.json   — 手写头 md5 清单（回滚校验用）
  *   generated/        — 生成产物（按 sourcePath 镜像）
@@ -90,7 +90,7 @@ function loadSchemas(): ModuleSchema[] {
   return schemas;
 }
 
-/** 生成全部 110 头（拼接路径开启） */
+/** 生成全部头（拼接路径开启；YAC-MAP-003 起 109 个） */
 async function generateAll(): Promise<{ files: Map<string, { content: string; sourcePath: string }>; errors: any[] }> {
   const schemas = loadSchemas();
   const handwritten = loadHandwrittenHeaders();

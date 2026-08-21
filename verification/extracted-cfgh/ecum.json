@@ -296,7 +296,7 @@
     },
     "ECUM_CONFIGURED_WAKEUP_SOURCES": {
       "type": "string",
-      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "description": "多行表达式宏（续行原样透传，提取器不展开）",
       "default": "\\\n(ECUM_WKSOURCE_POWER | ECUM_WKSOURCE_RESET | ECUM_WKSOURCE_TIMER | \\\nECUM_WKSOURCE_CAN | ECUM_WKSOURCE_CAN0 | ECUM_WKSOURCE_GPIO)",
       "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "object-literal"

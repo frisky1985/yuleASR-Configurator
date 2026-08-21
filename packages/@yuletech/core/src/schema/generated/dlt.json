@@ -151,6 +151,93 @@
       "minimum": 0,
       "maximum": 255,
       "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DLT_MAX_CONTEXT_COUNT": {
+      "type": "integer",
+      "description": "最大 context 数量 (Dlt_ContextConfig 表大小)",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DLT_BUFFER_COUNT": {
+      "type": "integer",
+      "description": "缓冲区数量 (优先级 0~3)",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DLT_BUFFERING_TIMEOUT": {
+      "type": "integer",
+      "description": "缓冲超时 (ms)",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 65535,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DLT_MAIN_FUNCTION_PERIOD": {
+      "type": "integer",
+      "description": "主函数周期 (ms, ecual 兼容名)",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DLT_USE_COM": {
+      "type": "boolean",
+      "description": "是否启用 Com 集成 (Tx 确认/Rx 指示)",
+      "default": true,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DLT_ECU_ID": {
+      "type": "string",
+      "description": "ECU ID (4 字节, 用于 DLT 标准头)",
+      "default": "\"ECU1\"",
+      "x-section": "PRE-COMPILE CONFIGURATION",
+      "x-macro-kind": "string-literal"
+    },
+    "DLT_ECU_ID_LENGTH": {
+      "type": "integer",
+      "description": "ECU ID 长度",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DLT_PROTOCOL_VERSION_MAJOR": {
+      "type": "integer",
+      "description": "DLT 协议版本-主",
+      "default": 1,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DLT_PROTOCOL_VERSION_MINOR": {
+      "type": "integer",
+      "description": "DLT 协议版本-次",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DLT_MAX_CONTEXT_DESCRIPTION": {
+      "type": "integer",
+      "description": "context 描述最大长度 (Dlt_ContextType.description 定长)",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255,
+      "x-section": "PRE-COMPILE CONFIGURATION"
+    },
+    "DLT_DEFAULT_TRACE_STATUS": {
+      "type": "enum",
+      "description": "新注册 context 默认跟踪状态",
+      "default": "DLT_TRACE_STATUS_ON",
+      "enum": [
+        "DLT_TRACE_STATUS_OFF",
+        "DLT_TRACE_STATUS_ON"
+      ],
+      "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },
   "additionalProperties": true,

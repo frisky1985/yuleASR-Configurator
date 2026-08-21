@@ -139,7 +139,7 @@
     },
     "TCPIP_IPV6_LINKLOCAL": {
       "type": "string",
-      "description": "对象/数组字面量宏（初始化器，原样透传）",
+      "description": "对象/数组字面量宏（初始化器，提取器不展开）",
       "default": "{ { 0xFE800000UL, 0x00000000UL, 0x00000000UL, 0x00000001UL } }",
       "x-section": "PRE-COMPILE CONFIGURATION",
       "x-macro-kind": "object-literal"

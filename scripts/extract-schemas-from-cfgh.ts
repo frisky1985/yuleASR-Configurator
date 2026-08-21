@@ -4,7 +4,7 @@
  *
  * 从 yuleASR 仓库 src 下各 `*_Cfg.h` 的纯宏定义自动提取模块 Schema，
  * 输出到 `packages/@yuletech/core/src/schema/generated/`（与现有 54 个合并），
- * 并把全部 110 个提取结果另存到 `verification/extracted-cfgh/` 供审计/抽查。
+ * 并把全部提取结果（109 个，YAC-MAP-003 起；此前 110，dlt_ecual 随 yuleASR ecual/dlt 重构并入 services/dlt）另存到 `verification/extracted-cfgh/` 供审计/抽查。
  *
  * 用法:
  *   npx tsx scripts/extract-schemas-from-cfgh.ts [--yuleasr <yuleASR-repo-root>]
@@ -22,7 +22,7 @@
  *
  * 合并策略（同名去重）: 与现有 generated/*.json 重名的模块保留现有更完整者
  * （现有 schema 带手写容器/crossReferences，被 validator 测试消费）；
- * 提取版全量存 verification/extracted-cfgh/ 保证 110 模块可审计。
+ * 提取版全量存 verification/extracted-cfgh/ 保证 109 模块可审计（110→109：dlt_ecual 并入 dlt）。
  */
 
 import * as fs from 'fs';
@@ -433,7 +433,7 @@ function parseCfgHeader(content: string): ParsedFile {
       continue;
     }
 
-    // 多行宏（初始值列表等）
+    // 多行宏（初始值列表 / 续行表达式）
     if (rest.endsWith('\\')) {
       // 判断是否为初始化器 `{`
       const body = lines
@@ -443,39 +443,31 @@ function parseCfgHeader(content: string): ParsedFile {
       const isObject = body.includes('{');
       // P0-1（2026-08-11）：多行对象/数组初始化宏（CRYPTO_ALG_SHA256 等 struct 字面量）
       // 不再丢弃为 ''（此前 schema default 丢失 → codegen 输出 ""，DoIP_Eid[6] = "" 语义错误）。
-      // 提取完整原始文本（含续行）作为 default，codegen formatMacroValue 原样输出。
-      if (isObject) {
-        // 从 `#define NAME` 之后取值：去掉宏名前缀，保留 `{ ... }` 字面量本身
-        const afterName = line.slice(line.indexOf('define') + 6).trim();
-        let rawText = afterName.slice(afterName.indexOf(' ') >= 0 ? afterName.indexOf(' ') + 1 : 0).trim();
-        let j = i;
-        while (rawText.endsWith('\\') && j + 1 < lines.length) {
-          j++;
-          rawText += '\n' + lines[j].trim();
-        }
-        result.multilineObjects++;
-        params.push({
-          name,
-          value: rawText,
-          raw: rest,
-          section: currentSection,
-          multilineObject: true,
-          line: i + 1,
-          comment: '多行初始化宏（对象/数组字面量，提取器不展开）',
-        });
-        i = j;
-        continue;
+      // YAC-MAP-003（2026-08-21）：非 `{` 的多行表达式宏（ECUM_CONFIGURED_WAKEUP_SOURCES /
+      // KEYM_CFG_KEY_AES_*_USAGE 位或表达式）同样提取完整原始文本（含续行与行尾反斜杠）
+      // 作为 default —— 此前 value 置 '' 导致生成 ""（语义错误），且 79c8ec02 手补值每次
+      // F1 重跑即丢失（漂移根因之一）。codegen formatMacroValue 对含 '\n' 值原样透传。
+      const afterName = line.slice(line.indexOf('define') + 6).trim();
+      let rawText = afterName.slice(afterName.indexOf(' ') >= 0 ? afterName.indexOf(' ') + 1 : 0).trim();
+      let j = i;
+      while (rawText.endsWith('\\') && j + 1 < lines.length) {
+        j++;
+        rawText += '\n' + lines[j].trim();
       }
       result.multilineObjects++;
       params.push({
         name,
-        value: '',
+        value: rawText,
         raw: rest,
         section: currentSection,
         multilineObject: true,
+        guarded,
         line: i + 1,
+        comment: isObject
+          ? '多行初始化宏（对象/数组字面量，提取器不展开）'
+          : '多行表达式宏（续行原样透传，提取器不展开）',
       });
-      while (i + 1 < lines.length && lines[i + 1].trimEnd().endsWith('\\')) i++;
+      i = j;
       continue;
     }
 
@@ -491,6 +483,7 @@ function parseCfgHeader(content: string): ParsedFile {
         raw: rest,
         section: currentSection,
         multilineObject: true,
+        guarded,
         line: i + 1,
         comment: '对象/数组字面量宏（初始化器，提取器不展开）',
       });
@@ -698,13 +691,14 @@ function inferParamType(
     if (fileDefines.has(v)) {
       const target = fileDefines.get(v)!;
       if (target.type === 'integer' || target.type === 'boolean' || target.type === 'number' || target.type === 'string') {
-        base.type = target.type;
-        base.default = target.default;
-        if (target.min !== undefined) base.min = target.min;
-        if (target.max !== undefined) base.max = target.max;
+        // YAC-MAP-003（2026-08-21）：纯标识符别名（#define X Y，Y 为同文件其它宏名）
+        // 原样输出别名引用（如 COM_NUM_IPDU_GROUPS = COM_NUM_OF_IPDU_GROUPS），与手写头
+        // 字节一致（a1bad5dc 手改 com.json 的根因 —— 展开为目标值 (16U) 产生宏级差异）。
+        base.type = 'string';
+        base.default = v;
         const familyNote =
           siblings.size >= 1 ? `；同族可选: ${[...siblings].sort().join(' / ')}` : '';
-        base.description = `${p.comment || p.name}（别名: ${v} = ${target.default}${familyNote}）`;
+        base.description = `${p.comment || p.name}（别名: ${v} = ${target.default}${familyNote}）— 生成时原样输出别名引用，与手写头一致`;
         return base;
       }
     }
@@ -727,14 +721,13 @@ function inferParamType(
       return base;
     }
 
-    // 别名解析: 引用同文件其它 define 的字面量（兜底，一般已被上面规则覆盖）
+    // 别名解析: 引用同文件其它 define 的字面量（兜底，一般已被上面规则覆盖）——
+    // 与上方分支同规则：原样输出别名引用，保证生成产物与手写头字节一致。
     const target = fileDefines.get(v);
     if (target && (target.type === 'integer' || target.type === 'boolean' || target.type === 'number' || target.type === 'string')) {
-      base.type = target.type;
-      base.default = target.default;
-      if (target.min !== undefined) base.min = target.min;
-      if (target.max !== undefined) base.max = target.max;
-      base.description = `${p.comment || p.name}（别名: ${v} = ${target.default}）`;
+      base.type = 'string';
+      base.default = v;
+      base.description = `${p.comment || p.name}（别名: ${v} = ${target.default}）— 生成时原样输出别名引用，与手写头一致`;
       return base;
     }
 
@@ -756,7 +749,11 @@ function inferParamType(
   // → 保留原始表达式作为默认值（修复 LinSM LINSM_REQUEST_TIMEOUT_COUNT 生成 ""）
   if (/^[0-9A-Za-z_().*&|+\-<>/\s]+$/.test(v) && /[*&|+\-<>/()]/.test(v)) {
     base.type = 'string';
-    base.default = `(${v})`; // 输出原表达式（如 (A / B)），codegen 原样透传
+    // YAC-MAP-003（2026-08-21）：手写头已带括号的表达式（如 RTE_PORT_*_H 的
+    // `(((A << 8) | B))`）原样保留 p.raw —— normalizeValue 剥括号后重包会少一层括号，
+    // 生成产物与手写头字节不一致（a1bad5dc 手改 rte.json 22 宏的根因，F1 重跑即回退）；
+    // 无括号表达式仍补一层括号（如 (A / B)），供 codegen formatMacroValue 原样透传。
+    base.default = p.raw.startsWith('(') && p.raw.endsWith(')') ? p.raw : `(${v})`;
     base.kind = 'expression';
     base.description = `${p.comment || p.name}（派生表达式: ${p.raw}）`;
     return base;
@@ -823,6 +820,33 @@ function cpiContainer(): Record<string, unknown> {
 
 function cfiFieldsSafe(fields: string[]): string[] {
   return fields;
+}
+
+/**
+ * 保留手写补充的标准配置容器（顶层 properties 中 type=object 且不在本次提取结果里的项）。
+ *
+ * 背景（YAC-MAP-003，2026-08-21）：58f5f7f2（MCAL 缺失标准容器补齐，ocu OcuConfigSet/
+ * OcuChannel、ramtst RamTstCommon 等）与 e81a63c9（boot OtaSecurity 双源同步）在
+ * CfgH-Extracted 文件上手工补充了 AUTOSAR 标准容器；F1 重跑整文件覆盖会静默冲掉这些容器。
+ * 提取参数均为标量（boolean/integer/string/enum），不会误留陈旧宏，故 type=object 的
+ * 额外属性可安全保留。
+ */
+function preserveExtraContainers(
+  oldJson: Record<string, unknown> | undefined,
+  newJson: Record<string, unknown>
+): Record<string, unknown> {
+  if (!oldJson) return newJson;
+  const oldProps = (oldJson.properties as Record<string, unknown> | undefined) || {};
+  const newProps = (newJson.properties as Record<string, unknown> | undefined) || {};
+  const extra: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(oldProps)) {
+    if (k in newProps) continue;
+    if (v && typeof v === 'object' && (v as Record<string, unknown>).type === 'object') {
+      extra[k] = v;
+    }
+  }
+  if (Object.keys(extra).length === 0) return newJson;
+  return { ...newJson, properties: { ...newProps, ...extra } };
 }
 
 /* ------------------------------------------------------------------ */
@@ -1000,7 +1024,7 @@ function main(): void {
   }
 
   // 重名优先级: services > mcal > ecual（Fee/RamTst 以 AUTOSAR 规范层 MCAL 为准；
-  // Dem 存在 legacy 副本 → 作为 Dem_Legacy 副版保留，保证 110 全覆盖）
+  // Dem 存在 legacy 副本 → 作为 Dem_Legacy 副版保留，保证全覆盖）
   const IS_LEGACY = (r: ModuleResult): boolean => r.sourceFile.includes('/legacy/');
   const PREFER_MCAL = new Set(['Fee', 'RamTst']);
   const layerRank = (layer: string): number =>
@@ -1045,11 +1069,25 @@ function main(): void {
   console.log(`[F1] 提取模块 schema 总数: ${all.length}（canonical ${canonical.size} + 重名副版 ${dupSecondary.length}）`);
   console.log(`[F1] 重名模块: ${[...byName.entries()].filter(([, v]) => v.length > 1).map(([n]) => n).join(', ')}`);
 
-  // ---- 提取版全量写入 verification/（110 个，供审计 + F1 抽查）----
+  // ---- 提取版全量写入 verification/（109 个，供审计 + F1 抽查）----
+  // YAC-MAP-003（2026-08-21）：写前快照旧文件，保留手写补充的标准容器（preserveExtraContainers），
+  // 避免 F1 重跑把 boot OtaSecurity 等容器冲掉（e81a63c9 双源同步 / 58f5f7f2 容器补齐的防再漂移）。
+  const prevVerify = new Map<string, Record<string, unknown>>();
+  if (fs.existsSync(VERIFY_DIR)) {
+    for (const f of fs.readdirSync(VERIFY_DIR)) {
+      if (!f.endsWith('.json')) continue;
+      try {
+        prevVerify.set(f, JSON.parse(fs.readFileSync(path.join(VERIFY_DIR, f), 'utf8')));
+      } catch {
+        /* 忽略解析失败 */
+      }
+    }
+  }
   fs.rmSync(VERIFY_DIR, { recursive: true, force: true });
   fs.mkdirSync(VERIFY_DIR, { recursive: true });
   for (const mod of all) {
-    const json = JSON.stringify(toGeneratedJson(mod, mod.sourceFile), null, 2) + '\n';
+    const oldJson = prevVerify.get(`${mod.fileName}.json`);
+    const json = JSON.stringify(preserveExtraContainers(oldJson, toGeneratedJson(mod, mod.sourceFile)), null, 2) + '\n';
     fs.writeFileSync(path.join(VERIFY_DIR, `${mod.fileName}.json`), json, 'utf8');
   }
   const verifyCount = fs.readdirSync(VERIFY_DIR).filter(f => f.endsWith('.json')).length;
@@ -1083,14 +1121,38 @@ function main(): void {
       keptList.push(mod.displayName);
       continue;
     }
-    fs.writeFileSync(
-      target,
-      JSON.stringify(toGeneratedJson(mod, mod.sourceFile), null, 2) + '\n',
-      'utf8'
-    );
+    let newJson = toGeneratedJson(mod, mod.sourceFile);
+    // YAC-MAP-003（2026-08-21）：覆盖前保留旧文件手写补充的标准容器（type=object，
+    // 如 ocu OcuConfigSet/OcuChannel、ramtst RamTstCommon、boot OtaSecurity），
+    // 否则 F1 重跑即丢失（58f5f7f2/e81a63c9 手补容器，脚本纯覆盖为漂移根因之一）。
+    if (fs.existsSync(target)) {
+      try {
+        const oldJson = JSON.parse(fs.readFileSync(target, 'utf8'));
+        newJson = preserveExtraContainers(oldJson, newJson);
+      } catch {
+        /* 忽略解析失败 */
+      }
+    }
+    fs.writeFileSync(target, JSON.stringify(newJson, null, 2) + '\n', 'utf8');
     written++;
   }
   console.log(`[F1] 合并结果: 新增写入 generated/ ${written} 个; 与现有重名保留现有 ${keptExisting} 个 → ${keptList.join(', ')}`);
+
+  // ---- 清理孤儿文件（YAC-MAP-003，2026-08-21）----
+  // 之前由本脚本生成、但本次提取已不存在的模块（如 dlt_ecual —— yuleASR ecual/dlt
+  // 目录重构并入 services/dlt 后不再有独立 Cfg.h）→ 删除 schema + index.ts 导出，
+  // 避免 110→109 计数不一致；只删 priorExtracted（本脚本产物），不碰手写/ARXML 原始文件。
+  const newFileNames = new Set(all.map(m => m.fileName));
+  let orphanRemoved = 0;
+  for (const f of existingFiles) {
+    const stem = f.replace(/\.json$/, '');
+    if (priorExtracted.has(stem) && !newFileNames.has(stem)) {
+      fs.rmSync(path.join(GENERATED_DIR, f), { force: true });
+      orphanRemoved++;
+      console.log(`[F1] 孤儿 schema 已删除（yuleASR 不再产出该 Cfg.h）: ${f}`);
+    }
+  }
+  if (orphanRemoved > 0) console.log(`[F1] 孤儿清理: ${orphanRemoved} 个`);
 
   // ---- 重写 index.ts ----
   const oldIndex = path.join(GENERATED_DIR, 'index.ts');

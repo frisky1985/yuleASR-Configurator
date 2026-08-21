@@ -27,7 +27,6 @@ export { default as Dem_Legacy } from './dem_legacy.json';
 export { default as Det } from './det.json';
 export { default as Dio } from './dio.json';
 export { default as Dlt } from './dlt.json';
-export { default as Dlt_Ecual } from './dlt_ecual.json';
 export { default as DoCan } from './docan.json';
 export { default as DoIP } from './doip.json';
 export { default as DoIP_Ecual } from './doip_ecual.json';
