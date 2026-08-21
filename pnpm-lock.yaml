@@ -404,6 +404,9 @@ importers:
       bcryptjs:
         specifier: ^3.0.3
         version: 3.0.3
+      dotenv:
+        specifier: ^16.6.1
+        version: 16.6.1
       drizzle-orm:
         specifier: ^0.45.2
         version: 0.45.2(@prisma/client@6.19.3(prisma@6.19.3(magicast@0.5.4)(typescript@7.0.2))(typescript@7.0.2))(postgres@3.4.9)(prisma@6.19.3(magicast@0.5.4)(typescript@7.0.2))

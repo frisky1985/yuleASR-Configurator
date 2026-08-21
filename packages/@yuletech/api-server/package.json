@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "prebuild": "pnpm --filter @yuletech/core build",
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "vitest run",
@@ -27,7 +26,8 @@
     "fastify": "^5.11.0",
     "jose": "^6.2.5",
     "postgres": "^3.4.9",
-    "zod": "^4.4.3"
+    "zod": "^4.4.3",
+    "dotenv": "^16.6.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^3.0.0",
