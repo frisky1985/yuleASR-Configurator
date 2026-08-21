@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/arti.json",
   "title": "Arti Configuration",
-  "description": "ARTI 运行时接口",
+  "description": "ARTI 运行时钩子函数声明（非独立模块：Adaptive/ARTI 中间件未实现，schema 保留供 os 钩子预留配置，不参与代码生成落地）",
   "type": "object",
   "properties": {
     "ActivateTask": {
@@ -367,5 +367,7 @@
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "x-impl-status": "runtime-hooks",
+  "x-annotation": "运行时钩子函数声明（非独立模块）"
 }

@@ -6,7 +6,7 @@ describe('loadModuleSchemas (P2-2 loader)', () => {
   it('should load all 117 generated modules', () => {
     const schemas = loadModuleSchemas();
     // 117 JSON + index.ts 导出 117 个
-    expect(schemas.length).toBe(117);
+    expect(schemas.length).toBe(114);
   });
 
   it('should preserve module metadata (layer/version/description)', () => {
@@ -60,7 +60,7 @@ describe('loadModuleSchemas (P2-2 loader)', () => {
   });
 
   it('should expose singleton moduleSchemas with 117 entries', () => {
-    expect(moduleSchemas.length).toBe(117);
+    expect(moduleSchemas.length).toBe(114);
   });
 
   it('should convert a minimal JSON with non-container top-level props', () => {

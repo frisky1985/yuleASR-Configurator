@@ -15,9 +15,10 @@ function getSchemaFiles(): string[] {
 describe('JSON Schema Validation', () => {
   const files = getSchemaFiles();
 
-  it('should have exactly 117 schema files (54 existing + 63 CfgH-extracted)', () => {
+  it('should have exactly 114 schema files (54 existing + 63 CfgH-extracted − 3 deleted: ble/mcl/sbc)', () => {
     // 2026-08-01: 39 → 54; 2026-08-09 (F1): 54 → 117 (+63 yuleASR Cfg.h 自动提取)
-    expect(files.length).toBe(117);
+    // YAC-MAP-002（2026-08-21 老板裁决）：ble/mcl/sbc 无 yuleASR 实现 → 删除；后续补 ethtsyn/ldcom/tm/dds/microdds 至 119
+    expect(files.length).toBe(114);
   });
 
   it.each(files)('should parse %s as valid JSON', file => {
@@ -97,7 +98,6 @@ describe('JSON Schema Validation', () => {
       'adc',
       'appswc',
       'arti',
-      'ble',
       'boot',
       'bswm',
       'can',
@@ -169,7 +169,6 @@ describe('JSON Schema Validation', () => {
       'lintp',
       'lintp_ecual',
       'lintrcv',
-      'mcl',
       'mcu',
       'mem',
       'memif',
@@ -188,7 +187,6 @@ describe('JSON Schema Validation', () => {
       'ramtst',
       'ramtst_service',
       'rte',
-      'sbc',
       'schm',
       'sd',
       'secoc',

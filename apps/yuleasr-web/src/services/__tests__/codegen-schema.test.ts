@@ -18,7 +18,7 @@ function schemaByName(name: string) {
 describe('Codegen - Schema-driven macro headers (F2a)', () => {
   it('should generate one header per loaded schema (117 modules, no throw)', async () => {
     const schemas = loadModuleSchemas();
-    expect(schemas.length).toBeGreaterThanOrEqual(117);
+    expect(schemas.length).toBeGreaterThanOrEqual(114);
 
     const files = await generateHeadersFromSchemas(schemas);
     expect(files).toHaveLength(schemas.length);

@@ -234,7 +234,7 @@ describe('V2.2 — codegen schema 源切换（宏名版优先）', () => {
   it('loadPreferredSchemas：与 loadModuleSchemas 同集合同排序，5 个 demo 模块为宏名版', () => {
     const preferred = loadPreferredSchemas();
     const generated = loadModuleSchemas();
-    expect(preferred.length).toBeGreaterThanOrEqual(117);
+    expect(preferred.length).toBeGreaterThanOrEqual(114);
     expect(preferred.map(s => s.name)).toEqual(generated.map(s => s.name));
 
     for (const mod of DEMO_MODULES) {
@@ -297,10 +297,14 @@ describe('V2.2 — codegen schema 源切换（宏名版优先）', () => {
 
   it('未覆盖模块（非 yuleASR Cfg.h 来源）回退 generated/ 原路径', () => {
     const preferred = loadPreferredSchemas();
-    for (const name of ['AppSwc', 'CompSwc', 'Arti', 'Ble', 'Fr', 'Mcl', 'Sbc']) {
+    // YAC-MAP-002（2026-08-21 老板裁决）：ble/mcl/sbc 无 yuleASR 实现已删除，不再回退
+    for (const name of ['AppSwc', 'CompSwc', 'Arti', 'Fr']) {
       expect(preferred.find(s => s.name === name), `${name} 应保留`).toBeDefined();
     }
-    // 7 个回退模块参数仍为 ARXML 风格（非宏名），走原 schema 行为
+    for (const name of ['Ble', 'Mcl', 'Sbc']) {
+      expect(preferred.find(s => s.name === name), `${name} 应已删除`).toBeUndefined();
+    }
+    // 4 个回退模块参数仍为 ARXML 风格（非宏名），走原 schema 行为
     const appswc = preferred.find(s => s.name === 'AppSwc')!;
     expect(appswc.parameters!.length).toBeGreaterThan(0);
   });
