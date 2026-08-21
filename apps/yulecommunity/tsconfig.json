@@ -11,10 +11,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "ignoreDeprecations": "6.0",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["vite/client"],
-    "baseUrl": ".",
+    // YAC-CI-004: TS7 移除 baseUrl（TS5102）；paths 在无 baseUrl 时相对 tsconfig 目录解析，行为不变
     "paths": {
       "@/*": ["./src/*"]
     }

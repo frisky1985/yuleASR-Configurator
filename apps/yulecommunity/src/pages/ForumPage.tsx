@@ -25,7 +25,7 @@ import {
   type ForumPost,
   type ForumReply,
 } from '../data/communityData';
-import { CodeBlock } from '../components/CodeBlock';
+import { CodeBlock } from '../components/blog/CodeBlock';
 import { ConfigCard } from '../components/ConfigCard';
 import apiClient from '../services/apiClient';
 

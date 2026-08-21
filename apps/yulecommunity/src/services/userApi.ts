@@ -247,11 +247,14 @@ class UserApiService {
     return this.request(`/user/points/leaderboard?${query.toString()}`);
   }
 
-  async getCheckinStatus(): Promise<{ success: boolean; data: { checkedIn: boolean; streak: number; today: string } }> {
+  async getCheckinStatus(): Promise<{
+    success: boolean;
+    data: { checkedIn: boolean; streak: number; today: string };
+  }> {
     return this.request('/user/points/checkin');
   }
 
-  async earnDailyCheckin(): Promise<{ success: boolean; data: any }> {
+  async earnDailyCheckin(): Promise<{ success: boolean; data: any; message?: string }> {
     return this.earnPoints('daily.login', { type: 'system', id: 'daily-login', title: '每日签到' });
   }
 }

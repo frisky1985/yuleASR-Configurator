@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { generateId } from '../data/communityData';
-import { CodeBlock } from '../components/CodeBlock';
+import { CodeBlock } from '../components/blog/CodeBlock';
 
 const categories = ['全部', 'MCAL', 'ECUAL', 'Service', '工具链', '功能安全', '架构设计'];
 

@@ -1,4 +1,10 @@
-import type { AutosarModule, AutosarLayer, AutosarVersion, ApiIndexEntry, AutosarApi } from './types';
+import type {
+  AutosarModule,
+  AutosarLayer,
+  AutosarVersion,
+  ApiIndexEntry,
+  AutosarApi,
+} from './types';
 import { CAN_APIS } from './can-spec';
 import { DIO_APIS } from './dio-spec';
 import { PORT_APIS } from './port-spec';
@@ -25,7 +31,13 @@ interface ApiSpecRow {
   brief_cn?: string;
   description: string;
   description_cn?: string;
-  params: Array<{ name: string; type: string; direction: string; description: string; range?: string }>;
+  params: Array<{
+    name: string;
+    type: string;
+    direction: string;
+    description: string;
+    range?: string;
+  }>;
   return_type: string;
   return_description: string;
   version: string;
@@ -45,7 +57,7 @@ function rowToApi(row: ApiSpecRow): AutosarApi {
     signature: row.signature,
     brief: row.brief,
     description: row.description,
-    params: row.params,
+    params: row.params as AutosarApi['params'],
     returnType: row.return_type,
     returnDescription: row.return_description,
     moduleId: row.module_id,
@@ -91,7 +103,9 @@ export function clearSpecCache() {
 /**
  * 尝试从后端批量获取所有模块的 API 索引（模块列表页面用）
  */
-export async function fetchModuleIndex(): Promise<{ id: string; name: string; layer: string; apiCount: number }[] | null> {
+export async function fetchModuleIndex(): Promise<
+  { id: string; name: string; layer: string; apiCount: number }[] | null
+> {
   try {
     const res = await fetch(`${API_BASE}/api/specs/modules`, {
       signal: AbortSignal.timeout(5000),
@@ -100,7 +114,10 @@ export async function fetchModuleIndex(): Promise<{ id: string; name: string; la
     const json = await res.json();
     if (!json.success || !json.data) throw new Error('invalid response');
     return json.data.map((m: any) => ({
-      id: m.id, name: m.name, layer: m.layer_id, apiCount: m.api_count,
+      id: m.id,
+      name: m.name,
+      layer: m.layer_id,
+      apiCount: m.api_count,
     }));
   } catch {
     return null;
@@ -113,7 +130,19 @@ export async function fetchModuleIndex(): Promise<{ id: string; name: string; la
  */
 export function preloadSpecData(): void {
   // 所有模块列表
-  const modules = ['Can', 'Dio', 'Port', 'Mcu', 'Spi', 'CanIf', 'Com', 'PduR', 'NvM', 'EcuM', 'Rte'];
+  const modules = [
+    'Can',
+    'Dio',
+    'Port',
+    'Mcu',
+    'Spi',
+    'CanIf',
+    'Com',
+    'PduR',
+    'NvM',
+    'EcuM',
+    'Rte',
+  ];
   // 静默加载，不关心结果
   for (const mod of modules) {
     fetchModuleApis(mod).catch(() => {});
@@ -154,67 +183,89 @@ function getModuleApis(moduleId: string): AutosarApi[] {
 export function getAllModules(): AutosarModule[] {
   return [
     {
-      id: 'Can', name: 'Can', layer: 'MCAL',
+      id: 'Can',
+      name: 'Can',
+      layer: 'MCAL',
       description: 'CAN 通信驱动，支持 CAN 2.0B 和 CAN-FD，提供消息发送、接收、波特率配置等功能',
       versionIntroduced: '4.0',
       apis: getModuleApis('Can'),
     },
     {
-      id: 'Dio', name: 'Dio', layer: 'MCAL',
+      id: 'Dio',
+      name: 'Dio',
+      layer: 'MCAL',
       description: '数字 I/O 驱动，提供引脚电平的读写和翻转操作',
       versionIntroduced: '4.0',
       apis: getModuleApis('Dio'),
     },
     {
-      id: 'Port', name: 'Port', layer: 'MCAL',
+      id: 'Port',
+      name: 'Port',
+      layer: 'MCAL',
       description: '端口驱动，配置引脚功能复用和方向',
       versionIntroduced: '4.0',
       apis: getModuleApis('Port'),
     },
     {
-      id: 'Mcu', name: 'Mcu', layer: 'MCAL',
+      id: 'Mcu',
+      name: 'Mcu',
+      layer: 'MCAL',
       description: '微控制器驱动，负责时钟、复位和功耗管理',
       versionIntroduced: '4.0',
       apis: getModuleApis('Mcu'),
     },
     {
-      id: 'Spi', name: 'Spi', layer: 'MCAL',
+      id: 'Spi',
+      name: 'Spi',
+      layer: 'MCAL',
       description: 'SPI 通信驱动，支持主从模式和数据传输',
       versionIntroduced: '4.0',
       apis: getModuleApis('Spi'),
     },
     {
-      id: 'CanIf', name: 'CanIf', layer: 'ECUAL',
+      id: 'CanIf',
+      name: 'CanIf',
+      layer: 'ECUAL',
       description: 'CAN 接口模块，为上层提供与硬件无关的 CAN 通信抽象接口',
       versionIntroduced: '4.0',
       apis: getModuleApis('CanIf'),
     },
     {
-      id: 'Com', name: 'Com', layer: 'ECUAL',
+      id: 'Com',
+      name: 'Com',
+      layer: 'ECUAL',
       description: '信号级通信模块，提供信号打包/解包和路由',
       versionIntroduced: '4.0',
       apis: getModuleApis('Com'),
     },
     {
-      id: 'PduR', name: 'PduR', layer: 'ECUAL',
+      id: 'PduR',
+      name: 'PduR',
+      layer: 'ECUAL',
       description: 'PDU 路由器，实现 PDU 路由和网关功能',
       versionIntroduced: '4.0',
       apis: getModuleApis('PduR'),
     },
     {
-      id: 'NvM', name: 'NvM', layer: 'Service',
+      id: 'NvM',
+      name: 'NvM',
+      layer: 'Service',
       description: '非易失性存储器管理，提供数据持久化服务',
       versionIntroduced: '4.0',
       apis: getModuleApis('NvM'),
     },
     {
-      id: 'EcuM', name: 'EcuM', layer: 'Service',
+      id: 'EcuM',
+      name: 'EcuM',
+      layer: 'Service',
       description: 'ECU 状态管理，控制 ECU 启动/关闭和功耗模式',
       versionIntroduced: '4.0',
       apis: getModuleApis('EcuM'),
     },
     {
-      id: 'Rte', name: 'Rte', layer: 'RTE_ASW',
+      id: 'Rte',
+      name: 'Rte',
+      layer: 'RTE_ASW',
       description: '运行时环境，连接应用层与 BSW 的通信桥梁',
       versionIntroduced: '4.0',
       apis: getModuleApis('Rte'),
@@ -268,6 +319,9 @@ export function findModuleById(moduleId: string): AutosarModule | undefined {
 
 export function getModuleIndex(): { id: string; name: string; layer: string; apiCount: number }[] {
   return getAllModules().map(m => ({
-    id: m.id, name: m.name, layer: m.layer, apiCount: m.apis.length,
+    id: m.id,
+    name: m.name,
+    layer: m.layer,
+    apiCount: m.apis.length,
   }));
 }

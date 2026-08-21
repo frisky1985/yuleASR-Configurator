@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+/* Tailwind v4 兼容旧版 JS 配置（tailwind.config.js：主题扩展/颜色板等），与 yuleasr-web 同模式 */
+@config "../tailwind.config.js";
 
 @layer base {
   :root {

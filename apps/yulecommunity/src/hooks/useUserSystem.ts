@@ -17,7 +17,7 @@ export interface UserSystemState {
   history: PointsHistoryItem[];
 }
 
-const DEFAULT_ACTION_POINTS: Record<PointsAction, number> = {
+export const DEFAULT_ACTION_POINTS: Record<PointsAction, number> = {
   post: 10,
   reply: 5,
   answer: 15,
@@ -53,7 +53,7 @@ export interface LevelThreshold {
   max: number;
 }
 
-const DEFAULT_LEVEL_THRESHOLDS: LevelThreshold[] = [
+export const DEFAULT_LEVEL_THRESHOLDS: LevelThreshold[] = [
   { level: 1, title: '初级工程师', min: 0, max: 100 },
   { level: 2, title: '中级工程师', min: 101, max: 500 },
   { level: 3, title: '高级工程师', min: 501, max: 2000 },

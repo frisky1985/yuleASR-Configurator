@@ -75,17 +75,22 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          // React 核心库
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          // 图表库
-          recharts: ['recharts'],
-          // 动画库
-          'framer-motion': ['framer-motion'],
-          // 代码高亮
-          'syntax-highlight': ['react-syntax-highlighter'],
-          // UI 工具
-          'ui-utils': ['lucide-react', 'clsx', 'class-variance-authority', 'tailwind-merge'],
+        // Rolldown（vite 8）不支持 manualChunks 对象形式，改为函数形式（YAC-CI-004）
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return undefined;
+          if (id.includes('react-router') || id.includes('react-dom') || id.includes('react'))
+            return 'react-vendor';
+          if (id.includes('recharts')) return 'recharts';
+          if (id.includes('framer-motion')) return 'framer-motion';
+          if (id.includes('react-syntax-highlighter')) return 'syntax-highlight';
+          if (
+            id.includes('lucide-react') ||
+            id.includes('clsx') ||
+            id.includes('class-variance-authority') ||
+            id.includes('tailwind-merge')
+          )
+            return 'ui-utils';
+          return undefined;
         },
       },
     },

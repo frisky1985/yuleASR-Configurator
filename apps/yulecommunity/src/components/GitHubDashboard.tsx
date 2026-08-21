@@ -188,9 +188,9 @@ export function GitHubDashboard() {
                   />
                   <YAxis tick={{ fontSize: 12 }} />
                   <Tooltip
-                    formatter={value => [value, '贡献次数']}
+                    formatter={value => [String(value ?? ''), '贡献次数']}
                     labelFormatter={date => {
-                      const d = new Date(date);
+                      const d = new Date(String(date));
                       return d.toLocaleDateString('zh-CN');
                     }}
                     contentStyle={{
