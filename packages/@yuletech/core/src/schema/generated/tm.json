@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/tm.json",
+  "title": "Tm Configuration",
+  "description": "时间管理（Tm）— 手写 schema（YAC-MAP-002 补全，yuleASR src/bsw/services/tm/，AUTOSAR R21-11 §12.15 时间基同步/换算/定时事件调度）。无独立 Tm_Cfg.h，配置宏内嵌 Tm.c，参数按源码提取（Tm_ConfigType.numTimeBases/defaultResolution/enableSync）。",
+  "type": "object",
+  "properties": {
+    "TM_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "TM_DEV_ERROR_DETECT 参数（Tm.c 内嵌宏，默认 STD_ON）",
+      "default": true
+    },
+    "TM_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "TM_VERSION_INFO_API 参数（Tm_GetVersionInfo 守卫宏）",
+      "default": true
+    },
+    "TM_NUM_TIME_BASES": {
+      "type": "integer",
+      "description": "TM_NUM_TIME_BASES 参数（Tm_ConfigType.numTimeBases，时间基数量上限）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "TM_DEFAULT_RESOLUTION": {
+      "type": "integer",
+      "description": "TM_DEFAULT_RESOLUTION 参数（Tm_ConfigType.defaultResolution，默认时间基分辨率）",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "TM_ENABLE_SYNC": {
+      "type": "boolean",
+      "description": "TM_ENABLE_SYNC 参数（Tm_ConfigType.enableSync，使能时间基同步）",
+      "default": false
+    },
+    "TM_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "TM_MAIN_FUNCTION_PERIOD_MS 参数（Tm_MainFunction 周期）",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数",
+          "default": 12
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "HandWritten",
+  "x-display-name": "Tm"
+}

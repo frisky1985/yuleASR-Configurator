@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/microdds.json",
+  "title": "MicroDds Configuration",
+  "description": "Micro-DDS 轻量中间件（src/middleware/microdds/，资源受限 MCU 设计：ROM<50KB/RAM<16KB）— 最小 schema（YAC-MAP-002 findings 推荐 a+c：补最小使能/域/资源上限参数打通配置→生成闭环，完整配置走代码直连）。参数取自 microdds/types.h #ifndef 可覆盖宏。",
+  "type": "object",
+  "properties": {
+    "MICRODDS_ENABLE": {
+      "type": "boolean",
+      "description": "MICRODDS_ENABLE 参数（Micro-DDS 中间件使能开关）",
+      "default": false
+    },
+    "MICRODDS_DEFAULT_DOMAIN_ID": {
+      "type": "integer",
+      "description": "MICRODDS_DEFAULT_DOMAIN_ID 参数（microdds/types.h: 0U，默认域 ID）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "MICRODDS_MAX_PARTICIPANTS": {
+      "type": "integer",
+      "description": "MICRODDS_MAX_PARTICIPANTS 参数（microdds/types.h: 4U，参与者上限）",
+      "default": 4,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MICRODDS_MAX_TOPICS": {
+      "type": "integer",
+      "description": "MICRODDS_MAX_TOPICS 参数（microdds/types.h: 8U，主题上限）",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MICRODDS_MAX_PUBLISHERS": {
+      "type": "integer",
+      "description": "MICRODDS_MAX_PUBLISHERS 参数（microdds/types.h: 8U，发布者上限）",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MICRODDS_MAX_SUBSCRIBERS": {
+      "type": "integer",
+      "description": "MICRODDS_MAX_SUBSCRIBERS 参数（microdds/types.h: 8U，订阅者上限）",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MICRODDS_MAX_DATA_WRITERS": {
+      "type": "integer",
+      "description": "MICRODDS_MAX_DATA_WRITERS 参数（microdds/types.h: 16U，数据写入器上限）",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MICRODDS_MAX_DATA_READERS": {
+      "type": "integer",
+      "description": "MICRODDS_MAX_DATA_READERS 参数（microdds/types.h: 16U，数据读取器上限）",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MICRODDS_MAX_INSTANCES": {
+      "type": "integer",
+      "description": "MICRODDS_MAX_INSTANCES 参数（microdds/types.h: 32U，实例上限）",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "MICRODDS_TOPIC_NAME_MAX": {
+      "type": "integer",
+      "description": "MICRODDS_TOPIC_NAME_MAX 参数（microdds/types.h: 64U，主题名最大长度）",
+      "default": 64,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "HandWritten",
+  "x-display-name": "MicroDds"
+}

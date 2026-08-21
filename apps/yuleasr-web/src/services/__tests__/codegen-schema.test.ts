@@ -18,7 +18,7 @@ function schemaByName(name: string) {
 describe('Codegen - Schema-driven macro headers (F2a)', () => {
   it('should generate one header per loaded schema (117 modules, no throw)', async () => {
     const schemas = loadModuleSchemas();
-    expect(schemas.length).toBeGreaterThanOrEqual(114);
+    expect(schemas.length).toBeGreaterThanOrEqual(119);
 
     const files = await generateHeadersFromSchemas(schemas);
     expect(files).toHaveLength(schemas.length);
@@ -88,5 +88,76 @@ describe('Codegen - Schema-driven macro headers (F2a)', () => {
     expect(files[0].filename).toBe('Wdg_Cfg.h');
     // WdgConfigSet.WdgDisableAllowed → WDG_DISABLE_ALLOWED（去除 Wdg 前缀，避免 WDG_WDG_*）
     expect(files[0].content).toContain('#define WDG_DISABLE_ALLOWED    STD_OFF');
+  });
+});
+
+/**
+ * YAC-MAP-002（2026-08-21 老板裁决）— 补全模块 schema 生成闭环验证：
+ * ethtsyn/ldcom/tm 手写 schema（源码内嵌宏提取），dds/microdds 最小 schema
+ * （findings 推荐 a+c：最小参数打通配置→生成，完整配置走代码直连）。
+ * 参数名即宏名（UPPER_SNAKE，rawMacroNames 原样输出），默认值取自 yuleASR 源码。
+ */
+describe('Codegen - YAC-MAP-002 补全模块（有代码无 schema → 手写 schema 打通闭环）', () => {
+  it('ethtsyn: EthTSyn_Cfg.h 含 ETHTSYN_* 宏（EthTSyn.c 内嵌宏提取）', async () => {
+    const files = await generateHeadersFromSchemas(schemaByName('ethtsyn'));
+    expect(files).toHaveLength(1);
+    expect(files[0].filename).toBe('EthTSyn_Cfg.h');
+    expect(files[0].content).toContain('#define ETHTSYN_DEV_ERROR_DETECT    STD_ON');
+    expect(files[0].content).toContain('#define ETHTSYN_VERSION_INFO_API    STD_ON');
+    expect(files[0].content).toContain('#define ETHTSYN_MODULE_ID    (10U)');
+  });
+
+  it('ldcom: LdCom_Cfg.h 含 LDCOM_* 宏（LdCom.c 内嵌宏提取）', async () => {
+    const files = await generateHeadersFromSchemas(schemaByName('ldcom'));
+    expect(files).toHaveLength(1);
+    expect(files[0].filename).toBe('LdCom_Cfg.h');
+    expect(files[0].content).toContain('#define LDCOM_DEV_ERROR_DETECT    STD_ON');
+    expect(files[0].content).toContain('#define LDCOM_MODULE_ID    (11U)');
+  });
+
+  it('tm: Tm_Cfg.h 含 TM_* 宏（Tm.c 内嵌宏 + Tm_ConfigType 提取）', async () => {
+    const files = await generateHeadersFromSchemas(schemaByName('tm'));
+    expect(files).toHaveLength(1);
+    expect(files[0].filename).toBe('Tm_Cfg.h');
+    expect(files[0].content).toContain('#define TM_DEV_ERROR_DETECT    STD_ON');
+    expect(files[0].content).toContain('#define TM_MODULE_ID    (12U)');
+    expect(files[0].content).toContain('#define TM_NUM_TIME_BASES    (4U)');
+    expect(files[0].content).toContain('#define TM_ENABLE_SYNC    STD_OFF');
+  });
+
+  it('dds: Dds_Cfg.h 含最小 DDS_* 宏（dds_runtime/dds_eth_transport 实际宏）', async () => {
+    const files = await generateHeadersFromSchemas(schemaByName('dds'));
+    expect(files).toHaveLength(1);
+    expect(files[0].filename).toBe('Dds_Cfg.h');
+    expect(files[0].content).toContain('#define DDS_ENABLE    STD_OFF');
+    expect(files[0].content).toContain('#define DDS_DEFAULT_DOMAIN_ID    (0U)');
+    expect(files[0].content).toContain('#define DDS_ETH_MULTICAST_PORT_BASE    (7400U)');
+    expect(files[0].content).toContain('#define DDS_ETH_MAX_PARTICIPANTS    (16U)');
+    expect(files[0].content).toContain('#define DDS_TRANSPORT_TYPE    DDS_TRANSPORT_ETH');
+  });
+
+  it('microdds: MicroDds_Cfg.h 含最小 MICRODDS_* 宏（microdds/types.h #ifndef 可覆盖宏）', async () => {
+    const files = await generateHeadersFromSchemas(schemaByName('microdds'));
+    expect(files).toHaveLength(1);
+    expect(files[0].filename).toBe('MicroDds_Cfg.h');
+    expect(files[0].content).toContain('#define MICRODDS_ENABLE    STD_OFF');
+    expect(files[0].content).toContain('#define MICRODDS_MAX_PARTICIPANTS    (4U)');
+    expect(files[0].content).toContain('#define MICRODDS_MAX_TOPICS    (8U)');
+    expect(files[0].content).toContain('#define MICRODDS_DEFAULT_DOMAIN_ID    (0U)');
+  });
+
+  it('lntm↔lintp 命名核对：lintp schema 的 x-source-file 精确指向 services/lntm（双版 DoIP 先例）', () => {
+    const schemas = loadModuleSchemas();
+    const lintp = schemas.find(s => s.name === 'LinTp');
+    const lintpEcual = schemas.find(s => s.name === 'LinTp_Ecual');
+    expect(lintp).toBeDefined();
+    expect(lintpEcual).toBeDefined();
+    // 与 DoIP 双版先例一致：x-source-file 区分 services/ecual 两版
+    expect((lintp as unknown as Record<string, unknown>)['sourceFile']).toBe(
+      'src/bsw/services/lntm/include/LinTp_Cfg.h'
+    );
+    expect((lintpEcual as unknown as Record<string, unknown>)['sourceFile']).toBe(
+      'src/bsw/ecual/linTp/include/LinTp_Cfg.h'
+    );
   });
 });

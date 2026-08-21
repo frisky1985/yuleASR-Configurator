@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/dds.json",
+  "title": "DDS Configuration",
+  "description": "DDS 中间件（src/middleware/dds/，3.2 万行 RTPS over ETH/SOME-IP/TSN）— 最小 schema（YAC-MAP-002 findings 推荐 a+c：补最小使能/传输/IP 端口参数打通配置→生成闭环，完整配置走代码直连）。非 AUTOSAR 标准 BSW，参数取自 dds_runtime.h / dds_eth_transport.h 实际宏。",
+  "type": "object",
+  "properties": {
+    "DDS_ENABLE": {
+      "type": "boolean",
+      "description": "DDS_ENABLE 参数（DDS 中间件使能开关；配置→生成闭环入口）",
+      "default": false
+    },
+    "DDS_DEFAULT_DOMAIN_ID": {
+      "type": "integer",
+      "description": "DDS_DEFAULT_DOMAIN_ID 参数（dds_runtime.h: DDS_DEFAULT_DOMAIN_ID 0，域 ID）",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "DDS_TRANSPORT_TYPE": {
+      "type": "string",
+      "description": "DDS_TRANSPORT_TYPE 参数（传输类型：ETH 多播 RTPS / SOAD SOME-IP 桥接 / TSN）",
+      "enum": [
+        "DDS_TRANSPORT_ETH",
+        "DDS_TRANSPORT_SOAD",
+        "DDS_TRANSPORT_TSN"
+      ],
+      "default": "DDS_TRANSPORT_ETH"
+    },
+    "DDS_ETH_MULTICAST_PORT_BASE": {
+      "type": "integer",
+      "description": "DDS_ETH_MULTICAST_PORT_BASE 参数（dds_eth_transport.h: 7400，RTPS 默认多播端口基址）",
+      "default": 7400,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "DDS_ETH_TX_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "DDS_ETH_TX_BUFFER_SIZE 参数（dds_eth_transport.h: 4096，传输层发送缓冲）",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "DDS_ETH_RX_BUFFER_SIZE": {
+      "type": "integer",
+      "description": "DDS_ETH_RX_BUFFER_SIZE 参数（dds_eth_transport.h: 8192，传输层接收缓冲）",
+      "default": 8192,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "DDS_ETH_MAX_ENDPOINTS": {
+      "type": "integer",
+      "description": "DDS_ETH_MAX_ENDPOINTS 参数（dds_eth_transport.h: 32，端点上限）",
+      "default": 32,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DDS_ETH_MAX_PARTICIPANTS": {
+      "type": "integer",
+      "description": "DDS_ETH_MAX_PARTICIPANTS 参数（dds_eth_transport.h: 16，参与者上限）",
+      "default": 16,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "DDS_ETH_MAX_UDP_PAYLOAD": {
+      "type": "integer",
+      "description": "DDS_ETH_MAX_UDP_PAYLOAD 参数（dds_eth_transport.h: 65507，UDP 最大负载）",
+      "default": 65507,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "DDS_SOAD_ADAPTER_ENABLE": {
+      "type": "boolean",
+      "description": "DDS_SOAD_ADAPTER_ENABLE 参数（dds_soad_adapter.c，SOME-IP 桥接使能）",
+      "default": false
+    },
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数"
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "HandWritten",
+  "x-display-name": "Dds"
+}

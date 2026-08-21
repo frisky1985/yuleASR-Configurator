@@ -69,8 +69,11 @@ const MODULE_IDS: Record<string, number> = {
 /**
  * Get the module short name from a ConfigModule.
  * Maps module 'id' to PascalCase name (e.g. 'can' → 'Can').
+ *
+ * YAC-MAP-002（2026-08-21）：known 表显式化命名映射——
+ * 见 docs/planning/2026-08-21-module-mapping-naming.md（yuleASR 文件/目录 ↔ Configurator schema id 对照）。
  */
-function getModuleShortName(id: string): string {
+export function getModuleShortName(id: string): string {
   // Known modules
   const known: Record<string, string> = {
     can: 'Can',
@@ -97,6 +100,22 @@ function getModuleShortName(id: string): string {
     someip: 'SomeIp',
     tcpip: 'TcpIp',
     udpnm: 'UdpNm',
+    // YAC-MAP-002 命名映射显式化（2026-08-21）：
+    // 1) canm↔cannm：yuleASR services/canm + ecual/canNm（CanNm.c）→ Configurator id=cannm
+    cannm: 'CanNm',
+    cannm_ecual: 'CanNm',
+    // 2) cdd 家族：Cdd_Fvm → cddfvm（其余 5 子模块 Hsm/Lockstep/RamEcc/Safety/Boot 见映射表，未建 schema）
+    cddfvm: 'Cdd_Fvm',
+    // 3) lntm↔lintp：yuleASR services/lntm/include/LinTp_Cfg.h → schema lintp（Service）；
+    //    ecual/lintp → lintp_ecual（ECUAL）——DoIP 双版先例（x-source-file 区分）
+    lintp: 'LinTp',
+    lintp_ecual: 'LinTp',
+    // 4) 补全模块（YAC-MAP-002 新增 schema）：ethtsyn/ldcom/tm/dds/microdds
+    ethtsyn: 'EthTSyn',
+    ldcom: 'LdCom',
+    tm: 'Tm',
+    dds: 'Dds',
+    microdds: 'MicroDds',
   };
   return known[id] || id.charAt(0).toUpperCase() + id.slice(1);
 }

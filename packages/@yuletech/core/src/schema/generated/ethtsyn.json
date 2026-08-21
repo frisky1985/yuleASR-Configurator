@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/ethtsyn.json",
+  "title": "EthTSyn Configuration",
+  "description": "以太网时间同步（EthTSyn）— 手写 schema（YAC-MAP-002 补全，yuleASR src/bsw/services/ethtsyn/，AUTOSAR R21-11 §12.9 gPTP/IEEE 802.1AS）。无独立 EthTSyn_Cfg.h，配置宏内嵌 EthTSyn.c/.h，参数按源码提取。",
+  "type": "object",
+  "properties": {
+    "ETHTSYN_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "ETHTSYN_DEV_ERROR_DETECT 参数（EthTSyn.c 内嵌宏，默认 STD_ON）",
+      "default": true
+    },
+    "ETHTSYN_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "ETHTSYN_VERSION_INFO_API 参数（EthTSyn.h 守卫宏，STD_ON 时提供 EthTSyn_GetVersionInfo）",
+      "default": true
+    },
+    "ETHTSYN_MAIN_FUNCTION_PERIOD_MS": {
+      "type": "integer",
+      "description": "ETHTSYN_MAIN_FUNCTION_PERIOD_MS 参数（EthTSyn_MainFunction 周期，与 Eth_17_40GEthTSyn 对齐）",
+      "default": 10,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数",
+          "default": 10
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "HandWritten",
+  "x-display-name": "EthTSyn"
+}

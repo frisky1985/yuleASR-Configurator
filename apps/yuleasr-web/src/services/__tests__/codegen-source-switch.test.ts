@@ -234,7 +234,7 @@ describe('V2.2 — codegen schema 源切换（宏名版优先）', () => {
   it('loadPreferredSchemas：与 loadModuleSchemas 同集合同排序，5 个 demo 模块为宏名版', () => {
     const preferred = loadPreferredSchemas();
     const generated = loadModuleSchemas();
-    expect(preferred.length).toBeGreaterThanOrEqual(114);
+    expect(preferred.length).toBeGreaterThanOrEqual(119);
     expect(preferred.map(s => s.name)).toEqual(generated.map(s => s.name));
 
     for (const mod of DEMO_MODULES) {

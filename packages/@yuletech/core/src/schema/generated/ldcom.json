@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://yuletech.io/schemas/modules/ldcom.json",
+  "title": "LdCom Configuration",
+  "description": "大块数据通信（LdCom）— 手写 schema（YAC-MAP-002 补全，yuleASR src/bsw/services/ldcom/，AUTOSAR R21-11 §12.11 大 PDU 分段重组）。无独立 LdCom_Cfg.h，配置宏内嵌 LdCom.c，参数按源码提取。",
+  "type": "object",
+  "properties": {
+    "LDCOM_DEV_ERROR_DETECT": {
+      "type": "boolean",
+      "description": "LDCOM_DEV_ERROR_DETECT 参数（LdCom.c 内嵌宏，默认 STD_ON）",
+      "default": true
+    },
+    "LDCOM_VERSION_INFO_API": {
+      "type": "boolean",
+      "description": "LDCOM_VERSION_INFO_API 参数（LdCom_GetVersionInfo 守卫宏）",
+      "default": true
+    },
+    "LDCOM_MAX_SEGMENT_SIZE": {
+      "type": "integer",
+      "description": "LDCOM_MAX_SEGMENT_SIZE 参数（LdCom_ConfigType.maxSegmentSize 默认，超过单帧 MTU 的 PDU 分段大小）",
+      "default": 4096,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "LDCOM_MAX_NUM_PDUS": {
+      "type": "integer",
+      "description": "LDCOM_MAX_NUM_PDUS 参数（并发分段 PDU 通道数上限）",
+      "default": 8,
+      "minimum": 0,
+      "maximum": 255
+    },
+    "CommonPublishedInformation": {
+      "description": "CommonPublishedInformation 配置容器",
+      "type": "object",
+      "properties": {
+        "ArReleaseMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMajorVersion 参数"
+        },
+        "ArReleaseMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseMinorVersion 参数"
+        },
+        "ArReleaseRevisionVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ArReleaseRevisionVersion 参数"
+        },
+        "ModuleId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "ModuleId 参数",
+          "default": 11
+        },
+        "SwMajorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMajorVersion 参数"
+        },
+        "SwMinorVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwMinorVersion 参数"
+        },
+        "SwPatchVersion": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "SwPatchVersion 参数"
+        },
+        "VendorId": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535,
+          "description": "VendorId 参数"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "required": [],
+  "additionalProperties": false,
+  "x-layer": "Service",
+  "x-version": "4.4.0",
+  "x-source": "HandWritten",
+  "x-display-name": "LdCom"
+}

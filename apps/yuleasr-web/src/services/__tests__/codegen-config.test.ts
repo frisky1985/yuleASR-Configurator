@@ -33,7 +33,7 @@ describe('generateHeadersFromConfig（F2b 配置合并生成）', () => {
   it('生成全部 schema 头文件（117），与 loadModuleSchemas 等长', async () => {
     const files = await generateHeadersFromConfig([]);
     expect(files.length).toBe(SCHEMA_COUNT);
-    expect(SCHEMA_COUNT).toBeGreaterThanOrEqual(114);
+    expect(SCHEMA_COUNT).toBeGreaterThanOrEqual(119);
     for (const f of files) {
       expect(f.filename.endsWith('_Cfg.h')).toBe(true);
       expect(f.content).toContain('#define');
@@ -75,7 +75,7 @@ describe('generateHeadersFromConfig（F2b 配置合并生成）', () => {
 describe('buildSchemaCoverage（117 模块覆盖展示）', () => {
   it('空配置：全部模块 absent，有 schema 全量可配', () => {
     const { rows, summary } = buildSchemaCoverage([]);
-    expect(summary.total).toBeGreaterThanOrEqual(114);
+    expect(summary.total).toBeGreaterThanOrEqual(119);
     expect(summary.withSchema).toBe(SCHEMA_COUNT);
     expect(summary.withoutSchema).toBe(0);
     expect(summary.configured).toBe(0);
