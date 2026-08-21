@@ -206,6 +206,18 @@ jobs:
           git init -q "$SCRATCH" && git -C "$SCRATCH" add -A
           git -C "$SCRATCH" -c user.name="ci" -c user.email="ci@users.noreply.github.com" commit -q -m "scratch baseline (YAC-CI-003)"
 
+      # ── YAC-CI-004 探针：pristine 基线对照（确认 test_csm/mcal_adc/mcal_uart 失败是否生成头引入）──
+      - name: 探针：pristine 基线 3 项测试对照（apply 前）
+        if: steps.checkout-yuleasr.outcome == 'success'
+        run: |
+          cmake -B "$RUNNER_TEMP/yuleasr-pristine-build" -S "$RUNNER_TEMP/yuleasr-scratch" -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DCMAKE_EXE_LINKER_FLAGS="-Wl,--allow-multiple-definition -no-pie -Wl,--defsym=sp=0" > /dev/null
+          cmake --build "$RUNNER_TEMP/yuleasr-pristine-build" --target test_csm mcal_adc_test mcal_uart_test -j"$(nproc)" > /dev/null 2>&1
+          set +e
+          (cd "$RUNNER_TEMP/yuleasr-pristine-build" && ctest -R "test_csm|mcal_adc_test|mcal_uart_test") | tee /tmp/pristine-suspects.log
+          PRIS_RC=${PIPESTATUS[0]}
+          set -e
+          echo "PRISTINE_SUSPECTS_RC=$PRIS_RC"
+
       - name: replace-cfgh dry-run（109 schema 全生成，0 failed）
         if: steps.checkout-yuleasr.outcome == 'success'
         env:
