@@ -11,6 +11,34 @@ described in the [Versioning Policy](#versioning-policy) below.
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-08-22
+
+98 commits since v0.4.0 (1d2da6c2). 主线：模块映射闭环、配置↔代码闭环验证、CI 历史首次全绿 + linkage 门禁常驻。
+
+### Added
+
+- **模块映射闭环（YAC-MAP-001→003）** — 109 extracted-cfgh schema 与 yuleASR 一一对应；命名映射表（canm↔cannm/cdd 家族）；NOLANDING 仅配置不生成 7 模块；F1 幂等（二次重跑 diff=0）
+- **配置↔代码闭环验证（YAC-VER-001→003）** — 覆盖度 4759=4759 缺口 0；生成→替换→编译 139/139→ctest 55/55→rollback 归零；5 模块×3 宏 15 条功能关联证据链；可复跑工具 compare-schema-cfgh-coverage.ts
+- **replace-cfgh 编译闭环 CI 门禁（YAC-CI-003）** — configurator-linkage job 常驻：dry-run 109/109→apply→build→ctest→rollback→dirty=0 双检
+- **补 5 个缺 schema** — ethtsyn/ldcom/tm（手写）+ dds/microdds（最小打通闭环）；删除 ble/mcl/sbc 无实现 schema；arti 保留标记 runtime-hooks
+
+### Fixed
+
+- **CI 历史首次全绿（YAC-CI-004）** — 修复仓库 CI 从未真正跑过 job 的根因：pnpm/action-setup v6 双版本冲突、空 with 块、GNU tar 兼容（macOS bsdtar vs ubuntu GNU tar）、tsup+TS7 dts 崩溃（dts:false + tsc emitDeclarationOnly）、CI 全新环境 build 前置、prettier 326 文件归一
+- **YAC-KNOWN-001→007** — electron-updater CJS import 修复、vitest4 workspace→projects 迁移、replace-cfgh import 修复、测试缺口补全（ARXML E2E）、CrossModuleValidator TODO、scratch 副本隔离、过时测试清理
+- **F1 漂移重生成入库（YAC-MAP-003）** — dlt_ecual 删除、boot +10 宏、csm 枚举 24→26（国密 SM2/SM3）、脚本根因修复 6 项防再漂移
+
+### Changed
+
+- **TS7 适配（Go 重构版）** — tsup dts:false + tsc --emitDeclarationOnly；plugin-sdk 补 .d.mts；editor-core 补 d.ts 缺口
+- **yulecommunity 构建链** — TS7 baseUrl 移除 + Tailwind v4 迁移 + Rolldown 适配
+- **CI 6 job 测试前先 build**（build:ci），api-server 补 dotenv + 去 prebuild 竞态
+- **linkage gate 定稿** — yuleASR 既有 7 项 Linux 工具链问题白名单（pristine 探针证实与生成头无关）
+
+### Tests
+
+- 全仓 vitest 1616/1616（core 991 + web 325 实测）· typecheck 全绿 · lint:ci 0 error · format 0 问题
+
 ## [0.4.0] - 2026-08-10
 
 ### Added
