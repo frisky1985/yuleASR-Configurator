@@ -94,7 +94,7 @@
     "@yuletech/plugin-sdk": "workspace:*",
     "ajv": "^8.12.0",
     "ajv-formats": "^3.0.0",
-    "fast-xml-parser": "^5.10.0"
+    "fast-xml-parser": "^5.11.0"
   },
   "devDependencies": {
     "@rollup/rollup-darwin-arm64": "^4.62.3",
