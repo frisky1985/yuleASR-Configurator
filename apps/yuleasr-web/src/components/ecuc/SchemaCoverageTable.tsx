@@ -19,7 +19,12 @@ import type {
   GeneratedFile,
   SchemaCoverageRow,
 } from '@/services/codegen';
-import { buildSchemaCoverage, generateHeadersFromConfig } from '@/services/codegen';
+import {
+  buildSchemaCoverage,
+  generateHeadersFromConfig,
+  getNoLandingReason,
+  NOLANDING_MODULES,
+} from '@/services/codegen';
 
 /** 配置状态徽标配色 */
 const STATUS_BADGE: Record<SchemaCoverageRow['configStatus'], string> = {
@@ -164,6 +169,13 @@ export function SchemaCoverageTable({
           )}
           {generating ? '生成中…' : '全量生成 ZIP'}
         </button>
+        {/* YAC-MAP-002：仅配置不生成提示（生成产物无 yuleASR 落地） */}
+        {schemas && schemas.length > 0 && (
+          <span className="text-xs text-amber-600 dark:text-amber-400">
+            跳过 {schemas.filter(s => NOLANDING_MODULES.has(s.name.toLowerCase())).length} 个仅配置不生成模块
+            （ASW 组件/运行时钩子/硬件不支持，无 *_Cfg.h 落地）
+          </span>
+        )}
         {generatedCount !== null && (
           <span className="text-xs text-green-600 dark:text-green-400">
             已生成 {generatedCount} 个 Cfg.h 并打包下载
@@ -293,6 +305,15 @@ export function SchemaCoverageTable({
                   ) : (
                     <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">
                       无 schema 仅展示
+                    </span>
+                  )}
+                  {/* YAC-MAP-002：仅配置不生成徽标（appswc/compswc/arti/fr 等） */}
+                  {getNoLandingReason(row.name) && (
+                    <span
+                      title={getNoLandingReason(row.name)}
+                      className="ml-1 text-[10px] px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 font-medium"
+                    >
+                      仅配置不生成
                     </span>
                   )}
                 </td>

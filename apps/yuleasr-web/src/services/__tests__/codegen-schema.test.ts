@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { generateHeadersFromSchemas } from '../codegen';
+import { generateHeadersFromSchemas, NOLANDING_MODULES } from '../codegen';
 
 import { loadModuleSchemas } from '@yuletech/core/schema/load-generated';
 
@@ -16,17 +16,24 @@ function schemaByName(name: string) {
  * 宏名/宏值与 yuleASR 手写 *_Cfg.h 逐条对应（抽查）。
  */
 describe('Codegen - Schema-driven macro headers (F2a)', () => {
-  it('should generate one header per loaded schema (117 modules, no throw)', async () => {
+  it('should generate one header per loaded schema minus NOLANDING（仅配置不生成跳过）', async () => {
     const schemas = loadModuleSchemas();
     expect(schemas.length).toBeGreaterThanOrEqual(119);
 
     const files = await generateHeadersFromSchemas(schemas);
-    expect(files).toHaveLength(schemas.length);
+    // YAC-MAP-002：appswc/arti/compswc/fr 生成产物无 yuleASR 落地 → 跳过
+    const noLanding = schemas.filter(s => NOLANDING_MODULES.has(s.name.toLowerCase()));
+    expect(noLanding.length).toBeGreaterThan(0);
+    expect(files).toHaveLength(schemas.length - noLanding.length);
     for (const f of files) {
       expect(f.language).toBe('h');
       expect(f.filename.endsWith('_Cfg.h')).toBe(true);
       expect(f.content).toContain('#define');
       expect(f.content).toContain('endif');
+    }
+    // 跳过模块不产出文件
+    for (const s of noLanding) {
+      expect(files.some(f => f.filename === `${s.name}_Cfg.h`)).toBe(false);
     }
   });
 

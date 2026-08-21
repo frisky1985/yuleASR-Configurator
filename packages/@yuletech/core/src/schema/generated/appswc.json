@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/appswc.json",
   "title": "Application SWC Configuration",
-  "description": "AUTOSAR ApplicationSwComponentType configuration for yuleASR Configurator",
+  "description": "ASW 组件配置-仅配置不生成（AUTOSAR ApplicationSwComponentType；src/application 组件描述型 schema，无 *_Cfg.h 可落地）",
   "type": "object",
   "x-layer": "ASW",
   "properties": {
@@ -314,5 +314,7 @@
   },
   "required": [
     "ComponentName"
-  ]
+  ],
+  "x-impl-status": "asw-config-only",
+  "x-annotation": "ASW 组件配置-仅配置不生成"
 }

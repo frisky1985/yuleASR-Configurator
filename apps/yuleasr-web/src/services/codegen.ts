@@ -18,6 +18,40 @@ import type { ModuleSchema, ModuleParameter } from '@yuletech/core';
 
 import { loadPreferredSchemas } from './schemaSource';
 
+/**
+ * YAC-MAP-002（2026-08-21 老板裁决）— 仅配置不生成模块集合（NOLANDING）。
+ *
+ * 这些模块的 schema 保留（可配置），但生成产物在 yuleASR 无落地（无对应 *_Cfg.h），
+ * codegen 生成时跳过并提示（“仅配置不生成”）。
+ *
+ * - appswc / compswc：ASW 组件配置（src/application 组件描述型 schema，无 *_Cfg.h）
+ * - arti：运行时钩子函数声明（非独立模块，yuleASR 无 ARTI 实现）
+ * - fr：硬件不支持-仅配置（S32K312 无 FlexRay 外设；frif/frtp 协议层代码保留，保守方案）
+ * - ble / mcl / sbc：schema 已删除（原子1），保留条目防回归
+ */
+export const NOLANDING_MODULES: ReadonlySet<string> = new Set([
+  'appswc',
+  'arti',
+  'ble',
+  'compswc',
+  'fr',
+  'mcl',
+  'sbc',
+]);
+
+/** 仅配置不生成原因（UI 提示用）；非 NOLANDING 模块返回 undefined */
+export function getNoLandingReason(moduleId: string): string | undefined {
+  const reasons: Record<string, string> = {
+    appswc: 'ASW 组件配置-仅配置不生成（src/application 无 *_Cfg.h）',
+    compswc: 'ASW 组件配置-仅配置不生成（src/application 无 *_Cfg.h）',
+    arti: '运行时钩子函数声明（非独立模块，yuleASR 无 ARTI 实现）',
+    fr: '硬件不支持-仅配置（S32K312 无 FlexRay 外设，frif/frtp 协议层代码保留）',
+    ble: 'schema 已删除（无 yuleASR 实现）',
+    mcl: 'schema 已删除（无 yuleASR 实现）',
+    sbc: 'schema 已删除（无 yuleASR 实现）',
+  };
+  return reasons[moduleId.toLowerCase()];
+}
 
 export interface GeneratedFile {
   filename: string;
@@ -1085,6 +1119,14 @@ export async function generateHeadersFromSchemas(
   const files: GeneratedFile[] = [];
 
   for (const schema of schemas) {
+    // YAC-MAP-002（2026-08-21 老板裁决）— 仅配置不生成模块跳过并提示
+    // （生成产物无 yuleASR 落地：appswc/compswc ASW 配置、arti 运行时钩子、fr 硬件不支持）
+    if (NOLANDING_MODULES.has(schema.name.toLowerCase())) {
+      const reason = getNoLandingReason(schema.name);
+      console.warn(`[codegen] 跳过仅配置不生成模块 ${schema.name}（${reason}）`);
+      continue;
+    }
+
     const shortName = getModuleShortName(schema.name);
     const displayName = schema.label || schema.name;
     const moduleKey = schema.name.toLowerCase();

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://yuletech.io/schemas/modules/fr.json",
   "title": "Fr Configuration",
-  "description": "FlexRay 驱动 - MCAL",
+  "description": "FR 控制器配置 — 硬件不支持-仅配置（S32K312 无 FlexRay 外设；frif/frtp 协议层代码保留，保守方案）",
   "type": "object",
   "properties": {
     "CommonPublishedInformation": {
@@ -539,5 +539,7 @@
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",
-  "x-source": "ARXML-Extracted"
+  "x-source": "ARXML-Extracted",
+  "x-impl-status": "hw-unsupported-config-only",
+  "x-annotation": "硬件不支持-仅配置（S32K312 无 FlexRay 外设）"
 }
