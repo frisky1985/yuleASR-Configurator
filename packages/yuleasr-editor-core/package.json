@@ -33,7 +33,7 @@
     }
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && tsc --emitDeclarationOnly --outDir dist && rm -f tsconfig.tsbuildinfo",
     "dev": "tsup --watch",
     "test": "vitest run",
     "test:watch": "vitest",
