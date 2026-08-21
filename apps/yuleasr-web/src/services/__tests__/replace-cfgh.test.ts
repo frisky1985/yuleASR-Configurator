@@ -11,7 +11,18 @@ import { runReplace } from '../../../../../scripts/replace-cfgh';
 // 注：yuleASR 是 partial clone（promisor remote，blob:limit=204800），离线环境下 git clone
 // 会因惰性拉取缺失对象失败 → 用"已跟踪文件 tar 复制 + 全新 git init"建副本（等价 rsync 副本）。
 // 路径可被 env 覆盖（CI 可移植，不硬编码本机路径）。
+// YAC-CI-004：CI test job 不 checkout yuleASR → env 未设且默认路径不存在时整体跳过
+// （真实 yuleASR 闭环验证由 configurator-linkage job 的 replace-cfgh-run 负责）。
 const REAL = process.env.YULEASR_AUDIT_DIR || '/Users/stefan/.openclaw/workspace/yuleASR';
+const HAS_REAL_REPO = (() => {
+  if (!existsSync(REAL)) return false;
+  try {
+    execSync(`git -C ${REAL} rev-parse --is-inside-work-tree`, { stdio: 'pipe' });
+    return true;
+  } catch {
+    return false;
+  }
+})();
 const SCRATCH = join(tmpdir(), `yuleasr-cfgh-scratch-${process.pid}`);
 const OUT = process.env.REPLACE_AUDIT_OUT || join(tmpdir(), `replace-cfgh-test-${process.pid}`);
 
@@ -86,7 +97,7 @@ afterAll(() => {
  * replace-cfgh 可追溯替换工具闭环（单文件串行；scratch 副本隔离，YAC-KNOWN-006）：
  * dry-run（生成替换包）→ apply（替换 scratch 工作树）→ rollback（恢复，md5 校验）。
  */
-describe('replace-cfgh（可追溯替换工具）', () => {
+describe.skipIf(!HAS_REAL_REPO)('replace-cfgh（可追溯替换工具）', () => {
   it('dry-run → apply → rollback 全闭环，工作树归零 + 替换包证据齐全（scratch 副本）', async () => {
     process.env.YULEASR_DIR = SCRATCH;
     process.env.REPLACE_OUT = OUT;

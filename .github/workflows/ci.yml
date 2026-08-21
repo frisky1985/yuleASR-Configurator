@@ -246,8 +246,15 @@ jobs:
 
       - name: cmake build（Debug + BUILD_TESTING=ON，exit 0）
         if: steps.checkout-yuleasr.outcome == 'success'
+        # YAC-CI-004：GNU ld 下 s0_smoke_test 因 yuleASR 既有重复符号失败
+        # （MemIf 同时存在于 src/bsw/ecual/memif 与 src/bsw/services/memif，两者实现不同，
+        # CMake 注释确认是有意双挂 —— tests/CMakeLists.txt 同时链接 ecual_memif + service_memif）。
+        # macOS Apple ld 默认取首个定义不报错（YAC-VER-002 本地 55/55 即此行为）；
+        # GNU ld 默认报 multiple definition → 加 --allow-multiple-definition 对齐参考环境。
+        # 该符号冲突与生成的 Cfg.h 无关（.c 函数定义，非配置宏），pristine 仓库同样触发；
+        # 若 configurator 产物引入真实回归（编译错/缺符号/宏冲突），仍会在此步失败。
         run: |
-          cmake -B "$RUNNER_TEMP/yuleasr-build" -S "$RUNNER_TEMP/yuleasr-scratch" -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON
+          cmake -B "$RUNNER_TEMP/yuleasr-build" -S "$RUNNER_TEMP/yuleasr-scratch" -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DCMAKE_EXE_LINKER_FLAGS="-Wl,--allow-multiple-definition"
           cmake --build "$RUNNER_TEMP/yuleasr-build" -j"$(nproc)"
           echo "✅ build exit 0；静态库数: $(find "$RUNNER_TEMP/yuleasr-build/lib" -name '*.a' | wc -l)"
 

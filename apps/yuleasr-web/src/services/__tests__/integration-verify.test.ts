@@ -21,6 +21,15 @@ import type { ModuleConfig, ModuleSchema } from '@yuletech/core';
 
 // ── Paths ──────────────────────────────────────────────────────────────────
 const YULEASR_ROOT = join(dirname(dirname(dirname(dirname(dirname(__dirname))))), '..', 'yuleASR');
+// YAC-CI-004：该套件依赖真实 yuleASR 仓库（兄弟目录）+ gcc 语法检查，
+// CI test job 两者皆无（yuleASR 闭环由 configurator-linkage job 承担）→ 环境不具备时整体跳过。
+const HAS_YULEASR = existsSync(YULEASR_ROOT);
+let HAS_GCC = true;
+try {
+  execSync('gcc --version', { stdio: 'ignore' });
+} catch {
+  HAS_GCC = false;
+}
 const GEN_DIR = join(YULEASR_ROOT, 'config', 'generated');
 const AUTOSAR_INC = join(YULEASR_ROOT, 'include', 'autosar');
 const MCAL_INC_DIRS = [
@@ -43,7 +52,7 @@ function syntaxCheck(filePath: string): { ok: boolean; output: string } {
   }
 }
 
-describe('yuleASR Integration Verification', () => {
+describe.skipIf(!HAS_YULEASR || !HAS_GCC)('yuleASR Integration Verification', () => {
   // ── Test 1: codegen.ts produces yuleASR-compatible headers ──────────────
   describe('codegen.ts → yuleASR header compatibility', () => {
     it('should produce Can_Cfg.h with all expected yuleASR macros', async () => {
