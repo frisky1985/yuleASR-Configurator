@@ -121,6 +121,160 @@ jobs:
       - name: Verify baselines match
         run: node scripts/manage-baseline.cjs verify
 
+  # =========================================================================
+  # YAC-CI-003：replace-cfgh 编译闭环门禁（configurator-linkage）
+  # 依据 docs/planning/2026-08-21-ver002-build.md §2 复跑命令，本地实测通过：
+  # dry-run 109/109 → apply 109 → cmake build exit 0 → ctest 55/55 →
+  # rollback rolledBack=109 skipped=0 → scratch dirty=0。防 schema/codegen 回归。
+  #
+  # 私有仓库访问（frisky1985/yuleASR，同主私有仓库）：
+  # - checkout 用同主 GITHUB_TOKEN（github-actions app 安装在个人账户下、覆盖
+  #   同主名下全部仓库，通常可直接读取；若机构场景未覆盖，需在 Secrets 配 PAT
+  #   并把下方 token 换成 secrets 引用）。
+  # - fork PR 降级策略：fork 的 GITHUB_TOKEN 无 yuleASR 权限 → checkout 步骤
+  #   直接跳过（if 条件），仅跑 说明步骤（::notice + exit 0）→ job 绿但门禁不执行，
+  #   避免 fork PR 全红；push / 同仓库 PR 的 checkout 失败 = 真故障 → job 红。
+  # 约束：yuleASR 只读 —— apply 只落在 $RUNNER_TEMP/yuleasr-scratch 一次性副本，
+  # 真实 checkout 零改动（末尾 porcelain 校验 dirty=0）。
+  # =========================================================================
+  configurator-linkage:
+    name: Configurator↔yuleASR Linkage Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # ---- yuleASR 私有仓库 checkout（同主 frisky1985；fork PR 跳过）----
+      - name: Checkout yuleASR (private, same-owner)
+        id: checkout-yuleasr
+        # fork PR 降级：fork 的 GITHUB_TOKEN 无权限读私有 yuleASR，直接跳过（见 job 头注释）
+        if: github.event.pull_request.head.repo.fork != 'true'
+        uses: actions/checkout@v7
+        with:
+          repository: frisky1985/yuleASR
+          token: ${{ github.token }}
+          path: yuleASR
+          fetch-depth: 1
+
+      - name: Fork PR 降级说明（跳过 linkage 门禁）
+        if: github.event.pull_request.head.repo.fork == 'true'
+        run: |
+          echo "::notice::Fork PR：GITHUB_TOKEN 无权限访问私有 yuleASR 仓库，configurator-linkage 门禁跳过（fork PR 降级策略，见 ci.yml 注释）"
+          exit 0
+
+      - name: Setup pnpm
+        if: steps.checkout-yuleasr.outcome == 'success'
+        uses: pnpm/action-setup@v6
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        if: steps.checkout-yuleasr.outcome == 'success'
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        if: steps.checkout-yuleasr.outcome == 'success'
+        run: pnpm install --frozen-lockfile
+
+      - name: Install C toolchain (cmake/gcc/g++/make)
+        if: steps.checkout-yuleasr.outcome == 'success'
+        run: sudo apt-get update && sudo apt-get install -y cmake gcc g++ make
+
+      - name: 建 scratch 副本（已跟踪文件 + git init + 基线 commit）
+        if: steps.checkout-yuleasr.outcome == 'success'
+        run: |
+          REAL="$GITHUB_WORKSPACE/yuleASR"; SCRATCH="$RUNNER_TEMP/yuleasr-scratch"
+          rm -rf "$SCRATCH"; mkdir -p "$SCRATCH"
+          # 路径含空格/中文时 git ls-files 默认 C-quote 会致 tar 失配，须 -z/--null（YAC-CI-003 实测踩坑）
+          git -C "$REAL" ls-files -z | tar --null -T - -C "$REAL" -cf - | tar -C "$SCRATCH" -xf -
+          git init -q "$SCRATCH" && git -C "$SCRATCH" add -A
+          git -C "$SCRATCH" -c user.name="ci" -c user.email="ci@users.noreply.github.com" commit -q -m "scratch baseline (YAC-CI-003)"
+
+      - name: replace-cfgh dry-run（109 schema 全生成，0 failed）
+        if: steps.checkout-yuleasr.outcome == 'success'
+        env:
+          YULEASR_DIR: ${{ runner.temp }}/yuleasr-scratch
+          REPLACE_OUT: ${{ runner.temp }}/replace-out
+          REPLACE_MODE: dry-run
+        run: |
+          npx vitest run apps/yuleasr-web/src/services/__tests__/replace-cfgh-run.test.ts > /tmp/replace-dry-run.log 2>&1
+          node -e "
+          const fs=require('fs');
+          const s=fs.readFileSync('/tmp/replace-dry-run.log','utf8').replace(/\x1b\[[0-9;]*m/g,'');
+          const m=[...s.matchAll(/REPLACE_CFGH_RESULT=(\{.*\})/g)].pop();
+          if(!m){console.error('NO REPLACE_CFGH_RESULT marker:');console.error(s.slice(-1500));process.exit(1);}
+          const r=JSON.parse(m[1]);
+          console.log('dry-run:',JSON.stringify(r));
+          if(r.mode!=='dry-run'||r.total!==109||r.ok!==109||r.failed!==0){console.error('dry-run assert FAIL');process.exit(1);}
+          console.log('✅ dry-run 109/109');
+          "
+
+      - name: replace-cfgh apply（替换 scratch 工作树，applied=109）
+        if: steps.checkout-yuleasr.outcome == 'success'
+        env:
+          YULEASR_DIR: ${{ runner.temp }}/yuleasr-scratch
+          REPLACE_OUT: ${{ runner.temp }}/replace-out
+          REPLACE_MODE: apply
+        run: |
+          npx vitest run apps/yuleasr-web/src/services/__tests__/replace-cfgh-run.test.ts > /tmp/replace-apply.log 2>&1
+          node -e "
+          const fs=require('fs');
+          const s=fs.readFileSync('/tmp/replace-apply.log','utf8').replace(/\x1b\[[0-9;]*m/g,'');
+          const m=[...s.matchAll(/REPLACE_CFGH_RESULT=(\{.*\})/g)].pop();
+          if(!m){console.error('NO REPLACE_CFGH_RESULT marker:');console.error(s.slice(-1500));process.exit(1);}
+          const r=JSON.parse(m[1]);
+          console.log('apply:',JSON.stringify(r));
+          if(r.mode!=='apply'||r.ok!==109||r.applied!==109||r.failed!==0){console.error('apply assert FAIL');process.exit(1);}
+          console.log('✅ apply 109');
+          "
+
+      - name: cmake build（Debug + BUILD_TESTING=ON，exit 0）
+        if: steps.checkout-yuleasr.outcome == 'success'
+        run: |
+          cmake -B "$RUNNER_TEMP/yuleasr-build" -S "$RUNNER_TEMP/yuleasr-scratch" -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON
+          cmake --build "$RUNNER_TEMP/yuleasr-build" -j"$(nproc)"
+          echo "✅ build exit 0；静态库数: $(find "$RUNNER_TEMP/yuleasr-build/lib" -name '*.a' | wc -l)"
+
+      - name: ctest 全绿（0 failed）
+        if: steps.checkout-yuleasr.outcome == 'success'
+        run: |
+          (cd "$RUNNER_TEMP/yuleasr-build" && ctest --output-on-failure) | tee /tmp/ctest.log
+          grep -E "100% tests passed, 0 tests failed" /tmp/ctest.log
+
+      - name: replace-cfgh rollback（md5 校验恢复，rolledBack=109 skipped=0）
+        if: steps.checkout-yuleasr.outcome == 'success'
+        env:
+          YULEASR_DIR: ${{ runner.temp }}/yuleasr-scratch
+          REPLACE_OUT: ${{ runner.temp }}/replace-out
+          REPLACE_MODE: rollback
+        run: |
+          npx vitest run apps/yuleasr-web/src/services/__tests__/replace-cfgh-run.test.ts > /tmp/replace-rollback.log 2>&1
+          node -e "
+          const fs=require('fs');
+          const s=fs.readFileSync('/tmp/replace-rollback.log','utf8').replace(/\x1b\[[0-9;]*m/g,'');
+          const m=[...s.matchAll(/REPLACE_CFGH_RESULT=(\{.*\})/g)].pop();
+          if(!m){console.error('NO REPLACE_CFGH_RESULT marker:');console.error(s.slice(-1500));process.exit(1);}
+          const r=JSON.parse(m[1]);
+          console.log('rollback:',JSON.stringify(r));
+          if(r.mode!=='rollback'||r.rolledBack!==109||r.skipped!==0){console.error('rollback assert FAIL');process.exit(1);}
+          console.log('✅ rollback rolledBack=109 skipped=0');
+          "
+
+      - name: 校验 dirty=0（scratch 归零 + yuleASR checkout 零改动）
+        if: steps.checkout-yuleasr.outcome == 'success'
+        run: |
+          S_CNT=$(git -C "$RUNNER_TEMP/yuleasr-scratch" status --porcelain | wc -l | tr -d ' ')
+          R_CNT=$(git -C "$GITHUB_WORKSPACE/yuleASR" status --porcelain | wc -l | tr -d ' ')
+          echo "scratch dirty after rollback: $S_CNT"
+          echo "yuleASR checkout dirty:       $R_CNT"
+          [ "$S_CNT" = "0" ] || { echo "::error::scratch 未归零"; exit 1; }
+          [ "$R_CNT" = "0" ] || { echo "::error::yuleASR checkout 有改动（应只读）"; exit 1; }
+          echo "✅ 闭环完成：dirty=0/0"
+
   build:
     name: Build
     runs-on: ubuntu-latest
