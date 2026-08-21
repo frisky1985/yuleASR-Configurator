@@ -43,7 +43,9 @@ export function SpecBrowserPage() {
         <span className="text-xs text-muted-foreground">版本:</span>
         <select className="text-xs px-2 py-1 rounded-md bg-background border border-border">
           {SPEC_VERSIONS.map(v => (
-            <option key={v.id} value={v.id}>{v.label}</option>
+            <option key={v.id} value={v.id}>
+              {v.label}
+            </option>
           ))}
         </select>
       </div>
@@ -53,7 +55,9 @@ export function SpecBrowserPage() {
   return (
     <DevHubLayout title="规范引擎" backTo="/autosar" headerExtra={headerExtra}>
       <Helmet>
-        <title>{selectedApi ? `${selectedApi.name} - AutoSAR 规范` : 'AutoSAR 规范引擎'} - YuleTech</title>
+        <title>
+          {selectedApi ? `${selectedApi.name} - AutoSAR 规范` : 'AutoSAR 规范引擎'} - YuleTech
+        </title>
       </Helmet>
 
       {/* Mobile selector - visible only on small screens */}
@@ -65,20 +69,13 @@ export function SpecBrowserPage() {
       <div className="flex" style={{ height: 'calc(100vh - 8.5rem)' }}>
         {/* Left sidebar - Tree */}
         <div className="w-[240px] shrink-0 border-r border-border bg-muted/5 overflow-hidden hidden md:block">
-          <SpecTreeNav
-            selectedApi={selectedApi?.id || null}
-            onSelectApi={handleSelectApi}
-          />
+          <SpecTreeNav selectedApi={selectedApi?.id || null} onSelectApi={handleSelectApi} />
         </div>
 
         {/* Right - Detail */}
         <div className="flex-1 overflow-y-auto">
           <div className="max-w-4xl mx-auto px-6 py-6">
-            {selectedApi ? (
-              <ApiCard api={selectedApi} />
-            ) : (
-              <EmptyApiCard />
-            )}
+            {selectedApi ? <ApiCard api={selectedApi} /> : <EmptyApiCard />}
           </div>
         </div>
       </div>

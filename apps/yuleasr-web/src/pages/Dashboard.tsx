@@ -83,14 +83,16 @@ export function Dashboard() {
 
   // Pipeline state
   const [activePipelineJobId, setActivePipelineJobId] = useState<string | null>(null);
-  const [recentPipelineRuns, setRecentPipelineRuns] = useState<Array<{
-    job_id: string;
-    status: string;
-    type: string;
-    progress: number;
-    current_stage: string;
-    started_at: string | null;
-  }>>([]);
+  const [recentPipelineRuns, setRecentPipelineRuns] = useState<
+    Array<{
+      job_id: string;
+      status: string;
+      type: string;
+      progress: number;
+      current_stage: string;
+      started_at: string | null;
+    }>
+  >([]);
   const [loadingPipelineRuns, setLoadingPipelineRuns] = useState(false);
 
   // Stats computed from loaded config data
@@ -345,10 +347,7 @@ export function Dashboard() {
           <h1 className="text-2xl font-bold text-primary">{t('dashboard.title')}</h1>
           <p className="text-app-text-secondary mt-1">{t('dashboard.subtitle')}</p>
         </div>
-        <UiButton
-          onClick={() => setShowCreateModal(true)}
-          className="shadow-sm hover:shadow-md"
-        >
+        <UiButton onClick={() => setShowCreateModal(true)} className="shadow-sm hover:shadow-md">
           <Plus className="w-4 h-4" />
           {t('dashboard.newConfiguration')}
         </UiButton>
@@ -454,10 +453,7 @@ export function Dashboard() {
             { key: 'ASW', color: 'bg-emerald-500', textColor: 'text-emerald-600' },
           ].map(({ key, color, textColor }) => {
             const count = stats.layerBreakdown[key] || 0;
-            const pct =
-              stats.totalModules > 0
-                ? Math.round((count / stats.totalModules) * 100)
-                : 0;
+            const pct = stats.totalModules > 0 ? Math.round((count / stats.totalModules) * 100) : 0;
             return (
               <div
                 key={key}
@@ -472,9 +468,7 @@ export function Dashboard() {
                   </span>
                   <span className="text-sm font-bold text-primary">
                     {count}
-                    <span className="text-xs text-app-text-tertiary font-normal ml-1">
-                      {pct}%
-                    </span>
+                    <span className="text-xs text-app-text-tertiary font-normal ml-1">{pct}%</span>
                   </span>
                 </div>
                 <div className="h-1.5 bg-app-bg-tertiary rounded-full overflow-hidden">
@@ -900,7 +894,7 @@ export function Dashboard() {
           jobId={activePipelineJobId}
           autoPoll={true}
           pollInterval={3000}
-          onComplete={(job) => {
+          onComplete={job => {
             setTimeout(() => setActivePipelineJobId(null), 10000);
           }}
         />
@@ -910,20 +904,32 @@ export function Dashboard() {
       <div className="bg-app-bg-primary border border-app-border-primary rounded-xl overflow-hidden shadow-sm">
         <div className="px-6 py-4 border-b border-app-border-primary bg-app-bg-secondary flex items-center justify-between">
           <h2 className="text-lg font-semibold text-primary flex items-center gap-2">
-            <svg className="w-5 h-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            <svg
+              className="w-5 h-5 text-purple-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              />
             </svg>
             Recent Pipeline Runs
           </h2>
           <PipelinePushButton
             config={null}
-            onPipelineStart={(jobId) => {
+            onPipelineStart={jobId => {
               setActivePipelineJobId(jobId);
               // Refresh the runs list
               setTimeout(() => {
-                listPipelineRuns().then(resp => {
-                  if (resp.ok) setRecentPipelineRuns(resp.runs);
-                }).catch(() => {});
+                listPipelineRuns()
+                  .then(resp => {
+                    if (resp.ok) setRecentPipelineRuns(resp.runs);
+                  })
+                  .catch(() => {});
               }, 2000);
             }}
             size="sm"
@@ -938,13 +944,24 @@ export function Dashboard() {
         ) : recentPipelineRuns.length === 0 ? (
           <div className="py-12 px-8 text-center">
             <div className="w-16 h-16 bg-purple-50 rounded-2xl flex items-center justify-center mx-auto mb-4 dark:bg-purple-950/40">
-              <svg className="w-8 h-8 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              <svg
+                className="w-8 h-8 text-purple-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
               </svg>
             </div>
             <h3 className="text-lg font-semibold text-primary mb-1">No Pipeline Runs Yet</h3>
             <p className="text-sm text-app-text-secondary max-w-sm mx-auto mb-4">
-              Configure your BSW modules in the editor, then push to yuleOSH to start a pipeline run.
+              Configure your BSW modules in the editor, then push to yuleOSH to start a pipeline
+              run.
             </p>
             <button
               onClick={() => navigate('/dashboard')}
@@ -956,7 +973,7 @@ export function Dashboard() {
           </div>
         ) : (
           <div className="divide-y divide-app-border-primary">
-            {recentPipelineRuns.map((run) => (
+            {recentPipelineRuns.map(run => (
               <div
                 key={run.job_id}
                 className="px-6 py-3 flex items-center justify-between hover:bg-app-bg-secondary transition-colors cursor-pointer"
@@ -977,15 +994,15 @@ export function Dashboard() {
                     <span className="text-sm font-medium text-primary">{run.job_id}</span>
                     <span className="text-xs text-app-text-tertiary ml-2">{run.type}</span>
                     {run.current_stage && (
-                      <p className="text-xs text-app-text-tertiary mt-0.5">Current: {run.current_stage}</p>
+                      <p className="text-xs text-app-text-tertiary mt-0.5">
+                        Current: {run.current_stage}
+                      </p>
                     )}
                   </div>
                 </div>
                 <div className="flex items-center gap-3 text-xs text-app-text-tertiary">
                   <span className="font-medium">{run.progress}%</span>
-                  {run.started_at && (
-                    <span>{new Date(run.started_at).toLocaleTimeString()}</span>
-                  )}
+                  {run.started_at && <span>{new Date(run.started_at).toLocaleTimeString()}</span>}
                 </div>
               </div>
             ))}

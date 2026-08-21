@@ -101,10 +101,7 @@
           "type": "string",
           "maxLength": 255,
           "description": "PwmIdleState 参数",
-          "enum": [
-            "PWM_IDLE_LOW",
-            "PWM_IDLE_HIGH"
-          ]
+          "enum": ["PWM_IDLE_LOW", "PWM_IDLE_HIGH"]
         },
         "PwmPolarity": {
           "type": "string",
@@ -241,10 +238,7 @@
           "type": "string",
           "maxLength": 255,
           "description": "PwmIdleState 参数",
-          "enum": [
-            "PWM_IDLE_LOW",
-            "PWM_IDLE_HIGH"
-          ]
+          "enum": ["PWM_IDLE_LOW", "PWM_IDLE_HIGH"]
         },
         "PwmPolarity": {
           "type": "string",
@@ -332,11 +326,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CommonPublishedInformation",
-    "PwmConfigSet",
-    "PwmGeneral"
-  ],
+  "required": ["CommonPublishedInformation", "PwmConfigSet", "PwmGeneral"],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",

@@ -13,11 +13,7 @@ import { join } from 'node:path';
 
 import type { ModuleSchema } from '@yuletech/core';
 
-import {
-  generateHeadersFromSchemas,
-  type GeneratedFile,
-  type SpliceOptions,
-} from './codegen';
+import { generateHeadersFromSchemas, type GeneratedFile, type SpliceOptions } from './codegen';
 
 /** 手写头目录下所有 *_Cfg.h 文件（不递归） */
 export function collectHandwrittenHeaders(dir: string): Map<string, string> {

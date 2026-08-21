@@ -62,8 +62,9 @@ export class SwcCodeGenerator implements CodeGenerator {
   name = 'SwcCodeGenerator';
   version = '1.0.0';
   supportedModules: string[] = ['AppSwc', 'CompSwc'];
-  private compilerAbstraction: CompilerAbstraction = new (getCompilerAbstraction(undefined)
-    .constructor as new () => CompilerAbstraction)();
+  private compilerAbstraction: CompilerAbstraction = new (
+    getCompilerAbstraction(undefined).constructor as new () => CompilerAbstraction
+  )();
 
   supports(moduleName: string): boolean {
     return this.supportedModules.includes(moduleName);
@@ -336,7 +337,11 @@ export class SwcCodeGenerator implements CodeGenerator {
       irvDeclBlock += `extern ${irv.typeRef} ${componentName}_${irv.name};\n`;
     }
     if (irvDeclBlock) {
-      content += this.compilerAbstraction.wrapMemMapSection(componentName, 'VAR_INIT', irvDeclBlock);
+      content += this.compilerAbstraction.wrapMemMapSection(
+        componentName,
+        'VAR_INIT',
+        irvDeclBlock
+      );
     }
     content += '\n';
 

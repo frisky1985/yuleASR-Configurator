@@ -635,10 +635,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "FeeBlockConfiguration",
-    "FeeBlockDescriptor"
-  ],
+  "required": ["FeeBlockConfiguration", "FeeBlockDescriptor"],
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",

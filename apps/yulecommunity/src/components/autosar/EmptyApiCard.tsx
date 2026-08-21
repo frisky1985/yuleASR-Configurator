@@ -8,7 +8,8 @@ export function EmptyApiCard() {
       </div>
       <h3 className="text-lg font-semibold mb-2">选择一个 API</h3>
       <p className="text-sm text-muted-foreground max-w-sm">
-        从左侧树形导航中选择一个模块和 API 函数，<br />
+        从左侧树形导航中选择一个模块和 API 函数，
+        <br />
         查看其完整规范说明、参数详情和代码示例。
       </p>
       <div className="mt-6 flex items-center gap-4 text-xs text-muted-foreground">

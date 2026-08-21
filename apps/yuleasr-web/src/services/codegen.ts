@@ -288,7 +288,10 @@ function braceDelta(line: string): number {
 
 /** 行是否以 ; 结束语句（忽略行尾注释） */
 function endsWithSemicolon(line: string): boolean {
-  const t = line.replace(/\/\*.*?\*\//g, '').replace(/\/\/.*$/, '').trimEnd();
+  const t = line
+    .replace(/\/\*.*?\*\//g, '')
+    .replace(/\/\/.*$/, '')
+    .trimEnd();
   return t.endsWith(';');
 }
 
@@ -513,9 +516,7 @@ export function spliceGeneratedWithNonMacro(
     }
   }
   if (guardIdx < 0 || endifIdx < 0) {
-    throw new Error(
-      `[codegen] 生成头结构异常（找不到 guard/#endif），拒绝拼接: ${headerName}`
-    );
+    throw new Error(`[codegen] 生成头结构异常（找不到 guard/#endif），拒绝拼接: ${headerName}`);
   }
 
   const head = lines.slice(0, guardIdx + 1);
@@ -889,7 +890,10 @@ function schemaParamToMacroName(moduleShortName: string, param: ModuleParameter)
   if (/^[A-Z][A-Z0-9_]*$/.test(raw)) return raw;
   // B 类修复（PascalCase 混合宏名，如 OsTask_Init/OsAlarm_BswM_MainFunction）:
   // 参数名含下划线且非纯 PascalCase 配置名（CfgH 提取的宏名允许小写）→ 原样使用
-  if (/^[A-Za-z][A-Za-z0-9_]*_[A-Za-z0-9_]*$/.test(raw) && !/^[A-Z][a-z]+(?:[A-Z][a-z]+)+$/.test(raw)) {
+  if (
+    /^[A-Za-z][A-Za-z0-9_]*_[A-Za-z0-9_]*$/.test(raw) &&
+    !/^[A-Z][a-z]+(?:[A-Z][a-z]+)+$/.test(raw)
+  ) {
     return raw;
   }
   // 去除 PascalCase 模块名前缀，避免 WDG_WDG_* 双重前缀
@@ -927,7 +931,10 @@ function schemaParamValue(param: ModuleParameter): unknown {
  * 如 OsTask_Init）；非提取 schema（ARXML 风格参数名）走 schemaParamToMacroName 转换。
  * guarded 参数（#ifndef 默认值保护）包装为 { __guarded, __value } 供生成头输出保护结构。
  */
-function schemaToMacroParams(moduleShortName: string, schema: ModuleSchema): Record<string, unknown> {
+function schemaToMacroParams(
+  moduleShortName: string,
+  schema: ModuleSchema
+): Record<string, unknown> {
   const params: Record<string, unknown> = {};
   const extracted = (schema as unknown as Record<string, unknown>)['xSource'] === 'CfgH-Extracted';
   for (const p of schema.parameters || []) {
@@ -1134,15 +1141,13 @@ export async function generateHeadersFromSchemas(
     // 1) 重名模块按 x-source-file 精确匹配（DoIP services/ecual 两版共享 basename）
     // 2) 兜底按生成头文件名大小写/下划线归一匹配
     const sourceFile = (schema as unknown as Record<string, unknown>)['sourceFile'] as
-      | string
-      | undefined;
+      string | undefined;
     // 重名副版（fim_ecual 等）：生成头文件名/guard 必须与手写源一致
     // （CMake include 路径同时含 config/input 模板与 src 版，guard 不同则 typedef 双份冲突）
-    const srcBase = sourceFile && /\.[hH]$/.test(sourceFile) ? sourceFile.split('/').pop()! : undefined;
+    const srcBase =
+      sourceFile && /\.[hH]$/.test(sourceFile) ? sourceFile.split('/').pop()! : undefined;
     const filename = srcBase || getHeaderFilename(schema.name);
-    let handwritten = sourceFile
-      ? options.handwrittenHeaders?.get(sourceFile)
-      : undefined;
+    let handwritten = sourceFile ? options.handwrittenHeaders?.get(sourceFile) : undefined;
     if (handwritten === undefined) {
       handwritten = findHandwrittenHeader(options.handwrittenHeaders, filename);
     }
@@ -1157,8 +1162,7 @@ export async function generateHeadersFromSchemas(
         rawMacroNames: true,
         filename,
         verbatimDefines: (schema as unknown as Record<string, unknown>)['verbatimDefines'] as
-          | string[]
-          | undefined,
+          string[] | undefined,
         // 类型依赖 include 透传（手写头顶层 #include 原样保留）
         includes: handwritten !== undefined ? extractHeaderIncludes(handwritten) : undefined,
         // 条件 include 块（MemIf 的 #if (MEMIF_FEE_USED == STD_ON) / #include "Fee.h"）
@@ -1173,9 +1177,7 @@ export async function generateHeadersFromSchemas(
       if (hasNonMacroContent(handwritten)) {
         content = spliceGeneratedWithNonMacro(content, handwritten, filename);
       } else if (KNOWN_MIXED_HEADERS.has(moduleKey)) {
-        warnings.push(
-          `[codegen] ${filename} 已知混合头但手写头未探测到非宏内容，产物为纯宏头`
-        );
+        warnings.push(`[codegen] ${filename} 已知混合头但手写头未探测到非宏内容，产物为纯宏头`);
       }
     } else if (options.handwrittenHeaders && KNOWN_MIXED_HEADERS.has(moduleKey)) {
       // 护栏兜底（规则 3）：拼接模式下已知混合头缺手写头 → 报错，不产出残缺头
@@ -1258,9 +1260,7 @@ export function buildSchemaCoverage(
   schemas?: ModuleSchema[]
 ): { rows: SchemaCoverageRow[]; summary: SchemaCoverageSummary } {
   const allSchemas = schemas ?? loadPreferredSchemas();
-  const configByName = new Map(
-    configModules.map(m => [m.name.toLowerCase(), m])
-  );
+  const configByName = new Map(configModules.map(m => [m.name.toLowerCase(), m]));
 
   const rows: SchemaCoverageRow[] = allSchemas.map(schema => {
     const cfg = configByName.get(schema.name.toLowerCase());
@@ -1330,9 +1330,7 @@ export async function generateHeadersFromConfig(
 ): Promise<GeneratedFile[]> {
   const allSchemas = schemas ?? loadPreferredSchemas();
   const configByModule = new Map(
-    configModules
-      .filter(m => m.enabled)
-      .map(m => [m.name.toLowerCase(), m])
+    configModules.filter(m => m.enabled).map(m => [m.name.toLowerCase(), m])
   );
 
   const overridden = allSchemas.map(schema => {
@@ -1354,28 +1352,26 @@ export async function generateHeadersFromConfig(
  * Generate a single module header file.
  * Returns null if the module is disabled.
  */
-export async function generateHeader(
-  module: {
+export async function generateHeader(module: {
+  id: string;
+  name: string;
+  version: string;
+  enabled: boolean;
+  parameters?: Array<{ id: string; name: string; type: string; value: unknown }>;
+  containers?: Array<{
     id: string;
     name: string;
-    version: string;
-    enabled: boolean;
-    parameters?: Array<{ id: string; name: string; type: string; value: unknown }>;
-    containers?: Array<{
+    multiple?: boolean;
+    parameters: Array<{ id: string; name: string; type: string; value: unknown }>;
+    subContainers?: Array<{
       id: string;
       name: string;
-      multiple?: boolean;
+      shortName?: string;
       parameters: Array<{ id: string; name: string; type: string; value: unknown }>;
-      subContainers?: Array<{
-        id: string;
-        name: string;
-        shortName?: string;
-        parameters: Array<{ id: string; name: string; type: string; value: unknown }>;
-      }>;
     }>;
-    displayName?: string;
-  }
-): Promise<GeneratedFile | null> {
+  }>;
+  displayName?: string;
+}): Promise<GeneratedFile | null> {
   if (!module.enabled) return null;
 
   const files = await generateAllHeaders([module]);

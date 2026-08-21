@@ -51,15 +51,24 @@ describe('JSON Schema Validation', () => {
     // 手写头版本宏（AR_RELEASE_*/MODULE_ID/SW_*/VENDOR_ID）由普通参数 rawMacroNames
     // 原样保留；强加 8 个版本宏会与模块 .h 重复定义 / 抢占 #ifndef 守卫（V5 D 类 7 模块根因）。
     if (schema['x-source'] === 'CfgH-Extracted') {
-      expect(cpi, `${file} CfgH-Extracted 不应附加 CPI 容器（D 类修复，版本宏由普通参数保留）`).toBeUndefined();
+      expect(
+        cpi,
+        `${file} CfgH-Extracted 不应附加 CPI 容器（D 类修复，版本宏由普通参数保留）`
+      ).toBeUndefined();
       return;
     }
     expect(cpi, `${file} 缺 CommonPublishedInformation (AUTOSAR ECUC 标准容器)`).toBeDefined();
     expect(cpi.type).toBe('object');
     // AUTOSAR 标准 8 字段
     const cpiFields = [
-      'ArReleaseMajorVersion', 'ArReleaseMinorVersion', 'ArReleaseRevisionVersion',
-      'ModuleId', 'SwMajorVersion', 'SwMinorVersion', 'SwPatchVersion', 'VendorId',
+      'ArReleaseMajorVersion',
+      'ArReleaseMinorVersion',
+      'ArReleaseRevisionVersion',
+      'ModuleId',
+      'SwMajorVersion',
+      'SwMinorVersion',
+      'SwPatchVersion',
+      'VendorId',
     ];
     for (const f of cpiFields) {
       expect(cpi.properties?.[f], `${file} CPI 缺字段 ${f}`).toBeDefined();
@@ -259,7 +268,10 @@ describe('JSON Schema Validation', () => {
       })(schema);
       if (found) withConfigClass.push(file);
     }
-    expect(withConfigClass, `含 x-config-class 的 schema: ${withConfigClass.join(', ')}`).not.toHaveLength(0);
+    expect(
+      withConfigClass,
+      `含 x-config-class 的 schema: ${withConfigClass.join(', ')}`
+    ).not.toHaveLength(0);
   });
 
   it('至少一个 schema 含 x-choice-container (ChoiceContainerDef 表达, P2-3)', () => {
@@ -273,7 +285,10 @@ describe('JSON Schema Validation', () => {
       })(schema);
       if (found) withChoice.push(file);
     }
-    expect(withChoice, `含 x-choice-container 的 schema: ${withChoice.join(', ')}`).not.toHaveLength(0);
+    expect(
+      withChoice,
+      `含 x-choice-container 的 schema: ${withChoice.join(', ')}`
+    ).not.toHaveLength(0);
   });
 
   it('x-choice-container 容器应含 x-choice-params 且参数真实存在', () => {

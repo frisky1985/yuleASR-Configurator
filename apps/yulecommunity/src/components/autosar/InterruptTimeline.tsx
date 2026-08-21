@@ -25,11 +25,15 @@ const SOURCE_COLORS: Record<string, string> = {
   DEFAULT: 'bg-slate-500',
 };
 
-export function InterruptTimeline({ events, maxEvents = 50, timeWindow = 2000 }: InterruptTimelineProps) {
+export function InterruptTimeline({
+  events,
+  maxEvents = 50,
+  timeWindow = 2000,
+}: InterruptTimelineProps) {
   const recentEvents = useMemo(() => {
     const now = Date.now();
     return events
-      .filter(e => (now - e.timestamp) < timeWindow)
+      .filter(e => now - e.timestamp < timeWindow)
       .slice(-maxEvents)
       .reverse();
   }, [events, maxEvents, timeWindow]);
@@ -79,7 +83,9 @@ export function InterruptTimeline({ events, maxEvents = 50, timeWindow = 2000 }:
                 key={source}
                 className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-muted border border-border"
               >
-                <span className={`w-1.5 h-1.5 rounded-full ${SOURCE_COLORS[source] || SOURCE_COLORS.DEFAULT}`} />
+                <span
+                  className={`w-1.5 h-1.5 rounded-full ${SOURCE_COLORS[source] || SOURCE_COLORS.DEFAULT}`}
+                />
                 {source}: {count}
               </span>
             ))}
@@ -103,20 +109,22 @@ export function InterruptTimeline({ events, maxEvents = 50, timeWindow = 2000 }:
             >
               {/* Timeline dot and line */}
               <div className="flex flex-col items-center">
-                <div className={`w-2 h-2 rounded-full ${SOURCE_COLORS[evt.source] || SOURCE_COLORS.DEFAULT} shadow-sm`} />
-                {i < recentEvents.length - 1 && (
-                  <div className="w-px flex-1 bg-border/20 mt-0.5" />
-                )}
+                <div
+                  className={`w-2 h-2 rounded-full ${SOURCE_COLORS[evt.source] || SOURCE_COLORS.DEFAULT} shadow-sm`}
+                />
+                {i < recentEvents.length - 1 && <div className="w-px flex-1 bg-border/20 mt-0.5" />}
               </div>
 
               {/* Content */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${
-                    SOURCE_COLORS[evt.source]
-                      ? `bg-${SOURCE_COLORS[evt.source].replace('bg-', '')}/10 text-${SOURCE_COLORS[evt.source].replace('bg-', '')}`
-                      : 'bg-slate-500/10 text-slate-500'
-                  }`}>
+                  <span
+                    className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${
+                      SOURCE_COLORS[evt.source]
+                        ? `bg-${SOURCE_COLORS[evt.source].replace('bg-', '')}/10 text-${SOURCE_COLORS[evt.source].replace('bg-', '')}`
+                        : 'bg-slate-500/10 text-slate-500'
+                    }`}
+                  >
                     {evt.source}
                   </span>
                   <span className="text-[10px] text-muted-foreground">
@@ -126,9 +134,7 @@ export function InterruptTimeline({ events, maxEvents = 50, timeWindow = 2000 }:
                     prio {evt.priority}
                   </span>
                 </div>
-                <p className="text-[11px] text-foreground/80 mt-0.5 truncate">
-                  {evt.description}
-                </p>
+                <p className="text-[11px] text-foreground/80 mt-0.5 truncate">{evt.description}</p>
               </div>
             </motion.div>
           ))}

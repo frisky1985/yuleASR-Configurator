@@ -218,10 +218,7 @@
         "EepDefaultMode": {
           "description": "EepDefaultMode 参数 - This parameter is the default EEPROM device mode after initialization.",
           "type": "string",
-          "enum": [
-            "MEMIF_MODE_FAST",
-            "MEMIF_MODE_SLOW"
-          ],
+          "enum": ["MEMIF_MODE_FAST", "MEMIF_MODE_SLOW"],
           "default": "MEMIF_MODE_SLOW"
         },
         "EepFastReadBlockSize": {
@@ -307,11 +304,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CommonPublishedInformation",
-    "EepConfigSet",
-    "EepGeneral"
-  ],
+  "required": ["CommonPublishedInformation", "EepConfigSet", "EepGeneral"],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",

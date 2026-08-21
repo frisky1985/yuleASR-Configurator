@@ -225,11 +225,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CanSMConfiguration",
-    "CanSMController",
-    "CanSMGeneral"
-  ],
+  "required": ["CanSMConfiguration", "CanSMController", "CanSMGeneral"],
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",

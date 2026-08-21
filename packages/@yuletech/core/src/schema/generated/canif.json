@@ -203,10 +203,7 @@
         },
         "CanIfTxPduType": {
           "type": "string",
-          "enum": [
-            "DYNAMIC",
-            "STATIC"
-          ],
+          "enum": ["DYNAMIC", "STATIC"],
           "description": "PDU 类型"
         },
         "CanIfTxPduUserTriggerTransmitName": {
@@ -428,11 +425,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CanIfTxPdu",
-    "CanIfGeneral",
-    "CanIfInitCfg"
-  ],
+  "required": ["CanIfTxPdu", "CanIfGeneral", "CanIfInitCfg"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

@@ -29,11 +29,7 @@ const MCAL_INC_DIRS = [
   join(YULEASR_ROOT, 'src', 'bsw', 'mcal', 'mcu', 'include'),
   join(YULEASR_ROOT, 'src', 'bsw', 'mcal', 'port', 'include'),
 ];
-const INCLUDE_FLAGS = [
-  `-I${AUTOSAR_INC}`,
-  `-I${GEN_DIR}`,
-  ...MCAL_INC_DIRS.map(d => `-I${d}`),
-];
+const INCLUDE_FLAGS = [`-I${AUTOSAR_INC}`, `-I${GEN_DIR}`, ...MCAL_INC_DIRS.map(d => `-I${d}`)];
 
 function syntaxCheck(filePath: string): { ok: boolean; output: string } {
   try {
@@ -82,8 +78,13 @@ describe('yuleASR Integration Verification', () => {
     it('should NOT contain types or function declarations (macro-only)', async () => {
       const files = await generateAllHeaders([
         {
-          id: 'can', name: 'CAN Driver', version: '1.0.0', enabled: true,
-          parameters: [{ id: 'devErrorDetect', name: 'devErrorDetect', type: 'boolean', value: true }],
+          id: 'can',
+          name: 'CAN Driver',
+          version: '1.0.0',
+          enabled: true,
+          parameters: [
+            { id: 'devErrorDetect', name: 'devErrorDetect', type: 'boolean', value: true },
+          ],
         },
       ]);
 
@@ -96,12 +97,33 @@ describe('yuleASR Integration Verification', () => {
 
     it('should produce headers that pass gcc -fsyntax-only', async () => {
       const files = await generateAllHeaders([
-        { id: 'can', name: 'CAN Driver', version: '1.0.0', enabled: true,
-          parameters: [{ id: 'devErrorDetect', name: 'devErrorDetect', type: 'boolean', value: true }] },
-        { id: 'mcu', name: 'MCU Driver', version: '1.0.0', enabled: true,
-          parameters: [{ id: 'devErrorDetect', name: 'devErrorDetect', type: 'boolean', value: false }] },
-        { id: 'port', name: 'Port Driver', version: '1.0.0', enabled: true,
-          parameters: [{ id: 'devErrorDetect', name: 'devErrorDetect', type: 'boolean', value: false }] },
+        {
+          id: 'can',
+          name: 'CAN Driver',
+          version: '1.0.0',
+          enabled: true,
+          parameters: [
+            { id: 'devErrorDetect', name: 'devErrorDetect', type: 'boolean', value: true },
+          ],
+        },
+        {
+          id: 'mcu',
+          name: 'MCU Driver',
+          version: '1.0.0',
+          enabled: true,
+          parameters: [
+            { id: 'devErrorDetect', name: 'devErrorDetect', type: 'boolean', value: false },
+          ],
+        },
+        {
+          id: 'port',
+          name: 'Port Driver',
+          version: '1.0.0',
+          enabled: true,
+          parameters: [
+            { id: 'devErrorDetect', name: 'devErrorDetect', type: 'boolean', value: false },
+          ],
+        },
       ]);
 
       for (const file of files) {
@@ -125,12 +147,16 @@ describe('yuleASR Integration Verification', () => {
 
     it('should use Ecuc_ prefix for Can headers (not Can_Cfg.h)', async () => {
       const config: ModuleConfig = {
-        module: 'Can', version: '1.0.0',
+        module: 'Can',
+        version: '1.0.0',
         parameters: { canBaudrate: 500000 },
         containers: {},
       };
       const schema: ModuleSchema = {
-        name: 'Can', label: 'CAN Driver', layer: 'MCAL', version: '1.0.0',
+        name: 'Can',
+        label: 'CAN Driver',
+        layer: 'MCAL',
+        version: '1.0.0',
         parameters: [{ name: 'canBaudrate', type: 'integer', required: true }],
         containers: [],
       };
@@ -143,12 +169,18 @@ describe('yuleASR Integration Verification', () => {
     it('should use Ecuc_ prefix for all BSW modules', async () => {
       for (const moduleName of ['Can', 'Mcu', 'Port']) {
         const config: ModuleConfig = {
-          module: moduleName, version: '1.0.0',
-          parameters: {}, containers: {},
+          module: moduleName,
+          version: '1.0.0',
+          parameters: {},
+          containers: {},
         };
         const schema: ModuleSchema = {
-          name: moduleName, label: `${moduleName} Driver`, layer: 'MCAL', version: '1.0.0',
-          parameters: [], containers: [],
+          name: moduleName,
+          label: `${moduleName} Driver`,
+          layer: 'MCAL',
+          version: '1.0.0',
+          parameters: [],
+          containers: [],
         };
         const result = await generator.generate(config, schema, { outputDir: './out' });
         const header = result.files.find(f => f.path.endsWith('.h'))!;
@@ -180,9 +212,15 @@ describe('yuleASR Integration Verification', () => {
 
     it('all .c files should pass gcc -fsyntax-only', () => {
       const cFiles = [
-        'Ecuc_Can.c', 'Ecuc_Can_PBcfg.c', 'Ecuc_Can_Lcfg.c',
-        'Ecuc_Mcu.c', 'Ecuc_Mcu_PBcfg.c', 'Ecuc_Mcu_Lcfg.c',
-        'Ecuc_Port.c', 'Ecuc_Port_PBcfg.c', 'Ecuc_Port_Lcfg.c',
+        'Ecuc_Can.c',
+        'Ecuc_Can_PBcfg.c',
+        'Ecuc_Can_Lcfg.c',
+        'Ecuc_Mcu.c',
+        'Ecuc_Mcu_PBcfg.c',
+        'Ecuc_Mcu_Lcfg.c',
+        'Ecuc_Port.c',
+        'Ecuc_Port_PBcfg.c',
+        'Ecuc_Port_Lcfg.c',
       ];
       for (const f of cFiles) {
         const result = syntaxCheck(join(GEN_DIR, f));

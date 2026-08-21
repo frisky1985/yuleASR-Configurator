@@ -14,18 +14,34 @@ interface GpioWaveformProps {
 }
 
 const PIN_COLORS = [
-  '#3b82f6', '#10b981', '#f59e0b', '#ef4444',
-  '#8b5cf6', '#ec4899', '#14b8a6', '#f97316',
-  '#6366f1', '#84cc16', '#06b6d4', '#d946ef',
-  '#0ea5e9', '#22c55e', '#eab308', '#a855f7',
+  '#3b82f6',
+  '#10b981',
+  '#f59e0b',
+  '#ef4444',
+  '#8b5cf6',
+  '#ec4899',
+  '#14b8a6',
+  '#f97316',
+  '#6366f1',
+  '#84cc16',
+  '#06b6d4',
+  '#d946ef',
+  '#0ea5e9',
+  '#22c55e',
+  '#eab308',
+  '#a855f7',
 ];
 
-export function GpioWaveform({ events, pins = [0, 1, 2, 3], timeWindow = 1000 }: GpioWaveformProps) {
+export function GpioWaveform({
+  events,
+  pins = [0, 1, 2, 3],
+  timeWindow = 1000,
+}: GpioWaveformProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const pinEvents = useMemo(() => {
     const now = Date.now();
-    const recentEvents = events.filter(e => (now - e.timestamp) < timeWindow);
+    const recentEvents = events.filter(e => now - e.timestamp < timeWindow);
     const map = new Map<number, GpioEvent[]>();
     for (const pin of pins) {
       const pinEvts = recentEvents
@@ -141,7 +157,7 @@ export function GpioWaveform({ events, pins = [0, 1, 2, 3], timeWindow = 1000 }:
     ctx.textAlign = 'center';
     for (let i = 0; i <= gridLines; i++) {
       const x = padding.left + (plotWidth / gridLines) * i;
-      const timeLabel = `${((timeWindow / gridLines) * (gridLines - i) / 1000).toFixed(1)}s`;
+      const timeLabel = `${(((timeWindow / gridLines) * (gridLines - i)) / 1000).toFixed(1)}s`;
       ctx.fillText(timeLabel, x, height - 1);
     }
   }, [pinEvents, pins, timeWindow]);

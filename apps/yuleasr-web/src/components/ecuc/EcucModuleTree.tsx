@@ -27,7 +27,7 @@ import { useState } from 'react';
 import { EcucParamIssue, EcucParameterInput } from './EcucParameterInput';
 
 import { cn } from '@/lib/utils';
-import type { EcucEditIssue , EcucContainerPath } from '@/types/ecuc-edit';
+import type { EcucEditIssue, EcucContainerPath } from '@/types/ecuc-edit';
 import type { EcucContainerView, EcucModuleView, EcucParamRow } from '@/types/ecuc-view';
 
 /** 树组件可消费的参数/容器/模块形态（只读视图与编辑视图结构兼容） */
@@ -54,11 +54,7 @@ export interface EcucTreeEditHandlers {
     value: string | number | boolean
   ) => void;
   onToggleModule: (module: string, enabled: boolean) => void;
-  onAddContainer: (
-    module: string,
-    parentPath: EcucContainerPath,
-    defName: string
-  ) => void;
+  onAddContainer: (module: string, parentPath: EcucContainerPath, defName: string) => void;
   onRemoveContainer: (module: string, parentPath: EcucContainerPath, childIndex: number) => void;
 }
 
@@ -142,7 +138,7 @@ function ContainerBlock({
 }) {
   const [open, setOpen] = useState(true);
   const hasChildren = container.containers.length > 0 || container.parameters.length > 0;
-  const subDefs = editable ? container.def?.subContainerDefs ?? [] : [];
+  const subDefs = editable ? (container.def?.subContainerDefs ?? []) : [];
 
   return (
     <div>
@@ -256,7 +252,7 @@ function ModuleBlock({
   handlers?: EcucTreeEditHandlers;
 }) {
   const [open, setOpen] = useState(true);
-  const subDefs = editable ? module.moduleDef?.containerDefs ?? [] : [];
+  const subDefs = editable ? (module.moduleDef?.containerDefs ?? []) : [];
 
   return (
     <div className="border border-border rounded-lg overflow-hidden">
@@ -368,12 +364,7 @@ export function EcucModuleTree({
   return (
     <div className="space-y-3">
       {modules.map(m => (
-        <ModuleBlock
-          key={m.name}
-          module={m}
-          editable={editable}
-          handlers={handlers}
-        />
+        <ModuleBlock key={m.name} module={m} editable={editable} handlers={handlers} />
       ))}
     </div>
   );

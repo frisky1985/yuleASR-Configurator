@@ -62,7 +62,12 @@ interface GeneratedModuleJson {
 function isContainerProp(prop: JsonProp, key: string): boolean {
   if (prop.type !== 'object' || !prop.properties) return false;
   const desc = (prop.description || '').toLowerCase();
-  return desc.includes('容器') || desc.includes('container') || key.endsWith('Set') || key.endsWith('Config');
+  return (
+    desc.includes('容器') ||
+    desc.includes('container') ||
+    key.endsWith('Set') ||
+    key.endsWith('Config')
+  );
 }
 
 /**
@@ -140,7 +145,11 @@ function buildContainer(
   const props = prop.properties || {};
   for (const [childKey, childProp] of Object.entries(props)) {
     if (isContainerProp(childProp, childKey)) {
-      const { container, flatParams: childFlat } = buildContainer(childKey, childProp, modulePrefix);
+      const { container, flatParams: childFlat } = buildContainer(
+        childKey,
+        childProp,
+        modulePrefix
+      );
       children.push(container);
       flatParams.push(...childFlat);
     } else {

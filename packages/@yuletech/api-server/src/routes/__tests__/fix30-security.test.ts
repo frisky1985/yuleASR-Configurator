@@ -9,11 +9,7 @@
  */
 import { describe, expect, it } from 'vitest';
 
-import {
-  canViewTemplate,
-  resolveListStatus,
-  templateIsPublic,
-} from '../bswTemplates.js';
+import { canViewTemplate, resolveListStatus, templateIsPublic } from '../bswTemplates.js';
 import { cssEscape } from '../branding.js';
 import { likeToggleDecision } from '../sharedConfigs.js';
 
@@ -116,7 +112,7 @@ describe('cssEscape（Fix 30 CSS 注入防护）', () => {
   });
 
   it('单引号/反斜杠/换行/圆括号等 CSS 语法字符全部剔除', () => {
-    const payload = "abc'\\\n();\"";
+    const payload = 'abc\'\\\n();"';
     const escaped = cssEscape(payload);
     expect(escaped).not.toMatch(/[\\()"';]/);
     expect(escaped).toBe('abc');

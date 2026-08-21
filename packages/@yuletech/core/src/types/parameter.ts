@@ -7,25 +7,13 @@
  * 参数基础类型
  */
 export type ParameterBaseType =
-  | 'boolean'
-  | 'integer'
-  | 'float'
-  | 'string'
-  | 'enum'
-  | 'reference'
-  | 'array'
-  | 'object';
+  'boolean' | 'integer' | 'float' | 'string' | 'enum' | 'reference' | 'array' | 'object';
 
 /**
  * 参数值类型
  */
 export type ParameterValue =
-  | boolean
-  | number
-  | string
-  | null
-  | ParameterValue[]
-  | { [key: string]: ParameterValue };
+  boolean | number | string | null | ParameterValue[] | { [key: string]: ParameterValue };
 
 /**
  * 参数验证规则类型

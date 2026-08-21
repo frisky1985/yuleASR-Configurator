@@ -52,7 +52,7 @@ import {
   updateParamValue,
 } from '@/services/ecuc-editor';
 import { buildEcucProjectView } from '@/services/ecuc-view-adapter';
-import type { EcucContainerPath , EcucEditableProject } from '@/types/ecuc-edit';
+import type { EcucContainerPath, EcucEditableProject } from '@/types/ecuc-edit';
 import type { EcucProjectView } from '@/types/ecuc-view';
 import { createEmptyEcucProjectView } from '@/types/ecuc-view';
 
@@ -120,7 +120,9 @@ function ReportPanel({ view }: { view: EcucProjectView }) {
             key={i}
             className={cn(
               'text-xs font-mono break-all',
-              issue.severity === 'error' ? 'text-red-600 dark:text-red-400' : 'text-amber-600 dark:text-amber-400'
+              issue.severity === 'error'
+                ? 'text-red-600 dark:text-red-400'
+                : 'text-amber-600 dark:text-amber-400'
             )}
           >
             {issue.severity === 'error' ? '[error] ' : '[warn] '}
@@ -223,7 +225,9 @@ export function EcucImport() {
 
   const editHandlers: EcucTreeEditHandlers = {
     onParamChange: (module, containerPath, paramName, value) => {
-      setEditable(prev => (prev ? updateParamValue(prev, module, containerPath, paramName, value) : prev));
+      setEditable(prev =>
+        prev ? updateParamValue(prev, module, containerPath, paramName, value) : prev
+      );
     },
     onToggleModule: (module, _enabled) => {
       setEditable(prev => (prev ? toggleModuleEnabled(prev, module) : prev));
@@ -232,7 +236,9 @@ export function EcucImport() {
       setEditable(prev => (prev ? addContainerInstance(prev, module, parentPath, defName) : prev));
     },
     onRemoveContainer: (module, parentPath, childIndex) => {
-      setEditable(prev => (prev ? removeContainerInstance(prev, module, parentPath, childIndex) : prev));
+      setEditable(prev =>
+        prev ? removeContainerInstance(prev, module, parentPath, childIndex) : prev
+      );
     },
   };
 
@@ -334,7 +340,11 @@ export function EcucImport() {
                 onClick={handleGenerateCfgH}
                 disabled={exporting !== null || editable.errors > 0}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 disabled:opacity-50 transition-colors"
-                title={editable.errors > 0 ? `存在 ${editable.errors} 个校验错误，请先修复` : '按编辑值生成 Cfg.h（ZIP）'}
+                title={
+                  editable.errors > 0
+                    ? `存在 ${editable.errors} 个校验错误，请先修复`
+                    : '按编辑值生成 Cfg.h（ZIP）'
+                }
               >
                 {exporting === 'cfgh' ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -444,16 +454,16 @@ export function EcucImport() {
 
           {tab === 'tree' ? (
             editMode && editable ? (
-              <EcucModuleTree
-                modules={editable.modules}
-                editable
-                handlers={editHandlers}
-              />
+              <EcucModuleTree modules={editable.modules} editable handlers={editHandlers} />
             ) : (
               <EcucModuleTree modules={view.modules} />
             )
           ) : editMode && editable ? (
-            <EcucParameterTable rows={editableRows} editable onParamChange={editHandlers.onParamChange} />
+            <EcucParameterTable
+              rows={editableRows}
+              editable
+              onParamChange={editHandlers.onParamChange}
+            />
           ) : (
             <EcucParameterTable rows={view.flatParams} />
           )}

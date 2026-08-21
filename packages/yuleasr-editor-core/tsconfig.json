@@ -7,20 +7,10 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "paths": {
-      "yuleasr-editor-core/*": [
-        "./src/*"
-      ]
+      "yuleasr-editor-core/*": ["./src/*"]
     },
-    "types": [
-      "node"
-    ]
+    "types": ["node"]
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules",
-    "**/*.test.ts"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["dist", "node_modules", "**/*.test.ts"]
 }

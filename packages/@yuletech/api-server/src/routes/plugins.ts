@@ -13,7 +13,7 @@ import { z } from 'zod';
 // ── Validation Schemas ────────────────────────────────────────────────────
 
 const updateConfigSchema = z.object({
-  config: z.record(z.unknown()),
+  config: z.record(z.string(), z.unknown()),
 });
 
 const toggleSchema = z.object({

@@ -10,6 +10,7 @@
 ## Summary
 
 Created a comprehensive automated integration test framework with:
+
 - Vitest-based integration test suite covering all 8 modules
 - ECUC generation → syntax check → AUTOSAR compliance → determinism checking
 - Baseline management system for regression detection
@@ -19,18 +20,20 @@ Created a comprehensive automated integration test framework with:
 
 ### C1 ✅ Integration Test Suite
 
-**Test file:** `packages/@yuletech/core/src/integration-tests/all-modules.test.ts` (32 tests)
+**Test file:**
+`packages/@yuletech/core/src/integration-tests/all-modules.test.ts` (32 tests)
 
-| Test Category | Tests | Pass |
-|---------------|:-----:|:----:|
-| ECUC Generation – all 8 modules produce 4 files | 8 | ✅ |
-| GCC Syntax Check – all 32 files compile clean | 8 | ✅ |
-| AUTOSAR Compliance – MODULE_ID, VENDOR_ID, include guards | 8 | ✅ |
-| Output Determinism – two runs produce identical output | 8 | ✅ |
+| Test Category                                             | Tests | Pass |
+| --------------------------------------------------------- | :---: | :--: |
+| ECUC Generation – all 8 modules produce 4 files           |   8   |  ✅  |
+| GCC Syntax Check – all 32 files compile clean             |   8   |  ✅  |
+| AUTOSAR Compliance – MODULE_ID, VENDOR_ID, include guards |   8   |  ✅  |
+| Output Determinism – two runs produce identical output    |   8   |  ✅  |
 
 ### C2 ✅ Regression Detection
 
 **Difference detection** implemented via `scripts/manage-baseline.cjs`:
+
 - `generate` — creates fresh baselines from current generator output
 - `verify` — compares current output against stored baselines
 - Strips timestamps before comparison to avoid false positives
@@ -38,6 +41,7 @@ Created a comprehensive automated integration test framework with:
 ### C3 ✅ Baseline Management
 
 **Storage:** `tests/integration/baseline/<Module>/` (32 files)
+
 - Can: 4 files
 - Mcu: 4 files
 - Port: 4 files

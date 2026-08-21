@@ -24,7 +24,10 @@ test.describe('yuleASR Configurator - Basic E2E', () => {
     expect(navCount).toBeGreaterThan(3);
     // 主操作按钮（新建配置）
     await expect(
-      page.locator('button').filter({ hasText: /新建|New/i }).first()
+      page
+        .locator('button')
+        .filter({ hasText: /新建|New/i })
+        .first()
     ).toBeVisible({ timeout: 10000 });
   });
 });

@@ -52,7 +52,8 @@ function mockHeadContent(path: string, content: string): void {
 }
 
 function setWorkdirContent(service: GitService, content: string): void {
-  const fs = (service as unknown as { fs: { promises: { readFile: ReturnType<typeof vi.fn> } } }).fs;
+  const fs = (service as unknown as { fs: { promises: { readFile: ReturnType<typeof vi.fn> } } })
+    .fs;
   fs.promises.readFile.mockResolvedValue(content);
 }
 

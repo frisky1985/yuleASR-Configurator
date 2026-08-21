@@ -263,7 +263,6 @@ export async function getLockStatus(request: FastifyRequest, reply: FastifyReply
   });
 }
 
-
 // ── Routes ──────────────────────────────────────────────────────────────
 
 export async function configsRoutes(app: FastifyInstance) {

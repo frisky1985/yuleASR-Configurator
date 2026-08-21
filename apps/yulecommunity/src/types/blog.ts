@@ -31,13 +31,7 @@ export interface SEOInfo {
 
 /** 博客分类 */
 export type BlogCategory =
-  | 'MCAL'
-  | 'ECUAL'
-  | 'Service'
-  | '工具链'
-  | '功能安全'
-  | '架构设计'
-  | '全部';
+  'MCAL' | 'ECUAL' | 'Service' | '工具链' | '功能安全' | '架构设计' | '全部';
 
 /** 博客文章 */
 export interface BlogArticle {

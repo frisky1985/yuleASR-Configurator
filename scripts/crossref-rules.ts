@@ -613,7 +613,12 @@ export interface ModuleDependencyRule {
 }
 
 export const MODULE_DEPENDENCY_RULES: ModuleDependencyRule[] = [
-  { sourceModule: 'CanIf', targetModule: 'Can', required: true, message: 'CanIf requires Can driver' },
+  {
+    sourceModule: 'CanIf',
+    targetModule: 'Can',
+    required: true,
+    message: 'CanIf requires Can driver',
+  },
   {
     sourceModule: 'CanIf',
     targetModule: 'Can',
@@ -624,10 +629,20 @@ export const MODULE_DEPENDENCY_RULES: ModuleDependencyRule[] = [
   { sourceModule: 'CanNm', targetModule: 'CanIf', required: true, message: 'CanNm requires CanIf' },
   { sourceModule: 'CanNm', targetModule: 'Nm', required: true, message: 'CanNm requires Nm' },
   { sourceModule: 'CanSm', targetModule: 'CanIf', required: true, message: 'CanSM requires CanIf' },
-  { sourceModule: 'CanSm', targetModule: 'ComM', required: false, message: 'CanSM should have ComM' },
+  {
+    sourceModule: 'CanSm',
+    targetModule: 'ComM',
+    required: false,
+    message: 'CanSM should have ComM',
+  },
   { sourceModule: 'CanTp', targetModule: 'CanIf', required: true, message: 'CanTp requires CanIf' },
   { sourceModule: 'CanTp', targetModule: 'PduR', required: true, message: 'CanTp requires PduR' },
-  { sourceModule: 'CanTrcv', targetModule: 'Can', required: false, message: 'CanTrcv should have Can' },
+  {
+    sourceModule: 'CanTrcv',
+    targetModule: 'Can',
+    required: false,
+    message: 'CanTrcv should have Can',
+  },
   { sourceModule: 'Com', targetModule: 'PduR', required: true, message: 'Com requires PduR' },
   { sourceModule: 'ComM', targetModule: 'Com', required: true, message: 'ComM requires Com' },
   { sourceModule: 'ComM', targetModule: 'Nm', required: false, message: 'ComM should have Nm' },
@@ -645,7 +660,12 @@ export const MODULE_DEPENDENCY_RULES: ModuleDependencyRule[] = [
   { sourceModule: 'Gpt', targetModule: 'Mcu', required: false, message: 'Gpt should have Mcu' },
   { sourceModule: 'Icu', targetModule: 'Mcu', required: false, message: 'Icu should have Mcu' },
   { sourceModule: 'Mcl', targetModule: 'Mcu', required: false, message: 'Mcl should have Mcu' },
-  { sourceModule: 'MemIf', targetModule: 'Fee', required: true, message: 'MemIf requires Fee or Ea' },
+  {
+    sourceModule: 'MemIf',
+    targetModule: 'Fee',
+    required: true,
+    message: 'MemIf requires Fee or Ea',
+  },
   { sourceModule: 'Nm', targetModule: 'ComM', required: true, message: 'Nm requires ComM' },
   { sourceModule: 'NvM', targetModule: 'MemIf', required: true, message: 'NvM requires MemIf' },
   { sourceModule: 'Os', targetModule: 'EcuM', required: false, message: 'Os should have EcuM' },

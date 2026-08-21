@@ -92,7 +92,12 @@ export function OSEditor({ className }: OSEditorProps) {
               )}
               title={os.enabled ? 'Module enabled' : 'Module disabled'}
             >
-              <Power className={cn('w-3.5 h-3.5', os.enabled ? 'text-green-600' : 'text-app-text-tertiary')} />
+              <Power
+                className={cn(
+                  'w-3.5 h-3.5',
+                  os.enabled ? 'text-green-600' : 'text-app-text-tertiary'
+                )}
+              />
               {os.enabled ? 'Enabled' : 'Disabled'}
             </span>
           </div>

@@ -446,11 +446,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CommonPublishedInformation",
-    "EthConfigSet",
-    "EthGeneral"
-  ],
+  "required": ["CommonPublishedInformation", "EthConfigSet", "EthGeneral"],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",

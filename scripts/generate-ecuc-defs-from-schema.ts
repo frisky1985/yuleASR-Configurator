@@ -130,13 +130,21 @@ export function classifyParam(pval: Record<string, unknown> | undefined): ParamC
 export function buildGeneratedModule(schema: SchemaDoc, sourceFile: string): GeneratedModule {
   const moduleName = moduleNameFromSchema(schema, sourceFile);
   const props = schema.properties ?? {};
-  const module: GeneratedModule = { moduleName, sourceFile, moduleParams: [], containers: [], skipped: [] };
+  const module: GeneratedModule = {
+    moduleName,
+    sourceFile,
+    moduleParams: [],
+    containers: [],
+    skipped: [],
+  };
 
   for (const [pname, pval] of Object.entries(props)) {
     const cls = classifyParam(pval);
     if (pval && pval.type === 'object') {
       const params: GeneratedModule['containers'][number]['params'] = [];
-      for (const [pname2, pval2] of Object.entries((pval.properties ?? {}) as Record<string, Record<string, unknown>>)) {
+      for (const [pname2, pval2] of Object.entries(
+        (pval.properties ?? {}) as Record<string, Record<string, unknown>>
+      )) {
         const cls2 = classifyParam(pval2);
         if (cls2.kind === 'skip') {
           module.skipped.push({ container: pname, name: pname2, reason: cls2.reason });
@@ -196,12 +204,15 @@ function emitParamDef(
     if (typeof schema.maximum === 'number') lines.push(`${indent}  <MAX>${schema.maximum}</MAX>`);
   }
   const dflt = defaultValueOf(schema);
-  if (dflt !== undefined) lines.push(`${indent}  <DEFAULT-VALUE>${xmlEncode(dflt)}</DEFAULT-VALUE>`);
+  if (dflt !== undefined)
+    lines.push(`${indent}  <DEFAULT-VALUE>${xmlEncode(dflt)}</DEFAULT-VALUE>`);
   if (cls.kind === 'enum') {
     const literals = (cls as { literals: string[] }).literals;
     lines.push(`${indent}  <LITERALS>`);
     for (const lit of literals) {
-      lines.push(`${indent}    <ECUC-ENUMERATION-LITERAL-DEF><SHORT-NAME>${xmlEncode(lit)}</SHORT-NAME></ECUC-ENUMERATION-LITERAL-DEF>`);
+      lines.push(
+        `${indent}    <ECUC-ENUMERATION-LITERAL-DEF><SHORT-NAME>${xmlEncode(lit)}</SHORT-NAME></ECUC-ENUMERATION-LITERAL-DEF>`
+      );
     }
     lines.push(`${indent}  </LITERALS>`);
   }
@@ -259,14 +270,21 @@ export function moduleToEcucDefArxml(module: GeneratedModule, emitMinMax: boolea
 
 // ── 加载与生成 ──────────────────────────────────────────────────────────────
 
-export function loadSchemas(schemaDir: string = SCHEMA_DIR): Array<{ file: string; schema: SchemaDoc }> {
+export function loadSchemas(
+  schemaDir: string = SCHEMA_DIR
+): Array<{ file: string; schema: SchemaDoc }> {
   return readdirSync(schemaDir)
     .filter(f => f.endsWith('.json'))
     .sort()
-    .map(f => ({ file: f, schema: JSON.parse(readFileSync(join(schemaDir, f), 'utf8')) as SchemaDoc }));
+    .map(f => ({
+      file: f,
+      schema: JSON.parse(readFileSync(join(schemaDir, f), 'utf8')) as SchemaDoc,
+    }));
 }
 
-export function generateAllModules(schemas: Array<{ file: string; schema: SchemaDoc }>): GeneratedModule[] {
+export function generateAllModules(
+  schemas: Array<{ file: string; schema: SchemaDoc }>
+): GeneratedModule[] {
   return schemas.map(({ file, schema }) => buildGeneratedModule(schema, file));
 }
 

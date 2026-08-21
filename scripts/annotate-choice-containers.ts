@@ -21,7 +21,12 @@ const GENERATED_DIR = join(__dirname, '../packages/@yuletech/core/src/schema/gen
  * [模块, 容器, 互斥参数名列表, 描述]
  */
 const CHOICE_MATRIX: Array<[string, string, string[], string]> = [
-  ['wdg', 'WdgDevice', ['WdgTriggeredMode', 'WdgTriggerConditionValue'], '看门狗触发模式与触发条件互斥 (预触发/无预触发 二选一)'],
+  [
+    'wdg',
+    'WdgDevice',
+    ['WdgTriggeredMode', 'WdgTriggerConditionValue'],
+    '看门狗触发模式与触发条件互斥 (预触发/无预触发 二选一)',
+  ],
   ['wdgif', 'WdgIfDevice', ['WdgIfTriggeredMode'], '看门狗接口触发模式二选一 (预触发/无预触发)'],
   ['spi', 'SpiDriver', ['SpiChannelType'], 'SPI 通道类型互斥 (SPI_MASTER/SPI_SLAVE 二选一)'],
   ['cantp', 'CanTpConfig', ['CanTpChannelMode'], 'CanTp 通道模式二选一 (标准/扩展寻址)'],

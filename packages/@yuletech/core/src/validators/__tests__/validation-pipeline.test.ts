@@ -56,8 +56,18 @@ describe('ValidationPipeline', () => {
         {
           ...makeSchema('CanTp'),
           dependencies: [
-            { module: 'CanIf', required: true, severity: 'error', description: 'CanTp requires CanIf' },
-            { module: 'PduR', required: true, severity: 'error', description: 'CanTp requires PduR' },
+            {
+              module: 'CanIf',
+              required: true,
+              severity: 'error',
+              description: 'CanTp requires CanIf',
+            },
+            {
+              module: 'PduR',
+              required: true,
+              severity: 'error',
+              description: 'CanTp requires PduR',
+            },
           ],
         },
       ];

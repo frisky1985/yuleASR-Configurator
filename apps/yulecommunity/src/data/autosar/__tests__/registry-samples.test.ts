@@ -11,7 +11,6 @@ import {
   getRegistryVersionHistory,
 } from '../registry-samples';
 
-
 describe('AutoSAR Registry Sample Data', () => {
   // ─── Module count ──────────────────────────────────────────────────
   it('should have exactly 10 registry modules', () => {

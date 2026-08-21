@@ -90,7 +90,7 @@ export abstract class ElementTemplate<TElement extends NamedElement> {
     /** 依赖模板（默认无依赖） */
     depends: ElementTemplate<NamedElement>[] = [],
     /** 创建后是否追加进包（默认 true；false 时仅创建不落地） */
-    readonly appendToPackage = true,
+    readonly appendToPackage = true
   ) {
     this.depends = depends;
   }

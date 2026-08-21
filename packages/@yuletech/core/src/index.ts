@@ -75,11 +75,7 @@ export {
 export * from './arxml-templates';
 
 // 导出 C 代码生成共享工具 (escapeCString 等, Fix 18/22 单一实现)
-export {
-  escapeCString,
-  C_IDENTIFIER_RE,
-  assertCIdentifier,
-} from './generator/autosar-format';
+export { escapeCString, C_IDENTIFIER_RE, assertCIdentifier } from './generator/autosar-format';
 
 // 导出插件系统
 export { pluginRegistry, pluginManager } from './plugins';

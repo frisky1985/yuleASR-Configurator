@@ -1,6 +1,18 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronDown, FileText, BookOpen, HelpCircle, Cpu, Download, Wrench, Calendar, MessageSquare, Info, Mail } from 'lucide-react';
+import {
+  ChevronDown,
+  FileText,
+  BookOpen,
+  HelpCircle,
+  Cpu,
+  Download,
+  Wrench,
+  Calendar,
+  MessageSquare,
+  Info,
+  Mail,
+} from 'lucide-react';
 
 const moreGroups = [
   {
@@ -60,7 +72,8 @@ export function MoreDropdown() {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
       >
-        更多 <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        更多{' '}
+        <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
       {isOpen && (
         <div className="absolute left-0 top-full mt-2 w-56 bg-card border border-border rounded-xl shadow-2xl p-2 z-50">
@@ -70,7 +83,7 @@ export function MoreDropdown() {
               <div className="px-2 py-1 text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
                 {group.label}
               </div>
-              {group.items.map((item) => (
+              {group.items.map(item => (
                 <Link
                   key={item.to}
                   to={item.to}

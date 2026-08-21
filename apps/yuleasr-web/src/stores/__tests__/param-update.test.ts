@@ -38,7 +38,9 @@ describe('parseParamPath', () => {
   });
 
   it('解析动态实例参数路径', () => {
-    const r = parseParamPath('layer:MCAL/module:can/container:cancontroller/instance:CanController_0/param:baudrate');
+    const r = parseParamPath(
+      'layer:MCAL/module:can/container:cancontroller/instance:CanController_0/param:baudrate'
+    );
     expect(r.moduleId).toBe('can');
     expect(r.containerId).toBe('cancontroller');
     expect(r.instanceName).toBe('CanController_0');
@@ -85,7 +87,13 @@ describe('updateContainerParam', () => {
         ],
       }),
     ];
-    const result = updateContainerParam(containers, 'cancontroller', 'CanController_0', 'baudrate', 1000000);
+    const result = updateContainerParam(
+      containers,
+      'cancontroller',
+      'CanController_0',
+      'baudrate',
+      1000000
+    );
     expect(result[0].instances?.[0].paramValues.baudrate).toBe(1000000);
     expect(result[0].instances?.[1].paramValues.baudrate).toBe(500000); // 其他实例不变
   });
@@ -93,7 +101,13 @@ describe('updateContainerParam', () => {
   it('递归更新子容器参数', () => {
     const containers = [
       makeContainer({
-        subContainers: [makeContainer({ id: 'nested', name: 'Nested', parameters: [{ id: 'depth', name: 'Depth', type: 'integer', value: 1 }] })],
+        subContainers: [
+          makeContainer({
+            id: 'nested',
+            name: 'Nested',
+            parameters: [{ id: 'depth', name: 'Depth', type: 'integer', value: 1 }],
+          }),
+        ],
       }),
     ];
     const result = updateContainerParam(containers, 'nested', null, 'depth', 99);
@@ -134,7 +148,9 @@ describe('setContainerInstances', () => {
 
   it('容器不存在时原样返回（不静默新建）', () => {
     const containers = [makeContainer({})];
-    const result = setContainerInstances(containers, 'notexist', [{ name: 'X_0', paramValues: {} }]);
+    const result = setContainerInstances(containers, 'notexist', [
+      { name: 'X_0', paramValues: {} },
+    ]);
     expect(result[0].instances).toBeUndefined();
   });
 });

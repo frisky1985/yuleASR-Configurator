@@ -223,10 +223,7 @@
           "type": "string",
           "maxLength": 255,
           "description": "FlsDefaultMode 参数",
-          "enum": [
-            "FLS_MODE_NORMAL",
-            "FLS_MODE_FAST"
-          ]
+          "enum": ["FLS_MODE_NORMAL", "FLS_MODE_FAST"]
         },
         "FlsJobEndNotification": {
           "type": "string",
@@ -568,11 +565,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "AutosarExt",
-    "CommonPublishedInformation",
-    "FlsConfigSet"
-  ],
+  "required": ["AutosarExt", "CommonPublishedInformation", "FlsConfigSet"],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",

@@ -16,7 +16,8 @@ describe('Fix 24: selectedModule 精确匹配', () => {
   });
 
   it('module:<id> 后跟 / 时精确匹配', () => {
-    const path = 'layer:MCAL/module:can/container:CanController/instance:CanController_0/param:baudrate';
+    const path =
+      'layer:MCAL/module:can/container:CanController/instance:CanController_0/param:baudrate';
     expect(modulePathMatches('can', path)).toBe(true);
     expect(modulePathMatches('cantp', path)).toBe(false);
   });

@@ -348,9 +348,7 @@
       },
       "additionalProperties": true,
       "x-choice-container": true,
-      "x-choice-params": [
-        "IcuSignalNotification"
-      ],
+      "x-choice-params": ["IcuSignalNotification"],
       "x-choice-description": "边沿检测模式通知回调"
     },
     "IcuSignalMeasurement": {
@@ -370,9 +368,7 @@
       },
       "additionalProperties": true,
       "x-choice-container": true,
-      "x-choice-params": [
-        "IcuSignalMeasurementProperty"
-      ],
+      "x-choice-params": ["IcuSignalMeasurementProperty"],
       "x-choice-description": "信号测量属性四选一"
     },
     "IcuTimestampMeasurement": {
@@ -381,18 +377,13 @@
       "properties": {
         "IcuTimestampMeasurementProperty": {
           "type": "string",
-          "enum": [
-            "ICU_CIRCULAR_BUFFER",
-            "ICU_LINEAR_BUFFER"
-          ],
+          "enum": ["ICU_CIRCULAR_BUFFER", "ICU_LINEAR_BUFFER"],
           "description": "时间戳缓冲模式（环形/线性）"
         }
       },
       "additionalProperties": true,
       "x-choice-container": true,
-      "x-choice-params": [
-        "IcuTimestampMeasurementProperty"
-      ],
+      "x-choice-params": ["IcuTimestampMeasurementProperty"],
       "x-choice-description": "时间戳缓冲模式二选一"
     },
     "IcuWakeup": {
@@ -480,10 +471,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CommonPublishedInformation",
-    "IcuChannel"
-  ],
+  "required": ["CommonPublishedInformation", "IcuChannel"],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",

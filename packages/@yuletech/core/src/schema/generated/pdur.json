@@ -245,11 +245,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "PduRDestPdu",
-    "PduRSrcPdu",
-    "PduRGeneral"
-  ],
+  "required": ["PduRDestPdu", "PduRSrcPdu", "PduRGeneral"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

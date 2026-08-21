@@ -6,9 +6,15 @@ export const NVM_APIS: AutosarApi[] = [
     name: 'NvM_Init',
     signature: 'void NvM_Init(const NvM_ConfigType* ConfigPtr)',
     brief: '初始化 NvM 模块',
-    description: '初始化 NvM 模块，加载 NVRAM 管理器配置，包括块布局、存储介质、校验和算法等。必须在任何 NvM 操作之前调用。',
+    description:
+      '初始化 NvM 模块，加载 NVRAM 管理器配置，包括块布局、存储介质、校验和算法等。必须在任何 NvM 操作之前调用。',
     params: [
-      { name: 'ConfigPtr', type: 'const NvM_ConfigType*', direction: 'in', description: 'NvM 配置指针，包含所有 NVRAM 块和存储设备配置' },
+      {
+        name: 'ConfigPtr',
+        type: 'const NvM_ConfigType*',
+        direction: 'in',
+        description: 'NvM 配置指针，包含所有 NVRAM 块和存储设备配置',
+      },
     ],
     returnType: 'void',
     returnDescription: '无返回值',
@@ -23,9 +29,7 @@ void NvM_InitExample(void) {
     /* NVRAM 管理器已初始化，各块状态可用 */
 }`,
     seeAlso: ['NvM_ReadBlock', 'NvM_WriteBlock', 'NvM_GetVersionInfo'],
-    configParams: [
-      { paramName: 'NvMConfig', configModule: 'NvM', path: 'NvM/NvMConfig' },
-    ],
+    configParams: [{ paramName: 'NvMConfig', configModule: 'NvM', path: 'NvM/NvMConfig' }],
     status: 'standard',
   },
   {
@@ -33,10 +37,16 @@ void NvM_InitExample(void) {
     name: 'NvM_ReadBlock',
     signature: 'Std_ReturnType NvM_ReadBlock(NvM_BlockIdType BlockId, void* DataBufferPtr)',
     brief: '从 NVRAM 读取指定块的数据',
-    description: '从非易失性存储器中读取指定 NVRAM 块的数据到提供的缓冲区。支持同步和异步模式，异步模式下通过回调通知完成。',
+    description:
+      '从非易失性存储器中读取指定 NVRAM 块的数据到提供的缓冲区。支持同步和异步模式，异步模式下通过回调通知完成。',
     params: [
       { name: 'BlockId', type: 'NvM_BlockIdType', direction: 'in', description: 'NVRAM 块 ID' },
-      { name: 'DataBufferPtr', type: 'void*', direction: 'out', description: '数据输出缓冲区指针，用于存放读取的数据' },
+      {
+        name: 'DataBufferPtr',
+        type: 'void*',
+        direction: 'out',
+        description: '数据输出缓冲区指针，用于存放读取的数据',
+      },
     ],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 读取成功；E_NOT_OK: 读取失败；NVM_REQ_BUSY: 模块忙',
@@ -68,10 +78,16 @@ void NvM_ReadCalibration(void) {
     name: 'NvM_WriteBlock',
     signature: 'Std_ReturnType NvM_WriteBlock(NvM_BlockIdType BlockId, const void* DataBufferPtr)',
     brief: '写入数据到 NVRAM 指定块',
-    description: '将缓冲区中的数据写入非易失性存储器中的指定 NVRAM 块。写入操作在后台执行，完成后通过回调通知上层。',
+    description:
+      '将缓冲区中的数据写入非易失性存储器中的指定 NVRAM 块。写入操作在后台执行，完成后通过回调通知上层。',
     params: [
       { name: 'BlockId', type: 'NvM_BlockIdType', direction: 'in', description: 'NVRAM 块 ID' },
-      { name: 'DataBufferPtr', type: 'const void*', direction: 'in', description: '待写入数据缓冲区指针' },
+      {
+        name: 'DataBufferPtr',
+        type: 'const void*',
+        direction: 'in',
+        description: '待写入数据缓冲区指针',
+      },
     ],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 写入请求已提交；E_NOT_OK: 写入失败；NVM_REQ_BUSY: 模块忙',
@@ -107,9 +123,15 @@ void NvM_SaveCalibration(void) {
     name: 'NvM_EraseBlock',
     signature: 'Std_ReturnType NvM_EraseBlock(NvM_BlockIdType BlockId)',
     brief: '擦除 NVRAM 指定块的数据',
-    description: '擦除非易失性存储器中指定 NVRAM 块的数据。擦除后块数据恢复到未初始化状态（通常为全 0xFF 或配置的默认值）。',
+    description:
+      '擦除非易失性存储器中指定 NVRAM 块的数据。擦除后块数据恢复到未初始化状态（通常为全 0xFF 或配置的默认值）。',
     params: [
-      { name: 'BlockId', type: 'NvM_BlockIdType', direction: 'in', description: '要擦除的 NVRAM 块 ID' },
+      {
+        name: 'BlockId',
+        type: 'NvM_BlockIdType',
+        direction: 'in',
+        description: '要擦除的 NVRAM 块 ID',
+      },
     ],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 擦除成功；E_NOT_OK: 擦除失败',
@@ -136,7 +158,12 @@ void NvM_ResetToFactory(void) {
     brief: '获取 NvM 模块版本信息',
     description: '返回 NvM 模块的厂商 ID、模块 ID、软件版本号等版本信息。',
     params: [
-      { name: 'VersionInfo', type: 'Std_VersionInfoType*', direction: 'out', description: '版本信息输出结构体指针' },
+      {
+        name: 'VersionInfo',
+        type: 'Std_VersionInfoType*',
+        direction: 'out',
+        description: '版本信息输出结构体指针',
+      },
     ],
     returnType: 'void',
     returnDescription: '无返回值，版本信息通过 VersionInfo 指针返回',
@@ -158,7 +185,8 @@ void NvM_PrintVersion(void) {
     name: 'NvM_ReadAll',
     signature: 'Std_ReturnType NvM_ReadAll(void)',
     brief: '批量读取所有 NVRAM 块',
-    description: '启动读取所有配置为自动读取的 NVRAM 块的批量操作。通常在系统启动后调用，一次性从非易失性存储器加载所有持久化数据。',
+    description:
+      '启动读取所有配置为自动读取的 NVRAM 块的批量操作。通常在系统启动后调用，一次性从非易失性存储器加载所有持久化数据。',
     params: [],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 读取已启动；E_NOT_OK: 启动失败',
@@ -183,7 +211,8 @@ void NvM_LoadAllBlocks(void) {
     name: 'NvM_WriteAll',
     signature: 'Std_ReturnType NvM_WriteAll(void)',
     brief: '批量写入所有 NVRAM 块',
-    description: '启动写入所有配置为自动写入的 NVRAM 块的批量操作。通常在系统关闭前调用，将所有需要持久化的数据一次性写入非易失性存储器。',
+    description:
+      '启动写入所有配置为自动写入的 NVRAM 块的批量操作。通常在系统关闭前调用，将所有需要持久化的数据一次性写入非易失性存储器。',
     params: [],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 写入已启动；E_NOT_OK: 启动失败',
@@ -208,7 +237,8 @@ void NvM_SaveAllBeforeShutdown(void) {
     name: 'NvM_CancelWriteAll',
     signature: 'Std_ReturnType NvM_CancelWriteAll(void)',
     brief: '取消批量写入操作',
-    description: '取消正在进行的 NvM_WriteAll 批量写入操作。部分已写入的块可能已完成写入，部分可能未写入。',
+    description:
+      '取消正在进行的 NvM_WriteAll 批量写入操作。部分已写入的块可能已完成写入，部分可能未写入。',
     params: [],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 取消成功；E_NOT_OK: 无正在进行的批量写入',
@@ -258,9 +288,15 @@ void NvM_AbortLoad(void) {
     name: 'NvM_RestoreBlockDefaults',
     signature: 'Std_ReturnType NvM_RestoreBlockDefaults(NvM_BlockIdType BlockId)',
     brief: '恢复 NVRAM 块的默认值',
-    description: '将指定 NVRAM 块的数据恢复为配置中定义的默认值。块数据在内存中被重置为默认值，并在下次写入时持久化。',
+    description:
+      '将指定 NVRAM 块的数据恢复为配置中定义的默认值。块数据在内存中被重置为默认值，并在下次写入时持久化。',
     params: [
-      { name: 'BlockId', type: 'NvM_BlockIdType', direction: 'in', description: '要恢复默认值的 NVRAM 块 ID' },
+      {
+        name: 'BlockId',
+        type: 'NvM_BlockIdType',
+        direction: 'in',
+        description: '要恢复默认值的 NVRAM 块 ID',
+      },
     ],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 恢复成功；E_NOT_OK: 块 ID 无效',
@@ -285,9 +321,15 @@ void NvM_ResetToDefaults(void) {
     name: 'NvM_GetErrorStatus',
     signature: 'NvM_RequestResultType NvM_GetErrorStatus(NvM_BlockIdType BlockId)',
     brief: '获取指定块的错误状态',
-    description: '返回指定 NVRAM 块最近一次操作的结果状态，包括成功、失败、数据损坏或校验和错误等信息。',
+    description:
+      '返回指定 NVRAM 块最近一次操作的结果状态，包括成功、失败、数据损坏或校验和错误等信息。',
     params: [
-      { name: 'BlockId', type: 'NvM_BlockIdType', direction: 'in', description: '要查询的 NVRAM 块 ID' },
+      {
+        name: 'BlockId',
+        type: 'NvM_BlockIdType',
+        direction: 'in',
+        description: '要查询的 NVRAM 块 ID',
+      },
     ],
     returnType: 'NvM_RequestResultType',
     returnDescription: '块操作结果状态：NVM_REQ_OK / NVM_REQ_NOT_OK / NVM_REQ_INTEGRITY_FAILED 等',
@@ -312,12 +354,19 @@ void NvM_CheckBlockHealth(void) {
   {
     id: 'NvM_SetBlockLockStatus',
     name: 'NvM_SetBlockLockStatus',
-    signature: 'Std_ReturnType NvM_SetBlockLockStatus(NvM_BlockIdType BlockId, NvM_LockStatusType LockStatus)',
+    signature:
+      'Std_ReturnType NvM_SetBlockLockStatus(NvM_BlockIdType BlockId, NvM_LockStatusType LockStatus)',
     brief: '设置 NVRAM 块的锁定状态',
-    description: '锁定或解锁指定的 NVRAM 块。锁定后该块无法被写入或擦除，用于防止意外修改关键数据。解锁后恢复正常访问。',
+    description:
+      '锁定或解锁指定的 NVRAM 块。锁定后该块无法被写入或擦除，用于防止意外修改关键数据。解锁后恢复正常访问。',
     params: [
       { name: 'BlockId', type: 'NvM_BlockIdType', direction: 'in', description: 'NVRAM 块 ID' },
-      { name: 'LockStatus', type: 'NvM_LockStatusType', direction: 'in', description: '锁定状态：NVM_LOCKED / NVM_UNLOCKED' },
+      {
+        name: 'LockStatus',
+        type: 'NvM_LockStatusType',
+        direction: 'in',
+        description: '锁定状态：NVM_LOCKED / NVM_UNLOCKED',
+      },
     ],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 设置成功；E_NOT_OK: 块 ID 无效',

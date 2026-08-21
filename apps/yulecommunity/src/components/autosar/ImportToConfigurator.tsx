@@ -9,7 +9,11 @@ interface ImportToConfiguratorProps {
   disabled?: boolean;
 }
 
-export function ImportToConfigurator({ configData, moduleName, disabled = false }: ImportToConfiguratorProps) {
+export function ImportToConfigurator({
+  configData,
+  moduleName,
+  disabled = false,
+}: ImportToConfiguratorProps) {
   const navigate = useNavigate();
   const [imported, setImported] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);

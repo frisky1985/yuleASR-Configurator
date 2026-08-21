@@ -53,35 +53,43 @@ export async function licenseRoutes(app: FastifyInstance) {
    * POST /api/license/validate
    * Validate a license key and return tier + feature permissions.
    */
-  app.post('/validate', { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (request, reply) => {
-    const parsed = validateSchema.safeParse(request.body);
-    if (!parsed.success) {
-      return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
+  app.post(
+    '/validate',
+    { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } },
+    async (request, reply) => {
+      const parsed = validateSchema.safeParse(request.body);
+      if (!parsed.success) {
+        return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
+      }
+
+      const { key } = parsed.data;
+
+      const [license] = await db
+        .select()
+        .from(licenseKeys)
+        .where(eq(licenseKeys.key, key))
+        .limit(1);
+      if (!license) {
+        return reply.status(404).send({ message: 'License key not found' });
+      }
+
+      if (!license.active) {
+        return reply.status(403).send({ message: 'License key is deactivated' });
+      }
+
+      if (license.expiresAt && new Date(license.expiresAt) < new Date()) {
+        return reply.status(403).send({ message: 'License key has expired' });
+      }
+
+      return {
+        tier: license.tier,
+        maxModules: license.maxModules,
+        maxProjects: license.maxProjects,
+        expiresAt: license.expiresAt,
+        features: getFeaturesForTier(license.tier),
+      };
     }
-
-    const { key } = parsed.data;
-
-    const [license] = await db.select().from(licenseKeys).where(eq(licenseKeys.key, key)).limit(1);
-    if (!license) {
-      return reply.status(404).send({ message: 'License key not found' });
-    }
-
-    if (!license.active) {
-      return reply.status(403).send({ message: 'License key is deactivated' });
-    }
-
-    if (license.expiresAt && new Date(license.expiresAt) < new Date()) {
-      return reply.status(403).send({ message: 'License key has expired' });
-    }
-
-    return {
-      tier: license.tier,
-      maxModules: license.maxModules,
-      maxProjects: license.maxProjects,
-      expiresAt: license.expiresAt,
-      features: getFeaturesForTier(license.tier),
-    };
-  });
+  );
 
   /**
    * POST /api/license/activate

@@ -72,7 +72,10 @@ export function classifyImportError(message: string): ArxmlError | VersionError 
   if (message.startsWith('Duplicate element:')) {
     return new DuplicateElementError(message);
   }
-  if (message.startsWith('Unsupported AUTOSAR schema version') || message.startsWith('Unsupported schema version')) {
+  if (
+    message.startsWith('Unsupported AUTOSAR schema version') ||
+    message.startsWith('Unsupported schema version')
+  ) {
     return new VersionError(message);
   }
   return null;

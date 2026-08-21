@@ -75,7 +75,9 @@ describe('R6 导出接入 — 版本错误', () => {
     } catch (err) {
       expect(err).toBeInstanceOf(VersionError);
       expect(err).toBeInstanceOf(RangeError); // 存量调用方零回归
-      expect(err).toMatchObject({ message: expect.stringContaining('Unsupported AUTOSAR schema version: 52') });
+      expect(err).toMatchObject({
+        message: expect.stringContaining('Unsupported AUTOSAR schema version: 52'),
+      });
     }
   });
 
@@ -211,7 +213,9 @@ describe('R6 导入接入 — 严格入口按类重抛', () => {
   });
 
   it('畸形 XML → 抛 ParseError', () => {
-    expect(() => importSwcArxmlStrict('<AUTOSAR><AR-PACKAGES>', 'broken.arxml')).toThrow(ParseError);
+    expect(() => importSwcArxmlStrict('<AUTOSAR><AR-PACKAGES>', 'broken.arxml')).toThrow(
+      ParseError
+    );
   });
 
   it('重复元素 → 抛 DuplicateElementError', () => {
@@ -260,23 +264,29 @@ describe('R6 导入接入 — 严格入口按类重抛', () => {
 
 describe('classifyImportError — 错误前缀 → 异常类', () => {
   it('Invalid reference: → InvalidReferenceError', () => {
-    expect(classifyImportError('Invalid reference: /P/X (port In): expected an interface')).toBeInstanceOf(
-      InvalidReferenceError
-    );
+    expect(
+      classifyImportError('Invalid reference: /P/X (port In): expected an interface')
+    ).toBeInstanceOf(InvalidReferenceError);
   });
 
   it('Parse error / Malformed XML / Missing AUTOSAR → ParseError', () => {
     expect(classifyImportError('Parse error: unexpected')).toBeInstanceOf(ParseError);
-    expect(classifyImportError('Malformed XML: missing closing </AUTOSAR> tag')).toBeInstanceOf(ParseError);
+    expect(classifyImportError('Malformed XML: missing closing </AUTOSAR> tag')).toBeInstanceOf(
+      ParseError
+    );
     expect(classifyImportError('Missing AUTOSAR root element')).toBeInstanceOf(ParseError);
   });
 
   it('Duplicate element: → DuplicateElementError', () => {
-    expect(classifyImportError('Duplicate element: X in SWC Y ports')).toBeInstanceOf(DuplicateElementError);
+    expect(classifyImportError('Duplicate element: X in SWC Y ports')).toBeInstanceOf(
+      DuplicateElementError
+    );
   });
 
   it('Unsupported schema version → VersionError', () => {
-    expect(classifyImportError('Unsupported AUTOSAR schema version: 52')).toBeInstanceOf(VersionError);
+    expect(classifyImportError('Unsupported AUTOSAR schema version: 52')).toBeInstanceOf(
+      VersionError
+    );
   });
 
   it('未知前缀 → null（非分类错误）', () => {

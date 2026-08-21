@@ -554,11 +554,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CanNmGlobalConfig",
-    "CanNmGeneration",
-    "CanNmCluster"
-  ],
+  "required": ["CanNmGlobalConfig", "CanNmGeneration", "CanNmCluster"],
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",

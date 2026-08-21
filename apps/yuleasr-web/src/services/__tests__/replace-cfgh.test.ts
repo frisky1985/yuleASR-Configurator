@@ -30,7 +30,9 @@ beforeAll(() => {
   // 显式放宽至 120s，避免 CI 并行下 flaky 超时（YAC-CI-002）
   // 0) 真实仓库必须是 git 仓库（只读基准；路径错误/非 git 立即失败），记录起始脏数
   execSync(`git -C ${REAL} rev-parse --is-inside-work-tree`, { stdio: 'pipe' });
-  realDirtyBefore = execSync(`git -C ${REAL} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
+  realDirtyBefore = execSync(`git -C ${REAL} status --porcelain | wc -l`, {
+    encoding: 'utf8',
+  }).trim();
 
   // 1) 建 scratch 副本：只复制真实仓库已跟踪文件（工作树干净 = 基线），全新 git init
   //    （保留 .git 供"工作树归零"校验；partial clone 无法离线 git clone）
@@ -38,7 +40,9 @@ beforeAll(() => {
   rmSync(OUT, { recursive: true, force: true });
   mkdirSync(SCRATCH, { recursive: true });
   mkdirSync(OUT, { recursive: true });
-  execSync(`git -C ${REAL} ls-files | tar -T - -C ${REAL} -cf - | tar -C ${SCRATCH} -xf -`, { stdio: 'pipe' });
+  execSync(`git -C ${REAL} ls-files | tar -T - -C ${REAL} -cf - | tar -C ${SCRATCH} -xf -`, {
+    stdio: 'pipe',
+  });
   execSync(`git init -q ${SCRATCH}`, { stdio: 'pipe' });
   execSync(`git -C ${SCRATCH} add -A`, { stdio: 'pipe' });
   // 仓库级 user.name/email 不随副本继承（本机 yuleASR 为 repo-local 配置），显式注入
@@ -55,17 +59,22 @@ beforeAll(() => {
 afterEach(() => {
   try {
     execSync(`git -C ${SCRATCH} checkout -- src/`, { stdio: 'pipe' });
-  } catch { /* 已干净 */ }
+  } catch {
+    /* 已干净 */
+  }
   try {
     execSync(`git -C ${SCRATCH} clean -fd src/rte src/bsw/ecual/dlt`, { stdio: 'pipe' });
-  } catch { /* 已干净 */ }
+  } catch {
+    /* 已干净 */
+  }
 }, 120_000);
 
 afterAll(() => {
-
   try {
     // 纪律校验：真实 yuleASR 仓库工作树脏数与测试前一致（测试全程只读，不得制造增量污染）
-    const realDirty = execSync(`git -C ${REAL} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
+    const realDirty = execSync(`git -C ${REAL} status --porcelain | wc -l`, {
+      encoding: 'utf8',
+    }).trim();
     expect(realDirty, '真实 yuleASR 仓库工作树被测试污染（应与测试前一致）').toBe(realDirtyBefore);
   } finally {
     rmSync(SCRATCH, { recursive: true, force: true });
@@ -83,7 +92,9 @@ describe('replace-cfgh（可追溯替换工具）', () => {
     process.env.REPLACE_OUT = OUT;
 
     // 0) 前置：scratch 工作树干净（clone + seed 后基线）
-    const before = execSync(`git -C ${SCRATCH} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
+    const before = execSync(`git -C ${SCRATCH} status --porcelain | wc -l`, {
+      encoding: 'utf8',
+    }).trim();
     expect(before).toBe('0');
 
     // 1) dry-run：生成替换包，不落工作树
@@ -93,7 +104,9 @@ describe('replace-cfgh（可追溯替换工具）', () => {
     expect(dry.ok).toBe(dry.total);
     expect(dry.failed).toBe(0);
     expect(dry.applied).toBe(0);
-    const dryDirty = execSync(`git -C ${SCRATCH} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
+    const dryDirty = execSync(`git -C ${SCRATCH} status --porcelain | wc -l`, {
+      encoding: 'utf8',
+    }).trim();
     expect(dryDirty).toBe('0');
 
     // 2) apply：备份 + 替换
@@ -101,7 +114,9 @@ describe('replace-cfgh（可追溯替换工具）', () => {
     console.log(`[apply] total=${r.total} ok=${r.ok} applied=${r.applied} pkg=${r.pkgDir}`);
     expect(r.ok).toBe(r.total);
     expect(r.applied).toBeGreaterThan(100);
-    const dirty = execSync(`git -C ${SCRATCH} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
+    const dirty = execSync(`git -C ${SCRATCH} status --porcelain | wc -l`, {
+      encoding: 'utf8',
+    }).trim();
     console.log(`[apply] scratch 改动文件数: ${dirty}`);
     // 2026-08-10：yuleASR 已入库生成头（3902399e）后，再 apply 是增量差异（仅内容变化文件），
     // 不再要求 >100；核心断言是 applied>100（工具替换数）+ rollback 后工作树归零。
@@ -109,8 +124,12 @@ describe('replace-cfgh（可追溯替换工具）', () => {
 
     // 3) rollback：恢复手写头
     const rb = await runReplace('rollback');
-    console.log(`[rollback] rolledBack=${rb.rolledBack} skipped=${rb.skipped ?? 0} pkg=${rb.pkgDir}`);
-    const clean = execSync(`git -C ${SCRATCH} status --porcelain | wc -l`, { encoding: 'utf8' }).trim();
+    console.log(
+      `[rollback] rolledBack=${rb.rolledBack} skipped=${rb.skipped ?? 0} pkg=${rb.pkgDir}`
+    );
+    const clean = execSync(`git -C ${SCRATCH} status --porcelain | wc -l`, {
+      encoding: 'utf8',
+    }).trim();
     console.log(`[rollback] scratch 剩余改动: ${clean}`);
     expect(clean).toBe('0');
 

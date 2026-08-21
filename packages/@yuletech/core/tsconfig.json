@@ -4,28 +4,14 @@
     "composite": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "lib": [
-      "ES2022",
-      "DOM"
-    ],
+    "lib": ["ES2022", "DOM"],
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "paths": {
-      "@yuletech/core/*": [
-        "./src/*"
-      ]
+      "@yuletech/core/*": ["./src/*"]
     },
-    "types": [
-      "node"
-    ]
+    "types": ["node"]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.json"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules",
-    "**/*.test.ts"
-  ]
+  "include": ["src/**/*.ts", "src/**/*.json"],
+  "exclude": ["dist", "node_modules", "**/*.test.ts"]
 }

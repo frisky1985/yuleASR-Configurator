@@ -18,15 +18,16 @@ export function useLocalBookmarks() {
 
   const toggleBookmark = useCallback((apiId: string) => {
     setBookmarks(prev =>
-      prev.includes(apiId)
-        ? prev.filter(id => id !== apiId)
-        : [...prev, apiId]
+      prev.includes(apiId) ? prev.filter(id => id !== apiId) : [...prev, apiId]
     );
   }, []);
 
-  const isBookmarked = useCallback((apiId: string) => {
-    return bookmarks.includes(apiId);
-  }, [bookmarks]);
+  const isBookmarked = useCallback(
+    (apiId: string) => {
+      return bookmarks.includes(apiId);
+    },
+    [bookmarks]
+  );
 
   const clearBookmarks = useCallback(() => {
     setBookmarks([]);

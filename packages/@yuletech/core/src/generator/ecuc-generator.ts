@@ -67,8 +67,9 @@ export class EcucCodeGenerator implements CodeGenerator {
   name = 'EcucCodeGenerator';
   version = '1.0.0';
   supportedModules: string[] = ['*']; // 支持所有模块
-  private compilerAbstraction: CompilerAbstraction = new (getCompilerAbstraction(undefined)
-    .constructor as new () => CompilerAbstraction)();
+  private compilerAbstraction: CompilerAbstraction = new (
+    getCompilerAbstraction(undefined).constructor as new () => CompilerAbstraction
+  )();
 
   supports(moduleName: string): boolean {
     return this.supportedModules.includes('*') || this.supportedModules.includes(moduleName);
@@ -284,8 +285,6 @@ export class EcucCodeGenerator implements CodeGenerator {
 
 `;
 
-
-
     // 生成参数宏定义
     content += this.generateParameterMacros(config, schema, options);
 
@@ -330,10 +329,7 @@ export class EcucCodeGenerator implements CodeGenerator {
    * 这样使用者可以 #include "Ecuc_Can_Cfg.h" 或 "Ecuc_Mcu_Cfg.h" 来同时获得 ECUC 类型
    * 和 yuleASR 兼容的类型定义。
    */
-  private generateYuleASRTypeAliases(
-    config: ModuleConfig,
-    _schema: ModuleSchema
-  ): string {
+  private generateYuleASRTypeAliases(config: ModuleConfig, _schema: ModuleSchema): string {
     const moduleName = config.module;
     let content = '';
 
@@ -616,7 +612,12 @@ ${content}
     // 生成容器宏定义（包含子容器）
     if (schema.containers) {
       // 递归生成所有容器计数宏
-      content += this.generateContainerCountMacros(schema.containers, config.containers, config.module, options);
+      content += this.generateContainerCountMacros(
+        schema.containers,
+        config.containers,
+        config.module,
+        options
+      );
     }
 
     content += '\n';
@@ -682,7 +683,13 @@ ${content}
     // 递归生成子容器类型（先子后父，保证类型可见）
     if (container.children) {
       for (const child of container.children) {
-        content += this.generateContainerTypeDef(moduleName, child, schema, indent, childParentChain);
+        content += this.generateContainerTypeDef(
+          moduleName,
+          child,
+          schema,
+          indent,
+          childParentChain
+        );
       }
     }
 
@@ -759,7 +766,11 @@ ${content}
    * 生成 Can bridge: ECUC ConfigSet → Can_ConfigType Can_Config
    * 填充 Can_ControllerConfigType（含 BaudrateConfig / HardwareObject 子结构）
    */
-  private generateCanBridge(config: ModuleConfig, _schema: ModuleSchema, moduleName: string): string {
+  private generateCanBridge(
+    config: ModuleConfig,
+    _schema: ModuleSchema,
+    moduleName: string
+  ): string {
     const containers = config.containers?.['CanController'] || [];
     const controllerCount = containers.length;
 
@@ -774,8 +785,10 @@ ${content}
       for (let i = 0; i < controllerCount; i++) {
         const instance = containers[i];
         const params = instance.parameters;
-        const baudrateInstances = (instance.children?.['BaudrateConfig'] as ContainerConfig[] | undefined) || [];
-        const hohInstances = (instance.children?.['HardwareObject'] as ContainerConfig[] | undefined) || [];
+        const baudrateInstances =
+          (instance.children?.['BaudrateConfig'] as ContainerConfig[] | undefined) || [];
+        const hohInstances =
+          (instance.children?.['HardwareObject'] as ContainerConfig[] | undefined) || [];
 
         // BaudrateConfigs — compound literal，零实例时为 NULL_PTR
         let baudrateLiteral: string;
@@ -840,7 +853,11 @@ ${content}
   /**
    * 生成 Mcu bridge: ECUC ConfigSet → Mcu_ConfigType Mcu_Config
    */
-  private generateMcuBridge(config: ModuleConfig, _schema: ModuleSchema, moduleName: string): string {
+  private generateMcuBridge(
+    config: ModuleConfig,
+    _schema: ModuleSchema,
+    moduleName: string
+  ): string {
     const containers = config.containers?.['McuClockSettingConfig'] || [];
     const clockCount = containers.length;
 
@@ -852,7 +869,8 @@ ${content}
       for (let i = 0; i < clockCount; i++) {
         const instance = containers[i];
         const params = instance.parameters;
-        const pllInstances = (instance.children?.['PllConfig'] as ContainerConfig[] | undefined) || [];
+        const pllInstances =
+          (instance.children?.['PllConfig'] as ContainerConfig[] | undefined) || [];
 
         // PllConfigs — compound literal，零实例时为 NULL_PTR
         let pllLiteral: string;
@@ -920,7 +938,11 @@ ${content}
   /**
    * 生成 Port bridge: ECUC ConfigSet → Port_ConfigType Port_Config
    */
-  private generatePortBridge(config: ModuleConfig, _schema: ModuleSchema, moduleName: string): string {
+  private generatePortBridge(
+    config: ModuleConfig,
+    _schema: ModuleSchema,
+    moduleName: string
+  ): string {
     const pinInstances = config.containers?.['PortPin'] || [];
     const pinCount = pinInstances.length;
 
@@ -1281,7 +1303,9 @@ ${content}
   ): string {
     let content = '';
     // 使用链式命名避免与驱动类型冲突
-    const typeQualifier = parentContainerName ? `${parentContainerName}_${container.name}` : container.name;
+    const typeQualifier = parentContainerName
+      ? `${parentContainerName}_${container.name}`
+      : container.name;
     const containerType = `${moduleName}_${typeQualifier}Type`;
 
     // 生成子容器实例数组 — 使用内联 struct initializers 避免 C99 static const 引用限制
@@ -1322,7 +1346,7 @@ ${content}
         }
 
         // 内联 struct 定义
-        content +=    `{\n`;
+        content += `{\n`;
         for (const paramName of container.parameters || []) {
           const param = schema.parameters.find(p => p.name === paramName);
           const value = instance.parameters[paramName];
@@ -1346,7 +1370,7 @@ ${content}
           }
         }
 
-        content +=    `},\n`;
+        content += `},\n`;
       }
 
       content += `};\n\n`;

@@ -61,7 +61,11 @@ function macrosOf(file: string): Map<string, string> {
 
 /** C 宏值归一化 → [kind, value] */
 function normValue(s: string): [string, unknown] | null {
-  let t = s.replace(/\/\*.*?\*\//g, ' ').trim().replace(/\s*\/\/.*$/, '').trim();
+  let t = s
+    .replace(/\/\*.*?\*\//g, ' ')
+    .trim()
+    .replace(/\s*\/\/.*$/, '')
+    .trim();
   if (!t) return null;
   const up = t.toUpperCase();
   if (['STD_ON', 'TRUE', 'STD_HIGH'].includes(up)) return ['bool', true];
@@ -118,14 +122,18 @@ function verbatimNames(schema: any): Set<string> {
   if (!Array.isArray(defs)) return out;
   for (const block of defs) {
     if (typeof block !== 'string') continue;
-    for (const m of block.matchAll(/^[ \t]*#[ \t]*define[ \t]+([A-Za-z_][A-Za-z0-9_]*)/gm)) out.add(m[1]);
+    for (const m of block.matchAll(/^[ \t]*#[ \t]*define[ \t]+([A-Za-z_][A-Za-z0-9_]*)/gm))
+      out.add(m[1]);
   }
   return out;
 }
 
 function compare(): Row[] {
   const rows: Row[] = [];
-  for (const f of fs.readdirSync(CFGH_DIR).filter(x => x.endsWith('.json')).sort()) {
+  for (const f of fs
+    .readdirSync(CFGH_DIR)
+    .filter(x => x.endsWith('.json'))
+    .sort()) {
     const stem = f.replace(/\.json$/, '');
     const schema = JSON.parse(fs.readFileSync(path.join(CFGH_DIR, f), 'utf8'));
     const src = schema['x-source-file'] as string | undefined;
@@ -147,17 +155,24 @@ function compare(): Row[] {
     const mismatches: Row['mismatches'] = [];
     for (const name of [...macroNames].filter(n => propNames.has(n)).sort()) {
       const prop = props[name];
-      const dv = 'defaultValue' in prop ? prop.defaultValue : 'default' in prop ? prop.default : undefined;
+      const dv =
+        'defaultValue' in prop ? prop.defaultValue : 'default' in prop ? prop.default : undefined;
       if (dv === undefined) continue;
       const nv = normValue(macros.get(name)!);
       const sv = normSchemaVal(dv);
       if (!nv || !sv) continue;
       if (nv[0] === 'bool' && sv[0] === 'bool') {
-        if (nv[1] !== sv[1]) mismatches.push({ name, schemaDefault: dv, handwritten: macros.get(name)! });
-      } else if ((nv[0] === 'int' || nv[0] === 'num' || nv[0] === 'float') && (sv[0] === 'int' || sv[0] === 'num' || sv[0] === 'float')) {
-        if (Number(nv[1]) !== Number(sv[1])) mismatches.push({ name, schemaDefault: dv, handwritten: macros.get(name)! });
+        if (nv[1] !== sv[1])
+          mismatches.push({ name, schemaDefault: dv, handwritten: macros.get(name)! });
+      } else if (
+        (nv[0] === 'int' || nv[0] === 'num' || nv[0] === 'float') &&
+        (sv[0] === 'int' || sv[0] === 'num' || sv[0] === 'float')
+      ) {
+        if (Number(nv[1]) !== Number(sv[1]))
+          mismatches.push({ name, schemaDefault: dv, handwritten: macros.get(name)! });
       } else if (nv[0] === 'str' && sv[0] === 'str') {
-        if (nv[1] !== sv[1]) mismatches.push({ name, schemaDefault: dv, handwritten: macros.get(name)! });
+        if (nv[1] !== sv[1])
+          mismatches.push({ name, schemaDefault: dv, handwritten: macros.get(name)! });
       }
     }
 
@@ -186,16 +201,28 @@ function main(): number {
   const nExtra = rows.reduce((a, r) => a + r.extra.length, 0);
   const nMm = rows.reduce((a, r) => a + r.mismatches.length, 0);
 
-  const out = { generatedAt: new Date().toISOString(), yuleasrRoot, totalModules: rows.length, summary: { missing: nMissing, verbatimCovered: nVerbatim, extra: nExtra, defaultMismatch: nMm }, rows };
+  const out = {
+    generatedAt: new Date().toISOString(),
+    yuleasrRoot,
+    totalModules: rows.length,
+    summary: { missing: nMissing, verbatimCovered: nVerbatim, extra: nExtra, defaultMismatch: nMm },
+    rows,
+  };
   const jsonPath = jsonArg >= 0 ? args[jsonArg + 1] : undefined;
   if (jsonPath) fs.writeFileSync(jsonPath, JSON.stringify(out, null, 2));
 
-  console.log(`[VER-001] 模块数: ${rows.length}; 缺失配置项: ${nMissing}; verbatim 透传覆盖: ${nVerbatim}; 多余配置项: ${nExtra}; 默认值不一致: ${nMm}`);
+  console.log(
+    `[VER-001] 模块数: ${rows.length}; 缺失配置项: ${nMissing}; verbatim 透传覆盖: ${nVerbatim}; 多余配置项: ${nExtra}; 默认值不一致: ${nMm}`
+  );
   for (const r of rows) {
     if (r.missing.length) console.log(`  [missing] ${r.module}: ${r.missing.join(', ')}`);
-    if (r.missingVerbatim.length) console.log(`  [verbatim] ${r.module}: ${r.missingVerbatim.join(', ')}`);
+    if (r.missingVerbatim.length)
+      console.log(`  [verbatim] ${r.module}: ${r.missingVerbatim.join(', ')}`);
     if (r.extra.length) console.log(`  [extra] ${r.module}: ${r.extra.join(', ')}`);
-    for (const m of r.mismatches) console.log(`  [mismatch] ${r.module}.${m.name}: schema=${JSON.stringify(m.schemaDefault)} vs 手写=${m.handwritten}`);
+    for (const m of r.mismatches)
+      console.log(
+        `  [mismatch] ${r.module}.${m.name}: schema=${JSON.stringify(m.schemaDefault)} vs 手写=${m.handwritten}`
+      );
   }
   return 0;
 }

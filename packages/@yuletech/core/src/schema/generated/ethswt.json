@@ -165,10 +165,7 @@
       "type": "enum",
       "description": "ETHSWT_DEFAULT_DUPLEX 参数",
       "default": "ETHSWT_DUPLEX_FULL",
-      "enum": [
-        "ETHSWT_DUPLEX_FULL",
-        "ETHSWT_DUPLEX_HALF"
-      ],
+      "enum": ["ETHSWT_DUPLEX_FULL", "ETHSWT_DUPLEX_HALF"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHSWT_DEFAULT_MTU": {

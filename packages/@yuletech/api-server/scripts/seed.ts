@@ -126,7 +126,11 @@ async function main() {
   console.log(`Using user: ${systemUser.username} (id: ${systemUser.id})`);
 
   for (const tpl of sampleTemplates) {
-    const [existing] = await db.select().from(bswTemplates).where(eq(bswTemplates.name, tpl.name)).limit(1);
+    const [existing] = await db
+      .select()
+      .from(bswTemplates)
+      .where(eq(bswTemplates.name, tpl.name))
+      .limit(1);
     if (existing) {
       console.log(`  Skipping existing template: ${tpl.name}`);
       continue;

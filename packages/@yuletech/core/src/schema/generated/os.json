@@ -110,11 +110,7 @@
         },
         "OsTaskSchedule": {
           "type": "string",
-          "enum": [
-            "FULL",
-            "NON",
-            "MIXED"
-          ],
+          "enum": ["FULL", "NON", "MIXED"],
           "default": "FULL",
           "description": "调度策略: FULL(完全抢占), NON(非抢占), MIXED(混合)"
         },
@@ -134,10 +130,7 @@
         },
         "OsTaskType": {
           "type": "string",
-          "enum": [
-            "BCC",
-            "ECC"
-          ],
+          "enum": ["BCC", "ECC"],
           "default": "BCC",
           "description": "任务类型: BCC(基础任务), ECC(扩展任务-支持事件)"
         },
@@ -182,10 +175,7 @@
         },
         "OsIsrCategory": {
           "type": "integer",
-          "enum": [
-            1,
-            2
-          ],
+          "enum": [1, 2],
           "default": 2,
           "description": "ISR 分类: 1(Category 1 - 不使用OS服务), 2(Category 2 - 可使用OS服务)"
         },
@@ -291,11 +281,7 @@
         },
         "OsAlarmActionType": {
           "type": "string",
-          "enum": [
-            "ActivateTask",
-            "SetEvent",
-            "Callback"
-          ],
+          "enum": ["ActivateTask", "SetEvent", "Callback"],
           "default": "ActivateTask",
           "description": "到期动作类型"
         },
@@ -362,11 +348,7 @@
         },
         "OsScheduleTableSyncStrategy": {
           "type": "string",
-          "enum": [
-            "NONE",
-            "SINGLE",
-            "IMPLICIT"
-          ],
+          "enum": ["NONE", "SINGLE", "IMPLICIT"],
           "default": "NONE",
           "description": "同步策略: NONE(无), SINGLE(单次), IMPLICIT(隐式)"
         },
@@ -396,11 +378,7 @@
               },
               "ExpiryPointActionType": {
                 "type": "string",
-                "enum": [
-                  "ActivateTask",
-                  "SetEvent",
-                  "Callback"
-                ],
+                "enum": ["ActivateTask", "SetEvent", "Callback"],
                 "default": "ActivateTask",
                 "description": "到期动作类型"
               },
@@ -419,9 +397,7 @@
                 "description": "事件掩码"
               }
             },
-            "required": [
-              "ExpiryPointOffset"
-            ],
+            "required": ["ExpiryPointOffset"],
             "additionalProperties": true
           }
         }
@@ -637,9 +613,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "OsGeneral"
-  ],
+  "required": ["OsGeneral"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

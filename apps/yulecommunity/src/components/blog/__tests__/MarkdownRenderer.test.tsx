@@ -241,9 +241,7 @@ describe('MarkdownRenderer', () => {
   });
 
   it('javascript: 协议的图片 src 不渲染', () => {
-    const { container } = render(
-      <MarkdownRenderer content="![x](javascript:alert(1))" />
-    );
+    const { container } = render(<MarkdownRenderer content="![x](javascript:alert(1))" />);
 
     const img = container.querySelector('img');
     // img 组件在协议校验失败时渲染 safeSrc=undefined

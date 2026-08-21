@@ -33,17 +33,83 @@ interface AClassCase {
 }
 
 const A_CASES: AClassCase[] = [
-  { json: 'doip.json', moduleName: 'DoIP', sourcePath: 'src/bsw/services/doip/include/DoIP_Cfg.h', headerName: 'DoIP_Cfg.h', kind: 'truncation' },
-  { json: 'doip_ecual.json', moduleName: 'DoIP', sourcePath: 'src/bsw/ecual/doIP/include/DoIP_Cfg.h', headerName: 'DoIP_Cfg.h', kind: 'truncation' },
-  { json: 'fim_ecual.json', moduleName: 'FiM', sourcePath: 'src/bsw/ecual/fim/include/FiM_Cfg.h', headerName: 'FiM_Cfg.h', kind: 'truncation' },
-  { json: 'mqtt.json', moduleName: 'Mqtt', sourcePath: 'src/bsw/services/mqtt/include/Mqtt_Cfg.h', headerName: 'Mqtt_Cfg.h', kind: 'truncation' },
-  { json: 'ostimingprotection.json', moduleName: 'Os_TimingProtection', sourcePath: 'src/bsw/os/include/Os_TimingProtection_Cfg.h', headerName: 'Os_TimingProtection_Cfg.h', kind: 'truncation' },
-  { json: 'swc.json', moduleName: 'Swc', sourcePath: 'src/bsw/services/swc/include/Swc_Cfg.h', headerName: 'Swc_Cfg.h', kind: 'truncation' },
-  { json: 'xcp_ecual.json', moduleName: 'Xcp', sourcePath: 'src/bsw/ecual/xcp/include/Xcp_Cfg.h', headerName: 'Xcp_Cfg.h', kind: 'truncation' },
-  { json: 'csm.json', moduleName: 'Csm', sourcePath: 'src/bsw/services/csm/include/Csm_Cfg.h', headerName: 'Csm_Cfg.h', kind: 'guardrail' },
-  { json: 'flash.json', moduleName: 'Flash', sourcePath: 'src/bsw/mcal/flash/include/Flash_Cfg.h', headerName: 'Flash_Cfg.h', kind: 'guardrail' },
-  { json: 'linker.json', moduleName: 'Linker', sourcePath: 'src/platform/s32k312/linker/Linker_Cfg.h', headerName: 'Linker_Cfg.h', kind: 'guardrail' },
-  { json: 'wdgm.json', moduleName: 'WdgM', sourcePath: 'src/bsw/services/wdgm/include/WdgM_Cfg.h', headerName: 'WdgM_Cfg.h', kind: 'guardrail' },
+  {
+    json: 'doip.json',
+    moduleName: 'DoIP',
+    sourcePath: 'src/bsw/services/doip/include/DoIP_Cfg.h',
+    headerName: 'DoIP_Cfg.h',
+    kind: 'truncation',
+  },
+  {
+    json: 'doip_ecual.json',
+    moduleName: 'DoIP',
+    sourcePath: 'src/bsw/ecual/doIP/include/DoIP_Cfg.h',
+    headerName: 'DoIP_Cfg.h',
+    kind: 'truncation',
+  },
+  {
+    json: 'fim_ecual.json',
+    moduleName: 'FiM',
+    sourcePath: 'src/bsw/ecual/fim/include/FiM_Cfg.h',
+    headerName: 'FiM_Cfg.h',
+    kind: 'truncation',
+  },
+  {
+    json: 'mqtt.json',
+    moduleName: 'Mqtt',
+    sourcePath: 'src/bsw/services/mqtt/include/Mqtt_Cfg.h',
+    headerName: 'Mqtt_Cfg.h',
+    kind: 'truncation',
+  },
+  {
+    json: 'ostimingprotection.json',
+    moduleName: 'Os_TimingProtection',
+    sourcePath: 'src/bsw/os/include/Os_TimingProtection_Cfg.h',
+    headerName: 'Os_TimingProtection_Cfg.h',
+    kind: 'truncation',
+  },
+  {
+    json: 'swc.json',
+    moduleName: 'Swc',
+    sourcePath: 'src/bsw/services/swc/include/Swc_Cfg.h',
+    headerName: 'Swc_Cfg.h',
+    kind: 'truncation',
+  },
+  {
+    json: 'xcp_ecual.json',
+    moduleName: 'Xcp',
+    sourcePath: 'src/bsw/ecual/xcp/include/Xcp_Cfg.h',
+    headerName: 'Xcp_Cfg.h',
+    kind: 'truncation',
+  },
+  {
+    json: 'csm.json',
+    moduleName: 'Csm',
+    sourcePath: 'src/bsw/services/csm/include/Csm_Cfg.h',
+    headerName: 'Csm_Cfg.h',
+    kind: 'guardrail',
+  },
+  {
+    json: 'flash.json',
+    moduleName: 'Flash',
+    sourcePath: 'src/bsw/mcal/flash/include/Flash_Cfg.h',
+    headerName: 'Flash_Cfg.h',
+    kind: 'guardrail',
+  },
+  {
+    json: 'linker.json',
+    moduleName: 'Linker',
+    sourcePath: 'src/platform/s32k312/linker/Linker_Cfg.h',
+    headerName: 'Linker_Cfg.h',
+    kind: 'guardrail',
+  },
+  {
+    json: 'wdgm.json',
+    moduleName: 'WdgM',
+    sourcePath: 'src/bsw/services/wdgm/include/WdgM_Cfg.h',
+    headerName: 'WdgM_Cfg.h',
+    kind: 'guardrail',
+  },
 ];
 
 function readHandwritten(c: AClassCase): string {
@@ -55,47 +121,50 @@ function loadSchema(c: AClassCase): ModuleSchema {
   return generatedJsonToModuleSchema(c.moduleName, raw);
 }
 
-describe.skipIf(!HAS_YULEASR)('demo-fixA — A 类 11 模块（splice 修复后回归，需 yuleASR 仓库）', () => {
-  for (const c of A_CASES) {
-    it(`${c.kind}: ${c.moduleName} (${c.json})`, async () => {
-      const schema = loadSchema(c);
-      const handwritten = readHandwritten(c);
-      let error = '';
-      let content = '';
-      try {
-        const files = await generateHeadersFromSchemas([schema], {
-          handwrittenHeaders: new Map([[c.headerName, handwritten]]),
-        });
-        content = files[0].content;
-      } catch (e) {
-        error = (e as Error).message;
-      }
-      expect(error, `生成抛错: ${error}`).toBe('');
+describe.skipIf(!HAS_YULEASR)(
+  'demo-fixA — A 类 11 模块（splice 修复后回归，需 yuleASR 仓库）',
+  () => {
+    for (const c of A_CASES) {
+      it(`${c.kind}: ${c.moduleName} (${c.json})`, async () => {
+        const schema = loadSchema(c);
+        const handwritten = readHandwritten(c);
+        let error = '';
+        let content = '';
+        try {
+          const files = await generateHeadersFromSchemas([schema], {
+            handwrittenHeaders: new Map([[c.headerName, handwritten]]),
+          });
+          content = files[0].content;
+        } catch (e) {
+          error = (e as Error).message;
+        }
+        expect(error, `生成抛错: ${error}`).toBe('');
 
-      // 非宏段完整性：拼接产物中保留的非宏段，与手写头提取的非宏段逐行一致
-      const bannerIdx = content.indexOf('NON-MACRO SEGMENT');
-      expect(bannerIdx, '应含非宏段 banner').toBeGreaterThanOrEqual(0);
-      // banner 为多行注释，取注释闭合行（*==...*/）之后的内容
-      const closeIdx = content.indexOf('*========', bannerIdx);
-      const segStart = content.indexOf('\n', closeIdx) + 1;
-      const splicedSeg = content.slice(segStart);
-      // 取最后一个 #endif（生成头尾部），段内防重定义守卫的 #endif 不计
-      const segEnd = splicedSeg.lastIndexOf('#endif');
-      const splicedNonMacro = (segEnd >= 0 ? splicedSeg.slice(0, segEnd) : splicedSeg).trimEnd();
+        // 非宏段完整性：拼接产物中保留的非宏段，与手写头提取的非宏段逐行一致
+        const bannerIdx = content.indexOf('NON-MACRO SEGMENT');
+        expect(bannerIdx, '应含非宏段 banner').toBeGreaterThanOrEqual(0);
+        // banner 为多行注释，取注释闭合行（*==...*/）之后的内容
+        const closeIdx = content.indexOf('*========', bannerIdx);
+        const segStart = content.indexOf('\n', closeIdx) + 1;
+        const splicedSeg = content.slice(segStart);
+        // 取最后一个 #endif（生成头尾部），段内防重定义守卫的 #endif 不计
+        const segEnd = splicedSeg.lastIndexOf('#endif');
+        const splicedNonMacro = (segEnd >= 0 ? splicedSeg.slice(0, segEnd) : splicedSeg).trimEnd();
 
-      const handwrittenSeg = extractNonMacroSegment(handwritten);
-      expect(handwrittenSeg, '手写头应含非宏段').not.toBeNull();
-      expect(splicedNonMacro).toBe(handwrittenSeg!.segment.trimEnd());
+        const handwrittenSeg = extractNonMacroSegment(handwritten);
+        expect(handwrittenSeg, '手写头应含非宏段').not.toBeNull();
+        expect(splicedNonMacro).toBe(handwrittenSeg!.segment.trimEnd());
 
-      // 语句闭合完整性：末行必须以 ; 或 } 或 MemMap.h include 或 #endif 结尾（不截断）
-      const lastLine = splicedNonMacro.split('\n').pop()!.trim();
-      expect(
-        lastLine.endsWith(';') ||
-          lastLine.endsWith('}') ||
-          /_MemMap\.h"$/.test(lastLine) ||
-          /^#endif/.test(lastLine),
-        `末行未闭合: ${lastLine}`
-      ).toBe(true);
-    });
+        // 语句闭合完整性：末行必须以 ; 或 } 或 MemMap.h include 或 #endif 结尾（不截断）
+        const lastLine = splicedNonMacro.split('\n').pop()!.trim();
+        expect(
+          lastLine.endsWith(';') ||
+            lastLine.endsWith('}') ||
+            /_MemMap\.h"$/.test(lastLine) ||
+            /^#endif/.test(lastLine),
+          `末行未闭合: ${lastLine}`
+        ).toBe(true);
+      });
+    }
   }
-});
+);

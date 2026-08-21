@@ -115,10 +115,7 @@ function findParameterDefInContainers(
  * 策略：逐段剥离前导段（容忍版本前缀 /4.4.0 与模块短名段），尝试容器链逐段匹配
  * + 末段参数名；全部失败退化短名模糊查找（整树首个同名）。
  */
-function resolveParameterDef(
-  moduleDef: EcucModuleDef,
-  ref: string
-): EcucParameterDef | undefined {
+function resolveParameterDef(moduleDef: EcucModuleDef, ref: string): EcucParameterDef | undefined {
   const segments = ref.split('/').filter(s => s.length > 0);
   const paramName = segments[segments.length - 1];
   if (!paramName) return undefined;
@@ -134,10 +131,7 @@ function resolveParameterDef(
 }
 
 /** 按 DEFINITION-REF 解析容器定义（同 resolveParameterDef 的剥离 + 短名退化策略） */
-function resolveContainerDef(
-  moduleDef: EcucModuleDef,
-  ref: string
-): EcucContainerDef | undefined {
+function resolveContainerDef(moduleDef: EcucModuleDef, ref: string): EcucContainerDef | undefined {
   const segments = ref.split('/').filter(s => s.length > 0);
   const containerName = segments[segments.length - 1];
   if (!containerName) return undefined;
@@ -170,11 +164,17 @@ function validateParameterValue(
 
   const value = param.value;
   const ok =
-    def.kind === 'NUMERICAL' ? typeof value === 'number' :
-    def.kind === 'BOOLEAN' ? typeof value === 'boolean' :
-    def.kind === 'TEXTUAL' ? typeof value === 'string' :
-    def.kind === 'REFERENCE' ? typeof value === 'string' :
-    /* ENUMERATION */ typeof value === 'string' && def.literals !== undefined && def.literals.includes(value);
+    def.kind === 'NUMERICAL'
+      ? typeof value === 'number'
+      : def.kind === 'BOOLEAN'
+        ? typeof value === 'boolean'
+        : def.kind === 'TEXTUAL'
+          ? typeof value === 'string'
+          : def.kind === 'REFERENCE'
+            ? typeof value === 'string'
+            : /* ENUMERATION */ typeof value === 'string' &&
+              def.literals !== undefined &&
+              def.literals.includes(value);
   if (ok) return;
 
   const location = `ECUC module ${moduleName} parameter ${param.name}`;

@@ -84,11 +84,7 @@
           "type": "string",
           "maxLength": 255,
           "description": "UartStopBits 参数",
-          "enum": [
-            "UART_STOP_BITS_1",
-            "UART_STOP_BITS_1_5",
-            "UART_STOP_BITS_2"
-          ]
+          "enum": ["UART_STOP_BITS_1", "UART_STOP_BITS_1_5", "UART_STOP_BITS_2"]
         },
         "UartDataBits": {
           "type": "string",
@@ -213,11 +209,7 @@
           "type": "string",
           "maxLength": 255,
           "description": "UartStopBits 参数",
-          "enum": [
-            "UART_STOP_BITS_1",
-            "UART_STOP_BITS_1_5",
-            "UART_STOP_BITS_2"
-          ]
+          "enum": ["UART_STOP_BITS_1", "UART_STOP_BITS_1_5", "UART_STOP_BITS_2"]
         },
         "UartDataBits": {
           "type": "string",
@@ -268,11 +260,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CommonPublishedInformation",
-    "UartConfigSet",
-    "UartGeneral"
-  ],
+  "required": ["CommonPublishedInformation", "UartConfigSet", "UartGeneral"],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",

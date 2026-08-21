@@ -45,10 +45,7 @@
           "type": "string",
           "maxLength": 255,
           "description": "PortPinDirection 参数",
-          "enum": [
-            "PORT_PIN_IN",
-            "PORT_PIN_OUT"
-          ]
+          "enum": ["PORT_PIN_IN", "PORT_PIN_OUT"]
         },
         "PortPinInitialMode": {
           "type": "string",
@@ -59,10 +56,7 @@
           "type": "string",
           "maxLength": 255,
           "description": "PortPinLevelValue 参数",
-          "enum": [
-            "PORT_PIN_LEVEL_LOW",
-            "PORT_PIN_LEVEL_HIGH"
-          ]
+          "enum": ["PORT_PIN_LEVEL_LOW", "PORT_PIN_LEVEL_HIGH"]
         },
         "PortPinMode": {
           "type": "string",
@@ -262,9 +256,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "PortPin"
-  ],
+  "required": ["PortPin"],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",

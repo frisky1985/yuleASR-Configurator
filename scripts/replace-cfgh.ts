@@ -19,7 +19,16 @@
  *   REPLACE_MODE=rollback 从替换包恢复手写头（校验 md5）
  */
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, rmSync, copyFileSync, statSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+  readdirSync,
+  rmSync,
+  copyFileSync,
+  statSync,
+} from 'node:fs';
 import { join } from 'node:path';
 
 // YAC-KNOWN-003 修复：根目录脚本不能用裸包名导入 @yuletech/core —— 仓库根 node_modules
@@ -67,7 +76,9 @@ function md5(content: string | Buffer): string {
 /** 模块 → 手写头内容（按 x-source-file 精确；重名模块各自独立） */
 function loadHandwrittenHeaders(): Map<string, string> {
   const map = new Map<string, string>();
-  for (const f of readdirSync(CFGH_DIR).filter(f => f.endsWith('.json')).sort()) {
+  for (const f of readdirSync(CFGH_DIR)
+    .filter(f => f.endsWith('.json'))
+    .sort()) {
     const json = JSON.parse(readFileSync(join(CFGH_DIR, f), 'utf8'));
     const src = json['x-source-file'];
     if (typeof src !== 'string') continue;
@@ -81,7 +92,9 @@ function loadHandwrittenHeaders(): Map<string, string> {
 /** 加载宏名版 schema（与生产 loadPreferredSchemas 对齐） */
 function loadSchemas(): ModuleSchema[] {
   const schemas: ModuleSchema[] = [];
-  for (const f of readdirSync(CFGH_DIR).filter(f => f.endsWith('.json')).sort()) {
+  for (const f of readdirSync(CFGH_DIR)
+    .filter(f => f.endsWith('.json'))
+    .sort()) {
     const stem = f.replace(/\.json$/, '');
     const json = JSON.parse(readFileSync(join(CFGH_DIR, f), 'utf8'));
     schemas.push(generatedJsonToModuleSchema(stem, json));
@@ -91,13 +104,18 @@ function loadSchemas(): ModuleSchema[] {
 }
 
 /** 生成全部头（拼接路径开启；YAC-MAP-003 起 109 个） */
-async function generateAll(): Promise<{ files: Map<string, { content: string; sourcePath: string }>; errors: any[] }> {
+async function generateAll(): Promise<{
+  files: Map<string, { content: string; sourcePath: string }>;
+  errors: any[];
+}> {
   const schemas = loadSchemas();
   const handwritten = loadHandwrittenHeaders();
   const files = new Map<string, { content: string; sourcePath: string }>();
   const errors: any[] = [];
   for (const schema of schemas) {
-    const json = JSON.parse(readFileSync(join(CFGH_DIR, `${schema.name.toLowerCase()}.json`), 'utf8'));
+    const json = JSON.parse(
+      readFileSync(join(CFGH_DIR, `${schema.name.toLowerCase()}.json`), 'utf8')
+    );
     const src = json['x-source-file'] as string | undefined;
     try {
       const out = await generateHeadersFromSchemas([schema], { handwrittenHeaders: handwritten });
@@ -123,7 +141,9 @@ export async function runReplace(
     // 空/错误路径会静默写向草稿树（~/.openclaw/yuleASR）导致真实仓库未恢复
     const yDir = assertYuleasrGitRepo(mode);
     const pkgDirs = existsSync(outRoot())
-      ? readdirSync(outRoot()).filter(d => existsSync(join(outRoot(), d, 'backup-md5.json'))).sort()
+      ? readdirSync(outRoot())
+          .filter(d => existsSync(join(outRoot(), d, 'backup-md5.json')))
+          .sort()
       : [];
     const latest = explicitPkgDir || (pkgDirs.length > 0 ? pkgDirs[pkgDirs.length - 1] : null);
     if (!latest) throw new Error('无可回滚的替换包');
@@ -170,7 +190,10 @@ export async function runReplace(
 
   // 时间戳 + 模式后缀（P2 加固 2026-08-10）：dry-run/apply 同秒执行会写同一包目录，
   // 第二次 backup 会录成生成内容 → 回滚错乱；加模式后缀 + 毫秒彻底隔离
-  const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19) + '-' + String(Date.now() % 1000).padStart(3, '0');
+  const ts =
+    new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19) +
+    '-' +
+    String(Date.now() % 1000).padStart(3, '0');
   const pkgDir = join(outRoot(), `${ts}-${mode}`);
   const backupDir = join(pkgDir, 'backup');
   const genDir = join(pkgDir, 'generated');

@@ -8,7 +8,12 @@ describe('T4 跨模块依赖校验链路验证（宏名版，生产入口）', (
     const schemas = loadPreferredSchemas();
     const withRefs = schemas.filter(s => (s as any).crossReferences?.length > 0);
     console.log(`[T4] schema 总数 ${schemas.length}，含 crossReferences: ${withRefs.length} 模块`);
-    console.log(`[T4] schema.name 示例: ${withRefs.slice(0, 4).map(s => s.name).join(', ')}`);
+    console.log(
+      `[T4] schema.name 示例: ${withRefs
+        .slice(0, 4)
+        .map(s => s.name)
+        .join(', ')}`
+    );
     expect(withRefs.length).toBeGreaterThanOrEqual(10);
 
     const fee = withRefs.find(s => s.name.toLowerCase() === 'fee');
@@ -25,7 +30,9 @@ describe('T4 跨模块依赖校验链路验证（宏名版，生产入口）', (
     const map = new Map(schemas.map(s => [s.name, s]));
     const v = new CrossModuleValidator(map);
     const errors = v.validate(configs);
-    console.log(`[T4] 违反配置检测到 ${errors.length} 条: ${errors.map(e => e.message).join('; ')}`);
+    console.log(
+      `[T4] 违反配置检测到 ${errors.length} 条: ${errors.map(e => e.message).join('; ')}`
+    );
     expect(errors.length).toBeGreaterThan(0);
   });
 });

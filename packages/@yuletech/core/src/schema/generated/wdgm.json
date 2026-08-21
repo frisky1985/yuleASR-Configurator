@@ -232,11 +232,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CommonPublishedInformation",
-    "WdgMConfigSet",
-    "WdgMGeneral"
-  ],
+  "required": ["CommonPublishedInformation", "WdgMConfigSet", "WdgMGeneral"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

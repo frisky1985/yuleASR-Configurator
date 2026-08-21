@@ -42,8 +42,9 @@ export class OsCodeGenerator implements CodeGenerator {
   name = 'OsCodeGenerator';
   version = '1.0.0';
   supportedModules: string[] = ['Os', 'OS'];
-  private compilerAbstraction: CompilerAbstraction = new (getCompilerAbstraction(undefined)
-    .constructor as new () => CompilerAbstraction)();
+  private compilerAbstraction: CompilerAbstraction = new (
+    getCompilerAbstraction(undefined).constructor as new () => CompilerAbstraction
+  )();
 
   supports(moduleName: string): boolean {
     return this.supportedModules.includes(moduleName);
@@ -253,8 +254,7 @@ export class OsCodeGenerator implements CodeGenerator {
     // ScheduleTable expiry points: ExpiryPointTaskRef
     for (const [name, st] of Object.entries(scheduleTables)) {
       const expiryPoints = st['OsScheduleTableExpiryPoints'] as
-        | Array<Record<string, unknown>>
-        | undefined;
+        Array<Record<string, unknown>> | undefined;
       if (expiryPoints && Array.isArray(expiryPoints)) {
         for (const ep of expiryPoints) {
           const epTaskRef = String(ep['ExpiryPointTaskRef'] ?? '');

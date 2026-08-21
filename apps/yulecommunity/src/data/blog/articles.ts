@@ -890,7 +890,8 @@ export const articlesData = [
     tags: ['MCAL', 'CAN', 'i.MX8M'],
     category: 'MCAL',
     hot: true,
-    content: '本平台集成了 FlexCAN 模块，支持经典 CAN 和 CAN FD 两种模式。本文将详细介绍从寄存器配置到 AutoSAR Can 模块接口的完整实现。',
+    content:
+      '本平台集成了 FlexCAN 模块，支持经典 CAN 和 CAN FD 两种模式。本文将详细介绍从寄存器配置到 AutoSAR Can 模块接口的完整实现。',
   },
   {
     id: 'blog-3',
@@ -907,7 +908,8 @@ export const articlesData = [
     tags: ['ECUAL', 'CanIf', '配置'],
     category: 'ECUAL',
     hot: true,
-    content: 'CanIf（CAN Interface）是 ECUAL 层的关键模块，负责为上层的 PduR 和 Com 提供与硬件无关的 CAN 通信接口。',
+    content:
+      'CanIf（CAN Interface）是 ECUAL 层的关键模块，负责为上层的 PduR 和 Com 提供与硬件无关的 CAN 通信接口。',
   },
   {
     id: 'blog-4',
@@ -924,7 +926,8 @@ export const articlesData = [
     tags: ['Service', 'Com', '通信'],
     category: 'Service',
     hot: false,
-    content: 'Com 模块是 AutoSAR 通信栈的核心，负责将应用层的信号数据打包成 PDU，以及将接收到的 PDU 解包成信号数据。',
+    content:
+      'Com 模块是 AutoSAR 通信栈的核心，负责将应用层的信号数据打包成 PDU，以及将接收到的 PDU 解包成信号数据。',
   },
   {
     id: 'blog-5',
@@ -941,7 +944,8 @@ export const articlesData = [
     tags: ['工具链', 'YuleConfig', '插件'],
     category: '工具链',
     hot: false,
-    content: 'YuleConfig 是 YuleTech 开源的 AutoSAR BSW 配置工具链，采用插件化架构，支持自定义模块配置界面和代码生成器开发。',
+    content:
+      'YuleConfig 是 YuleTech 开源的 AutoSAR BSW 配置工具链，采用插件化架构，支持自定义模块配置界面和代码生成器开发。',
   },
   {
     id: 'blog-6',
@@ -958,7 +962,8 @@ export const articlesData = [
     tags: ['功能安全', 'ISO 26262', 'E2E'],
     category: '功能安全',
     hot: true,
-    content: 'ISO 26262 是汽车功能安全的国际标准，AutoSAR BSW 作为基础软件，需要在架构设计和代码实现中充分考虑功能安全要求。',
+    content:
+      'ISO 26262 是汽车功能安全的国际标准，AutoSAR BSW 作为基础软件，需要在架构设计和代码实现中充分考虑功能安全要求。',
   },
   {
     id: 'blog-7',
@@ -975,7 +980,8 @@ export const articlesData = [
     tags: ['工具链', 'CI/CD', 'Docker'],
     category: '工具链',
     hot: false,
-    content: '持续集成是现代软件开发的标准实践，对于 AutoSAR BSW 这种对质量要求极高的嵌入式软件尤为重要。',
+    content:
+      '持续集成是现代软件开发的标准实践，对于 AutoSAR BSW 这种对质量要求极高的嵌入式软件尤为重要。',
   },
   {
     id: 'blog-8',
@@ -1009,7 +1015,8 @@ export const articlesData = [
     tags: ['架构设计', 'RTE', '代码生成'],
     category: '架构设计',
     hot: true,
-    content: 'RTE（Runtime Environment）是 AutoSAR 软件组件之间的通信接口层，其代码通常由 RTE 生成器根据 ARXML 配置自动生成。',
+    content:
+      'RTE（Runtime Environment）是 AutoSAR 软件组件之间的通信接口层，其代码通常由 RTE 生成器根据 ARXML 配置自动生成。',
   },
   {
     id: 'blog-10',
@@ -1026,7 +1033,8 @@ export const articlesData = [
     tags: ['工具链', 'MISRA', '代码质量'],
     category: '工具链',
     hot: false,
-    content: 'MISRA C:2012 是汽车嵌入式软件开发中最广泛使用的编码规范，遵循 MISRA 规则可以显著提高代码的安全性和可维护性。',
+    content:
+      'MISRA C:2012 是汽车嵌入式软件开发中最广泛使用的编码规范，遵循 MISRA 规则可以显著提高代码的安全性和可维护性。',
   },
 ];
 

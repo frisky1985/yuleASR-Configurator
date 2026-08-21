@@ -285,9 +285,7 @@
       },
       "additionalProperties": true,
       "x-choice-container": true,
-      "x-choice-params": [
-        "CanTpChannelMode"
-      ],
+      "x-choice-params": ["CanTpChannelMode"],
       "x-choice-description": "CanTp 通道模式二选一 (标准/扩展寻址)"
     },
     "LHBDCANFDTpChannel_fc1f7a07": {
@@ -862,11 +860,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CanTpGeneral",
-    "CanTpConfig",
-    "LHBDCANFDTpChannel_fc1f7a07"
-  ],
+  "required": ["CanTpGeneral", "CanTpConfig", "LHBDCANFDTpChannel_fc1f7a07"],
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",

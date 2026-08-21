@@ -60,7 +60,11 @@ export async function templateReviewsRoutes(app: FastifyInstance) {
       const user = request.user as { id: number };
 
       // Verify template exists
-      const [template] = await db.select().from(bswTemplates).where(eq(bswTemplates.id, tid)).limit(1);
+      const [template] = await db
+        .select()
+        .from(bswTemplates)
+        .where(eq(bswTemplates.id, tid))
+        .limit(1);
       if (!template) {
         throw { statusCode: 404, message: 'Template not found' };
       }
@@ -99,54 +103,50 @@ export async function templateReviewsRoutes(app: FastifyInstance) {
   );
 
   // ── PUT /api/template-reviews/:id — edit own review ───────────────────
-  app.put(
-    '/template-reviews/:id',
-    { onRequest: [app.authenticate] },
-    async (request, reply) => {
-      const parsed = updateReviewSchema.safeParse(request.body);
-      if (!parsed.success) {
-        return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
-      }
-
-      const { id } = request.params as { id: string };
-      const reviewId = parseInt(id, 10);
-      if (isNaN(reviewId)) {
-        throw { statusCode: 400, message: 'Invalid review ID' };
-      }
-
-      const user = request.user as { id: number };
-
-      const [existing] = await db
-        .select()
-        .from(bswTemplateReviews)
-        .where(eq(bswTemplateReviews.id, reviewId))
-        .limit(1);
-      if (!existing) {
-        throw { statusCode: 404, message: 'Review not found' };
-      }
-      if (existing.userId !== user.id) {
-        throw { statusCode: 403, message: 'You can only edit your own reviews' };
-      }
-
-      const data: any = {};
-      if (parsed.data.rating !== undefined) data.rating = parsed.data.rating;
-      if (parsed.data.content !== undefined) data.content = parsed.data.content;
-
-      const [updated] = await db
-        .update(bswTemplateReviews)
-        .set(data)
-        .where(eq(bswTemplateReviews.id, reviewId))
-        .returning();
-
-      const [reviewer] = await db
-        .select({ id: users.id, username: users.username, avatar: users.avatar })
-        .from(users)
-        .where(eq(users.id, updated.userId))
-        .limit(1);
-
-      return { ...updated, user: reviewer ?? null };
+  app.put('/template-reviews/:id', { onRequest: [app.authenticate] }, async (request, reply) => {
+    const parsed = updateReviewSchema.safeParse(request.body);
+    if (!parsed.success) {
+      return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
     }
-  );
+
+    const { id } = request.params as { id: string };
+    const reviewId = parseInt(id, 10);
+    if (isNaN(reviewId)) {
+      throw { statusCode: 400, message: 'Invalid review ID' };
+    }
+
+    const user = request.user as { id: number };
+
+    const [existing] = await db
+      .select()
+      .from(bswTemplateReviews)
+      .where(eq(bswTemplateReviews.id, reviewId))
+      .limit(1);
+    if (!existing) {
+      throw { statusCode: 404, message: 'Review not found' };
+    }
+    if (existing.userId !== user.id) {
+      throw { statusCode: 403, message: 'You can only edit your own reviews' };
+    }
+
+    const data: any = {};
+    if (parsed.data.rating !== undefined) data.rating = parsed.data.rating;
+    if (parsed.data.content !== undefined) data.content = parsed.data.content;
+
+    const [updated] = await db
+      .update(bswTemplateReviews)
+      .set(data)
+      .where(eq(bswTemplateReviews.id, reviewId))
+      .returning();
+
+    const [reviewer] = await db
+      .select({ id: users.id, username: users.username, avatar: users.avatar })
+      .from(users)
+      .where(eq(users.id, updated.userId))
+      .limit(1);
+
+    return { ...updated, user: reviewer ?? null };
+  });
 
   // ── DELETE /api/template-reviews/:id — delete own review ──────────────
   app.delete('/template-reviews/:id', { onRequest: [app.authenticate] }, async request => {

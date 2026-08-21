@@ -212,10 +212,7 @@ export function ParameterEditor({
       const ast = parseCondition(visibleWhen);
       return conditionEvaluator.evaluate(ast, moduleConfigs ?? []);
     } catch (err) {
-      console.warn(
-        `[ParameterEditor] visibleWhen 表达式解析失败，按隐藏处理: ${visibleWhen}`,
-        err
-      );
+      console.warn(`[ParameterEditor] visibleWhen 表达式解析失败，按隐藏处理: ${visibleWhen}`, err);
       return false;
     }
   }, [visibleWhen, moduleConfigs, conditionEvaluator]);

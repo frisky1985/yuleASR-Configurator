@@ -31,9 +31,12 @@ export function Tooltip({ content, children, side = 'top', delay = 200, classNam
     setVisible(false);
   };
 
-  React.useEffect(() => () => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-  }, []);
+  React.useEffect(
+    () => () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    },
+    []
+  );
 
   return (
     <span

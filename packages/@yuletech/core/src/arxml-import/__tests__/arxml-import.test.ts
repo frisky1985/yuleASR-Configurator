@@ -164,7 +164,9 @@ describe('importSwcArxml — unprocessed element warnings', () => {
     expect(tags).toContain('VENDOR-SPECIFIC-CONTAINER');
 
     const bswWarning = report.warnings.find(w => w.tag === 'BSW-MODULE-DEF');
-    expect(bswWarning!.message).toMatch(/unknown\.arxml\(\d+\): Unprocessed element <BSW-MODULE-DEF>/);
+    expect(bswWarning!.message).toMatch(
+      /unknown\.arxml\(\d+\): Unprocessed element <BSW-MODULE-DEF>/
+    );
     expect(bswWarning!.line).not.toBeNull();
   });
 
@@ -299,7 +301,12 @@ describe('importSwcArxml — Client-Server & rational CompuMethod', () => {
     const iface = project.interfaces[0];
     expect(iface.kind).toBe('ClientServerInterface');
     expect(iface.name).toBe('DoorLock_IF');
-    const cs = iface as { operations: Array<{ name: string; arguments?: Array<{ name: string; typeRef: string; direction: string }> }> };
+    const cs = iface as {
+      operations: Array<{
+        name: string;
+        arguments?: Array<{ name: string; typeRef: string; direction: string }>;
+      }>;
+    };
     expect(cs.operations).toHaveLength(1);
     expect(cs.operations[0].name).toBe('LockDoor');
     expect(cs.operations[0].arguments![0]).toMatchObject({
@@ -386,7 +393,9 @@ describe('importSwcArxml — Client-Server & rational CompuMethod', () => {
     expect(report.counts.ports).toBe(8); // 3+2+2+1
 
     const names = project.applicationComponents.map(c => c.name);
-    expect(names).toEqual(expect.arrayContaining(['BCM_Door', 'BCM_Light', 'BCM_Wiper', 'BCM_Power']));
+    expect(names).toEqual(
+      expect.arrayContaining(['BCM_Door', 'BCM_Light', 'BCM_Wiper', 'BCM_Power'])
+    );
 
     // 接口与数据类型
     expect(project.interfaces.length).toBeGreaterThanOrEqual(7);
@@ -395,10 +404,15 @@ describe('importSwcArxml — Client-Server & rational CompuMethod', () => {
 
     // Door SWC 端口与 runnable（fast-xml-parser 按 tag 分组，跨 tag 文档序不保证，用集合断言）
     const door = project.applicationComponents.find(c => c.name === 'BCM_Door')!;
-    expect(new Set(door.ports.map(p => p.name))).toEqual(new Set(['DoorStatus_R', 'DoorLock_P', 'LightSwitch_R']));
+    expect(new Set(door.ports.map(p => p.name))).toEqual(
+      new Set(['DoorStatus_R', 'DoorLock_P', 'LightSwitch_R'])
+    );
     expect(door.ports.find(p => p.name === 'DoorStatus_R')!.direction).toBe('IN');
     expect(door.ports.find(p => p.name === 'DoorLock_P')!.direction).toBe('OUT');
-    expect(door.internalBehavior.runnables.map(r => r.name)).toEqual(['DoorMonitor_Runnable', 'DoorLock_Runnable']);
+    expect(door.internalBehavior.runnables.map(r => r.name)).toEqual([
+      'DoorMonitor_Runnable',
+      'DoorLock_Runnable',
+    ]);
     expect(door.ports.find(p => p.name === 'DoorStatus_R')!.interfaceRef).toBe('DoorStatus_IF'); // 跨包引用解析
   });
 });
@@ -411,7 +425,7 @@ describe('reader utilities', () => {
   it('ChildElementMap tracks consumed vs unprocessed children', () => {
     const node = {
       'SHORT-NAME': 'X',
-      'PORTS': { 'P-PORT-PROTOTYPE': [] },
+      PORTS: { 'P-PORT-PROTOTYPE': [] },
       '@_UUID': 'abc',
     };
     const map = new ChildElementMap(node);

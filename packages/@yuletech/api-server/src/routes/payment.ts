@@ -151,59 +151,55 @@ export async function paymentRoutes(app: FastifyInstance) {
    * - If LemonSqueezy is configured: creates a real LemonSqueezy checkout
    * - Otherwise: returns a mock checkout URL (for development)
    */
-  app.post(
-    '/create-checkout',
-    { onRequest: [app.authenticate] },
-    async (request, reply) => {
-      const parsed = createCheckoutSchema.safeParse(request.body);
-      if (!parsed.success) {
-        return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
-      }
-
-      const { priceId, customerEmail } = parsed.data;
-      const userId = (request.user as { id: number }).id;
-      const successUrl =
-        parsed.data.successUrl || `${FRONTEND_URL}/settings/license?checkout=success`;
-      const cancelUrl = parsed.data.cancelUrl || `${FRONTEND_URL}/settings/license?checkout=cancel`;
-
-      // ── Live mode: LemonSqueezy ──────────────────────────────────────────
-      if (LEMON_ENABLED) {
-        const variantId = VARIANT_IDS[priceId];
-        if (!variantId) {
-          return reply.status(400).send({
-            message: `No LemonSqueezy variant configured for priceId: ${priceId}. Set LEMON_VARIANT_ID_MONTHLY / LEMON_VARIANT_ID_YEARLY env vars.`,
-          });
-        }
-
-        try {
-          const result = await createLemonCheckout({
-            variantId,
-            email: customerEmail,
-            userId,
-            successUrl,
-            cancelUrl,
-          });
-          return { url: result.url, checkoutId: result.checkoutId, provider: 'lemonsqueezy' };
-        } catch (err: any) {
-          return reply
-            .status(500)
-            .send({ message: 'Failed to create LemonSqueezy checkout', error: err.message });
-        }
-      }
-
-      // ── Mock mode (no real payment gateway) ────────────────────────────
-      const mockSessionId = `cs_mock_${Date.now()}_${userId}`;
-      const mockUrl = `${FRONTEND_URL}/api/payment/mock-checkout?session_id=${mockSessionId}&price_id=${priceId}&user_id=${userId}`;
-
-      return {
-        url: mockUrl,
-        mock: true,
-        provider: 'mock',
-        message: 'Mock checkout — use POST /api/payment/mock-success to simulate payment',
-        sessionId: mockSessionId,
-      };
+  app.post('/create-checkout', { onRequest: [app.authenticate] }, async (request, reply) => {
+    const parsed = createCheckoutSchema.safeParse(request.body);
+    if (!parsed.success) {
+      return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
     }
-  );
+
+    const { priceId, customerEmail } = parsed.data;
+    const userId = (request.user as { id: number }).id;
+    const successUrl =
+      parsed.data.successUrl || `${FRONTEND_URL}/settings/license?checkout=success`;
+    const cancelUrl = parsed.data.cancelUrl || `${FRONTEND_URL}/settings/license?checkout=cancel`;
+
+    // ── Live mode: LemonSqueezy ──────────────────────────────────────────
+    if (LEMON_ENABLED) {
+      const variantId = VARIANT_IDS[priceId];
+      if (!variantId) {
+        return reply.status(400).send({
+          message: `No LemonSqueezy variant configured for priceId: ${priceId}. Set LEMON_VARIANT_ID_MONTHLY / LEMON_VARIANT_ID_YEARLY env vars.`,
+        });
+      }
+
+      try {
+        const result = await createLemonCheckout({
+          variantId,
+          email: customerEmail,
+          userId,
+          successUrl,
+          cancelUrl,
+        });
+        return { url: result.url, checkoutId: result.checkoutId, provider: 'lemonsqueezy' };
+      } catch (err: any) {
+        return reply
+          .status(500)
+          .send({ message: 'Failed to create LemonSqueezy checkout', error: err.message });
+      }
+    }
+
+    // ── Mock mode (no real payment gateway) ────────────────────────────
+    const mockSessionId = `cs_mock_${Date.now()}_${userId}`;
+    const mockUrl = `${FRONTEND_URL}/api/payment/mock-checkout?session_id=${mockSessionId}&price_id=${priceId}&user_id=${userId}`;
+
+    return {
+      url: mockUrl,
+      mock: true,
+      provider: 'mock',
+      message: 'Mock checkout — use POST /api/payment/mock-success to simulate payment',
+      sessionId: mockSessionId,
+    };
+  });
 
   /**
    * POST /api/payment/mock-success
@@ -213,53 +209,59 @@ export async function paymentRoutes(app: FastifyInstance) {
    */
   if (ENABLE_MOCK_PAYMENT) {
     app.post('/mock-success', { onRequest: [app.authenticate] }, async (request, reply) => {
-    const parsed = z
-      .object({
-        priceId: z.enum(['pro_monthly', 'pro_yearly']),
-      })
-      .safeParse(request.body);
+      const parsed = z
+        .object({
+          priceId: z.enum(['pro_monthly', 'pro_yearly']),
+        })
+        .safeParse(request.body);
 
-    if (!parsed.success) {
-      return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
-    }
+      if (!parsed.success) {
+        return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
+      }
 
-    const { priceId } = parsed.data;
-    const userId = (request.user as { id: number }).id;
+      const { priceId } = parsed.data;
+      const userId = (request.user as { id: number }).id;
 
-    // Deactivate any existing active Pro license for this user
-    await db
-      .update(licenseKeys)
-      .set({ active: false })
-      .where(and(eq(licenseKeys.userId, userId), eq(licenseKeys.tier, 'pro'), eq(licenseKeys.active, true)));
+      // Deactivate any existing active Pro license for this user
+      await db
+        .update(licenseKeys)
+        .set({ active: false })
+        .where(
+          and(
+            eq(licenseKeys.userId, userId),
+            eq(licenseKeys.tier, 'pro'),
+            eq(licenseKeys.active, true)
+          )
+        );
 
-    // Calculate expiry — monthly = 30 days, yearly = 365 days
-    const days = priceId === 'pro_yearly' ? 365 : 30;
-    const expiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+      // Calculate expiry — monthly = 30 days, yearly = 365 days
+      const days = priceId === 'pro_yearly' ? 365 : 30;
+      const expiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
 
-    const [license] = await db
-      .insert(licenseKeys)
-      .values({
-        key: generateLicenseKey(),
-        tier: 'pro',
-        maxModules: 9999,
-        maxProjects: 9999,
-        expiresAt,
-        customerEmail: (request.user as any).email ?? null,
-        userId,
-        active: true,
-      })
-      .returning();
+      const [license] = await db
+        .insert(licenseKeys)
+        .values({
+          key: generateLicenseKey(),
+          tier: 'pro',
+          maxModules: 9999,
+          maxProjects: 9999,
+          expiresAt,
+          customerEmail: (request.user as any).email ?? null,
+          userId,
+          active: true,
+        })
+        .returning();
 
-    return {
-      message: 'Payment simulated successfully. Pro license activated.',
-      license: {
-        key: license.key,
-        tier: license.tier,
-        maxModules: license.maxModules,
-        maxProjects: license.maxProjects,
-        expiresAt: license.expiresAt,
-      },
-    };
+      return {
+        message: 'Payment simulated successfully. Pro license activated.',
+        license: {
+          key: license.key,
+          tier: license.tier,
+          maxModules: license.maxModules,
+          maxProjects: license.maxProjects,
+          expiresAt: license.expiresAt,
+        },
+      };
     });
   }
 
@@ -309,7 +311,11 @@ export async function paymentRoutes(app: FastifyInstance) {
     }
 
     // ── Deduplication ───────────────────────────────────────────────────
-    const [existing] = await db.select().from(paymentEvents).where(eq(paymentEvents.eventId, eventId)).limit(1);
+    const [existing] = await db
+      .select()
+      .from(paymentEvents)
+      .where(eq(paymentEvents.eventId, eventId))
+      .limit(1);
     if (existing) {
       return reply.status(200).send({ received: true, duplicate: true });
     }

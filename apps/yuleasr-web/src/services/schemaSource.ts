@@ -21,10 +21,10 @@ import {
 } from '@yuletech/core/schema/load-generated';
 
 /** extracted-cfgh/*.json 构建期打包（宏名版 schema，参数名即宏名） */
-const macroNameSchemasByPath = import.meta.glob(
-  '../../../../verification/extracted-cfgh/*.json',
-  { eager: true, import: 'default' }
-) as Record<string, Parameters<typeof generatedJsonToModuleSchema>[1]>;
+const macroNameSchemasByPath = import.meta.glob('../../../../verification/extracted-cfgh/*.json', {
+  eager: true,
+  import: 'default',
+}) as Record<string, Parameters<typeof generatedJsonToModuleSchema>[1]>;
 
 let cached: ModuleSchema[] | null = null;
 

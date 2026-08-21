@@ -117,9 +117,7 @@
       "type": "enum",
       "description": "OCU_CONFIGURATION_VARIANT 参数",
       "default": "OCU_VARIANT_PRE_COMPILE",
-      "enum": [
-        "OCU_VARIANT_PRE_COMPILE"
-      ],
+      "enum": ["OCU_VARIANT_PRE_COMPILE"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "OCU_DE_INIT_API": {
@@ -194,10 +192,7 @@
       "type": "enum",
       "description": "OCU_CHANNEL_0_DEFAULT_PIN_STATE 参数",
       "default": "OCU_LOW",
-      "enum": [
-        "OCU_HIGH",
-        "OCU_LOW"
-      ],
+      "enum": ["OCU_HIGH", "OCU_LOW"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "OCU_CHANNEL_0_DEFAULT_THRESHOLD": {
@@ -239,10 +234,7 @@
       "type": "enum",
       "description": "OCU_CHANNEL_1_DEFAULT_PIN_STATE 参数",
       "default": "OCU_LOW",
-      "enum": [
-        "OCU_HIGH",
-        "OCU_LOW"
-      ],
+      "enum": ["OCU_HIGH", "OCU_LOW"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "OCU_CHANNEL_1_DEFAULT_THRESHOLD": {
@@ -284,10 +276,7 @@
       "type": "enum",
       "description": "OCU_CHANNEL_2_DEFAULT_PIN_STATE 参数",
       "default": "OCU_LOW",
-      "enum": [
-        "OCU_HIGH",
-        "OCU_LOW"
-      ],
+      "enum": ["OCU_HIGH", "OCU_LOW"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "OCU_CHANNEL_2_DEFAULT_THRESHOLD": {
@@ -329,10 +318,7 @@
       "type": "enum",
       "description": "OCU_CHANNEL_3_DEFAULT_PIN_STATE 参数",
       "default": "OCU_LOW",
-      "enum": [
-        "OCU_HIGH",
-        "OCU_LOW"
-      ],
+      "enum": ["OCU_HIGH", "OCU_LOW"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "OCU_CHANNEL_3_DEFAULT_THRESHOLD": {
@@ -459,10 +445,7 @@
         "OcuCountdirection": {
           "description": "OcuCountdirection 参数 - This parameter indicates the count direction for the whole OCU driver.",
           "type": "string",
-          "enum": [
-            "OCU_DOWNCOUNTING",
-            "OCU_UPCOUNTING"
-          ],
+          "enum": ["OCU_DOWNCOUNTING", "OCU_UPCOUNTING"],
           "default": "OCU_UPCOUNTING"
         }
       },
@@ -528,10 +511,7 @@
         "OcuOutputPinDefaultState": {
           "description": "OcuOutputPinDefaultState 参数 - The parameter OcuOutputPinDefaultState represents the state that a pin associated with a channel shall be set to after initialisation.",
           "type": "string",
-          "enum": [
-            "OCU_HIGH",
-            "OCU_LOW"
-          ]
+          "enum": ["OCU_HIGH", "OCU_LOW"]
         },
         "OcuChannelEcucPartitionRef": {
           "type": "string",

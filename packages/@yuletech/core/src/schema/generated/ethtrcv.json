@@ -265,10 +265,7 @@
       "type": "enum",
       "description": "ETHTRCV_TRCV0_FIXED_DUPLEX 参数",
       "default": "ETHTRCV_DUPLEX_MODE_FULL",
-      "enum": [
-        "ETHTRCV_DUPLEX_MODE_FULL",
-        "ETHTRCV_DUPLEX_MODE_HALF"
-      ],
+      "enum": ["ETHTRCV_DUPLEX_MODE_FULL", "ETHTRCV_DUPLEX_MODE_HALF"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV0_WAKEUP_SUPPORT": {
@@ -371,10 +368,7 @@
       "type": "enum",
       "description": "ETHTRCV_TRCV1_FIXED_DUPLEX 参数",
       "default": "ETHTRCV_DUPLEX_MODE_FULL",
-      "enum": [
-        "ETHTRCV_DUPLEX_MODE_FULL",
-        "ETHTRCV_DUPLEX_MODE_HALF"
-      ],
+      "enum": ["ETHTRCV_DUPLEX_MODE_FULL", "ETHTRCV_DUPLEX_MODE_HALF"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETHTRCV_TRCV1_WAKEUP_SUPPORT": {

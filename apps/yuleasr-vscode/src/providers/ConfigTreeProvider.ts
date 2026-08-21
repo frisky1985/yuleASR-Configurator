@@ -7,14 +7,7 @@ import * as vscode from 'vscode';
  * Represents a configuration module layer (MCAL, ECUAL, Service)
  */
 export type ModuleLayer =
-  | 'MCAL'
-  | 'ECUAL'
-  | 'Service'
-  | 'RTE'
-  | 'ASW'
-  | 'OS'
-  | 'Integration'
-  | 'Unknown';
+  'MCAL' | 'ECUAL' | 'Service' | 'RTE' | 'ASW' | 'OS' | 'Integration' | 'Unknown';
 
 /**
  * Tree item representing a yuleASR configuration node

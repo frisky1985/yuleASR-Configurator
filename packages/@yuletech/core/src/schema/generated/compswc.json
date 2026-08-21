@@ -66,11 +66,7 @@
           },
           "PortDirection": {
             "type": "string",
-            "enum": [
-              "IN",
-              "OUT",
-              "INOUT"
-            ]
+            "enum": ["IN", "OUT", "INOUT"]
           },
           "PortInterfaceRef": {
             "type": "string"
@@ -182,9 +178,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "ComponentName"
-  ],
+  "required": ["ComponentName"],
   "x-impl-status": "asw-config-only",
   "x-annotation": "ASW 组件配置-仅配置不生成"
 }

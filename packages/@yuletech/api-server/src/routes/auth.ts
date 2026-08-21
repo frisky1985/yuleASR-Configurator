@@ -20,59 +20,67 @@ const registerSchema = z.object({
 
 export async function authRoutes(app: FastifyInstance) {
   // Fix 30: 敏感端点单独配额（10 次/分钟，配合全局限流 100 次/分钟）
-  app.post('/login', { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (request, reply) => {
-    const parsed = loginSchema.safeParse(request.body);
-    if (!parsed.success) {
-      return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
+  app.post(
+    '/login',
+    { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } },
+    async (request, reply) => {
+      const parsed = loginSchema.safeParse(request.body);
+      if (!parsed.success) {
+        return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
+      }
+
+      const { email, password } = parsed.data;
+
+      const [user] = await db.select().from(users).where(eq(users.email, email)).limit(1);
+      if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
+        return reply.status(401).send({ message: 'Invalid email or password' });
+      }
+
+      const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role });
+      return {
+        token,
+        provider: 'email',
+        user: { id: user.id, email: user.email, username: user.username, role: user.role },
+      };
     }
+  );
 
-    const { email, password } = parsed.data;
+  app.post(
+    '/register',
+    { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } },
+    async (request, reply) => {
+      const parsed = registerSchema.safeParse(request.body);
+      if (!parsed.success) {
+        return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
+      }
 
-    const [user] = await db.select().from(users).where(eq(users.email, email)).limit(1);
-    if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
-      return reply.status(401).send({ message: 'Invalid email or password' });
+      const { email, username, password } = parsed.data;
+
+      const [existing] = await db
+        .select()
+        .from(users)
+        .where(or(eq(users.email, email), eq(users.username, username)))
+        .limit(1);
+      if (existing) {
+        return reply.status(409).send({
+          message: existing.email === email ? 'Email already registered' : 'Username already taken',
+        });
+      }
+
+      const hashed = await bcrypt.hash(password, 10);
+      const [user] = await db
+        .insert(users)
+        .values({ email, username, passwordHash: hashed })
+        .returning();
+
+      const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role });
+      return {
+        token,
+        provider: 'email',
+        user: { id: user.id, email: user.email, username: user.username, role: user.role },
+      };
     }
-
-    const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role });
-    return {
-      token,
-      provider: 'email',
-      user: { id: user.id, email: user.email, username: user.username, role: user.role },
-    };
-  });
-
-  app.post('/register', { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (request, reply) => {
-    const parsed = registerSchema.safeParse(request.body);
-    if (!parsed.success) {
-      return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
-    }
-
-    const { email, username, password } = parsed.data;
-
-    const [existing] = await db
-      .select()
-      .from(users)
-      .where(or(eq(users.email, email), eq(users.username, username)))
-      .limit(1);
-    if (existing) {
-      return reply.status(409).send({
-        message: existing.email === email ? 'Email already registered' : 'Username already taken',
-      });
-    }
-
-    const hashed = await bcrypt.hash(password, 10);
-    const [user] = await db
-      .insert(users)
-      .values({ email, username, passwordHash: hashed })
-      .returning();
-
-    const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role });
-    return {
-      token,
-      provider: 'email',
-      user: { id: user.id, email: user.email, username: user.username, role: user.role },
-    };
-  });
+  );
 
   app.get('/me', { onRequest: [app.authenticate] }, async request => {
     const { id } = request.user as { id: number };
@@ -110,7 +118,11 @@ export async function authRoutes(app: FastifyInstance) {
     }
     const { email, password } = parsed.data;
     const [user] = await db.select().from(users).where(eq(users.email, email)).limit(1);
-    if (!user || !(await bcrypt.compare(password, user.passwordHash)) || !['admin', 'super_admin'].includes(user.role)) {
+    if (
+      !user ||
+      !(await bcrypt.compare(password, user.passwordHash)) ||
+      !['admin', 'super_admin'].includes(user.role)
+    ) {
       return reply.status(401).send({ message: 'Invalid credentials or not an admin' });
     }
     const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role });

@@ -1,7 +1,16 @@
 import { useCallback, useRef, useState } from 'react';
 import Editor from '@monaco-editor/react';
 import { motion } from 'framer-motion';
-import { Play, Square, Trash2, FileCode, AlertCircle, CheckCircle, Terminal, Loader2 } from 'lucide-react';
+import {
+  Play,
+  Square,
+  Trash2,
+  FileCode,
+  AlertCircle,
+  CheckCircle,
+  Terminal,
+  Loader2,
+} from 'lucide-react';
 import { SANDBOX_EXAMPLES, getExampleById } from '../../data/autosar/sandbox-examples';
 import { simulateCode } from '../../data/autosar/simulation-engine';
 import { VIRTUAL_HEADERS } from '../../data/autosar-headers';
@@ -16,15 +25,24 @@ interface SandboxProps {
   initialExampleId?: string;
 }
 
-export function Sandbox({ onCanMessages, onGpioEvents, onInterrupts, initialExampleId }: SandboxProps) {
-  const initialExample = initialExampleId ? (getExampleById(initialExampleId) ?? SANDBOX_EXAMPLES[0]) : SANDBOX_EXAMPLES[0];
+export function Sandbox({
+  onCanMessages,
+  onGpioEvents,
+  onInterrupts,
+  initialExampleId,
+}: SandboxProps) {
+  const initialExample = initialExampleId
+    ? (getExampleById(initialExampleId) ?? SANDBOX_EXAMPLES[0])
+    : SANDBOX_EXAMPLES[0];
   const [code, setCode] = useState(initialExample.code);
   const [output, setOutput] = useState<string[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [selectedExample, setSelectedExample] = useState(initialExample.id);
   const [autoIncludeHeaders, setAutoIncludeHeaders] = useState(true);
   const [activeTab, setActiveTab] = useState<'code' | 'headers'>('code');
-  const [compileStatus, setCompileStatus] = useState<'idle' | 'running' | 'success' | 'error'>('idle');
+  const [compileStatus, setCompileStatus] = useState<'idle' | 'running' | 'success' | 'error'>(
+    'idle'
+  );
   const outputRef = useRef<HTMLDivElement>(null);
 
   const handleExampleChange = useCallback((exampleId: string) => {
@@ -253,18 +271,13 @@ export function Sandbox({ onCanMessages, onGpioEvents, onInterrupts, initialExam
       </div>
 
       {/* Compile Output */}
-      <motion.div
-        initial={false}
-        className="border-t border-border bg-[#1a1a2e]"
-      >
+      <motion.div initial={false} className="border-t border-border bg-[#1a1a2e]">
         <div className="flex items-center justify-between px-4 py-1.5 border-b border-border/50">
           <span className="text-[10px] font-medium text-muted-foreground flex items-center gap-1.5">
             <Terminal className="w-3 h-3" />
             Output
           </span>
-          <span className="text-[9px] text-muted-foreground/60">
-            Simulation Mode
-          </span>
+          <span className="text-[9px] text-muted-foreground/60">Simulation Mode</span>
         </div>
         <div
           ref={outputRef}
@@ -288,10 +301,10 @@ export function Sandbox({ onCanMessages, onGpioEvents, onInterrupts, initialExam
                     isError
                       ? 'text-red-400'
                       : isSummary
-                      ? 'text-primary font-semibold'
-                      : isSim
-                      ? 'text-green-400'
-                      : 'text-foreground/80'
+                        ? 'text-primary font-semibold'
+                        : isSim
+                          ? 'text-green-400'
+                          : 'text-foreground/80'
                   }`}
                 >
                   {line}

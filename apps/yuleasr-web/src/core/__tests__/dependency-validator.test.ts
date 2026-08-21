@@ -29,11 +29,7 @@ function makeContainer(
   return { id, name, parameters: params, subContainers };
 }
 
-function makeModule(
-  id: string,
-  name: string,
-  overrides: Partial<ConfigModule> = {}
-): ConfigModule {
+function makeModule(id: string, name: string, overrides: Partial<ConfigModule> = {}): ConfigModule {
   return {
     id,
     name,
@@ -65,9 +61,7 @@ describe('DependencyValidator required check (Fix 25)', () => {
   it('flags null values for required parameters', () => {
     const config = makeConfig([
       makeModule('m1', 'Can', {
-        parameters: [
-          makeParam('p1', 'CanBaudrate', null, { validation: { required: true } }),
-        ],
+        parameters: [makeParam('p1', 'CanBaudrate', null, { validation: { required: true } })],
       }),
     ]);
 
@@ -80,9 +74,7 @@ describe('DependencyValidator required check (Fix 25)', () => {
   it('flags undefined values for required parameters', () => {
     const config = makeConfig([
       makeModule('m1', 'Can', {
-        parameters: [
-          makeParam('p1', 'CanBaudrate', undefined, { validation: { required: true } }),
-        ],
+        parameters: [makeParam('p1', 'CanBaudrate', undefined, { validation: { required: true } })],
       }),
     ]);
 
@@ -93,9 +85,7 @@ describe('DependencyValidator required check (Fix 25)', () => {
   it('flags empty-string values for required parameters', () => {
     const config = makeConfig([
       makeModule('m1', 'Can', {
-        parameters: [
-          makeParam('p1', 'CanBaudrate', '', { validation: { required: true } }),
-        ],
+        parameters: [makeParam('p1', 'CanBaudrate', '', { validation: { required: true } })],
       }),
     ]);
 
@@ -114,7 +104,9 @@ describe('DependencyValidator required check (Fix 25)', () => {
     ]);
 
     const result = DependencyValidator.validate(config);
-    expect(result.errors.filter(e => e.parameter === 'CanCount' || e.parameter === 'CanEnabled')).toHaveLength(0);
+    expect(
+      result.errors.filter(e => e.parameter === 'CanCount' || e.parameter === 'CanEnabled')
+    ).toHaveLength(0);
   });
 });
 
@@ -149,9 +141,7 @@ describe('DependencyValidator validateRTEConsistency (Fix 25 minimal)', () => {
       makeModule('rte1', 'Rte', {
         layer: 'RTE',
         containers: [
-          makeContainer('if1', 'Interfaces', [
-            makeParam('i1', 'CanIf_Tx', 'CanIf_Tx'),
-          ]),
+          makeContainer('if1', 'Interfaces', [makeParam('i1', 'CanIf_Tx', 'CanIf_Tx')]),
           makeContainer('pt1', 'Ports', [
             makeParam('r1', 'CanTxPort', 'CanIf_Tx', { type: 'reference' }),
           ]),
@@ -265,8 +255,7 @@ describe('DependencyValidator validateCrossModuleReferences (YAC-DEP-002)', () =
       for (const other of OTHER_SEVERITIES.filter(s => s !== severity)) {
         expect(
           bucketOf(result, other).some(
-            i =>
-              i.message.includes(`"${target}"`) && i.message.includes('which is not enabled')
+            i => i.message.includes(`"${target}"`) && i.message.includes('which is not enabled')
           )
         ).toBe(false);
       }
@@ -406,7 +395,9 @@ describe('DependencyValidator validateModuleDependencies (YAC-DEP-002)', () => {
     expect(portErr?.suggestion).toBe('Enable Port automatically');
     // 未声名 autoEnable 的 required 依赖不进建议列表
     expect(
-      result1.errors.some(e => e.dependencyTarget === 'Dio' && e.suggestion?.includes('automatically'))
+      result1.errors.some(
+        e => e.dependencyTarget === 'Dio' && e.suggestion?.includes('automatically')
+      )
     ).toBe(false);
 
     const config2 = makeConfig([

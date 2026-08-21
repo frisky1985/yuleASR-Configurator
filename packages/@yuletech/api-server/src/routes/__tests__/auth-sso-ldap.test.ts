@@ -58,9 +58,7 @@ describe('ldapBuildFilter（Fix 7 畸形过滤器拒绝）', () => {
   });
 
   it('畸形过滤器（含闭合括号的注入载荷）必须抛错拒绝', () => {
-    expect(() => ldapBuildFilter('(uid=admin)(|(uid=*))')).toThrow(
-      'LDAP filter parse failed'
-    );
+    expect(() => ldapBuildFilter('(uid=admin)(|(uid=*))')).toThrow('LDAP filter parse failed');
   });
 
   it('空过滤器必须抛错拒绝', () => {

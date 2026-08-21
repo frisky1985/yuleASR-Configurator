@@ -113,10 +113,7 @@
       },
       "additionalProperties": true,
       "x-choice-container": true,
-      "x-choice-params": [
-        "WdgTriggeredMode",
-        "WdgTriggerConditionValue"
-      ],
+      "x-choice-params": ["WdgTriggeredMode", "WdgTriggerConditionValue"],
       "x-choice-description": "看门狗触发模式与触发条件互斥 (预触发/无预触发 二选一)"
     },
     "WdgGeneral": {
@@ -158,11 +155,7 @@
         "WdgTriggerMode": {
           "description": "WdgTriggerMode 参数 - Watchdog trigger mode (toggle/window/both)",
           "type": "string",
-          "enum": [
-            "WDG_BOTH",
-            "WDG_TOGGLE",
-            "WDG_WINDOW"
-          ]
+          "enum": ["WDG_BOTH", "WDG_TOGGLE", "WDG_WINDOW"]
         }
       },
       "additionalProperties": true
@@ -174,11 +167,7 @@
         "WdgDefaultMode": {
           "description": "WdgDefaultMode 参数 - Default mode for watchdog driver initialization.",
           "type": "string",
-          "enum": [
-            "WDGIF_FAST_MODE",
-            "WDGIF_OFF_MODE",
-            "WDGIF_SLOW_MODE"
-          ]
+          "enum": ["WDGIF_FAST_MODE", "WDGIF_OFF_MODE", "WDGIF_SLOW_MODE"]
         }
       },
       "additionalProperties": true
@@ -213,11 +202,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CommonPublishedInformation",
-    "WdgConfigSet",
-    "WdgGeneral"
-  ],
+  "required": ["CommonPublishedInformation", "WdgConfigSet", "WdgGeneral"],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",

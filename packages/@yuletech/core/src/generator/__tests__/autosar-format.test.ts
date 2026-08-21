@@ -188,9 +188,7 @@ describe('autosar-format', () => {
 
   describe('escapeCString (Fix 18/22: W5 C 代码注入防护)', () => {
     it('should escape quotes, backslashes and control characters', () => {
-      expect(escapeCString('x"\n#include "evil.h"')).toBe(
-        'x\\"\\n#include \\"evil.h\\"'
-      );
+      expect(escapeCString('x"\n#include "evil.h"')).toBe('x\\"\\n#include \\"evil.h\\"');
     });
 
     it('should not emit raw quotes or newlines in output', () => {
@@ -219,9 +217,7 @@ describe('autosar-format', () => {
 
     it('should reject names with hyphens, spaces or quotes', () => {
       expect(() => assertCIdentifier('my-task', 'task')).toThrow(/Invalid C identifier/);
-      expect(() => assertCIdentifier('evil name', 'interface')).toThrow(
-        /Invalid C identifier/
-      );
+      expect(() => assertCIdentifier('evil name', 'interface')).toThrow(/Invalid C identifier/);
       expect(() => assertCIdentifier('x"; #include "evil.h', 'object')).toThrow(
         /Invalid C identifier/
       );

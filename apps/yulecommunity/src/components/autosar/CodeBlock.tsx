@@ -10,7 +10,13 @@ interface CodeBlockProps {
   customStyle?: CSSProperties;
 }
 
-export function CodeBlock({ language, children, showLineNumbers, wrapLongLines, customStyle }: CodeBlockProps) {
+export function CodeBlock({
+  language,
+  children,
+  showLineNumbers,
+  wrapLongLines,
+  customStyle,
+}: CodeBlockProps) {
   return (
     <SyntaxHighlighter
       language={language}

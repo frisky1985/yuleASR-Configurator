@@ -61,7 +61,9 @@ describe('schema-validator-plugin (Fix 21 K1: schemaCache 空转)', () => {
     expect(results.some(r => r.message.includes('No AUTOSAR schema found'))).toBe(false);
 
     // required 真实报错
-    expect(results.some(r => r.message.includes('Missing required parameter: reqParam'))).toBe(true);
+    expect(results.some(r => r.message.includes('Missing required parameter: reqParam'))).toBe(
+      true
+    );
     // enum 真实报错
     expect(results.some(r => r.message.includes('Invalid value "C" for modeParam'))).toBe(true);
     // range 真实报错（超出 max）

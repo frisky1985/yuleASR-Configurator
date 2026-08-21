@@ -101,10 +101,9 @@ export async function triggerPipeline(
  * Poll pipeline job status
  */
 export async function getPipelineStatus(jobId: string): Promise<PipelineStatusResponse> {
-  const response = await fetch(
-    `${requireYuleoshBase()}/api/v1/pipeline/status/${jobId}`,
-    { method: 'GET' }
-  );
+  const response = await fetch(`${requireYuleoshBase()}/api/v1/pipeline/status/${jobId}`, {
+    method: 'GET',
+  });
 
   if (!response.ok) {
     const text = await response.text();
@@ -118,10 +117,7 @@ export async function getPipelineStatus(jobId: string): Promise<PipelineStatusRe
  * List recent pipeline runs
  */
 export async function listPipelineRuns(): Promise<PipelineRunsResponse> {
-  const response = await fetch(
-    `${requireYuleoshBase()}/api/v1/pipeline/runs`,
-    { method: 'GET' }
-  );
+  const response = await fetch(`${requireYuleoshBase()}/api/v1/pipeline/runs`, { method: 'GET' });
 
   if (!response.ok) {
     throw new Error(`Pipeline runs list failed (${response.status})`);

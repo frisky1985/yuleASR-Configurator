@@ -4,8 +4,7 @@
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const okJson = (body: unknown) =>
-  ({ ok: true, status: 200, json: async () => body }) as Response;
+const okJson = (body: unknown) => ({ ok: true, status: 200, json: async () => body }) as Response;
 
 beforeEach(() => {
   vi.stubGlobal('fetch', vi.fn());

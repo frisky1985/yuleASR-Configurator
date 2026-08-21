@@ -349,9 +349,7 @@ export class DependencyValidator {
    * 校验 ports 引用的 interface 存在，返回结构性错误。
    */
   private validateRTEConsistency(): void {
-    const rteModule = this.config.modules.find(
-      m => m.layer === 'RTE' || /rte/i.test(m.name)
-    );
+    const rteModule = this.config.modules.find(m => m.layer === 'RTE' || /rte/i.test(m.name));
     if (!rteModule || !rteModule.enabled) return;
 
     // 收集所有已定义的 interface 名（容器名含 "interface"）
@@ -385,10 +383,7 @@ export class DependencyValidator {
         if (/port/i.test(container.name)) {
           for (const param of container.parameters || []) {
             // 仅校验引用型参数（reference 类型或值形如 "interface 名"）
-            const refValue =
-              param.type === 'reference'
-                ? String(param.value ?? '').trim()
-                : '';
+            const refValue = param.type === 'reference' ? String(param.value ?? '').trim() : '';
             if (!refValue) continue;
 
             if (!interfaceNames.has(refValue)) {

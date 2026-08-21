@@ -197,11 +197,7 @@
       "type": "enum",
       "description": "SECOC_AUTH_ALGORITHM 参数",
       "default": "SECOC_HMAC_SHA256",
-      "enum": [
-        "SECOC_AES_MAC",
-        "SECOC_HMAC_SHA256",
-        "SECOC_HMAC_SHA512"
-      ],
+      "enum": ["SECOC_AES_MAC", "SECOC_HMAC_SHA256", "SECOC_HMAC_SHA512"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_AUTH_INFO_LENGTH": {
@@ -216,10 +212,7 @@
       "type": "enum",
       "description": "SECOC_FRESHNESS_VALUE_TYPE 参数",
       "default": "SECOC_COUNTER",
-      "enum": [
-        "SECOC_COUNTER",
-        "SECOC_TIMESTAMP"
-      ],
+      "enum": ["SECOC_COUNTER", "SECOC_TIMESTAMP"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_FRESHNESS_VALUE_LENGTH": {
@@ -282,18 +275,14 @@
       "type": "enum",
       "description": "SECOC_CSM_JOB_ID_AUTH 参数",
       "default": "CSM_JOB_ID_MAC_GENERATE_1",
-      "enum": [
-        "CSM_JOB_ID_MAC_GENERATE_1"
-      ],
+      "enum": ["CSM_JOB_ID_MAC_GENERATE_1"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_CSM_JOB_ID_VERIFY": {
       "type": "enum",
       "description": "SECOC_CSM_JOB_ID_VERIFY 参数",
       "default": "CSM_JOB_ID_MAC_VERIFY_1",
-      "enum": [
-        "CSM_JOB_ID_MAC_VERIFY_1"
-      ],
+      "enum": ["CSM_JOB_ID_MAC_VERIFY_1"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "SECOC_MAX_CRYPTO_OPERATIONS": {

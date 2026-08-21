@@ -108,11 +108,11 @@ Dt.prototype = Jt.prototype = {
       i = -1,
       s = r.length;
     if (arguments.length < 2) {
-      for (; ++i < s; ) if ((o = (e = r[i]).type) && (o = Pa(n[o], e.name))) return o;
+      for (; ++i < s;) if ((o = (e = r[i]).type) && (o = Pa(n[o], e.name))) return o;
       return;
     }
     if (t != null && typeof t != 'function') throw new Error('invalid callback: ' + t);
-    for (; ++i < s; )
+    for (; ++i < s;)
       if ((o = (e = r[i]).type)) n[o] = gr(n[o], e.name, t);
       else if (t == null) for (o in n) n[o] = gr(n[o], e.name, null);
     return this;
@@ -337,7 +337,7 @@ function tc(e, t) {
     n(d, u, x, y, m, h, t);
     for (var _ = 0, p = 0, w, E; _ < g; ++_)
       if ((w = x[_])) {
-        for (_ >= p && (p = _ + 1); !(E = y[p]) && ++p < g; );
+        for (_ >= p && (p = _ + 1); !(E = y[p]) && ++p < g;);
         w._next = E || null;
       }
   }
@@ -379,8 +379,8 @@ function ic(e) {
   return new ue(a, this._parents);
 }
 function sc() {
-  for (var e = this._groups, t = -1, n = e.length; ++t < n; )
-    for (var r = e[t], o = r.length - 1, i = r[o], s; --o >= 0; )
+  for (var e = this._groups, t = -1, n = e.length; ++t < n;)
+    for (var r = e[t], o = r.length - 1, i = r[o], s; --o >= 0;)
       (s = r[o]) &&
         (i && s.compareDocumentPosition(i) ^ 4 && i.parentNode.insertBefore(s, i), (i = s));
   return this;
@@ -552,10 +552,10 @@ ko.prototype = {
   },
 };
 function Ao(e, t) {
-  for (var n = On(e), r = -1, o = t.length; ++r < o; ) n.add(t[r]);
+  for (var n = On(e), r = -1, o = t.length; ++r < o;) n.add(t[r]);
 }
 function Io(e, t) {
-  for (var n = On(e), r = -1, o = t.length; ++r < o; ) n.remove(t[r]);
+  for (var n = On(e), r = -1, o = t.length; ++r < o;) n.remove(t[r]);
 }
 function Ic(e) {
   return function () {
@@ -575,7 +575,7 @@ function Pc(e, t) {
 function Tc(e, t) {
   var n = Mo(e + '');
   if (arguments.length < 2) {
-    for (var r = On(this.node()), o = -1, i = n.length; ++o < i; ) if (!r.contains(n[o])) return !1;
+    for (var r = On(this.node()), o = -1, i = n.length; ++o < i;) if (!r.contains(n[o])) return !1;
     return !0;
   }
   return this.each((typeof t == 'function' ? Pc : t ? Ic : $c)(n, t));
@@ -816,7 +816,7 @@ function le(e) {
 }
 function dl(e) {
   let t;
-  for (; (t = e.sourceEvent); ) e = t;
+  for (; (t = e.sourceEvent);) e = t;
   return e;
 }
 function de(e, t) {
@@ -1607,7 +1607,7 @@ function Ro(e, t) {
     s = -1,
     a = [],
     c = [];
-  for (e = e + '', t = t + ''; (r = In.exec(e)) && (o = xn.exec(t)); )
+  for (e = e + '', t = t + ''; (r = In.exec(e)) && (o = xn.exec(t));)
     ((i = o.index) > n && ((i = t.slice(n, i)), a[s] ? (a[s] += i) : (a[++s] = i)),
       (r = r[0]) === (o = o[0])
         ? a[s]
@@ -1722,7 +1722,7 @@ function Bo(e, t, n, r) {
       c(l.scaleX, l.scaleY, d.scaleX, d.scaleY, u, f),
       (l = d = null),
       function (h) {
-        for (var g = -1, x = f.length, y; ++g < x; ) u[(y = f[g]).i] = y.x(h);
+        for (var g = -1, x = f.length, y; ++g < x;) u[(y = f[g]).i] = y.x(h);
         return u.join('');
       }
     );
@@ -1829,7 +1829,7 @@ function Xo(e, t, n) {
 }
 function ql() {
   (Wn(), ++We);
-  for (var e = Yt, t; e; ) ((t = De - e._time) >= 0 && e._call.call(void 0, t), (e = e._next));
+  for (var e = Yt, t; e;) ((t = De - e._time) >= 0 && e._call.call(void 0, t), (e = e._next));
   --We;
 }
 function Cr() {
@@ -1846,7 +1846,7 @@ function Gl() {
   t > Fo && ((tn -= t), (Wt = e));
 }
 function Zl() {
-  for (var e, t = Yt, n, r = 1 / 0; t; )
+  for (var e, t = Yt, n, r = 1 / 0; t;)
     t._call
       ? (r > t._time && (r = t._time), (e = t), (t = t._next))
       : ((n = t._next), (t._next = null), (t = e ? (e._next = n) : (Yt = n)));
@@ -2506,7 +2506,7 @@ function Ju(e) {
 }
 var ed = { time: null, delay: 0, duration: 250, ease: Ju };
 function td(e, t) {
-  for (var n; !(n = e.__transition) || !(n = n[t]); )
+  for (var n; !(n = e.__transition) || !(n = n[t]);)
     if (!(e = e.parentNode)) throw new Error(`transition ${t} not found`);
   return n;
 }
@@ -2574,7 +2574,7 @@ _e.prototype = {
 var rn = new _e(1, 0, 0);
 Zo.prototype = _e.prototype;
 function Zo(e) {
-  for (; !e.__zoom; ) if (!(e = e.parentNode)) return rn;
+  for (; !e.__zoom;) if (!(e = e.parentNode)) return rn;
   return e.__zoom;
 }
 function wn(e) {
@@ -10223,13 +10223,11 @@ function Hg(e, t, n = {}) {
         var o;
         if (t) {
           const i = t.toLowerCase();
-          if (
-            !(
-              r.name.toLowerCase().includes(i) ||
-              (((o = r.description) == null ? void 0 : o.toLowerCase().includes(i)) ?? !1) ||
-              r.layer.toLowerCase().includes(i)
-            )
-          )
+          if (!(
+            r.name.toLowerCase().includes(i) ||
+            (((o = r.description) == null ? void 0 : o.toLowerCase().includes(i)) ?? !1) ||
+            r.layer.toLowerCase().includes(i)
+          ))
             return !1;
         }
         return !(

@@ -19,11 +19,7 @@ import type {
   SrDataElement,
 } from '../types/swc';
 
-import {
-  ElementTemplate,
-  type NamedElement,
-  type TemplateCreateContext,
-} from './element-template';
+import { ElementTemplate, type NamedElement, type TemplateCreateContext } from './element-template';
 
 // ============================================================================
 // SenderReceiverInterfaceTemplate
@@ -41,7 +37,7 @@ export interface SenderReceiverInterfaceTemplateOptions {
 export class SenderReceiverInterfaceTemplate extends ElementTemplate<SenderReceiverInterface> {
   constructor(
     elementName: string,
-    private readonly options: SenderReceiverInterfaceTemplateOptions = {},
+    private readonly options: SenderReceiverInterfaceTemplateOptions = {}
   ) {
     super(elementName, 'Interface');
   }
@@ -90,7 +86,7 @@ export class ApplicationSwcTemplate extends ElementTemplate<ApplicationSwCompone
   constructor(
     elementName: string,
     private readonly options: ApplicationSwcTemplateOptions = {},
-    depends: ElementTemplate<NamedElement>[] = [],
+    depends: ElementTemplate<NamedElement>[] = []
   ) {
     super(elementName, 'ApplicationComponent', depends);
   }

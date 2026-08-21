@@ -218,11 +218,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "DioChannel",
-    "CommonPublishedInformation",
-    "DioConfig"
-  ],
+  "required": ["DioChannel", "CommonPublishedInformation", "DioConfig"],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",

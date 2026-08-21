@@ -285,7 +285,9 @@ describe('SchemaCoverageTable（F2b 覆盖展示）', () => {
   it('配置独有模块 → 无 schema 仅展示徽标', () => {
     render(
       <SchemaCoverageTable
-        configModules={[{ name: 'CustomFoo', enabled: true, parameters: [{ name: 'A', value: 1 }] }]}
+        configModules={[
+          { name: 'CustomFoo', enabled: true, parameters: [{ name: 'A', value: 1 }] },
+        ]}
       />
     );
 

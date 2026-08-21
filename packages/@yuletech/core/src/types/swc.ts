@@ -286,12 +286,7 @@ export interface PortComSpec {
  * Runnable invocation type
  */
 export type RunnableInvocationType =
-  | 'cyclic'
-  | 'event'
-  | 'triggered'
-  | 'onEntry'
-  | 'onExit'
-  | 'onTransition';
+  'cyclic' | 'event' | 'triggered' | 'onEntry' | 'onExit' | 'onTransition';
 
 /**
  * Runnable entity — a schedulable function inside an SWC

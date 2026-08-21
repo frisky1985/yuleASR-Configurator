@@ -35,7 +35,7 @@ const layerColors: Record<string, string> = {
 // Use module id as seed for stable mock data
 const seedFromId = (id: string, offset: number) => {
   let hash = 0;
-  for (let i = 0; i < id.length; i++) hash = ((hash << 5) - hash) + id.charCodeAt(i);
+  for (let i = 0; i < id.length; i++) hash = (hash << 5) - hash + id.charCodeAt(i);
   const x = Math.sin((hash + offset) * 0.1) * 10000;
   return x - Math.floor(x);
 };
@@ -43,10 +43,7 @@ const seedFromId = (id: string, offset: number) => {
 export function ModuleComparePage() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const moduleIds = useMemo(() => 
-    searchParams.get('modules')?.split(',') || [], 
-    [searchParams]
-  );
+  const moduleIds = useMemo(() => searchParams.get('modules')?.split(',') || [], [searchParams]);
   const [showRadar, setShowRadar] = useState(true);
 
   const modules = useMemo(() => {

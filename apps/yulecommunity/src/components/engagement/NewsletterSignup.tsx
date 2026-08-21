@@ -49,9 +49,7 @@ interface PopupNewsletterProps extends BaseNewsletterProps {
 }
 
 type NewsletterSignupProps =
-  | InlineNewsletterProps
-  | ArticleEndNewsletterProps
-  | PopupNewsletterProps;
+  InlineNewsletterProps | ArticleEndNewsletterProps | PopupNewsletterProps;
 
 /**
  * 验证邮箱格式

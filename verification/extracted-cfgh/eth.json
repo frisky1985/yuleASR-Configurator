@@ -88,11 +88,7 @@
       "type": "enum",
       "description": "ETH_CTRL0_SPEED 参数",
       "default": "ETH_RATE_100MBPS",
-      "enum": [
-        "ETH_RATE_100MBPS",
-        "ETH_RATE_1000MBPS",
-        "ETH_RATE_10MBPS"
-      ],
+      "enum": ["ETH_RATE_100MBPS", "ETH_RATE_1000MBPS", "ETH_RATE_10MBPS"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ETH_CTRL0_FULL_DUPLEX": {

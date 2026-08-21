@@ -352,11 +352,7 @@
       "type": "enum",
       "description": "I2C_DEFAULT_TRANSFER_MODE 参数",
       "default": "I2C_MODE_INTERRUPT",
-      "enum": [
-        "I2C_MODE_INTERRUPT",
-        "I2C_MODE_MASTER",
-        "I2C_MODE_SLAVE"
-      ],
+      "enum": ["I2C_MODE_INTERRUPT", "I2C_MODE_MASTER", "I2C_MODE_SLAVE"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },

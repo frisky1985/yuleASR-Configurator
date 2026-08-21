@@ -60,7 +60,10 @@ describe('api 401 处理（Fix 26）', () => {
   it('401 抛带 unauthorized 标记的 ApiError，并清理 token/user', async () => {
     storage.set('yuleasr_token', 'expired-token');
     storage.set('yuleasr_user', '{"id":1,"username":"t"}');
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(401, { message: 'Unauthorized' })));
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(jsonResponse(401, { message: 'Unauthorized' }))
+    );
 
     let caught: any;
     try {
@@ -81,7 +84,10 @@ describe('api 401 处理（Fix 26）', () => {
     (globalThis as any).window.addEventListener(UNAUTHORIZED_EVENT, () => {
       fired += 1;
     });
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(401, { message: 'Unauthorized' })));
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(jsonResponse(401, { message: 'Unauthorized' }))
+    );
 
     await expect(api.get('/x')).rejects.toThrow('Unauthorized');
     expect(fired).toBe(1);

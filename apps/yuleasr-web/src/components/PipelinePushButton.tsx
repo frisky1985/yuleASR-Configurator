@@ -48,9 +48,7 @@ export function PipelinePushButton({
           name: m.name,
           version: m.version,
           layer: m.layer,
-          parameters: Object.fromEntries(
-            m.parameters.map(p => [p.name, p.value])
-          ),
+          parameters: Object.fromEntries(m.parameters.map(p => [p.name, p.value])),
           enabled: m.enabled,
         }));
 
@@ -113,12 +111,9 @@ export function PipelinePushButton({
         sizeClasses[size],
         pushState === 'idle' &&
           'bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed',
-        pushState === 'pushing' &&
-          'bg-blue-500 text-white cursor-wait',
-        pushState === 'success' &&
-          'bg-green-600 text-white cursor-default',
-        pushState === 'error' &&
-          'bg-red-600 text-white'
+        pushState === 'pushing' && 'bg-blue-500 text-white cursor-wait',
+        pushState === 'success' && 'bg-green-600 text-white cursor-default',
+        pushState === 'error' && 'bg-red-600 text-white'
       )}
       title={
         disabled

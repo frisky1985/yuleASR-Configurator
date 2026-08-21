@@ -69,7 +69,8 @@
   `adapters/arxml-parser` 覆盖
 
 - [x] 类型系统 (ModuleSchema, ModuleConfig, Validation)
-- [x] Schema 管理 (JSON Schema 转换，117 个模块 schema: 54 手写/ARXML + 63 yuleASR Cfg.h 自动提取)
+- [x] Schema 管理 (JSON Schema 转换，117 个模块 schema: 54 手写/ARXML + 63
+      yuleASR Cfg.h 自动提取)
 - [x] 配置验证器
 - [x] 代码生成器接口 (ecuc/swc/os/rte 4 个生成器)
 - [x] ARXML 解析器

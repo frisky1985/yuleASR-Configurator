@@ -323,9 +323,7 @@
       "type": "enum",
       "description": "DEM_CFG_DTC_FORMAT 参数",
       "default": "DEM_DTC_FORMAT_UDS",
-      "enum": [
-        "DEM_DTC_FORMAT_UDS"
-      ],
+      "enum": ["DEM_DTC_FORMAT_UDS"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "DEM_CFG_PRIMARY_MEMORY_MAX_ENTRIES": {

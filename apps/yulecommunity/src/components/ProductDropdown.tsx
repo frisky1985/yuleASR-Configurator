@@ -35,11 +35,12 @@ export function ProductDropdown() {
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-1 text-sm font-medium text-foreground hover:text-primary transition-colors"
       >
-        产品 <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        产品{' '}
+        <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
       {isOpen && (
         <div className="absolute left-0 top-full mt-2 w-64 bg-card border border-border rounded-xl shadow-2xl p-2 z-50">
-          {productItems.map((item) => (
+          {productItems.map(item => (
             <Link
               key={item.to}
               to={item.to}

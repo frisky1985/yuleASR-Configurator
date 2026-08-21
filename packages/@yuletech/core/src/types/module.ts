@@ -127,26 +127,13 @@ export interface ModuleSchema {
  * 模块参数类型
  */
 export type ParameterType =
-  | 'boolean'
-  | 'integer'
-  | 'float'
-  | 'string'
-  | 'enum'
-  | 'reference'
-  | 'array'
-  | 'object';
+  'boolean' | 'integer' | 'float' | 'string' | 'enum' | 'reference' | 'array' | 'object';
 
 /**
  * 验证规则类型
  */
 export type ValidationRuleType =
-  | 'required'
-  | 'min'
-  | 'max'
-  | 'range'
-  | 'pattern'
-  | 'custom'
-  | 'dependency';
+  'required' | 'min' | 'max' | 'range' | 'pattern' | 'custom' | 'dependency';
 
 /**
  * 验证规则

@@ -96,7 +96,9 @@ describe('toConditionModuleConfigs (Fix 17 组装)', () => {
                 makeContainer({
                   id: 'sub',
                   name: 'CanSub',
-                  parameters: [makeParam({ id: 'p2', name: 'wakeup', value: true, type: 'boolean' })],
+                  parameters: [
+                    makeParam({ id: 'p2', name: 'wakeup', value: true, type: 'boolean' }),
+                  ],
                 }),
               ],
             }),
@@ -110,9 +112,7 @@ describe('toConditionModuleConfigs (Fix 17 组装)', () => {
   });
 
   it('disabled 模块也包含在 configs 中（供 !Module.enabled 类表达式求值）', () => {
-    const configs = toConditionModuleConfigs(
-      makeConfigFile([makeModule({ enabled: false })])
-    );
+    const configs = toConditionModuleConfigs(makeConfigFile([makeModule({ enabled: false })]));
     expect(configs).toHaveLength(1);
     expect(configs[0].module).toBe('Can');
   });
@@ -155,12 +155,8 @@ describe('条件引擎与组装 configs 的寻址一致性', () => {
 // ─── 3. 容器 condition 显隐（ContainerParameterList） ─────────────────
 
 describe('ContainerParameterList 容器 condition', () => {
-  const visibleConfigs = toConditionModuleConfigs(
-    makeConfigFile([makeModule({ enabled: true })])
-  );
-  const hiddenConfigs = toConditionModuleConfigs(
-    makeConfigFile([makeModule({ enabled: false })])
-  );
+  const visibleConfigs = toConditionModuleConfigs(makeConfigFile([makeModule({ enabled: true })]));
+  const hiddenConfigs = toConditionModuleConfigs(makeConfigFile([makeModule({ enabled: false })]));
 
   function renderContainer(condition: string | undefined, configs: typeof visibleConfigs) {
     return render(
@@ -199,12 +195,8 @@ describe('ContainerParameterList 容器 condition', () => {
 // ─── 4. 参数 visibleWhen 显隐（ParameterEditor） ──────────────────────
 
 describe('ParameterEditor 参数 visibleWhen', () => {
-  const visibleConfigs = toConditionModuleConfigs(
-    makeConfigFile([makeModule({ enabled: true })])
-  );
-  const hiddenConfigs = toConditionModuleConfigs(
-    makeConfigFile([makeModule({ enabled: false })])
-  );
+  const visibleConfigs = toConditionModuleConfigs(makeConfigFile([makeModule({ enabled: true })]));
+  const hiddenConfigs = toConditionModuleConfigs(makeConfigFile([makeModule({ enabled: false })]));
 
   function renderParam(visibleWhen: string | undefined, configs: typeof visibleConfigs) {
     return render(

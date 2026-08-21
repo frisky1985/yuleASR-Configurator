@@ -19,7 +19,7 @@ export function useSpecSearch(apiIndex: ApiIndexEntry[]) {
         includeScore: true,
         minMatchCharLength: 1,
       }),
-    [apiIndex],
+    [apiIndex]
   );
 
   const results = useMemo(() => {

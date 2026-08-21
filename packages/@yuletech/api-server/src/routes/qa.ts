@@ -80,7 +80,10 @@ export async function qaRoutes(app: FastifyInstance) {
             : desc(questions.createdAt);
 
     const [totalRow, rows] = await Promise.all([
-      db.select({ count: sql<number>`count(*)::int` }).from(questions).where(where),
+      db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(questions)
+        .where(where),
       db
         .select({
           question: questions,
@@ -208,7 +211,11 @@ export async function qaRoutes(app: FastifyInstance) {
     const questionId = parseInt(id, 10);
     const user = request.user as { id: number };
 
-    const [existing] = await db.select().from(questions).where(eq(questions.id, questionId)).limit(1);
+    const [existing] = await db
+      .select()
+      .from(questions)
+      .where(eq(questions.id, questionId))
+      .limit(1);
     if (!existing) throw { statusCode: 404, message: 'Question not found' };
     if (existing.authorId !== user.id) throw { statusCode: 403, message: 'Forbidden' };
 
@@ -236,7 +243,11 @@ export async function qaRoutes(app: FastifyInstance) {
     const questionId = parseInt(id, 10);
     const user = request.user as { id: number };
 
-    const [existing] = await db.select().from(questions).where(eq(questions.id, questionId)).limit(1);
+    const [existing] = await db
+      .select()
+      .from(questions)
+      .where(eq(questions.id, questionId))
+      .limit(1);
     if (!existing) throw { statusCode: 404, message: 'Question not found' };
     if (existing.authorId !== user.id) throw { statusCode: 403, message: 'Forbidden' };
 
@@ -254,7 +265,11 @@ export async function qaRoutes(app: FastifyInstance) {
     const questionId = parseInt(id, 10);
     const user = request.user as { id: number };
 
-    const [question] = await db.select().from(questions).where(eq(questions.id, questionId)).limit(1);
+    const [question] = await db
+      .select()
+      .from(questions)
+      .where(eq(questions.id, questionId))
+      .limit(1);
     if (!question) throw { statusCode: 404, message: 'Question not found' };
     if (question.status === 'closed') throw { statusCode: 400, message: 'Question is closed' };
 
@@ -327,8 +342,7 @@ export async function qaRoutes(app: FastifyInstance) {
     if (!question) throw { statusCode: 404, message: 'Question not found' };
     if (question.authorId !== user.id)
       throw { statusCode: 403, message: 'Only the question author can accept an answer' };
-    if (question.status === 'closed')
-      throw { statusCode: 400, message: 'Question is closed' };
+    if (question.status === 'closed') throw { statusCode: 400, message: 'Question is closed' };
 
     // Un-accept any previously accepted answer
     await db

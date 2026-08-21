@@ -141,7 +141,9 @@ describe('V3.2 — 混合头拼接（codegen splice）', () => {
       expect(seg!.structs).toBe(4);
       expect(seg!.externs).toBe(5);
       expect(seg!.segment).toContain('typedef uint32 CanIf_CanIdType;');
-      expect(seg!.segment).toContain('extern const CanIf_PduIdType CanIf_RxPduHohMap[CANIF_HOH_CNT][CANIF_RX_LPDU_CNT];');
+      expect(seg!.segment).toContain(
+        'extern const CanIf_PduIdType CanIf_RxPduHohMap[CANIF_HOH_CNT][CANIF_RX_LPDU_CNT];'
+      );
       expect(seg!.segment).not.toContain('#define');
     });
 
@@ -251,9 +253,9 @@ describe('V3.2 — 混合头拼接（codegen splice）', () => {
     });
 
     it('护栏：生成头缺 guard/#endif → splice 抛错', () => {
-      expect(() => spliceGeneratedWithNonMacro('#define X 1U\n', HANDWRITTEN_CANIF, 'CanIf_Cfg.h')).toThrow(
-        /结构异常/
-      );
+      expect(() =>
+        spliceGeneratedWithNonMacro('#define X 1U\n', HANDWRITTEN_CANIF, 'CanIf_Cfg.h')
+      ).toThrow(/结构异常/);
     });
   });
 
@@ -271,7 +273,8 @@ describe('V3.2 — 混合头拼接（codegen splice）', () => {
       const v31Defs = parseDefines(MERGED_V31);
       // D 类修复（2026-08-10）：生成器不再强加 8 个 CPI 版本宏（AR_RELEASE_*/MODULE_ID/
       // SW_*/VENDOR_ID）——V3.1 fixture 是旧生成器产物含这些宏，对比时从 V3.1 侧过滤
-      const CPI_VERSION_RE = /_(?:AR_RELEASE_(?:MAJOR|MINOR|REVISION)_VERSION|MODULE_ID|SW_(?:MAJOR|MINOR|PATCH)_VERSION|VENDOR_ID)$/;
+      const CPI_VERSION_RE =
+        /_(?:AR_RELEASE_(?:MAJOR|MINOR|REVISION)_VERSION|MODULE_ID|SW_(?:MAJOR|MINOR|PATCH)_VERSION|VENDOR_ID)$/;
       const v31Filtered = new Map([...v31Defs].filter(([k]) => !CPI_VERSION_RE.test(k)));
       // 宏名集合一致
       expect([...genDefs.keys()].sort()).toEqual([...v31Filtered.keys()].sort());
@@ -308,7 +311,9 @@ describe('V3.2 — 混合头拼接（codegen splice）', () => {
       // extern 数组尺寸引用宏段计数宏（拼接后仍成立）
       expect(gen).toContain('extern const CanIf_HohCfgType CanIf_HohCfg[CANIF_HOH_CNT];');
       expect(gen).toContain('extern const CanIf_TxPduCfgType CanIf_TxPduCfg[CANIF_TX_LPDU_CNT];');
-      expect(gen).toContain('extern const CanIf_PduIdType CanIf_RxPduHohMap[CANIF_HOH_CNT][CANIF_RX_LPDU_CNT];');
+      expect(gen).toContain(
+        'extern const CanIf_PduIdType CanIf_RxPduHohMap[CANIF_HOH_CNT][CANIF_RX_LPDU_CNT];'
+      );
       // 错误码仍由宏段提供，不重复拼接（防重定义）
       expect(gen).toContain('#define CANIF_E_PARAM_CANID');
       expect(gen.split('#define CANIF_E_PARAM_CANID').length).toBe(2);
@@ -349,11 +354,9 @@ describe('V3.2 — 混合头拼接（codegen splice）', () => {
       // P0-1（2026-08-11）：schema 收窄到 canif——护栏已补齐 27 个拼接模块，
       // 全量 110 schema + 仅 CanIf 手写头会正确触发“缺手写头”报错（防残缺纯宏头）。
       const schemas = loadPreferredSchemas().filter(s => s.name.toLowerCase() === 'canif');
-      const files = await generateHeadersFromConfig(
-        [{ name: 'canif', enabled: true }],
-        schemas,
-        { handwrittenHeaders: new Map([['CanIf_Cfg.h', HANDWRITTEN_CANIF]]) }
-      );
+      const files = await generateHeadersFromConfig([{ name: 'canif', enabled: true }], schemas, {
+        handwrittenHeaders: new Map([['CanIf_Cfg.h', HANDWRITTEN_CANIF]]),
+      });
       const canif = files.find(f => f.filename === 'CanIf_Cfg.h')!;
       expect(canif).toBeDefined();
       expect(canif.content).toContain('typedef uint32 CanIf_CanIdType;');

@@ -57,10 +57,7 @@ export function EcucParameterInput({
         )}
       >
         <span
-          className={cn(
-            'w-2 h-2 rounded-full',
-            on ? 'bg-green-500' : 'bg-muted-foreground/50'
-          )}
+          className={cn('w-2 h-2 rounded-full', on ? 'bg-green-500' : 'bg-muted-foreground/50')}
         />
         {on ? 'STD_ON' : 'STD_OFF'}
       </button>
@@ -125,9 +122,7 @@ export function EcucParamIssue({ issue }: { issue: EcucEditParam['issue'] }) {
     <p
       className={cn(
         'flex items-start gap-1 text-[11px] leading-tight mt-0.5',
-        isError
-          ? 'text-red-600 dark:text-red-400'
-          : 'text-amber-600 dark:text-amber-400'
+        isError ? 'text-red-600 dark:text-red-400' : 'text-amber-600 dark:text-amber-400'
       )}
       data-testid="ecuc-param-issue"
     >

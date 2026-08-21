@@ -409,11 +409,7 @@
           "properties": {
             "DcmDspDataDefaultEndianness": {
               "type": "string",
-              "enum": [
-                "BIG_ENDIAN",
-                "LITTLE_ENDIAN",
-                "OPAQUE"
-              ],
+              "enum": ["BIG_ENDIAN", "LITTLE_ENDIAN", "OPAQUE"],
               "description": "DID/RID/PID 默认字节序"
             },
             "DcmDspDDDIDcheckPerSourceDID": {
@@ -579,10 +575,7 @@
             },
             "DcmDslProtocolTransType": {
               "type": "string",
-              "enum": [
-                "TYPE1",
-                "TYPE2"
-              ],
+              "enum": ["TYPE1", "TYPE2"],
               "description": "ROE 协议传输类型"
             },
             "DcmDslProtocolType": {
@@ -765,10 +758,7 @@
             },
             "DcmDspSecurityUsePort": {
               "type": "string",
-              "enum": [
-                "USE_ASYNCH_CLIENT_SERVER",
-                "USE_ASYNCH_FNC"
-              ],
+              "enum": ["USE_ASYNCH_CLIENT_SERVER", "USE_ASYNCH_FNC"],
               "description": "安全访问接口类型"
             }
           },
@@ -851,11 +841,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "DcmDspDid",
-    "DcmDsdSidTab",
-    "DcmDslProtocolRx"
-  ],
+  "required": ["DcmDspDid", "DcmDsdSidTab", "DcmDslProtocolRx"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

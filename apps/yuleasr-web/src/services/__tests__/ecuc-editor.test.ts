@@ -143,7 +143,10 @@ describe('createEditableProject', () => {
   });
 
   it('定义缺失的纯值层参数不产生校验错误（无定义可依，降级）', () => {
-    const valueOnlyXml = FIXTURE_XML.replace(/<ECUC-MODULE-DEF>[\s\S]*?<\/ECUC-MODULE-DEF>\s*/g, '');
+    const valueOnlyXml = FIXTURE_XML.replace(
+      /<ECUC-MODULE-DEF>[\s\S]*?<\/ECUC-MODULE-DEF>\s*/g,
+      ''
+    );
     const view = buildEcucProjectView(parseSwcArxml(valueOnlyXml, 'values-only.arxml'));
     const editable = createEditableProject(view);
     expect(editable.errors).toBe(0);
@@ -157,7 +160,9 @@ describe('updateParamValue（改值 + 实时校验）', () => {
     const { editable } = buildProject();
     const next = updateParamValue(editable, 'Can', [], 'CanMainFunctionPeriod', 20);
     expect(next.dirty).toBe(true);
-    expect(next.modules[0].parameters.find(p => p.name === 'CanMainFunctionPeriod')?.value).toBe(20);
+    expect(next.modules[0].parameters.find(p => p.name === 'CanMainFunctionPeriod')?.value).toBe(
+      20
+    );
     expect(next.errors).toBe(0);
   });
 
@@ -181,9 +186,7 @@ describe('updateParamValue（改值 + 实时校验）', () => {
   it('布尔参数改值（true→false）无错误', () => {
     const { editable } = buildProject();
     const next = updateParamValue(editable, 'Can', [], 'CanDevErrorDetect', false);
-    expect(
-      next.modules[0].parameters.find(p => p.name === 'CanDevErrorDetect')?.value
-    ).toBe(false);
+    expect(next.modules[0].parameters.find(p => p.name === 'CanDevErrorDetect')?.value).toBe(false);
     expect(next.errors).toBe(0);
   });
 
@@ -192,15 +195,21 @@ describe('updateParamValue（改值 + 实时校验）', () => {
     const path2 = [{ name: 'CanController', index: 1 }];
     const next = updateParamValue(editable, 'Can', path2, 'CanControllerBaudRate', 125000);
     const containers = next.modules[0].containers;
-    expect(containers[0].parameters.find(p => p.name === 'CanControllerBaudRate')?.value).toBe(500000);
-    expect(containers[1].parameters.find(p => p.name === 'CanControllerBaudRate')?.value).toBe(125000);
+    expect(containers[0].parameters.find(p => p.name === 'CanControllerBaudRate')?.value).toBe(
+      500000
+    );
+    expect(containers[1].parameters.find(p => p.name === 'CanControllerBaudRate')?.value).toBe(
+      125000
+    );
   });
 
   it('容器内枚举参数非法值 → 错误', () => {
     const { editable } = buildProject();
     const path = [{ name: 'CanController', index: 0 }];
     const next = updateParamValue(editable, 'Can', path, 'CanControllerMode', 'USB');
-    const param = next.modules[0].containers[0].parameters.find(p => p.name === 'CanControllerMode');
+    const param = next.modules[0].containers[0].parameters.find(
+      p => p.name === 'CanControllerMode'
+    );
     expect(param?.issue?.severity).toBe('error');
   });
 });

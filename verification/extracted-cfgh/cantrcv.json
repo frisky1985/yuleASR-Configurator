@@ -307,60 +307,42 @@
       "type": "enum",
       "description": "CANTRCV_CH0_SPI_SEQUENCE 参数",
       "default": "SPI_SEQUENCE_0",
-      "enum": [
-        "SPI_SEQUENCE_0",
-        "SPI_SEQUENCE_1"
-      ],
+      "enum": ["SPI_SEQUENCE_0", "SPI_SEQUENCE_1"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANTRCV_CH0_SPI_CHANNEL": {
       "type": "enum",
       "description": "CANTRCV_CH0_SPI_CHANNEL 参数",
       "default": "SPI_CHANNEL_0",
-      "enum": [
-        "SPI_CHANNEL_0",
-        "SPI_CHANNEL_1"
-      ],
+      "enum": ["SPI_CHANNEL_0", "SPI_CHANNEL_1"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANTRCV_CH1_SPI_SEQUENCE": {
       "type": "enum",
       "description": "CANTRCV_CH1_SPI_SEQUENCE 参数",
       "default": "SPI_SEQUENCE_1",
-      "enum": [
-        "SPI_SEQUENCE_1",
-        "SPI_SEQUENCE_0"
-      ],
+      "enum": ["SPI_SEQUENCE_1", "SPI_SEQUENCE_0"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANTRCV_CH1_SPI_CHANNEL": {
       "type": "enum",
       "description": "CANTRCV_CH1_SPI_CHANNEL 参数",
       "default": "SPI_CHANNEL_1",
-      "enum": [
-        "SPI_CHANNEL_1",
-        "SPI_CHANNEL_0"
-      ],
+      "enum": ["SPI_CHANNEL_1", "SPI_CHANNEL_0"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANTRCV_CH0_WAKEUP_SOURCE": {
       "type": "enum",
       "description": "CANTRCV_CH0_WAKEUP_SOURCE 参数",
       "default": "ECUM_WKSOURCE_CAN",
-      "enum": [
-        "ECUM_WKSOURCE_CAN",
-        "ECUM_WKSOURCE_CAN1"
-      ],
+      "enum": ["ECUM_WKSOURCE_CAN", "ECUM_WKSOURCE_CAN1"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANTRCV_CH1_WAKEUP_SOURCE": {
       "type": "enum",
       "description": "CANTRCV_CH1_WAKEUP_SOURCE 参数",
       "default": "ECUM_WKSOURCE_CAN1",
-      "enum": [
-        "ECUM_WKSOURCE_CAN1",
-        "ECUM_WKSOURCE_CAN"
-      ],
+      "enum": ["ECUM_WKSOURCE_CAN1", "ECUM_WKSOURCE_CAN"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CANTRCV_DEFAULT_WAKEUP_MODE": {

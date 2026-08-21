@@ -10,11 +10,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import {
-  importEcucArxml,
-  parseSwcArxml,
-  validateEcucConsistency,
-} from '../arxml-ecuc-import';
+import { importEcucArxml, parseSwcArxml, validateEcucConsistency } from '../arxml-ecuc-import';
 // 值层 + 定义层同文件夹具（E2 关联：DEFINITION-REF 短名匹配模块定义）
 const BOTH_LAYERS_XML = `<?xml version="1.0" encoding="UTF-8"?>
 <AUTOSAR xmlns="http://autosar.org/schema/r4.0">

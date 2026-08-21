@@ -3,7 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
 import { Send, ArrowLeft, AlertCircle, CheckCircle2, Plus, X } from 'lucide-react';
-import { LAYER_OPTIONS, MCU_OPTIONS, OS_OPTIONS, COMPILER_OPTIONS } from '../../data/autosar/registry-types';
+import {
+  LAYER_OPTIONS,
+  MCU_OPTIONS,
+  OS_OPTIONS,
+  COMPILER_OPTIONS,
+} from '../../data/autosar/registry-types';
 import type { RegistryModuleDependency } from '../../data/autosar/registry-types';
 
 interface PublishForm {
@@ -30,15 +35,19 @@ const initialForm: PublishForm = {
   mcus: [],
   oses: [],
   compilers: [],
-  configData: JSON.stringify({
-    "$schema": "./yuleasr.schema.json",
-    "name": "",
-    "description": "",
-    "version": "1.0.0",
-    "vendor": "",
-    "mcu": "",
-    "module": {},
-  }, null, 2),
+  configData: JSON.stringify(
+    {
+      $schema: './yuleasr.schema.json',
+      name: '',
+      description: '',
+      version: '1.0.0',
+      vendor: '',
+      mcu: '',
+      module: {},
+    },
+    null,
+    2
+  ),
   dependencies: [],
 };
 
@@ -107,7 +116,11 @@ export function RegistryPublishPage() {
     }));
   };
 
-  const updateDependency = (index: number, field: keyof RegistryModuleDependency, value: string | boolean) => {
+  const updateDependency = (
+    index: number,
+    field: keyof RegistryModuleDependency,
+    value: string | boolean
+  ) => {
     setForm(prev => {
       const deps = [...prev.dependencies];
       deps[index] = { ...deps[index], [field]: value };
@@ -153,7 +166,10 @@ export function RegistryPublishPage() {
       version: form.version.trim(),
       layer: form.layer,
       description: form.description.trim(),
-      tags: form.tags.split(',').map(t => t.trim()).filter(Boolean),
+      tags: form.tags
+        .split(',')
+        .map(t => t.trim())
+        .filter(Boolean),
       author: form.author.trim() || '社区贡献者',
       configData: form.configData,
       compatibility: {
@@ -208,11 +224,7 @@ export function RegistryPublishPage() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <button
             onClick={() => navigate('/autosar/registry')}
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors mb-4"
@@ -282,7 +294,9 @@ export function RegistryPublishPage() {
             >
               <option value="">选择层级...</option>
               {LAYER_OPTIONS.map(opt => (
-                <option key={opt.value} value={opt.value}>{opt.label} - {opt.description}</option>
+                <option key={opt.value} value={opt.value}>
+                  {opt.label} - {opt.description}
+                </option>
               ))}
             </select>
           </div>
@@ -407,12 +421,12 @@ export function RegistryPublishPage() {
               }}
               rows={16}
               className={`w-full px-3 py-2.5 text-sm font-mono bg-background border rounded-lg focus:outline-none focus:ring-2 resize-y ${
-                jsonError ? 'border-red-500/50 focus:ring-red-500/30' : 'border-border focus:ring-primary/30'
+                jsonError
+                  ? 'border-red-500/50 focus:ring-red-500/30'
+                  : 'border-border focus:ring-primary/30'
               }`}
             />
-            {jsonError && (
-              <p className="mt-1 text-xs text-red-500">{jsonError}</p>
-            )}
+            {jsonError && <p className="mt-1 text-xs text-red-500">{jsonError}</p>}
             <button
               type="button"
               onClick={() => {
@@ -439,7 +453,10 @@ export function RegistryPublishPage() {
             </div>
             <div className="space-y-2">
               {form.dependencies.map((dep, i) => (
-                <div key={i} className="flex items-center gap-2 p-2 rounded-lg bg-card border border-border">
+                <div
+                  key={i}
+                  className="flex items-center gap-2 p-2 rounded-lg bg-card border border-border"
+                >
                   <input
                     type="text"
                     value={dep.name}

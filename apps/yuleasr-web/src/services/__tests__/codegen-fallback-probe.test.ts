@@ -29,9 +29,7 @@ describe('P0-1 codegen fallback/error probes', () => {
     const doipSchema: any = {
       name: 'DoIP',
       version: '1.0.0',
-      parameters: [
-        { name: 'DOIP_DEV_ERROR_DETECT', type: 'boolean', default: true },
-      ],
+      parameters: [{ name: 'DOIP_DEV_ERROR_DETECT', type: 'boolean', default: true }],
     };
     await expect(
       generateHeadersFromSchemas([doipSchema], { handwrittenHeaders: new Map() })
@@ -80,7 +78,8 @@ describe('P0-1 codegen fallback/error probes', () => {
 
   it('S3: unknown mixed module + handwritten provided -> auto-splice, no throw', async () => {
     const schema: any = {
-      name: 'Xyz', version: '1.0.0',
+      name: 'Xyz',
+      version: '1.0.0',
       parameters: [{ name: 'XYZ_CNT', type: 'integer', default: 2 }],
     };
     const mixed = `#ifndef XYZ_CFG_H\n#define XYZ_CFG_H\n#define XYZ_CNT (2U)\ntypedef struct { uint16 b; } Xyz_Type;\nextern const Xyz_Type Xyz_Data;\n#endif`;
@@ -93,7 +92,8 @@ describe('P0-1 codegen fallback/error probes', () => {
 
   it('S4: unknown mixed module + splice mode + missing handwritten -> auto pure-macro (warning)', async () => {
     const schema: any = {
-      name: 'Yzw', version: '1.0.0',
+      name: 'Yzw',
+      version: '1.0.0',
       parameters: [{ name: 'YZW_CNT', type: 'integer', default: 1 }],
     };
     const out = await generateHeadersFromSchemas([schema], { handwrittenHeaders: new Map() });

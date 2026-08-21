@@ -463,38 +463,30 @@ export class SchemaParser {
         name: data.os?.name || 'YuleOS',
         version: data.os?.version || '1.0.0',
         status: data.os?.status || 'STANDARD',
-        tasks: (data.tasks || []).map(
-          (t: any): OsTask => ({
-            name: t.name,
-            priority: t.priority,
-            activation: t.activation,
-            autostart: t.autostart,
-            schedule: t.schedule,
-            events: t.events,
-          })
-        ),
-        alarms: (data.alarms || []).map(
-          (a: any): OsAlarm => ({
-            name: a.name,
-            counter: a.counter,
-            action: a.action,
-            task: a.task,
-            autostart: a.autostart,
-            period: a.period,
-          })
-        ),
-        resources: (data.resources || []).map(
-          (r: any): OsResource => ({
-            name: r.name,
-            priorityCeiling: r.priority_ceiling,
-          })
-        ),
-        events: (data.events || []).map(
-          (e: any): OsEvent => ({
-            name: e.name,
-            mask: e.mask,
-          })
-        ),
+        tasks: (data.tasks || []).map((t: any): OsTask => ({
+          name: t.name,
+          priority: t.priority,
+          activation: t.activation,
+          autostart: t.autostart,
+          schedule: t.schedule,
+          events: t.events,
+        })),
+        alarms: (data.alarms || []).map((a: any): OsAlarm => ({
+          name: a.name,
+          counter: a.counter,
+          action: a.action,
+          task: a.task,
+          autostart: a.autostart,
+          period: a.period,
+        })),
+        resources: (data.resources || []).map((r: any): OsResource => ({
+          name: r.name,
+          priorityCeiling: r.priority_ceiling,
+        })),
+        events: (data.events || []).map((e: any): OsEvent => ({
+          name: e.name,
+          mask: e.mask,
+        })),
         scheduleTables: data.schedule_tables || [],
       };
     } catch (error) {
@@ -591,22 +583,18 @@ export class SchemaParser {
             category,
             version: '1.0.0',
             dependencies: [],
-            containers: data.containers.map(
-              (c: any): ModuleContainer => ({
-                name: c.name,
-                definition: c.definition,
-                description: c.description,
-                parameters: (c.parameters || []).map(
-                  (p: any): ModuleParameter => ({
-                    name: p.name,
-                    value: this.parseValue(p.value, p.type),
-                    type: p.type,
-                    definition: p.definition,
-                    description: p.description,
-                  })
-                ),
-              })
-            ),
+            containers: data.containers.map((c: any): ModuleContainer => ({
+              name: c.name,
+              definition: c.definition,
+              description: c.description,
+              parameters: (c.parameters || []).map((p: any): ModuleParameter => ({
+                name: p.name,
+                value: this.parseValue(p.value, p.type),
+                type: p.type,
+                definition: p.definition,
+                description: p.description,
+              })),
+            })),
           };
 
           modules.push(module);

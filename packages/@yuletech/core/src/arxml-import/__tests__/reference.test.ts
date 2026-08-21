@@ -219,7 +219,9 @@ describe('C1 引用类型安全 — 类型不符即报错', () => {
     const { report } = importSwcArxml(xml, 'bad-iface.arxml');
 
     expect(report.errors).toHaveLength(1);
-    expect(report.errors[0]).toMatch(/^Invalid reference: \/P\/NotAnIface \(port In\): expected an interface/);
+    expect(report.errors[0]).toMatch(
+      /^Invalid reference: \/P\/NotAnIface \(port In\): expected an interface/
+    );
     expect(report.errors[0]).toContain("'NotAnIface' is a data type");
   });
 
@@ -246,7 +248,9 @@ describe('C1 引用类型安全 — 类型不符即报错', () => {
     const { report } = importSwcArxml(xml, 'bad-typeref.arxml');
 
     expect(report.errors).toHaveLength(1);
-    expect(report.errors[0]).toMatch(/^Invalid reference: \/P\/IfaceNotType \(data element E\): expected a data type/);
+    expect(report.errors[0]).toMatch(
+      /^Invalid reference: \/P\/IfaceNotType \(data element E\): expected a data type/
+    );
     expect(report.errors[0]).toContain("'IfaceNotType' is an interface");
   });
 
@@ -279,7 +283,9 @@ describe('C1 引用类型安全 — 类型不符即报错', () => {
     const { report } = importSwcArxml(xml, 'bad-baseref.arxml');
 
     expect(report.errors).toHaveLength(1);
-    expect(report.errors[0]).toMatch(/^Invalid reference: \/P\/NotABase \(data type SpeedType\): expected a base type/);
+    expect(report.errors[0]).toMatch(
+      /^Invalid reference: \/P\/NotABase \(data type SpeedType\): expected a base type/
+    );
   });
 
   it('compuMethodRef 指向接口 → Invalid reference 错误', () => {
@@ -315,7 +321,9 @@ describe('C1 引用类型安全 — 类型不符即报错', () => {
     const { report } = importSwcArxml(xml, 'bad-cmref.arxml');
 
     expect(report.errors).toHaveLength(1);
-    expect(report.errors[0]).toMatch(/^Invalid reference: \/P\/IfaceNotCM \(data type SpeedType\): expected a CompuMethod/);
+    expect(report.errors[0]).toMatch(
+      /^Invalid reference: \/P\/IfaceNotCM \(data type SpeedType\): expected a CompuMethod/
+    );
   });
 
   it('同一文件多处类型不符 → 全部报出（不短路）', () => {
@@ -355,7 +363,9 @@ describe('C1 引用类型安全 — 类型不符即报错', () => {
 
     expect(report.errors).toHaveLength(2);
     for (const err of report.errors) {
-      expect(err).toMatch(/^Invalid reference: \/P\/TypeX \(port (In|Out)\): expected an interface/);
+      expect(err).toMatch(
+        /^Invalid reference: \/P\/TypeX \(port (In|Out)\): expected an interface/
+      );
     }
   });
 });

@@ -104,7 +104,10 @@ export function validateArxmlDocument(
   const detected = detectSchemaVersion(xml);
   if (detected === null) {
     errors.push('schemaLocation 中未找到 AUTOSAR_%05d.xsd 版本标记');
-  } else if (options.expectedSchemaVersion !== undefined && detected !== options.expectedSchemaVersion) {
+  } else if (
+    options.expectedSchemaVersion !== undefined &&
+    detected !== options.expectedSchemaVersion
+  ) {
     errors.push(
       `schemaLocation 版本不匹配：文档 ${detected} vs 期望 ${options.expectedSchemaVersion}`
     );

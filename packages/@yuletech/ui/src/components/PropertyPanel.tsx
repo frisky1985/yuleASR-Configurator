@@ -17,7 +17,12 @@ export interface PropertyPanelProps {
 /** 只读属性面板: key-value 网格展示 */
 export function PropertyPanel({ title, items, columns = 2, className }: PropertyPanelProps) {
   return (
-    <div className={cn('rounded-xl border border-app-border-primary bg-app-bg-primary overflow-hidden', className)}>
+    <div
+      className={cn(
+        'rounded-xl border border-app-border-primary bg-app-bg-primary overflow-hidden',
+        className
+      )}
+    >
       {title && (
         <div className="px-4 py-2.5 border-b border-app-border-primary bg-app-bg-secondary">
           <h3 className="text-sm font-semibold text-primary">{title}</h3>

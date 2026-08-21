@@ -200,11 +200,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CommonPublishedInformation",
-    "FrIfConfigSet",
-    "FrIfGeneral"
-  ],
+  "required": ["CommonPublishedInformation", "FrIfConfigSet", "FrIfGeneral"],
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",

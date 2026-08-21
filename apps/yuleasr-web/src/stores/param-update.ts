@@ -29,7 +29,13 @@ export function updateContainerParam(
       if (container.subContainers?.length) {
         return {
           ...container,
-          subContainers: updateContainerParam(container.subContainers, containerId, instanceName, paramKey, value),
+          subContainers: updateContainerParam(
+            container.subContainers,
+            containerId,
+            instanceName,
+            paramKey,
+            value
+          ),
         };
       }
       return container;
@@ -53,7 +59,9 @@ export function updateContainerParam(
     }
     return {
       ...container,
-      parameters: container.parameters.map(p => (matchesParamKey(p, paramKey) ? { ...p, value } : p)),
+      parameters: container.parameters.map(p =>
+        matchesParamKey(p, paramKey) ? { ...p, value } : p
+      ),
     };
   });
 }

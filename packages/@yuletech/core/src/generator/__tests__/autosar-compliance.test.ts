@@ -524,21 +524,21 @@ describe('AUTOSAR 4.4 Compliance - Generated Code Integration', () => {
 
   // (d) Init / MainFunction / GetVersionInfo 函数声明存在
   // -----------------------------------------------------------------------
-  describe("(d) ECUC headers do NOT declare function prototypes (those go in driver headers)", () => {
+  describe('(d) ECUC headers do NOT declare function prototypes (those go in driver headers)', () => {
     for (const { config, schema } of moduleConfigs) {
       it(`should NOT declare ${schema.name}_Init in ECUC header`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: "./out" });
-        const header = result.files.find(f => f.path.endsWith(".h"))!.content;
+        const result = await ecucGen.generate(config, schema, { outputDir: './out' });
+        const header = result.files.find(f => f.path.endsWith('.h'))!.content;
         expect(header).not.toContain(`${schema.name}_Init(`);
       });
       it(`should NOT declare ${schema.name}_DeInit in ECUC header`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: "./out" });
-        const header = result.files.find(f => f.path.endsWith(".h"))!.content;
+        const result = await ecucGen.generate(config, schema, { outputDir: './out' });
+        const header = result.files.find(f => f.path.endsWith('.h'))!.content;
         expect(header).not.toContain(`${schema.name}_DeInit`);
       });
       it(`should NOT declare ${schema.name}_MainFunction in ECUC header`, async () => {
-        const result = await ecucGen.generate(config, schema, { outputDir: "./out" });
-        const header = result.files.find(f => f.path.endsWith(".h"))!.content;
+        const result = await ecucGen.generate(config, schema, { outputDir: './out' });
+        const header = result.files.find(f => f.path.endsWith('.h'))!.content;
         expect(header).not.toContain(`${schema.name}_MainFunction`);
       });
     }

@@ -7,11 +7,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import {
-  ElementTemplate,
-  GenericTemplate,
-  type NamedElement,
-} from '../element-template';
+import { ElementTemplate, GenericTemplate, type NamedElement } from '../element-template';
 import { ApplicationSwcTemplate, SenderReceiverInterfaceTemplate } from '../swc-templates';
 import { TemplateWorkspace } from '../workspace';
 import type { SwcProjectConfig } from '../../types/swc';
@@ -47,9 +43,7 @@ describe('TemplateWorkspace.apply · ElementTemplate 自动化四步', () => {
     // 依赖接口已创建（依赖先建）
     expect(workspace.project.interfaces?.map(i => i.name)).toEqual(['VehicleSpeed_I']);
     // SWC 已 append（create 后追加）
-    expect(workspace.project.applicationComponents.map(c => c.name)).toEqual([
-      'App_SpeedSensor',
-    ]);
+    expect(workspace.project.applicationComponents.map(c => c.name)).toEqual(['App_SpeedSensor']);
     expect(swc.ports).toEqual([
       { name: 'VehicleSpeed_In', direction: 'IN', interfaceRef: 'VehicleSpeed_I' },
     ]);

@@ -30,195 +30,209 @@ export async function ssoRoutes(app: FastifyInstance) {
   // ────────── OIDC Login (redirect) ──────────
 
   // Fix 30: 敏感端点单独配额（10 次/分钟）
-  app.get('/oidc/login', { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (_request, reply) => {
-    const issuer = envStr('OIDC_ISSUER');
-    const clientId = envStr('OIDC_CLIENT_ID');
-    const redirectUri = envStr('OIDC_REDIRECT_URI');
+  app.get(
+    '/oidc/login',
+    { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } },
+    async (_request, reply) => {
+      const issuer = envStr('OIDC_ISSUER');
+      const clientId = envStr('OIDC_CLIENT_ID');
+      const redirectUri = envStr('OIDC_REDIRECT_URI');
 
-    if (!issuer || !clientId || !redirectUri) {
-      return reply.status(500).send({ message: 'OIDC not configured' });
+      if (!issuer || !clientId || !redirectUri) {
+        return reply.status(500).send({ message: 'OIDC not configured' });
+      }
+
+      // Discover OIDC configuration from the issuer
+      const oidcConfigUrl = `${issuer.replace(/\/$/, '')}/.well-known/openid-configuration`;
+      let oidcConfig: any;
+      try {
+        const res = await fetch(oidcConfigUrl);
+        oidcConfig = await res.json();
+      } catch {
+        return reply.status(500).send({ message: 'Failed to fetch OIDC configuration' });
+      }
+
+      const authorizationUrl = oidcConfig.authorization_endpoint;
+      const state = crypto.randomUUID();
+      const nonce = crypto.randomUUID();
+
+      // Store state/nonce in a simple in-memory map (for production, use session/cache)
+      oidcStateStore.set(state, { nonce, createdAt: Date.now() });
+
+      const params = new URLSearchParams({
+        response_type: 'code',
+        client_id: clientId,
+        redirect_uri: redirectUri,
+        scope: 'openid profile email',
+        state,
+        nonce,
+      });
+
+      return reply.redirect(`${authorizationUrl}?${params.toString()}`);
     }
-
-    // Discover OIDC configuration from the issuer
-    const oidcConfigUrl = `${issuer.replace(/\/$/, '')}/.well-known/openid-configuration`;
-    let oidcConfig: any;
-    try {
-      const res = await fetch(oidcConfigUrl);
-      oidcConfig = await res.json();
-    } catch {
-      return reply.status(500).send({ message: 'Failed to fetch OIDC configuration' });
-    }
-
-    const authorizationUrl = oidcConfig.authorization_endpoint;
-    const state = crypto.randomUUID();
-    const nonce = crypto.randomUUID();
-
-    // Store state/nonce in a simple in-memory map (for production, use session/cache)
-    oidcStateStore.set(state, { nonce, createdAt: Date.now() });
-
-    const params = new URLSearchParams({
-      response_type: 'code',
-      client_id: clientId,
-      redirect_uri: redirectUri,
-      scope: 'openid profile email',
-      state,
-      nonce,
-    });
-
-    return reply.redirect(`${authorizationUrl}?${params.toString()}`);
-  });
+  );
 
   // ────────── OIDC Callback ──────────
 
-  app.get('/oidc/callback', { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (request, reply) => {
-    const { code, state } = request.query as { code?: string; state?: string };
-    const issuer = envStr('OIDC_ISSUER');
-    const clientId = envStr('OIDC_CLIENT_ID');
-    const clientSecret = envStr('OIDC_CLIENT_SECRET');
-    const redirectUri = envStr('OIDC_REDIRECT_URI');
+  app.get(
+    '/oidc/callback',
+    { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } },
+    async (request, reply) => {
+      const { code, state } = request.query as { code?: string; state?: string };
+      const issuer = envStr('OIDC_ISSUER');
+      const clientId = envStr('OIDC_CLIENT_ID');
+      const clientSecret = envStr('OIDC_CLIENT_SECRET');
+      const redirectUri = envStr('OIDC_REDIRECT_URI');
 
-    if (!code || !state) {
-      return reply.status(400).send({ message: 'Missing code or state parameter' });
-    }
-    if (!issuer || !clientId || !clientSecret || !redirectUri) {
-      return reply.status(500).send({ message: 'OIDC not configured' });
-    }
+      if (!code || !state) {
+        return reply.status(400).send({ message: 'Missing code or state parameter' });
+      }
+      if (!issuer || !clientId || !clientSecret || !redirectUri) {
+        return reply.status(500).send({ message: 'OIDC not configured' });
+      }
 
-    // Verify state（Fix 30: nonce 一次性消费——校验通过后才删除条目）
-    const storedState = oidcStateStore.get(state);
-    if (!storedState) {
-      return reply.status(400).send({ message: 'Invalid state parameter' });
-    }
+      // Verify state（Fix 30: nonce 一次性消费——校验通过后才删除条目）
+      const storedState = oidcStateStore.get(state);
+      if (!storedState) {
+        return reply.status(400).send({ message: 'Invalid state parameter' });
+      }
 
-    // Discover OIDC configuration
-    const oidcConfigUrl = `${issuer.replace(/\/$/, '')}/.well-known/openid-configuration`;
-    let oidcConfig: any;
-    try {
-      const res = await fetch(oidcConfigUrl);
-      oidcConfig = await res.json();
-    } catch {
-      return reply.status(500).send({ message: 'Failed to fetch OIDC configuration' });
-    }
+      // Discover OIDC configuration
+      const oidcConfigUrl = `${issuer.replace(/\/$/, '')}/.well-known/openid-configuration`;
+      let oidcConfig: any;
+      try {
+        const res = await fetch(oidcConfigUrl);
+        oidcConfig = await res.json();
+      } catch {
+        return reply.status(500).send({ message: 'Failed to fetch OIDC configuration' });
+      }
 
-    // Exchange authorization code for tokens
-    let tokenResponse: any;
-    try {
-      const res = await fetch(oidcConfig.token_endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          grant_type: 'authorization_code',
-          code,
-          redirect_uri: redirectUri,
-          client_id: clientId,
-          client_secret: clientSecret,
-        }).toString(),
-      });
-      tokenResponse = await res.json();
-    } catch {
-      return reply.status(500).send({ message: 'Failed to exchange authorization code' });
-    }
+      // Exchange authorization code for tokens
+      let tokenResponse: any;
+      try {
+        const res = await fetch(oidcConfig.token_endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            grant_type: 'authorization_code',
+            code,
+            redirect_uri: redirectUri,
+            client_id: clientId,
+            client_secret: clientSecret,
+          }).toString(),
+        });
+        tokenResponse = await res.json();
+      } catch {
+        return reply.status(500).send({ message: 'Failed to exchange authorization code' });
+      }
 
-    if (!tokenResponse.id_token) {
-      return reply.status(500).send({ message: 'No id_token in token response' });
-    }
+      if (!tokenResponse.id_token) {
+        return reply.status(500).send({ message: 'No id_token in token response' });
+      }
 
-    // Verify the id_token using JWKS（Fix 30: 增加 nonce 校验，防重放/CSRF；
-    // jose v6 的 JWTVerifyOptions 无 nonce 选项，验证后手动比对）
-    let payload: jose.JWTPayload;
-    try {
-      const JWKS = jose.createRemoteJWKSet(new URL(oidcConfig.jwks_uri));
-      const { payload: verified } = await jose.jwtVerify(tokenResponse.id_token, JWKS, {
-        issuer,
-        audience: clientId,
-      });
-      payload = verified;
-    } catch {
+      // Verify the id_token using JWKS（Fix 30: 增加 nonce 校验，防重放/CSRF；
+      // jose v6 的 JWTVerifyOptions 无 nonce 选项，验证后手动比对）
+      let payload: jose.JWTPayload;
+      try {
+        const JWKS = jose.createRemoteJWKSet(new URL(oidcConfig.jwks_uri));
+        const { payload: verified } = await jose.jwtVerify(tokenResponse.id_token, JWKS, {
+          issuer,
+          audience: clientId,
+        });
+        payload = verified;
+      } catch {
+        oidcStateStore.delete(state);
+        return reply.status(500).send({ message: 'Failed to verify id_token' });
+      }
+
+      // nonce 一次性消费：比对失败或通过后均删除 state 条目
+      if (payload.nonce !== storedState.nonce) {
+        oidcStateStore.delete(state);
+        return reply.status(400).send({ message: 'Invalid nonce' });
+      }
       oidcStateStore.delete(state);
-      return reply.status(500).send({ message: 'Failed to verify id_token' });
+
+      const ssoId = (payload.sub || payload.email || '') as string;
+      const email = (payload.email || `${ssoId}@oidc.local`) as string;
+      // Fix 30: 兜底邮箱（*@oidc.local）视为未验证；真实邮箱尊重 IdP 的 email_verified 声明
+      const emailVerified = email.endsWith('@oidc.local')
+        ? false
+        : typeof payload.email_verified === 'boolean'
+          ? payload.email_verified
+          : true;
+      const username = (payload.preferred_username ||
+        payload.name ||
+        email.split('@')[0]) as string;
+
+      // Find or create user by ssoId (or email fallback)
+      const [found] = await db
+        .select()
+        .from(users)
+        .where(
+          or(and(eq(users.ssoProvider, 'oidc'), eq(users.ssoId, ssoId)), eq(users.email, email))
+        )
+        .limit(1);
+
+      let user = found;
+
+      if (user) {
+        // Update existing user's SSO info
+        const [updated] = await db
+          .update(users)
+          .set({
+            ssoProvider: 'oidc',
+            ssoId,
+            ssoMetadata: JSON.stringify(payload),
+            // update email if changed（Fix 30: 同步刷新邮箱验证状态）
+            ...(user.email === email ? {} : { email, emailVerified }),
+          })
+          .where(eq(users.id, user.id))
+          .returning();
+        user = updated;
+      } else {
+        // Create new user
+        const randomPassword = crypto.randomUUID();
+        const hashed = await bcrypt.hash(randomPassword, 10);
+        const [created] = await db
+          .insert(users)
+          .values({
+            email,
+            username: await uniqueUsername(username),
+            passwordHash: hashed,
+            ssoProvider: 'oidc',
+            ssoId,
+            ssoMetadata: JSON.stringify(payload),
+            emailVerified,
+          })
+          .returning();
+        user = created;
+      }
+
+      const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role });
+      // Fix 30: token 放 URL fragment（#token=...），避免 token 进入浏览器历史/日志；
+      // 前端从 location.hash 读取（配合 helmet Referrer-Policy: no-referrer 防 Referer 泄露）
+      return reply.redirect(`/#token=${token}`);
     }
-
-    // nonce 一次性消费：比对失败或通过后均删除 state 条目
-    if (payload.nonce !== storedState.nonce) {
-      oidcStateStore.delete(state);
-      return reply.status(400).send({ message: 'Invalid nonce' });
-    }
-    oidcStateStore.delete(state);
-
-    const ssoId = (payload.sub || payload.email || '') as string;
-    const email = (payload.email || `${ssoId}@oidc.local`) as string;
-    // Fix 30: 兜底邮箱（*@oidc.local）视为未验证；真实邮箱尊重 IdP 的 email_verified 声明
-    const emailVerified = email.endsWith('@oidc.local')
-      ? false
-      : typeof payload.email_verified === 'boolean'
-        ? payload.email_verified
-        : true;
-    const username = (payload.preferred_username || payload.name || email.split('@')[0]) as string;
-
-    // Find or create user by ssoId (or email fallback)
-    const [found] = await db
-      .select()
-      .from(users)
-      .where(or(and(eq(users.ssoProvider, 'oidc'), eq(users.ssoId, ssoId)), eq(users.email, email)))
-      .limit(1);
-
-    let user = found;
-
-    if (user) {
-      // Update existing user's SSO info
-      const [updated] = await db
-        .update(users)
-        .set({
-          ssoProvider: 'oidc',
-          ssoId,
-          ssoMetadata: JSON.stringify(payload),
-          // update email if changed（Fix 30: 同步刷新邮箱验证状态）
-          ...(user.email === email
-            ? {}
-            : { email, emailVerified }),
-        })
-        .where(eq(users.id, user.id))
-        .returning();
-      user = updated;
-    } else {
-      // Create new user
-      const randomPassword = crypto.randomUUID();
-      const hashed = await bcrypt.hash(randomPassword, 10);
-      const [created] = await db
-        .insert(users)
-        .values({
-          email,
-          username: await uniqueUsername(username),
-          passwordHash: hashed,
-          ssoProvider: 'oidc',
-          ssoId,
-          ssoMetadata: JSON.stringify(payload),
-          emailVerified,
-        })
-        .returning();
-      user = created;
-    }
-
-    const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role });
-    // Fix 30: token 放 URL fragment（#token=...），避免 token 进入浏览器历史/日志；
-    // 前端从 location.hash 读取（配合 helmet Referrer-Policy: no-referrer 防 Referer 泄露）
-    return reply.redirect(`/#token=${token}`);
-  });
+  );
 
   // ────────── OIDC Logout ──────────
 
-  app.post('/oidc/logout', { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (_request, _reply) => {
-    const issuer = envStr('OIDC_ISSUER');
-    if (issuer) {
-      const endSessionEndpoint = `${issuer.replace(/\/$/, '')}/protocol/openid-connect/logout`;
-      try {
-        await fetch(endSessionEndpoint, { method: 'GET' });
-      } catch {
-        // Ignore errors — just proceed with local logout
+  app.post(
+    '/oidc/logout',
+    { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } },
+    async (_request, _reply) => {
+      const issuer = envStr('OIDC_ISSUER');
+      if (issuer) {
+        const endSessionEndpoint = `${issuer.replace(/\/$/, '')}/protocol/openid-connect/logout`;
+        try {
+          await fetch(endSessionEndpoint, { method: 'GET' });
+        } catch {
+          // Ignore errors — just proceed with local logout
+        }
       }
+      return { message: 'Logged out' };
     }
-    return { message: 'Logged out' };
-  });
+  );
 
   // ────────── LDAP Login ──────────
 
@@ -227,101 +241,111 @@ export async function ssoRoutes(app: FastifyInstance) {
     password: z.string().min(1),
   });
 
-  app.post('/ldap/login', { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } }, async (request, reply) => {
-    const parsed = ldapLoginSchema.safeParse(request.body);
-    if (!parsed.success) {
-      return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
-    }
+  app.post(
+    '/ldap/login',
+    { config: { rateLimit: { max: 10, timeWindow: '1 minute' } } },
+    async (request, reply) => {
+      const parsed = ldapLoginSchema.safeParse(request.body);
+      if (!parsed.success) {
+        return reply.status(400).send({ message: 'Invalid input', errors: parsed.error.flatten() });
+      }
 
-    const { username: inputUsername, password: inputPassword } = parsed.data;
-    const ldapUrl = envStr('LDAP_URL');
-    const baseDn = envStr('LDAP_BASE_DN');
-    const bindDn = envStr('LDAP_BIND_DN');
-    const bindCredentials = envStr('LDAP_BIND_CREDENTIALS');
-    const searchFilter = envStr('LDAP_SEARCH_FILTER', '(uid={{username}})');
+      const { username: inputUsername, password: inputPassword } = parsed.data;
+      const ldapUrl = envStr('LDAP_URL');
+      const baseDn = envStr('LDAP_BASE_DN');
+      const bindDn = envStr('LDAP_BIND_DN');
+      const bindCredentials = envStr('LDAP_BIND_CREDENTIALS');
+      const searchFilter = envStr('LDAP_SEARCH_FILTER', '(uid={{username}})');
 
-    if (!ldapUrl || !baseDn) {
-      return reply.status(500).send({ message: 'LDAP not configured' });
-    }
+      if (!ldapUrl || !baseDn) {
+        return reply.status(500).send({ message: 'LDAP not configured' });
+      }
 
-    // Parse LDAP URL
-    const url = new URL(ldapUrl);
-    const isTls = url.protocol === 'ldaps:';
-    const hostname = url.hostname;
-    const port = parseInt(url.port || (isTls ? '636' : '389'), 10);
+      // Parse LDAP URL
+      const url = new URL(ldapUrl);
+      const isTls = url.protocol === 'ldaps:';
+      const hostname = url.hostname;
+      const port = parseInt(url.port || (isTls ? '636' : '389'), 10);
 
-    // Construct search filter (Fix 7: 用户名经 RFC 4515 转义后再拼入，杜绝过滤器注入)
-    const filter = searchFilter.replace(/\{\{username\}\}/g, ldapEscapeFilterValue(inputUsername));
-
-    // Perform LDAP bind via raw socket (no external dependency)
-    try {
-      const ldapEntry = await ldapBindAndSearch(
-        hostname,
-        port,
-        isTls,
-        bindDn,
-        bindCredentials,
-        baseDn,
-        filter,
-        inputPassword
+      // Construct search filter (Fix 7: 用户名经 RFC 4515 转义后再拼入，杜绝过滤器注入)
+      const filter = searchFilter.replace(
+        /\{\{username\}\}/g,
+        ldapEscapeFilterValue(inputUsername)
       );
-      if (!ldapEntry) {
-        return reply.status(401).send({ message: 'LDAP authentication failed' });
+
+      // Perform LDAP bind via raw socket (no external dependency)
+      try {
+        const ldapEntry = await ldapBindAndSearch(
+          hostname,
+          port,
+          isTls,
+          bindDn,
+          bindCredentials,
+          baseDn,
+          filter,
+          inputPassword
+        );
+        if (!ldapEntry) {
+          return reply.status(401).send({ message: 'LDAP authentication failed' });
+        }
+
+        const email = ldapEntry.mail || ldapEntry.email || `${inputUsername}@ldap.local`;
+        const displayName =
+          ldapEntry.displayName || ldapEntry.cn || ldapEntry.name || inputUsername;
+        const ssoId = ldapEntry.dn || ldapEntry.uid || inputUsername;
+
+        // Find or create user
+        const [found] = await db
+          .select()
+          .from(users)
+          .where(
+            or(and(eq(users.ssoProvider, 'ldap'), eq(users.ssoId, ssoId)), eq(users.email, email))
+          )
+          .limit(1);
+
+        let user = found;
+
+        if (user) {
+          const [updated] = await db
+            .update(users)
+            .set({
+              ssoProvider: 'ldap',
+              ssoId,
+              ssoMetadata: JSON.stringify(ldapEntry),
+            })
+            .where(eq(users.id, user.id))
+            .returning();
+          user = updated;
+        } else {
+          const randomPassword = crypto.randomUUID();
+          const hashed = await bcrypt.hash(randomPassword, 10);
+          const [created] = await db
+            .insert(users)
+            .values({
+              email,
+              username: await uniqueUsername(displayName),
+              passwordHash: hashed,
+              ssoProvider: 'ldap',
+              ssoId,
+              ssoMetadata: JSON.stringify(ldapEntry),
+              // Fix 30: LDAP 兜底邮箱（*@ldap.local）视为未验证
+              emailVerified: !email.endsWith('@ldap.local'),
+            })
+            .returning();
+          user = created;
+        }
+
+        const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role });
+        return {
+          token,
+          provider: 'ldap',
+          user: { id: user.id, email: user.email, username: user.username, role: user.role },
+        };
+      } catch (err: any) {
+        return reply.status(401).send({ message: err.message || 'LDAP authentication failed' });
       }
-
-      const email = ldapEntry.mail || ldapEntry.email || `${inputUsername}@ldap.local`;
-      const displayName = ldapEntry.displayName || ldapEntry.cn || ldapEntry.name || inputUsername;
-      const ssoId = ldapEntry.dn || ldapEntry.uid || inputUsername;
-
-      // Find or create user
-      const [found] = await db
-        .select()
-        .from(users)
-        .where(or(and(eq(users.ssoProvider, 'ldap'), eq(users.ssoId, ssoId)), eq(users.email, email)))
-        .limit(1);
-
-      let user = found;
-
-      if (user) {
-        const [updated] = await db
-          .update(users)
-          .set({
-            ssoProvider: 'ldap',
-            ssoId,
-            ssoMetadata: JSON.stringify(ldapEntry),
-          })
-          .where(eq(users.id, user.id))
-          .returning();
-        user = updated;
-      } else {
-        const randomPassword = crypto.randomUUID();
-        const hashed = await bcrypt.hash(randomPassword, 10);
-        const [created] = await db
-          .insert(users)
-          .values({
-            email,
-            username: await uniqueUsername(displayName),
-            passwordHash: hashed,
-            ssoProvider: 'ldap',
-            ssoId,
-            ssoMetadata: JSON.stringify(ldapEntry),
-            // Fix 30: LDAP 兜底邮箱（*@ldap.local）视为未验证
-            emailVerified: !email.endsWith('@ldap.local'),
-          })
-          .returning();
-        user = created;
-      }
-
-      const token = app.jwt.sign({ id: user.id, email: user.email, role: user.role });
-      return {
-        token,
-        provider: 'ldap',
-        user: { id: user.id, email: user.email, username: user.username, role: user.role },
-      };
-    } catch (err: any) {
-      return reply.status(401).send({ message: err.message || 'LDAP authentication failed' });
     }
-  });
+  );
 }
 
 // ── Helper: OIDC state store (in-memory) ────────────────────────────────
@@ -329,14 +353,17 @@ export async function ssoRoutes(app: FastifyInstance) {
 const oidcStateStore = new Map<string, { nonce: string; createdAt: number }>();
 
 // ── Fix 30: OIDC state 定期清理（TTL 10 分钟，每 10 分钟清理一次；unref 不阻塞进程退出）──
-setInterval(() => {
-  const cutoff = Date.now() - 10 * 60 * 1000;
-  for (const [key, entry] of oidcStateStore) {
-    if (entry.createdAt < cutoff) {
-      oidcStateStore.delete(key);
+setInterval(
+  () => {
+    const cutoff = Date.now() - 10 * 60 * 1000;
+    for (const [key, entry] of oidcStateStore) {
+      if (entry.createdAt < cutoff) {
+        oidcStateStore.delete(key);
+      }
     }
-  }
-}, 10 * 60 * 1000).unref();
+  },
+  10 * 60 * 1000
+).unref();
 
 // ── Helper: Ensure unique username ──────────────────────────────────────
 

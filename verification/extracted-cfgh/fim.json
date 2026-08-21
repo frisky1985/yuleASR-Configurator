@@ -252,10 +252,7 @@
       "type": "enum",
       "description": "FIM_DEFAULT_PERMISSION 参数",
       "default": "FIM_PERMISSION_ALLOWED",
-      "enum": [
-        "FIM_PERMISSION_DENIED",
-        "FIM_PERMISSION_ALLOWED"
-      ],
+      "enum": ["FIM_PERMISSION_DENIED", "FIM_PERMISSION_ALLOWED"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "FIM_DEFAULT_AVAILABILITY": {

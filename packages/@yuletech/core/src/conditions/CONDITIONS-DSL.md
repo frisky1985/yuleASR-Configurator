@@ -94,13 +94,12 @@ Whitespace is ignored between tokens.
 
 ## Precedence (highest → lowest)
 
-| Level | Operators                   | Associativity | Notes                          |
-| ----- | --------------------------- | ------------- | ------------------------------ | ---- | ---------- |
-| 1     | `primary` / `path`          | —             | literals, paths, parenthesised |
-| 2     | `!` `-` (unary)             | right         |                                |
-| 3     | `==` `!=` `<` `>` `<=` `>=` | left          | comparisons                    |
-| 4     | `&&`                        | left          | logical AND                    |
-| 5     | `                           |               | `                              | left | logical OR |
+| Level | Operators | Associativity | Notes | | ----- |
+--------------------------- | ------------- | ------------------------------ |
+---- | ---------- | | 1 | `primary` / `path` | — | literals, paths,
+parenthesised | | 2 | `!` `-` (unary) | right | | | 3 | `==` `!=` `<` `>` `<=`
+`>=` | left | comparisons | | 4 | `&&` | left | logical AND | | 5 |
+`                          |               |` | left | logical OR |
 
 ---
 

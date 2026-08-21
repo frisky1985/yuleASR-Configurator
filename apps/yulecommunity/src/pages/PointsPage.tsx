@@ -11,8 +11,17 @@ import { useState, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import {
-  Trophy, Star, Award, TrendingUp, Calendar, CheckCircle2,
-  Loader2, AlertCircle, Users, Medal, ChevronRight,
+  Trophy,
+  Star,
+  Award,
+  TrendingUp,
+  Calendar,
+  CheckCircle2,
+  Loader2,
+  AlertCircle,
+  Users,
+  Medal,
+  ChevronRight,
   ArrowLeft,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -32,8 +41,13 @@ const LEVEL_CONFIG = [
 ];
 
 const levelColors = [
-  'text-gray-500', 'text-green-500', 'text-blue-500',
-  'text-purple-500', 'text-orange-500', 'text-red-500', 'text-yellow-500',
+  'text-gray-500',
+  'text-green-500',
+  'text-blue-500',
+  'text-purple-500',
+  'text-orange-500',
+  'text-red-500',
+  'text-yellow-500',
 ];
 
 const medalColors = ['text-yellow-500', 'text-gray-400', 'text-amber-700'];
@@ -77,37 +91,47 @@ export function PointsPage() {
   // 加载签到状态
   useEffect(() => {
     if (!isAuthenticated) return;
-    userApi.getCheckinStatus().then(res => {
-      if (res.success) setCheckin(res.data);
-    }).catch(() => {});
+    userApi
+      .getCheckinStatus()
+      .then(res => {
+        if (res.success) setCheckin(res.data);
+      })
+      .catch(() => {});
   }, [isAuthenticated]);
 
   // 加载排行榜和积分规则
   useEffect(() => {
     setLeadersLoading(true);
-    userApi.getLeaderboard({ limit: 50 }).then(res => {
-      if (res.success) setLeaders(res.data);
-    }).catch(() => {}).finally(() => setLeadersLoading(false));
+    userApi
+      .getLeaderboard({ limit: 50 })
+      .then(res => {
+        if (res.success) setLeaders(res.data);
+      })
+      .catch(() => {})
+      .finally(() => setLeadersLoading(false));
 
-    userApi.getPointsRules().then(res => {
-      if (res.success) {
-        const actionLabels: Record<string, string> = {
-          'daily.login': '每日签到',
-          'article.read': '阅读文章',
-          'article.like': '点赞文章',
-          'article.comment': '评论文章',
-          'article.publish': '发布文章',
-          'build.success': '构建成功',
-          'module.published': '发布模块',
-        };
-        const rules = Object.entries(res.data).map(([action, cfg]) => ({
-          action: actionLabels[action] || action,
-          points: cfg.points,
-          note: cfg.dailyLimit ? `每天最多${cfg.dailyLimit}次` : ''
-        }));
-        setPointsRules(rules);
-      }
-    }).catch(() => {});
+    userApi
+      .getPointsRules()
+      .then(res => {
+        if (res.success) {
+          const actionLabels: Record<string, string> = {
+            'daily.login': '每日签到',
+            'article.read': '阅读文章',
+            'article.like': '点赞文章',
+            'article.comment': '评论文章',
+            'article.publish': '发布文章',
+            'build.success': '构建成功',
+            'module.published': '发布模块',
+          };
+          const rules = Object.entries(res.data).map(([action, cfg]) => ({
+            action: actionLabels[action] || action,
+            points: cfg.points,
+            note: cfg.dailyLimit ? `每天最多${cfg.dailyLimit}次` : '',
+          }));
+          setPointsRules(rules);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const handleCheckin = useCallback(async () => {
@@ -117,7 +141,11 @@ export function PointsPage() {
     try {
       const res = await userApi.earnDailyCheckin();
       if (res.success) {
-        setCheckin({ checkedIn: true, streak: (checkin?.streak || 0) + 1, today: new Date().toISOString().slice(0, 10) });
+        setCheckin({
+          checkedIn: true,
+          streak: (checkin?.streak || 0) + 1,
+          today: new Date().toISOString().slice(0, 10),
+        });
         setCheckinMsg('签到成功！+5 积分');
         refreshPoints();
       } else {
@@ -151,7 +179,9 @@ export function PointsPage() {
             <Trophy className="w-6 h-6 text-yellow-500" />
             积分中心
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">通过贡献获取积分，提升等级，赢取社区声望</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            通过贡献获取积分，提升等级，赢取社区声望
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
@@ -175,7 +205,9 @@ export function PointsPage() {
                       <p className="text-3xl font-bold">{points.toLocaleString()}</p>
                     </div>
                     <div className="text-right">
-                      <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full bg-background ${levelColors[level - 1] || levelColors[0]}`}>
+                      <div
+                        className={`inline-flex items-center gap-1 px-3 py-1 rounded-full bg-background ${levelColors[level - 1] || levelColors[0]}`}
+                      >
                         <Star className="w-4 h-4" />
                         <span className="font-semibold">Lv.{level}</span>
                       </div>
@@ -187,7 +219,8 @@ export function PointsPage() {
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between text-xs">
                       <span className="text-muted-foreground">
-                        {LEVEL_CONFIG[level - 1]?.min.toLocaleString()} → {max === Infinity ? '∞' : max.toLocaleString()}
+                        {LEVEL_CONFIG[level - 1]?.min.toLocaleString()} →{' '}
+                        {max === Infinity ? '∞' : max.toLocaleString()}
                       </span>
                       <span className="font-medium">{progress}%</span>
                     </div>
@@ -255,7 +288,9 @@ export function PointsPage() {
                 </div>
 
                 {checkinMsg && (
-                  <p className={`mt-3 text-sm ${checkinMsg.includes('失败') ? 'text-destructive' : 'text-green-600 dark:text-green-400'}`}>
+                  <p
+                    className={`mt-3 text-sm ${checkinMsg.includes('失败') ? 'text-destructive' : 'text-green-600 dark:text-green-400'}`}
+                  >
                     {checkinMsg}
                   </p>
                 )}
@@ -277,8 +312,8 @@ export function PointsPage() {
                             isToday && checkin.checkedIn
                               ? 'bg-green-500 text-white'
                               : isToday
-                              ? 'bg-primary/10 text-primary border border-primary/20'
-                              : 'bg-muted/30 text-muted-foreground/40'
+                                ? 'bg-primary/10 text-primary border border-primary/20'
+                                : 'bg-muted/30 text-muted-foreground/40'
                           }`}
                         >
                           {d.getDate()}
@@ -302,7 +337,7 @@ export function PointsPage() {
                 等级一览
               </h3>
               <div className="space-y-2">
-                {LEVEL_CONFIG.map((cfg) => {
+                {LEVEL_CONFIG.map(cfg => {
                   const isCurrent = cfg.level === level;
                   const isUnlocked = cfg.level <= level;
                   return (
@@ -312,16 +347,18 @@ export function PointsPage() {
                         isCurrent
                           ? 'bg-primary/5 border border-primary/20'
                           : isUnlocked
-                          ? 'bg-muted/10'
-                          : 'opacity-40'
+                            ? 'bg-muted/10'
+                            : 'opacity-40'
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
-                          isUnlocked
-                            ? `${levelColors[cfg.level - 1]} bg-background`
-                            : 'bg-muted/30 text-muted-foreground/50'
-                        }`}>
+                        <span
+                          className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
+                            isUnlocked
+                              ? `${levelColors[cfg.level - 1]} bg-background`
+                              : 'bg-muted/30 text-muted-foreground/50'
+                          }`}
+                        >
                           {cfg.level}
                         </span>
                         <div>
@@ -390,7 +427,9 @@ export function PointsPage() {
 
                       {/* 积分 */}
                       <div className="text-right">
-                        <span className="text-sm font-semibold tabular-nums">{entry.total.toLocaleString()}</span>
+                        <span className="text-sm font-semibold tabular-nums">
+                          {entry.total.toLocaleString()}
+                        </span>
                         <span className="text-[10px] text-muted-foreground ml-1">分</span>
                       </div>
                     </div>
@@ -410,20 +449,24 @@ export function PointsPage() {
                 获取积分
               </h4>
               <div className="space-y-2 text-sm">
-                {(pointsRules || [
-                  { action: '每日签到', points: 5, note: '每天1次' },
-                  { action: '阅读文章', points: 1, note: '每天最多50篇' },
-                  { action: '点赞文章', points: 2, note: '每天最多20个' },
-                  { action: '评论文章', points: 5, note: '每天最多10次' },
-                  { action: '发布文章', points: 50, note: '' },
-                  { action: '构建成功', points: 10, note: '每天最多20次' },
-                  { action: '发布模块', points: 100, note: '' },
-                ]).map(item => (
+                {(
+                  pointsRules || [
+                    { action: '每日签到', points: 5, note: '每天1次' },
+                    { action: '阅读文章', points: 1, note: '每天最多50篇' },
+                    { action: '点赞文章', points: 2, note: '每天最多20个' },
+                    { action: '评论文章', points: 5, note: '每天最多10次' },
+                    { action: '发布文章', points: 50, note: '' },
+                    { action: '构建成功', points: 10, note: '每天最多20次' },
+                    { action: '发布模块', points: 100, note: '' },
+                  ]
+                ).map(item => (
                   <div key={item.action} className="flex items-center justify-between">
                     <span className="text-muted-foreground">{item.action}</span>
                     <div className="text-right">
                       <span className="font-medium tabular-nums">+{item.points}</span>
-                      {item.note && <span className="text-[10px] text-muted-foreground ml-1">{item.note}</span>}
+                      {item.note && (
+                        <span className="text-[10px] text-muted-foreground ml-1">{item.note}</span>
+                      )}
                     </div>
                   </div>
                 ))}

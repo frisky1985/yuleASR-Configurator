@@ -28,10 +28,7 @@
         },
         "BswMActionListExecution": {
           "type": "string",
-          "enum": [
-            "BSWM_CONDITION",
-            "BSWM_TRIGGER"
-          ],
+          "enum": ["BSWM_CONDITION", "BSWM_TRIGGER"],
           "description": "动作列表执行方式（BSWM_CONDITION/BSWM_TRIGGER）"
         },
         "BswMActionListItem": {
@@ -190,10 +187,7 @@
               "properties": {
                 "BswMEventRequestProcessing": {
                   "type": "string",
-                  "enum": [
-                    "BSWM_DEFERRED",
-                    "BSWM_IMMEDIATE"
-                  ],
+                  "enum": ["BSWM_DEFERRED", "BSWM_IMMEDIATE"],
                   "description": "事件请求处理方式"
                 }
               },
@@ -250,10 +244,7 @@
               "properties": {
                 "BswMRequestProcessing": {
                   "type": "string",
-                  "enum": [
-                    "BSWM_DEFERRED",
-                    "BSWM_IMMEDIATE"
-                  ],
+                  "enum": ["BSWM_DEFERRED", "BSWM_IMMEDIATE"],
                   "description": "模式请求处理方式"
                 },
                 "BswMModeInitValue": {
@@ -299,11 +290,7 @@
                 },
                 "BswMRuleInitState": {
                   "type": "string",
-                  "enum": [
-                    "BSWM_FALSE",
-                    "BSWM_TRUE",
-                    "BSWM_UNDEFINED"
-                  ],
+                  "enum": ["BSWM_FALSE", "BSWM_TRUE", "BSWM_UNDEFINED"],
                   "description": "规则初始状态"
                 },
                 "BswMRuleExpressionRef": {
@@ -402,10 +389,7 @@
           "properties": {
             "BswMEventRequestProcessing": {
               "type": "string",
-              "enum": [
-                "BSWM_DEFERRED",
-                "BSWM_IMMEDIATE"
-              ],
+              "enum": ["BSWM_DEFERRED", "BSWM_IMMEDIATE"],
               "description": "事件请求处理方式"
             }
           },
@@ -462,10 +446,7 @@
           "properties": {
             "BswMRequestProcessing": {
               "type": "string",
-              "enum": [
-                "BSWM_DEFERRED",
-                "BSWM_IMMEDIATE"
-              ],
+              "enum": ["BSWM_DEFERRED", "BSWM_IMMEDIATE"],
               "description": "模式请求处理方式"
             },
             "BswMModeInitValue": {
@@ -511,11 +492,7 @@
             },
             "BswMRuleInitState": {
               "type": "string",
-              "enum": [
-                "BSWM_FALSE",
-                "BSWM_TRUE",
-                "BSWM_UNDEFINED"
-              ],
+              "enum": ["BSWM_FALSE", "BSWM_TRUE", "BSWM_UNDEFINED"],
               "description": "规则初始状态"
             },
             "BswMRuleExpressionRef": {
@@ -545,13 +522,7 @@
       "properties": {
         "BswMLogicalOperator": {
           "type": "string",
-          "enum": [
-            "BSWM_AND",
-            "BSWM_NAND",
-            "BSWM_NOT",
-            "BSWM_OR",
-            "BSWM_XOR"
-          ],
+          "enum": ["BSWM_AND", "BSWM_NAND", "BSWM_NOT", "BSWM_OR", "BSWM_XOR"],
           "description": "逻辑运算符"
         },
         "BswMArgumentRef": {
@@ -595,11 +566,7 @@
         },
         "BswMRuleInitState": {
           "type": "string",
-          "enum": [
-            "BSWM_FALSE",
-            "BSWM_TRUE",
-            "BSWM_UNDEFINED"
-          ],
+          "enum": ["BSWM_FALSE", "BSWM_TRUE", "BSWM_UNDEFINED"],
           "description": "规则初始状态"
         },
         "BswMRuleExpressionRef": {
@@ -627,11 +594,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "BswMActionList",
-    "BswMAction",
-    "BswMGeneral"
-  ],
+  "required": ["BswMActionList", "BswMAction", "BswMGeneral"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

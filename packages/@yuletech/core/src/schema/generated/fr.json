@@ -252,11 +252,7 @@
         "FrPChannels": {
           "type": "string",
           "description": "FrPChannels 参数",
-          "enum": [
-            "FR_CHANNEL_A",
-            "FR_CHANNEL_AB",
-            "FR_CHANNEL_B"
-          ]
+          "enum": ["FR_CHANNEL_A", "FR_CHANNEL_AB", "FR_CHANNEL_B"]
         },
         "FrPClusterDriftDamping": {
           "type": "integer",
@@ -297,13 +293,7 @@
         "FrPdMicrotick": {
           "type": "string",
           "description": "FrPdMicrotick 参数",
-          "enum": [
-            "T100NS",
-            "T12_5NS",
-            "T200NS",
-            "T25NS",
-            "T50NS"
-          ]
+          "enum": ["T100NS", "T12_5NS", "T200NS", "T25NS", "T50NS"]
         },
         "FrPExternalSync": {
           "type": "boolean",
@@ -398,11 +388,7 @@
         "FrPSamplesPerMicrotick": {
           "type": "string",
           "description": "FrPSamplesPerMicrotick 参数",
-          "enum": [
-            "N1SAMPLES",
-            "N2SAMPLES",
-            "N4SAMPLES"
-          ]
+          "enum": ["N1SAMPLES", "N2SAMPLES", "N4SAMPLES"]
         },
         "FrPSecondKeySlotId": {
           "type": "integer",
@@ -417,10 +403,7 @@
         "FrPWakeupChannel": {
           "type": "string",
           "description": "FrPWakeupChannel 参数",
-          "enum": [
-            "FR_CHANNEL_A",
-            "FR_CHANNEL_B"
-          ]
+          "enum": ["FR_CHANNEL_A", "FR_CHANNEL_B"]
         },
         "FrPWakeupPattern": {
           "type": "integer",
@@ -478,11 +461,7 @@
         "FrChannels": {
           "type": "string",
           "description": "FrChannels 参数",
-          "enum": [
-            "FR_CHANNEL_A",
-            "FR_CHANNEL_AB",
-            "FR_CHANNEL_B"
-          ]
+          "enum": ["FR_CHANNEL_A", "FR_CHANNEL_AB", "FR_CHANNEL_B"]
         },
         "FrCycleRepetition": {
           "type": "integer",
@@ -531,11 +510,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CommonPublishedInformation",
-    "FrConfigSet",
-    "FrGeneral"
-  ],
+  "required": ["CommonPublishedInformation", "FrConfigSet", "FrGeneral"],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",

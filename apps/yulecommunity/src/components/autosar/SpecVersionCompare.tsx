@@ -57,7 +57,9 @@ export function SpecVersionCompare() {
             className="px-3 py-1.5 text-sm rounded-lg bg-background border border-border"
           >
             {SPEC_VERSIONS.map(v => (
-              <option key={v.id} value={v.id}>{v.label}</option>
+              <option key={v.id} value={v.id}>
+                {v.label}
+              </option>
             ))}
           </select>
         </div>
@@ -70,7 +72,9 @@ export function SpecVersionCompare() {
             className="px-3 py-1.5 text-sm rounded-lg bg-background border border-border"
           >
             {SPEC_VERSIONS.map(v => (
-              <option key={v.id} value={v.id}>{v.label}</option>
+              <option key={v.id} value={v.id}>
+                {v.label}
+              </option>
             ))}
           </select>
         </div>
@@ -101,11 +105,21 @@ export function SpecVersionCompare() {
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-muted/30 border-b border-border">
-              <th className="text-left px-4 py-2.5 text-xs font-medium text-muted-foreground">API</th>
-              <th className="text-left px-4 py-2.5 text-xs font-medium text-muted-foreground">模块</th>
-              <th className="text-center px-4 py-2.5 text-xs font-medium text-muted-foreground">{selectedA.label}</th>
-              <th className="text-center px-4 py-2.5 text-xs font-medium text-muted-foreground">{selectedB.label}</th>
-              <th className="text-center px-4 py-2.5 text-xs font-medium text-muted-foreground">状态</th>
+              <th className="text-left px-4 py-2.5 text-xs font-medium text-muted-foreground">
+                API
+              </th>
+              <th className="text-left px-4 py-2.5 text-xs font-medium text-muted-foreground">
+                模块
+              </th>
+              <th className="text-center px-4 py-2.5 text-xs font-medium text-muted-foreground">
+                {selectedA.label}
+              </th>
+              <th className="text-center px-4 py-2.5 text-xs font-medium text-muted-foreground">
+                {selectedB.label}
+              </th>
+              <th className="text-center px-4 py-2.5 text-xs font-medium text-muted-foreground">
+                状态
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -122,34 +136,61 @@ export function SpecVersionCompare() {
                 <td className="px-4 py-2 font-mono text-xs">{diff.apiName}</td>
                 <td className="px-4 py-2 text-xs text-muted-foreground">{diff.moduleId}</td>
                 <td className="px-4 py-2 text-center">
-                  <span className={`inline-flex items-center gap-1 text-xs ${
-                    diff.statuses[0] === 'removed' ? 'text-red-500' :
-                    diff.statuses[0] === 'added' ? 'text-green-500' : 'text-muted-foreground'
-                  }`}>
-                    {diff.statuses[0] === 'unchanged' ? <CheckCircle2 className="w-3.5 h-3.5" /> :
-                     diff.statuses[0] === 'added' ? <AlertTriangle className="w-3.5 h-3.5" /> :
-                     <XCircle className="w-3.5 h-3.5" />}
-                    {diff.statuses[0] === 'unchanged' ? '✅' :
-                     diff.statuses[0] === 'added' ? '🆕' : '❌'}
+                  <span
+                    className={`inline-flex items-center gap-1 text-xs ${
+                      diff.statuses[0] === 'removed'
+                        ? 'text-red-500'
+                        : diff.statuses[0] === 'added'
+                          ? 'text-green-500'
+                          : 'text-muted-foreground'
+                    }`}
+                  >
+                    {diff.statuses[0] === 'unchanged' ? (
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                    ) : diff.statuses[0] === 'added' ? (
+                      <AlertTriangle className="w-3.5 h-3.5" />
+                    ) : (
+                      <XCircle className="w-3.5 h-3.5" />
+                    )}
+                    {diff.statuses[0] === 'unchanged'
+                      ? '✅'
+                      : diff.statuses[0] === 'added'
+                        ? '🆕'
+                        : '❌'}
                   </span>
                 </td>
                 <td className="px-4 py-2 text-center">
-                  <span className={`inline-flex items-center gap-1 text-xs ${
-                    diff.statuses[1] === 'removed' ? 'text-red-500' :
-                    diff.statuses[1] === 'added' ? 'text-green-500' : 'text-muted-foreground'
-                  }`}>
-                    {diff.statuses[1] === 'unchanged' ? '✅' :
-                     diff.statuses[1] === 'added' ? '🆕' : '❌'}
+                  <span
+                    className={`inline-flex items-center gap-1 text-xs ${
+                      diff.statuses[1] === 'removed'
+                        ? 'text-red-500'
+                        : diff.statuses[1] === 'added'
+                          ? 'text-green-500'
+                          : 'text-muted-foreground'
+                    }`}
+                  >
+                    {diff.statuses[1] === 'unchanged'
+                      ? '✅'
+                      : diff.statuses[1] === 'added'
+                        ? '🆕'
+                        : '❌'}
                   </span>
                 </td>
                 <td className="px-4 py-2 text-center">
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
-                    diff.statuses[1] === 'modified' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400' :
-                    diff.statuses[1] === 'unchanged' ? 'bg-green-500/10 text-green-600 dark:text-green-400' :
-                    'bg-red-500/10 text-red-600 dark:text-red-400'
-                  }`}>
-                    {diff.statuses[1] === 'modified' ? '差异' :
-                     diff.statuses[1] === 'unchanged' ? '一致' : '缺失'}
+                  <span
+                    className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
+                      diff.statuses[1] === 'modified'
+                        ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
+                        : diff.statuses[1] === 'unchanged'
+                          ? 'bg-green-500/10 text-green-600 dark:text-green-400'
+                          : 'bg-red-500/10 text-red-600 dark:text-red-400'
+                    }`}
+                  >
+                    {diff.statuses[1] === 'modified'
+                      ? '差异'
+                      : diff.statuses[1] === 'unchanged'
+                        ? '一致'
+                        : '缺失'}
                   </span>
                 </td>
               </motion.tr>

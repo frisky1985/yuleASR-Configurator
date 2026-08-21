@@ -5,11 +5,7 @@ import { CrossModuleValidator } from '@yuletech/core/validators';
 import { loadPreferredSchemas } from '../../services/schemaSource';
 
 // 复刻 configStore.validateCrossModuleChanges 的核心链路（不依赖完整 store 状态）
-function uiValidate(
-  configs: ModuleConfig[],
-  changedModule: string,
-  changedParam: string
-) {
+function uiValidate(configs: ModuleConfig[], changedModule: string, changedParam: string) {
   const schemas = loadPreferredSchemas();
   const validator = new CrossModuleValidator(new Map(schemas.map(s => [s.name, s])));
   const errors = validator.validateAffectedBy(

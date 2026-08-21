@@ -82,8 +82,9 @@ export class RteCodeGenerator implements CodeGenerator {
   name = 'RteCodeGenerator';
   version = '1.0.0';
   supportedModules: string[] = ['RTE', 'Rte', 'Os'];
-  private compilerAbstraction: CompilerAbstraction = new (getCompilerAbstraction(undefined)
-    .constructor as new () => CompilerAbstraction)();
+  private compilerAbstraction: CompilerAbstraction = new (
+    getCompilerAbstraction(undefined).constructor as new () => CompilerAbstraction
+  )();
 
   supports(moduleName: string): boolean {
     return this.supportedModules.includes(moduleName);

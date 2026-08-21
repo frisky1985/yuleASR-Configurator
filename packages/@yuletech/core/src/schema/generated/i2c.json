@@ -114,10 +114,7 @@
           "type": "string",
           "maxLength": 255,
           "description": "I2cOperationMode 参数",
-          "enum": [
-            "I2C_MODE_MASTER",
-            "I2C_MODE_SLAVE"
-          ]
+          "enum": ["I2C_MODE_MASTER", "I2C_MODE_SLAVE"]
         }
       },
       "additionalProperties": true
@@ -227,20 +224,13 @@
           "type": "string",
           "maxLength": 255,
           "description": "I2cOperationMode 参数",
-          "enum": [
-            "I2C_MODE_MASTER",
-            "I2C_MODE_SLAVE"
-          ]
+          "enum": ["I2C_MODE_MASTER", "I2C_MODE_SLAVE"]
         }
       },
       "additionalProperties": true
     }
   },
-  "required": [
-    "CommonPublishedInformation",
-    "I2cConfigSet",
-    "I2cGeneral"
-  ],
+  "required": ["CommonPublishedInformation", "I2cConfigSet", "I2cGeneral"],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",

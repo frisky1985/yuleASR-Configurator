@@ -435,25 +435,52 @@ extern const Port_ConfigType Port_Config;
         version: '4.4.0',
         parameters: { canBaudrate: 500000, canDevErrorDetect: false },
         containers: {
-          CanController: [{
-            id: 'c0',
-            parameters: {
-              canBaudrate: 500000,
-              canControllerId: 0,
-              controllerId: 0,
-              baseAddress: 0x2090000,
-              rxProcessing: 0,
-              txProcessing: 0,
-              busOffProcessing: true,
-              wakeupProcessing: false,
-              wakeupSupport: false,
-              defaultBaudrateIndex: 0,
+          CanController: [
+            {
+              id: 'c0',
+              parameters: {
+                canBaudrate: 500000,
+                canControllerId: 0,
+                controllerId: 0,
+                baseAddress: 0x2090000,
+                rxProcessing: 0,
+                txProcessing: 0,
+                busOffProcessing: true,
+                wakeupProcessing: false,
+                wakeupSupport: false,
+                defaultBaudrateIndex: 0,
+              },
+              children: {
+                BaudrateConfig: [
+                  {
+                    id: 'br0',
+                    parameters: {
+                      baudRate: 500000,
+                      propSeg: 0,
+                      phaseSeg1: 0,
+                      phaseSeg2: 0,
+                      syncJumpWidth: 0,
+                      prescaler: 0,
+                    },
+                  },
+                ],
+                HardwareObject: [
+                  {
+                    id: 'hoh0',
+                    parameters: {
+                      hoh: 0,
+                      hohType: 0,
+                      idType: 0,
+                      firstId: 0,
+                      lastId: 0,
+                      objectId: 0,
+                      filtering: false,
+                    },
+                  },
+                ],
+              },
             },
-            children: {
-              BaudrateConfig: [{ id: 'br0', parameters: { baudRate: 500000, propSeg: 0, phaseSeg1: 0, phaseSeg2: 0, syncJumpWidth: 0, prescaler: 0 } }],
-              HardwareObject: [{ id: 'hoh0', parameters: { hoh: 0, hohType: 0, idType: 0, firstId: 0, lastId: 0, objectId: 0, filtering: false } }],
-            },
-          }],
+          ],
         },
       },
       schema: {
@@ -494,22 +521,44 @@ extern const Port_ConfigType Port_Config;
             minInstances: 1,
             maxInstances: 4,
             parameters: [
-              'canBaudrate', 'canControllerId', 'controllerId', 'baseAddress',
-              'rxProcessing', 'txProcessing', 'busOffProcessing',
-              'wakeupProcessing', 'wakeupSupport', 'defaultBaudrateIndex',
+              'canBaudrate',
+              'canControllerId',
+              'controllerId',
+              'baseAddress',
+              'rxProcessing',
+              'txProcessing',
+              'busOffProcessing',
+              'wakeupProcessing',
+              'wakeupSupport',
+              'defaultBaudrateIndex',
             ],
             children: [
               {
                 name: 'BaudrateConfig',
                 label: 'Baudrate Config',
                 multiple: true,
-                parameters: ['baudRate', 'propSeg', 'phaseSeg1', 'phaseSeg2', 'syncJumpWidth', 'prescaler'],
+                parameters: [
+                  'baudRate',
+                  'propSeg',
+                  'phaseSeg1',
+                  'phaseSeg2',
+                  'syncJumpWidth',
+                  'prescaler',
+                ],
               },
               {
                 name: 'HardwareObject',
                 label: 'Hardware Object',
                 multiple: true,
-                parameters: ['hoh', 'hohType', 'idType', 'firstId', 'lastId', 'objectId', 'filtering'],
+                parameters: [
+                  'hoh',
+                  'hohType',
+                  'idType',
+                  'firstId',
+                  'lastId',
+                  'objectId',
+                  'filtering',
+                ],
               },
             ],
           },
@@ -520,16 +569,51 @@ extern const Port_ConfigType Port_Config;
       config: {
         module: 'Mcu',
         version: '4.4.0',
-        parameters: { mcuClockSetting: 16000000, mcuRamSectors: 4, clockFrequency: 1000000000, pllMultiplier: 0, pllDivider: 0, pllEnabled: false, mcuDefaultMode: 0 },
+        parameters: {
+          mcuClockSetting: 16000000,
+          mcuRamSectors: 4,
+          clockFrequency: 1000000000,
+          pllMultiplier: 0,
+          pllDivider: 0,
+          pllEnabled: false,
+          mcuDefaultMode: 0,
+        },
         containers: {
-          McuClockSettingConfig: [{
-            id: 'clk0',
-            parameters: { clockId: 0, clockFrequency: 16000000, pllBaseAddr: 0, clockSource: 0, armDiv: 0, axiDiv: 0, ahbDiv: 0 },
-            children: {
-              PllConfig: [{ id: 'pll0', parameters: { pllBaseAddr: 0, prediv: 1, multiplier: 125, postdiv1: 0, postdiv2: 0, enable: true } }],
+          McuClockSettingConfig: [
+            {
+              id: 'clk0',
+              parameters: {
+                clockId: 0,
+                clockFrequency: 16000000,
+                pllBaseAddr: 0,
+                clockSource: 0,
+                armDiv: 0,
+                axiDiv: 0,
+                ahbDiv: 0,
+              },
+              children: {
+                PllConfig: [
+                  {
+                    id: 'pll0',
+                    parameters: {
+                      pllBaseAddr: 0,
+                      prediv: 1,
+                      multiplier: 125,
+                      postdiv1: 0,
+                      postdiv2: 0,
+                      enable: true,
+                    },
+                  },
+                ],
+              },
             },
-          }],
-          McuRamSection: [{ id: 'ram0', parameters: { ramBaseAddr: 0x10000000, ramSize: 65536, ramDefaultValue: 0 } }],
+          ],
+          McuRamSection: [
+            {
+              id: 'ram0',
+              parameters: { ramBaseAddr: 0x10000000, ramSize: 65536, ramDefaultValue: 0 },
+            },
+          ],
         },
       },
       schema: {
@@ -566,13 +650,28 @@ extern const Port_ConfigType Port_Config;
             multiple: true,
             minInstances: 1,
             maxInstances: 8,
-            parameters: ['clockId', 'clockFrequency', 'pllBaseAddr', 'clockSource', 'armDiv', 'axiDiv', 'ahbDiv'],
+            parameters: [
+              'clockId',
+              'clockFrequency',
+              'pllBaseAddr',
+              'clockSource',
+              'armDiv',
+              'axiDiv',
+              'ahbDiv',
+            ],
             children: [
               {
                 name: 'PllConfig',
                 label: 'PLL Config',
                 multiple: true,
-                parameters: ['pllBaseAddr', 'prediv', 'multiplier', 'postdiv1', 'postdiv2', 'enable'],
+                parameters: [
+                  'pllBaseAddr',
+                  'prediv',
+                  'multiplier',
+                  'postdiv1',
+                  'postdiv2',
+                  'enable',
+                ],
               },
             ],
           },
@@ -594,8 +693,32 @@ extern const Port_ConfigType Port_Config;
         parameters: { portDevErrorDetect: true, portPinCount: 8 },
         containers: {
           PortPin: [
-            { id: 'p0', parameters: { pinId: 0, pinDirection: 1, pinMode: 0, directionChangeable: true, modeChangeable: true, initialLevel: 0, pullUpEnable: true, pullDownEnable: false } },
-            { id: 'p1', parameters: { pinId: 1, pinDirection: 0, pinMode: 0, directionChangeable: false, modeChangeable: false, initialLevel: 0, pullUpEnable: false, pullDownEnable: true } },
+            {
+              id: 'p0',
+              parameters: {
+                pinId: 0,
+                pinDirection: 1,
+                pinMode: 0,
+                directionChangeable: true,
+                modeChangeable: true,
+                initialLevel: 0,
+                pullUpEnable: true,
+                pullDownEnable: false,
+              },
+            },
+            {
+              id: 'p1',
+              parameters: {
+                pinId: 1,
+                pinDirection: 0,
+                pinMode: 0,
+                directionChangeable: false,
+                modeChangeable: false,
+                initialLevel: 0,
+                pullUpEnable: false,
+                pullDownEnable: true,
+              },
+            },
           ],
         },
       },
@@ -623,7 +746,16 @@ extern const Port_ConfigType Port_Config;
             multiple: true,
             minInstances: 1,
             maxInstances: 64,
-            parameters: ['pinId', 'pinDirection', 'pinMode', 'directionChangeable', 'modeChangeable', 'initialLevel', 'pullUpEnable', 'pullDownEnable'],
+            parameters: [
+              'pinId',
+              'pinDirection',
+              'pinMode',
+              'directionChangeable',
+              'modeChangeable',
+              'initialLevel',
+              'pullUpEnable',
+              'pullDownEnable',
+            ],
           },
         ],
       },

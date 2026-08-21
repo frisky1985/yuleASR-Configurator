@@ -37,7 +37,10 @@ export async function postsRoutes(app: FastifyInstance) {
     const where = and(...conditions);
 
     const [totalRow, postList] = await Promise.all([
-      db.select({ count: sql<number>`count(*)::int` }).from(posts).where(where),
+      db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(posts)
+        .where(where),
       db
         .select({
           id: posts.id,

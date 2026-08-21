@@ -160,9 +160,7 @@
       },
       "additionalProperties": true,
       "x-choice-container": true,
-      "x-choice-params": [
-        "SpiChannelType"
-      ],
+      "x-choice-params": ["SpiChannelType"],
       "x-choice-description": "SPI 通道类型互斥 (SPI_MASTER/SPI_SLAVE 二选一)"
     },
     "SpiExternalDevice": {
@@ -578,18 +576,12 @@
         "SpiHwUnitDataShiftEdge": {
           "type": "string",
           "description": "SpiHwUnitDataShiftEdge 参数",
-          "enum": [
-            "SPI_MSB_FIRST",
-            "SPI_LSB_FIRST"
-          ]
+          "enum": ["SPI_MSB_FIRST", "SPI_LSB_FIRST"]
         },
         "SpiHwUnitEndianness": {
           "type": "string",
           "description": "SpiHwUnitEndianness 参数",
-          "enum": [
-            "SPI_MSB_FIRST",
-            "SPI_LSB_FIRST"
-          ]
+          "enum": ["SPI_MSB_FIRST", "SPI_LSB_FIRST"]
         },
         "SpiHwUnitFifoDepth": {
           "type": "integer",
@@ -605,10 +597,7 @@
         "SpiHwUnitMode": {
           "type": "string",
           "description": "SpiHwUnitMode 参数",
-          "enum": [
-            "SPI_MASTER",
-            "SPI_SLAVE"
-          ]
+          "enum": ["SPI_MASTER", "SPI_SLAVE"]
         },
         "SpiHwUnitRamThreshold": {
           "type": "integer",
@@ -625,10 +614,7 @@
         "SpiHwUnitShiftClockIdleLevel": {
           "type": "string",
           "description": "SpiHwUnitShiftClockIdleLevel 参数",
-          "enum": [
-            "SPI_LOW",
-            "SPI_HIGH"
-          ]
+          "enum": ["SPI_LOW", "SPI_HIGH"]
         },
         "SpiHwUnitTxFifoThreshold": {
           "type": "integer",
@@ -712,11 +698,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CommonPublishedInformation",
-    "SpiChannelList",
-    "SpiChannel"
-  ],
+  "required": ["CommonPublishedInformation", "SpiChannelList", "SpiChannel"],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",

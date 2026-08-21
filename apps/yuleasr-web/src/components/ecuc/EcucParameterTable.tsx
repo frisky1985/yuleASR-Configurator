@@ -16,7 +16,7 @@ import { Table2 } from 'lucide-react';
 import { EcucParamIssue, EcucParameterInput } from './EcucParameterInput';
 
 import { cn } from '@/lib/utils';
-import type { EcucEditIssue , EcucContainerPath } from '@/types/ecuc-edit';
+import type { EcucEditIssue, EcucContainerPath } from '@/types/ecuc-edit';
 import type { EcucFlatParamRow } from '@/types/ecuc-view';
 
 /** 表格行形态（只读行与可编辑行结构兼容） */
@@ -94,9 +94,7 @@ export function EcucParameterTable({
                   <div className="flex flex-col">
                     <EcucParameterInput
                       param={row}
-                      onChange={value =>
-                        onParamChange(row.module, row.pathKey!, row.name, value)
-                      }
+                      onChange={value => onParamChange(row.module, row.pathKey!, row.name, value)}
                     />
                     <EcucParamIssue issue={row.issue} />
                   </div>

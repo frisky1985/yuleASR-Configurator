@@ -477,47 +477,56 @@ export const ConfigTree = forwardRef<ConfigTreeHandle, ConfigTreeProps>(function
   }
 
   // Remove a dynamic instance
-  const removeInstance = useCallback((containerPath: string, instanceName: string) => {
-    setDynamicInstances(prev => {
-      const entries = (prev[containerPath] || []).filter(e => e.name !== instanceName);
-      // Fix C2: 同步到 store
-      updateContainerInstances(containerPath, entries);
-      return { ...prev, [containerPath]: entries };
-    });
-  }, [updateContainerInstances]);
+  const removeInstance = useCallback(
+    (containerPath: string, instanceName: string) => {
+      setDynamicInstances(prev => {
+        const entries = (prev[containerPath] || []).filter(e => e.name !== instanceName);
+        // Fix C2: 同步到 store
+        updateContainerInstances(containerPath, entries);
+        return { ...prev, [containerPath]: entries };
+      });
+    },
+    [updateContainerInstances]
+  );
 
   // Rename an instance
-  const renameInstance = useCallback((containerPath: string, oldName: string, newName: string) => {
-    setDynamicInstances(prev => {
-      const entries = (prev[containerPath] || []).map(e =>
-        e.name === oldName ? { ...e, name: newName } : e
-      );
-      // Fix C2: 同步到 store
-      updateContainerInstances(containerPath, entries);
-      return { ...prev, [containerPath]: entries };
-    });
-  }, [updateContainerInstances]);
+  const renameInstance = useCallback(
+    (containerPath: string, oldName: string, newName: string) => {
+      setDynamicInstances(prev => {
+        const entries = (prev[containerPath] || []).map(e =>
+          e.name === oldName ? { ...e, name: newName } : e
+        );
+        // Fix C2: 同步到 store
+        updateContainerInstances(containerPath, entries);
+        return { ...prev, [containerPath]: entries };
+      });
+    },
+    [updateContainerInstances]
+  );
 
   // Copy an instance (adds a new one with auto-incremented name and copied params)
-  const copyInstance = useCallback((containerPath: string, sourceName: string) => {
-    setDynamicInstances(prev => {
-      const entries = [...(prev[containerPath] || [])];
-      let maxIdx = -1;
-      for (const e of entries) {
-        const match = e.name.match(/_(\d+)$/);
-        if (match) maxIdx = Math.max(maxIdx, parseInt(match[1]));
-      }
-      const baseName = sourceName.replace(/_\d+$/, '') || sourceName;
-      const source = entries.find(e => e.name === sourceName);
-      entries.push({
-        name: `${baseName}_${maxIdx + 1}`,
-        paramValues: source ? { ...source.paramValues } : {},
+  const copyInstance = useCallback(
+    (containerPath: string, sourceName: string) => {
+      setDynamicInstances(prev => {
+        const entries = [...(prev[containerPath] || [])];
+        let maxIdx = -1;
+        for (const e of entries) {
+          const match = e.name.match(/_(\d+)$/);
+          if (match) maxIdx = Math.max(maxIdx, parseInt(match[1]));
+        }
+        const baseName = sourceName.replace(/_\d+$/, '') || sourceName;
+        const source = entries.find(e => e.name === sourceName);
+        entries.push({
+          name: `${baseName}_${maxIdx + 1}`,
+          paramValues: source ? { ...source.paramValues } : {},
+        });
+        // Fix C2: 同步到 store
+        updateContainerInstances(containerPath, entries);
+        return { ...prev, [containerPath]: entries };
       });
-      // Fix C2: 同步到 store
-      updateContainerInstances(containerPath, entries);
-      return { ...prev, [containerPath]: entries };
-    });
-  }, [updateContainerInstances]);
+    },
+    [updateContainerInstances]
+  );
 
   // Start rename (set editing state)
   const startRename = useCallback((path: string, currentName: string) => {

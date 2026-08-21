@@ -76,11 +76,7 @@ describe('Select', () => {
 
   it('shows placeholder when provided', () => {
     render(
-      <Select
-        aria-label="pick"
-        placeholder="Choose..."
-        options={[{ value: 'x', label: 'X' }]}
-      />
+      <Select aria-label="pick" placeholder="Choose..." options={[{ value: 'x', label: 'X' }]} />
     );
     const placeholderOpt = screen.getByRole('option', { name: 'Choose...' });
     expect(placeholderOpt).toHaveAttribute('value', '');

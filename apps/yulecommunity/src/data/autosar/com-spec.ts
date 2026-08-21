@@ -4,12 +4,24 @@ export const COM_APIS: AutosarApi[] = [
   {
     id: 'Com_SendSignal',
     name: 'Com_SendSignal',
-    signature: 'Std_ReturnType Com_SendSignal(Com_SignalIdType SignalId, const void* SignalDataPtr)',
+    signature:
+      'Std_ReturnType Com_SendSignal(Com_SignalIdType SignalId, const void* SignalDataPtr)',
     brief: '发送指定信号的值',
-    description: '将指定信号的数据写入 Com 模块内部缓冲区，等待 PDU 周期发送或触发式发送。支持所有信号数据类型，包括布尔、枚举、整数和浮点数。',
+    description:
+      '将指定信号的数据写入 Com 模块内部缓冲区，等待 PDU 周期发送或触发式发送。支持所有信号数据类型，包括布尔、枚举、整数和浮点数。',
     params: [
-      { name: 'SignalId', type: 'Com_SignalIdType', direction: 'in', description: '信号 ID，标识要发送的信号' },
-      { name: 'SignalDataPtr', type: 'const void*', direction: 'in', description: '指向信号数据的指针，数据长度与信号配置一致' },
+      {
+        name: 'SignalId',
+        type: 'Com_SignalIdType',
+        direction: 'in',
+        description: '信号 ID，标识要发送的信号',
+      },
+      {
+        name: 'SignalDataPtr',
+        type: 'const void*',
+        direction: 'in',
+        description: '指向信号数据的指针，数据长度与信号配置一致',
+      },
     ],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 发送成功；E_NOT_OK: 信号 ID 无效或数据指针为空',
@@ -28,9 +40,7 @@ void Com_SendVehicleSpeed(void) {
 }`,
     exampleDescription: '发送车速信号值 60 km/h',
     seeAlso: ['Com_ReceiveSignal', 'Com_SendSignalGroup', 'Com_WriteSignal'],
-    configParams: [
-      { paramName: 'ComConfig', configModule: 'Com', path: 'Com/ComConfig' },
-    ],
+    configParams: [{ paramName: 'ComConfig', configModule: 'Com', path: 'Com/ComConfig' }],
     status: 'standard',
   },
   {
@@ -38,10 +48,21 @@ void Com_SendVehicleSpeed(void) {
     name: 'Com_ReceiveSignal',
     signature: 'Std_ReturnType Com_ReceiveSignal(Com_SignalIdType SignalId, void* SignalDataPtr)',
     brief: '接收指定信号的值',
-    description: '从 Com 模块的接收缓冲区读取指定信号的当前值。接收的数据已被解包和转换为宿主 CPU 格式。',
+    description:
+      '从 Com 模块的接收缓冲区读取指定信号的当前值。接收的数据已被解包和转换为宿主 CPU 格式。',
     params: [
-      { name: 'SignalId', type: 'Com_SignalIdType', direction: 'in', description: '信号 ID，标识要接收的信号' },
-      { name: 'SignalDataPtr', type: 'void*', direction: 'out', description: '数据输出缓冲区的指针，用于存储接收的信号值' },
+      {
+        name: 'SignalId',
+        type: 'Com_SignalIdType',
+        direction: 'in',
+        description: '信号 ID，标识要接收的信号',
+      },
+      {
+        name: 'SignalDataPtr',
+        type: 'void*',
+        direction: 'out',
+        description: '数据输出缓冲区的指针，用于存储接收的信号值',
+      },
     ],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 接收成功；E_NOT_OK: 信号 ID 无效或数据无效',
@@ -67,9 +88,15 @@ void Com_ReadVehicleSpeed(void) {
     name: 'Com_SendSignalGroup',
     signature: 'Std_ReturnType Com_SendSignalGroup(Com_SignalGroupIdType SignalGroupId)',
     brief: '发送指定信号组中所有信号',
-    description: '将信号组中所有已更新的信号一次性打包并提交发送。信号组内的信号共享同一个 PDU，通过此函数实现原子性发送。',
+    description:
+      '将信号组中所有已更新的信号一次性打包并提交发送。信号组内的信号共享同一个 PDU，通过此函数实现原子性发送。',
     params: [
-      { name: 'SignalGroupId', type: 'Com_SignalGroupIdType', direction: 'in', description: '信号组 ID，标识要发送的信号组' },
+      {
+        name: 'SignalGroupId',
+        type: 'Com_SignalGroupIdType',
+        direction: 'in',
+        description: '信号组 ID，标识要发送的信号组',
+      },
     ],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 发送请求成功；E_NOT_OK: 信号组 ID 无效或组内信号有误',
@@ -104,9 +131,15 @@ void Com_SendVehicleStatusGroup(void) {
     name: 'Com_ReceiveSignalGroup',
     signature: 'Std_ReturnType Com_ReceiveSignalGroup(Com_SignalGroupIdType SignalGroupId)',
     brief: '接收指定信号组中所有信号',
-    description: '将信号组对应的接收 PDU 数据一次性解包到内部信号缓冲区，确保组内所有信号在时间上保持一致。',
+    description:
+      '将信号组对应的接收 PDU 数据一次性解包到内部信号缓冲区，确保组内所有信号在时间上保持一致。',
     params: [
-      { name: 'SignalGroupId', type: 'Com_SignalGroupIdType', direction: 'in', description: '信号组 ID，标识要接收的信号组' },
+      {
+        name: 'SignalGroupId',
+        type: 'Com_SignalGroupIdType',
+        direction: 'in',
+        description: '信号组 ID，标识要接收的信号组',
+      },
     ],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 接收成功；E_NOT_OK: 信号组 ID 无效',
@@ -133,7 +166,12 @@ void Com_ReadVehicleStatusGroup(void) {
     brief: '获取 Com 模块版本信息',
     description: '返回 Com 模块的厂商 ID、模块 ID、软件版本号等版本信息。',
     params: [
-      { name: 'VersionInfo', type: 'Std_VersionInfoType*', direction: 'out', description: '版本信息输出结构体指针' },
+      {
+        name: 'VersionInfo',
+        type: 'Std_VersionInfoType*',
+        direction: 'out',
+        description: '版本信息输出结构体指针',
+      },
     ],
     returnType: 'void',
     returnDescription: '无返回值，版本信息通过 VersionInfo 指针返回',
@@ -153,12 +191,19 @@ void Com_PrintVersion(void) {
   {
     id: 'Com_SetValidationStatus',
     name: 'Com_SetValidationStatus',
-    signature: 'Std_ReturnType Com_SetValidationStatus(Com_SignalIdType SignalId, Com_ValidationStatusType Status)',
+    signature:
+      'Std_ReturnType Com_SetValidationStatus(Com_SignalIdType SignalId, Com_ValidationStatusType Status)',
     brief: '设置信号的验证状态',
-    description: '设置指定接收信号的验证结果状态。当应用层完成对信号的合理性或范围检查后，通过此函数通知 Com 模块该信号是否有效。',
+    description:
+      '设置指定接收信号的验证结果状态。当应用层完成对信号的合理性或范围检查后，通过此函数通知 Com 模块该信号是否有效。',
     params: [
       { name: 'SignalId', type: 'Com_SignalIdType', direction: 'in', description: '信号 ID' },
-      { name: 'Status', type: 'Com_ValidationStatusType', direction: 'in', description: '验证状态：COM_VALIDATION_OK / COM_VALIDATION_FAILED' },
+      {
+        name: 'Status',
+        type: 'Com_ValidationStatusType',
+        direction: 'in',
+        description: '验证状态：COM_VALIDATION_OK / COM_VALIDATION_FAILED',
+      },
     ],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 设置成功；E_NOT_OK: 信号 ID 无效',
@@ -188,7 +233,8 @@ void Com_ValidateSpeedSignal(void) {
     name: 'Com_ReadSignal',
     signature: 'Std_ReturnType Com_ReadSignal(Com_SignalIdType SignalId, void* SignalDataPtr)',
     brief: '读取信号的当前值（无更新语义）',
-    description: '直接读取指定信号的当前值，不触发任何更新通知或回调。与 Com_ReceiveSignal 不同，Com_ReadSignal 仅读取而不改变信号的状态。',
+    description:
+      '直接读取指定信号的当前值，不触发任何更新通知或回调。与 Com_ReceiveSignal 不同，Com_ReadSignal 仅读取而不改变信号的状态。',
     params: [
       { name: 'SignalId', type: 'Com_SignalIdType', direction: 'in', description: '信号 ID' },
       { name: 'SignalDataPtr', type: 'void*', direction: 'out', description: '信号值输出缓冲区' },
@@ -214,9 +260,11 @@ void Com_CheckSignalNoUpdate(void) {
   {
     id: 'Com_WriteSignal',
     name: 'Com_WriteSignal',
-    signature: 'Std_ReturnType Com_WriteSignal(Com_SignalIdType SignalId, const void* SignalDataPtr)',
+    signature:
+      'Std_ReturnType Com_WriteSignal(Com_SignalIdType SignalId, const void* SignalDataPtr)',
     brief: '写入信号值（不触发发送）',
-    description: '将信号值写入内部缓冲区，但不触发立即发送或更新 PDU 发送触发器。配合 Com_SendSignalGroup 使用，先在组内写入各信号再统一发送。',
+    description:
+      '将信号值写入内部缓冲区，但不触发立即发送或更新 PDU 发送触发器。配合 Com_SendSignalGroup 使用，先在组内写入各信号再统一发送。',
     params: [
       { name: 'SignalId', type: 'Com_SignalIdType', direction: 'in', description: '信号 ID' },
       { name: 'SignalDataPtr', type: 'const void*', direction: 'in', description: '信号数据指针' },
@@ -247,14 +295,17 @@ void Com_PrepareSignals(void) {
   {
     id: 'Com_GetEventNotificationStatus',
     name: 'Com_GetEventNotificationStatus',
-    signature: 'Com_NotificationStatusType Com_GetEventNotificationStatus(Com_SignalIdType SignalId)',
+    signature:
+      'Com_NotificationStatusType Com_GetEventNotificationStatus(Com_SignalIdType SignalId)',
     brief: '获取信号的事件通知状态',
-    description: '返回指定信号的当前事件通知状态，指示信号是否有新数据到达尚未被应用处理。用于轮询方式接收信号的场景。',
+    description:
+      '返回指定信号的当前事件通知状态，指示信号是否有新数据到达尚未被应用处理。用于轮询方式接收信号的场景。',
     params: [
       { name: 'SignalId', type: 'Com_SignalIdType', direction: 'in', description: '信号 ID' },
     ],
     returnType: 'Com_NotificationStatusType',
-    returnDescription: 'COM_NOTIFICATION_STATUS_NEW: 存在新数据；COM_NOTIFICATION_STATUS_NO_NEW: 无新数据',
+    returnDescription:
+      'COM_NOTIFICATION_STATUS_NEW: 存在新数据；COM_NOTIFICATION_STATUS_NO_NEW: 无新数据',
     moduleId: 'Com',
     layerId: 'ECUAL',
     version: '4.4',
@@ -305,9 +356,15 @@ void Com_ReadAndClear(void) {
     name: 'Com_GetCurrentComMode',
     signature: 'Com_ModeType Com_GetCurrentComMode(Com_ModeGroupIdType ModeGroupId)',
     brief: '获取指定模式组的当前通信模式',
-    description: '返回指定模式组的当前通信模式状态，如 COM_MODE_UNINIT、COM_MODE_OFF、COM_MODE_ON 等。用于控制信号通信的启停决策。',
+    description:
+      '返回指定模式组的当前通信模式状态，如 COM_MODE_UNINIT、COM_MODE_OFF、COM_MODE_ON 等。用于控制信号通信的启停决策。',
     params: [
-      { name: 'ModeGroupId', type: 'Com_ModeGroupIdType', direction: 'in', description: '模式组 ID' },
+      {
+        name: 'ModeGroupId',
+        type: 'Com_ModeGroupIdType',
+        direction: 'in',
+        description: '模式组 ID',
+      },
     ],
     returnType: 'Com_ModeType',
     returnDescription: '当前通信模式枚举值',
@@ -332,9 +389,11 @@ void Com_CheckMode(void) {
   {
     id: 'Com_SendSignalWithWriteOnly',
     name: 'Com_SendSignalWithWriteOnly',
-    signature: 'Std_ReturnType Com_SendSignalWithWriteOnly(Com_SignalIdType SignalId, const void* SignalDataPtr)',
+    signature:
+      'Std_ReturnType Com_SendSignalWithWriteOnly(Com_SignalIdType SignalId, const void* SignalDataPtr)',
     brief: '发送信号（WriteOnly 模式）',
-    description: '以 WriteOnly 模式发送信号。与 Com_SendSignal 相同，但当信号配置为 WriteOnly 时，仅写入发送缓冲区而不触发发送确认。适用于不需要发送确认的应用场景。',
+    description:
+      '以 WriteOnly 模式发送信号。与 Com_SendSignal 相同，但当信号配置为 WriteOnly 时，仅写入发送缓冲区而不触发发送确认。适用于不需要发送确认的应用场景。',
     params: [
       { name: 'SignalId', type: 'Com_SignalIdType', direction: 'in', description: '信号 ID' },
       { name: 'SignalDataPtr', type: 'const void*', direction: 'in', description: '信号数据指针' },

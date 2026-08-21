@@ -89,11 +89,7 @@
                       },
                       "ArgDirection": {
                         "type": "string",
-                        "enum": [
-                          "IN",
-                          "OUT",
-                          "INOUT"
-                        ]
+                        "enum": ["IN", "OUT", "INOUT"]
                       },
                       "ArgDescription": {
                         "type": "string"
@@ -118,11 +114,7 @@
           },
           "PortDirection": {
             "type": "string",
-            "enum": [
-              "IN",
-              "OUT",
-              "INOUT"
-            ]
+            "enum": ["IN", "OUT", "INOUT"]
           },
           "PortInterfaceRef": {
             "type": "string"
@@ -223,10 +215,7 @@
           },
           "AccessKind": {
             "type": "string",
-            "enum": [
-              "READ",
-              "WRITE"
-            ]
+            "enum": ["READ", "WRITE"]
           }
         }
       }
@@ -312,9 +301,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "ComponentName"
-  ],
+  "required": ["ComponentName"],
   "x-impl-status": "asw-config-only",
   "x-annotation": "ASW 组件配置-仅配置不生成"
 }

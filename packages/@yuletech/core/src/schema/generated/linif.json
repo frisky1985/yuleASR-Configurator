@@ -135,11 +135,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CommonPublishedInformation",
-    "LinIfConfigSet",
-    "LinIfGeneral"
-  ],
+  "required": ["CommonPublishedInformation", "LinIfConfigSet", "LinIfGeneral"],
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",

@@ -169,21 +169,14 @@
       "type": "enum",
       "description": "ICU_DEFAULT_MODE 参数",
       "default": "ICU_MODE_NORMAL",
-      "enum": [
-        "ICU_MODE_NORMAL",
-        "ICU_MODE_SLEEP"
-      ],
+      "enum": ["ICU_MODE_NORMAL", "ICU_MODE_SLEEP"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_DEFAULT_ACTIVATION": {
       "type": "enum",
       "description": "ICU_DEFAULT_ACTIVATION 参数",
       "default": "ICU_RISING_EDGE",
-      "enum": [
-        "ICU_FALLING_EDGE",
-        "ICU_RISING_EDGE",
-        "ICU_BOTH_EDGES"
-      ],
+      "enum": ["ICU_FALLING_EDGE", "ICU_RISING_EDGE", "ICU_BOTH_EDGES"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "ICU_CLOCK_FREQUENCY_HZ": {

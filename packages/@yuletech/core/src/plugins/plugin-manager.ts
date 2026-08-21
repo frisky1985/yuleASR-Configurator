@@ -45,8 +45,7 @@ class PluginManagerImpl {
   private externalPluginDir: string | null = null;
   /** Factory for creating the context — allows overriding in tests */
   private contextFactory:
-    | ((pluginId: string, userConfig: Record<string, unknown>) => PluginContext)
-    | null = null;
+    ((pluginId: string, userConfig: Record<string, unknown>) => PluginContext) | null = null;
 
   /**
    * Set the directory path for external plugin discovery.

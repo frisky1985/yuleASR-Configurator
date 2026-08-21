@@ -53,7 +53,6 @@ function checkSyntax(filePath: string, extraIncludes = ''): void {
 }
 
 describe('yuleASR BSW Integration Build Verification', () => {
-
   // ── 1. Codegen Web Layer ───────────────────────────────────────────
   describe('Codegen (Web Layer) — Macro-only headers', () => {
     it('generates Can_Cfg.h with all required macros', async () => {
@@ -135,7 +134,12 @@ describe('yuleASR BSW Integration Build Verification', () => {
         layer: 'MCAL',
         parameters: [
           { name: 'canBaudrate', type: 'integer', description: 'CAN bus baudrate', required: true },
-          { name: 'canDevErrorDetect', type: 'boolean', description: 'DET switch', required: false },
+          {
+            name: 'canDevErrorDetect',
+            type: 'boolean',
+            description: 'DET switch',
+            required: false,
+          },
         ],
         containers: [
           {

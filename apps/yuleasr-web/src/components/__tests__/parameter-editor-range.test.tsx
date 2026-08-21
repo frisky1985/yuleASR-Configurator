@@ -56,7 +56,12 @@ describe('ParameterEditor 超范围值（Fix 24）', () => {
 
   it('输入低于 min 的值：保持旧值并显示最小值错误', () => {
     const onChange = vi.fn();
-    const { container } = render(<ParameterEditor parameter={makeParam({ min: 10, max: 100, value: 50 })} onChange={onChange} />);
+    const { container } = render(
+      <ParameterEditor
+        parameter={makeParam({ min: 10, max: 100, value: 50 })}
+        onChange={onChange}
+      />
+    );
 
     const input = getNumberInput(container);
     fireEvent.change(input, { target: { value: '3' } });
@@ -93,7 +98,7 @@ describe('ParameterEditor 超范围值（Fix 24）', () => {
     expect((input as HTMLInputElement).value).toBe('3');
   });
 
-  it('string 参数空字符串：允许清空（newValue === \'\' 分支）', () => {
+  it("string 参数空字符串：允许清空（newValue === '' 分支）", () => {
     const onChange = vi.fn();
     render(
       <ParameterEditor

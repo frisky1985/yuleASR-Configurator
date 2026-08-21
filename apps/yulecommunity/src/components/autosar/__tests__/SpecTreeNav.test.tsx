@@ -168,9 +168,9 @@ describe('SpecTreeNav', () => {
     fireEvent.change(searchInput, { target: { value: 'a' } });
 
     // Count result buttons (not the header)
-    const resultButtons = screen.getAllByRole('button').filter(
-      btn => btn.textContent && btn.textContent.length > 0
-    );
+    const resultButtons = screen
+      .getAllByRole('button')
+      .filter(btn => btn.textContent && btn.textContent.length > 0);
     // Search results should show at most 20 items (plus nav buttons)
     expect(resultButtons.length).toBeGreaterThan(0);
   });

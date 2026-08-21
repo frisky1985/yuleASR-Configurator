@@ -142,11 +142,7 @@ function countDefContainersAndParams(defs: EcucContainerDef[]): [number, number]
 function flattenParams(module: EcucModuleView): EcucFlatParamRow[] {
   const rows: EcucFlatParamRow[] = [];
 
-  const visit = (
-    params: EcucParamRow[],
-    containerPath: string[],
-    pathLabel: string
-  ): void => {
+  const visit = (params: EcucParamRow[], containerPath: string[], pathLabel: string): void => {
     for (const p of params) {
       rows.push({
         ...p,
@@ -177,10 +173,7 @@ function flattenParams(module: EcucModuleView): EcucFlatParamRow[] {
  * @param modules 展示模块（值层）
  * @param defModules 定义层模块（可空）
  */
-export function buildEcucStats(
-  modules: EcucModuleView[],
-  defModules: EcucModuleDef[]
-): EcucStats {
+export function buildEcucStats(modules: EcucModuleView[], defModules: EcucModuleDef[]): EcucStats {
   let moduleCount = 0;
   let containerCount = 0;
   let parameterCount = 0;
@@ -203,8 +196,7 @@ export function buildEcucStats(
 
   // 定义覆盖率：有定义层的值层模块占比（无定义层文件 = 0）
   const withDef = modules.filter(m => m.moduleDef !== undefined).length;
-  const defCoveragePercent =
-    modules.length > 0 ? Math.round((withDef / modules.length) * 100) : 0;
+  const defCoveragePercent = modules.length > 0 ? Math.round((withDef / modules.length) * 100) : 0;
 
   return {
     moduleCount,

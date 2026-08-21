@@ -9,14 +9,7 @@ export type ParameterValue = string | number | boolean | string[] | number[];
 
 /** Parameter data types */
 export type ParameterDataType =
-  | 'BOOLEAN'
-  | 'INTEGER'
-  | 'FLOAT'
-  | 'STRING'
-  | 'ENUM'
-  | 'FUNCTION-NAME'
-  | 'REFERENCE'
-  | 'ARRAY';
+  'BOOLEAN' | 'INTEGER' | 'FLOAT' | 'STRING' | 'ENUM' | 'FUNCTION-NAME' | 'REFERENCE' | 'ARRAY';
 
 /** Module parameter definition */
 export interface ModuleParameter {

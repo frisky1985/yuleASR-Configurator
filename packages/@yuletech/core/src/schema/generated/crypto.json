@@ -312,10 +312,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CommonPublishedInformation",
-    "CryptoDriverObject"
-  ],
+  "required": ["CommonPublishedInformation", "CryptoDriverObject"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

@@ -10,8 +10,19 @@ import { generatorRegistry } from '../../generator';
 import type { CompilerType } from '../../generator';
 
 const MCAL_MODULES = [
-  'Can', 'CanTrcv', 'Lin', 'LinTrcv', 'Spi', 'Mcu', 'Dio',
-  'Pwm', 'Icu', 'Adc', 'Gpt', 'Wdg', 'Port',
+  'Can',
+  'CanTrcv',
+  'Lin',
+  'LinTrcv',
+  'Spi',
+  'Mcu',
+  'Dio',
+  'Pwm',
+  'Icu',
+  'Adc',
+  'Gpt',
+  'Wdg',
+  'Port',
 ];
 
 const mcalGeneratorPlugin: YulePlugin = {
@@ -48,7 +59,7 @@ const mcalGeneratorPlugin: YulePlugin = {
           const result = await existingGenerator.generate(
             moduleConfig,
             { name: moduleName, version: '4.4.0', layer: 'MCAL', parameters: [] },
-            { outputDir, compiler: ((options.compiler as CompilerType | undefined) ?? 'gcc') }
+            { outputDir, compiler: (options.compiler as CompilerType | undefined) ?? 'gcc' }
           );
           return {
             files: result.files.map(f => ({

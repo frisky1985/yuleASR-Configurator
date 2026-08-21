@@ -101,11 +101,7 @@
       "type": "enum",
       "description": "WDG_INITIAL_MODE 参数",
       "default": "WDGIF_FAST_MODE",
-      "enum": [
-        "WDGIF_OFF_MODE",
-        "WDGIF_SLOW_MODE",
-        "WDGIF_FAST_MODE"
-      ],
+      "enum": ["WDGIF_OFF_MODE", "WDGIF_SLOW_MODE", "WDGIF_FAST_MODE"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDG_FAST_MODE_PRESCALER": {
@@ -210,10 +206,7 @@
       "type": "enum",
       "description": "WDG_WINDOW_ERROR_ACTION 参数",
       "default": "WDG_WINDOW_ERROR_RESET",
-      "enum": [
-        "WDG_WINDOW_ERROR_RESET",
-        "WDG_WINDOW_ERROR_IGNORE"
-      ],
+      "enum": ["WDG_WINDOW_ERROR_RESET", "WDG_WINDOW_ERROR_IGNORE"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "WDG_PRE_WARNING_CALLBACK": {

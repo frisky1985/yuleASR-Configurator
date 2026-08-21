@@ -21,17 +21,9 @@
 import type { ModuleSchema } from '@yuletech/core';
 import { loadModuleSchemas } from '@yuletech/core/schema/load-generated';
 
-import {
-  validateContainerInstanceCount,
-  validateEditedParamValue,
-} from './ecuc-editor-validation';
+import { validateContainerInstanceCount, validateEditedParamValue } from './ecuc-editor-validation';
 
-import type {
-  ConfigContainer,
-  ConfigModule,
-  ConfigParameter,
-  ConfigFile,
-} from '@/types/config';
+import type { ConfigContainer, ConfigModule, ConfigParameter, ConfigFile } from '@/types/config';
 import type {
   EcucContainerPath,
   EcucEditContainer,
@@ -41,7 +33,12 @@ import type {
   EcucEditIssue,
   EcucEditParam,
 } from '@/types/ecuc-edit';
-import type { EcucContainerView, EcucModuleView, EcucParamRow, EcucProjectView } from '@/types/ecuc-view';
+import type {
+  EcucContainerView,
+  EcucModuleView,
+  EcucParamRow,
+  EcucProjectView,
+} from '@/types/ecuc-view';
 
 // ============================================================================
 // 视图 → 可编辑副本
@@ -102,11 +99,7 @@ function recomputeModule(module: EcucEditModule): {
       groups.set(c.name, (groups.get(c.name) ?? 0) + 1);
     }
     for (const c of container.containers) {
-      c.issue = validateContainerInstanceCount(
-        c.name,
-        groups.get(c.name) ?? 1,
-        c.def
-      );
+      c.issue = validateContainerInstanceCount(c.name, groups.get(c.name) ?? 1, c.def);
       countIssue(c.issue);
       for (const p of c.parameters) {
         p.issue = validateEditedParamValue(p);
@@ -174,12 +167,17 @@ export function updateParamValue(
     const updateParams = (params: EcucEditParam[]): EcucEditParam[] =>
       params.map(p => (p.name === paramName ? { ...p, value } : p));
 
-    const cloneContainers = (containers: EcucEditContainer[], path: EcucContainerPath): EcucEditContainer[] =>
+    const cloneContainers = (
+      containers: EcucEditContainer[],
+      path: EcucContainerPath
+    ): EcucEditContainer[] =>
       containers.map((c, index) => {
         const segPath = [...path, { name: c.name, index }];
         const isTarget =
           segPath.length === containerPath.length &&
-          segPath.every((s, i) => s.name === containerPath[i].name && s.index === containerPath[i].index);
+          segPath.every(
+            (s, i) => s.name === containerPath[i].name && s.index === containerPath[i].index
+          );
         if (isTarget) {
           return { ...c, parameters: updateParams(c.parameters) };
         }
@@ -224,14 +222,17 @@ export function addContainerInstance(
   const modules = project.modules.map(m => {
     if (m.name !== moduleName) return m;
 
-    const defs = parentPath.length === 0 ? m.moduleDef?.containerDefs : findContainerDefAt(m, parentPath)?.subContainerDefs;
+    const defs =
+      parentPath.length === 0
+        ? m.moduleDef?.containerDefs
+        : findContainerDefAt(m, parentPath)?.subContainerDefs;
     const def = defs?.find(d => d.name === defName);
     if (!def) return m;
 
     const parentRef =
       parentPath.length === 0
         ? m.definitionRef
-        : findContainerByPath(m.containers, parentPath)?.definitionRef ?? m.definitionRef;
+        : (findContainerByPath(m.containers, parentPath)?.definitionRef ?? m.definitionRef);
 
     const newContainer: EcucEditContainer = {
       name: def.name,
@@ -253,7 +254,10 @@ export function addContainerInstance(
       created = true;
       return { ...m, containers: [...m.containers, newContainer] };
     }
-    const cloneContainers = (containers: EcucEditContainer[], path: EcucContainerPath): EcucEditContainer[] =>
+    const cloneContainers = (
+      containers: EcucEditContainer[],
+      path: EcucContainerPath
+    ): EcucEditContainer[] =>
       containers.map((c, index) => {
         const segPath = [...path, { name: c.name, index }];
         const isTarget =
@@ -330,7 +334,10 @@ export function removeContainerInstance(
       removed = true;
       return { ...m, containers: m.containers.filter((_, i) => i !== childIndex) };
     }
-    const cloneContainers = (containers: EcucEditContainer[], path: EcucContainerPath): EcucEditContainer[] => {
+    const cloneContainers = (
+      containers: EcucEditContainer[],
+      path: EcucContainerPath
+    ): EcucEditContainer[] => {
       const isTargetLevel =
         path.length === parentPath.length &&
         path.every((s, i) => s.name === parentPath[i].name && s.index === parentPath[i].index);
@@ -528,11 +535,14 @@ function minimalSchemaFromEditModule(module: EcucEditModule): ModuleSchema {
     description: `ECUC 编辑导出模块（无预置 schema，参数来自 ARXML 值层）`,
     parameters: [...params.entries()].map(([name, value]) => ({
       name,
-      type: typeof value === 'number'
-        ? (Number.isInteger(value) ? 'integer' : 'float')
-        : typeof value === 'boolean'
-          ? 'boolean'
-          : 'string',
+      type:
+        typeof value === 'number'
+          ? Number.isInteger(value)
+            ? 'integer'
+            : 'float'
+          : typeof value === 'boolean'
+            ? 'boolean'
+            : 'string',
       description: `Imported from ARXML: ${name}`,
       default: value,
     })),

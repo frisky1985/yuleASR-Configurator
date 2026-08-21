@@ -90,11 +90,7 @@
         },
         "IoHwAbChannelDirection": {
           "type": "string",
-          "enum": [
-            "IOHWAB_CH_IN",
-            "IOHWAB_CH_OUT",
-            "IOHWAB_CH_INOUT"
-          ],
+          "enum": ["IOHWAB_CH_IN", "IOHWAB_CH_OUT", "IOHWAB_CH_INOUT"],
           "description": "通道方向"
         },
         "IoHwAbPortPinRef": {
@@ -120,19 +116,12 @@
         },
         "IoHwAbSignalDirection": {
           "type": "string",
-          "enum": [
-            "IOHWAB_SIG_IN",
-            "IOHWAB_SIG_OUT"
-          ],
+          "enum": ["IOHWAB_SIG_IN", "IOHWAB_SIG_OUT"],
           "description": "信号方向"
         },
         "IoHwAbSignalType": {
           "type": "string",
-          "enum": [
-            "IOHWAB_SIG_DIGITAL",
-            "IOHWAB_SIG_ANALOG",
-            "IOHWAB_SIG_PWM"
-          ],
+          "enum": ["IOHWAB_SIG_DIGITAL", "IOHWAB_SIG_ANALOG", "IOHWAB_SIG_PWM"],
           "description": "信号类型"
         }
       }
@@ -154,10 +143,7 @@
         },
         "IoHwAbDioDirection": {
           "type": "string",
-          "enum": [
-            "IOHWAB_DIO_IN",
-            "IOHWAB_DIO_OUT"
-          ],
+          "enum": ["IOHWAB_DIO_IN", "IOHWAB_DIO_OUT"],
           "description": "数字通道方向"
         }
       }
@@ -186,9 +172,7 @@
       }
     }
   },
-  "required": [
-    "CommonPublishedInformation"
-  ],
+  "required": ["CommonPublishedInformation"],
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",

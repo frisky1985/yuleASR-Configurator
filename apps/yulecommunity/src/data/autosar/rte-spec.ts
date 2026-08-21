@@ -6,7 +6,8 @@ export const RTE_APIS: AutosarApi[] = [
     name: 'Rte_Start',
     signature: 'void Rte_Start(void)',
     brief: '启动 RTE 运行环境',
-    description: '初始化并启动 RTE 运行环境。在 RTE 生成的应用代码调用任何 RTE API 之前必须调用此函数。Rte_Start 会初始化 RTE 内部数据结构并启动所有配置的定时任务。',
+    description:
+      '初始化并启动 RTE 运行环境。在 RTE 生成的应用代码调用任何 RTE API 之前必须调用此函数。Rte_Start 会初始化 RTE 内部数据结构并启动所有配置的定时任务。',
     params: [],
     returnType: 'void',
     returnDescription: '无返回值',
@@ -26,9 +27,7 @@ void main(void) {
     /* RTE 已启动，应用组件可以开始通信 */
 }`,
     seeAlso: ['Rte_Stop', 'Rte_GetVersionInfo'],
-    configParams: [
-      { paramName: 'RteConfig', configModule: 'Rte', path: 'Rte/RteConfig' },
-    ],
+    configParams: [{ paramName: 'RteConfig', configModule: 'Rte', path: 'Rte/RteConfig' }],
     status: 'standard',
   },
   {
@@ -36,7 +35,8 @@ void main(void) {
     name: 'Rte_Stop',
     signature: 'void Rte_Stop(void)',
     brief: '停止 RTE 运行环境',
-    description: '停止 RTE 运行环境并释放所有内部资源。在系统关闭流程中调用，确保所有挂起的通信和数据写操作完成。',
+    description:
+      '停止 RTE 运行环境并释放所有内部资源。在系统关闭流程中调用，确保所有挂起的通信和数据写操作完成。',
     params: [],
     returnType: 'void',
     returnDescription: '无返回值',
@@ -62,7 +62,12 @@ void ShutdownSequence(void) {
     brief: '获取 RTE 模块版本信息',
     description: '返回 RTE 运行环境的厂商 ID、模块 ID、软件版本号等版本信息。',
     params: [
-      { name: 'VersionInfo', type: 'Std_VersionInfoType*', direction: 'out', description: '版本信息输出结构体指针' },
+      {
+        name: 'VersionInfo',
+        type: 'Std_VersionInfoType*',
+        direction: 'out',
+        description: '版本信息输出结构体指针',
+      },
     ],
     returnType: 'void',
     returnDescription: '无返回值，版本信息通过 VersionInfo 指针返回',
@@ -84,9 +89,15 @@ void Rte_PrintVersion(void) {
     name: 'Rte_WriteVariable',
     signature: 'Std_ReturnType Rte_WriteVariable(Rte_VariableRef Variable, const void* Data)',
     brief: '写入组件间变量',
-    description: '将数据写入指定的组件间变量。Sender-Receiver 通信模式中的发送端使用此函数来更新变量值，供接收端组件读取。',
+    description:
+      '将数据写入指定的组件间变量。Sender-Receiver 通信模式中的发送端使用此函数来更新变量值，供接收端组件读取。',
     params: [
-      { name: 'Variable', type: 'Rte_VariableRef', direction: 'in', description: '变量引用，标识目标变量' },
+      {
+        name: 'Variable',
+        type: 'Rte_VariableRef',
+        direction: 'in',
+        description: '变量引用，标识目标变量',
+      },
       { name: 'Data', type: 'const void*', direction: 'in', description: '待写入的数据指针' },
     ],
     returnType: 'Std_ReturnType',
@@ -113,9 +124,15 @@ void App_UpdateSpeed(void) {
     name: 'Rte_ReadVariable',
     signature: 'Std_ReturnType Rte_ReadVariable(Rte_VariableRef Variable, void* Data)',
     brief: '读取组件间变量',
-    description: '从指定的组件间变量读取数据。Sender-Receiver 通信模式中的接收端使用此函数获取其他组件写入的变量值。',
+    description:
+      '从指定的组件间变量读取数据。Sender-Receiver 通信模式中的接收端使用此函数获取其他组件写入的变量值。',
     params: [
-      { name: 'Variable', type: 'Rte_VariableRef', direction: 'in', description: '变量引用，标识要读取的变量' },
+      {
+        name: 'Variable',
+        type: 'Rte_VariableRef',
+        direction: 'in',
+        description: '变量引用，标识要读取的变量',
+      },
       { name: 'Data', type: 'void*', direction: 'out', description: '数据输出缓冲区指针' },
     ],
     returnType: 'Std_ReturnType',
@@ -142,9 +159,15 @@ void App_DisplaySpeed(void) {
     name: 'Rte_SendSignal',
     signature: 'Std_ReturnType Rte_SendSignal(Rte_SignalRef Signal, const void* Data)',
     brief: '发送 RTE 信号',
-    description: '将数据作为信号发送到 RTE 信号链。RTE 信号是一种与通信总线信号直接关联的跨 ECU 数据传输机制，数据通过 RTE 路由到通信栈。',
+    description:
+      '将数据作为信号发送到 RTE 信号链。RTE 信号是一种与通信总线信号直接关联的跨 ECU 数据传输机制，数据通过 RTE 路由到通信栈。',
     params: [
-      { name: 'Signal', type: 'Rte_SignalRef', direction: 'in', description: '信号引用，标识要发送的信号' },
+      {
+        name: 'Signal',
+        type: 'Rte_SignalRef',
+        direction: 'in',
+        description: '信号引用，标识要发送的信号',
+      },
       { name: 'Data', type: 'const void*', direction: 'in', description: '信号数据指针' },
     ],
     returnType: 'Std_ReturnType',
@@ -171,9 +194,15 @@ void App_SendDoorStatus(void) {
     name: 'Rte_ReceiveSignal',
     signature: 'Std_ReturnType Rte_ReceiveSignal(Rte_SignalRef Signal, void* Data)',
     brief: '接收 RTE 信号',
-    description: '从 RTE 信号链接收信号数据。接收从其他 ECU 发送的、经过通信栈解码后到达 RTE 的信号数据。',
+    description:
+      '从 RTE 信号链接收信号数据。接收从其他 ECU 发送的、经过通信栈解码后到达 RTE 的信号数据。',
     params: [
-      { name: 'Signal', type: 'Rte_SignalRef', direction: 'in', description: '信号引用，标识要接收的信号' },
+      {
+        name: 'Signal',
+        type: 'Rte_SignalRef',
+        direction: 'in',
+        description: '信号引用，标识要接收的信号',
+      },
       { name: 'Data', type: 'void*', direction: 'out', description: '信号数据输出缓冲区' },
     ],
     returnType: 'Std_ReturnType',
@@ -198,11 +227,18 @@ void App_ReadDoorStatus(void) {
   {
     id: 'Rte_CallOperation',
     name: 'Rte_CallOperation',
-    signature: 'Std_ReturnType Rte_CallOperation(Rte_OperationRef Operation, void* Result, const void* Args)',
+    signature:
+      'Std_ReturnType Rte_CallOperation(Rte_OperationRef Operation, void* Result, const void* Args)',
     brief: '调用组件间操作',
-    description: '通过 RTE 调用另一组件提供的可运行操作（Client-Server 通信）。支持同步和异步调用模式，异步调用通过回调返回结果。',
+    description:
+      '通过 RTE 调用另一组件提供的可运行操作（Client-Server 通信）。支持同步和异步调用模式，异步调用通过回调返回结果。',
     params: [
-      { name: 'Operation', type: 'Rte_OperationRef', direction: 'in', description: '操作引用，标识要调用的远端操作' },
+      {
+        name: 'Operation',
+        type: 'Rte_OperationRef',
+        direction: 'in',
+        description: '操作引用，标识要调用的远端操作',
+      },
       { name: 'Result', type: 'void*', direction: 'out', description: '操作返回值缓冲区' },
       { name: 'Args', type: 'const void*', direction: 'in', description: '操作参数指针' },
     ],
@@ -240,7 +276,8 @@ void App_RequestCalculation(void) {
     name: 'Rte_IRvSend',
     signature: 'Std_ReturnType Rte_IRvSend(Rte_IRvRef IRvRef, const void* Data)',
     brief: '发送运行时不变数据',
-    description: '发送运行时不变（IRv）数据。IRv 数据在运行期间保持恒定，此操作用于在配置阶段或初始化时将静态数据分发给其他组件。',
+    description:
+      '发送运行时不变（IRv）数据。IRv 数据在运行期间保持恒定，此操作用于在配置阶段或初始化时将静态数据分发给其他组件。',
     params: [
       { name: 'IRvRef', type: 'Rte_IRvRef', direction: 'in', description: 'IRv 数据引用' },
       { name: 'Data', type: 'const void*', direction: 'in', description: '运行时不变数据指针' },
@@ -280,7 +317,8 @@ void App_SendVehicleParams(void) {
     name: 'Rte_IRvReceive',
     signature: 'Std_ReturnType Rte_IRvReceive(Rte_IRvRef IRvRef, void* Data)',
     brief: '接收运行时不变数据',
-    description: '从 RTE 接收运行时不变（IRv）数据。接收其他组件在初始化阶段发送的静态配置数据，在运行期间保持不变。',
+    description:
+      '从 RTE 接收运行时不变（IRv）数据。接收其他组件在初始化阶段发送的静态配置数据，在运行期间保持不变。',
     params: [
       { name: 'IRvRef', type: 'Rte_IRvRef', direction: 'in', description: 'IRv 数据引用' },
       { name: 'Data', type: 'void*', direction: 'out', description: 'IRv 数据输出缓冲区' },

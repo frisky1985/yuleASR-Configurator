@@ -59,16 +59,15 @@ export function SandboxPage() {
     <DevHubLayout title="在线编译" backTo="/autosar">
       <Helmet>
         <title>在线编译器 - AutoSAR DevHub - YuleTech</title>
-        <meta name="description" content="AutoSAR 在线编译器与运行时仿真环境，支持 CAN/DIO/SPI/MCU 仿真可视化。" />
+        <meta
+          name="description"
+          content="AutoSAR 在线编译器与运行时仿真环境，支持 CAN/DIO/SPI/MCU 仿真可视化。"
+        />
       </Helmet>
 
       <div className="py-6">
         {/* Header badges */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-6"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
           <div className="flex items-center gap-3 mb-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 text-xs font-medium">
               <Code2 className="w-3.5 h-3.5" />
@@ -82,8 +81,8 @@ export function SandboxPage() {
             AutoSAR <span className="text-gradient-accent">在线编译器</span>
           </h1>
           <p className="text-sm text-muted-foreground max-w-2xl">
-            Write, compile, and simulate AutoSAR C code directly in your browser.
-            Monitor CAN bus traffic, GPIO waveforms, and interrupt activity in real-time.
+            Write, compile, and simulate AutoSAR C code directly in your browser. Monitor CAN bus
+            traffic, GPIO waveforms, and interrupt activity in real-time.
           </p>
         </motion.div>
 

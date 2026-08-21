@@ -21,9 +21,7 @@ describe('P2-3 ChoiceContainerDef end-to-end', () => {
 
   it('annotated modules should be discoverable across all 54', () => {
     const schemas = loadModuleSchemas();
-    const withChoice = schemas.filter(
-      s => s.containers?.some(c => c.xChoiceContainer)
-    );
+    const withChoice = schemas.filter(s => s.containers?.some(c => c.xChoiceContainer));
     expect(withChoice.length).toBeGreaterThanOrEqual(4);
   });
 

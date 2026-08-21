@@ -252,6 +252,6 @@ describe('AutoSAR Spec Data Integrity', () => {
     const a = getAllModules();
     const b = getAllModules();
     expect(a).not.toBe(b); // different reference
-    expect(a).toEqual(b);  // same content
+    expect(a).toEqual(b); // same content
   });
 });

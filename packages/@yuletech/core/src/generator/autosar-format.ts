@@ -796,10 +796,7 @@ ${codeBlock}
  *   toStandardGuard('Ecuc_Can_PBcfg.c') → 'ECUC_CAN_PBCFG_C'
  */
 export function toStandardGuard(filename: string): string {
-  return filename
-    .replace(/\./g, '_')
-    .replace(/-/g, '_')
-    .toUpperCase();
+  return filename.replace(/\./g, '_').replace(/-/g, '_').toUpperCase();
 }
 
 /**
@@ -827,10 +824,7 @@ export function generateFileTemplate(params: {
 }): string {
   const guard = params.guardOverride || toStandardGuard(params.fileName);
   const vendorId = params.vendorId ?? 0x1234;
-  const includes = [
-    '"Std_Types.h"',
-    ...(params.extraIncludes || []),
-  ];
+  const includes = ['"Std_Types.h"', ...(params.extraIncludes || [])];
 
   let content = generateAutosarFileHeader(
     params.fileName,
@@ -885,7 +879,13 @@ export function generateFunctionPrologue(
     postconditions?: string[];
   }
 ): string {
-  return generateAutosarFunctionHeader(brief, options?.params, options?.returns, options?.preconditions, options?.postconditions);
+  return generateAutosarFunctionHeader(
+    brief,
+    options?.params,
+    options?.returns,
+    options?.preconditions,
+    options?.postconditions
+  );
 }
 
 /**
@@ -962,7 +962,17 @@ export function generateContainerArrayBlock(params: {
  */
 export async function tryPluginDelegation(
   moduleName: string,
-  pluginRegistryObj: { findCodeGeneratorForModule(name: string): { name: string; generate(config: Record<string, unknown>, options: Record<string, unknown>): Promise<{ files: Array<{ path: string; content: string }> }> } | undefined },
+  pluginRegistryObj: {
+    findCodeGeneratorForModule(name: string):
+      | {
+          name: string;
+          generate(
+            config: Record<string, unknown>,
+            options: Record<string, unknown>
+          ): Promise<{ files: Array<{ path: string; content: string }> }>;
+        }
+      | undefined;
+  },
   config: Record<string, unknown>,
   options: Record<string, unknown>,
   warnings: string[],
@@ -984,7 +994,7 @@ export async function tryPluginDelegation(
       files: pluginResult.files.map(f => ({
         path: f.path,
         content: f.content,
-        language: f.path.endsWith('.h') ? 'h' as const : 'c' as const,
+        language: f.path.endsWith('.h') ? ('h' as const) : ('c' as const),
       })),
     },
   };

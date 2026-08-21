@@ -171,7 +171,11 @@ function matchParenGroup(s: string): { inner: string; rest: string } | null {
 function isTypeToken(tok: string): boolean {
   const t = tok.trim();
   if (!t) return false;
-  if (/^(u?int(8|16|32|64)?|int(8|16|32|64)?|s?int(8|16|32|64)?|uint(8|16|32|64)?|sint(8|16|32|64)?|float(32|64)?|double|boolean|bool|char|byte|void)(_t)?$/i.test(t))
+  if (
+    /^(u?int(8|16|32|64)?|int(8|16|32|64)?|s?int(8|16|32|64)?|uint(8|16|32|64)?|sint(8|16|32|64)?|float(32|64)?|double|boolean|bool|char|byte|void)(_t)?$/i.test(
+      t
+    )
+  )
     return true;
   if (/^[A-Z][A-Za-z0-9_]*Type$/.test(t)) return true; // Wdg_TimeoutType 等
   if (/^(Std_|Can_|Lin_|Eth_)[A-Za-z0-9_]*Type$/.test(t)) return true;
@@ -373,7 +377,6 @@ function parseCfgHeader(content: string): ParsedFile {
     }
   }
 
-
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
 
@@ -448,7 +451,9 @@ function parseCfgHeader(content: string): ParsedFile {
       // 作为 default —— 此前 value 置 '' 导致生成 ""（语义错误），且 79c8ec02 手补值每次
       // F1 重跑即丢失（漂移根因之一）。codegen formatMacroValue 对含 '\n' 值原样透传。
       const afterName = line.slice(line.indexOf('define') + 6).trim();
-      let rawText = afterName.slice(afterName.indexOf(' ') >= 0 ? afterName.indexOf(' ') + 1 : 0).trim();
+      let rawText = afterName
+        .slice(afterName.indexOf(' ') >= 0 ? afterName.indexOf(' ') + 1 : 0)
+        .trim();
       let j = i;
       while (rawText.endsWith('\\') && j + 1 < lines.length) {
         j++;
@@ -690,7 +695,12 @@ function inferParamType(
     //    → 别名，避免把兄弟参数误当枚举选项（OS_TASK_COUNT 案例）
     if (fileDefines.has(v)) {
       const target = fileDefines.get(v)!;
-      if (target.type === 'integer' || target.type === 'boolean' || target.type === 'number' || target.type === 'string') {
+      if (
+        target.type === 'integer' ||
+        target.type === 'boolean' ||
+        target.type === 'number' ||
+        target.type === 'string'
+      ) {
         // YAC-MAP-003（2026-08-21）：纯标识符别名（#define X Y，Y 为同文件其它宏名）
         // 原样输出别名引用（如 COM_NUM_IPDU_GROUPS = COM_NUM_OF_IPDU_GROUPS），与手写头
         // 字节一致（a1bad5dc 手改 com.json 的根因 —— 展开为目标值 (16U) 产生宏级差异）。
@@ -724,7 +734,13 @@ function inferParamType(
     // 别名解析: 引用同文件其它 define 的字面量（兜底，一般已被上面规则覆盖）——
     // 与上方分支同规则：原样输出别名引用，保证生成产物与手写头字节一致。
     const target = fileDefines.get(v);
-    if (target && (target.type === 'integer' || target.type === 'boolean' || target.type === 'number' || target.type === 'string')) {
+    if (
+      target &&
+      (target.type === 'integer' ||
+        target.type === 'boolean' ||
+        target.type === 'number' ||
+        target.type === 'string')
+    ) {
       base.type = 'string';
       base.default = v;
       base.description = `${p.comment || p.name}（别名: ${v} = ${target.default}）— 生成时原样输出别名引用，与手写头一致`;
@@ -861,7 +877,10 @@ function toGeneratedJson(mod: ModuleResult, sourceRel: string): Record<string, u
   // 若再附加 CPI 容器，会额外生成 <SHORT>_AR_RELEASE_*（值 0）与模块 .h 重复定义
   // 或抢占 #ifndef 守卫（V5 D 类 7 模块根因），故提取版不附加。
   for (const p of mod.params) {
-    const prop: Record<string, unknown> = { type: p.type, description: p.description || `${p.name} 参数` };
+    const prop: Record<string, unknown> = {
+      type: p.type,
+      description: p.description || `${p.name} 参数`,
+    };
     if (p.default !== undefined) prop.default = p.default;
     if (p.min !== undefined) prop.minimum = p.min;
     if (p.max !== undefined) prop.maximum = p.max;
@@ -886,13 +905,15 @@ function toGeneratedJson(mod: ModuleResult, sourceRel: string): Record<string, u
 
   // 统一管理（2026-08-10）：模块级依赖数据化注入——原先硬编码在 yuleasr-validator.ts
   // 的 dependencyRules 表迁移到 crossref-rules.ts，提取器注入 dependencies 字段
-  const moduleDeps = MODULE_DEPENDENCY_RULES.filter(r => r.sourceModule === mod.displayName).map(r => ({
-    module: r.targetModule,
-    required: r.required,
-    description: r.message,
-    ...(r.required ? { severity: 'error' as const } : { severity: 'warning' as const }),
-    ...(r.paramCheck ? { paramCheck: r.paramCheck } : {}),
-  }));
+  const moduleDeps = MODULE_DEPENDENCY_RULES.filter(r => r.sourceModule === mod.displayName).map(
+    r => ({
+      module: r.targetModule,
+      required: r.required,
+      description: r.message,
+      ...(r.required ? { severity: 'error' as const } : { severity: 'warning' as const }),
+      ...(r.paramCheck ? { paramCheck: r.paramCheck } : {}),
+    })
+  );
 
   return {
     $schema: 'https://json-schema.org/draft/2020-12/schema',
@@ -928,7 +949,9 @@ function main(): void {
   const srcDir = path.join(yuleasrRoot, 'src');
   if (!fs.existsSync(srcDir)) {
     console.error(`[F1] yuleASR src 目录不存在: ${srcDir}`);
-    console.error('      用法: npx tsx scripts/extract-schemas-from-cfgh.ts --yuleasr <yuleASR-root>');
+    console.error(
+      '      用法: npx tsx scripts/extract-schemas-from-cfgh.ts --yuleasr <yuleASR-root>'
+    );
     process.exit(1);
   }
 
@@ -976,8 +999,19 @@ function main(): void {
       if (p.multilineObject) continue;
       fileIdentifiers.add(p.name); // define 名也参与前缀族收集
       if (/^[A-Z][A-Z0-9_]*$/.test(p.value)) fileIdentifiers.add(p.value);
-      const t = inferParamType(p, new Map(), new Set(), globalIdentifiers, path.dirname(f), dirTextCache);
-      if (t.type !== 'enum' && t.default !== undefined && (t.type === 'integer' || t.type === 'boolean' || t.type === 'number' || t.type === 'string')) {
+      const t = inferParamType(
+        p,
+        new Map(),
+        new Set(),
+        globalIdentifiers,
+        path.dirname(f),
+        dirTextCache
+      );
+      if (
+        t.type !== 'enum' &&
+        t.default !== undefined &&
+        (t.type === 'integer' || t.type === 'boolean' || t.type === 'number' || t.type === 'string')
+      ) {
         fileDefines.set(p.name, t);
       }
     }
@@ -985,7 +1019,16 @@ function main(): void {
     // 正式推断
     const typed: TypedParam[] = [];
     for (const p of parsed.params) {
-      typed.push(inferParamType(p, fileDefines, fileIdentifiers, globalIdentifiers, path.dirname(f), dirTextCache));
+      typed.push(
+        inferParamType(
+          p,
+          fileDefines,
+          fileIdentifiers,
+          globalIdentifiers,
+          path.dirname(f),
+          dirTextCache
+        )
+      );
     }
 
     // 分节列表（按出现顺序）
@@ -1028,7 +1071,15 @@ function main(): void {
   const IS_LEGACY = (r: ModuleResult): boolean => r.sourceFile.includes('/legacy/');
   const PREFER_MCAL = new Set(['Fee', 'RamTst']);
   const layerRank = (layer: string): number =>
-    layer === 'Service' ? 0 : layer === 'MCAL' ? 1 : layer === 'RTE' ? 2 : layer === 'ECUAL' ? 3 : 4;
+    layer === 'Service'
+      ? 0
+      : layer === 'MCAL'
+        ? 1
+        : layer === 'RTE'
+          ? 2
+          : layer === 'ECUAL'
+            ? 3
+            : 4;
 
   const canonical = new Map<string, ModuleResult>();
   const dupSecondary: ModuleResult[] = [];
@@ -1050,7 +1101,7 @@ function main(): void {
       const dup: ModuleResult = {
         ...other,
         displayName: `${other.displayName}_${other.layer === 'MCAL' ? 'Mcal' : other.layer === 'ECUAL' ? 'Ecual' : 'Service'}`,
-        fileName: `${other.displayName.toLowerCase().replace(/[^a-z0-9]/g, '')}_${(other.layer === 'MCAL' ? 'mcal' : other.layer === 'ECUAL' ? 'ecual' : 'service')}`,
+        fileName: `${other.displayName.toLowerCase().replace(/[^a-z0-9]/g, '')}_${other.layer === 'MCAL' ? 'mcal' : other.layer === 'ECUAL' ? 'ecual' : 'service'}`,
       };
       dupSecondary.push(dup);
     }
@@ -1066,8 +1117,15 @@ function main(): void {
   }
 
   const all = [...canonical.values(), ...dupSecondary];
-  console.log(`[F1] 提取模块 schema 总数: ${all.length}（canonical ${canonical.size} + 重名副版 ${dupSecondary.length}）`);
-  console.log(`[F1] 重名模块: ${[...byName.entries()].filter(([, v]) => v.length > 1).map(([n]) => n).join(', ')}`);
+  console.log(
+    `[F1] 提取模块 schema 总数: ${all.length}（canonical ${canonical.size} + 重名副版 ${dupSecondary.length}）`
+  );
+  console.log(
+    `[F1] 重名模块: ${[...byName.entries()]
+      .filter(([, v]) => v.length > 1)
+      .map(([n]) => n)
+      .join(', ')}`
+  );
 
   // ---- 提取版全量写入 verification/（109 个，供审计 + F1 抽查）----
   // YAC-MAP-003（2026-08-21）：写前快照旧文件，保留手写补充的标准容器（preserveExtraContainers），
@@ -1087,7 +1145,12 @@ function main(): void {
   fs.mkdirSync(VERIFY_DIR, { recursive: true });
   for (const mod of all) {
     const oldJson = prevVerify.get(`${mod.fileName}.json`);
-    const json = JSON.stringify(preserveExtraContainers(oldJson, toGeneratedJson(mod, mod.sourceFile)), null, 2) + '\n';
+    const json =
+      JSON.stringify(
+        preserveExtraContainers(oldJson, toGeneratedJson(mod, mod.sourceFile)),
+        null,
+        2
+      ) + '\n';
     fs.writeFileSync(path.join(VERIFY_DIR, `${mod.fileName}.json`), json, 'utf8');
   }
   const verifyCount = fs.readdirSync(VERIFY_DIR).filter(f => f.endsWith('.json')).length;
@@ -1097,7 +1160,10 @@ function main(): void {
   // 现有文件若带 x-source=CfgH-Extracted（本脚本之前生成的）→ 重新生成覆盖；
   // 无标记的（手写/ARXML 提取的原始 54 个）→ 重名时保留现有更完整者。
   const existingFiles = fs.existsSync(GENERATED_DIR)
-    ? fs.readdirSync(GENERATED_DIR).filter(f => f.endsWith('.json')).sort()
+    ? fs
+        .readdirSync(GENERATED_DIR)
+        .filter(f => f.endsWith('.json'))
+        .sort()
     : [];
   const priorExtracted = new Set<string>();
   for (const f of existingFiles) {
@@ -1114,7 +1180,8 @@ function main(): void {
   const keptList: string[] = [];
   for (const mod of all) {
     const target = path.join(GENERATED_DIR, `${mod.fileName}.json`);
-    const isOriginal = !priorExtracted.has(mod.fileName) && existingFiles.includes(`${mod.fileName}.json`);
+    const isOriginal =
+      !priorExtracted.has(mod.fileName) && existingFiles.includes(`${mod.fileName}.json`);
     if (isOriginal) {
       // 现有更完整者保留（现有带手写容器/crossReferences，validator 测试消费）
       keptExisting++;
@@ -1136,7 +1203,9 @@ function main(): void {
     fs.writeFileSync(target, JSON.stringify(newJson, null, 2) + '\n', 'utf8');
     written++;
   }
-  console.log(`[F1] 合并结果: 新增写入 generated/ ${written} 个; 与现有重名保留现有 ${keptExisting} 个 → ${keptList.join(', ')}`);
+  console.log(
+    `[F1] 合并结果: 新增写入 generated/ ${written} 个; 与现有重名保留现有 ${keptExisting} 个 → ${keptList.join(', ')}`
+  );
 
   // ---- 清理孤儿文件（YAC-MAP-003，2026-08-21）----
   // 之前由本脚本生成、但本次提取已不存在的模块（如 dlt_ecual —— yuleASR ecual/dlt
@@ -1159,12 +1228,17 @@ function main(): void {
   const oldMap = new Map<string, string>();
   if (fs.existsSync(oldIndex)) {
     const text = fs.readFileSync(oldIndex, 'utf8');
-    for (const m of text.matchAll(/export\s*\{\s*default\s+as\s+([A-Za-z0-9_]+)\s*\}\s*from\s*'\.\/([a-z0-9_]+)\.json'/g)) {
+    for (const m of text.matchAll(
+      /export\s*\{\s*default\s+as\s+([A-Za-z0-9_]+)\s*\}\s*from\s*'\.\/([a-z0-9_]+)\.json'/g
+    )) {
       oldMap.set(m[2], m[1]);
     }
   }
 
-  const finalJson = fs.readdirSync(GENERATED_DIR).filter(f => f.endsWith('.json')).sort();
+  const finalJson = fs
+    .readdirSync(GENERATED_DIR)
+    .filter(f => f.endsWith('.json'))
+    .sort();
   const lines: string[] = [];
   for (const f of finalJson) {
     const key = f.replace(/\.json$/, '');
@@ -1180,9 +1254,15 @@ function main(): void {
     lines.push(`export { default as ${exportName} } from './${f}';`);
   }
   lines.sort();
-  fs.writeFileSync(oldIndex, `// Auto-generated by scripts/extract-schemas-from-cfgh.ts — DO NOT EDIT\n${lines.join('\n')}\n`, 'utf8');
+  fs.writeFileSync(
+    oldIndex,
+    `// Auto-generated by scripts/extract-schemas-from-cfgh.ts — DO NOT EDIT\n${lines.join('\n')}\n`,
+    'utf8'
+  );
 
-  console.log(`[F1] generated/ 最终 JSON 数量: ${finalJson.length}; index.ts 导出 ${lines.length} 个`);
+  console.log(
+    `[F1] generated/ 最终 JSON 数量: ${finalJson.length}; index.ts 导出 ${lines.length} 个`
+  );
   console.log(`[F1] 层分布: ${stats(all)}`);
 
   // 层统计

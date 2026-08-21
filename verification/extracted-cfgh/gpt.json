@@ -161,10 +161,7 @@
       "type": "enum",
       "description": "GPT_DEFAULT_MODE 参数",
       "default": "GPT_MODE_NORMAL",
-      "enum": [
-        "GPT_MODE_NORMAL",
-        "GPT_MODE_SLEEP"
-      ],
+      "enum": ["GPT_MODE_NORMAL", "GPT_MODE_SLEEP"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "GPT_CLOCK_FREQUENCY_HZ": {

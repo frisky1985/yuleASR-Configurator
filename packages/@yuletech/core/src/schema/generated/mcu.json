@@ -647,10 +647,7 @@
         "McuClockSrcFailureNotification": {
           "description": "McuClockSrcFailureNotification 参数 - Enables/Disables clock failure notification. In case this feature is not supported by HW the setting should be disabled.",
           "type": "string",
-          "enum": [
-            "DISABLED",
-            "ENABLED"
-          ]
+          "enum": ["DISABLED", "ENABLED"]
         },
         "McuNumberOfMcuModes": {
           "description": "McuNumberOfMcuModes 参数 - This parameter shall represent the number of Modes available for the MCU.",

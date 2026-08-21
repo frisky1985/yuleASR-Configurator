@@ -6,16 +6,21 @@
 
 ## 1. 产品简介 (Product Overview)
 
-**yuleASR Configurator** 是一款面向 AUTOSAR 经典平台的基础软件（BSW）配置工具，专为嵌入式开发团队设计。它提供了直观的图形界面，帮助您快速完成 AUTOSAR 模块的参数配置、验证和代码生成。
+**yuleASR Configurator**
+是一款面向 AUTOSAR 经典平台的基础软件（BSW）配置工具，专为嵌入式开发团队设计。它提供了直观的图形界面，帮助您快速完成 AUTOSAR 模块的参数配置、验证和代码生成。
 
 ### 核心特性
 
 - **50+ 预置 AUTOSAR 模块**：覆盖 MCAL（Can、Dio、Mcu、Adc、Pwm 等）、ECUAL（Eep、Fee、WdgIf 等）、Service 层（BswM、Com、Dcm、Dem、NvM 等）以及 RTE 和 OS 配置。
-- **层级化配置树**：类似 Vector Davinci Configurator 的模块管理体验，支持按 AUTOSAR 层次（MCAL → ECUAL → Service → RTE → OS → ASW）组织模块。
+- **层级化配置树**：类似 Vector Davinci
+  Configurator 的模块管理体验，支持按 AUTOSAR 层次（MCAL → ECUAL → Service → RTE
+  → OS → ASW）组织模块。
 - **可视化参数编辑**：每个模块的参数通过表单界面编辑，支持数值、字符串、布尔、枚举等类型。
 - **内置验证引擎**：实时检查配置完整性、参数范围、依赖关系，并提供错误/警告/信息三级提示。
-- **代码生成**：一键生成符合 yuleASR 风格的 `_Cfg.h` 宏定义头文件，支持 `autosar-format` 规范的 ECUC ARXML 导出。
-- **插件系统**：通过 `@yuletech/plugin-sdk` 扩展功能，支持自定义验证规则、代码生成器和数据导出。
+- **代码生成**：一键生成符合 yuleASR 风格的 `_Cfg.h` 宏定义头文件，支持
+  `autosar-format` 规范的 ECUC ARXML 导出。
+- **插件系统**：通过 `@yuletech/plugin-sdk`
+  扩展功能，支持自定义验证规则、代码生成器和数据导出。
 - **多平台支持**：Web 版即开即用，桌面版提供 macOS / Windows / Linux 原生体验。
 
 ### 适用场景
@@ -45,15 +50,16 @@ Web 版支持所有主流浏览器（Chrome、Edge、Firefox、Safari），配�
 
 **[GitHub Releases](https://github.com/frisky1985/yuleASR-Configurator/releases)**
 
-| 平台 | 文件格式 |
-|------|----------|
-| **macOS** (Intel) | `yuleASR-Configurator-{version}-mac-x64.dmg` |
-| **macOS** (Apple Silicon) | `yuleASR-Configurator-{version}-mac-arm64.dmg` |
-| **Windows** (x64) | `yuleASR-Configurator-{version}-win-x64.exe` (NSIS 安装包) 或 `.zip` 便携版 |
-| **Linux** (x64) | `yuleASR-Configurator-{version}-linux-x64.AppImage` 或 `.deb` 安装包 |
-| **Linux** (ARM64) | `yuleASR-Configurator-{version}-linux-arm64.AppImage` |
+| 平台                      | 文件格式                                                                    |
+| ------------------------- | --------------------------------------------------------------------------- |
+| **macOS** (Intel)         | `yuleASR-Configurator-{version}-mac-x64.dmg`                                |
+| **macOS** (Apple Silicon) | `yuleASR-Configurator-{version}-mac-arm64.dmg`                              |
+| **Windows** (x64)         | `yuleASR-Configurator-{version}-win-x64.exe` (NSIS 安装包) 或 `.zip` 便携版 |
+| **Linux** (x64)           | `yuleASR-Configurator-{version}-linux-x64.AppImage` 或 `.deb` 安装包        |
+| **Linux** (ARM64)         | `yuleASR-Configurator-{version}-linux-arm64.AppImage`                       |
 
-> **提示**：桌面版支持自动更新（基于 `electron-updater`），首次安装后后续版本会自动推送。
+> **提示**：桌面版支持自动更新（基于
+> `electron-updater`），首次安装后后续版本会自动推送。
 
 ---
 
@@ -74,7 +80,8 @@ Web 版支持所有主流浏览器（Chrome、Edge、Firefox、Safari），配�
 
 1. 在仪表盘点击新建的配置，进入 **编辑器**（Editor）。
 2. 左侧 **配置树**（Config Tree）按 AUTOSAR 层次展示所有可用模块。
-3. 点击工具栏上的 **"模块向导"**（Module Wizard）按钮，或直接在配置树中找到目标模块。
+3. 点击工具栏上的 **"模块向导"**（Module
+   Wizard）按钮，或直接在配置树中找到目标模块。
 4. 选择您需要配置的模块，例如：
    - **Can**（CAN 驱动程序）—— MCAL 层
    - **Dio**（数字 I/O 驱动）—— MCAL 层
@@ -87,7 +94,8 @@ Web 版支持所有主流浏览器（Chrome、Edge、Firefox、Safari），配�
 
 ### 3.3 配置参数
 
-1. 在配置树中点击某个已启用的模块，右侧 **参数编辑器**（Parameter Editor）将显示该模块的可配置参数。
+1. 在配置树中点击某个已启用的模块，右侧 **参数编辑器**（Parameter
+   Editor）将显示该模块的可配置参数。
 2. 参数按功能分组为容器（Container），每个容器可包含多个参数项。
 3. 支持的参数类型：
    - **数值（Number）**：直接输入整数或浮点数
@@ -128,7 +136,8 @@ Web 版支持所有主流浏览器（Chrome、Edge、Firefox、Safari），配�
 1. 点击工具栏 **"生成"**（Generate）按钮。
 2. 选择 **"生成 C 代码"**（Generate C Code）。
 3. 工具会为每个已配置的模块生成对应的 `<Module>_Cfg.h` 文件。
-4. 代码风格为纯宏定义模式（无类型定义、无函数声明），可直接集成到 yuleASR BSW 项目中。
+4. 代码风格为纯宏定义模式（无类型定义、无函数声明），可直接集成到 yuleASR
+   BSW 项目中。
 5. 支持一次生成所有模块代码，或以 ZIP 包形式批量下载。
 
 ---
@@ -179,21 +188,23 @@ yuleASR Configurator 提供了强大的插件扩展机制，让您可以根据�
 
 ### 插件类型
 
-| 类型 | 用途 | 示例 |
-|------|------|------|
-| **code-generator** | 自定义代码生成器 | 增加版权头、生成特定格式输出 |
-| **validator** | 自定义验证规则 | MCU 时钟频率校验、Can 波特率范围检查 |
-| **data-export** | 导出配置数据 | JSON 报告生成、自定义格式导出 |
-| **ui-extension** | 扩展 UI 功能 | 自定义面板、快捷操作 |
+| 类型               | 用途             | 示例                                 |
+| ------------------ | ---------------- | ------------------------------------ |
+| **code-generator** | 自定义代码生成器 | 增加版权头、生成特定格式输出         |
+| **validator**      | 自定义验证规则   | MCU 时钟频率校验、Can 波特率范围检查 |
+| **data-export**    | 导出配置数据     | JSON 报告生成、自定义格式导出        |
+| **ui-extension**   | 扩展 UI 功能     | 自定义面板、快捷操作                 |
 
 ### 插件开发
 
 1. 安装插件 SDK：
+
    ```bash
    npm install @yuletech/plugin-sdk
    ```
 
 2. 实现插件接口：
+
    ```typescript
    import type { YulePlugin, PluginContext } from '@yuletech/plugin-sdk';
 
@@ -218,15 +229,16 @@ yuleASR Configurator 提供了强大的插件扩展机制，让您可以根据�
 
 项目 `examples/plugins/` 目录下提供了三个完整的示例插件：
 
-| 插件 | 类型 | 功能 |
-|------|------|------|
-| **mcu-validator** | validator | 验证 MCU 模块时钟频率、PLL 配置 |
-| **json-exporter** | data-export | 将配置导出为带格式的 JSON 报告 |
+| 插件                        | 类型           | 功能                              |
+| --------------------------- | -------------- | --------------------------------- |
+| **mcu-validator**           | validator      | 验证 MCU 模块时钟频率、PLL 配置   |
+| **json-exporter**           | data-export    | 将配置导出为带格式的 JSON 报告    |
 | **custom-header-generator** | code-generator | 在生成的 C 文件中添加自定义版权头 |
 
 ### 插件管理
 
-在 Web 版或桌面版中，通过 **设置 → 插件管理** 页面可以查看已安装的插件列表、启用/禁用插件，以及配置每个插件的用户自定义参数。
+在 Web 版或桌面版中，通过 **设置 → 插件管理**
+页面可以查看已安装的插件列表、启用/禁用插件，以及配置每个插件的用户自定义参数。
 
 ---
 
@@ -234,53 +246,64 @@ yuleASR Configurator 提供了强大的插件扩展机制，让您可以根据�
 
 ### Q1: 配置数据存储在哪里？Web 版和桌面版数据互通吗？
 
-**A:** Web 版配置数据存储在浏览器的 `localStorage` 中（按配置 ID 隔离）。桌面版使用 Electron 的本地文件系统存储。
-两者暂未实现自动同步，但您可以通过 **导出 ARXML** 或 **导出 yuleASR 配置** → **导入到另一平台** 的方式来迁移数据。
+**A:** Web 版配置数据存储在浏览器的 `localStorage`
+中（按配置 ID 隔离）。桌面版使用 Electron 的本地文件系统存储。两者暂未实现自动同步，但您可以通过
+**导出 ARXML** 或 **导出 yuleASR 配置** → **导入到另一平台** 的方式来迁移数据。
 
 ### Q2: 支持哪些 AUTOSAR 模块？
 
-**A:** 当前支持 50+ 个 AUTOSAR 模块，完整列表包括但不限于：Can、CanIf、CanNm、CanSM、CanTp、CanTrcv、Dio、Mcu、Port、Adc、Icu、Gpt、Pwm、Spi、Lin、LinIf、Fr、FrIf、Eth、EthIf、Wdg、WdgIf、WdgM、Ea、Eep、Fee、Fls、Crc、Crypto、Csm、CryIf、Det、Dem、Dcm、Com、ComM、BswM、PduR、NvM、MemIf、Nm、Os、Rte、Xcp、EcuM、IoHwAb、Sbc、Ble、Uart、I2c、Mcl 等。详情请查看 `packages/@yuletech/core/src/schema/generated/` 下的 JSON 模式文件。
+**A:**
+当前支持 50+ 个 AUTOSAR 模块，完整列表包括但不限于：Can、CanIf、CanNm、CanSM、CanTp、CanTrcv、Dio、Mcu、Port、Adc、Icu、Gpt、Pwm、Spi、Lin、LinIf、Fr、FrIf、Eth、EthIf、Wdg、WdgIf、WdgM、Ea、Eep、Fee、Fls、Crc、Crypto、Csm、CryIf、Det、Dem、Dcm、Com、ComM、BswM、PduR、NvM、MemIf、Nm、Os、Rte、Xcp、EcuM、IoHwAb、Sbc、Ble、Uart、I2c、Mcl 等。详情请查看
+`packages/@yuletech/core/src/schema/generated/` 下的 JSON 模式文件。
 
 ### Q3: 如何导入现有的 ARXML 配置？
 
-**A:** 在编辑器中点击 **"导入"**（Import）按钮，选择 **"导入 ARXML"**。工具会解析标准的 AUTOSAR ECUC ARXML 文件，将其转换为 yuleASR 内部配置格式。支持大部分常见模块的参数还原。如果导入过程中遇到不支持的元素，会显示警告信息但不会中断导入。
+**A:** 在编辑器中点击 **"导入"**（Import）按钮，选择
+**"导入 ARXML"**。工具会解析标准的 AUTOSAR ECUC
+ARXML 文件，将其转换为 yuleASR 内部配置格式。支持大部分常见模块的参数还原。如果导入过程中遇到不支持的元素，会显示警告信息但不会中断导入。
 
 ### Q4: 代码生成输出的是什么格式？
 
-**A:** 默认生成纯宏定义的 C 头文件（`<Module>_Cfg.h`），格式符合 yuleASR BSW 的预编译配置规范。输出内容为 `#define` 宏定义，不包含类型声明或函数定义。同时支持 ECUC 格式的 ARXML 导出，符合 AUTOSAR 标准，可与其他工具链互操作。
+**A:** 默认生成纯宏定义的 C 头文件（`<Module>_Cfg.h`），格式符合 yuleASR
+BSW 的预编译配置规范。输出内容为 `#define`
+宏定义，不包含类型声明或函数定义。同时支持 ECUC 格式的 ARXML 导出，符合 AUTOSAR 标准，可与其他工具链互操作。
 
 ### Q5: 能否比较两个配置的差异？
 
-**A:** 可以。在仪表盘中选中两个配置，点击 **"比较配置"**（Compare Configurations），工具会以并排视图展示两个配置的差异，包括模块增减、参数值变化等。差异结果也可以导出为差异报告。
+**A:** 可以。在仪表盘中选中两个配置，点击 **"比较配置"**（Compare
+Configurations），工具会以并排视图展示两个配置的差异，包括模块增减、参数值变化等。差异结果也可以导出为差异报告。
 
 ### Q6: 支持 Git 版本管理吗？
 
-**A:** 支持基础 Git 集成。在 **Git 同步**（Git Sync）页面，您可以将配置关联到 Git 仓库、查看变更历史、创建分支以及提交更改。该功能适用于希望将配置纳入版本控制的团队。
+**A:** 支持基础 Git 集成。在 **Git 同步**（Git
+Sync）页面，您可以将配置关联到 Git 仓库、查看变更历史、创建分支以及提交更改。该功能适用于希望将配置纳入版本控制的团队。
 
 ### Q7: 如何切换语言？
 
-**A:** 进入 **设置 → 界面偏好**，在语言选项中选择 **中文** 或 **English**。切换即时生效，无需重启。目前支持简体中文和英文两种语言。
+**A:** 进入 **设置 → 界面偏好**，在语言选项中选择 **中文** 或
+**English**。切换即时生效，无需重启。目前支持简体中文和英文两种语言。
 
 ### Q8: 桌面版支持哪些快捷键？
 
 **A:** 常用快捷键：
-| 操作 | Windows/Linux | macOS |
-|------|---------------|-------|
-| 保存 | `Ctrl + S` | `Cmd + S` |
-| 全局搜索 | `Ctrl + K` | `Cmd + K` |
-| 切换主题 | `Ctrl + D` | `Cmd + D` |
-| 快捷键帮助 | `Ctrl + /` | `Cmd + /` |
-| 关闭弹窗 | `Escape` | `Escape` |
+
+| 操作       | Windows/Linux | macOS     |
+| ---------- | ------------- | --------- |
+| 保存       | `Ctrl + S`    | `Cmd + S` |
+| 全局搜索   | `Ctrl + K`    | `Cmd + K` |
+| 切换主题   | `Ctrl + D`    | `Cmd + D` |
+| 快捷键帮助 | `Ctrl + /`    | `Cmd + /` |
+| 关闭弹窗   | `Escape`      | `Escape`  |
 
 ### Q9: 配置完成后，如何验证配置的正确性？
 
 **A:** 内置验证引擎会在您点击 **"验证"** 按钮时自动执行多项检查：
+
 - 必填参数是否已配置
 - 参数值是否在有效范围内
 - 模块间的依赖关系是否满足
 - 枚举值是否合法
-- OS 配置的完整性和一致性
-验证结果会按严重程度分级展示，并支持一键跳转到问题位置。
+- OS 配置的完整性和一致性验证结果会按严重程度分级展示，并支持一键跳转到问题位置。
 
 ---
 
@@ -289,15 +312,18 @@ yuleASR Configurator 提供了强大的插件扩展机制，让您可以根据�
 ### 文档与资源
 
 - **项目主页**：[https://github.com/frisky1985/yuleASR-Configurator](https://github.com/frisky1985/yuleASR-Configurator)
-- **变更日志**：[CHANGELOG.md](./CHANGELOG.md) —— 详细记录每个版本的新功能、修复和变更
+- **变更日志**：[CHANGELOG.md](./CHANGELOG.md)
+  —— 详细记录每个版本的新功能、修复和变更
 
 ### 反馈问题
 
 如果遇到 Bug 或有功能建议，欢迎提交 GitHub Issue：
 
-- **[提交 Issue](https://github.com/frisky1985/yuleASR-Configurator/issues/new/choose)** —— 选择 Bug 报告或功能请求模板
+- **[提交 Issue](https://github.com/frisky1985/yuleASR-Configurator/issues/new/choose)**
+  —— 选择 Bug 报告或功能请求模板
 
 提交 Issue 时，请尽量包含以下信息：
+
 - 使用的版本（Web 版 / 桌面版及具体版本号）
 - 操作系统及版本
 - 复现步骤和截图（如适用）
@@ -305,7 +331,8 @@ yuleASR Configurator 提供了强大的插件扩展机制，让您可以根据�
 
 ### 社区交流
 
-- **[GitHub Discussions](https://github.com/frisky1985/yuleASR-Configurator/discussions)** —— 提问、分享经验、讨论最佳实践
+- **[GitHub Discussions](https://github.com/frisky1985/yuleASR-Configurator/discussions)**
+  —— 提问、分享经验、讨论最佳实践
 - **社区链接** —— 桌面版页脚提供社区入口，点击后会在默认浏览器中打开
 
 ### 贡献代码
@@ -318,4 +345,4 @@ yuleASR Configurator 提供了强大的插件扩展机制，让您可以根据�
 
 ---
 
-*yuleASR Configurator —— 让 AUTOSAR 配置更简单。*
+_yuleASR Configurator —— 让 AUTOSAR 配置更简单。_

@@ -37,7 +37,9 @@ export function useAuth() {
       try {
         const user = JSON.parse(userRaw) as User;
         return { user, token, isAuthenticated: true, isLoading: false };
-      } catch { /* fall through */ }
+      } catch {
+        /* fall through */
+      }
     }
     return { user: null, token: null, isAuthenticated: false, isLoading: false };
   });
@@ -53,7 +55,9 @@ export function useAuth() {
           userApi.setToken(token);
           setAuth({ user, token, isAuthenticated: true, isLoading: false });
           return;
-        } catch { /* fall through */ }
+        } catch {
+          /* fall through */
+        }
       }
     }
     setAuth(prev => ({ ...prev, isLoading: false }));
@@ -63,70 +67,76 @@ export function useAuth() {
    * 登录 — 调用后端 API
    * Fix 11: 后端不可达/失败时直接返回错误，不再降级到本地 mock（mock 登录会掩盖认证故障）
    */
-  const login = useCallback(async (email: string, password: string): Promise<{ success: boolean; message: string }> => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/v1/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+  const login = useCallback(
+    async (email: string, password: string): Promise<{ success: boolean; message: string }> => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/v1/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
 
-      if (!response.ok) {
-        const err = await response.json().catch(() => ({}));
-        return { success: false, message: err.message || '登录失败' };
+        if (!response.ok) {
+          const err = await response.json().catch(() => ({}));
+          return { success: false, message: err.message || '登录失败' };
+        }
+
+        const result = await response.json();
+        // Fix 13: 服务端 /v1/auth/login 返回 { token, user }（无 success/data 信封）
+        if (response.ok && result.token && result.user) {
+          const { user, token } = result;
+          safeSessionSet(USER_KEY, JSON.stringify(user));
+          safeSessionSet(TOKEN_KEY, token);
+          userApi.setToken(token);
+          setAuth({ user, token, isAuthenticated: true, isLoading: false });
+          return { success: true, message: '' };
+        }
+
+        return { success: false, message: result.message || '登录失败' };
+      } catch (err) {
+        console.warn('[useAuth] 后端不可达:', err);
+        return { success: false, message: '服务暂时不可用，请稍后重试' };
       }
-
-      const result = await response.json();
-      // Fix 13: 服务端 /v1/auth/login 返回 { token, user }（无 success/data 信封）
-      if (response.ok && result.token && result.user) {
-        const { user, token } = result;
-        safeSessionSet(USER_KEY, JSON.stringify(user));
-        safeSessionSet(TOKEN_KEY, token);
-        userApi.setToken(token);
-        setAuth({ user, token, isAuthenticated: true, isLoading: false });
-        return { success: true, message: '' };
-      }
-
-      return { success: false, message: result.message || '登录失败' };
-    } catch (err) {
-      console.warn('[useAuth] 后端不可达:', err);
-      return { success: false, message: '服务暂时不可用，请稍后重试' };
-    }
-  }, []);
+    },
+    []
+  );
 
   /**
    * 注册 — 调用后端 API
    * Fix 11: 后端不可达/失败时直接返回错误，不再降级到本地 mock
    */
-  const register = useCallback(async (
-    username: string,
-    email: string,
-    password: string
-  ): Promise<{ success: boolean; message: string }> => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/v1/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password }),
-      });
+  const register = useCallback(
+    async (
+      username: string,
+      email: string,
+      password: string
+    ): Promise<{ success: boolean; message: string }> => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/v1/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password }),
+        });
 
-      const result = await response.json();
-      // Fix 13: 服务端 /v1/auth/register 返回 { token, user }（无 success/data 信封）
-      if (response.ok && result.token && result.user) {
-        const { user, token } = result;
-        safeSessionSet(USER_KEY, JSON.stringify(user));
-        safeSessionSet(TOKEN_KEY, token);
-        userApi.setToken(token);
-        setAuth({ user, token, isAuthenticated: true, isLoading: false });
-        return { success: true, message: '' };
+        const result = await response.json();
+        // Fix 13: 服务端 /v1/auth/register 返回 { token, user }（无 success/data 信封）
+        if (response.ok && result.token && result.user) {
+          const { user, token } = result;
+          safeSessionSet(USER_KEY, JSON.stringify(user));
+          safeSessionSet(TOKEN_KEY, token);
+          userApi.setToken(token);
+          setAuth({ user, token, isAuthenticated: true, isLoading: false });
+          return { success: true, message: '' };
+        }
+
+        return { success: false, message: result.message || '注册失败' };
+      } catch (err) {
+        console.warn('[useAuth] 后端不可达:', err);
+        return { success: false, message: '服务暂时不可用，请稍后重试' };
       }
-
-      return { success: false, message: result.message || '注册失败' };
-    } catch (err) {
-      console.warn('[useAuth] 后端不可达:', err);
-      return { success: false, message: '服务暂时不可用，请稍后重试' };
-    }
-  }, []);
+    },
+    []
+  );
 
   const logout = useCallback(() => {
     safeSessionRemove(USER_KEY);

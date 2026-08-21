@@ -25,8 +25,7 @@ export function getHeaderContent(name: string): string | undefined {
 }
 
 export function getAllHeaderIncludes(): string {
-  return VIRTUAL_HEADERS
-    .filter(h => h.name !== 'Std_Types.h')
+  return VIRTUAL_HEADERS.filter(h => h.name !== 'Std_Types.h')
     .map(h => `#include "${h.name}"`)
     .join('\n');
 }

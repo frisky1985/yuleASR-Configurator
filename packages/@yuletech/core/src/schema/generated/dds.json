@@ -20,11 +20,7 @@
     "DDS_TRANSPORT_TYPE": {
       "type": "string",
       "description": "DDS_TRANSPORT_TYPE 参数（传输类型：ETH 多播 RTPS / SOAD SOME-IP 桥接 / TSN）",
-      "enum": [
-        "DDS_TRANSPORT_ETH",
-        "DDS_TRANSPORT_SOAD",
-        "DDS_TRANSPORT_TSN"
-      ],
+      "enum": ["DDS_TRANSPORT_ETH", "DDS_TRANSPORT_SOAD", "DDS_TRANSPORT_TSN"],
       "default": "DDS_TRANSPORT_ETH"
     },
     "DDS_ETH_MULTICAST_PORT_BASE": {

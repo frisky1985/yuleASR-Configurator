@@ -366,10 +366,7 @@
         "CsmHashAlgorithmMode": {
           "type": "string",
           "default": "CRYPTO_ALGOMODE_NOT_SET",
-          "enum": [
-            "CRYPTO_ALGOMODE_CUSTOM",
-            "CRYPTO_ALGOMODE_NOT_SET"
-          ],
+          "enum": ["CRYPTO_ALGOMODE_CUSTOM", "CRYPTO_ALGOMODE_NOT_SET"],
           "description": "算法模式"
         },
         "CsmHashAlgorithmModeCustom": {
@@ -380,10 +377,7 @@
         "CsmHashAlgorithmSecondaryFamily": {
           "type": "string",
           "default": "CRYPTO_ALGOFAM_NOT_SET",
-          "enum": [
-            "CRYPTO_ALGOFAM_CUSTOM",
-            "CRYPTO_ALGOFAM_NOT_SET"
-          ],
+          "enum": ["CRYPTO_ALGOFAM_CUSTOM", "CRYPTO_ALGOFAM_NOT_SET"],
           "description": "次级算法族"
         },
         "CsmHashAlgorithmSecondaryFamilyCustom": {
@@ -454,10 +448,7 @@
         "CsmEncryptAlgorithmSecondaryFamily": {
           "type": "string",
           "default": "CRYPTO_ALGOFAM_NOT_SET",
-          "enum": [
-            "CRYPTO_ALGOFAM_CUSTOM",
-            "CRYPTO_ALGOFAM_NOT_SET"
-          ],
+          "enum": ["CRYPTO_ALGOFAM_CUSTOM", "CRYPTO_ALGOFAM_NOT_SET"],
           "description": "次级算法族"
         },
         "CsmEncryptAlgorithmSecondaryFamilyCustom": {
@@ -527,10 +518,7 @@
         "CsmDecryptAlgorithmSecondaryFamily": {
           "type": "string",
           "default": "CRYPTO_ALGOFAM_NOT_SET",
-          "enum": [
-            "CRYPTO_ALGOFAM_CUSTOM",
-            "CRYPTO_ALGOFAM_NOT_SET"
-          ],
+          "enum": ["CRYPTO_ALGOFAM_CUSTOM", "CRYPTO_ALGOFAM_NOT_SET"],
           "description": "次级算法族"
         },
         "CsmDecryptAlgorithmSecondaryFamilyCustom": {
@@ -614,10 +602,7 @@
         "CsmMacGenerateAlgorithmSecondaryFamily": {
           "type": "string",
           "default": "CRYPTO_ALGOFAM_NOT_SET",
-          "enum": [
-            "CRYPTO_ALGOFAM_NOT_SET",
-            "CRYPTO_ALGOMODE_CUSTOM"
-          ],
+          "enum": ["CRYPTO_ALGOFAM_NOT_SET", "CRYPTO_ALGOMODE_CUSTOM"],
           "description": "次级算法族"
         },
         "CsmMacGenerateAlgorithmSecondaryFamilyCustom": {
@@ -805,11 +790,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CsmGeneral",
-    "CsmJobTypeLayout",
-    "CsmBswApiCompatibility"
-  ],
+  "required": ["CsmGeneral", "CsmJobTypeLayout", "CsmBswApiCompatibility"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

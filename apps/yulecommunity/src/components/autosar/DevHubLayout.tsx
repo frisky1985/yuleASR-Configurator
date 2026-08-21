@@ -10,7 +10,13 @@ interface DevHubLayoutProps {
   headerExtra?: ReactNode;
 }
 
-export function DevHubLayout({ title, subtitle, backTo, children, headerExtra }: DevHubLayoutProps) {
+export function DevHubLayout({
+  title,
+  subtitle,
+  backTo,
+  children,
+  headerExtra,
+}: DevHubLayoutProps) {
   const navigate = useNavigate();
   return (
     <div className="min-h-screen pt-16">
@@ -19,7 +25,10 @@ export function DevHubLayout({ title, subtitle, backTo, children, headerExtra }:
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             {backTo && (
-              <button onClick={() => navigate(backTo)} className="p-1.5 rounded-lg hover:bg-muted/50 transition-colors">
+              <button
+                onClick={() => navigate(backTo)}
+                className="p-1.5 rounded-lg hover:bg-muted/50 transition-colors"
+              >
                 <ArrowLeft className="w-4 h-4" />
               </button>
             )}
@@ -37,9 +46,7 @@ export function DevHubLayout({ title, subtitle, backTo, children, headerExtra }:
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {children}
-      </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</div>
     </div>
   );
 }

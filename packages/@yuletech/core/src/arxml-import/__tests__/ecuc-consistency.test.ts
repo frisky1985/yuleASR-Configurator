@@ -131,10 +131,9 @@ describe('ECUC 一致性校验 — 匹配', () => {
 
 describe('ECUC 一致性校验 — 类型不匹配', () => {
   it('文本定义（STRING-PARAM-DEF）配数值值 → Assignment type mismatch', () => {
-    const xml = consistentXml.replace('<VALUE>HW</VALUE>', '<VALUE>10</VALUE>').replace(
-      '<ECUC-TEXTUAL-PARAM-VALUE>',
-      '<ECUC-NUMERICAL-PARAM-VALUE>'
-    );
+    const xml = consistentXml
+      .replace('<VALUE>HW</VALUE>', '<VALUE>10</VALUE>')
+      .replace('<ECUC-TEXTUAL-PARAM-VALUE>', '<ECUC-NUMERICAL-PARAM-VALUE>');
     const parsed = parseSwcArxml(xml, 'mismatch.arxml');
 
     expect(parsed.report.errors).toHaveLength(1);
@@ -143,22 +142,22 @@ describe('ECUC 一致性校验 — 类型不匹配', () => {
   });
 
   it('数值定义（INTEGER-PARAM-DEF）配布尔值 → Assignment type mismatch', () => {
-    const xml = consistentXml.replace('<VALUE>10</VALUE>', '<VALUE>true</VALUE>').replace(
-      '<ECUC-NUMERICAL-PARAM-VALUE>',
-      '<ECUC-BOOLEAN-PARAM-VALUE>'
-    );
+    const xml = consistentXml
+      .replace('<VALUE>10</VALUE>', '<VALUE>true</VALUE>')
+      .replace('<ECUC-NUMERICAL-PARAM-VALUE>', '<ECUC-BOOLEAN-PARAM-VALUE>');
     const parsed = parseSwcArxml(xml, 'mismatch2.arxml');
 
     expect(parsed.report.errors).toHaveLength(1);
-    expect(parsed.report.errors[0]).toMatch(/^Assignment type mismatch: \/Can\/CanMainFunctionPeriod/);
+    expect(parsed.report.errors[0]).toMatch(
+      /^Assignment type mismatch: \/Can\/CanMainFunctionPeriod/
+    );
     expect(parsed.report.errors[0]).toContain('expected a numerical value, got true (boolean)');
   });
 
   it('strict 入口对类型不匹配抛 AssignmentTypeError', () => {
-    const xml = consistentXml.replace('<VALUE>HW</VALUE>', '<VALUE>10</VALUE>').replace(
-      '<ECUC-TEXTUAL-PARAM-VALUE>',
-      '<ECUC-NUMERICAL-PARAM-VALUE>'
-    );
+    const xml = consistentXml
+      .replace('<VALUE>HW</VALUE>', '<VALUE>10</VALUE>')
+      .replace('<ECUC-TEXTUAL-PARAM-VALUE>', '<ECUC-NUMERICAL-PARAM-VALUE>');
     expect(() => importSwcArxmlStrict(xml, 'strict-mismatch.arxml')).toThrow(AssignmentTypeError);
   });
 });
@@ -174,7 +173,9 @@ describe('ECUC 一致性校验 — 枚举非法', () => {
 
     expect(parsed.report.errors).toHaveLength(1);
     expect(parsed.report.errors[0]).toMatch(/^Assignment type mismatch: \/Can\/CanBaudRateConfig/);
-    expect(parsed.report.errors[0]).toContain("value '2M' is not one of the enumeration literals [500K, 1M]");
+    expect(parsed.report.errors[0]).toContain(
+      "value '2M' is not one of the enumeration literals [500K, 1M]"
+    );
   });
 });
 
@@ -194,7 +195,10 @@ describe('ECUC 一致性校验 — 定义缺失', () => {
   });
 
   it('容器 DEFINITION-REF 找不到 → Invalid reference', () => {
-    const xml = consistentXml.replace('/Can/Can/CanController</DEFINITION-REF>', '/Can/Can/GhostContainer</DEFINITION-REF>');
+    const xml = consistentXml.replace(
+      '/Can/Can/CanController</DEFINITION-REF>',
+      '/Can/Can/GhostContainer</DEFINITION-REF>'
+    );
     const parsed = parseSwcArxml(xml, 'missing-container.arxml');
 
     expect(parsed.report.errors).toHaveLength(1);
@@ -316,13 +320,17 @@ describe('ECUC 一致性校验 — 纯值层跳过', () => {
 describe('classifyImportError — E3 新前缀', () => {
   it('Assignment type mismatch: → AssignmentTypeError', () => {
     expect(
-      classifyImportError('Assignment type mismatch: /Can/X (ECUC module Can parameter X): expected a numerical value, got abc (string)')
+      classifyImportError(
+        'Assignment type mismatch: /Can/X (ECUC module Can parameter X): expected a numerical value, got abc (string)'
+      )
     ).toBeInstanceOf(AssignmentTypeError);
   });
 
   it('Invalid reference: → InvalidReferenceError（E3 定义缺失沿用既有分类）', () => {
     expect(
-      classifyImportError('Invalid reference: /Can/Ghost (ECUC module Can parameter Ghost): parameter definition not found')
+      classifyImportError(
+        'Invalid reference: /Can/Ghost (ECUC module Can parameter Ghost): parameter definition not found'
+      )
     ).toBeInstanceOf(InvalidReferenceError);
   });
 });

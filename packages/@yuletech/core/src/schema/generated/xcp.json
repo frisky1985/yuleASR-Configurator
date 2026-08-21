@@ -198,11 +198,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CommonPublishedInformation",
-    "XcpConfigSet",
-    "XcpGeneral"
-  ],
+  "required": ["CommonPublishedInformation", "XcpConfigSet", "XcpGeneral"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

@@ -28,10 +28,7 @@ function useConditionVisible(
       const ast = parseCondition(condition);
       return evaluator.evaluate(ast, moduleConfigs ?? []);
     } catch (err) {
-      console.warn(
-        `[ContainerParameterList] 条件表达式解析失败，按不可见处理: ${condition}`,
-        err
-      );
+      console.warn(`[ContainerParameterList] 条件表达式解析失败，按不可见处理: ${condition}`, err);
       return false;
     }
   }, [condition, moduleConfigs, evaluator]);
@@ -94,7 +91,12 @@ interface SubContainerGroupProps {
   moduleConfigs?: ModuleConfig[];
 }
 
-function SubContainerGroup({ container, level, onParamChange, moduleConfigs }: SubContainerGroupProps) {
+function SubContainerGroup({
+  container,
+  level,
+  onParamChange,
+  moduleConfigs,
+}: SubContainerGroupProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const visible = useConditionVisible(container.condition, moduleConfigs);
 

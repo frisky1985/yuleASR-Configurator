@@ -219,11 +219,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "EcuMDriverInitList",
-    "EcuMWakeupSource",
-    "EcuMGeneral"
-  ],
+  "required": ["EcuMDriverInitList", "EcuMWakeupSource", "EcuMGeneral"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

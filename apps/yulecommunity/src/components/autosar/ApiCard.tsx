@@ -2,8 +2,17 @@ import { useState, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  ChevronDown, ChevronRight, Copy, Check, ExternalLink,
-  BookOpen, Code2, ArrowRight, Info, Clock, Star,
+  ChevronDown,
+  ChevronRight,
+  Copy,
+  Check,
+  ExternalLink,
+  BookOpen,
+  Code2,
+  ArrowRight,
+  Info,
+  Clock,
+  Star,
 } from 'lucide-react';
 import type { AutosarApi } from '../../data/autosar/types';
 import { LAYERS } from '../../data/autosar/spec-index';
@@ -57,10 +66,14 @@ export function ApiCard({ api }: ApiCardProps) {
       <div>
         <div className="flex items-center gap-3 mb-3">
           <h2 className="text-xl font-bold font-mono">{api.name}</h2>
-          <span className={`px-2 py-0.5 text-[10px] font-medium rounded-full border ${layerColors[api.layerId] || ''}`}>
+          <span
+            className={`px-2 py-0.5 text-[10px] font-medium rounded-full border ${layerColors[api.layerId] || ''}`}
+          >
             {api.layerId}
           </span>
-          <span className={`px-2 py-0.5 text-[10px] font-medium rounded-full ${statusColors[api.status]}`}>
+          <span
+            className={`px-2 py-0.5 text-[10px] font-medium rounded-full ${statusColors[api.status]}`}
+          >
             {api.status === 'standard' ? '标准' : api.status === 'optional' ? '可选' : '弃用'}
           </span>
           <button
@@ -68,17 +81,22 @@ export function ApiCard({ api }: ApiCardProps) {
             className="p-1.5 rounded-md hover:bg-muted/50 transition-colors"
             title={isBookmarked(api.id) ? '取消收藏' : '收藏'}
           >
-            {isBookmarked(api.id)
-              ? <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-              : <Star className="w-4 h-4 text-muted-foreground" />
-            }
+            {isBookmarked(api.id) ? (
+              <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+            ) : (
+              <Star className="w-4 h-4 text-muted-foreground" />
+            )}
           </button>
           <button
             onClick={copyShareLink}
             className="ml-auto p-1.5 rounded-md hover:bg-muted/50 text-muted-foreground hover:text-foreground transition-colors"
             title="分享链接"
           >
-            {shareCopied ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
+            {shareCopied ? (
+              <Check className="w-3.5 h-3.5 text-green-500" />
+            ) : (
+              <Copy className="w-3.5 h-3.5" />
+            )}
           </button>
           {shareCopied && (
             <span className="text-[10px] text-green-500 font-medium">已复制链接</span>
@@ -102,7 +120,16 @@ export function ApiCard({ api }: ApiCardProps) {
           函数签名
         </h3>
         <div className="bg-[#1e1e1e] dark:bg-[#1e1e1e] rounded-lg p-3 overflow-x-auto">
-          <Suspense fallback={<pre className="text-sm font-mono text-gray-300" style={{ margin: 0, padding: 0, fontSize: '13px', background: 'transparent' }}><code>{api.signature}</code></pre>}>
+          <Suspense
+            fallback={
+              <pre
+                className="text-sm font-mono text-gray-300"
+                style={{ margin: 0, padding: 0, fontSize: '13px', background: 'transparent' }}
+              >
+                <code>{api.signature}</code>
+              </pre>
+            }
+          >
             <CodeBlock
               language="c"
               customStyle={{ background: 'transparent', padding: 0, margin: 0, fontSize: '13px' }}
@@ -124,24 +151,45 @@ export function ApiCard({ api }: ApiCardProps) {
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-muted/30 border-b border-border">
-                  <th className="text-left px-3 py-2 text-xs font-medium text-muted-foreground">参数名</th>
-                  <th className="text-left px-3 py-2 text-xs font-medium text-muted-foreground">类型</th>
-                  <th className="text-left px-3 py-2 text-xs font-medium text-muted-foreground">方向</th>
-                  <th className="text-left px-3 py-2 text-xs font-medium text-muted-foreground">说明</th>
+                  <th className="text-left px-3 py-2 text-xs font-medium text-muted-foreground">
+                    参数名
+                  </th>
+                  <th className="text-left px-3 py-2 text-xs font-medium text-muted-foreground">
+                    类型
+                  </th>
+                  <th className="text-left px-3 py-2 text-xs font-medium text-muted-foreground">
+                    方向
+                  </th>
+                  <th className="text-left px-3 py-2 text-xs font-medium text-muted-foreground">
+                    说明
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {api.params.map((param, i) => (
-                  <tr key={i} className="border-b border-border/50 last:border-b-0 hover:bg-muted/10">
+                  <tr
+                    key={i}
+                    className="border-b border-border/50 last:border-b-0 hover:bg-muted/10"
+                  >
                     <td className="px-3 py-2 font-mono text-xs font-medium">{param.name}</td>
-                    <td className="px-3 py-2 font-mono text-xs text-muted-foreground">{param.type}</td>
+                    <td className="px-3 py-2 font-mono text-xs text-muted-foreground">
+                      {param.type}
+                    </td>
                     <td className="px-3 py-2">
-                      <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
-                        param.direction === 'in' ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400' :
-                        param.direction === 'out' ? 'bg-green-500/10 text-green-600 dark:text-green-400' :
-                        'bg-purple-500/10 text-purple-600 dark:text-purple-400'
-                      }`}>
-                        {param.direction === 'in' ? '输入' : param.direction === 'out' ? '输出' : '输入/输出'}
+                      <span
+                        className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
+                          param.direction === 'in'
+                            ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400'
+                            : param.direction === 'out'
+                              ? 'bg-green-500/10 text-green-600 dark:text-green-400'
+                              : 'bg-purple-500/10 text-purple-600 dark:text-purple-400'
+                        }`}
+                      >
+                        {param.direction === 'in'
+                          ? '输入'
+                          : param.direction === 'out'
+                            ? '输出'
+                            : '输入/输出'}
                       </span>
                     </td>
                     <td className="px-3 py-2 text-xs text-muted-foreground">{param.description}</td>
@@ -200,19 +248,32 @@ export function ApiCard({ api }: ApiCardProps) {
           <div className="flex items-center gap-2">
             {showExample && (
               <button
-                onClick={(e) => { e.stopPropagation(); copyExample(); }}
+                onClick={e => {
+                  e.stopPropagation();
+                  copyExample();
+                }}
                 className="p-1 rounded hover:bg-muted/50 transition-colors"
                 title="复制代码"
               >
-                {copied ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
+                {copied ? (
+                  <Check className="w-3.5 h-3.5 text-green-500" />
+                ) : (
+                  <Copy className="w-3.5 h-3.5" />
+                )}
               </button>
             )}
-            {showExample ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+            {showExample ? (
+              <ChevronDown className="w-4 h-4" />
+            ) : (
+              <ChevronRight className="w-4 h-4" />
+            )}
           </div>
         </button>
         {showExample && (
           <div className="border-t border-border">
-            <Suspense fallback={<div className="p-4 text-xs text-muted-foreground">加载语法高亮...</div>}>
+            <Suspense
+              fallback={<div className="p-4 text-xs text-muted-foreground">加载语法高亮...</div>}
+            >
               <CodeBlock
                 language="c"
                 customStyle={{ margin: 0, padding: '16px', fontSize: '13px' }}

@@ -85,13 +85,7 @@ export interface BlogSEO {
 }
 
 export type BlogCategory =
-  | 'MCAL'
-  | 'ECUAL'
-  | 'Service'
-  | '工具链'
-  | '功能安全'
-  | '架构设计'
-  | '全部';
+  'MCAL' | 'ECUAL' | 'Service' | '工具链' | '功能安全' | '架构设计' | '全部';
 
 export interface BlogPost {
   id: string;

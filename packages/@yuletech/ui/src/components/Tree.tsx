@@ -52,7 +52,13 @@ interface TreeBranchProps<T> {
   defaultExpandAll: boolean;
 }
 
-function TreeBranch<T>({ node, depth, selectedId, onSelect, defaultExpandAll }: TreeBranchProps<T>) {
+function TreeBranch<T>({
+  node,
+  depth,
+  selectedId,
+  onSelect,
+  defaultExpandAll,
+}: TreeBranchProps<T>) {
   const [expanded, setExpanded] = React.useState(
     defaultExpandAll ? true : (node.defaultExpanded ?? false)
   );

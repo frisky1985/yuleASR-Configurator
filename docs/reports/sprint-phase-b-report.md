@@ -9,31 +9,39 @@
 
 ## Summary
 
-All 5 BSW modules (Dio, Adc, Spi, Gpt, Pwm) successfully integrated. ECUC files generated, GCC syntax-checked, and deployed to yuleASR/config/generated/. No code changes needed in ecuc-generator (supports all modules via `['*']`) or CMakeLists.txt (uses GLOBs).
+All 5 BSW modules (Dio, Adc, Spi, Gpt, Pwm) successfully integrated. ECUC files
+generated, GCC syntax-checked, and deployed to yuleASR/config/generated/. No
+code changes needed in ecuc-generator (supports all modules via `['*']`) or
+CMakeLists.txt (uses GLOBs).
 
 ## Task Results
 
 ### B1 ✅ Dio Module
+
 - **ECUC files:** Ecuc_Dio_Cfg.h, Ecuc_Dio.c, Ecuc_Dio_PBcfg.c, Ecuc_Dio_Lcfg.c
 - **GCC syntax:** ✅ 4/4 passed
 - **Macro header:** Dio_Cfg.h via `generateMacroOnlyHeader()`
 
 ### B2 ✅ Adc Module
+
 - **ECUC files:** Ecuc_Adc_Cfg.h, Ecuc_Adc.c, Ecuc_Adc_PBcfg.c, Ecuc_Adc_Lcfg.c
 - **GCC syntax:** ✅ 4/4 passed
 - **Macro header:** Adc_Cfg.h via `generateMacroOnlyHeader()`
 
 ### B3 ✅ Spi Module
+
 - **ECUC files:** Ecuc_Spi_Cfg.h, Ecuc_Spi.c, Ecuc_Spi_PBcfg.c, Ecuc_Spi_Lcfg.c
 - **GCC syntax:** ✅ 4/4 passed
 - **Macro header:** Spi_Cfg.h via `generateMacroOnlyHeader()`
 
 ### B4 ✅ Gpt Module
+
 - **ECUC files:** Ecuc_Gpt_Cfg.h, Ecuc_Gpt.c, Ecuc_Gpt_PBcfg.c, Ecuc_Gpt_Lcfg.c
 - **GCC syntax:** ✅ 4/4 passed
 - **Macro header:** Gpt_Cfg.h via `generateMacroOnlyHeader()`
 
 ### B5 ✅ Pwm Module
+
 - **ECUC files:** Ecuc_Pwm_Cfg.h, Ecuc_Pwm.c, Ecuc_Pwm_PBcfg.c, Ecuc_Pwm_Lcfg.c
 - **GCC syntax:** ✅ 4/4 passed
 - **Macro header:** Pwm_Cfg.h via `generateMacroOnlyHeader()`
@@ -54,12 +62,12 @@ Total: 32 files across 8 modules
 
 ## Infrastructure Verified
 
-| Check | Result |
-|-------|--------|
-| ecuc-generator supports all 5 modules | ✅ `['*']` wildcard |
-| CMakeLists.txt auto-discovers ECUC files | ✅ file(GLOB) pattern |
+| Check                                      | Result                       |
+| ------------------------------------------ | ---------------------------- |
+| ecuc-generator supports all 5 modules      | ✅ `['*']` wildcard          |
+| CMakeLists.txt auto-discovers ECUC files   | ✅ file(GLOB) pattern        |
 | codegen.ts generic generateMacroOnlyHeader | ✅ parameter-based macro gen |
-| Web codegen test suite covers Dio/Adc/Gpt | ✅ tests exist and pass |
+| Web codegen test suite covers Dio/Adc/Gpt  | ✅ tests exist and pass      |
 
 ---
 

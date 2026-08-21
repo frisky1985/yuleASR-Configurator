@@ -210,16 +210,16 @@ export function PipelineStatusPanel({
         className="w-full px-4 py-3 flex items-center justify-between hover:bg-app-bg-secondary transition-colors"
       >
         <div className="flex items-center gap-3">
-          {collapsed ? <ChevronRight size={18} className="text-app-text-tertiary" /> : <ChevronDown size={18} className="text-app-text-tertiary" />}
+          {collapsed ? (
+            <ChevronRight size={18} className="text-app-text-tertiary" />
+          ) : (
+            <ChevronDown size={18} className="text-app-text-tertiary" />
+          )}
           <div className="flex items-center gap-2">
             <Terminal size={16} className="text-purple-600" />
-            <span className="font-semibold text-sm text-primary">
-              Pipeline Status
-            </span>
+            <span className="font-semibold text-sm text-primary">Pipeline Status</span>
           </div>
-          {job && (
-            <StatusBadge status={job.status} />
-          )}
+          {job && <StatusBadge status={job.status} />}
         </div>
         <div className="flex items-center gap-3 text-xs text-app-text-tertiary">
           {job && (
@@ -257,9 +257,11 @@ export function PipelineStatusPanel({
                 <div
                   className={cn(
                     'h-full rounded-full transition-all duration-700 ease-out',
-                    job.status === 'failed' ? 'bg-red-500' :
-                    job.status === 'passed' ? 'bg-green-500' :
-                    'bg-blue-500'
+                    job.status === 'failed'
+                      ? 'bg-red-500'
+                      : job.status === 'passed'
+                        ? 'bg-green-500'
+                        : 'bg-blue-500'
                   )}
                   style={{ width: `${job.progress}%` }}
                 />
@@ -270,14 +272,14 @@ export function PipelineStatusPanel({
           {/* Stage list */}
           {job && job.stages.length > 0 && (
             <div className="space-y-1">
-              {job.stages.map((stage) => (
+              {job.stages.map(stage => (
                 <div
                   key={stage.key}
                   className={cn(
                     'flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs',
                     stage.status === 'running' && 'bg-blue-50 dark:bg-blue-950/30',
                     stage.status === 'failed' && 'bg-red-50 dark:bg-red-950/30',
-                    stage.status === 'passed' && 'bg-green-50/50 dark:bg-green-950/20',
+                    stage.status === 'passed' && 'bg-green-50/50 dark:bg-green-950/20'
                   )}
                 >
                   <StageIcon status={stage.status} />
@@ -320,8 +322,13 @@ export function PipelineStatusPanel({
                     <div key={i} className="leading-relaxed whitespace-pre-wrap">
                       {log.startsWith('❌') && <span className="text-red-400">{log}</span>}
                       {log.includes('FAILED') && <span className="text-red-400">{log}</span>}
-                      {log.startsWith('===') && <span className="text-cyan-400 font-semibold">{log}</span>}
-                      {!log.startsWith('❌') && !log.includes('FAILED') && !log.startsWith('===') && log}
+                      {log.startsWith('===') && (
+                        <span className="text-cyan-400 font-semibold">{log}</span>
+                      )}
+                      {!log.startsWith('❌') &&
+                        !log.includes('FAILED') &&
+                        !log.startsWith('===') &&
+                        log}
                     </div>
                   ))}
                   <div ref={logsEndRef} />
@@ -334,7 +341,10 @@ export function PipelineStatusPanel({
           {job && job.status === 'passed' && (
             <div className="flex items-center gap-2 p-2 bg-green-50 dark:bg-green-950/30 rounded-lg text-xs text-green-700 dark:text-green-400">
               <CheckCircle size={14} />
-              <span>Pipeline completed successfully in {formatDuration(job.started_at, job.completed_at)}</span>
+              <span>
+                Pipeline completed successfully in{' '}
+                {formatDuration(job.started_at, job.completed_at)}
+              </span>
             </div>
           )}
 

@@ -14,7 +14,12 @@ import { DependencyValidator } from '@/core/DependencyValidator';
 import { allModules } from '@/data/all-modules';
 import { defaultOSConfig } from '@/data/os-config';
 import { api } from '@/services/api';
-import { parseParamPath, matchesParamKey, updateContainerParam, setContainerInstances } from '@/stores/param-update';
+import {
+  parseParamPath,
+  matchesParamKey,
+  updateContainerParam,
+  setContainerInstances,
+} from '@/stores/param-update';
 import { useAuthStore } from '@/stores/authStore';
 import type {
   ConfigContainer,
@@ -152,7 +157,10 @@ function validateCrossModuleChanges(
   } catch (err) {
     // Fix 19: 不再静默吞错。显式上报并标记降级，UI 据此显示警告条，
     // 避免用户看到"无错误"的假绿灯。
-    console.error('[configStore] 跨模块验证失败（schema 加载失败），已降级，当前结论可能不完整:', err);
+    console.error(
+      '[configStore] 跨模块验证失败（schema 加载失败），已降级，当前结论可能不完整:',
+      err
+    );
     return { issues: [], failed: true };
   }
 }
@@ -458,11 +466,7 @@ export const useConfigStore = create<ConfigState>()(
         };
 
         // 增量跨模块验证：只检查受影响的约束（Fix 19: failed 时显式降级，UI 显示警告条）
-        const cross = validateCrossModuleChanges(
-          updatedConfig,
-          targetModule.name,
-          paramKey
-        );
+        const cross = validateCrossModuleChanges(updatedConfig, targetModule.name, paramKey);
 
         // 全量运行现有验证器，但合并跨模块增量结果
         const validator = new DependencyValidator(updatedConfig);
@@ -488,7 +492,9 @@ export const useConfigStore = create<ConfigState>()(
         // 从路径提取 module: 与 container: 段（实例操作目标是容器，不含 instance:/param:）
         const { moduleId, containerId } = parseParamPath(containerPath);
         if (!moduleId || !containerId) {
-          console.error(`[configStore] updateContainerInstances: 路径缺少 module:/container: 段: ${containerPath}`);
+          console.error(
+            `[configStore] updateContainerInstances: 路径缺少 module:/container: 段: ${containerPath}`
+          );
           return;
         }
 

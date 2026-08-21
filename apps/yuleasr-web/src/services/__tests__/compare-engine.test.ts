@@ -78,16 +78,22 @@ describe('configComparer.compare', () => {
     // Sub-container param value differs between A and B
     const configA = makeConfig('a', [
       makeModule('m1', 'Can', [
-        makeContainer('c1', 'CanGeneral', [], [
-          makeContainer('sub1', 'CanFilter', [makeParam('p2', 'FilterCount', 4)]),
-        ]),
+        makeContainer(
+          'c1',
+          'CanGeneral',
+          [],
+          [makeContainer('sub1', 'CanFilter', [makeParam('p2', 'FilterCount', 4)])]
+        ),
       ]),
     ]);
     const configB = makeConfig('b', [
       makeModule('m1', 'Can', [
-        makeContainer('c1', 'CanGeneral', [], [
-          makeContainer('sub1', 'CanFilter', [makeParam('p2', 'FilterCount', 8)]),
-        ]),
+        makeContainer(
+          'c1',
+          'CanGeneral',
+          [],
+          [makeContainer('sub1', 'CanFilter', [makeParam('p2', 'FilterCount', 8)])]
+        ),
       ]),
     ]);
 
@@ -121,16 +127,22 @@ describe('configComparer.compare', () => {
   it('includes sub-container params even when parent container has no own params', () => {
     const configA = makeConfig('a', [
       makeModule('m1', 'Mcu', [
-        makeContainer('c1', 'McuGeneral', [], [
-          makeContainer('sub1', 'McuClockRef', [makeParam('p3', 'ClockRef', 'SysClk')]),
-        ]),
+        makeContainer(
+          'c1',
+          'McuGeneral',
+          [],
+          [makeContainer('sub1', 'McuClockRef', [makeParam('p3', 'ClockRef', 'SysClk')])]
+        ),
       ]),
     ]);
     const configB = makeConfig('b', [
       makeModule('m1', 'Mcu', [
-        makeContainer('c1', 'McuGeneral', [], [
-          makeContainer('sub1', 'McuClockRef', [makeParam('p3', 'ClockRef', 'AltClk')]),
-        ]),
+        makeContainer(
+          'c1',
+          'McuGeneral',
+          [],
+          [makeContainer('sub1', 'McuClockRef', [makeParam('p3', 'ClockRef', 'AltClk')])]
+        ),
       ]),
     ]);
 
@@ -146,9 +158,12 @@ describe('configComparer.compare', () => {
   it('handles module only in A with sub-container params', () => {
     const configA = makeConfig('a', [
       makeModule('m1', 'Can', [
-        makeContainer('c1', 'CanGeneral', [], [
-          makeContainer('sub1', 'CanFilter', [makeParam('p2', 'FilterCount', 4)]),
-        ]),
+        makeContainer(
+          'c1',
+          'CanGeneral',
+          [],
+          [makeContainer('sub1', 'CanFilter', [makeParam('p2', 'FilterCount', 4)])]
+        ),
       ]),
     ]);
     const configB = makeConfig('b', []);

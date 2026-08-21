@@ -119,10 +119,7 @@
           "type": "string",
           "description": "ComSignalEndianness 参数",
           "default": "COM_LITTLE_ENDIAN",
-          "enum": [
-            "COM_LITTLE_ENDIAN",
-            "COM_BIG_ENDIAN"
-          ]
+          "enum": ["COM_LITTLE_ENDIAN", "COM_BIG_ENDIAN"]
         },
         "ComMainFunctionPeriod": {
           "type": "integer",
@@ -173,18 +170,12 @@
         "ComSignalType": {
           "type": "string",
           "description": "ComSignalType 参数",
-          "enum": [
-            "COM_SIGNAL_TYPE_DEFAULT",
-            "COM_SIGNAL_TYPE_UNDEFINED"
-          ]
+          "enum": ["COM_SIGNAL_TYPE_DEFAULT", "COM_SIGNAL_TYPE_UNDEFINED"]
         },
         "ComSignalEndianness": {
           "type": "string",
           "description": "ComSignalEndianness 参数",
-          "enum": [
-            "COM_LITTLE_ENDIAN",
-            "COM_BIG_ENDIAN"
-          ]
+          "enum": ["COM_LITTLE_ENDIAN", "COM_BIG_ENDIAN"]
         },
         "ComHandleId": {
           "type": "integer",
@@ -282,11 +273,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "ComIPdu",
-    "ComIPduGroup",
-    "ComGeneral"
-  ],
+  "required": ["ComIPdu", "ComIPduGroup", "ComGeneral"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

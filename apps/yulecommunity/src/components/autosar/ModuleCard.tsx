@@ -26,7 +26,8 @@ function RatingStars({ rating }: { rating: number }) {
     <span className="inline-flex items-center gap-0.5 text-amber-500">
       {Array.from({ length: 5 }, (_, i) => {
         if (i < full) return <Star key={i} className="w-3.5 h-3.5 fill-current" />;
-        if (i === full && half) return <Star key={i} className="w-3.5 h-3.5 fill-current opacity-50" />;
+        if (i === full && half)
+          return <Star key={i} className="w-3.5 h-3.5 fill-current opacity-50" />;
         return <Star key={i} className="w-3.5 h-3.5 text-muted-foreground/30" />;
       })}
       <span className="text-xs text-muted-foreground ml-1">{rating.toFixed(1)}</span>
@@ -55,11 +56,21 @@ export function ModuleCard({ module, index = 0 }: ModuleCardProps) {
           <div className="flex items-start justify-between mb-3">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <span className={`px-2 py-0.5 text-[10px] font-medium rounded-full border ${layerColorMap[module.layer] || ''}`}>
+                <span
+                  className={`px-2 py-0.5 text-[10px] font-medium rounded-full border ${layerColorMap[module.layer] || ''}`}
+                >
                   {module.layer}
                 </span>
-                <span className={`px-2 py-0.5 text-[10px] font-medium rounded-full ${statusMap[module.status] || ''}`}>
-                  {module.status === 'published' ? '已发布' : module.status === 'draft' ? '预览' : module.status === 'deprecated' ? '已弃用' : '审核中'}
+                <span
+                  className={`px-2 py-0.5 text-[10px] font-medium rounded-full ${statusMap[module.status] || ''}`}
+                >
+                  {module.status === 'published'
+                    ? '已发布'
+                    : module.status === 'draft'
+                      ? '预览'
+                      : module.status === 'deprecated'
+                        ? '已弃用'
+                        : '审核中'}
                 </span>
               </div>
               <h3 className="text-base font-semibold group-hover:text-primary transition-colors truncate">
@@ -72,9 +83,7 @@ export function ModuleCard({ module, index = 0 }: ModuleCardProps) {
           </div>
 
           {/* Description */}
-          <p className="text-xs text-muted-foreground line-clamp-2 mb-3">
-            {module.description}
-          </p>
+          <p className="text-xs text-muted-foreground line-clamp-2 mb-3">{module.description}</p>
 
           {/* Tags */}
           {module.tags.length > 0 && (

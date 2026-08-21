@@ -108,10 +108,7 @@
       "type": "enum",
       "description": "DOIP_NODE_TYPE 参数",
       "default": "DOIP_NODE_TYPE_GATEWAY",
-      "enum": [
-        "DOIP_NODE_TYPE_GATEWAY",
-        "DOIP_NODE_TYPE_NODE"
-      ],
+      "enum": ["DOIP_NODE_TYPE_GATEWAY", "DOIP_NODE_TYPE_NODE"],
       "x-section": "PRE-COMPILE CONFIGURATION",
       "x-guarded": true
     },

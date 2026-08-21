@@ -115,7 +115,7 @@ function cacheSet<T>(key: string, data: T): void {
 export function clearGitHubCache(): void {
   memoryCache.clear();
   try {
-    Object.values(CACHE_KEYS).forEach((key) => sessionStorage.removeItem(key));
+    Object.values(CACHE_KEYS).forEach(key => sessionStorage.removeItem(key));
   } catch {
     // Ignore
   }

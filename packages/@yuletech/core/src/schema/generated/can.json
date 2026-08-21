@@ -483,34 +483,22 @@
         "CanRxProcessing": {
           "type": "string",
           "description": "CanRxProcessing 参数",
-          "enum": [
-            "CAN_PROCESSING_INTERRUPT",
-            "CAN_PROCESSING_POLLING"
-          ]
+          "enum": ["CAN_PROCESSING_INTERRUPT", "CAN_PROCESSING_POLLING"]
         },
         "CanTxProcessing": {
           "type": "string",
           "description": "CanTxProcessing 参数",
-          "enum": [
-            "CAN_PROCESSING_INTERRUPT",
-            "CAN_PROCESSING_POLLING"
-          ]
+          "enum": ["CAN_PROCESSING_INTERRUPT", "CAN_PROCESSING_POLLING"]
         },
         "CanBusOffProcessing": {
           "type": "string",
           "description": "CanBusOffProcessing 参数",
-          "enum": [
-            "CAN_PROCESSING_INTERRUPT",
-            "CAN_PROCESSING_POLLING"
-          ]
+          "enum": ["CAN_PROCESSING_INTERRUPT", "CAN_PROCESSING_POLLING"]
         },
         "CanWakeupProcessing": {
           "type": "string",
           "description": "CanWakeupProcessing 参数",
-          "enum": [
-            "CAN_PROCESSING_INTERRUPT",
-            "CAN_PROCESSING_POLLING"
-          ]
+          "enum": ["CAN_PROCESSING_INTERRUPT", "CAN_PROCESSING_POLLING"]
         },
         "CanIndex": {
           "type": "integer",
@@ -603,34 +591,22 @@
         "CanControllerRxProcessing": {
           "type": "string",
           "description": "CanControllerRxProcessing 参数",
-          "enum": [
-            "CAN_PROCESSING_INTERRUPT",
-            "CAN_PROCESSING_POLLING"
-          ]
+          "enum": ["CAN_PROCESSING_INTERRUPT", "CAN_PROCESSING_POLLING"]
         },
         "CanControllerTxProcessing": {
           "type": "string",
           "description": "CanControllerTxProcessing 参数",
-          "enum": [
-            "CAN_PROCESSING_INTERRUPT",
-            "CAN_PROCESSING_POLLING"
-          ]
+          "enum": ["CAN_PROCESSING_INTERRUPT", "CAN_PROCESSING_POLLING"]
         },
         "CanControllerBusOffProcessing": {
           "type": "string",
           "description": "CanControllerBusOffProcessing 参数",
-          "enum": [
-            "CAN_PROCESSING_INTERRUPT",
-            "CAN_PROCESSING_POLLING"
-          ]
+          "enum": ["CAN_PROCESSING_INTERRUPT", "CAN_PROCESSING_POLLING"]
         },
         "CanControllerWakeupProcessing": {
           "type": "string",
           "description": "CanControllerWakeupProcessing 参数",
-          "enum": [
-            "CAN_PROCESSING_INTERRUPT",
-            "CAN_PROCESSING_POLLING"
-          ]
+          "enum": ["CAN_PROCESSING_INTERRUPT", "CAN_PROCESSING_POLLING"]
         },
         "CanControllerDefaultBaudrate": {
           "type": "integer",
@@ -660,10 +636,7 @@
         "CanHardwareObjectCanIdType": {
           "type": "string",
           "description": "CanHardwareObjectCanIdType 参数",
-          "enum": [
-            "CAN_ID_TYPE_STANDARD",
-            "CAN_ID_TYPE_EXTENDED"
-          ]
+          "enum": ["CAN_ID_TYPE_STANDARD", "CAN_ID_TYPE_EXTENDED"]
         },
         "CanHardwareObjectFilterMask": {
           "type": "integer",
@@ -684,10 +657,7 @@
         "CanHardwareObjectHohType": {
           "type": "string",
           "description": "CanHardwareObjectHohType 参数",
-          "enum": [
-            "CAN_HOH_TYPE_RECEIVE",
-            "CAN_HOH_TYPE_TRANSMIT"
-          ]
+          "enum": ["CAN_HOH_TYPE_RECEIVE", "CAN_HOH_TYPE_TRANSMIT"]
         },
         "CanHardwareObjectId": {
           "type": "integer",
@@ -704,10 +674,7 @@
         "CanHardwareObjectUsage": {
           "type": "string",
           "description": "CanHardwareObjectUsage 参数",
-          "enum": [
-            "CAN_HOH_USAGE_RX",
-            "CAN_HOH_USAGE_TX"
-          ]
+          "enum": ["CAN_HOH_USAGE_RX", "CAN_HOH_USAGE_TX"]
         },
         "CanHardwareObjectFirstId": {
           "type": "integer",
@@ -855,10 +822,7 @@
         "CanTTIRQProcessing": {
           "type": "string",
           "description": "CanTTIRQProcessing 参数",
-          "enum": [
-            "INTERRUPT",
-            "POLLING"
-          ]
+          "enum": ["INTERRUPT", "POLLING"]
         },
         "CanTTControllerEcucPartitionRef": {
           "type": "string",
@@ -1007,13 +971,7 @@
         "CanIcomSignalOperation": {
           "type": "string",
           "description": "CanIcomSignalOperation 参数",
-          "enum": [
-            "AND",
-            "EQUAL",
-            "GREATER",
-            "SMALLER",
-            "XOR"
-          ]
+          "enum": ["AND", "EQUAL", "GREATER", "SMALLER", "XOR"]
         },
         "CanIcomSignalValue": {
           "type": "integer",
@@ -1036,10 +994,7 @@
         "CanIcomLevel": {
           "type": "string",
           "description": "CanIcomLevel 参数",
-          "enum": [
-            "CAN_ICOM_LEVEL_ONE",
-            "CAN_ICOM_LEVEL_TWO"
-          ],
+          "enum": ["CAN_ICOM_LEVEL_ONE", "CAN_ICOM_LEVEL_TWO"],
           "default": "CAN_ICOM_LEVEL_ONE"
         },
         "CanIcomVariant": {

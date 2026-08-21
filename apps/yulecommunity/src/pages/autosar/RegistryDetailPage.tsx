@@ -5,9 +5,21 @@ import { Helmet } from 'react-helmet-async';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import {
-  ArrowLeft, Download, Star, Clock, User, Cpu, Layers,
-  GitBranch, AlertCircle, CheckCircle2, ChevronDown, ChevronRight,
-  Code, ExternalLink, Tag,
+  ArrowLeft,
+  Download,
+  Star,
+  Clock,
+  User,
+  Cpu,
+  Layers,
+  GitBranch,
+  AlertCircle,
+  CheckCircle2,
+  ChevronDown,
+  ChevronRight,
+  Code,
+  ExternalLink,
+  Tag,
 } from 'lucide-react';
 import { getRegistryModuleById, fetchRegistryModule } from '../../data/autosar/registry-samples';
 import { CompatibilityMatrix } from '../../components/autosar/CompatibilityMatrix';
@@ -44,8 +56,8 @@ function RatingLarge({ rating, count }: { rating: number; count: number }) {
               i < full
                 ? 'fill-amber-400 text-amber-400'
                 : i === full && half
-                ? 'fill-amber-400/50 text-amber-400'
-                : 'text-muted-foreground/30'
+                  ? 'fill-amber-400/50 text-amber-400'
+                  : 'text-muted-foreground/30'
             }`}
           />
         ))}
@@ -65,7 +77,10 @@ export function RegistryDetailPage() {
   useEffect(() => {
     setLoading(true);
     const loadModule = async () => {
-      if (!moduleId) { setLoading(false); return; }
+      if (!moduleId) {
+        setLoading(false);
+        return;
+      }
       // 尝试后端
       const serverMod = await fetchRegistryModule(moduleId);
       if (serverMod) {
@@ -87,7 +102,11 @@ export function RegistryDetailPage() {
 
   const versionHistory = useMemo(() => {
     return [
-      { version: '2.1.0', date: '2025-03-20', notes: '支持 CAN FD 灵活数据速率, 修复 Bus-Off 恢复问题' },
+      {
+        version: '2.1.0',
+        date: '2025-03-20',
+        notes: '支持 CAN FD 灵活数据速率, 修复 Bus-Off 恢复问题',
+      },
       { version: '2.0.0', date: '2024-12-10', notes: '重构协议栈架构, 新增 TCAN 支持' },
       { version: '1.5.0', date: '2024-09-15', notes: '增加 DLC 校验, 优化错误处理' },
       { version: '1.0.0', date: '2024-06-01', notes: '初始版本, 支持 CAN 2.0 通信' },
@@ -97,7 +116,9 @@ export function RegistryDetailPage() {
   const relatedModules = useMemo(() => {
     if (!module) return [];
     return REGISTRY_MODULES.filter(
-      m => m.id !== module.id && (m.layer === module.layer || m.tags.some(t => module.tags.includes(t)))
+      m =>
+        m.id !== module.id &&
+        (m.layer === module.layer || m.tags.some(t => module.tags.includes(t)))
     ).slice(0, 3);
   }, [module]);
 
@@ -140,11 +161,7 @@ export function RegistryDetailPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="mb-6"
-        >
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-6">
           <Link
             to="/autosar/registry"
             className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -164,11 +181,21 @@ export function RegistryDetailPage() {
           <div className="lg:col-span-2 space-y-6">
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <span className={`px-2 py-0.5 text-[10px] font-medium rounded-full border ${layerColorMap[module.layer] || ''}`}>
+                <span
+                  className={`px-2 py-0.5 text-[10px] font-medium rounded-full border ${layerColorMap[module.layer] || ''}`}
+                >
                   {module.layer}
                 </span>
-                <span className={`px-2 py-0.5 text-[10px] font-medium rounded-full ${statusMap[module.status] || ''}`}>
-                  {module.status === 'published' ? '已发布' : module.status === 'draft' ? '预览' : module.status === 'deprecated' ? '已弃用' : '审核中'}
+                <span
+                  className={`px-2 py-0.5 text-[10px] font-medium rounded-full ${statusMap[module.status] || ''}`}
+                >
+                  {module.status === 'published'
+                    ? '已发布'
+                    : module.status === 'draft'
+                      ? '预览'
+                      : module.status === 'deprecated'
+                        ? '已弃用'
+                        : '审核中'}
                 </span>
                 <span className="text-xs text-muted-foreground font-mono">v{module.version}</span>
               </div>
@@ -206,7 +233,9 @@ export function RegistryDetailPage() {
               <RatingLarge rating={module.stats.rating} count={module.stats.reviewCount} />
               <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                 <Download className="w-4 h-4" />
-                <span className="font-semibold text-foreground">{module.stats.downloads.toLocaleString()}</span>
+                <span className="font-semibold text-foreground">
+                  {module.stats.downloads.toLocaleString()}
+                </span>
                 次下载
               </div>
             </div>
@@ -257,10 +286,7 @@ export function RegistryDetailPage() {
           <div className="space-y-4">
             {/* Import Button */}
             <div className="p-5 rounded-xl bg-card border border-border">
-              <ImportToConfigurator
-                configData={module.configData}
-                moduleName={module.name}
-              />
+              <ImportToConfigurator configData={module.configData} moduleName={module.name} />
               <p className="text-xs text-muted-foreground mt-2">
                 将模块配置一键导入 yuleASR 配置器进行深度定制
               </p>
@@ -268,13 +294,31 @@ export function RegistryDetailPage() {
 
             {/* Quick Info */}
             <div className="p-4 rounded-xl bg-card border border-border space-y-3">
-              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">模块信息</h3>
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                模块信息
+              </h3>
               {[
                 { label: '层级', value: module.layer },
                 { label: '版本', value: `v${module.version}` },
-                { label: '创建时间', value: new Date(module.timestamps.created).toLocaleDateString('zh-CN') },
-                { label: '最近更新', value: new Date(module.timestamps.updated).toLocaleDateString('zh-CN') },
-                { label: '状态', value: module.status === 'published' ? '已发布' : module.status === 'draft' ? '预览版' : module.status === 'deprecated' ? '已弃用' : '审核中' },
+                {
+                  label: '创建时间',
+                  value: new Date(module.timestamps.created).toLocaleDateString('zh-CN'),
+                },
+                {
+                  label: '最近更新',
+                  value: new Date(module.timestamps.updated).toLocaleDateString('zh-CN'),
+                },
+                {
+                  label: '状态',
+                  value:
+                    module.status === 'published'
+                      ? '已发布'
+                      : module.status === 'draft'
+                        ? '预览版'
+                        : module.status === 'deprecated'
+                          ? '已弃用'
+                          : '审核中',
+                },
               ].map(info => (
                 <div key={info.label} className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">{info.label}</span>
@@ -303,7 +347,11 @@ export function RegistryDetailPage() {
                 ({JSON.stringify(module.configData).length} 字符)
               </span>
             </div>
-            {showConfig ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+            {showConfig ? (
+              <ChevronDown className="w-4 h-4" />
+            ) : (
+              <ChevronRight className="w-4 h-4" />
+            )}
           </button>
           {showConfig && (
             <div className="mt-2 rounded-xl overflow-hidden border border-border">
@@ -350,9 +398,15 @@ export function RegistryDetailPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-muted/30 border-b border-border">
-                  <th className="text-left px-4 py-2.5 text-xs font-medium text-muted-foreground">版本</th>
-                  <th className="text-left px-4 py-2.5 text-xs font-medium text-muted-foreground">发布日期</th>
-                  <th className="text-left px-4 py-2.5 text-xs font-medium text-muted-foreground">更新说明</th>
+                  <th className="text-left px-4 py-2.5 text-xs font-medium text-muted-foreground">
+                    版本
+                  </th>
+                  <th className="text-left px-4 py-2.5 text-xs font-medium text-muted-foreground">
+                    发布日期
+                  </th>
+                  <th className="text-left px-4 py-2.5 text-xs font-medium text-muted-foreground">
+                    更新说明
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -395,9 +449,7 @@ export function RegistryDetailPage() {
               <div className="text-3xl font-bold">{module.stats.rating.toFixed(1)}</div>
               <p className="text-sm text-muted-foreground">{module.stats.reviewCount} 条评价</p>
             </div>
-            <p className="text-sm text-muted-foreground">
-              评价功能将在后续版本中开放，敬请期待
-            </p>
+            <p className="text-sm text-muted-foreground">评价功能将在后续版本中开放，敬请期待</p>
           </div>
         </motion.div>
 
@@ -420,7 +472,9 @@ export function RegistryDetailPage() {
                   className="p-4 rounded-xl bg-card border border-border hover:border-primary/30 hover:shadow-elegant transition-all group"
                 >
                   <div className="flex items-center gap-2 mb-1">
-                    <span className={`px-1.5 py-0.5 text-[10px] font-medium rounded-full border ${layerColorMap[rel.layer] || ''}`}>
+                    <span
+                      className={`px-1.5 py-0.5 text-[10px] font-medium rounded-full border ${layerColorMap[rel.layer] || ''}`}
+                    >
                       {rel.layer}
                     </span>
                   </div>

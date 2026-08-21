@@ -475,11 +475,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "NvMBlockDescriptor",
-    "NvMGeneral",
-    "NvMCommon"
-  ],
+  "required": ["NvMBlockDescriptor", "NvMGeneral", "NvMCommon"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

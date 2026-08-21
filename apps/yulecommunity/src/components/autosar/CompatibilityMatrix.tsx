@@ -6,7 +6,11 @@ import { MCU_OPTIONS, OS_OPTIONS, COMPILER_OPTIONS } from '../../data/autosar/re
 
 type CompatibilityLevel = 'verified' | 'compatible' | 'unknown' | 'incompatible';
 
-function getCompatibilityLevel(module: RegistryModule, target: string, type: 'mcu' | 'os' | 'compiler'): CompatibilityLevel {
+function getCompatibilityLevel(
+  module: RegistryModule,
+  target: string,
+  type: 'mcu' | 'os' | 'compiler'
+): CompatibilityLevel {
   const items = module.compatibility[type];
   if (items.includes(target)) {
     // Some MCUs are "verified" (first 3 in list), others are just "compatible"
@@ -16,11 +20,26 @@ function getCompatibilityLevel(module: RegistryModule, target: string, type: 'mc
   return 'unknown';
 }
 
-const badgeConfig: Record<CompatibilityLevel, { label: string; bg: string; icon: typeof CheckCircle2 }> = {
-  verified: { label: '已验证', bg: 'bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/20', icon: CheckCircle2 },
-  compatible: { label: '兼容', bg: 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/20', icon: AlertTriangle },
+const badgeConfig: Record<
+  CompatibilityLevel,
+  { label: string; bg: string; icon: typeof CheckCircle2 }
+> = {
+  verified: {
+    label: '已验证',
+    bg: 'bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/20',
+    icon: CheckCircle2,
+  },
+  compatible: {
+    label: '兼容',
+    bg: 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/20',
+    icon: AlertTriangle,
+  },
   unknown: { label: '未知', bg: 'bg-muted text-muted-foreground border-border', icon: HelpCircle },
-  incompatible: { label: '不兼容', bg: 'bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/20', icon: XCircle },
+  incompatible: {
+    label: '不兼容',
+    bg: 'bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/20',
+    icon: XCircle,
+  },
 };
 
 interface CompatibilityMatrixProps {
@@ -44,11 +63,7 @@ export function CompatibilityMatrix({ modules, mode }: CompatibilityMatrixProps)
   }, [modules]);
 
   if (modules.length === 0) {
-    return (
-      <div className="text-center py-8 text-muted-foreground text-sm">
-        无模块数据
-      </div>
-    );
+    return <div className="text-center py-8 text-muted-foreground text-sm">无模块数据</div>;
   }
 
   return (

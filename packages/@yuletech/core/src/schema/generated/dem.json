@@ -471,11 +471,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "DemDataElement",
-    "DemDTCAttributes",
-    "DemGeneral"
-  ],
+  "required": ["DemDataElement", "DemDTCAttributes", "DemGeneral"],
   "additionalProperties": false,
   "x-layer": "Service",
   "x-version": "4.4.0",

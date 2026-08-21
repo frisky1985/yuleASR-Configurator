@@ -245,7 +245,9 @@ export const qaVotes = pgTable(
     voteType: varchar('vote_type', { length: 16 }).notNull(), // up | down
     createdAt: timestamp('created_at').defaultNow().notNull(),
   },
-  table => [uniqueIndex('qa_votes_target_user_unique').on(table.targetType, table.targetId, table.userId)]
+  table => [
+    uniqueIndex('qa_votes_target_user_unique').on(table.targetType, table.targetId, table.userId),
+  ]
 );
 
 export const bswTemplateReviews = pgTable(
@@ -262,7 +264,9 @@ export const bswTemplateReviews = pgTable(
     content: text('content'),
     createdAt: timestamp('created_at').defaultNow().notNull(),
   },
-  table => [uniqueIndex('bsw_template_reviews_template_user_unique').on(table.templateId, table.userId)]
+  table => [
+    uniqueIndex('bsw_template_reviews_template_user_unique').on(table.templateId, table.userId),
+  ]
 );
 
 export const sharedConfigs = pgTable('shared_configs', {

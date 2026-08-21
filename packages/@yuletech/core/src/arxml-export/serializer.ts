@@ -218,8 +218,7 @@ export function splitModulesByType(
   const groups: Record<string, ArxmlExportModule[]> = {};
   for (const module of modules) {
     const mapping = mappings.find(m => m.moduleNames.includes(module.name));
-    const key =
-      mapping === undefined ? DEFAULT_DOCUMENT_GROUP : `${module.name}${mapping.suffix}`;
+    const key = mapping === undefined ? DEFAULT_DOCUMENT_GROUP : `${module.name}${mapping.suffix}`;
     (groups[key] ??= []).push(module);
   }
   return groups;
@@ -246,8 +245,7 @@ export function serializeArxmlDocuments(
 
   const result: Record<string, string> = {};
   for (const key of keys) {
-    const fileName =
-      key === DEFAULT_DOCUMENT_GROUP ? `${packageName}.arxml` : `${key}.arxml`;
+    const fileName = key === DEFAULT_DOCUMENT_GROUP ? `${packageName}.arxml` : `${key}.arxml`;
     result[fileName] = serializeArxmlDocument(groups[key], options);
   }
   return result;

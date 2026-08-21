@@ -66,12 +66,8 @@ const result = await pluginRegistry
   .getDataExporter('example-json-exporter:JsonExporter')
   ?.export(
     {
-      Can: {
-        /* ... */
-      },
-      Mcu: {
-        /* ... */
-      },
+      Can: {/* ... */},
+      Mcu: {/* ... */},
     },
     {}
   );

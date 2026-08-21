@@ -342,10 +342,7 @@ class ConfigComparer {
               moduleName: moduleA.name,
               containerName: sub.name,
               containerId: sub.id,
-              containerPath: buildContainerPath(
-                moduleA.name,
-                `${container.name}.${sub.name}`
-              ),
+              containerPath: buildContainerPath(moduleA.name, `${container.name}.${sub.name}`),
               status: 'only_a',
               instanceCountA: sub.multiple ? (sub.index ?? 0) + 1 : 1,
               multiple: sub.multiple,
@@ -402,10 +399,7 @@ class ConfigComparer {
               moduleName: moduleB.name,
               containerName: sub.name,
               containerId: sub.id,
-              containerPath: buildContainerPath(
-                moduleB.name,
-                `${container.name}.${sub.name}`
-              ),
+              containerPath: buildContainerPath(moduleB.name, `${container.name}.${sub.name}`),
               status: 'only_b',
               instanceCountB: sub.multiple ? (sub.index ?? 0) + 1 : 1,
               multiple: sub.multiple,

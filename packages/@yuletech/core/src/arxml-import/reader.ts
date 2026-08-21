@@ -325,7 +325,10 @@ export function getChild(parent: Record<string, unknown>, name: string): unknown
 }
 
 /** 获取子元素的文本内容 */
-export function getTextContent(parent: Record<string, unknown>, tagName: string): string | undefined {
+export function getTextContent(
+  parent: Record<string, unknown>,
+  tagName: string
+): string | undefined {
   const child = getChild(parent, tagName);
   return getNodeText(child);
 }
@@ -370,7 +373,10 @@ export function ensureArray<T>(value: unknown): T[] {
  * 取子元素并解包为对象（fast-xml-parser 对 isArray 标签返回数组，
  * 但多数容器语义是“单个父容器节点”，此处取首个元素）。
  */
-export function firstChild(parent: Record<string, unknown> | undefined, name: string): Record<string, unknown> | undefined {
+export function firstChild(
+  parent: Record<string, unknown> | undefined,
+  name: string
+): Record<string, unknown> | undefined {
   if (!parent || typeof parent !== 'object') return undefined;
   const child = parent[name];
   if (child === undefined || child === null) return undefined;
@@ -530,7 +536,11 @@ export function createReadContext(sourceName: string, xml: string): ReadContext 
 }
 
 /** 记录未处理元素告警：`file(line): Unprocessed element <TAG>`（对齐 cogu 输出格式） */
-export function reportUnprocessed(ctx: ReadContext, _parent: Record<string, unknown>, tag: string): void {
+export function reportUnprocessed(
+  ctx: ReadContext,
+  _parent: Record<string, unknown>,
+  tag: string
+): void {
   const line = ctx.lineIndex.nextLine(tag);
   ctx.report.warnings.push({
     line,
@@ -613,7 +623,8 @@ export function parseSwcArxml(xmlContent: string, sourceName = 'input.arxml'): S
     }
 
     // 探测 schema 版本：xsi:schemaLocation 属性（如 "AUTOSAR_00051.xsd"）或 @_schemaVersion
-    const schemaLocation = getAttribute(autosar, 'schemaLocation') ?? getAttribute(autosar, 'xsi:schemaLocation');
+    const schemaLocation =
+      getAttribute(autosar, 'schemaLocation') ?? getAttribute(autosar, 'xsi:schemaLocation');
     ctx.report.schemaVersion = detectSchemaVersion(schemaLocation);
 
     // 逐包分发解析（switcher 模式：先收集，后统一 resolve 引用）
@@ -824,7 +835,11 @@ function detectSchemaVersion(schemaLocation: string | undefined): number | null 
 
 // ── SW-BASE-TYPE ────────────────────────────────────────────
 
-function readBaseType(ctx: ReadContext, node: Record<string, unknown>, project: SwcArxmlProject): void {
+function readBaseType(
+  ctx: ReadContext,
+  node: Record<string, unknown>,
+  project: SwcArxmlProject
+): void {
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
   if (!name) {
@@ -840,7 +855,11 @@ function readBaseType(ctx: ReadContext, node: Record<string, unknown>, project: 
 
 // ── APPLICATION-PRIMITIVE-DATA-TYPE / APPLICATION-DATA-TYPE ──
 
-function readApplicationDataType(ctx: ReadContext, node: Record<string, unknown>, project: SwcArxmlProject): void {
+function readApplicationDataType(
+  ctx: ReadContext,
+  node: Record<string, unknown>,
+  project: SwcArxmlProject
+): void {
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
   if (!name) return;
@@ -859,7 +878,9 @@ function readApplicationDataType(ctx: ReadContext, node: Record<string, unknown>
   children.skip('SW-DATA-DEF-PROPS');
   if (swProps) {
     const variants = firstChild(swProps, 'SW-DATA-DEF-PROPS-VARIANTS');
-    const conditional = ensureArray<Record<string, unknown>>(variants?.['SW-DATA-DEF-PROPS-CONDITIONAL'])[0];
+    const conditional = ensureArray<Record<string, unknown>>(
+      variants?.['SW-DATA-DEF-PROPS-CONDITIONAL']
+    )[0];
     if (conditional) {
       const baseTypeRef = getTextContent(conditional, 'BASE-TYPE-REF');
       if (baseTypeRef) {
@@ -895,7 +916,11 @@ function readApplicationDataType(ctx: ReadContext, node: Record<string, unknown>
 
 // ── IMPLEMENTATION-DATA-TYPE ────────────────────────────────
 
-function readImplementationDataType(ctx: ReadContext, node: Record<string, unknown>, project: SwcArxmlProject): void {
+function readImplementationDataType(
+  ctx: ReadContext,
+  node: Record<string, unknown>,
+  project: SwcArxmlProject
+): void {
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
   if (!name) return;
@@ -914,7 +939,9 @@ function readImplementationDataType(ctx: ReadContext, node: Record<string, unkno
   children.skip('SW-DATA-DEF-PROPS');
   if (swProps) {
     const variants = firstChild(swProps, 'SW-DATA-DEF-PROPS-VARIANTS');
-    const conditional = ensureArray<Record<string, unknown>>(variants?.['SW-DATA-DEF-PROPS-CONDITIONAL'])[0];
+    const conditional = ensureArray<Record<string, unknown>>(
+      variants?.['SW-DATA-DEF-PROPS-CONDITIONAL']
+    )[0];
     if (conditional) {
       const baseTypeRef = getTextContent(conditional, 'BASE-TYPE-REF');
       if (baseTypeRef) {
@@ -946,7 +973,11 @@ function readImplementationDataType(ctx: ReadContext, node: Record<string, unkno
 
 // ── COMPU-METHOD ────────────────────────────────────────────
 
-function readCompuMethod(ctx: ReadContext, node: Record<string, unknown>, project: SwcArxmlProject): void {
+function readCompuMethod(
+  ctx: ReadContext,
+  node: Record<string, unknown>,
+  project: SwcArxmlProject
+): void {
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
   if (!name) return;
@@ -984,7 +1015,11 @@ function readCompuMethod(ctx: ReadContext, node: Record<string, unknown>, projec
 }
 
 /** 解析 COMPU-INTERNAL-TO-PHYS / COMPU-PHYS-TO-INTERNAL 公共结构 */
-function readComputation(ctx: ReadContext, node: Record<string, unknown>, compuMethod: CompuMethod): void {
+function readComputation(
+  ctx: ReadContext,
+  node: Record<string, unknown>,
+  compuMethod: CompuMethod
+): void {
   const children = new ChildElementMap(node);
 
   const scalesWrapper = firstChild(node, 'COMPU-SCALES');
@@ -1000,7 +1035,10 @@ function readComputation(ctx: ReadContext, node: Record<string, unknown>, compuM
   children.skip('COMPU-DEFAULT-VALUE');
   if (defaultWrapper) {
     // COMPU-DEFAULT-VALUE 内可为 <VT> 或 <V>
-    const vt = getTextContent(defaultWrapper, 'VT') ?? getTextContent(defaultWrapper, 'V') ?? getNodeText(defaultWrapper);
+    const vt =
+      getTextContent(defaultWrapper, 'VT') ??
+      getTextContent(defaultWrapper, 'V') ??
+      getNodeText(defaultWrapper);
     if (vt !== undefined) compuMethod.defaultValue = vt;
   }
 
@@ -1008,7 +1046,10 @@ function readComputation(ctx: ReadContext, node: Record<string, unknown>, compuM
 }
 
 /** 解析单个 COMPU-SCALE */
-function readCompuScale(ctx: ReadContext, node: Record<string, unknown>): CompuMethod['scales'][number] | null {
+function readCompuScale(
+  ctx: ReadContext,
+  node: Record<string, unknown>
+): CompuMethod['scales'][number] | null {
   const children = new ChildElementMap(node);
 
   const scale: CompuMethod['scales'][number] = {};
@@ -1039,13 +1080,15 @@ function readCompuScale(ctx: ReadContext, node: Record<string, unknown>): CompuM
   if (rational) {
     const numWrapper = firstChild(rational, 'COMPU-NUMERATOR');
     if (numWrapper) {
-      scale.numerator = ensureArray<Record<string, unknown>>(numWrapper['V'])
-        .map(v => parseFloat(getNodeText(v) ?? '0'));
+      scale.numerator = ensureArray<Record<string, unknown>>(numWrapper['V']).map(v =>
+        parseFloat(getNodeText(v) ?? '0')
+      );
     }
     const denWrapper = firstChild(rational, 'COMPU-DENOMINATOR');
     if (denWrapper) {
-      scale.denominator = ensureArray<Record<string, unknown>>(denWrapper['V'])
-        .map(v => parseFloat(getNodeText(v) ?? '1'));
+      scale.denominator = ensureArray<Record<string, unknown>>(denWrapper['V']).map(v =>
+        parseFloat(getNodeText(v) ?? '1')
+      );
     }
   }
 
@@ -1060,7 +1103,11 @@ function readCompuScale(ctx: ReadContext, node: Record<string, unknown>): CompuM
 
 // ── SENDER-RECEIVER-INTERFACE ───────────────────────────────
 
-function readSenderReceiverInterface(ctx: ReadContext, node: Record<string, unknown>, project: SwcArxmlProject): void {
+function readSenderReceiverInterface(
+  ctx: ReadContext,
+  node: Record<string, unknown>,
+  project: SwcArxmlProject
+): void {
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
   if (!name) return;
@@ -1085,7 +1132,9 @@ function readSenderReceiverInterface(ctx: ReadContext, node: Record<string, unkn
   children.skip('DATA-ELEMENTS');
   if (deWrapper) {
     const seen = new Set<string>();
-    for (const deNode of ensureArray<Record<string, unknown>>(deWrapper['DATA-ELEMENT-PROTOTYPE'])) {
+    for (const deNode of ensureArray<Record<string, unknown>>(
+      deWrapper['DATA-ELEMENT-PROTOTYPE']
+    )) {
       const de = readDataElementPrototype(ctx, deNode);
       if (de) {
         if (seen.has(de.name)) {
@@ -1106,7 +1155,10 @@ function readSenderReceiverInterface(ctx: ReadContext, node: Record<string, unkn
 }
 
 /** 解析 DATA-ELEMENT-PROTOTYPE */
-function readDataElementPrototype(ctx: ReadContext, node: Record<string, unknown>): SenderReceiverInterface['dataElements'][number] | null {
+function readDataElementPrototype(
+  ctx: ReadContext,
+  node: Record<string, unknown>
+): SenderReceiverInterface['dataElements'][number] | null {
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
   if (!name) {
@@ -1140,7 +1192,11 @@ function readDataElementPrototype(ctx: ReadContext, node: Record<string, unknown
 
 // ── CLIENT-SERVER-INTERFACE ─────────────────────────────────
 
-function readClientServerInterface(ctx: ReadContext, node: Record<string, unknown>, project: SwcArxmlProject): void {
+function readClientServerInterface(
+  ctx: ReadContext,
+  node: Record<string, unknown>,
+  project: SwcArxmlProject
+): void {
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
   if (!name) return;
@@ -1164,7 +1220,9 @@ function readClientServerInterface(ctx: ReadContext, node: Record<string, unknow
   children.skip('OPERATIONS');
   if (opsWrapper) {
     const seen = new Set<string>();
-    for (const opNode of ensureArray<Record<string, unknown>>(opsWrapper['CLIENT-SERVER-OPERATION'])) {
+    for (const opNode of ensureArray<Record<string, unknown>>(
+      opsWrapper['CLIENT-SERVER-OPERATION']
+    )) {
       const op = readCsOperation(ctx, opNode);
       if (op) {
         if (seen.has(op.name)) {
@@ -1185,7 +1243,10 @@ function readClientServerInterface(ctx: ReadContext, node: Record<string, unknow
 }
 
 /** 解析 CLIENT-SERVER-OPERATION（含参数） */
-function readCsOperation(ctx: ReadContext, node: Record<string, unknown>): ClientServerInterface['operations'][number] | null {
+function readCsOperation(
+  ctx: ReadContext,
+  node: Record<string, unknown>
+): ClientServerInterface['operations'][number] | null {
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
   if (!name) {
@@ -1207,7 +1268,9 @@ function readCsOperation(ctx: ReadContext, node: Record<string, unknown>): Clien
   children.skip('ARGUMENTS');
   if (argsWrapper) {
     const seen = new Set<string>();
-    for (const argNode of ensureArray<Record<string, unknown>>(argsWrapper['ARGUMENT-DATA-PROTOTYPE'])) {
+    for (const argNode of ensureArray<Record<string, unknown>>(
+      argsWrapper['ARGUMENT-DATA-PROTOTYPE']
+    )) {
       const arg = readCsArgument(ctx, argNode);
       if (arg) {
         if (seen.has(arg.name)) {
@@ -1247,7 +1310,8 @@ function readCsArgument(
   const arg = {
     name,
     typeRef: typeRef ? refShortName(typeRef) : '',
-    direction: (directionRaw === 'OUT' ? 'OUT' : directionRaw === 'INOUT' ? 'INOUT' : 'IN') as 'IN' | 'OUT' | 'INOUT',
+    direction: (directionRaw === 'OUT' ? 'OUT' : directionRaw === 'INOUT' ? 'INOUT' : 'IN') as
+      'IN' | 'OUT' | 'INOUT',
   };
   if (typeRef) {
     ctx.pendingRefs.push({
@@ -1263,7 +1327,11 @@ function readCsArgument(
 
 // ── APPLICATION-SW-COMPONENT-TYPE ───────────────────────────
 
-function readApplicationSwc(ctx: ReadContext, node: Record<string, unknown>, project: SwcArxmlProject): void {
+function readApplicationSwc(
+  ctx: ReadContext,
+  node: Record<string, unknown>,
+  project: SwcArxmlProject
+): void {
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
   if (!name) return;
@@ -1321,7 +1389,9 @@ function readApplicationSwc(ctx: ReadContext, node: Record<string, unknown>, pro
   const behaviorsWrapper = firstChild(node, 'INTERNAL-BEHAVIORS');
   children.skip('INTERNAL-BEHAVIORS');
   if (behaviorsWrapper) {
-    const behaviorNode = ensureArray<Record<string, unknown>>(behaviorsWrapper['SWC-INTERNAL-BEHAVIOR'])[0];
+    const behaviorNode = ensureArray<Record<string, unknown>>(
+      behaviorsWrapper['SWC-INTERNAL-BEHAVIOR']
+    )[0];
     if (behaviorNode) {
       const behavior = readSwcInternalBehavior(ctx, behaviorNode);
       if (behavior) {
@@ -1337,7 +1407,11 @@ function readApplicationSwc(ctx: ReadContext, node: Record<string, unknown>, pro
 }
 
 /** 解析 PORT-PROTOTYPE（P/R 共用） */
-function readPortPrototype(ctx: ReadContext, node: Record<string, unknown>, direction: 'IN' | 'OUT'): PortPrototype | null {
+function readPortPrototype(
+  ctx: ReadContext,
+  node: Record<string, unknown>,
+  direction: 'IN' | 'OUT'
+): PortPrototype | null {
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
   if (!name) {
@@ -1377,7 +1451,10 @@ function readPortPrototype(ctx: ReadContext, node: Record<string, unknown>, dire
 }
 
 /** 解析 SWC-INTERNAL-BEHAVIOR（Runnable 实体） */
-function readSwcInternalBehavior(ctx: ReadContext, node: Record<string, unknown>): SwcInternalBehavior | null {
+function readSwcInternalBehavior(
+  ctx: ReadContext,
+  node: Record<string, unknown>
+): SwcInternalBehavior | null {
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
   children.skip('SHORT-NAME');
@@ -1411,7 +1488,10 @@ function readSwcInternalBehavior(ctx: ReadContext, node: Record<string, unknown>
 }
 
 /** 解析 RUNNABLE-ENTITY */
-function readRunnableEntity(ctx: ReadContext, node: Record<string, unknown>): RunnableEntity | null {
+function readRunnableEntity(
+  ctx: ReadContext,
+  node: Record<string, unknown>
+): RunnableEntity | null {
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
   if (!name) {
@@ -1430,7 +1510,8 @@ function readRunnableEntity(ctx: ReadContext, node: Record<string, unknown>): Ru
   children.skip('SYMBOL');
 
   const canConcurrent = getTextContent(node, 'CAN-BE-INVOKED-CONCURRENTLY');
-  if (canConcurrent !== undefined) runnable.canBeInvokedConcurrently = canConcurrent.toLowerCase() === 'true';
+  if (canConcurrent !== undefined)
+    runnable.canBeInvokedConcurrently = canConcurrent.toLowerCase() === 'true';
   children.skip('CAN-BE-INVOKED-CONCURRENTLY');
 
   const interval = getTextContent(node, 'MINIMUM-START-INTERVAL');
@@ -1450,7 +1531,11 @@ function readRunnableEntity(ctx: ReadContext, node: Record<string, unknown>): Ru
 
 // ── COMPOSITION-SW-COMPONENT-TYPE ───────────────────────────
 
-function readCompositionSwc(ctx: ReadContext, node: Record<string, unknown>, project: SwcArxmlProject): void {
+function readCompositionSwc(
+  ctx: ReadContext,
+  node: Record<string, unknown>,
+  project: SwcArxmlProject
+): void {
   // 组合组件：本版本仅导入组件名与端口（连接器留待后续）
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
@@ -1554,7 +1639,10 @@ function readEcucParameterValue(
  * 按文档顺序遍历（fast-xml-parser 对象键序 = 首次出现序），
  * 保证与导出侧输入顺序一致（round-trip 顺序可还原）。
  */
-function readEcucParameterValues(ctx: ReadContext, wrapper: Record<string, unknown>): EcucParameterValue[] {
+function readEcucParameterValues(
+  ctx: ReadContext,
+  wrapper: Record<string, unknown>
+): EcucParameterValue[] {
   const parameters: EcucParameterValue[] = [];
   for (const [tag, value] of Object.entries(wrapper)) {
     if (tag.startsWith('@_') || tag === '#text') continue;
@@ -1571,7 +1659,10 @@ function readEcucParameterValues(ctx: ReadContext, wrapper: Record<string, unkno
  * 解析单个 ECUC-CONTAINER-VALUE（递归：PARAMETER-VALUES + SUB-CONTAINERS）。
  * 与导出侧 ArxmlExportContainer（name/parameters/containers）对称。
  */
-function readEcucContainer(ctx: ReadContext, node: Record<string, unknown>): EcucContainerValue | null {
+function readEcucContainer(
+  ctx: ReadContext,
+  node: Record<string, unknown>
+): EcucContainerValue | null {
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
   if (!name) {
@@ -1607,7 +1698,10 @@ function readEcucContainer(ctx: ReadContext, node: Record<string, unknown>): Ecu
 }
 
 /** 解析 CONTAINERS / SUB-CONTAINERS 包装节点内的全部容器 */
-function readEcucContainers(ctx: ReadContext, wrapper: Record<string, unknown>): EcucContainerValue[] {
+function readEcucContainers(
+  ctx: ReadContext,
+  wrapper: Record<string, unknown>
+): EcucContainerValue[] {
   return ensureArray<Record<string, unknown>>(wrapper['ECUC-CONTAINER-VALUE'])
     .map(node => readEcucContainer(ctx, node))
     .filter((c): c is EcucContainerValue => c !== null);
@@ -1618,7 +1712,11 @@ function readEcucContainers(ctx: ReadContext, wrapper: Record<string, unknown>):
  * 与导出侧 ArxmlExportModule（name/parameters/containers）对称；
  * 另捕获 definitionRef（DEFINITION-REF 原文）与 moduleDefRef（短名）。
  */
-function readEcucModule(ctx: ReadContext, node: Record<string, unknown>, project: SwcArxmlProject): void {
+function readEcucModule(
+  ctx: ReadContext,
+  node: Record<string, unknown>,
+  project: SwcArxmlProject
+): void {
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
   if (!name) {
@@ -1688,7 +1786,10 @@ const ECUC_PARAM_DEF_KIND: Record<string, EcucParameterDefKind> = {
 };
 
 /** 解析 PARAMETER-DEFS 包装节点内的全部参数定义（按文档顺序） */
-function readEcucParameterDefs(ctx: ReadContext, wrapper: Record<string, unknown>): EcucParameterDef[] {
+function readEcucParameterDefs(
+  ctx: ReadContext,
+  wrapper: Record<string, unknown>
+): EcucParameterDef[] {
   const defs: EcucParameterDef[] = [];
   for (const [tag, value] of Object.entries(wrapper)) {
     if (tag.startsWith('@_') || tag === '#text') continue;
@@ -1762,7 +1863,10 @@ function readEcucParameterDef(
  * 解析单个 ECUC-CONTAINER-DEF（递归：PARAMETER-DEFS + SUB-CONTAINERS）。
  * 与值层 readEcucContainer 同构（name / parameterDefs / subContainerDefs）。
  */
-function readEcucContainerDef(ctx: ReadContext, node: Record<string, unknown>): EcucContainerDef | null {
+function readEcucContainerDef(
+  ctx: ReadContext,
+  node: Record<string, unknown>
+): EcucContainerDef | null {
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
   if (!name) {
@@ -1805,7 +1909,10 @@ function readEcucContainerDef(ctx: ReadContext, node: Record<string, unknown>): 
 }
 
 /** 解析 CONTAINER-DEFS 包装节点内的全部容器定义 */
-function readEcucContainerDefs(ctx: ReadContext, wrapper: Record<string, unknown>): EcucContainerDef[] {
+function readEcucContainerDefs(
+  ctx: ReadContext,
+  wrapper: Record<string, unknown>
+): EcucContainerDef[] {
   return ensureArray<Record<string, unknown>>(wrapper['ECUC-CONTAINER-DEF'])
     .map(node => readEcucContainerDef(ctx, node))
     .filter((d): d is EcucContainerDef => d !== null);
@@ -1815,7 +1922,11 @@ function readEcucContainerDefs(ctx: ReadContext, wrapper: Record<string, unknown
  * 读取 ECUC-MODULE-DEF（模块定义层导入）。
  * 与值层 readEcucModule 对称：SHORT-NAME / PARAMETER-DEFS / CONTAINER-DEFS 递归。
  */
-function readEcucModuleDef(ctx: ReadContext, node: Record<string, unknown>, project: SwcArxmlProject): void {
+function readEcucModuleDef(
+  ctx: ReadContext,
+  node: Record<string, unknown>,
+  project: SwcArxmlProject
+): void {
   const children = new ChildElementMap(node);
   const name = getTextContent(node, 'SHORT-NAME');
   if (!name) {

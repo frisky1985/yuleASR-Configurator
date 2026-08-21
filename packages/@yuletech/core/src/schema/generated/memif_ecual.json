@@ -133,10 +133,7 @@
       "type": "enum",
       "description": "MEMIF_DEFAULT_MODE 参数",
       "default": "MEMIF_MODE_FAST",
-      "enum": [
-        "MEMIF_MODE_SLOW",
-        "MEMIF_MODE_FAST"
-      ],
+      "enum": ["MEMIF_MODE_SLOW", "MEMIF_MODE_FAST"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "MEMIF_MAX_BLOCK_NUMBER": {

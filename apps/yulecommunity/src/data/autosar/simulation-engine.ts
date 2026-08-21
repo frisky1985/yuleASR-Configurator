@@ -84,8 +84,13 @@ export function simulateCode(code: string): SimulationResult {
       }
 
       // Process preprocessor directives
-      if (line.startsWith('#include') || line.startsWith('#define') || line.startsWith('#ifndef') ||
-          line.startsWith('#endif') || line.startsWith('#ifdef')) {
+      if (
+        line.startsWith('#include') ||
+        line.startsWith('#define') ||
+        line.startsWith('#ifndef') ||
+        line.startsWith('#endif') ||
+        line.startsWith('#ifdef')
+      ) {
         cleanedLines.push('');
         continue;
       }
@@ -161,14 +166,17 @@ export function simulateCode(code: string): SimulationResult {
           const canId = idMatch ? parseInt(idMatch[1], 16) : 0x123;
 
           // Extract data
-          let canData: number[] = [0xAA, 0xBB, 0xCC, 0xDD, 0x11, 0x22, 0x33, 0x44];
+          let canData: number[] = [0xaa, 0xbb, 0xcc, 0xdd, 0x11, 0x22, 0x33, 0x44];
           const dataMatch = line.match(/\{([0-9xa-fA-F,\s]+)\}/);
           if (dataMatch) {
-            canData = dataMatch[1].split(',').map(s => {
-              const trimmed = s.trim();
-              if (trimmed.startsWith('0x')) return parseInt(trimmed, 16);
-              return parseInt(trimmed, 10);
-            }).filter(n => !isNaN(n));
+            canData = dataMatch[1]
+              .split(',')
+              .map(s => {
+                const trimmed = s.trim();
+                if (trimmed.startsWith('0x')) return parseInt(trimmed, 16);
+                return parseInt(trimmed, 10);
+              })
+              .filter(n => !isNaN(n));
           }
 
           const dlc = Math.min(canData.length, 8);
@@ -182,7 +190,12 @@ export function simulateCode(code: string): SimulationResult {
             direction: 'tx',
           });
 
-          output.push(`[SIM] Can_Write: TX 0x${canId.toString(16).toUpperCase().padStart(3, '0')} [${canData.slice(0, dlc).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+          output.push(
+            `[SIM] Can_Write: TX 0x${canId.toString(16).toUpperCase().padStart(3, '0')} [${canData
+              .slice(0, dlc)
+              .map(b => b.toString(16).padStart(2, '0'))
+              .join(' ')}]`
+          );
 
           state.interrupts.push({
             source: 'CAN',
@@ -201,7 +214,7 @@ export function simulateCode(code: string): SimulationResult {
       if (line.includes('Can_Read(') && !line.includes('Can_ReadExample')) {
         simTime += 0.3;
         const simRxId = 0x100 + Math.floor(Math.random() * 0x100);
-        const simRxData = Array.from({length: 8}, () => Math.floor(Math.random() * 256));
+        const simRxData = Array.from({ length: 8 }, () => Math.floor(Math.random() * 256));
 
         state.canMessages.push({
           id: simRxId,
@@ -211,12 +224,16 @@ export function simulateCode(code: string): SimulationResult {
           direction: 'rx',
         });
 
-        output.push(`[SIM] Can_Read: RX 0x${simRxId.toString(16).toUpperCase().padStart(3, '0')} [${simRxData.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+        output.push(
+          `[SIM] Can_Read: RX 0x${simRxId.toString(16).toUpperCase().padStart(3, '0')} [${simRxData.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`
+        );
       }
 
       // Can_CheckWakeup
       if (line.includes('Can_CheckWakeup(')) {
-        output.push(`[SIM] Can_CheckWakeup: Wakeup detected = ${simCanState.initialized ? 'YES' : 'NO'}`);
+        output.push(
+          `[SIM] Can_CheckWakeup: Wakeup detected = ${simCanState.initialized ? 'YES' : 'NO'}`
+        );
         state.interrupts.push({
           source: 'CAN',
           timestamp: simTime,
@@ -280,7 +297,9 @@ export function simulateCode(code: string): SimulationResult {
             level: simDioState[pin],
           });
 
-          output.push(`[SIM] Dio_FlipChannel: GPIO${pin} flipped to ${simDioState[pin] ? 'HIGH' : 'LOW'} (flip #${flipCount[key]})`);
+          output.push(
+            `[SIM] Dio_FlipChannel: GPIO${pin} flipped to ${simDioState[pin] ? 'HIGH' : 'LOW'} (flip #${flipCount[key]})`
+          );
 
           state.interrupts.push({
             source: 'DIO',
@@ -331,7 +350,9 @@ export function simulateCode(code: string): SimulationResult {
       if (line.includes('Spi_Exchange(')) {
         const sizeMatch = line.match(/Spi_Exchange\(\s*(\d+)\s*,\s*\w+\s*,\s*\w+\s*,\s*(\d+)\)/);
         const size = sizeMatch ? parseInt(sizeMatch[2], 10) : 4;
-        output.push(`[SIM] Spi_Exchange: ${size}-byte SPI transfer completed (Tx data inverted on Rx)`);
+        output.push(
+          `[SIM] Spi_Exchange: ${size}-byte SPI transfer completed (Tx data inverted on Rx)`
+        );
         state.interrupts.push({
           source: 'SPI',
           timestamp: simTime,
@@ -429,11 +450,12 @@ export function simulateCode(code: string): SimulationResult {
     output.push(`=== Simulation Complete ===`);
     output.push(`Virtual time: ${simTime.toFixed(1)} ms`);
     output.push(`CAN messages sent: ${state.canMessages.filter(m => m.direction === 'tx').length}`);
-    output.push(`CAN messages received: ${state.canMessages.filter(m => m.direction === 'rx').length}`);
+    output.push(
+      `CAN messages received: ${state.canMessages.filter(m => m.direction === 'rx').length}`
+    );
     output.push(`GPIO events: ${state.gpioEvents.length}`);
     output.push(`Interrupts: ${state.interrupts.length}`);
     output.push(`MCU clock: ${(simMcuClock / 1000000).toFixed(0)} MHz`);
-
   } catch (err) {
     hasError = true;
     errorMsg = err instanceof Error ? err.message : 'Unknown simulation error';

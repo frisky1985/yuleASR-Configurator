@@ -25,7 +25,7 @@ const createTemplateSchema = z.object({
         id: z.string(),
         name: z.string(),
         layer: z.enum(['MCAL', 'ECUAL', 'Service', 'RTE']),
-        parameters: z.record(z.any()).optional(),
+        parameters: z.record(z.string(), z.any()).optional(),
       })
     )
     .optional()
@@ -48,7 +48,7 @@ const updateTemplateSchema = z.object({
         id: z.string(),
         name: z.string(),
         layer: z.enum(['MCAL', 'ECUAL', 'Service', 'RTE']),
-        parameters: z.record(z.any()).optional(),
+        parameters: z.record(z.string(), z.any()).optional(),
       })
     )
     .optional(),
@@ -67,7 +67,7 @@ const createVersionSchema = z.object({
         id: z.string(),
         name: z.string(),
         layer: z.enum(['MCAL', 'ECUAL', 'Service', 'RTE']),
-        parameters: z.record(z.any()).optional(),
+        parameters: z.record(z.string(), z.any()).optional(),
       })
     )
     .optional()
@@ -98,7 +98,11 @@ function isAdminUser(user: { role?: string } | undefined): boolean {
 }
 
 /** 模板是否公开可见（published + isPublic + visibility=public） */
-export function templateIsPublic(t: { status: string; isPublic: boolean; visibility: string }): boolean {
+export function templateIsPublic(t: {
+  status: string;
+  isPublic: boolean;
+  visibility: string;
+}): boolean {
   return t.status === 'published' && t.isPublic === true && t.visibility === 'public';
 }
 
@@ -146,7 +150,9 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     // Fix 30: 非 published 查询必须 admin 认证；否则强制 'published' + isPublic 过滤
     const user = await tryGetUser(request);
     const userIsAdmin = isAdminUser(user);
-    const conditions: any[] = [eq(bswTemplates.status, resolveListStatus(userIsAdmin, query.status))];
+    const conditions: any[] = [
+      eq(bswTemplates.status, resolveListStatus(userIsAdmin, query.status)),
+    ];
 
     // 匿名/非 admin：只显示公开模板；admin 无 status 参数时也保持公开过滤
     if (!query.status || !userIsAdmin) {
@@ -195,7 +201,10 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const orderByExpr = sortOrder === 'asc' ? asc(sortCol) : desc(sortCol);
 
     const [totalRow, rows] = await Promise.all([
-      db.select({ count: sql<number>`count(*)::int` }).from(bswTemplates).where(where),
+      db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(bswTemplates)
+        .where(where),
       db
         .select({
           template: bswTemplates,
@@ -269,7 +278,10 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const where = conditions.length ? and(...conditions) : undefined;
 
     const [totalRow, rows] = await Promise.all([
-      db.select({ count: sql<number>`count(*)::int` }).from(bswTemplates).where(where),
+      db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(bswTemplates)
+        .where(where),
       db
         .select({
           template: bswTemplates,
@@ -304,7 +316,7 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
         author: r.author,
         reviewedBy:
           r.template.reviewedById != null
-            ? reviewerMap.get(r.template.reviewedById) ?? null
+            ? (reviewerMap.get(r.template.reviewedById) ?? null)
             : null,
         tags: r.template.tags ?? [],
         modules: r.template.modules ?? [],
@@ -465,7 +477,11 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const templateId = parseInt(id, 10);
     const user = request.user as { id: number; role: string };
 
-    const [existing] = await db.select().from(bswTemplates).where(eq(bswTemplates.id, templateId)).limit(1);
+    const [existing] = await db
+      .select()
+      .from(bswTemplates)
+      .where(eq(bswTemplates.id, templateId))
+      .limit(1);
     if (!existing) throw { statusCode: 404, message: 'Template not found' };
     if (existing.authorId !== user.id && user.role !== 'admin' && user.role !== 'super_admin') {
       throw { statusCode: 403, message: 'Forbidden' };
@@ -513,7 +529,11 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const templateId = parseInt(id, 10);
     const user = request.user as { id: number; role: string };
 
-    const [existing] = await db.select().from(bswTemplates).where(eq(bswTemplates.id, templateId)).limit(1);
+    const [existing] = await db
+      .select()
+      .from(bswTemplates)
+      .where(eq(bswTemplates.id, templateId))
+      .limit(1);
     if (!existing) throw { statusCode: 404, message: 'Template not found' };
     if (existing.authorId !== user.id && user.role !== 'admin' && user.role !== 'super_admin') {
       throw { statusCode: 403, message: 'Forbidden' };
@@ -534,7 +554,11 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const templateId = parseInt(id, 10);
     const user = request.user as { id: number; role: string };
 
-    const [existing] = await db.select().from(bswTemplates).where(eq(bswTemplates.id, templateId)).limit(1);
+    const [existing] = await db
+      .select()
+      .from(bswTemplates)
+      .where(eq(bswTemplates.id, templateId))
+      .limit(1);
     if (!existing) throw { statusCode: 404, message: 'Template not found' };
     if (existing.authorId !== user.id && user.role !== 'admin' && user.role !== 'super_admin') {
       throw { statusCode: 403, message: 'Forbidden' };
@@ -578,7 +602,11 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const templateId = parseInt(id, 10);
 
     // Fix 30: IDOR —— 非公开模板的版本列表同样仅作者/admin 可见
-    const [tpl] = await db.select().from(bswTemplates).where(eq(bswTemplates.id, templateId)).limit(1);
+    const [tpl] = await db
+      .select()
+      .from(bswTemplates)
+      .where(eq(bswTemplates.id, templateId))
+      .limit(1);
     if (!tpl) throw { statusCode: 404, message: 'Template not found' };
     if (!canViewTemplate(tpl, await tryGetUser(request))) {
       throw { statusCode: 404, message: 'Template not found' };
@@ -603,7 +631,11 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const vId = parseInt(versionId, 10);
 
     // Fix 30: IDOR —— 非公开模板的版本详情同样仅作者/admin 可见
-    const [tpl] = await db.select().from(bswTemplates).where(eq(bswTemplates.id, templateId)).limit(1);
+    const [tpl] = await db
+      .select()
+      .from(bswTemplates)
+      .where(eq(bswTemplates.id, templateId))
+      .limit(1);
     if (!tpl) throw { statusCode: 404, message: 'Template not found' };
     if (!canViewTemplate(tpl, await tryGetUser(request))) {
       throw { statusCode: 404, message: 'Template not found' };
@@ -628,7 +660,11 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
     const templateId = parseInt(id, 10);
 
     // Fix 30: IDOR —— 下载计数同样禁止私有模板
-    const [tpl] = await db.select().from(bswTemplates).where(eq(bswTemplates.id, templateId)).limit(1);
+    const [tpl] = await db
+      .select()
+      .from(bswTemplates)
+      .where(eq(bswTemplates.id, templateId))
+      .limit(1);
     if (!tpl) throw { statusCode: 404, message: 'Template not found' };
     if (!canViewTemplate(tpl, await tryGetUser(request))) {
       throw { statusCode: 404, message: 'Template not found' };
@@ -658,7 +694,11 @@ export async function bswTemplatesRoutes(app: FastifyInstance) {
       throw { statusCode: 403, message: 'Forbidden: admin only' };
     }
 
-    const [existing] = await db.select().from(bswTemplates).where(eq(bswTemplates.id, templateId)).limit(1);
+    const [existing] = await db
+      .select()
+      .from(bswTemplates)
+      .where(eq(bswTemplates.id, templateId))
+      .limit(1);
     if (!existing) throw { statusCode: 404, message: 'Template not found' };
 
     const [updated] = await db

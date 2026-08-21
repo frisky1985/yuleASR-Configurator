@@ -522,9 +522,7 @@
       "type": "enum",
       "description": "CSM_CFG_QUEUE_SIZE 参数",
       "default": "CSM_MAX_QUEUE_DEPTH",
-      "enum": [
-        "CSM_MAX_QUEUE_DEPTH"
-      ],
+      "enum": ["CSM_MAX_QUEUE_DEPTH"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "CSM_CFG_MAX_CONCURRENT_JOBS": {

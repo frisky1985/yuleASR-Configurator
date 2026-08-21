@@ -318,10 +318,7 @@
           "description": "RamTstTestPolicy 参数",
           "type": "string",
           "maxLength": 255,
-          "enum": [
-            "RAMTEST_DESTRUCTIVE",
-            "RAMTEST_NON_DESTRUCTIVE"
-          ]
+          "enum": ["RAMTEST_DESTRUCTIVE", "RAMTEST_NON_DESTRUCTIVE"]
         }
       },
       "additionalProperties": true

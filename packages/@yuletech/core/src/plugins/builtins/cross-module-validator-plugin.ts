@@ -40,14 +40,12 @@ const crossModuleValidatorPlugin: YulePlugin = {
         const modules = (config.modules as Record<string, unknown>) ?? {};
 
         try {
-          const configs: ModuleConfig[] = Object.entries(modules).map(
-            ([module, data]) => ({
-              module,
-              version: ((data as Record<string, unknown>)?.version as string) ?? '4.4.0',
-              parameters:
-                ((data as Record<string, unknown>)?.parameters as Record<string, unknown>) ?? {},
-            })
-          );
+          const configs: ModuleConfig[] = Object.entries(modules).map(([module, data]) => ({
+            module,
+            version: ((data as Record<string, unknown>)?.version as string) ?? '4.4.0',
+            parameters:
+              ((data as Record<string, unknown>)?.parameters as Record<string, unknown>) ?? {},
+          }));
 
           // Read schemas from the global schema cache (fallback to loader if empty)
           let schemas: ModuleSchema[] = [];

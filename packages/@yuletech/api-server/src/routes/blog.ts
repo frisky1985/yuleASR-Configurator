@@ -53,7 +53,10 @@ export async function blogRoutes(app: FastifyInstance) {
             : desc(blogPosts.publishedAt);
 
     const [totalRow, rows] = await Promise.all([
-      db.select({ count: sql<number>`count(*)::int` }).from(blogPosts).where(where),
+      db
+        .select({ count: sql<number>`count(*)::int` })
+        .from(blogPosts)
+        .where(where),
       db
         .select({
           post: blogPosts,

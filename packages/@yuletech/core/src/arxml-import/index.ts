@@ -19,12 +19,7 @@
 
 import type { SwcProjectConfig } from '../types/swc';
 
-import {
-  classifyImportError,
-  isArxmlError,
-  ParseError,
-  type ArxmlError,
-} from '../arxml-errors';
+import { classifyImportError, isArxmlError, ParseError, type ArxmlError } from '../arxml-errors';
 import { parseSwcArxml, type ImportReport, type SwcArxmlProject } from './reader';
 
 export {
@@ -122,7 +117,10 @@ export function importSwcArxml(xmlContent: string, sourceName = 'input.arxml'): 
  * }
  * ```
  */
-export function importSwcArxmlStrict(xmlContent: string, sourceName = 'input.arxml'): SwcImportResult {
+export function importSwcArxmlStrict(
+  xmlContent: string,
+  sourceName = 'input.arxml'
+): SwcImportResult {
   const result = importSwcArxml(xmlContent, sourceName);
   if (result.report.errors.length > 0) {
     const first = result.report.errors[0];

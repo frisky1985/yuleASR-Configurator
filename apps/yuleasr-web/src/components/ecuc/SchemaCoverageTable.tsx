@@ -14,11 +14,7 @@ import { Boxes, Download, FileCode2, Loader2, RotateCcw, Save, Search } from 'lu
 import { useMemo, useState } from 'react';
 
 import { cn } from '@/lib/utils';
-import type {
-  ConfigModuleLike,
-  GeneratedFile,
-  SchemaCoverageRow,
-} from '@/services/codegen';
+import type { ConfigModuleLike, GeneratedFile, SchemaCoverageRow } from '@/services/codegen';
 import {
   buildSchemaCoverage,
   generateHeadersFromConfig,
@@ -172,8 +168,8 @@ export function SchemaCoverageTable({
         {/* YAC-MAP-002：仅配置不生成提示（生成产物无 yuleASR 落地） */}
         {schemas && schemas.length > 0 && (
           <span className="text-xs text-amber-600 dark:text-amber-400">
-            跳过 {schemas.filter(s => NOLANDING_MODULES.has(s.name.toLowerCase())).length} 个仅配置不生成模块
-            （ASW 组件/运行时钩子/硬件不支持，无 *_Cfg.h 落地）
+            跳过 {schemas.filter(s => NOLANDING_MODULES.has(s.name.toLowerCase())).length}{' '}
+            个仅配置不生成模块 （ASW 组件/运行时钩子/硬件不支持，无 *_Cfg.h 落地）
           </span>
         )}
         {generatedCount !== null && (
@@ -299,8 +295,7 @@ export function SchemaCoverageTable({
                 <td className="px-3 py-1.5 whitespace-nowrap">
                   {row.hasSchema ? (
                     <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-medium">
-                      <Boxes className="w-3 h-3" />
-                      有 schema 可配
+                      <Boxes className="w-3 h-3" />有 schema 可配
                     </span>
                   ) : (
                     <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground font-medium">

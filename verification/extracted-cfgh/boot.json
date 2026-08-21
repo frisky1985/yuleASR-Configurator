@@ -216,9 +216,7 @@
       "type": "enum",
       "description": "BOOT_SIGNATURE_ALGORITHM 参数",
       "default": "ECDSA_P256",
-      "enum": [
-        "ECDSA_P256"
-      ],
+      "enum": ["ECDSA_P256"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "BOOT_ANTI_ROLLBACK_ENABLE": {
@@ -274,11 +272,7 @@
         },
         "BOOT_SIGNATURE_ALGORITHM": {
           "type": "string",
-          "enum": [
-            "ECDSA_P256",
-            "SM2",
-            "RSA2048"
-          ],
+          "enum": ["ECDSA_P256", "SM2", "RSA2048"],
           "default": "ECDSA_P256",
           "description": "SignatureAlgorithm 参数 - 固件签名算法（经 Csm 调度，对应 AUTOSAR CSM 签名作业算法族，L1/L3）"
         },

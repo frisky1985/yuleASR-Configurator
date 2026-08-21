@@ -73,9 +73,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "ADC_EXCLUSIVE_AREA"
-  ],
+  "required": ["ADC_EXCLUSIVE_AREA"],
   "additionalProperties": false,
   "x-layer": "RTE",
   "x-version": "4.4.0",

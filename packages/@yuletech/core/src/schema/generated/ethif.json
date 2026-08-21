@@ -189,11 +189,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "CommonPublishedInformation",
-    "EthIfConfigSet",
-    "EthIfGeneral"
-  ],
+  "required": ["CommonPublishedInformation", "EthIfConfigSet", "EthIfGeneral"],
   "additionalProperties": false,
   "x-layer": "ECUAL",
   "x-version": "4.4.0",

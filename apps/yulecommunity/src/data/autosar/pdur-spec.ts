@@ -6,9 +6,15 @@ export const PDUR_APIS: AutosarApi[] = [
     name: 'PduR_Init',
     signature: 'void PduR_Init(const PduR_ConfigType* ConfigPtr)',
     brief: '初始化 PduR 模块',
-    description: '初始化 PduR 模块，加载 PDU 路由表配置。必须在任何 PDU 路由操作之前调用，且只能调用一次。配置包含所有源-目的 PDU 路由路径。',
+    description:
+      '初始化 PduR 模块，加载 PDU 路由表配置。必须在任何 PDU 路由操作之前调用，且只能调用一次。配置包含所有源-目的 PDU 路由路径。',
     params: [
-      { name: 'ConfigPtr', type: 'const PduR_ConfigType*', direction: 'in', description: 'PduR 配置指针，包含路由表、PDU 映射等配置' },
+      {
+        name: 'ConfigPtr',
+        type: 'const PduR_ConfigType*',
+        direction: 'in',
+        description: 'PduR 配置指针，包含路由表、PDU 映射等配置',
+      },
     ],
     returnType: 'void',
     returnDescription: '无返回值',
@@ -23,9 +29,7 @@ void PduR_InitExample(void) {
     /* 路由表已加载，PDU 路由功能可用 */
 }`,
     seeAlso: ['PduR_GetVersionInfo', 'PduR_RoutePdu'],
-    configParams: [
-      { paramName: 'PduRConfig', configModule: 'PduR', path: 'PduR/PduRConfig' },
-    ],
+    configParams: [{ paramName: 'PduRConfig', configModule: 'PduR', path: 'PduR/PduRConfig' }],
     status: 'standard',
   },
   {
@@ -35,7 +39,12 @@ void PduR_InitExample(void) {
     brief: '获取 PduR 模块版本信息',
     description: '返回 PduR 模块的厂商 ID、模块 ID、软件版本号等版本信息。',
     params: [
-      { name: 'VersionInfo', type: 'Std_VersionInfoType*', direction: 'out', description: '版本信息输出结构体指针' },
+      {
+        name: 'VersionInfo',
+        type: 'Std_VersionInfoType*',
+        direction: 'out',
+        description: '版本信息输出结构体指针',
+      },
     ],
     returnType: 'void',
     returnDescription: '无返回值，版本信息通过 VersionInfo 指针返回',
@@ -57,9 +66,15 @@ void PduR_PrintVersion(void) {
     name: 'PduR_GetSourcePduHandle',
     signature: 'PduR_PBConfigIdType PduR_GetSourcePduHandle(const PduR_ConfigType* ConfigPtr)',
     brief: '获取源 PDU 句柄',
-    description: '从 PduR 配置中获取源 PDU 的配置句柄。句柄用于识别路由表中的源 PDU，配合路由操作使用。',
+    description:
+      '从 PduR 配置中获取源 PDU 的配置句柄。句柄用于识别路由表中的源 PDU，配合路由操作使用。',
     params: [
-      { name: 'ConfigPtr', type: 'const PduR_ConfigType*', direction: 'in', description: 'PduR 配置指针' },
+      {
+        name: 'ConfigPtr',
+        type: 'const PduR_ConfigType*',
+        direction: 'in',
+        description: 'PduR 配置指针',
+      },
     ],
     returnType: 'PduR_PBConfigIdType',
     returnDescription: '源 PDU 配置句柄 ID',
@@ -79,12 +94,24 @@ void PduR_GetSrcHandle(void) {
   {
     id: 'PduR_RoutePdu',
     name: 'PduR_RoutePdu',
-    signature: 'Std_ReturnType PduR_RoutePdu(PduR_SourcePduIdType SrcPduHandleId, const PduInfoType* PduInfoPtr)',
+    signature:
+      'Std_ReturnType PduR_RoutePdu(PduR_SourcePduIdType SrcPduHandleId, const PduInfoType* PduInfoPtr)',
     brief: '路由 PDU 到目标模块',
-    description: '根据源 PDU ID 查找路由表，将 PDU 数据路由到一个或多个目标模块。支持一对一、一对多路由以及网关转发场景。',
+    description:
+      '根据源 PDU ID 查找路由表，将 PDU 数据路由到一个或多个目标模块。支持一对一、一对多路由以及网关转发场景。',
     params: [
-      { name: 'SrcPduHandleId', type: 'PduR_SourcePduIdType', direction: 'in', description: '源 PDU 句柄 ID' },
-      { name: 'PduInfoPtr', type: 'const PduInfoType*', direction: 'in', description: 'PDU 数据指针，包含 SDU 数据、长度和信息' },
+      {
+        name: 'SrcPduHandleId',
+        type: 'PduR_SourcePduIdType',
+        direction: 'in',
+        description: '源 PDU 句柄 ID',
+      },
+      {
+        name: 'PduInfoPtr',
+        type: 'const PduInfoType*',
+        direction: 'in',
+        description: 'PDU 数据指针，包含 SDU 数据、长度和信息',
+      },
     ],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 路由成功；E_NOT_OK: 路由失败或无目标',
@@ -117,7 +144,12 @@ void PduR_ForwardCanMsg(void) {
     brief: '获取目的 PDU 句柄',
     description: '从 PduR 配置中获取目的 PDU 的配置句柄。用于在运行时查询特定目的 PDU 的配置标识。',
     params: [
-      { name: 'ConfigPtr', type: 'const PduR_ConfigType*', direction: 'in', description: 'PduR 配置指针' },
+      {
+        name: 'ConfigPtr',
+        type: 'const PduR_ConfigType*',
+        direction: 'in',
+        description: 'PduR 配置指针',
+      },
     ],
     returnType: 'PduR_PBConfigIdType',
     returnDescription: '目的 PDU 配置句柄 ID',
@@ -137,11 +169,18 @@ void PduR_GetDestHandle(void) {
   {
     id: 'PduR_SetPduRoutingConfiguration',
     name: 'PduR_SetPduRoutingConfiguration',
-    signature: 'Std_ReturnType PduR_SetPduRoutingConfiguration(PduR_RoutingConfigurationType RoutingConfig)',
+    signature:
+      'Std_ReturnType PduR_SetPduRoutingConfiguration(PduR_RoutingConfigurationType RoutingConfig)',
     brief: '动态设置 PDU 路由配置',
-    description: '在运行时动态更改 PDU 路由配置。允许切换不同的路由表配置，适用于需要运行时重路由的场景。',
+    description:
+      '在运行时动态更改 PDU 路由配置。允许切换不同的路由表配置，适用于需要运行时重路由的场景。',
     params: [
-      { name: 'RoutingConfig', type: 'PduR_RoutingConfigurationType', direction: 'in', description: '新的路由配置 ID' },
+      {
+        name: 'RoutingConfig',
+        type: 'PduR_RoutingConfigurationType',
+        direction: 'in',
+        description: '新的路由配置 ID',
+      },
     ],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 配置切换成功；E_NOT_OK: 配置无效',
@@ -189,7 +228,8 @@ void PduR_CheckRoutingCfg(void) {
     name: 'PduR_EnableRouting',
     signature: 'Std_ReturnType PduR_EnableRouting(void)',
     brief: '启用 PDU 路由功能',
-    description: '启用 PDU 路由功能。在 PduR_Init 后默认启用，但通过此函数可以从禁用状态恢复路由功能。',
+    description:
+      '启用 PDU 路由功能。在 PduR_Init 后默认启用，但通过此函数可以从禁用状态恢复路由功能。',
     params: [],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 路由已启用；E_NOT_OK: 启用失败',
@@ -214,7 +254,8 @@ void PduR_ResumeRouting(void) {
     name: 'PduR_DisableRouting',
     signature: 'Std_ReturnType PduR_DisableRouting(void)',
     brief: '禁用 PDU 路由功能',
-    description: '禁用 PDU 路由功能。禁用后所有 PduR_RoutePdu 调用将返回 E_NOT_OK。用于安全模式或诊断模式下的通信隔离。',
+    description:
+      '禁用 PDU 路由功能。禁用后所有 PduR_RoutePdu 调用将返回 E_NOT_OK。用于安全模式或诊断模式下的通信隔离。',
     params: [],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 路由已禁用；E_NOT_OK: 禁用失败',
@@ -237,12 +278,24 @@ void PduR_StopRouting(void) {
   {
     id: 'PduR_TriggerTransmit',
     name: 'PduR_TriggerTransmit',
-    signature: 'Std_ReturnType PduR_TriggerTransmit(PduR_SourcePduIdType SrcPduHandleId, PduInfoType* PduInfoPtr)',
+    signature:
+      'Std_ReturnType PduR_TriggerTransmit(PduR_SourcePduIdType SrcPduHandleId, PduInfoType* PduInfoPtr)',
     brief: '触发 PDU 发送',
-    description: '触发指定源 PDU 的发送请求。PduR 会调用下层（如 CanIf、LinIf）的发送接口，并将结果返回。用于上层模块通过 PduR 发起发送。',
+    description:
+      '触发指定源 PDU 的发送请求。PduR 会调用下层（如 CanIf、LinIf）的发送接口，并将结果返回。用于上层模块通过 PduR 发起发送。',
     params: [
-      { name: 'SrcPduHandleId', type: 'PduR_SourcePduIdType', direction: 'in', description: '源 PDU 句柄 ID' },
-      { name: 'PduInfoPtr', type: 'PduInfoType*', direction: 'inout', description: 'PDU 数据指针，函数返回时可能包含发送状态信息' },
+      {
+        name: 'SrcPduHandleId',
+        type: 'PduR_SourcePduIdType',
+        direction: 'in',
+        description: '源 PDU 句柄 ID',
+      },
+      {
+        name: 'PduInfoPtr',
+        type: 'PduInfoType*',
+        direction: 'inout',
+        description: 'PDU 数据指针，函数返回时可能包含发送状态信息',
+      },
     ],
     returnType: 'Std_ReturnType',
     returnDescription: 'E_OK: 发送已触发；E_NOT_OK: 触发失败',

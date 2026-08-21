@@ -87,10 +87,7 @@ interface PluginLogger {
 
 ```typescript
 type PluginType =
-  | 'code-generator'
-  | 'validator'
-  | 'data-export'
-  | 'ui-extension';
+  'code-generator' | 'validator' | 'data-export' | 'ui-extension';
 ```
 
 ---

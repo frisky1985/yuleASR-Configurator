@@ -22,9 +22,13 @@ export function CanBusPanel({ messages, maxMessages = 100 }: CanBusPanelProps) {
   const [isRunning, setIsRunning] = useState(true);
 
   const filteredMessages = filter
-    ? messages.filter(m =>
-        m.id.toString(16).includes(filter.toLowerCase()) ||
-        m.data.map(b => b.toString(16).padStart(2, '0')).join(' ').includes(filter.toLowerCase())
+    ? messages.filter(
+        m =>
+          m.id.toString(16).includes(filter.toLowerCase()) ||
+          m.data
+            .map(b => b.toString(16).padStart(2, '0'))
+            .join(' ')
+            .includes(filter.toLowerCase())
       )
     : messages;
 
@@ -108,11 +112,7 @@ export function CanBusPanel({ messages, maxMessages = 100 }: CanBusPanelProps) {
       </div>
 
       {/* Message List */}
-      <div
-        ref={containerRef}
-        className="overflow-y-auto"
-        style={{ maxHeight: '320px' }}
-      >
+      <div ref={containerRef} className="overflow-y-auto" style={{ maxHeight: '320px' }}>
         {displayedMessages.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
             <Radio className="w-8 h-8 mb-2 opacity-30" />
@@ -123,11 +123,21 @@ export function CanBusPanel({ messages, maxMessages = 100 }: CanBusPanelProps) {
           <table className="w-full text-[11px] font-mono">
             <thead>
               <tr className="border-b border-border bg-muted/20">
-                <th className="text-left px-3 py-1.5 text-[10px] text-muted-foreground font-medium">Time</th>
-                <th className="text-left px-3 py-1.5 text-[10px] text-muted-foreground font-medium">Dir</th>
-                <th className="text-left px-3 py-1.5 text-[10px] text-muted-foreground font-medium">ID</th>
-                <th className="text-left px-3 py-1.5 text-[10px] text-muted-foreground font-medium">DLC</th>
-                <th className="text-left px-3 py-1.5 text-[10px] text-muted-foreground font-medium">Data</th>
+                <th className="text-left px-3 py-1.5 text-[10px] text-muted-foreground font-medium">
+                  Time
+                </th>
+                <th className="text-left px-3 py-1.5 text-[10px] text-muted-foreground font-medium">
+                  Dir
+                </th>
+                <th className="text-left px-3 py-1.5 text-[10px] text-muted-foreground font-medium">
+                  ID
+                </th>
+                <th className="text-left px-3 py-1.5 text-[10px] text-muted-foreground font-medium">
+                  DLC
+                </th>
+                <th className="text-left px-3 py-1.5 text-[10px] text-muted-foreground font-medium">
+                  Data
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -143,25 +153,23 @@ export function CanBusPanel({ messages, maxMessages = 100 }: CanBusPanelProps) {
                     {msg.timestamp.toFixed(1)}ms
                   </td>
                   <td className="px-3 py-1.5">
-                    <span className={`text-[10px] font-medium ${msg.direction === 'tx' ? 'text-blue-500' : 'text-green-500'}`}>
+                    <span
+                      className={`text-[10px] font-medium ${msg.direction === 'tx' ? 'text-blue-500' : 'text-green-500'}`}
+                    >
                       {msg.direction === 'tx' ? 'TX' : 'RX'}
                     </span>
                   </td>
                   <td className={`px-3 py-1.5 font-semibold ${canIdColor(msg.id)}`}>
                     0x{formatHex(msg.id, 3)}
                   </td>
-                  <td className="px-3 py-1.5 text-muted-foreground">
-                    {msg.dlc}
-                  </td>
+                  <td className="px-3 py-1.5 text-muted-foreground">{msg.dlc}</td>
                   <td className="px-3 py-1.5">
                     <div className="flex gap-0.5">
                       {msg.data.slice(0, msg.dlc).map((byte, j) => (
                         <span
                           key={j}
                           className={`inline-block px-1 rounded ${
-                            byte === 0
-                              ? 'text-muted-foreground/50'
-                              : 'text-foreground'
+                            byte === 0 ? 'text-muted-foreground/50' : 'text-foreground'
                           }`}
                         >
                           {formatHex(byte)}

@@ -212,7 +212,11 @@ export async function sharedConfigsRoutes(app: FastifyInstance) {
     const configId = parseInt(id, 10);
     const user = request.user as { id: number; role: string };
 
-    const [existing] = await db.select().from(sharedConfigs).where(eq(sharedConfigs.id, configId)).limit(1);
+    const [existing] = await db
+      .select()
+      .from(sharedConfigs)
+      .where(eq(sharedConfigs.id, configId))
+      .limit(1);
     if (!existing) {
       throw { statusCode: 404, message: 'Shared config not found' };
     }
@@ -230,7 +234,11 @@ export async function sharedConfigsRoutes(app: FastifyInstance) {
     const configId = parseInt(id, 10);
     const user = request.user as { id: number };
 
-    const [config] = await db.select().from(sharedConfigs).where(eq(sharedConfigs.id, configId)).limit(1);
+    const [config] = await db
+      .select()
+      .from(sharedConfigs)
+      .where(eq(sharedConfigs.id, configId))
+      .limit(1);
     if (!config) {
       throw { statusCode: 404, message: 'Shared config not found' };
     }

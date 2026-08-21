@@ -82,10 +82,7 @@ export class TemplateWorkspace {
   apply<TElement extends NamedElement>(template: ElementTemplate<TElement>): TElement;
   /** 应用全自由模板：直接转发，工作区不干预 */
   apply(template: GenericTemplate, ...args: unknown[]): unknown;
-  apply(
-    template: ElementTemplate<NamedElement> | GenericTemplate,
-    ...args: unknown[]
-  ): unknown {
+  apply(template: ElementTemplate<NamedElement> | GenericTemplate, ...args: unknown[]): unknown {
     if (template instanceof GenericTemplate) {
       return template.apply(this, ...args);
     }
@@ -113,11 +110,7 @@ export class TemplateWorkspace {
 
     // 4. create + append（appendToPackage=false 时仅创建不落地）
     const element = template.create({ pkg, workspace: this, dependencies });
-    if (
-      typeof element !== 'object' ||
-      element === null ||
-      typeof element.name !== 'string'
-    ) {
+    if (typeof element !== 'object' || element === null || typeof element.name !== 'string') {
       throw new AssignmentTypeError(
         `${template.elementName}: create() 必须返回带 name 的模型元素，实际返回 ${String(element)}`
       );

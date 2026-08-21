@@ -29,7 +29,8 @@
 
 ### 3. Desktop Build 工作流 (`build-desktop.yml`)
 
-在推送到 `main`/`develop` 分支、创建 Pull Request、推送版本标签或手动触发时执行。
+在推送到 `main`/`develop` 分支、创建 Pull
+Request、推送版本标签或手动触发时执行。
 
 包含以下任务：
 
@@ -53,13 +54,13 @@
 
 ### macOS 签名证书 (可选，用于桌面应用签名)
 
-| Secret 名称 | 说明 |
-|---|---|
-| `MAC_CSC_LINK` | Base64 编码的 macOS 开发者证书 (.p12) |
-| `MAC_CSC_KEY_PASSWORD` | 证书私钥密码 |
-| `APPLE_ID` | Apple 开发者账号 |
+| Secret 名称                   | 说明                                  |
+| ----------------------------- | ------------------------------------- |
+| `MAC_CSC_LINK`                | Base64 编码的 macOS 开发者证书 (.p12) |
+| `MAC_CSC_KEY_PASSWORD`        | 证书私钥密码                          |
+| `APPLE_ID`                    | Apple 开发者账号                      |
 | `APPLE_APP_SPECIFIC_PASSWORD` | App-specific 密码 (用于 notarization) |
-| `APPLE_TEAM_ID` | Apple 开发者 Team ID |
+| `APPLE_TEAM_ID`               | Apple 开发者 Team ID                  |
 
 如果不配置这些 Secrets，桌面应用仍会构建但不进行代码签名和公证。未签名的应用在 macOS 上会被 Gatekeeper 阻止，建议仅在开发测试时使用。
 

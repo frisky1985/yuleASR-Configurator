@@ -333,10 +333,7 @@
       "type": "enum",
       "description": "LINNM_CH0_NODE_TYPE 参数",
       "default": "LINNM_NODE_TYPE_MASTER",
-      "enum": [
-        "LINNM_NODE_TYPE_MASTER",
-        "LINNM_NODE_TYPE_SLAVE"
-      ],
+      "enum": ["LINNM_NODE_TYPE_MASTER", "LINNM_NODE_TYPE_SLAVE"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH0_PASSIVE_MODE": {
@@ -451,10 +448,7 @@
       "type": "enum",
       "description": "LINNM_CH1_NODE_TYPE 参数",
       "default": "LINNM_NODE_TYPE_SLAVE",
-      "enum": [
-        "LINNM_NODE_TYPE_MASTER",
-        "LINNM_NODE_TYPE_SLAVE"
-      ],
+      "enum": ["LINNM_NODE_TYPE_MASTER", "LINNM_NODE_TYPE_SLAVE"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "LINNM_CH1_PASSIVE_MODE": {

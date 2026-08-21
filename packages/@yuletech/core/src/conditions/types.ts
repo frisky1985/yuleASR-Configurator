@@ -15,12 +15,7 @@
 
 /** A parsed condition expression tree */
 export type ConditionExpr =
-  | BinaryOpExpr
-  | UnaryOpExpr
-  | CompareOpExpr
-  | PathExpr
-  | LiteralExpr
-  | GroupExpr;
+  BinaryOpExpr | UnaryOpExpr | CompareOpExpr | PathExpr | LiteralExpr | GroupExpr;
 
 export interface BinaryOpExpr {
   type: 'binary_op';

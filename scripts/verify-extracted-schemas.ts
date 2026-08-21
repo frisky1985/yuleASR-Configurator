@@ -51,7 +51,8 @@ function expectTypeOf(rest: string, line: string): string {
   // 如 `#define LINNM_CALL_REMOTE_SLEEP_INDICATION(networkHandle)` 之前被误判为
   // expression → 覆盖缺失）。提取器按条件块整块透传到 x-verbatim-defines。
   if (/^[ \t]*#[ \t]*define[ \t]+[A-Za-z_][A-Za-z0-9_]*\(/.test(line)) return 'functionlike';
-  if (/^\([^)]*,[^)]*\)/.test(s) || /^\(\)/.test(s) || /^\([a-z][a-z0-9_]*\)\s*[^=]/.test(s)) return 'functionlike';
+  if (/^\([^)]*,[^)]*\)/.test(s) || /^\(\)/.test(s) || /^\([a-z][a-z0-9_]*\)\s*[^=]/.test(s))
+    return 'functionlike';
   // 去外层括号
   while (/^\(.*\)$/.test(s) && balanced(s)) s = s.slice(1, -1).trim();
   const castM = s.match(/^\(([A-Za-z_][A-Za-z0-9_]*)\)\s*(.*)$/);
@@ -136,7 +137,13 @@ function main(): number {
   for (const f of files) {
     const rel = path.relative(yuleasrRoot, f).replace(/\\/g, '/');
     const schema = bySource.get(rel);
-    const res: VerifyResult = { file: rel, macros: 0, missed: [], typeMismatch: [], verbatimCovered: [] };
+    const res: VerifyResult = {
+      file: rel,
+      macros: 0,
+      missed: [],
+      typeMismatch: [],
+      verbatimCovered: [],
+    };
     if (!schema) {
       res.missed.push('(schema 缺失)');
       results.push(res);
@@ -190,7 +197,12 @@ function main(): number {
           ok = prop.type === 'string';
           break;
         case 'identifier':
-          ok = prop.type === 'enum' || prop.type === 'integer' || prop.type === 'boolean' || prop.type === 'reference' || prop.type === 'string';
+          ok =
+            prop.type === 'enum' ||
+            prop.type === 'integer' ||
+            prop.type === 'boolean' ||
+            prop.type === 'reference' ||
+            prop.type === 'string';
           break;
         default:
           ok = prop.type === 'integer' || prop.type === 'string' || prop.type === 'object';
@@ -206,20 +218,33 @@ function main(): number {
   // 汇总
   const missFiles = results.filter(r => r.missed.length > 0);
   const mismatchFiles = results.filter(r => r.typeMismatch.length > 0);
-  console.log(`[F1-verify] 宏总数: ${totalMacros}; properties 覆盖: ${totalMacros - totalMissed - totalVerbatim}; verbatim 透传覆盖: ${totalVerbatim}; 覆盖缺失: ${totalMissed}; 类型不一致: ${totalMismatch}`);
-  console.log(`[F1-verify] 缺失宏的文件数: ${missFiles.length}; 类型不一致的文件数: ${mismatchFiles.length}`);
+  console.log(
+    `[F1-verify] 宏总数: ${totalMacros}; properties 覆盖: ${totalMacros - totalMissed - totalVerbatim}; verbatim 透传覆盖: ${totalVerbatim}; 覆盖缺失: ${totalMissed}; 类型不一致: ${totalMismatch}`
+  );
+  console.log(
+    `[F1-verify] 缺失宏的文件数: ${missFiles.length}; 类型不一致的文件数: ${mismatchFiles.length}`
+  );
   for (const r of missFiles) {
-    console.log(`  [miss] ${r.file}: ${r.missed.slice(0, 8).join(', ')}${r.missed.length > 8 ? '...' : ''}`);
+    console.log(
+      `  [miss] ${r.file}: ${r.missed.slice(0, 8).join(', ')}${r.missed.length > 8 ? '...' : ''}`
+    );
   }
   for (const r of mismatchFiles) {
-    console.log(`  [type] ${r.file}: ${r.typeMismatch.slice(0, 6).join(', ')}${r.typeMismatch.length > 6 ? '...' : ''}`);
+    console.log(
+      `  [type] ${r.file}: ${r.typeMismatch.slice(0, 6).join(', ')}${r.typeMismatch.length > 6 ? '...' : ''}`
+    );
   }
 
   // ---- 抽查 5 个模块（逐宏一一对应）----
   const SPOT = ['Wdg', 'Flash', 'Crypto', 'Com', 'EcuM'];
   console.log(`\n[F1-verify] 抽查 ${SPOT.length} 个模块（与手写头逐宏对应）:`);
   for (const mod of SPOT) {
-    const file = files.find(f => path.basename(f).toLowerCase().startsWith(mod.toLowerCase() + '_cfg.h'));
+    const file = files.find(f =>
+      path
+        .basename(f)
+        .toLowerCase()
+        .startsWith(mod.toLowerCase() + '_cfg.h')
+    );
     if (!file) {
       console.log(`  ✗ ${mod}: 未找到 Cfg.h`);
       continue;
@@ -234,25 +259,39 @@ function main(): number {
       console.log(`      verbatim 透传覆盖: ${r.verbatimCovered.join(', ')}`);
     }
     if (r.missed.length || r.typeMismatch.length) {
-      console.log(`      missed: ${r.missed.slice(0, 5).join(', ')}; type: ${r.typeMismatch.slice(0, 5).join(', ')}`);
+      console.log(
+        `      missed: ${r.missed.slice(0, 5).join(', ')}; type: ${r.typeMismatch.slice(0, 5).join(', ')}`
+      );
     }
   }
 
   // ---- generated/ 合并目录校验 ----
-  const genJson = fs.readdirSync(GENERATED_DIR).filter(f => f.endsWith('.json')).sort();
+  const genJson = fs
+    .readdirSync(GENERATED_DIR)
+    .filter(f => f.endsWith('.json'))
+    .sort();
   const genIndex = fs.readFileSync(path.join(GENERATED_DIR, 'index.ts'), 'utf8');
-  const exports_ = [...genIndex.matchAll(/export\s*\{\s*default\s+as\s+([A-Za-z0-9_]+)\s*\}\s*from\s*'\.\/([a-z0-9_]+)\.json'/g)];
+  const exports_ = [
+    ...genIndex.matchAll(
+      /export\s*\{\s*default\s+as\s+([A-Za-z0-9_]+)\s*\}\s*from\s*'\.\/([a-z0-9_]+)\.json'/g
+    ),
+  ];
   const dupExports = exports_.map(m => m[1]).filter((n, i, a) => a.indexOf(n) !== i);
   const dupFiles = exports_.map(m => m[2]).filter((n, i, a) => a.indexOf(n) !== i);
-  console.log(`\n[F1-verify] generated/: ${genJson.length} 个 JSON; index.ts 导出 ${exports_.length} 个`);
+  console.log(
+    `\n[F1-verify] generated/: ${genJson.length} 个 JSON; index.ts 导出 ${exports_.length} 个`
+  );
   if (dupExports.length || dupFiles.length) {
     console.log(`  ✗ 重复导出名: ${[...new Set([...dupExports, ...dupFiles])].join(', ')}`);
     return 1;
   }
   console.log('  ✓ 无重复导出');
 
-  const pass = missFiles.length === 0 && mismatchFiles.length === 0 && files.length === bySource.size;
-  console.log(`\n[F1-verify] 结论: ${pass ? 'PASS — 110 模块全覆盖（properties + verbatim 透传），类型一致' : 'FAIL — 见上方缺失/不一致清单'}`);
+  const pass =
+    missFiles.length === 0 && mismatchFiles.length === 0 && files.length === bySource.size;
+  console.log(
+    `\n[F1-verify] 结论: ${pass ? 'PASS — 110 模块全覆盖（properties + verbatim 透传），类型一致' : 'FAIL — 见上方缺失/不一致清单'}`
+  );
   return pass ? 0 : 1;
 }
 

@@ -233,10 +233,7 @@
       "type": "enum",
       "description": "新注册 context 默认跟踪状态",
       "default": "DLT_TRACE_STATUS_ON",
-      "enum": [
-        "DLT_TRACE_STATUS_OFF",
-        "DLT_TRACE_STATUS_ON"
-      ],
+      "enum": ["DLT_TRACE_STATUS_OFF", "DLT_TRACE_STATUS_ON"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },

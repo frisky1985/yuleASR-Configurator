@@ -319,9 +319,7 @@
       "type": "enum",
       "description": "COMM_DEFAULT_MODE 参数",
       "default": "COMM_NO_COMMUNICATION",
-      "enum": [
-        "COMM_NO_COMMUNICATION"
-      ],
+      "enum": ["COMM_NO_COMMUNICATION"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     },
     "COMM_DEFAULT_CHANNEL_STATE": {
@@ -340,9 +338,7 @@
       "type": "enum",
       "description": "COMM_DEFAULT_PNC_MODE 参数",
       "default": "COMM_PNC_NO_COMMUNICATION",
-      "enum": [
-        "COMM_PNC_NO_COMMUNICATION"
-      ],
+      "enum": ["COMM_PNC_NO_COMMUNICATION"],
       "x-section": "PRE-COMPILE CONFIGURATION"
     }
   },

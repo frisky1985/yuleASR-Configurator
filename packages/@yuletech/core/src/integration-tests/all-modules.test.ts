@@ -6,7 +6,15 @@
  */
 
 import { execSync } from 'child_process';
-import { mkdtempSync, writeFileSync, rmSync, existsSync, readFileSync, mkdirSync, copyFileSync } from 'fs';
+import {
+  mkdtempSync,
+  writeFileSync,
+  rmSync,
+  existsSync,
+  readFileSync,
+  mkdirSync,
+  copyFileSync,
+} from 'fs';
 import { tmpdir } from 'os';
 import { join, dirname, basename } from 'path';
 import { fileURLToPath } from 'url';
@@ -50,7 +58,9 @@ interface ModuleSchema {
 
 /** AUTOSAR stub headers for syntax checking */
 function writeAUTOSARStubs(dir: string) {
-  writeFileSync(join(dir, 'Std_Types.h'), `
+  writeFileSync(
+    join(dir, 'Std_Types.h'),
+    `
 #ifndef STD_TYPES_H
 #define STD_TYPES_H
 typedef unsigned char boolean;
@@ -72,12 +82,18 @@ typedef struct { uint16 vendorID; uint16 moduleID; uint8 sw_major_version; uint8
 #define E_OK ((Std_ReturnType)0u)
 #define E_NOT_OK ((Std_ReturnType)1u)
 #endif
-`);
-  writeFileSync(join(dir, 'Ecuc.h'), `#ifndef ECUC_H\n#define ECUC_H\n#include "Std_Types.h"\n#endif\n`);
+`
+  );
+  writeFileSync(
+    join(dir, 'Ecuc.h'),
+    `#ifndef ECUC_H\n#define ECUC_H\n#include "Std_Types.h"\n#endif\n`
+  );
   writeFileSync(join(dir, 'MemMap.h'), MEMORY_MAP_STUBS);
 
   // yuleASR driver stubs for bridge code (#include "Can.h" etc.)
-  writeFileSync(join(dir, 'Can.h'), `
+  writeFileSync(
+    join(dir, 'Can.h'),
+    `
 #ifndef CAN_H
 #define CAN_H
 #include "Std_Types.h"
@@ -92,8 +108,11 @@ typedef struct { uint8 ControllerId; uint32 BaseAddress; const Can_BaudrateConfi
 typedef struct { const Can_ControllerConfigType* Controllers; uint8 NumControllers; boolean DevErrorDetect; boolean VersionInfoApi; } Can_ConfigType;
 extern const Can_ConfigType Can_Config;
 #endif
-`);
-  writeFileSync(join(dir, 'Mcu.h'), `
+`
+  );
+  writeFileSync(
+    join(dir, 'Mcu.h'),
+    `
 #ifndef MCU_H
 #define MCU_H
 #include "Std_Types.h"
@@ -109,8 +128,11 @@ typedef struct { uint32 PllBaseAddr; const Mcu_PllConfigType* PllConfigs; uint8 
 typedef struct { Mcu_ClockType ClockSetting; uint32 ClockFrequency; uint32 PllMultiplier; uint32 PllDivider; boolean PllEnabled; const Mcu_RamSectionType* RamSections; uint8 NumRamSections; const Mcu_ClockConfigType* ClockConfigs; uint8 NumClockConfigs; const Mcu_ModeConfigType* ModeConfigs; uint8 NumModes; } Mcu_ConfigType;
 extern const Mcu_ConfigType Mcu_Config;
 #endif
-`);
-  writeFileSync(join(dir, 'Port.h'), `
+`
+  );
+  writeFileSync(
+    join(dir, 'Port.h'),
+    `
 #ifndef PORT_HEADER_H
 #define PORT_HEADER_H
 #include "Std_Types.h"
@@ -122,7 +144,8 @@ typedef struct { Port_PinType Pin; Port_PinDirectionType Direction; Port_PinMode
 typedef struct { uint16 NumPins; const Port_PinConfigType* PinConfigs; } Port_ConfigType;
 extern const Port_ConfigType Port_Config;
 #endif
-`);
+`
+  );
 }
 
 const MEMORY_MAP_STUBS = `
@@ -220,8 +243,22 @@ export const MODULE_DEFINITIONS: ModuleDef[] = [
       ],
     },
     containerDefs: [
-      { name: 'CanController', label: 'CAN Controller', multiple: true, minInstances: 1, maxInstances: 4, parameters: ['canControllerId', 'canBaudrate'] },
-      { name: 'CanHardwareObject', label: 'CAN Hardware Object', multiple: true, minInstances: 1, maxInstances: 32, parameters: ['hohId', 'hohType'] },
+      {
+        name: 'CanController',
+        label: 'CAN Controller',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 4,
+        parameters: ['canControllerId', 'canBaudrate'],
+      },
+      {
+        name: 'CanHardwareObject',
+        label: 'CAN Hardware Object',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 32,
+        parameters: ['hohId', 'hohType'],
+      },
     ],
   },
   {
@@ -238,7 +275,14 @@ export const MODULE_DEFINITIONS: ModuleDef[] = [
       McuClockSettingConfig: [{ id: 'clk0', parameters: { clockId: 0, clockFrequency: 16000000 } }],
     },
     containerDefs: [
-      { name: 'McuClockSettingConfig', label: 'Clock Setting', multiple: true, minInstances: 1, maxInstances: 8, parameters: ['clockId', 'clockFrequency'] },
+      {
+        name: 'McuClockSettingConfig',
+        label: 'Clock Setting',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 8,
+        parameters: ['clockId', 'clockFrequency'],
+      },
     ],
   },
   {
@@ -257,7 +301,14 @@ export const MODULE_DEFINITIONS: ModuleDef[] = [
       ],
     },
     containerDefs: [
-      { name: 'PortPin', label: 'Port Pin', multiple: true, minInstances: 1, maxInstances: 64, parameters: ['pinId', 'pinDirection'] },
+      {
+        name: 'PortPin',
+        label: 'Port Pin',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 64,
+        parameters: ['pinId', 'pinDirection'],
+      },
     ],
   },
   {
@@ -289,8 +340,22 @@ export const MODULE_DEFINITIONS: ModuleDef[] = [
       ],
     },
     containerDefs: [
-      { name: 'DioPort', label: 'DIO Port', multiple: true, minInstances: 1, maxInstances: 8, parameters: ['portId'] },
-      { name: 'DioChannel', label: 'DIO Channel', multiple: true, minInstances: 1, maxInstances: 64, parameters: ['channelId', 'portRef'] },
+      {
+        name: 'DioPort',
+        label: 'DIO Port',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 8,
+        parameters: ['portId'],
+      },
+      {
+        name: 'DioChannel',
+        label: 'DIO Channel',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 64,
+        parameters: ['channelId', 'portRef'],
+      },
     ],
   },
   {
@@ -318,18 +383,37 @@ export const MODULE_DEFINITIONS: ModuleDef[] = [
         { id: 'hw0', parameters: { hwUnitId: 0 } },
         { id: 'hw1', parameters: { hwUnitId: 1 } },
       ],
-      AdcGroup: [
-        { id: 'grp0', parameters: { groupId: 0, hwUnitRef: 0 } },
-      ],
+      AdcGroup: [{ id: 'grp0', parameters: { groupId: 0, hwUnitRef: 0 } }],
       AdcChannel: [
         { id: 'ch0', parameters: { channelId: 0 } },
         { id: 'ch1', parameters: { channelId: 1 } },
       ],
     },
     containerDefs: [
-      { name: 'AdcHwUnit', label: 'ADC HW Unit', multiple: true, minInstances: 1, maxInstances: 8, parameters: ['hwUnitId'] },
-      { name: 'AdcGroup', label: 'ADC Group', multiple: true, minInstances: 1, maxInstances: 16, parameters: ['groupId', 'hwUnitRef'] },
-      { name: 'AdcChannel', label: 'ADC Channel', multiple: true, minInstances: 1, maxInstances: 32, parameters: ['channelId'] },
+      {
+        name: 'AdcHwUnit',
+        label: 'ADC HW Unit',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 8,
+        parameters: ['hwUnitId'],
+      },
+      {
+        name: 'AdcGroup',
+        label: 'ADC Group',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 16,
+        parameters: ['groupId', 'hwUnitRef'],
+      },
+      {
+        name: 'AdcChannel',
+        label: 'ADC Channel',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 32,
+        parameters: ['channelId'],
+      },
     ],
   },
   {
@@ -364,8 +448,22 @@ export const MODULE_DEFINITIONS: ModuleDef[] = [
       ],
     },
     containerDefs: [
-      { name: 'SpiChannel', label: 'SPI Channel', multiple: true, minInstances: 1, maxInstances: 16, parameters: ['channelId'] },
-      { name: 'SpiHwUnit', label: 'SPI HW Unit', multiple: true, minInstances: 1, maxInstances: 8, parameters: ['hwUnitId'] },
+      {
+        name: 'SpiChannel',
+        label: 'SPI Channel',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 16,
+        parameters: ['channelId'],
+      },
+      {
+        name: 'SpiHwUnit',
+        label: 'SPI HW Unit',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 8,
+        parameters: ['hwUnitId'],
+      },
     ],
   },
   {
@@ -380,7 +478,7 @@ export const MODULE_DEFINITIONS: ModuleDef[] = [
       gptTimeRemainingApi: true,
       gptNumChannels: 8,
       gptClockFrequencyHz: 24000000,
-      gptMaxTickValue: 0xFFFFFFFF,
+      gptMaxTickValue: 0xffffffff,
     },
     paramDefs: [
       { name: 'gptDevErrorDetect', type: 'boolean', required: true },
@@ -393,7 +491,14 @@ export const MODULE_DEFINITIONS: ModuleDef[] = [
       ],
     },
     containerDefs: [
-      { name: 'GptChannel', label: 'GPT Channel', multiple: true, minInstances: 1, maxInstances: 16, parameters: ['channelId', 'tickFrequency'] },
+      {
+        name: 'GptChannel',
+        label: 'GPT Channel',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 16,
+        parameters: ['channelId', 'tickFrequency'],
+      },
     ],
   },
   {
@@ -421,7 +526,14 @@ export const MODULE_DEFINITIONS: ModuleDef[] = [
       ],
     },
     containerDefs: [
-      { name: 'PwmChannel', label: 'PWM Channel', multiple: true, minInstances: 1, maxInstances: 16, parameters: ['channelId', 'defaultPeriod', 'defaultDutyCycle'] },
+      {
+        name: 'PwmChannel',
+        label: 'PWM Channel',
+        multiple: true,
+        minInstances: 1,
+        maxInstances: 16,
+        parameters: ['channelId', 'defaultPeriod', 'defaultDutyCycle'],
+      },
     ],
   },
 ];
@@ -442,9 +554,15 @@ function gccSyntaxCheck(filePath: string, includeDirs: string[]): boolean {
   const isHeader = filePath.endsWith('.h');
   try {
     if (isHeader) {
-      execSync(`gcc -fsyntax-only -x c ${includeFlags} "${filePath}"`, { stdio: 'pipe', timeout: 30000 });
+      execSync(`gcc -fsyntax-only -x c ${includeFlags} "${filePath}"`, {
+        stdio: 'pipe',
+        timeout: 30000,
+      });
     } else {
-      execSync(`gcc -fsyntax-only ${includeFlags} -include Std_Types.h "${filePath}"`, { stdio: 'pipe', timeout: 30000 });
+      execSync(`gcc -fsyntax-only ${includeFlags} -include Std_Types.h "${filePath}"`, {
+        stdio: 'pipe',
+        timeout: 30000,
+      });
     }
     return true;
   } catch {

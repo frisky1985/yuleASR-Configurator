@@ -87,7 +87,12 @@ describe('ChoiceContainerValidator (P2-3)', () => {
           xChoiceContainer: true,
           parameters: [],
           children: [
-            { name: 'SpiMasterMode', label: 'SpiMasterMode', description: '主模式', parameters: [] },
+            {
+              name: 'SpiMasterMode',
+              label: 'SpiMasterMode',
+              description: '主模式',
+              parameters: [],
+            },
             { name: 'SpiSlaveMode', label: 'SpiSlaveMode', description: '从模式', parameters: [] },
           ],
         },
@@ -193,9 +198,7 @@ describe('ChoiceContainerValidator (P2-3)', () => {
         ],
       });
       const validator = createChoiceContainerValidator([schemaWithX]);
-      const errors = validator.validate([
-        makeConfig('WdgIf', { WdgIfDevice: [{ id: 'd1' }] }),
-      ]);
+      const errors = validator.validate([makeConfig('WdgIf', { WdgIfDevice: [{ id: 'd1' }] })]);
       expect(errors).toHaveLength(0);
     });
   });

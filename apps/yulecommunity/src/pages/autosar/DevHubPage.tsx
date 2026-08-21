@@ -45,7 +45,10 @@ export function DevHubPage() {
     <div className="min-h-screen pt-24 pb-16">
       <Helmet>
         <title>AutoSAR 开发者中心 - YuleTech</title>
-        <meta name="description" content="一站式 AutoSAR 开发资源平台，包含规范查询、在线调试和模块管理。" />
+        <meta
+          name="description"
+          content="一站式 AutoSAR 开发资源平台，包含规范查询、在线调试和模块管理。"
+        />
       </Helmet>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -99,14 +102,18 @@ export function DevHubPage() {
               className={`relative group rounded-xl border bg-gradient-to-br ${card.color} p-6 hover:shadow-elegant transition-all`}
             >
               <div className="flex items-start justify-between mb-4">
-                <div className={`w-10 h-10 rounded-lg ${card.iconBg} flex items-center justify-center`}>
+                <div
+                  className={`w-10 h-10 rounded-lg ${card.iconBg} flex items-center justify-center`}
+                >
                   <card.icon className="w-5 h-5" />
                 </div>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
-                  card.status === '已上线'
-                    ? 'bg-green-500/10 text-green-600 dark:text-green-400'
-                    : 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
-                }`}>
+                <span
+                  className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
+                    card.status === '已上线'
+                      ? 'bg-green-500/10 text-green-600 dark:text-green-400'
+                      : 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
+                  }`}
+                >
                   {card.status}
                 </span>
               </div>

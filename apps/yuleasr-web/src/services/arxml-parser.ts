@@ -24,7 +24,11 @@ export {
 // ---------------------------------------------------------------------------
 
 import type { ConfigModule, ConfigContainer, ConfigParameter } from '@/types/config';
-import type { ParsedModuleDef, ParsedContainerValue, ParsedParamValue } from '@yuletech/core/adapters/arxml-parser';
+import type {
+  ParsedModuleDef,
+  ParsedContainerValue,
+  ParsedParamValue,
+} from '@yuletech/core/adapters/arxml-parser';
 
 const PARAM_LAYER_MAP: Record<string, string> = {
   Adc: 'MCAL',

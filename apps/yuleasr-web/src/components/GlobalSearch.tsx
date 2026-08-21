@@ -105,9 +105,12 @@ function buildSearchIndex(config: ConfigFile): SearchIndexEntry[] {
   if (config.os) {
     const os = config.os;
     const osEntries: Array<{ id: string; name: string; subtitle: string }> = [
-      ...(os.tasks?.map(t => ({ id: `os-task-${t.id}`, name: t.name, subtitle: 'OS › Task' })) || []),
-      ...(os.events?.map(e => ({ id: `os-event-${e.id}`, name: e.name, subtitle: 'OS › Event' })) || []),
-      ...(os.alarms?.map(a => ({ id: `os-alarm-${a.id}`, name: a.name, subtitle: 'OS › Alarm' })) || []),
+      ...(os.tasks?.map(t => ({ id: `os-task-${t.id}`, name: t.name, subtitle: 'OS › Task' })) ||
+        []),
+      ...(os.events?.map(e => ({ id: `os-event-${e.id}`, name: e.name, subtitle: 'OS › Event' })) ||
+        []),
+      ...(os.alarms?.map(a => ({ id: `os-alarm-${a.id}`, name: a.name, subtitle: 'OS › Alarm' })) ||
+        []),
     ];
     for (const oe of osEntries) {
       entries.push({
@@ -210,7 +213,7 @@ export function GlobalSearch({ isOpen, onClose, onSelectResult }: GlobalSearchPr
           matchedText:
             entry.type === 'parameter'
               ? entry.rawCandidates[matchIdx]
-              : entry.matchedText ?? entry.title,
+              : (entry.matchedText ?? entry.title),
         });
 
         if (searchResults.length >= 50) break; // Limit to 50 results

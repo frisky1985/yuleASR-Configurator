@@ -43,9 +43,7 @@ describe('CrossModuleValidator - module-level crossReferences (P2-2)', () => {
         ],
       }),
       makeSchema('CanTrcv', {
-        parameters: [
-          { name: 'CanTrcvMaxBaudrate', type: 'integer', min: 0, max: 65535 },
-        ],
+        parameters: [{ name: 'CanTrcvMaxBaudrate', type: 'integer', min: 0, max: 65535 }],
       }),
     ];
     const validator = createCrossModuleValidator(schemas);

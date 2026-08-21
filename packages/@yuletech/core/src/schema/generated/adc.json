@@ -142,19 +142,13 @@
           "type": "string",
           "maxLength": 255,
           "description": "AdcGroupAccessMode 参数",
-          "enum": [
-            "ADC_ACCESS_MODE_SINGLE",
-            "ADC_ACCESS_MODE_STREAMING"
-          ]
+          "enum": ["ADC_ACCESS_MODE_SINGLE", "ADC_ACCESS_MODE_STREAMING"]
         },
         "AdcGroupConversionMode": {
           "type": "string",
           "maxLength": 255,
           "description": "AdcGroupConversionMode 参数",
-          "enum": [
-            "ADC_CONV_MODE_ONESHOT",
-            "ADC_CONV_MODE_CONTINUOUS"
-          ]
+          "enum": ["ADC_CONV_MODE_ONESHOT", "ADC_CONV_MODE_CONTINUOUS"]
         },
         "AdcGroupConversionType": {
           "type": "string",
@@ -165,19 +159,13 @@
           "type": "string",
           "maxLength": 255,
           "description": "AdcGroupTriggSrc 参数",
-          "enum": [
-            "ADC_TRIGG_SRC_SW",
-            "ADC_TRIGG_SRC_HW"
-          ]
+          "enum": ["ADC_TRIGG_SRC_SW", "ADC_TRIGG_SRC_HW"]
         },
         "AdcStreamingBufferMode": {
           "type": "string",
           "maxLength": 255,
           "description": "AdcStreamingBufferMode 参数",
-          "enum": [
-            "ADC_STREAM_BUFFER_LINEAR",
-            "ADC_STREAM_BUFFER_CIRCULAR"
-          ]
+          "enum": ["ADC_STREAM_BUFFER_LINEAR", "ADC_STREAM_BUFFER_CIRCULAR"]
         }
       },
       "additionalProperties": true
@@ -272,19 +260,13 @@
           "type": "string",
           "maxLength": 255,
           "description": "AdcGroupAccessMode 参数",
-          "enum": [
-            "ADC_ACCESS_MODE_SINGLE",
-            "ADC_ACCESS_MODE_STREAMING"
-          ]
+          "enum": ["ADC_ACCESS_MODE_SINGLE", "ADC_ACCESS_MODE_STREAMING"]
         },
         "AdcGroupConversionMode": {
           "type": "string",
           "maxLength": 255,
           "description": "AdcGroupConversionMode 参数",
-          "enum": [
-            "ADC_CONV_MODE_ONESHOT",
-            "ADC_CONV_MODE_CONTINUOUS"
-          ]
+          "enum": ["ADC_CONV_MODE_ONESHOT", "ADC_CONV_MODE_CONTINUOUS"]
         },
         "AdcGroupConversionType": {
           "type": "string",
@@ -295,19 +277,13 @@
           "type": "string",
           "maxLength": 255,
           "description": "AdcGroupTriggSrc 参数",
-          "enum": [
-            "ADC_TRIGG_SRC_SW",
-            "ADC_TRIGG_SRC_HW"
-          ]
+          "enum": ["ADC_TRIGG_SRC_SW", "ADC_TRIGG_SRC_HW"]
         },
         "AdcStreamingBufferMode": {
           "type": "string",
           "maxLength": 255,
           "description": "AdcStreamingBufferMode 参数",
-          "enum": [
-            "ADC_STREAM_BUFFER_LINEAR",
-            "ADC_STREAM_BUFFER_CIRCULAR"
-          ]
+          "enum": ["ADC_STREAM_BUFFER_LINEAR", "ADC_STREAM_BUFFER_CIRCULAR"]
         }
       },
       "additionalProperties": true
@@ -542,11 +518,7 @@
       "additionalProperties": true
     }
   },
-  "required": [
-    "AdcConfigSet",
-    "AdcHwUnit",
-    "AdcChannel"
-  ],
+  "required": ["AdcConfigSet", "AdcHwUnit", "AdcChannel"],
   "additionalProperties": false,
   "x-layer": "MCAL",
   "x-version": "4.4.0",
