@@ -21,7 +21,6 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -51,7 +50,6 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -75,7 +73,6 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -101,7 +98,6 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -167,7 +163,6 @@ jobs:
         if: steps.checkout-yuleasr.outcome == 'success'
         uses: pnpm/action-setup@v6
         with:
-          version: 9
 
       - name: Setup Node.js
         if: steps.checkout-yuleasr.outcome == 'success'
@@ -285,7 +280,6 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -319,7 +313,6 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -392,7 +385,6 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
@@ -428,7 +420,6 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
