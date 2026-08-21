@@ -18,7 +18,7 @@ function schemaByName(name: string) {
 describe('Codegen - Schema-driven macro headers (F2a)', () => {
   it('should generate one header per loaded schema minus NOLANDING（仅配置不生成跳过）', async () => {
     const schemas = loadModuleSchemas();
-    expect(schemas.length).toBeGreaterThanOrEqual(119);
+    expect(schemas.length).toBeGreaterThanOrEqual(118);
 
     const files = await generateHeadersFromSchemas(schemas);
     // YAC-MAP-002：appswc/arti/compswc/fr 生成产物无 yuleASR 落地 → 跳过

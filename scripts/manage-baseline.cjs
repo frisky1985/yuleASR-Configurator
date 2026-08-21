@@ -85,7 +85,7 @@ const MODULE_DEFINITIONS = [
   },
 ];
 
-function generateBaselines() {
+async function generateBaselines() {
   const gen = new EcucCodeGenerator();
   mkdirSync(BASELINE_DIR, { recursive: true });
 
@@ -96,7 +96,8 @@ function generateBaselines() {
     const moduleDir = join(TMP_DIR, def.module);
     mkdirSync(moduleDir, { recursive: true });
 
-    const result = gen.generate(config, schema, { outputDir: moduleDir, generateComments: true });
+    // YAC-CI-004: EcucCodeGenerator.generate 为 async（返回 Promise），必须 await
+    const result = await gen.generate(config, schema, { outputDir: moduleDir, generateComments: true });
     if (!result.success) {
       console.error(`Failed to generate baseline for ${def.module}`);
       process.exit(1);
@@ -114,7 +115,7 @@ function generateBaselines() {
   console.log(`\nBaselines generated: ${BASELINE_DIR}`);
 }
 
-function verifyBaselines() {
+async function verifyBaselines() {
   const gen = new EcucCodeGenerator();
   let allMatch = true;
 
@@ -125,7 +126,8 @@ function verifyBaselines() {
     const moduleDir = join(TMP_DIR, def.module);
     mkdirSync(moduleDir, { recursive: true });
 
-    const result = gen.generate(config, schema, { outputDir: moduleDir, generateComments: true });
+    // YAC-CI-004: EcucCodeGenerator.generate 为 async（返回 Promise），必须 await
+    const result = await gen.generate(config, schema, { outputDir: moduleDir, generateComments: true });
     if (!result.success) {
       console.error(`Failed to generate for ${def.module}`);
       process.exit(1);
@@ -164,21 +166,23 @@ function verifyBaselines() {
 // Main
 console.log(`yuleASR Baseline Manager — command: ${command}\n`);
 
-switch (command) {
-  case 'generate':
-    generateBaselines();
-    break;
-  case 'verify':
-    const ok = verifyBaselines();
-    console.log(`\n${ok ? '✅ All baselines match' : '❌ Some baselines differ'}`);
-    process.exit(ok ? 0 : 1);
-    break;
-  case 'diff':
-    // TODO: implement diff
-    console.log('Diff command not yet implemented. Use verify for now.');
-    break;
-  default:
-    console.error(`Unknown command: ${command}`);
-    console.log('Usage: node scripts/manage-baseline.cjs [generate|verify|diff]');
-    process.exit(1);
-}
+(async () => {
+  switch (command) {
+    case 'generate':
+      await generateBaselines();
+      break;
+    case 'verify':
+      const ok = await verifyBaselines();
+      console.log(`\n${ok ? '✅ All baselines match' : '❌ Some baselines differ'}`);
+      process.exit(ok ? 0 : 1);
+      break;
+    case 'diff':
+      // TODO: implement diff
+      console.log('Diff command not yet implemented. Use verify for now.');
+      break;
+    default:
+      console.error(`Unknown command: ${command}`);
+      console.log('Usage: node scripts/manage-baseline.cjs [generate|verify|diff]');
+      process.exit(1);
+  }
+})();

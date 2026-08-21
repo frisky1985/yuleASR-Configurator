@@ -58,6 +58,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # YAC-CI-004（根因 B）：CI 全新环境无 workspace 包 dist（exports 指向 dist），
+      # typecheck 前必须先 build 依赖包；desktop 排除（electron-builder 需平台环境，见 build job 注释）
+      - name: Build workspace packages
+        run: pnpm build:ci
+
       - name: Type check
         run: pnpm typecheck
 
@@ -79,6 +84,10 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      # YAC-CI-004（根因 B）：测试 import workspace 包 dist，先 build 依赖包
+      - name: Build workspace packages
+        run: pnpm build:ci
 
       - name: Run tests
         run: pnpm test
@@ -104,11 +113,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # YAC-CI-004（根因 B）：integration 测试 import @yuletech/core dist，先 build 依赖包
+      - name: Build workspace packages
+        run: pnpm build:ci
+
       - name: Install gcc (for syntax check)
         run: sudo apt-get update && sudo apt-get install -y gcc
 
+      # YAC-CI-004：pnpm 9 下 `pnpm --filter <pkg> vitest ...` 不会回退到 bin 执行
+      # （报 "None of the selected packages has a vitest script"），须用 `exec vitest`
       - name: Run integration test suite (all 8 modules)
-        run: pnpm --filter @yuletech/core vitest run src/integration-tests/all-modules.test.ts
+        run: pnpm --filter @yuletech/core exec vitest run src/integration-tests/all-modules.test.ts
 
       - name: Verify baselines match
         run: node scripts/manage-baseline.cjs verify
@@ -169,6 +184,11 @@ jobs:
       - name: Install dependencies
         if: steps.checkout-yuleasr.outcome == 'success'
         run: pnpm install --frozen-lockfile
+
+      # YAC-CI-004（根因 B）：replace-cfgh 测试 import @yuletech/core 等 workspace 包 dist，先 build 依赖包
+      - name: Build workspace packages
+        if: steps.checkout-yuleasr.outcome == 'success'
+        run: pnpm build:ci
 
       - name: Install C toolchain (cmake/gcc/g++/make)
         if: steps.checkout-yuleasr.outcome == 'success'
@@ -318,6 +338,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # YAC-CI-004（根因 B）：core typecheck import @yuletech/plugin-sdk dist，先 build 依赖包
+      - name: Build workspace packages
+        run: pnpm build:ci
+
       - name: Validate JSON schemas are valid JSON
         run: |
           node -e "
@@ -388,6 +412,10 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      # YAC-CI-004（根因 B）：vscode 依赖 @yuletech/core + yuleasr-editor-core 的 dist，先 build 依赖包
+      - name: Build workspace packages
+        run: pnpm build:ci
 
       - name: Build VS Code extension
         run: pnpm --filter yuleasr-vscode build
