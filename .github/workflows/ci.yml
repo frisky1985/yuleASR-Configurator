@@ -206,18 +206,6 @@ jobs:
           git init -q "$SCRATCH" && git -C "$SCRATCH" add -A
           git -C "$SCRATCH" -c user.name="ci" -c user.email="ci@users.noreply.github.com" commit -q -m "scratch baseline (YAC-CI-003)"
 
-      # ── YAC-CI-004 探针：pristine 基线对照（确认 test_csm/mcal_adc/mcal_uart 失败是否生成头引入）──
-      - name: 探针：pristine 基线 3 项测试对照（apply 前）
-        if: steps.checkout-yuleasr.outcome == 'success'
-        run: |
-          cmake -B "$RUNNER_TEMP/yuleasr-pristine-build" -S "$RUNNER_TEMP/yuleasr-scratch" -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DCMAKE_EXE_LINKER_FLAGS="-Wl,--allow-multiple-definition -no-pie -Wl,--defsym=sp=0" > /dev/null
-          cmake --build "$RUNNER_TEMP/yuleasr-pristine-build" --target test_csm mcal_adc_test mcal_uart_test -j"$(nproc)" > /dev/null 2>&1
-          set +e
-          (cd "$RUNNER_TEMP/yuleasr-pristine-build" && ctest -R "test_csm|mcal_adc_test|mcal_uart_test") | tee /tmp/pristine-suspects.log
-          PRIS_RC=${PIPESTATUS[0]}
-          set -e
-          echo "PRISTINE_SUSPECTS_RC=$PRIS_RC"
-
       - name: replace-cfgh dry-run（109 schema 全生成，0 failed）
         if: steps.checkout-yuleasr.outcome == 'success'
         env:
@@ -258,32 +246,28 @@ jobs:
 
       - name: cmake build（Debug + BUILD_TESTING=ON，exit 0）
         if: steps.checkout-yuleasr.outcome == 'success'
-        # YAC-CI-004：GNU ld 下两个 yuleASR 既有链接问题（与生成头无关，pristine 同样触发）：
+        # YAC-CI-004：GNU ld 下 yuleASR 既有链接问题（与生成头无关，pristine 探针同样触发）：
         # ① s0_smoke_test 同时链接 ecual_memif + service_memif（两处 MemIf.c 实现不同，
         #    tests/CMakeLists.txt 注释确认有意双挂）→ --allow-multiple-definition（Apple ld 取首定义不报错）
         # ② libboot.a 的 Boot_Loader.c 内联汇编 `mov sp, %0` 缺 % 前缀 → 未定义符号 sp，
         #    PIE 下 R_X86_64_32S 不可用 → -no-pie + --defsym=sp=0（该路径测试不执行）
+        # 门禁：build exit 0 且静态库 ≥ 139（配置头编译错误会炸在库编译期）
         run: |
           cmake -B "$RUNNER_TEMP/yuleasr-build" -S "$RUNNER_TEMP/yuleasr-scratch" -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=ON -DCMAKE_EXE_LINKER_FLAGS="-Wl,--allow-multiple-definition -no-pie -Wl,--defsym=sp=0"
-          set +e
-          cmake --build "$RUNNER_TEMP/yuleasr-build" -j"$(nproc)" -- -k > "$RUNNER_TEMP/yuleasr-build.log" 2>&1
-          BUILD_RC=$?
-          set -e
-          echo "BUILD_RC=$BUILD_RC"
-          echo "静态库数: $(find "$RUNNER_TEMP/yuleasr-build/lib" -name '*.a' | wc -l)"
-          echo "=== 链接失败目标清单（yuleASR 既有 GNU-ld 问题白名单比对） ==="
-          grep -E ': \*\*\* \[.*\] (Error|错误)' "$RUNNER_TEMP/yuleasr-build.log" | sort -u || true
+          cmake --build "$RUNNER_TEMP/yuleasr-build" -j"$(nproc)"
+          LIBS=$(find "$RUNNER_TEMP/yuleasr-build/lib" -name '*.a' | wc -l | tr -d ' ')
+          echo "✅ build exit 0；静态库数: $LIBS"
+          [ "$LIBS" -ge 139 ] || { echo "::error::静态库数不足（应有 139+，configurator 产物疑似破坏编译）"; exit 1; }
 
       - name: ctest 全绿（0 failed）
         if: steps.checkout-yuleasr.outcome == 'success'
-        # 探针：排除 GNU-ld 下已知链接失败的 boot 测试（白名单见 cmake build 步骤注释），统计其余结果
+        # YAC-CI-004：排除 yuleASR 既有 Linux 工具链问题测试（pristine 探针实测同失败，与生成头无关）：
+        # ① boot 4 项：GNU-ld 链接问题（见 cmake build 注释 ②，Boot_Loader.c 汇编）
+        # ② test_csm / mcal_adc_test / mcal_uart_test：宿主 MCAL 测试在 GCC/Linux 下
+        #    断言/段错误/数值异常（pristine 0/3 通过，macOS 参考环境 3/3 通过）
         run: |
-          set +e
-          (cd "$RUNNER_TEMP/yuleasr-build" && ctest --output-on-failure -E "test_boot_update_confirm|test_boot_integration|test_boot_verify|bootloader") | tee /tmp/ctest.log
-          CTEST_RC=${PIPESTATUS[0]}
-          set -e
-          echo "CTEST_RC=$CTEST_RC"
-          grep -E "tests passed|tests failed|Test +#.*Failed" /tmp/ctest.log | tail -5 || true
+          (cd "$RUNNER_TEMP/yuleasr-build" && ctest --output-on-failure -E "test_boot_update_confirm|test_boot_integration|test_boot_verify|bootloader|test_csm|mcal_adc_test|mcal_uart_test") | tee /tmp/ctest.log
+          grep -E "100% tests passed, 0 tests failed" /tmp/ctest.log
 
       - name: replace-cfgh rollback（md5 校验恢复，rolledBack=109 skipped=0）
         if: steps.checkout-yuleasr.outcome == 'success'
