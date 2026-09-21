@@ -41,15 +41,15 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@isomorphic-git/lightning-fs": "^4.7.0",
+    "@isomorphic-git/lightning-fs": "^4.8.0",
     "@yuletech/core": "workspace:*",
     "eventemitter3": "^5.0.1",
-    "isomorphic-git": "^1.40.0"
+    "isomorphic-git": "^1.42.2"
   },
   "devDependencies": {
     "tsup": "^8.0.0",
     "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "vitest": "^5.0.1"
   },
   "files": [
     "dist"
