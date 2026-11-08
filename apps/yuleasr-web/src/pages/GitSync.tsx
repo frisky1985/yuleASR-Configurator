@@ -11,6 +11,8 @@ import {
   X,
   Clock,
   User,
+  Globe,
+  Save,
 } from 'lucide-react';
 import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -51,6 +53,10 @@ export function GitSync() {
   const [activeTab, setActiveTab] = useState<'history' | 'branches' | 'diff'>('history');
   const [isCommitting, setIsCommitting] = useState(false);
 
+  // 远程仓库地址（持久化于 localStorage: yuleasr.gitRemote）
+  const [remoteUrl, setRemoteUrl] = useState('');
+  const [remoteError, setRemoteError] = useState('');
+
   const flash = useCallback((status: 'success' | 'error', message: string) => {
     setSyncStatus(status);
     setSyncMessage(message);
@@ -62,6 +68,7 @@ export function GitSync() {
     setIsLoading(true);
     try {
       await gitService.init();
+      setRemoteUrl(gitService.getRemote() || '');
       const [branchList, commitList] = await Promise.all([
         gitService.getBranches(),
         gitService.getCommits(),
@@ -228,6 +235,33 @@ export function GitSync() {
     }
   };
 
+  // 远程仓库地址校验：允许空、http(s)://、ssh://、git://、git@ 形式
+  const validateRemote = (url: string): string | null => {
+    const v = url.trim();
+    if (!v) return null;
+    if (/^(https?:\/\/|ssh:\/\/|git:\/\/|git@)/.test(v)) return null;
+    return '仅支持 http://、https://、ssh://、git:// 或 git@ 形式的 Git 地址';
+  };
+
+  const handleSaveRemote = () => {
+    const err = validateRemote(remoteUrl);
+    if (err) {
+      setRemoteError(err);
+      return;
+    }
+    const v = remoteUrl.trim();
+    gitService.setRemote(v || undefined);
+    setRemoteError('');
+    flash('success', v ? `远程地址已保存：${v}` : '已清除远程地址');
+  };
+
+  const handleClearRemote = () => {
+    setRemoteUrl('');
+    setRemoteError('');
+    gitService.setRemote(undefined);
+    flash('success', '已清除远程地址');
+  };
+
   const handleViewCurrentDiff = async () => {
     // Show diff between HEAD and working directory (uncommitted changes)
     try {
@@ -350,6 +384,57 @@ export function GitSync() {
             Push
           </button>
         </div>
+      </div>
+
+      {/* Remote Repository */}
+      <div className="flex items-end gap-2 p-3 bg-app-bg-secondary rounded-lg border border-app-border-primary">
+        <div className="flex-1">
+          <label
+            htmlFor="git-remote-url"
+            className="block mb-1 text-xs font-medium text-app-text-secondary"
+          >
+            Remote
+          </label>
+          <div className="relative">
+            <Globe className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-app-text-tertiary" />
+            <input
+              id="git-remote-url"
+              type="text"
+              value={remoteUrl}
+              onChange={e => {
+                setRemoteUrl(e.target.value);
+                if (remoteError) setRemoteError('');
+              }}
+              onKeyDown={e => {
+                if (e.key === 'Enter') handleSaveRemote();
+              }}
+              placeholder="https://github.com/org/yuleasr-config.git"
+              className="w-full pl-9 pr-3 py-2 text-sm text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+            />
+          </div>
+          {remoteError ? (
+            <p className="mt-1 text-xs text-red-600 dark:text-red-400">{remoteError}</p>
+          ) : (
+            <p className="mt-1 text-xs text-app-text-tertiary">
+              未配置时 Pull/Push 将无法使用；地址保存在本地 localStorage
+            </p>
+          )}
+        </div>
+        <button
+          onClick={handleSaveRemote}
+          className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors"
+        >
+          <Save className="w-4 h-4" />
+          Save
+        </button>
+        <button
+          onClick={handleClearRemote}
+          disabled={!remoteUrl}
+          className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          <X className="w-4 h-4" />
+          Clear
+        </button>
       </div>
 
       {/* Main Content */}
