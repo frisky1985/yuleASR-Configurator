@@ -11,6 +11,10 @@ const base = process.env.PUBLIC_URL || '/configurator/';
 export default defineConfig({
   plugins: [react()],
   base,
+  // isomorphic-git 依赖 Node 风格的 global；浏览器用 globalThis 替代
+  define: {
+    global: 'globalThis',
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

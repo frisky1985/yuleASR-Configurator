@@ -3,6 +3,7 @@
  * 代码生成器接口定义
  */
 
+export * from './cfg-header';
 export * from './ecuc-generator';
 export * from './rte-generator';
 export * from './swc-generator';

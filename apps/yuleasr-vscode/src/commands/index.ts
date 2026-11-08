@@ -1,13 +1,21 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { validateAll } from '@yuletech/core/validators';
 import * as vscode from 'vscode';
 
 // Fix 28: 接入 core 统一验证管道，替换原「只查 moduleName」的假校验
-import { validateAll } from '@yuletech/core/validators';
 
 import { ConfigEditorPanel } from '../panels/ConfigEditorPanel';
 import { ConfigTreeProvider, ConfigTreeItem } from '../providers/ConfigTreeProvider';
+import {
+  collectHandwrittenHeaders,
+  generateForConfig,
+  loadExtractedSchemas,
+  resolveSchemaDir,
+  syncGeneratedFiles,
+  type ModuleGenerationResult,
+} from '../services/cfgGenerator';
 
 /**
  * Register all yuleASR commands
@@ -181,8 +189,45 @@ async function syncWithYuleASR(_item?: ConfigTreeItem): Promise<void> {
     return;
   }
 
-  // 同步功能尚未实现：明确警告，不做任何假装成功的模拟操作
-  vscode.window.showWarningMessage('同步 yuleASR 功能尚未实现，请使用 Web 端云同步');
+  const schemas = loadExtractedSchemas(getSchemaDir());
+  if (schemas.length === 0) {
+    vscode.window.showErrorMessage(`扩展内置 schema 缺失：${getSchemaDir()}`);
+    return;
+  }
+
+  // 生成 + 写回 yuleASR（按 schema 的 x-source-file 定位；写前备份原文件）
+  const handwritten = collectHandwrittenHeaders(yuleASRPath, schemas);
+  const { ok, failed } = await vscode.window.withProgress(
+    {
+      location: vscode.ProgressLocation.Notification,
+      title: 'Generating and syncing with yuleASR...',
+      cancellable: false,
+    },
+    async progress => {
+      progress.report({ message: '生成全部配置头文件...' });
+      return generateAllForWorkspace(handwritten);
+    }
+  );
+
+  if (ok.length === 0) {
+    vscode.window.showErrorMessage(
+      `同步失败：0 个模块生成成功${failed.length > 0 ? `；首个错误：${failed[0].module} — ${failed[0].error}` : ''}`
+    );
+    return;
+  }
+
+  const sync = syncGeneratedFiles(yuleASRPath, ok);
+  const backupCount = sync.written.filter(w => w.backupPath).length;
+  vscode.window.showInformationMessage(
+    `同步完成：写入 ${sync.written.length} 个头文件（备份 ${backupCount}），跳过 ${sync.skipped.length + failed.length}`
+  );
+  if (failed.length > 0 || sync.skipped.length > 0) {
+    const details = [
+      ...failed.map(f => `${f.module}: ${f.error}`),
+      ...sync.skipped.map(s => `${s.module}: ${s.reason}`),
+    ];
+    vscode.window.showWarningMessage(`部分模块未同步：${details.slice(0, 3).join('；')}`);
+  }
 }
 
 /**
@@ -328,38 +373,162 @@ async function validateAllConfigurations(treeProvider: ConfigTreeProvider): Prom
  * Generate code for a configuration
  */
 async function generateCodeForConfig(filePath: string, moduleName?: string): Promise<void> {
-  // 代码生成功能尚未实现：明确警告，不假装生成成功
-  vscode.window.showWarningMessage(
-    `代码生成功能尚未实现：${moduleName || path.basename(filePath)}`
+  const name = moduleName || moduleNameFromPath(filePath);
+  const schemas = loadExtractedSchemas(getSchemaDir());
+  if (schemas.length === 0) {
+    vscode.window.showErrorMessage(`扩展内置 schema 缺失：${getSchemaDir()}`);
+    return;
+  }
+
+  const yuleASRPath = vscode.workspace.getConfiguration('yuleasr').get<string>('yuleASRPath');
+  const handwritten = yuleASRPath ? collectHandwrittenHeaders(yuleASRPath, schemas) : new Map();
+
+  const result = await generateForConfig(filePath, name, schemas, handwritten);
+  if (!result.file) {
+    vscode.window.showErrorMessage(`代码生成失败：${result.error || '未知错误'}`);
+    return;
+  }
+
+  const outDir = getOutputDir();
+  if (!outDir) {
+    vscode.window.showErrorMessage('未打开工作区，无法确定输出目录');
+    return;
+  }
+  fs.mkdirSync(outDir, { recursive: true });
+  const outPath = path.join(outDir, result.file.filename);
+  fs.writeFileSync(outPath, result.file.content, 'utf8');
+
+  const open = await vscode.window.showInformationMessage(
+    `已生成 ${result.file.filename}（${outPath}）`,
+    '打开文件'
   );
+  if (open === '打开文件') {
+    const doc = await vscode.workspace.openTextDocument(outPath);
+    await vscode.window.showTextDocument(doc);
+  }
 }
 
 /**
  * Generate code for all configurations
  */
-async function generateAllCode(treeProvider: ConfigTreeProvider): Promise<void> {
-  const modules = await treeProvider.getAllModules();
+async function generateAllCode(_treeProvider: ConfigTreeProvider): Promise<void> {
+  const schemas = loadExtractedSchemas(getSchemaDir());
+  if (schemas.length === 0) {
+    vscode.window.showErrorMessage(`扩展内置 schema 缺失：${getSchemaDir()}`);
+    return;
+  }
 
-  await vscode.window.withProgress(
+  const yuleASRPath = vscode.workspace.getConfiguration('yuleasr').get<string>('yuleASRPath');
+  const handwritten = yuleASRPath ? collectHandwrittenHeaders(yuleASRPath, schemas) : new Map();
+
+  const { ok, failed } = await vscode.window.withProgress(
     {
       location: vscode.ProgressLocation.Notification,
       title: 'Generating code for all modules...',
-      cancellable: true,
+      cancellable: false,
     },
     async progress => {
-      for (let i = 0; i < modules.length; i++) {
-        if (modules[i].filePath) {
-          progress.report({
-            increment: 100 / modules.length,
-            message: `Processing ${modules[i].label}...`,
-          });
-          await delay(200);
-        }
+      const uris = await findConfigFiles();
+      const results: {
+        ok: Array<{
+          module: string;
+          file: NonNullable<ModuleGenerationResult['file']>;
+          sourcePath?: string;
+        }>;
+        failed: Array<{ module: string; error: string }>;
+      } = { ok: [], failed: [] };
+
+      for (let i = 0; i < uris.length; i++) {
+        const uri = uris[i];
+        const name = moduleNameFromPath(uri.fsPath);
+        progress.report({
+          increment: 100 / uris.length,
+          message: `${name} (${i + 1}/${uris.length})`,
+        });
+        const r = await generateForConfig(uri.fsPath, name, schemas, handwritten);
+        if (r.file) results.ok.push({ module: name, file: r.file, sourcePath: r.sourcePath });
+        else results.failed.push({ module: name, error: r.error || '未知错误' });
       }
+      return results;
     }
   );
 
-  vscode.window.showInformationMessage(`Code generated for ${modules.length} modules`);
+  const outDir = getOutputDir();
+  if (outDir && ok.length > 0) {
+    fs.mkdirSync(outDir, { recursive: true });
+    for (const item of ok) {
+      fs.writeFileSync(path.join(outDir, item.file.filename), item.file.content, 'utf8');
+    }
+  }
+
+  if (ok.length === 0) {
+    vscode.window.showErrorMessage(
+      `代码生成失败：0 个模块成功${failed.length > 0 ? `；首个错误：${failed[0].module} — ${failed[0].error}` : '（工作区无 *.yule.json 配置）'}`
+    );
+    return;
+  }
+  vscode.window.showInformationMessage(
+    `已生成 ${ok.length} 个模块头文件${outDir ? ` → ${outDir}` : ''}`
+  );
+  if (failed.length > 0) {
+    vscode.window.showWarningMessage(
+      `${failed.length} 个模块失败：${failed
+        .slice(0, 3)
+        .map(f => `${f.module} (${f.error})`)
+        .join('；')}`
+    );
+  }
+}
+
+/** 扩展内置宏名版 schema 目录 */
+function getSchemaDir(): string {
+  return resolveSchemaDir(path.join(__dirname, '..'));
+}
+
+/** 生成输出目录（工作区 .yuleasr/generated） */
+function getOutputDir(): string | undefined {
+  const root = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+  return root ? path.join(root, '.yuleasr', 'generated') : undefined;
+}
+
+/** 工作区内全部 *.yule.json 配置 */
+function findConfigFiles(): Thenable<vscode.Uri[]> {
+  return vscode.workspace.findFiles('**/*.yule.json', '**/node_modules/**');
+}
+
+/** 文件名 → 模块名（Can.yule.json → Can） */
+function moduleNameFromPath(filePath: string): string {
+  return path
+    .basename(filePath)
+    .replace(/\.yule\.json$/i, '')
+    .replace(/\.json$/i, '');
+}
+
+/** 全工作区生成（sync 与批量生成共用） */
+async function generateAllForWorkspace(handwritten: Map<string, string>): Promise<{
+  ok: Array<{
+    module: string;
+    file: NonNullable<ModuleGenerationResult['file']>;
+    sourcePath?: string;
+  }>;
+  failed: Array<{ module: string; error: string }>;
+}> {
+  const schemas = loadExtractedSchemas(getSchemaDir());
+  const uris = await findConfigFiles();
+  const ok: Array<{
+    module: string;
+    file: NonNullable<ModuleGenerationResult['file']>;
+    sourcePath?: string;
+  }> = [];
+  const failed: Array<{ module: string; error: string }> = [];
+
+  for (const uri of uris) {
+    const name = moduleNameFromPath(uri.fsPath);
+    const r = await generateForConfig(uri.fsPath, name, schemas, handwritten);
+    if (r.file) ok.push({ module: name, file: r.file, sourcePath: r.sourcePath });
+    else failed.push({ module: name, error: r.error || '未知错误' });
+  }
+  return { ok, failed };
 }
 
 /**
@@ -549,10 +718,6 @@ async function initializeProject(treeProvider: ConfigTreeProvider): Promise<void
   } catch (error) {
     vscode.window.showErrorMessage(`Failed to initialize project: ${error}`);
   }
-}
-
-function delay(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /**

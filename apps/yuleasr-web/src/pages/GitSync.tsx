@@ -22,15 +22,17 @@ import { cn, formatDate } from '@/lib/utils';
 import {
   GitService,
   GitError,
-  GIT_NOT_IMPLEMENTED,
   type CommitInfo,
   type BranchInfo,
   type DiffInfo,
 } from '@/services/gitService';
+import { useConfigStore } from '@/stores/configStore';
 
 export function GitSync() {
   const navigate = useNavigate();
   const [gitService] = useState(() => new GitService());
+  const currentConfig = useConfigStore(s => s.currentConfig);
+  const setCurrentConfig = useConfigStore(s => s.setCurrentConfig);
 
   // Data state
   const [branches, setBranches] = useState<BranchInfo[]>([]);
@@ -47,13 +49,19 @@ export function GitSync() {
   const [syncStatus, setSyncStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [syncMessage, setSyncMessage] = useState<string>('');
   const [activeTab, setActiveTab] = useState<'history' | 'branches' | 'diff'>('history');
-  // Git 后端尚未接入：为 true 时整个页面渲染禁用占位，绝不展示假数据
-  const [gitUnavailable, setGitUnavailable] = useState(false);
+  const [isCommitting, setIsCommitting] = useState(false);
+
+  const flash = useCallback((status: 'success' | 'error', message: string) => {
+    setSyncStatus(status);
+    setSyncMessage(message);
+    setTimeout(() => setSyncStatus('idle'), 5000);
+  }, []);
 
   // Load initial data
   const loadData = useCallback(async () => {
     setIsLoading(true);
     try {
+      await gitService.init();
       const [branchList, commitList] = await Promise.all([
         gitService.getBranches(),
         gitService.getCommits(),
@@ -65,21 +73,12 @@ export function GitSync() {
         setCurrentBranch(current.name);
       }
     } catch (err) {
-      if (err instanceof GitError && err.code === GIT_NOT_IMPLEMENTED) {
-        // Git 功能尚未接入：明确提示，不渲染假数据
-        setGitUnavailable(true);
-        setSyncStatus('error');
-        // TODO i18n: 接入 i18n 后替换为 t('git.notImplemented')
-        setSyncMessage('Git 功能尚未接入（计划中）');
-      } else {
-        console.error('Failed to load git data:', err);
-        setSyncStatus('error');
-        setSyncMessage('Failed to load git data');
-      }
+      console.error('Failed to load git data:', err);
+      flash('error', err instanceof GitError ? err.message : 'Failed to load git data');
     } finally {
       setIsLoading(false);
     }
-  }, [gitService]);
+  }, [gitService, flash]);
 
   useEffect(() => {
     loadData();
@@ -135,8 +134,47 @@ export function GitSync() {
     ) {
       return;
     }
-    // TODO: Implement rollback
-    console.log('Rollback to:', commit.oid);
+    try {
+      const config = await gitService.readConfigAt(commit.oid);
+      if (!config) {
+        flash('error', '该提交不含配置快照，无法回滚');
+        return;
+      }
+      setCurrentConfig(config);
+      flash('success', `已回滚到 ${commit.oid.slice(0, 7)}（工作区未提交，可创建快照保留该状态）`);
+    } catch (err) {
+      console.error('Failed to rollback:', err);
+      flash('error', err instanceof GitError ? err.message : '回滚失败');
+    }
+  };
+
+  // 创建当前配置快照
+  const handleCommit = async () => {
+    if (!currentConfig) {
+      flash('error', '当前没有打开的配置，无法创建快照');
+      return;
+    }
+    const message = prompt('快照说明', `配置快照 ${new Date().toLocaleString()}`);
+    if (message === null) return;
+
+    setIsCommitting(true);
+    try {
+      const oid = await gitService.commitConfig(
+        message.trim() || 'Update configuration',
+        currentConfig
+      );
+      if (oid === false) {
+        flash('success', '配置与上次快照一致，无需提交');
+      } else {
+        flash('success', `已创建快照 ${oid.slice(0, 7)}`);
+        await loadData();
+      }
+    } catch (err) {
+      console.error('Failed to commit:', err);
+      flash('error', err instanceof GitError ? err.message : '提交失败');
+    } finally {
+      setIsCommitting(false);
+    }
   };
 
   const handleCompare = async (commit1: CommitInfo, commit2: CommitInfo) => {
@@ -152,19 +190,42 @@ export function GitSync() {
 
   // Sync operations
   const handlePull = async () => {
-    // TODO i18n: 接入 i18n 后替换为 t('git.pullNotImplemented')
-    // Pull 依赖 Git 后端，尚未接入：明确提示未实现，不假装成功
-    setSyncStatus('error');
-    setSyncMessage('Pull 功能尚未接入（计划中）');
-    setTimeout(() => setSyncStatus('idle'), 5000);
+    setIsPulling(true);
+    try {
+      await gitService.pull();
+      flash('success', 'Pull 完成');
+      await loadData();
+    } catch (err) {
+      flash(
+        'error',
+        err instanceof GitError && err.code === 'REMOTE_NOT_CONFIGURED'
+          ? '未配置远程仓库（localStorage: yuleasr.gitRemote）'
+          : err instanceof GitError
+            ? err.message
+            : 'Pull 失败'
+      );
+    } finally {
+      setIsPulling(false);
+    }
   };
 
   const handlePush = async () => {
-    // TODO i18n: 接入 i18n 后替换为 t('git.pushNotImplemented')
-    // Push 依赖 Git 后端，尚未接入：明确提示未实现，不假装成功
-    setSyncStatus('error');
-    setSyncMessage('Push 功能尚未接入（计划中）');
-    setTimeout(() => setSyncStatus('idle'), 5000);
+    setIsPushing(true);
+    try {
+      await gitService.push();
+      flash('success', 'Push 完成');
+    } catch (err) {
+      flash(
+        'error',
+        err instanceof GitError && err.code === 'REMOTE_NOT_CONFIGURED'
+          ? '未配置远程仓库（localStorage: yuleasr.gitRemote）'
+          : err instanceof GitError
+            ? err.message
+            : 'Push 失败'
+      );
+    } finally {
+      setIsPushing(false);
+    }
   };
 
   const handleViewCurrentDiff = async () => {
@@ -228,10 +289,23 @@ export function GitSync() {
             </div>
           )}
 
+          {/* Snapshot Button */}
+          <button
+            onClick={handleCommit}
+            disabled={isCommitting || isLoading}
+            className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isCommitting ? (
+              <RefreshCw className="w-4 h-4 animate-spin" />
+            ) : (
+              <GitCommit className="w-4 h-4" />
+            )}
+            Snapshot
+          </button>
+
           {/* View Current Changes Button */}
           <button
             onClick={handleViewCurrentDiff}
-            disabled={gitUnavailable}
             className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <GitCompare className="w-4 h-4" />
@@ -241,7 +315,7 @@ export function GitSync() {
           {/* Pull Button */}
           <button
             onClick={handlePull}
-            disabled={isPulling || isPushing || gitUnavailable}
+            disabled={isPulling || isPushing}
             className={cn(
               'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
               isPulling
@@ -260,7 +334,7 @@ export function GitSync() {
           {/* Push Button */}
           <button
             onClick={handlePush}
-            disabled={isPulling || isPushing || gitUnavailable}
+            disabled={isPulling || isPushing}
             className={cn(
               'inline-flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
               isPushing
@@ -278,20 +352,6 @@ export function GitSync() {
         </div>
       </div>
 
-      {/* Git 未接入横幅：显式告知功能尚未实现，不展示假数据 */}
-      {gitUnavailable && (
-        <div className="flex items-start gap-2 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800 dark:bg-amber-950/40 dark:border-amber-800/60 dark:text-amber-300">
-          <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-          <div>
-            {/* TODO i18n: 接入 i18n 后替换为 t('git.notImplementedBanner') */}
-            <p className="font-medium">Git 功能尚未接入（计划中）</p>
-            <p className="text-xs mt-0.5">
-              分支管理、版本历史与差异对比等功能将在后续版本提供，当前不显示任何模拟数据。
-            </p>
-          </div>
-        </div>
-      )}
-
       {/* Main Content */}
       <div className="grid grid-cols-12 gap-4">
         {/* Left Sidebar - Branch Manager */}
@@ -304,7 +364,6 @@ export function GitSync() {
             onSwitchBranch={handleSwitchBranch}
             onRefresh={loadData}
             isLoading={isLoading}
-            unavailable={gitUnavailable}
           />
         </div>
 
@@ -358,7 +417,6 @@ export function GitSync() {
               onCompare={handleCompare}
               onRefresh={loadData}
               isLoading={isLoading}
-              unavailable={gitUnavailable}
             />
           )}
 
@@ -414,7 +472,6 @@ export function GitSync() {
                       : undefined
                   }
                   title={selectedCommit ? 'Commit Changes' : 'Current Changes'}
-                  unavailable={gitUnavailable}
                 />
               )}
             </div>
