@@ -35,6 +35,8 @@ export interface GitServiceConfig {
   author?: { name: string; email: string };
   /** 自定义文件系统（测试用 MemoryBackend；默认 IndexedDB） */
   fs?: FS;
+  /** 仓库目录（默认浏览器 IndexedDB 根 /；测试可指定子目录） */
+  dir?: string;
 }
 
 export interface CommitInfo {
@@ -100,7 +102,7 @@ const BRANCH_RE = /^(?!-)[A-Za-z0-9._/-]+$/;
 
 export class GitService {
   private fs: FS;
-  private readonly dir = '/';
+  private readonly dir: string;
   private readonly defaultBranch: string;
   private readonly author: { name: string; email: string };
   private readonly corsProxy: string;
@@ -108,6 +110,7 @@ export class GitService {
 
   constructor(config: GitServiceConfig = {}) {
     this.fs = config.fs || new FS(config.name || 'yuleasr-configurator');
+    this.dir = config.dir || '/';
     this.defaultBranch = config.defaultBranch || 'main';
     this.author = config.author || { name: 'yuleASR User', email: 'user@yuleasr.local' };
     this.corsProxy = config.corsProxy || 'https://cors.isomorphic-git.org';
@@ -363,7 +366,7 @@ export class GitService {
         remote,
         ref:
           (await git.currentBranch({ fs: this.fs, dir: this.dir, fullname: false })) || undefined,
-        corsProxy: this.corsProxy,
+        corsProxy: this.effectiveCorsProxy(),
         author: this.author,
       });
     } catch (e) {
@@ -387,7 +390,7 @@ export class GitService {
         remote,
         ref:
           (await git.currentBranch({ fs: this.fs, dir: this.dir, fullname: false })) || undefined,
-        corsProxy: this.corsProxy,
+        corsProxy: this.effectiveCorsProxy(),
       });
     } catch (e) {
       throw new GitError(
@@ -405,6 +408,21 @@ export class GitService {
         'REMOTE_NOT_CONFIGURED'
       );
     }
+  }
+
+  /**
+   * 本机/内网地址不经过 CORS 代理：代理仅用于浏览器跨域访问公网 Git 托管，
+   * 对 localhost / 127.0.0.1 走代理反而会把请求转发到外部、导致失败。
+   */
+  private effectiveCorsProxy(): string | undefined {
+    if (!this.remoteUrl) return undefined;
+    try {
+      const host = new URL(this.remoteUrl).hostname;
+      if (host === 'localhost' || host === '127.0.0.1' || host === '::1') return undefined;
+    } catch {
+      // 非标准 URL（如 git@host:repo）交给 isomorphic-git 自行报错
+    }
+    return this.corsProxy;
   }
 
   private async ensureRemote(remote: string): Promise<void> {
