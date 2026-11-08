@@ -20,17 +20,17 @@
     "version-packages": "changeset version"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.31.1",
+    "@changesets/cli": "^3.0.3",
     "@eslint/js": "^10.0.1",
-    "@playwright/test": "^1.62.1",
-    "@types/node": "^26.1.2",
-    "eslint": "^10.8.0",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.6",
+    "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.29.1",
-    "prettier": "^3.9.6",
-    "typescript": "6.0.3",
-    "typescript-eslint": "^8.66.0",
-    "vitest": "^4.1.12"
+    "prettier": "^3.9.10",
+    "typescript": "7.0.2",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.1.0"
   },
   "engines": {
     "node": ">=20.0.0",
@@ -52,7 +52,7 @@
       "linkify-it": "^5.0.2",
       "postcss": "^8.5.18",
       "tar": "^7.5.19",
-      "vitest": "^4.1.12",
+      "vitest": "^5.1.0",
       "@vitest/coverage-v8": "^4.1.12",
       "@vitest/mocker": "^4.1.12",
       "@vitest/ui": "^3.2.6",

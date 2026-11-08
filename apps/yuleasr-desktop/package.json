@@ -16,17 +16,17 @@
     "publish": "electron-builder --publish always"
   },
   "dependencies": {
-    "electron-updater": "^6.3.0"
+    "electron-updater": "^6.8.11"
   },
   "devDependencies": {
-    "@rollup/rollup-darwin-arm64": "^4.62.3",
-    "@vitejs/plugin-react": "^6.0.5",
-    "concurrently": "^10.0.4",
-    "electron": "43.8.7",
-    "electron-builder": "^26.15.3",
+    "@rollup/rollup-darwin-arm64": "^4.67.5",
+    "@vitejs/plugin-react": "^6.2.1",
+    "concurrently": "^10.0.6",
+    "electron": "45.2.3",
+    "electron-builder": "^26.18.0",
     "typescript": "^7.0.2",
     "vite": "^8.2.4",
-    "wait-on": "^9.1.0"
+    "wait-on": "^9.5.1"
   },
   "build": {
     "appId": "com.yuletech.yuleasr-configurator",
