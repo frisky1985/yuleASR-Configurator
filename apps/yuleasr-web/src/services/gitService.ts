@@ -87,7 +87,9 @@ export class GitError extends Error {
   constructor(
     message: string,
     public code: string,
-    public originalError?: Error
+    public originalError?: Error,
+    /** 结构化错误详情（如 Pull 分叉的 ahead/behind/冲突文件） */
+    public details?: Record<string, unknown>
   ) {
     super(message);
     this.name = 'GitError';
@@ -96,6 +98,9 @@ export class GitError extends Error {
 
 /** 配置快照在仓库中的固定路径 */
 const CONFIG_PATH = 'config/config.json';
+
+/** 分叉分析时回溯提交的上限（配置快照仓库体量小，1000 足够覆盖） */
+const MAX_LOG_DEPTH = 1000;
 
 /** 校验分支名（避免非法 ref 让 isomorphic-git 抛底层错误） */
 const BRANCH_RE = /^(?!-)[A-Za-z0-9._/-]+$/;
@@ -358,23 +363,130 @@ export class GitService {
   async pull(remote = 'origin'): Promise<void> {
     this.assertRemote();
     await this.ensureRemote(remote);
+
+    const branch = await git.currentBranch({ fs: this.fs, dir: this.dir, fullname: false });
+    if (!branch) {
+      throw new GitError(
+        'Pull 失败：当前处于分离 HEAD 状态，请先切换到分支',
+        'PULL_DETACHED_HEAD'
+      );
+    }
+
     try {
       await git.pull({
         fs: this.fs,
         http,
         dir: this.dir,
         remote,
-        ref:
-          (await git.currentBranch({ fs: this.fs, dir: this.dir, fullname: false })) || undefined,
+        ref: branch,
+        // 只允许快进：分叉时统一抛 FastForwardError，交由下方转换成明确错误，
+        // 避免 isomorphic-git 静默做三方合并或留下合并冲突标记。
+        fastForwardOnly: true,
         corsProxy: this.effectiveCorsProxy(),
         author: this.author,
       });
     } catch (e) {
+      // 本地与远程各自有新提交时，pull 默认只允许快进，会抛 FastForwardError。
+      // 这里转成带分叉详情的明确错误，避免上层只看到底层英文报错。
+      if (isFastForwardError(e)) {
+        throw await this.buildDivergedError(remote, branch, e);
+      }
       throw new GitError(
         `Pull 失败: ${e instanceof Error ? e.message : String(e)}`,
         'PULL_FAILED',
         asError(e)
       );
+    }
+  }
+
+  /**
+   * 构造分叉错误：统计 ahead/behind 与合并基点，并判断快照文件是否被双方同时修改。
+   * 依赖 pull 失败前已完成的 fetch（远程跟踪引用已更新）。
+   */
+  private async buildDivergedError(
+    remote: string,
+    branch: string,
+    cause: unknown
+  ): Promise<GitError> {
+    const remoteRef = `refs/remotes/${remote}/${branch}`;
+    const [localOid, remoteOid] = await Promise.all([
+      this.tryResolve('HEAD'),
+      this.tryResolve(remoteRef),
+    ]);
+
+    let ahead = 0;
+    let behind = 0;
+    let mergeBase: string | null = null;
+    let conflictingFiles: string[] = [];
+
+    if (localOid && remoteOid) {
+      const [localOids, remoteOids] = await Promise.all([
+        this.listCommitOids(localOid),
+        this.listCommitOids(remoteOid),
+      ]);
+      const localSet = new Set(localOids);
+      const remoteSet = new Set(remoteOids);
+      mergeBase = localOids.find(oid => remoteSet.has(oid)) ?? null;
+      ahead = localOids.filter(oid => !remoteSet.has(oid)).length;
+      behind = remoteOids.filter(oid => !localSet.has(oid)).length;
+      if (mergeBase) {
+        conflictingFiles = await this.findConflictingFiles(mergeBase, localOid, remoteOid);
+      }
+    }
+
+    const counts = `本地领先 ${ahead} 个提交、落后 ${behind} 个提交`;
+    const conflictText = conflictingFiles.length
+      ? `；冲突文件：${conflictingFiles.join(', ')}`
+      : '；未发现同一文件的并行修改（仅历史分叉）';
+
+    return new GitError(
+      `Pull 被拒绝：分支 ${branch} 与 ${remote}/${branch} 已分叉（${counts}）${conflictText}。请先手动合并远程提交，或基于远程分支重建本地分支`,
+      'PULL_DIVERGED',
+      asError(cause),
+      { remote, branch, ahead, behind, mergeBase, conflictingFiles }
+    );
+  }
+
+  private async tryResolve(ref: string): Promise<string | null> {
+    try {
+      return await git.resolveRef({ fs: this.fs, dir: this.dir, ref });
+    } catch {
+      return null;
+    }
+  }
+
+  private async listCommitOids(ref: string): Promise<string[]> {
+    try {
+      const log = await git.log({ fs: this.fs, dir: this.dir, ref, depth: MAX_LOG_DEPTH });
+      return log.map(c => c.oid);
+    } catch {
+      return [];
+    }
+  }
+
+  /** 判断配置快照是否在两侧被并行修改（两侧都改了且内容不同才算冲突） */
+  private async findConflictingFiles(
+    mergeBase: string,
+    localOid: string,
+    remoteOid: string
+  ): Promise<string[]> {
+    const [baseText, localText, remoteText] = await Promise.all([
+      this.readTextAt(mergeBase),
+      this.readTextAt(localOid),
+      this.readTextAt(remoteOid),
+    ]);
+    if (baseText === null || localText === null || remoteText === null) return [];
+    const localChanged = localText !== baseText;
+    const remoteChanged = remoteText !== baseText;
+    return localChanged && remoteChanged && localText !== remoteText ? [CONFIG_PATH] : [];
+  }
+
+  private async readTextAt(oid: string, filepath = CONFIG_PATH): Promise<string | null> {
+    try {
+      const { blob } = await git.readBlob({ fs: this.fs, dir: this.dir, oid, filepath });
+      return new TextDecoder().decode(blob);
+    } catch {
+      return null;
     }
   }
 
@@ -443,6 +555,17 @@ export class GitService {
 
 function asError(e: unknown): Error | undefined {
   return e instanceof Error ? e : undefined;
+}
+
+/** 识别 isomorphic-git 在无法快进时抛出的 FastForwardError */
+function isFastForwardError(e: unknown): boolean {
+  if (!e || typeof e !== 'object') return false;
+  const err = e as { code?: unknown; name?: unknown; message?: unknown };
+  return (
+    err.code === 'FastForwardError' ||
+    err.name === 'FastForwardError' ||
+    (typeof err.message === 'string' && /not possible to fast-forward/i.test(err.message))
+  );
 }
 
 function assertBranchName(name: string): void {

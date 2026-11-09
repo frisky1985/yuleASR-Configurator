@@ -11,14 +11,14 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import type { Server } from 'node:http';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 
 import * as git from 'isomorphic-git';
 import http from 'isomorphic-git/http/web';
 import { Volume } from 'memfs';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
-import { GitService, type GitServiceConfig } from '../gitService';
+import { GitError, GitService, type GitServiceConfig } from '../gitService';
 
 /** 用 git http-backend (CGI) 提供 smart-HTTP 服务 */
 function startGitHttpServer(root: string): Promise<{ server: Server; url: string }> {
@@ -169,5 +169,149 @@ describe('GitService.pull（本地 smart-HTTP 真实拉取）', () => {
       remoteUrl,
     });
     await expect(service.pull()).resolves.toBeUndefined();
+  });
+});
+
+describe('GitService.pull（分叉检测）', () => {
+  let workDir: string;
+  let server: Server;
+  let remoteUrl: string;
+  let seedDir: string;
+  let vol: Volume;
+
+  const seedGit = (...args: string[]) =>
+    execFileSync('git', args, {
+      cwd: seedDir,
+      env: {
+        ...process.env,
+        GIT_AUTHOR_NAME: 'Tester',
+        GIT_AUTHOR_EMAIL: 'tester@example.com',
+        GIT_COMMITTER_NAME: 'Tester',
+        GIT_COMMITTER_EMAIL: 'tester@example.com',
+        GIT_TERMINAL_PROMPT: '0',
+      },
+    });
+
+  /** 在远端（seed 仓库）写入文件、提交并推送 */
+  const seedCommit = (message: string, files: Record<string, string>) => {
+    for (const [rel, content] of Object.entries(files)) {
+      const full = join(seedDir, rel);
+      mkdirSync(dirname(full), { recursive: true });
+      writeFileSync(full, content);
+    }
+    seedGit('add', '.');
+    seedGit('commit', '-m', message);
+    seedGit('push');
+  };
+
+  const clientFs = () => vol as unknown as GitServiceConfig['fs'];
+
+  async function commitLocal(message: string, content: string) {
+    vol.writeFileSync('/repo/config/config.json', content);
+    await git.add({ fs: clientFs(), dir: '/repo', filepath: 'config/config.json' });
+    await git.commit({
+      fs: clientFs(),
+      dir: '/repo',
+      message,
+      author: { name: 'Tester', email: 'tester@example.com' },
+    });
+  }
+
+  async function pullError(service: GitService): Promise<GitError | undefined> {
+    try {
+      await service.pull();
+      return undefined;
+    } catch (e) {
+      return e as GitError;
+    }
+  }
+
+  beforeEach(async () => {
+    workDir = mkdtempSync(join(tmpdir(), 'yuleasr-git-diverge-'));
+    const bareDir = join(workDir, 'repo.git');
+    seedDir = join(workDir, 'seed');
+
+    execFileSync('git', ['init', '--bare', '-b', 'main', bareDir]);
+    execFileSync('git', ['init', '-b', 'main', seedDir]);
+    mkdirSync(join(seedDir, 'config'), { recursive: true });
+    writeFileSync(
+      join(seedDir, 'config', 'config.json'),
+      `${JSON.stringify({ version: 'v1' }, null, 2)}\n`
+    );
+    seedGit('add', '.');
+    seedGit('commit', '-m', 'v1');
+    seedGit('remote', 'add', 'origin', bareDir);
+    seedGit('push', '-u', 'origin', 'main');
+
+    const started = await startGitHttpServer(workDir);
+    server = started.server;
+    remoteUrl = started.url;
+
+    vol = new Volume();
+    vol.mkdirSync('/repo', { recursive: true });
+    await git.clone({
+      fs: clientFs(),
+      http,
+      dir: '/repo',
+      url: remoteUrl,
+      singleBranch: true,
+    });
+  });
+
+  afterEach(() => {
+    server?.close();
+    rmSync(workDir, { recursive: true, force: true });
+  });
+
+  it('双方修改同一文件时抛 PULL_DIVERGED 并给出 ahead/behind 与冲突文件', async () => {
+    await commitLocal('local v2', `${JSON.stringify({ version: 'local' }, null, 2)}\n`);
+    seedCommit('remote v2', {
+      'config/config.json': `${JSON.stringify({ version: 'remote' }, null, 2)}\n`,
+    });
+
+    const service = new GitService({
+      fs: clientFs(),
+      dir: '/repo',
+      remoteUrl,
+      author: { name: 'Tester', email: 'tester@example.com' },
+    });
+
+    const err = await pullError(service);
+
+    expect(err).toBeInstanceOf(GitError);
+    expect(err?.code).toBe('PULL_DIVERGED');
+    expect(err?.details).toMatchObject({
+      remote: 'origin',
+      branch: 'main',
+      ahead: 1,
+      behind: 1,
+      conflictingFiles: ['config/config.json'],
+    });
+    expect(err?.message).toContain('已分叉');
+    expect(err?.message).toContain('冲突文件：config/config.json');
+    // 失败后本地工作区保持原样，不被远程内容覆盖
+    expect(vol.readFileSync('/repo/config/config.json', 'utf8')).toContain('"local"');
+  });
+
+  it('远端仅改其他文件时抛 PULL_DIVERGED 但无冲突文件', async () => {
+    await commitLocal('local v2', `${JSON.stringify({ version: 'local' }, null, 2)}\n`);
+    seedCommit('remote readme', { 'README.md': '# remote\n' });
+
+    const service = new GitService({
+      fs: clientFs(),
+      dir: '/repo',
+      remoteUrl,
+      author: { name: 'Tester', email: 'tester@example.com' },
+    });
+
+    const err = await pullError(service);
+
+    expect(err?.code).toBe('PULL_DIVERGED');
+    expect(err?.details).toMatchObject({
+      ahead: 1,
+      behind: 1,
+      conflictingFiles: [],
+    });
+    expect(err?.message).toContain('仅历史分叉');
   });
 });
