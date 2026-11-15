@@ -42,7 +42,7 @@
       "builder-util-runtime": "^9.7.0",
       "electron-builder-squirrel-windows": "^26.15.0",
       "fast-jwt": "^6.3.4",
-      "fast-xml-parser": "^5.10.1",
+      "fast-xml-parser": "^5.12.1",
       "react-router-dom": "^7.18.0",
       "fast-uri": "^3.1.9",
       "@fastify/static": "^10.1.10",
