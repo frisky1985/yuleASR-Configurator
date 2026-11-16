@@ -7,14 +7,14 @@ import { useConfigStore } from '@/stores/configStore';
 
 export function StartPage() {
   const navigate = useNavigate();
-  const { configList, loadConfigList } = useConfigStore();
+  const { configList, loadConfigList, isLoading } = useConfigStore();
 
   useEffect(() => {
     void loadConfigList();
   }, [loadConfigList]);
 
   const recent = [...configList]
-    .sort((a, b) => b.lastModified.localeCompare(a.lastModified))
+    .sort((a, b) => (b.lastModified ?? '').localeCompare(a.lastModified ?? ''))
     .slice(0, 6);
 
   return (
@@ -46,7 +46,9 @@ export function StartPage() {
       </div>
 
       <h2 className="mt-8 text-sm font-semibold text-app-text-primary">最近工程</h2>
-      {recent.length === 0 ? (
+      {isLoading && configList.length === 0 ? (
+        <p className="mt-2 text-xs text-app-text-secondary">加载中…</p>
+      ) : recent.length === 0 ? (
         <p className="mt-2 text-xs text-app-text-secondary">还没有工程</p>
       ) : (
         <ul className="mt-2 divide-y divide-app-border-primary rounded-lg border border-app-border-primary">
@@ -59,7 +61,8 @@ export function StartPage() {
                 <FolderOpen className="h-4 w-4 text-app-text-secondary" />
                 <span className="text-sm">{item.name}</span>
                 <span className="ml-auto text-[11px] text-app-text-secondary">
-                  {item.moduleCount} 模块 · {formatDate(item.lastModified)}
+                  {item.moduleCount ?? 0} 模块 ·{' '}
+                  {item.lastModified ? formatDate(item.lastModified) : '—'}
                 </span>
               </button>
             </li>
