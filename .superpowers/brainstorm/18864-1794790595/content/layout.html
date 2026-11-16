@@ -1,0 +1,107 @@
+<style>
+  .wf{font:10px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:#9aa4b2;background:#12141a;height:186px;display:flex;flex-direction:column;overflow:hidden}
+  .wf-bar{height:15px;background:#1b1f27;border-bottom:1px solid #2a2f3a;display:flex;align-items:center;gap:4px;padding:0 6px;font-size:8px;color:#6b7480}
+  .wf-dot{width:5px;height:5px;border-radius:50%;background:#3d4450}
+  .wf-tabs{height:19px;display:flex;gap:2px;padding:2px 4px;background:#171b22;border-bottom:1px solid #2a2f3a}
+  .wf-tab{padding:1px 6px;background:#222834;border-radius:2px;font-size:8.5px;color:#9aa4b2}
+  .wf-tab.act{background:#2c3a55;color:#cfe0ff}
+  .wf-main{flex:1;display:flex;min-height:0}
+  .wf-tree{width:33%;background:#151920;border-right:1px solid #2a2f3a;padding:4px;font-size:8.5px;line-height:1.75}
+  .wf-content{flex:1;padding:4px;min-width:0}
+  .wf-row{display:flex;gap:2px;margin-bottom:2px}
+  .wf-cell{background:#1c212b;border:1px solid #2a3140;border-radius:2px;padding:1px 3px;font-size:8px;flex:1;overflow:hidden;white-space:nowrap}
+  .wf-cell.on{border-color:#4f8cff;color:#cfe0ff;background:#1b2436}
+  .wf-bottom{height:36%;border-top:1px solid #2a2f3a;background:#141821;padding:3px 4px;font-size:8px;line-height:1.7}
+  .wf-err{color:#ff8a8a}.wf-warn{color:#ffd166}.wf-ok{color:#6ee7a8}
+  .wf-status{height:12px;background:#1b1f27;border-top:1px solid #2a2f3a;font-size:7.5px;display:flex;align-items:center;padding:0 5px;gap:7px;color:#6b7480}
+  .wf-insp{width:27%;background:#151920;border-left:1px solid #2a2f3a;padding:3px;font-size:8px}
+  .wf-pill{display:inline-block;padding:0 4px;border-radius:6px;background:#2a1d22;color:#ff8a8a;font-size:7.5px}
+  .wf-card{background:#1a1f28;border:1px solid #2a3140;border-radius:3px;padding:3px;margin-bottom:3px;font-size:8px}
+  .wf-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+</style>
+
+<h2>桌面工作区主骨架：选一个方向</h2>
+<p class="subtitle">三者都保留 DaVinci 的「树 → 参数 → 校验」闭环，差别在于问题反馈的位置与跨模块切换方式。点选一个，我再按它做细节线框。</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:0">
+      <div class="wf">
+        <div class="wf-bar"><span class="wf-dot"></span><span class="wf-dot"></span><span class="wf-dot"></span><span style="margin-left:4px">ECU_Project.dvproj — yuleASR Configurator</span></div>
+        <div class="wf-tabs"><span class="wf-tab act">Basic Editor</span><span class="wf-tab">通信</span><span class="wf-tab">诊断</span><span class="wf-tab">生成</span></div>
+        <div class="wf-main">
+          <div class="wf-tree">▾ ECU Configuration<br>&nbsp;▾ Can<br>&nbsp;&nbsp;▾ CanConfigSet<br>&nbsp;&nbsp;&nbsp;• CanController<br>&nbsp;▾ Com<br>&nbsp;&nbsp;▪ ComIPdu<br>&nbsp;▸ Dem<br>&nbsp;▸ NvM</div>
+          <div class="wf-content">
+            <div class="wf-row"><span class="wf-cell">名称</span><span class="wf-cell">值</span><span class="wf-cell">单位</span></div>
+            <div class="wf-row"><span class="wf-cell on">CanControllerBaudRate</span><span class="wf-cell on">500000</span><span class="wf-cell">kbps</span></div>
+            <div class="wf-row"><span class="wf-cell">CanControllerId</span><span class="wf-cell">0</span><span class="wf-cell">—</span></div>
+            <div class="wf-row"><span class="wf-cell">CanRxProcessing</span><span class="wf-cell">INTERRUPT</span><span class="wf-cell">—</span></div>
+            <div class="wf-row"><span class="wf-cell">CanTxProcessing</span><span class="wf-cell">INTERRUPT</span><span class="wf-cell">—</span></div>
+            <div class="wf-row"><span class="wf-cell">CanWakeupSupport</span><span class="wf-cell">true</span><span class="wf-cell">—</span></div>
+          </div>
+        </div>
+        <div class="wf-bottom"><b style="color:#9aa4b2">问题 (3)</b><br><span class="wf-err">✕ CanControllerBaudRate 超出 [1000,1000000]</span><br><span class="wf-warn">▲ ComIPdu 缺少引用 Pdu</span><br><span class="wf-ok">✓ 26 个模块校验通过</span></div>
+        <div class="wf-status"><span>● 已保存</span><span>L1 · 55%</span><span>ARXML 就绪</span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A · 经典三栏 + 底部问题面板</h3>
+      <p>最接近 DaVinci 6 的 Basic Editor：底部问题常驻，双击问题跳转到参数。信息密度最高，但小屏挤压。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:0">
+      <div class="wf">
+        <div class="wf-bar"><span class="wf-dot"></span><span class="wf-dot"></span><span class="wf-dot"></span><span style="margin-left:4px">Can / CanConfigSet / CanController_0</span></div>
+        <div class="wf-main">
+          <div class="wf-tree">▾ 模块<br>&nbsp;▾ Can<br>&nbsp;&nbsp;▸ 容器 4<br>&nbsp;▾ Com<br>&nbsp;&nbsp;▸ 容器 12<br>&nbsp;▸ Dem<br>&nbsp;▸ NvM<br>&nbsp;▸ Os</div>
+          <div class="wf-content">
+            <div class="wf-row"><span class="wf-cell">参数</span><span class="wf-cell" style="flex:2">值</span></div>
+            <div class="wf-row"><span class="wf-cell on">BaudRate</span><span class="wf-cell on" style="flex:2">500000</span></div>
+            <div class="wf-row"><span class="wf-cell">ControllerId</span><span class="wf-cell" style="flex:2">0</span></div>
+            <div class="wf-row"><span class="wf-cell">RxProcessing</span><span class="wf-cell" style="flex:2">INTERRUPT ✎</span></div>
+            <div class="wf-row"><span class="wf-cell">TxProcessing</span><span class="wf-cell" style="flex:2">INTERRUPT ✎</span></div>
+            <div class="wf-row"><span class="wf-cell">WakeupSupport</span><span class="wf-cell" style="flex:2">true</span></div>
+          </div>
+          <div class="wf-insp"><b style="color:#cfe0ff">检查器</b><br><span class="wf-err">✕ 值超范围</span><br><span style="color:#6b7480">建议：1000–1000000</span><br><span class="wf-pill">应用修复</span><br><br><span style="color:#6b7480">描述<br></span>CAN 控制器波特率…<br><br><span style="color:#6b7480">引用 2 · 被引用 1</span></div>
+        </div>
+        <div class="wf-status"><span>✕ 1</span><span>▲ 1</span><span>↑ 2 个可自动修复</span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B · 左树 + 参数 + 右侧检查器</h3>
+      <p>校验内联到参数行，修复建议就近出现；底部只留一条问题状态带。改动路径最短，但看不到全局问题列表。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding:0">
+      <div class="wf">
+        <div class="wf-bar"><span class="wf-dot"></span><span class="wf-dot"></span><span class="wf-dot"></span><span style="margin-left:4px">工作台</span></div>
+        <div class="wf-main">
+          <div class="wf-tree" style="width:14%;text-align:center;padding-top:8px">⎔<br><br>▤<br><br>⚙</div>
+          <div class="wf-content">
+            <div style="font-size:9px;color:#cfe0ff;margin-bottom:4px">最近工程</div>
+            <div class="wf-grid">
+              <div class="wf-card">ECU_A / 0.5.0<br><span class="wf-ok">✓ 校验通过</span></div>
+              <div class="wf-card">ECU_B / 0.4.2<br><span class="wf-err">✕ 3 个问题</span></div>
+              <div class="wf-card">+ 新建工程</div>
+              <div class="wf-card">导入 ARXML</div>
+            </div>
+            <div style="font-size:8.5px;margin-top:5px;color:#9aa4b2">打开后 → 模块以标签页并存<br><span class="wf-tab act" style="display:inline-block;margin-top:3px">Can</span> <span class="wf-tab" style="display:inline-block">Com</span> <span class="wf-tab" style="display:inline-block">Dem</span> <span class="wf-tab" style="display:inline-block">+</span></div>
+          </div>
+        </div>
+        <div class="wf-bottom" style="height:30%"><span class="wf-warn">▲ 上次生成有 2 条警告</span> &nbsp; <span style="color:#6b7480">生成于 2 小时前</span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C · 启动工作台 + 模块标签页</h3>
+      <p>先给「最近工程 / 新建 / 导入」入口，进入后每个模块一个标签页，适合跨模块对照。首启更友好，但标签多时易迷失。</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top:18px">也可以直接说「A 的底部面板 + B 的检查器」，我按组合做下一版线框。</p>
