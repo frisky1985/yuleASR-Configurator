@@ -16,6 +16,7 @@ import { Login } from './pages/Login';
 import { Migrate } from './pages/Migrate';
 import { Register } from './pages/Register';
 import { Settings } from './pages/Settings';
+import { StartPage } from './pages/StartPage';
 import { Templates } from './pages/Templates';
 import { useAuthStore } from './stores/authStore';
 
@@ -31,13 +32,16 @@ function App() {
     loadFromStorage();
   }, [loadFromStorage]);
 
+  const isDesktop = typeof window !== 'undefined' && !!window.electronAPI?.isElectron;
+
   return (
     <ThemeProvider>
       <BrandProvider>
         <Layout>
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={isDesktop ? <StartPage /> : <Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/start" element={<StartPage />} />
             <Route path="/templates" element={<Templates />} />
             <Route path="/sync" element={<GitSync />} />
             <Route path="/settings" element={<Settings />} />
