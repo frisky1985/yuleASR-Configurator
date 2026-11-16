@@ -147,7 +147,12 @@ export function Editor() {
   }, [configId, loadConfig]);
 
   // 桌面端：编辑中的草稿静默落盘（停止输入 2s 后写入 userData/drafts）
-  useDraftAutosave(configId, currentConfig, isDirty);
+  // 仅在配置与路由一致时保存，避免切换工程时把旧配置写到新 id 的草稿
+  useDraftAutosave(
+    configId,
+    currentConfig && currentConfig.id === configId ? currentConfig : null,
+    isDirty
+  );
 
   // 桌面端：加载配置成功后读取草稿；存在且与当前配置不同则提示恢复
   useEffect(() => {
@@ -288,10 +293,10 @@ export function Editor() {
 
   const handleSave = async () => {
     await saveConfig();
-    // 保存成功即清理草稿，避免下次打开误报“有未保存草稿”
+    // 仅保存成功（isDirty 已清除）后清理草稿，失败时保留草稿待恢复
     const api = window.electronAPI;
     const name = draftFileName(configId);
-    if (api?.isElectron && name) {
+    if (api?.isElectron && name && useConfigStore.getState().isDirty === false) {
       void api.clearDraft(name).catch(() => {});
     }
   };
