@@ -1,7 +1,13 @@
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { useCallback, useRef, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+  type ReactNode,
+} from 'react';
 
-import { cn } from '@/lib/utils';
 import { useSettingsStore } from '@/stores/settingsStore';
 
 interface WorkbenchShellProps {
@@ -18,6 +24,25 @@ interface WorkbenchShellProps {
 
 const MIN_SIDE = 200;
 const MAX_SIDE = 560;
+const MIN_BOTTOM = 120;
+const MAX_BOTTOM = 420;
+
+type DragKind = 'tree' | 'inspector' | 'bottom';
+
+interface LiveSize {
+  kind: DragKind;
+  value: number;
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function sizePatch(kind: DragKind, value: number) {
+  if (kind === 'tree') return { treeWidth: value };
+  if (kind === 'inspector') return { inspectorWidth: value };
+  return { bottomHeight: value };
+}
 
 export function WorkbenchShell({
   topBar,
@@ -31,47 +56,68 @@ export function WorkbenchShell({
   statusBar,
 }: WorkbenchShellProps) {
   const { workbench, updateWorkbenchSettings } = useSettingsStore();
-  const dragging = useRef<'tree' | 'inspector' | 'bottom' | null>(null);
+  const stopDragRef = useRef<(() => void) | null>(null);
+  const [liveSize, setLiveSize] = useState<LiveSize | null>(null);
+
+  useEffect(() => () => stopDragRef.current?.(), []);
 
   const startDrag = useCallback(
-    (kind: 'tree' | 'inspector' | 'bottom') => (event: ReactPointerEvent) => {
+    (kind: DragKind) => (event: ReactPointerEvent) => {
       event.preventDefault();
-      dragging.current = kind;
+      stopDragRef.current?.();
+      setLiveSize(null);
+
       const startX = event.clientX;
       const startY = event.clientY;
       const startTree = workbench.treeWidth;
       const startInspector = workbench.inspectorWidth;
       const startBottom = workbench.bottomHeight;
 
-      const onMove = (e: PointerEvent) => {
-        if (dragging.current === 'tree') {
-          const next = Math.min(MAX_SIDE, Math.max(MIN_SIDE, startTree + e.clientX - startX));
-          updateWorkbenchSettings({ treeWidth: next });
-        } else if (dragging.current === 'inspector') {
-          const next = Math.min(
-            MAX_SIDE,
-            Math.max(MIN_SIDE, startInspector - (e.clientX - startX))
-          );
-          updateWorkbenchSettings({ inspectorWidth: next });
-        } else if (dragging.current === 'bottom') {
-          const next = Math.min(420, Math.max(120, startBottom - (e.clientY - startY)));
-          updateWorkbenchSettings({ bottomHeight: next });
-        }
-      };
+      let latest =
+        kind === 'tree' ? startTree : kind === 'inspector' ? startInspector : startBottom;
 
-      const onUp = () => {
-        dragging.current = null;
+      function stop() {
         window.removeEventListener('pointermove', onMove);
         window.removeEventListener('pointerup', onUp);
-      };
+        window.removeEventListener('pointercancel', onCancel);
+        if (stopDragRef.current === stop) {
+          stopDragRef.current = null;
+        }
+      }
+
+      function onMove(e: PointerEvent) {
+        latest =
+          kind === 'tree'
+            ? clamp(startTree + e.clientX - startX, MIN_SIDE, MAX_SIDE)
+            : kind === 'inspector'
+              ? clamp(startInspector - (e.clientX - startX), MIN_SIDE, MAX_SIDE)
+              : clamp(startBottom - (e.clientY - startY), MIN_BOTTOM, MAX_BOTTOM);
+        setLiveSize({ kind, value: latest });
+      }
+
+      function onUp() {
+        stop();
+        setLiveSize(null);
+        updateWorkbenchSettings(sizePatch(kind, latest));
+      }
+
+      function onCancel() {
+        stop();
+        setLiveSize(null);
+      }
 
       window.addEventListener('pointermove', onMove);
       window.addEventListener('pointerup', onUp);
+      window.addEventListener('pointercancel', onCancel);
+      stopDragRef.current = stop;
     },
     [workbench, updateWorkbenchSettings]
   );
 
   const collapsed = workbench.bottomCollapsed;
+  const treeWidth = liveSize?.kind === 'tree' ? liveSize.value : workbench.treeWidth;
+  const inspectorWidth = liveSize?.kind === 'inspector' ? liveSize.value : workbench.inspectorWidth;
+  const bottomHeight = liveSize?.kind === 'bottom' ? liveSize.value : workbench.bottomHeight;
 
   return (
     <div className="flex h-full min-h-0 flex-col bg-app-bg-primary text-app-text-primary">
@@ -85,7 +131,7 @@ export function WorkbenchShell({
 
       <div className="flex min-h-0 flex-1">
         <aside
-          style={{ width: workbench.treeWidth }}
+          style={{ width: treeWidth }}
           className="min-h-0 shrink-0 overflow-hidden border-r border-app-border-primary"
         >
           {tree}
@@ -95,7 +141,7 @@ export function WorkbenchShell({
           aria-orientation="vertical"
           aria-label="调整模块树宽度"
           onPointerDown={startDrag('tree')}
-          className="w-1 shrink-0 cursor-col-resize bg-transparent hover:bg-purple-500/40"
+          className="w-1 shrink-0 cursor-col-resize touch-none select-none bg-transparent hover:bg-purple-500/40"
         />
 
         <main className="min-w-0 flex-1 overflow-hidden">{main}</main>
@@ -105,10 +151,10 @@ export function WorkbenchShell({
           aria-orientation="vertical"
           aria-label="调整检查器宽度"
           onPointerDown={startDrag('inspector')}
-          className="w-1 shrink-0 cursor-col-resize bg-transparent hover:bg-purple-500/40"
+          className="w-1 shrink-0 cursor-col-resize touch-none select-none bg-transparent hover:bg-purple-500/40"
         />
         <aside
-          style={{ width: workbench.inspectorWidth }}
+          style={{ width: inspectorWidth }}
           className="min-h-0 shrink-0 overflow-hidden border-l border-app-border-primary"
         >
           {inspector}
@@ -138,13 +184,11 @@ export function WorkbenchShell({
             aria-orientation="horizontal"
             aria-label="调整问题面板高度"
             onPointerDown={startDrag('bottom')}
-            className="h-1 shrink-0 cursor-row-resize bg-transparent hover:bg-purple-500/40"
+            className="h-1 shrink-0 cursor-row-resize touch-none select-none bg-transparent hover:bg-purple-500/40"
           />
           <section
-            style={{ height: workbench.bottomHeight }}
-            className={cn(
-              'shrink-0 overflow-hidden border-t border-app-border-primary bg-app-bg-primary'
-            )}
+            style={{ height: bottomHeight }}
+            className="shrink-0 overflow-hidden border-t border-app-border-primary bg-app-bg-primary"
           >
             {problems}
           </section>
