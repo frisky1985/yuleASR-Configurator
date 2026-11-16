@@ -14,13 +14,14 @@ import { DependencyValidator } from '@/core/DependencyValidator';
 import { allModules } from '@/data/all-modules';
 import { defaultOSConfig } from '@/data/os-config';
 import { api } from '@/services/api';
+import { useAuthStore } from '@/stores/authStore';
+import { applyFix } from '@/stores/fix-executor';
 import {
   parseParamPath,
   matchesParamKey,
   updateContainerParam,
   setContainerInstances,
 } from '@/stores/param-update';
-import { useAuthStore } from '@/stores/authStore';
 import type {
   ConfigContainer,
   ConfigContainerInstance,
@@ -204,6 +205,8 @@ interface ConfigState {
     method?: ConfigModule['configMethod']
   ) => void;
   updateParameter: (path: string, value: unknown) => void;
+  /** 应用问题自带的可执行修复；无 fix 时不做任何事 */
+  applyIssueFix: (issue: ValidationIssue) => void;
   /**
    * 同步动态容器实例集合到 currentConfig（Fix C2）。
    * ConfigTree 的实例增删改操作后调用，保证实例数据随配置持久化。
@@ -469,6 +472,41 @@ export const useConfigStore = create<ConfigState>()(
         const cross = validateCrossModuleChanges(updatedConfig, targetModule.name, paramKey);
 
         // 全量运行现有验证器，但合并跨模块增量结果
+        const validator = new DependencyValidator(updatedConfig);
+        const result = validator.validate();
+
+        set({
+          currentConfig: updatedConfig,
+          validationResult: {
+            ...result,
+            errors: [...result.errors, ...cross.issues.filter(i => i.severity === 'error')],
+            warnings: [...result.warnings, ...cross.issues.filter(i => i.severity === 'warning')],
+          },
+          validationIssues: [...result.errors, ...result.warnings, ...cross.issues],
+          validationDegraded: cross.failed,
+          isDirty: true,
+        });
+      },
+
+      applyIssueFix: issue => {
+        const { currentConfig } = get();
+        const fix = issue.fix;
+        if (!currentConfig || !fix) return;
+
+        const updatedConfig = applyFix(currentConfig, fix);
+        // 无实际变更：applyFix 返回入参同一引用，此时不 set、不置脏、不重算校验
+        if (updatedConfig === currentConfig) return;
+
+        // 与 updateParameter 一致：全量验证 + 受影响跨模块约束的增量结果合并
+        const targetModule = updatedConfig.modules.find(
+          m => m.name === fix.module || m.id === fix.module
+        );
+        const changedParam = 'parameter' in fix ? fix.parameter : null;
+        const cross =
+          targetModule && changedParam
+            ? validateCrossModuleChanges(updatedConfig, targetModule.name, changedParam)
+            : { issues: [] as ValidationIssue[], failed: false };
+
         const validator = new DependencyValidator(updatedConfig);
         const result = validator.validate();
 
