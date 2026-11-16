@@ -31,9 +31,11 @@ import { PipelinePushButton } from '@/components/PipelinePushButton';
 import { PipelineStatusPanel } from '@/components/PipelineStatusPanel';
 import { ShareDialog } from '@/components/ShareDialog';
 import { useTheme } from '@/components/ThemeProvider';
+import { ArxmlDropZone } from '@/components/workbench/ArxmlDropZone';
 import { InspectorPane } from '@/components/workbench/InspectorPane';
 import { ProblemsPanel } from '@/components/workbench/ProblemsPanel';
 import { WorkbenchShell } from '@/components/workbench/WorkbenchShell';
+import { draftFileName, useDraftAutosave } from '@/hooks/useDraftAutosave';
 import { useWorkbenchShortcuts } from '@/hooks/useWorkbenchShortcuts';
 import { issueToConfigPath } from '@/lib/issue-target';
 import { modulesForSegment, WORKBENCH_SEGMENTS } from '@/lib/segment-modules';
@@ -85,6 +87,9 @@ export function Editor() {
   const overflowMenuRef = useRef<HTMLDivElement>(null);
   // F2b: 全量 schema 覆盖弹窗（117 模块覆盖展示 + 全量生成 ZIP）
   const [showSchemaCoverage, setShowSchemaCoverage] = useState(false);
+  // 桌面端草稿恢复提示（读取到与当前配置不同的草稿时展示）
+  const [draftBanner, setDraftBanner] = useState<{ name: string; content: string } | null>(null);
+  const draftCheckedRef = useRef<string | null>(null);
 
   // ── Code gen state (declared early — used by Electron useEffect below) ──
   const [importing, setImporting] = useState(false);
@@ -140,6 +145,30 @@ export function Editor() {
       loadConfig(configId);
     }
   }, [configId, loadConfig]);
+
+  // 桌面端：编辑中的草稿静默落盘（停止输入 2s 后写入 userData/drafts）
+  useDraftAutosave(configId, currentConfig, isDirty);
+
+  // 桌面端：加载配置成功后读取草稿；存在且与当前配置不同则提示恢复
+  useEffect(() => {
+    const api = window.electronAPI;
+    const name = draftFileName(configId);
+    if (!api?.isElectron || !name || !currentConfig || isLoading) return;
+    if (draftCheckedRef.current === name) return;
+    draftCheckedRef.current = name;
+
+    let cancelled = false;
+    api
+      .readDraft(name)
+      .then(content => {
+        if (cancelled || !content || content === JSON.stringify(currentConfig)) return;
+        setDraftBanner({ name, content });
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [configId, currentConfig, isLoading]);
 
   // Fix 24: 组件卸载时清理 pipeline 隐藏 timer，防止泄漏
   useEffect(() => {
@@ -259,6 +288,12 @@ export function Editor() {
 
   const handleSave = async () => {
     await saveConfig();
+    // 保存成功即清理草稿，避免下次打开误报“有未保存草稿”
+    const api = window.electronAPI;
+    const name = draftFileName(configId);
+    if (api?.isElectron && name) {
+      void api.clearDraft(name).catch(() => {});
+    }
   };
 
   const handleGenerate = useCallback(async () => {
@@ -367,14 +402,11 @@ export function Editor() {
     e.target.value = '';
   };
 
-  const handleImportArxml = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setImportArxml(true);
-    const reader = new FileReader();
-    reader.onload = () => {
+  // ARXML 内容导入（文件选择与拖拽共用同一解析/合并逻辑）
+  const importArxmlContent = useCallback(
+    (content: string) => {
       try {
-        const result = parseArxmlContent(reader.result as string);
+        const result = parseArxmlContent(content);
         if (result.errors.length > 0) {
           alert(`ARXML 解析失败:\n${result.errors.join('\n')}`);
         } else if (result.modules.length === 0) {
@@ -405,10 +437,43 @@ export function Editor() {
       } catch (err) {
         alert(`导入失败: ${err instanceof Error ? err.message : String(err)}`);
       }
+    },
+    [currentConfig]
+  );
+
+  const handleImportArxml = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImportArxml(true);
+    const reader = new FileReader();
+    reader.onload = () => {
+      importArxmlContent(reader.result as string);
       setImportArxml(false);
     };
     reader.readAsText(file);
     e.target.value = '';
+  };
+
+  const handleRestoreDraft = () => {
+    if (!draftBanner) return;
+    try {
+      const draft = JSON.parse(draftBanner.content) as ConfigFile;
+      if (!draft || typeof draft !== 'object' || !Array.isArray(draft.modules)) {
+        throw new Error('invalid draft');
+      }
+      setSelectedPath('');
+      useConfigStore.setState({ currentConfig: draft, isDirty: true });
+      localStorage.setItem('yuleasr_config', JSON.stringify(draft));
+    } catch {
+      alert('草稿内容无效，无法恢复');
+    }
+    setDraftBanner(null);
+  };
+
+  const handleDiscardDraft = () => {
+    if (!draftBanner) return;
+    void window.electronAPI?.clearDraft(draftBanner.name).catch(() => {});
+    setDraftBanner(null);
   };
 
   const handleParameterChange = (paramName: string, value: unknown) => {
@@ -601,6 +666,37 @@ export function Editor() {
           </button>
         </div>
       )}
+      {/* 桌面端草稿恢复提示条 */}
+      {draftBanner && (
+        <div
+          className="flex items-center gap-2.5 rounded-lg border border-amber-300 bg-amber-50 px-4 py-2 text-sm text-amber-900 dark:border-amber-700 dark:bg-amber-900/30 dark:text-amber-200"
+          role="status"
+        >
+          <AlertCircle className="w-4 h-4 shrink-0" />
+          <span className="flex-1">检测到未保存的草稿，是否恢复？</span>
+          <button
+            onClick={handleRestoreDraft}
+            className="rounded-md bg-amber-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-amber-700 transition-colors"
+          >
+            恢复草稿
+          </button>
+          <button
+            onClick={handleDiscardDraft}
+            className="rounded-md px-2.5 py-1 text-xs font-medium text-amber-900 hover:bg-amber-100 dark:text-amber-200 dark:hover:bg-amber-900/50 transition-colors"
+          >
+            丢弃
+          </button>
+          <button
+            onClick={() => setDraftBanner(null)}
+            className="shrink-0 text-amber-700 hover:text-amber-900 dark:text-amber-300"
+            aria-label="关闭草稿提示"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+      {/* 桌面端 ARXML 拖拽导入（Web 端不渲染） */}
+      <ArxmlDropZone onFile={importArxmlContent} />
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">

@@ -26,6 +26,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // yuleASR 全量替换（可追溯：dry-run/apply/rollback）
   replaceCfgh: (payload) => ipcRenderer.invoke('cfgh:replace', payload),
 
+  // 多窗口与草稿恢复
+  newWindow: () => ipcRenderer.invoke('window:new'),
+  writeDraft: (name, content) => ipcRenderer.invoke('draft:write', { name, content }),
+  readDraft: (name) => ipcRenderer.invoke('draft:read', name),
+  clearDraft: (name) => ipcRenderer.invoke('draft:clear', name),
+
   // Platform info
   platform: process.platform,
   isElectron: true,

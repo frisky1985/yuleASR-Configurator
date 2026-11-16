@@ -1,7 +1,7 @@
 // ESLint 10 已移除 env 注释；node 全局由下方 global 注释显式声明
-/* global console, process, clearTimeout, setTimeout */
+/* global Buffer, console, process, clearTimeout, setTimeout */
 import { spawn } from 'child_process';
-import { readFile } from 'fs/promises';
+import { mkdir, readFile, unlink, writeFile } from 'node:fs/promises';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -14,12 +14,34 @@ import { app, BrowserWindow, Menu, dialog, ipcMain, shell } from 'electron';
 import electronUpdater from 'electron-updater';
 const { autoUpdater } = electronUpdater;
 
-import { isGccAvailable, verifyFiles, saveFilesToDir, getGccVersion, sanitizeFiles } from './desktop-utils.mjs';
+import {
+  DRAFT_MAX_BYTES,
+  getGccVersion,
+  isGccAvailable,
+  isSafeDraftName,
+  sanitizeFiles,
+  saveFilesToDir,
+  verifyFiles,
+} from './desktop-utils.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const isDev = !app.isPackaged;
 
+/** 已打开的窗口集合（多窗口支持） */
+const windows = new Set();
+/** 最近创建的窗口；用于无聚焦窗口时对话框/更新的回退目标 */
 let mainWindow = null;
+
+/** 菜单/对话框等应用级操作的目标窗口：优先当前聚焦窗口，回退到最近创建的窗口 */
+function activeWindow() {
+  return BrowserWindow.getFocusedWindow() ?? mainWindow;
+}
+
+/** 有父窗口时以模态方式弹出，否则独立弹出（避免把 null 当 options 传入） */
+function showMessageBox(options) {
+  const win = activeWindow();
+  return win ? dialog.showMessageBox(win, options) : dialog.showMessageBox(options);
+}
 
 // ── Auto Updater ─────────────────────────────────────────
 
@@ -27,7 +49,7 @@ autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;
 
 autoUpdater.on('update-available', (info) => {
-  dialog.showMessageBox(mainWindow, {
+  showMessageBox({
     type: 'info',
     title: 'Update Available',
     message: `A new version (${info.version}) is available.`,
@@ -43,7 +65,7 @@ autoUpdater.on('update-available', (info) => {
 });
 
 autoUpdater.on('update-not-available', () => {
-  dialog.showMessageBox(mainWindow, {
+  showMessageBox({
     type: 'info',
     title: 'No Update Available',
     message: 'You are running the latest version.',
@@ -52,13 +74,15 @@ autoUpdater.on('update-not-available', () => {
 });
 
 autoUpdater.on('download-progress', (progressObj) => {
-  if (mainWindow) {
-    mainWindow.webContents.send('update-download-progress', progressObj.percent);
+  for (const win of windows) {
+    if (!win.isDestroyed()) {
+      win.webContents.send('update-download-progress', progressObj.percent);
+    }
   }
 });
 
 autoUpdater.on('update-downloaded', () => {
-  dialog.showMessageBox(mainWindow, {
+  showMessageBox({
     type: 'info',
     title: 'Update Downloaded',
     message: 'Update has been downloaded and will be installed on quit.',
@@ -81,7 +105,7 @@ autoUpdater.on('error', (error) => {
 
 function checkForUpdates() {
   if (isDev) {
-    dialog.showMessageBox(mainWindow, {
+    showMessageBox({
       type: 'info',
       title: 'Development Mode',
       message: 'Auto-update checking is disabled in development mode.',
@@ -113,10 +137,16 @@ ipcMain.handle('files:save', async (_event, files) => {
   // Fix 5: IPC 入口校验载荷，非法载荷直接拒绝
   const safeFiles = sanitizeFiles(files);
   if (!safeFiles) return { success: false, error: 'Invalid payload' };
-  const result = await dialog.showOpenDialog(mainWindow, {
-    properties: ['openDirectory', 'createDirectory'],
-    title: 'Select output directory for generated code',
-  });
+  const win = activeWindow();
+  const result = win
+    ? await dialog.showOpenDialog(win, {
+        properties: ['openDirectory', 'createDirectory'],
+        title: 'Select output directory for generated code',
+      })
+    : await dialog.showOpenDialog({
+        properties: ['openDirectory', 'createDirectory'],
+        title: 'Select output directory for generated code',
+      });
   if (result.canceled || !result.filePaths[0]) {
     return { success: false, cancelled: true };
   }
@@ -229,10 +259,46 @@ ipcMain.handle('openExternal', async (_event, url) => {
   return { success: false, error: 'Invalid URL' };
 });
 
+// ── Drafts（多窗口草稿恢复）────────────────────────────────
+
+function draftPath(name) {
+  return join(app.getPath('userData'), 'drafts', name);
+}
+
+ipcMain.handle('draft:write', async (_event, { name, content } = {}) => {
+  if (!isSafeDraftName(name)) throw new Error('invalid draft name');
+  if (typeof content !== 'string' || Buffer.byteLength(content, 'utf8') > DRAFT_MAX_BYTES) {
+    throw new Error('draft too large');
+  }
+  await mkdir(join(app.getPath('userData'), 'drafts'), { recursive: true });
+  await writeFile(draftPath(name), content, 'utf8');
+  return true;
+});
+
+ipcMain.handle('draft:read', async (_event, name) => {
+  if (!isSafeDraftName(name)) throw new Error('invalid draft name');
+  try {
+    return await readFile(draftPath(name), 'utf8');
+  } catch {
+    return null;
+  }
+});
+
+ipcMain.handle('draft:clear', async (_event, name) => {
+  if (!isSafeDraftName(name)) throw new Error('invalid draft name');
+  await unlink(draftPath(name)).catch(() => {});
+  return true;
+});
+
 // ── Window ────────────────────────────────────────────────
 
+ipcMain.handle('window:new', () => {
+  createWindow();
+  return true;
+});
+
 function createWindow() {
-  mainWindow = new BrowserWindow({
+  const win = new BrowserWindow({
     width: 1280,
     height: 860,
     minWidth: 900,
@@ -247,26 +313,55 @@ function createWindow() {
     },
   });
 
+  windows.add(win);
+  mainWindow = win;
+
   // Fix 5: 阻止页面导航离开应用（防钓鱼/防加载远程恶意页面）
-  mainWindow.webContents.on('will-navigate', (event) => event.preventDefault());
+  win.webContents.on('will-navigate', (event) => event.preventDefault());
 
   // Fix 5: 新窗口一律拒绝，外链交给系统浏览器
-  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+  win.webContents.setWindowOpenHandler(({ url }) => {
     if (typeof url === 'string' && (url.startsWith('https://') || url.startsWith('http://'))) {
       shell.openExternal(url);
     }
     return { action: 'deny' };
   });
 
+  win.on('closed', () => {
+    windows.delete(win);
+    if (mainWindow === win) {
+      mainWindow = windows.values().next().value ?? null;
+    }
+  });
+
+  if (isDev) {
+    win.loadURL('http://localhost:5173');
+    win.webContents.openDevTools();
+  } else {
+    win.loadFile(join(__dirname, '../dist/index.html'));
+  }
+
+  return win;
+}
+
+/** 构建应用菜单（多窗口：菜单动作作用于当前聚焦窗口） */
+function buildMenu() {
   const menuTemplate = [
     {
       label: 'File',
       submenu: [
         {
+          label: 'New Window',
+          accelerator: 'CmdOrCtrl+Shift+N',
+          click: () => createWindow(),
+        },
+        {
           label: 'Open Configuration...',
           accelerator: 'CmdOrCtrl+O',
           click: async () => {
-            const result = await dialog.showOpenDialog(mainWindow, {
+            const win = activeWindow();
+            if (!win) return;
+            const result = await dialog.showOpenDialog(win, {
               filters: [
                 { name: 'yuleASR Config', extensions: ['json', 'yuleasr.json'] },
                 { name: 'ARXML', extensions: ['arxml'] },
@@ -274,7 +369,7 @@ function createWindow() {
               properties: ['openFile'],
             });
             if (!result.canceled && result.filePaths[0]) {
-              mainWindow.webContents.send('file-opened', result.filePaths[0]);
+              win.webContents.send('file-opened', result.filePaths[0]);
             }
           },
         },
@@ -282,7 +377,7 @@ function createWindow() {
           label: 'Export Generated Code...',
           accelerator: 'CmdOrCtrl+E',
           click: () => {
-            mainWindow.webContents.send('export-code');
+            activeWindow()?.webContents.send('export-code');
           },
         },
         { type: 'separator' },
@@ -297,7 +392,7 @@ function createWindow() {
           label: 'Verify Generated Code with GCC',
           accelerator: 'CmdOrCtrl+Shift+V',
           click: () => {
-            mainWindow.webContents.send('run-verify');
+            activeWindow()?.webContents.send('run-verify');
           },
         },
       ],
@@ -327,7 +422,7 @@ function createWindow() {
         {
           label: 'About yuleASR Configurator',
           click: () => {
-            dialog.showMessageBox(mainWindow, {
+            showMessageBox({
               type: 'info',
               title: 'About yuleASR Configurator',
               message: 'yuleASR Configurator v' + app.getVersion(),
@@ -340,18 +435,10 @@ function createWindow() {
   ];
 
   Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
-
-  if (isDev) {
-    mainWindow.loadURL('http://localhost:5173');
-    mainWindow.webContents.openDevTools();
-  } else {
-    mainWindow.loadFile(join(__dirname, '../dist/index.html'));
-  }
-
-  mainWindow.on('closed', () => { mainWindow = null; });
 }
 
 app.whenReady().then(() => {
+  buildMenu();
   createWindow();
 
   // Check for updates on startup (only in production builds)
@@ -361,4 +448,4 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
-app.on('activate', () => { if (mainWindow === null) createWindow(); });
+app.on('activate', () => { if (windows.size === 0) createWindow(); });

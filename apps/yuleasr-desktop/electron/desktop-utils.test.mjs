@@ -8,7 +8,13 @@ import { test } from 'node:test';
 import { tmpdir } from 'os';
 import { join } from 'path';
 
-import { sanitizeFiles, saveFilesToDir, verifyFiles } from './desktop-utils.mjs';
+import {
+  DRAFT_MAX_BYTES,
+  isSafeDraftName,
+  sanitizeFiles,
+  saveFilesToDir,
+  verifyFiles,
+} from './desktop-utils.mjs';
 
 const VALID_FILES = [{ filename: 'Can_Cfg.h', content: 'typedef int uint32;', language: 'h' }];
 
@@ -87,4 +93,15 @@ test('verifyFiles: 恶意文件名在写入/编译阶段被跳过', () => {
   const valid = res.find(r => r.filename === 'Valid_Cfg.h');
   assert.ok(valid);
   assert.equal(valid.status, 'pass');
+});
+
+test('草稿名只允许安全字符', () => {
+  assert.equal(isSafeDraftName('config-abc.json'), true);
+  assert.equal(isSafeDraftName('../escape.json'), false);
+  assert.equal(isSafeDraftName('a/b.json'), false);
+  assert.equal(isSafeDraftName(''), false);
+});
+
+test('草稿大小上限为 5MB', () => {
+  assert.equal(DRAFT_MAX_BYTES, 5 * 1024 * 1024);
 });

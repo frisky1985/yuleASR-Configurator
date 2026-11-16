@@ -177,3 +177,12 @@ export function getGccVersion() {
     return 'gcc not available';
   }
 }
+
+// ── 草稿文件（多窗口恢复）──────────────────────────────────
+
+export const DRAFT_MAX_BYTES = 5 * 1024 * 1024;
+
+/** 草稿文件名只允许 [A-Za-z0-9._-]，且必须以 .json 结尾 */
+export function isSafeDraftName(name) {
+  return typeof name === 'string' && /^[A-Za-z0-9._-]+\.json$/.test(name) && !name.includes('..');
+}

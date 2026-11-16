@@ -62,6 +62,14 @@ interface ElectronAPI {
   saveFiles(files: Array<{ filename: string; content: string }>): Promise<SaveResult>;
   /** yuleASR 全量替换（可追溯：dry-run/apply/rollback） */
   replaceCfgh(payload: { mode: string; yuleasrDir: string }): Promise<ReplaceCfghResponse>;
+  /** 打开新的应用窗口（多窗口工作台） */
+  newWindow(): Promise<boolean>;
+  /** 写入本地草稿（名称须为安全的 .json 文件名，内容上限 5MB） */
+  writeDraft(name: string, content: string): Promise<boolean>;
+  /** 读取本地草稿；不存在时返回 null */
+  readDraft(name: string): Promise<string | null>;
+  /** 清除本地草稿 */
+  clearDraft(name: string): Promise<boolean>;
   platform: string;
   isElectron: boolean;
   openExternal(url: string): Promise<{ success: boolean; error?: string }>;
