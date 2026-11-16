@@ -14,6 +14,7 @@ export const WORKBENCH_SEGMENTS: Array<{ id: WorkbenchSegment; label: string }> 
 const COMMUNICATION_MODULES = new Set([
   'Can',
   'CanIf',
+  'CanSM',
   'CanTp',
   'CanNm',
   'Com',

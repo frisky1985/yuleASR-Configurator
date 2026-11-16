@@ -57,7 +57,6 @@ export function Editor() {
   const navigate = useNavigate();
 
   // Local state
-  const [searchQuery] = useState('');
   const [showDisabled, setShowDisabled] = useState(true);
   const [isValidating, setIsValidating] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -482,9 +481,21 @@ export function Editor() {
       const issue = visibleIssues.find(i => i.id === id);
       if (!issue || !currentConfig) return;
       const path = issueToConfigPath(currentConfig, issue);
-      if (path) setSelectedPath(path);
+      if (!path) return;
+      const inSegment = issue.module
+        ? treeConfig?.modules.some(m => m.name === issue.module || m.id === issue.module)
+        : true;
+      if (!inSegment) updateWorkbenchSettings({ activeSegment: 'basic' });
+      setSelectedPath(path);
     },
-    [visibleIssues, currentConfig, selectIssue, setSelectedPath]
+    [
+      visibleIssues,
+      currentConfig,
+      treeConfig,
+      selectIssue,
+      setSelectedPath,
+      updateWorkbenchSettings,
+    ]
   );
 
   if (isLoading && !currentConfig) {
@@ -966,7 +977,13 @@ export function Editor() {
                   key={item.id}
                   role="tab"
                   aria-selected={workbench.activeSegment === item.id}
-                  onClick={() => updateWorkbenchSettings({ activeSegment: item.id })}
+                  onClick={() =>
+                    updateWorkbenchSettings(
+                      item.id === 'generate'
+                        ? { activeSegment: item.id, bottomTab: 'generate' }
+                        : { activeSegment: item.id }
+                    )
+                  }
                   className={cn(
                     'rounded px-2 py-1 text-[11px] transition-colors',
                     workbench.activeSegment === item.id
@@ -1005,7 +1022,7 @@ export function Editor() {
               validationIssues={validationIssues}
               showDisabled={showDisabled}
               onToggleModule={(id, enabled) => toggleModuleEnabled(id, enabled)}
-              filterText={searchQuery}
+              filterText=""
             />
           }
           main={
@@ -1131,8 +1148,8 @@ export function Editor() {
               <span className={isDirty ? 'text-amber-600' : ''}>
                 {isDirty ? '未保存' : '已保存'}
               </span>
-              <span>{validationIssues.filter(i => i.severity === 'error').length} 错误</span>
-              <span>{validationIssues.filter(i => i.severity === 'warning').length} 警告</span>
+              <span>{visibleIssues.filter(i => i.severity === 'error').length} 错误</span>
+              <span>{visibleIssues.filter(i => i.severity === 'warning').length} 警告</span>
               {validationDegraded && <span className="text-amber-600">校验降级</span>}
               <span className="ml-auto">
                 {currentConfig.modules.filter(m => m.enabled).length} 模块 · 参数{' '}

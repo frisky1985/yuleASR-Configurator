@@ -29,6 +29,7 @@ const config = {
     mod('Dem', 'ECUAL'),
     mod('Os', 'OS'),
     mod('Mcu', 'MCAL'),
+    mod('CanSM', 'ECUAL'),
   ],
 } as ConfigFile;
 
@@ -36,12 +37,12 @@ const names = (list: Module[]) => list.map(m => m.name);
 
 describe('modulesForSegment', () => {
   it('basic 与 generate 返回全部模块', () => {
-    expect(names(modulesForSegment(config, 'basic'))).toHaveLength(5);
-    expect(names(modulesForSegment(config, 'generate'))).toHaveLength(5);
+    expect(names(modulesForSegment(config, 'basic'))).toHaveLength(6);
+    expect(names(modulesForSegment(config, 'generate'))).toHaveLength(6);
   });
 
   it('communication 只保留通信模块', () => {
-    expect(names(modulesForSegment(config, 'communication'))).toEqual(['Can', 'Com']);
+    expect(names(modulesForSegment(config, 'communication'))).toEqual(['Can', 'Com', 'CanSM']);
   });
 
   it('diagnostics 只保留诊断模块', () => {
@@ -49,6 +50,6 @@ describe('modulesForSegment', () => {
   });
 
   it('bsw 保留 ECUAL / Service / OS 层', () => {
-    expect(names(modulesForSegment(config, 'bsw'))).toEqual(['Can', 'Com', 'Dem', 'Os']);
+    expect(names(modulesForSegment(config, 'bsw'))).toEqual(['Can', 'Com', 'Dem', 'Os', 'CanSM']);
   });
 });

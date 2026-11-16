@@ -220,4 +220,25 @@ describe('校验问题携带可执行修复描述', () => {
     expect(issue).toBeDefined();
     expect(issue?.fix).toBeUndefined();
   });
+
+  it('同一配置连续校验两次得到完全相同的 issue id 序列', () => {
+    const config = makeConfig([
+      makeModule('m-can', 'Can', {
+        parameters: [makeParam('p-baud', 'BaudRate', 5000000, { type: 'integer', max: 1000000 })],
+      }),
+      makeModule('m-dem', 'Dem', {
+        dependencies: [{ module: 'NvM', required: true }],
+      }),
+    ]);
+
+    const ids = (result: ReturnType<DependencyValidator['validate']>) =>
+      [...result.errors, ...result.warnings, ...result.info].map(i => i.id);
+
+    const validator = new DependencyValidator(config);
+    const first = validator.validate();
+    const second = validator.validate();
+
+    expect(ids(first).length).toBeGreaterThan(0);
+    expect(ids(second)).toEqual(ids(first));
+  });
 });

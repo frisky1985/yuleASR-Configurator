@@ -4,23 +4,17 @@
  * Similar to Vector Configurator's validation engine
  */
 
-import type {
-  ConfigFile,
-  ConfigModule,
-  ModuleDependency,
-  ValidationResult,
-  ValidationIssue,
-} from '@/types/config';
+import type { ConfigFile, ValidationResult, ValidationIssue } from '@/types/config';
 
 export class DependencyValidator {
   private config: ConfigFile;
   private issues: ValidationIssue[] = [];
-  private issueIdCounter = 0;
+  private issueIdCounts = new Map<string, number>();
 
   constructor(config: ConfigFile) {
     this.config = config;
     this.issues = [];
-    this.issueIdCounter = 0;
+    this.issueIdCounts.clear();
   }
 
   /**
@@ -28,6 +22,7 @@ export class DependencyValidator {
    */
   validate(): ValidationResult {
     this.issues = [];
+    this.issueIdCounts.clear();
 
     // 1. Validate module dependencies
     this.validateModuleDependencies();
@@ -473,9 +468,21 @@ export class DependencyValidator {
    * Add a validation issue
    */
   private addIssue(issue: Omit<ValidationIssue, 'id'>): void {
+    const base = [
+      issue.severity,
+      issue.module ?? '',
+      issue.path,
+      issue.parameter ?? '',
+      issue.message,
+    ]
+      .join('|')
+      .replace(/\s+/g, '');
+    const count = (this.issueIdCounts.get(base) ?? 0) + 1;
+    this.issueIdCounts.set(base, count);
+
     this.issues.push({
       ...issue,
-      id: `issue-${++this.issueIdCounter}`,
+      id: count === 1 ? base : `${base}#${count}`,
     });
   }
 
