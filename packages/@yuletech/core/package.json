@@ -97,11 +97,11 @@
     "fast-xml-parser": "^5.12.1"
   },
   "devDependencies": {
-    "@rollup/rollup-darwin-arm64": "^4.62.3",
-    "@vitest/coverage-v8": "^4.1.10",
-    "tsup": "^8.0.0",
+    "@rollup/rollup-darwin-arm64": "^4.68.3",
+    "@vitest/coverage-v8": "^5.1.0",
+    "tsup": "^9.0.0",
     "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "vitest": "^5.1.0"
   },
   "files": [
     "dist"
