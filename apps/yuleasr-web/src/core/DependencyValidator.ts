@@ -67,6 +67,10 @@ export class DependencyValidator {
         const depEnabled = enabledModules.has(dep.module);
 
         if (dep.required && !depEnabled) {
+          const targetExists = this.config.modules.some(
+            m => m.name === dep.module || m.id === dep.module
+          );
+
           this.addIssue({
             path: `${module.name}.dependencies`,
             message: `Module "${module.name}" requires "${dep.module}" which is not enabled`,
@@ -77,7 +81,7 @@ export class DependencyValidator {
             suggestion: dep.autoEnable
               ? `Enable ${dep.module} automatically`
               : `Enable ${dep.module} module`,
-            fix: { kind: 'enable-module', module: dep.module },
+            fix: targetExists ? { kind: 'enable-module', module: dep.module } : undefined,
           });
         } else if (!dep.required && !depEnabled) {
           this.addIssue({
@@ -174,7 +178,7 @@ export class DependencyValidator {
         this.validateParameter(param, module.name);
       }
 
-      // Validate container parameters (including dynamic instances)
+      // Validate container parameters
       for (const container of module.containers) {
         this.validateContainer(container, module.name);
       }
@@ -184,12 +188,7 @@ export class DependencyValidator {
   /**
    * Validate a single parameter
    */
-  private validateParameter(
-    param: any,
-    moduleName: string,
-    containerPath?: string,
-    instanceName?: string
-  ): void {
+  private validateParameter(param: any, moduleName: string, containerPath?: string): void {
     const path = containerPath
       ? `${moduleName}.${containerPath}.${param.name}`
       : `${moduleName}.${param.name}`;
@@ -199,6 +198,16 @@ export class DependencyValidator {
       param.validation?.required &&
       (param.value === undefined || param.value === null || param.value === '')
     ) {
+      const defaultValue: string | number | boolean | undefined =
+        param.defaultValue !== undefined &&
+        param.defaultValue !== null &&
+        param.defaultValue !== '' &&
+        (typeof param.defaultValue === 'string' ||
+          typeof param.defaultValue === 'number' ||
+          typeof param.defaultValue === 'boolean')
+          ? param.defaultValue
+          : undefined;
+
       this.addIssue({
         path,
         message: `Parameter "${param.name}" is required`,
@@ -206,21 +215,21 @@ export class DependencyValidator {
         module: moduleName,
         parameter: param.name,
         fix:
-          !instanceName && param.defaultValue !== undefined
+          defaultValue !== undefined
             ? {
                 kind: 'set-default',
                 module: moduleName,
                 containerPath,
                 parameter: param.name,
-                value: param.defaultValue,
+                value: defaultValue,
               }
             : undefined,
       });
     }
 
     // Check min/max for numbers
-    if (param.type === 'integer' || param.type === 'float') {
-      const val = param.value as number;
+    if ((param.type === 'integer' || param.type === 'float') && typeof param.value === 'number') {
+      const val = param.value;
       if (param.min !== undefined && val < param.min) {
         this.addIssue({
           path,
@@ -229,15 +238,13 @@ export class DependencyValidator {
           module: moduleName,
           parameter: param.name,
           suggestion: `Set value to at least ${param.min}`,
-          fix: instanceName
-            ? undefined
-            : {
-                kind: 'clamp-min',
-                module: moduleName,
-                containerPath,
-                parameter: param.name,
-                value: param.min,
-              },
+          fix: {
+            kind: 'clamp-min',
+            module: moduleName,
+            containerPath,
+            parameter: param.name,
+            value: param.min,
+          },
         });
       }
       if (param.max !== undefined && val > param.max) {
@@ -248,15 +255,13 @@ export class DependencyValidator {
           module: moduleName,
           parameter: param.name,
           suggestion: `Set value to at most ${param.max}`,
-          fix: instanceName
-            ? undefined
-            : {
-                kind: 'clamp-max',
-                module: moduleName,
-                containerPath,
-                parameter: param.name,
-                value: param.max,
-              },
+          fix: {
+            kind: 'clamp-max',
+            module: moduleName,
+            containerPath,
+            parameter: param.name,
+            value: param.max,
+          },
         });
       }
     }

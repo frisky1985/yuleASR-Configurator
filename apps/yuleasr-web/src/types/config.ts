@@ -250,7 +250,13 @@ export interface ValidationResult {
 export type FixDescriptor =
   | { kind: 'clamp-min'; module: string; containerPath?: string; parameter: string; value: number }
   | { kind: 'clamp-max'; module: string; containerPath?: string; parameter: string; value: number }
-  | { kind: 'set-default'; module: string; containerPath?: string; parameter: string; value: unknown }
+  | {
+      kind: 'set-default';
+      module: string;
+      containerPath?: string;
+      parameter: string;
+      value: string | number | boolean;
+    }
   | { kind: 'enable-module'; module: string };
 
 export interface ValidationIssue {
