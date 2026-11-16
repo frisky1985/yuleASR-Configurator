@@ -205,8 +205,8 @@ interface ConfigState {
     method?: ConfigModule['configMethod']
   ) => void;
   updateParameter: (path: string, value: unknown) => void;
-  /** 应用问题自带的可执行修复；无 fix 时不做任何事 */
-  applyIssueFix: (issue: ValidationIssue) => void;
+  /** 应用问题自带的可执行修复；未产生实际变更时返回 false */
+  applyIssueFix: (issue: ValidationIssue) => boolean;
   /**
    * 同步动态容器实例集合到 currentConfig（Fix C2）。
    * ConfigTree 的实例增删改操作后调用，保证实例数据随配置持久化。
@@ -491,11 +491,11 @@ export const useConfigStore = create<ConfigState>()(
       applyIssueFix: issue => {
         const { currentConfig } = get();
         const fix = issue.fix;
-        if (!currentConfig || !fix) return;
+        if (!currentConfig || !fix) return false;
 
         const updatedConfig = applyFix(currentConfig, fix);
         // 无实际变更：applyFix 返回入参同一引用，此时不 set、不置脏、不重算校验
-        if (updatedConfig === currentConfig) return;
+        if (updatedConfig === currentConfig) return false;
 
         // 与 updateParameter 一致：全量验证 + 受影响跨模块约束的增量结果合并
         const targetModule = updatedConfig.modules.find(
@@ -521,6 +521,8 @@ export const useConfigStore = create<ConfigState>()(
           validationDegraded: cross.failed,
           isDirty: true,
         });
+
+        return true;
       },
 
       updateContainerInstances: (containerPath, instances) => {

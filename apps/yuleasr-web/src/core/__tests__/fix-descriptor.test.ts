@@ -100,6 +100,7 @@ describe('校验问题携带可执行修复描述', () => {
     const result = new DependencyValidator(config).validate();
     const issue = result.errors.find(i => i.parameter === 'BaudRate');
     expect(issue?.path).toBe('Can.General.BaudRate');
+    expect(issue?.container).toBe('General');
     expect(issue?.fix).toEqual({
       kind: 'clamp-max',
       module: 'Can',

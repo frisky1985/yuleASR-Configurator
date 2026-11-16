@@ -208,6 +208,7 @@ export class DependencyValidator {
         message: `Parameter "${param.name}" is required`,
         severity: 'error',
         module: moduleName,
+        container: containerPath,
         parameter: param.name,
         fix:
           defaultValue !== undefined
@@ -231,6 +232,7 @@ export class DependencyValidator {
           message: `Value ${val} is below minimum ${param.min}`,
           severity: 'error',
           module: moduleName,
+          container: containerPath,
           parameter: param.name,
           suggestion: `Set value to at least ${param.min}`,
           fix: {
@@ -248,6 +250,7 @@ export class DependencyValidator {
           message: `Value ${val} exceeds maximum ${param.max}`,
           severity: 'error',
           module: moduleName,
+          container: containerPath,
           parameter: param.name,
           suggestion: `Set value to at most ${param.max}`,
           fix: {
@@ -274,6 +277,7 @@ export class DependencyValidator {
           message: `Invalid enum value "${param.value}"`,
           severity: 'error',
           module: moduleName,
+          container: containerPath,
           parameter: param.name,
           suggestion: `Valid values: ${validValues.join(', ')}`,
         });

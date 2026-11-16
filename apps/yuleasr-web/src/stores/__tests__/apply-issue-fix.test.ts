@@ -46,7 +46,7 @@ describe('applyIssueFix', () => {
   });
 
   it('应用 clamp-max 后参数值被修正且标记脏', () => {
-    useConfigStore.getState().applyIssueFix({
+    const applied = useConfigStore.getState().applyIssueFix({
       id: 'e1',
       path: 'Can.BaudRate',
       message: 'too big',
@@ -56,6 +56,7 @@ describe('applyIssueFix', () => {
       fix: { kind: 'clamp-max', module: 'Can', parameter: 'BaudRate', value: 1000000 },
     });
 
+    expect(applied).toBe(true);
     const state = useConfigStore.getState();
     expect(state.currentConfig?.modules[0].parameters[0].value).toBe(1000000);
     expect(state.isDirty).toBe(true);
@@ -84,7 +85,7 @@ describe('applyIssueFix', () => {
       validationIssues: [],
     });
 
-    useConfigStore.getState().applyIssueFix({
+    const applied = useConfigStore.getState().applyIssueFix({
       id: 'e3',
       path: 'Can.BaudRate',
       message: 'too big',
@@ -94,6 +95,7 @@ describe('applyIssueFix', () => {
       fix: { kind: 'clamp-max', module: 'Can', parameter: 'BaudRate', value: 1000000 },
     });
 
+    expect(applied).toBe(false);
     const state = useConfigStore.getState();
     expect(state.currentConfig).toBe(before);
     expect(state.isDirty).toBe(false);

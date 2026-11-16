@@ -49,6 +49,36 @@ describe('issueToConfigPath', () => {
     ).toBe('layer:ECUAL/module:can/container:CanConfigSet');
   });
 
+  it('嵌套容器问题按点号路径定位到最深层容器', () => {
+    const nestedConfig = {
+      ...config,
+      modules: [
+        {
+          ...config.modules[0],
+          containers: [
+            {
+              id: 'c-outer',
+              name: 'Outer',
+              parameters: [],
+              subContainers: [{ id: 'c-inner', name: 'Inner', parameters: [], subContainers: [] }],
+            },
+          ],
+        },
+      ],
+    } as ConfigFile;
+
+    expect(
+      issueToConfigPath(nestedConfig, {
+        id: '4',
+        path: 'Can.Outer.Inner.BaudRate',
+        message: '',
+        severity: 'error',
+        module: 'Can',
+        container: 'Outer.Inner',
+      })
+    ).toBe('layer:ECUAL/module:can/container:c-inner');
+  });
+
   it('模块不存在返回 null', () => {
     expect(
       issueToConfigPath(config, {

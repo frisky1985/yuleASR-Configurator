@@ -395,7 +395,7 @@ export function Editor() {
           throw new Error('配置文件缺少 modules 字段');
         }
         setSelectedPath('');
-        useConfigStore.setState({ currentConfig: config as ConfigFile, isDirty: false });
+        useConfigStore.getState().setCurrentConfig(config as ConfigFile);
         localStorage.setItem('yuleasr_config', JSON.stringify(config));
       } catch {
         alert('导入失败：无效的配置文件');
@@ -435,6 +435,7 @@ export function Editor() {
               updatedAt: new Date().toISOString(),
             };
             useConfigStore.setState({ currentConfig: updated, isDirty: true });
+            useConfigStore.getState().validateConfig();
             localStorage.setItem('yuleasr_config', JSON.stringify(updated));
           }
           alert(`ARXML 导入成功: ${result.modules.length} 个模块`);
@@ -468,6 +469,7 @@ export function Editor() {
       }
       setSelectedPath('');
       useConfigStore.setState({ currentConfig: draft, isDirty: true });
+      useConfigStore.getState().validateConfig();
       localStorage.setItem('yuleasr_config', JSON.stringify(draft));
     } catch {
       alert('草稿内容无效，无法恢复');
@@ -724,10 +726,10 @@ export function Editor() {
                   {t('common.unsavedChanges')}
                 </span>
               )}
-              {validationIssues.length > 0 && (
+              {visibleIssues.length > 0 && (
                 <span className="flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-red-100 text-red-800 rounded-full">
                   <AlertCircle className="w-3 h-3" />
-                  {validationIssues.filter(i => i.severity === 'error').length} Errors
+                  {visibleIssues.filter(i => i.severity === 'error').length} Errors
                 </span>
               )}
             </div>
@@ -1135,7 +1137,7 @@ export function Editor() {
               config={treeConfig ?? currentConfig}
               selectedPath={selectedPath}
               onSelectPath={setSelectedPath}
-              validationIssues={validationIssues}
+              validationIssues={visibleIssues}
               showDisabled={showDisabled}
               onToggleModule={(id, enabled) => toggleModuleEnabled(id, enabled)}
               filterText=""
@@ -1200,8 +1202,7 @@ export function Editor() {
               parameter={selectedParameter}
               onApplyFix={() => {
                 if (!selectedIssue) return;
-                applyIssueFix(selectedIssue);
-                selectIssue(null);
+                if (applyIssueFix(selectedIssue)) selectIssue(null);
               }}
               onLocate={() => {
                 if (!selectedIssue) return;
