@@ -50,12 +50,27 @@ export interface UISettings {
   confirmBeforeDelete: boolean;
 }
 
+export type WorkbenchSegment = 'basic' | 'bsw' | 'communication' | 'diagnostics' | 'generate';
+export type ProblemFilter = 'all' | 'error' | 'warning' | 'info';
+export type BottomTab = 'problems' | 'generate' | 'output' | 'console';
+
+export interface WorkbenchSettings {
+  treeWidth: number;
+  inspectorWidth: number;
+  bottomHeight: number;
+  bottomCollapsed: boolean;
+  activeSegment: WorkbenchSegment;
+  problemsFilter: ProblemFilter;
+  bottomTab: BottomTab;
+}
+
 export interface SettingsState {
   editor: EditorSettings;
   validation: ValidationSettings;
   importExport: ImportExportSettings;
   pipeline: PipelineSettings;
   ui: UISettings;
+  workbench: WorkbenchSettings;
   version: string;
   lastCheckedAt: string | null;
 
@@ -65,6 +80,7 @@ export interface SettingsState {
   updateImportExportSettings: (settings: Partial<ImportExportSettings>) => void;
   updatePipelineSettings: (settings: Partial<PipelineSettings>) => void;
   updateUISettings: (settings: Partial<UISettings>) => void;
+  updateWorkbenchSettings: (settings: Partial<WorkbenchSettings>) => void;
   setVersion: (version: string) => void;
   setLastCheckedAt: (date: string) => void;
   resetAllSettings: () => void;
@@ -100,6 +116,15 @@ const defaultSettings = {
     sidebarCollapsed: false,
     showTooltips: true,
     confirmBeforeDelete: true,
+  },
+  workbench: {
+    treeWidth: 280,
+    inspectorWidth: 320,
+    bottomHeight: 180,
+    bottomCollapsed: false,
+    activeSegment: 'basic' as WorkbenchSegment,
+    problemsFilter: 'all' as ProblemFilter,
+    bottomTab: 'problems' as BottomTab,
   },
 };
 
@@ -141,6 +166,12 @@ export const useSettingsStore = create<SettingsState>()(
           }));
         },
 
+        updateWorkbenchSettings: settings => {
+          set(state => ({
+            workbench: { ...state.workbench, ...settings },
+          }));
+        },
+
         setVersion: version => {
           set({ version });
         },
@@ -164,6 +195,7 @@ export const useSettingsStore = create<SettingsState>()(
           validation: state.validation,
           importExport: state.importExport,
           ui: state.ui,
+          workbench: state.workbench,
           version: state.version,
           lastCheckedAt: state.lastCheckedAt,
         }),
