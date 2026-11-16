@@ -1,12 +1,15 @@
 // @vitest-environment jsdom
 import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import { afterEach, beforeEach, describe, it, expect } from 'vitest';
+import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest';
 
 import { WorkbenchShell } from '@/components/workbench/WorkbenchShell';
 import { useSettingsStore } from '@/stores/settingsStore';
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  vi.restoreAllMocks();
+});
 
 beforeEach(() => {
   useSettingsStore.getState().resetAllSettings();
@@ -53,5 +56,24 @@ describe('WorkbenchShell', () => {
   it('渲染 segments 插槽内容', () => {
     renderShell(<span>SEGMENTS</span>);
     expect(screen.getByText('SEGMENTS')).toBeTruthy();
+  });
+
+  it('单击分隔条无位移时不写入设置，拖动后才写入', () => {
+    const updateSpy = vi.spyOn(useSettingsStore.getState(), 'updateWorkbenchSettings');
+    renderShell();
+    const separator = screen.getByRole('separator', { name: '调整模块树宽度' });
+
+    fireEvent.pointerDown(separator, { pointerId: 1, clientX: 100, clientY: 100 });
+    fireEvent.pointerUp(separator, { pointerId: 1, clientX: 100, clientY: 100 });
+
+    expect(updateSpy).not.toHaveBeenCalled();
+    expect(useSettingsStore.getState().workbench.treeWidth).toBe(280);
+
+    fireEvent.pointerDown(separator, { pointerId: 1, clientX: 100, clientY: 100 });
+    fireEvent.pointerMove(window, { pointerId: 1, clientX: 150, clientY: 100 });
+    fireEvent.pointerUp(separator, { pointerId: 1, clientX: 150, clientY: 100 });
+
+    expect(updateSpy).toHaveBeenCalledTimes(1);
+    expect(useSettingsStore.getState().workbench.treeWidth).toBe(330);
   });
 });

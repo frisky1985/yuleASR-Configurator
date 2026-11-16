@@ -67,25 +67,55 @@ export function WorkbenchShell({
       stopDragRef.current?.();
       setLiveSize(null);
 
+      const target = event.currentTarget;
+      const pointerId = event.pointerId;
+
+      try {
+        target.setPointerCapture?.(pointerId);
+      } catch {
+        // jsdom 或非活动指针环境不支持指针捕获，忽略即可
+      }
+
       const startX = event.clientX;
       const startY = event.clientY;
-      const startTree = workbench.treeWidth;
-      const startInspector = workbench.inspectorWidth;
-      const startBottom = workbench.bottomHeight;
+      const startSettings = useSettingsStore.getState().workbench;
+      const startTree = startSettings.treeWidth;
+      const startInspector = startSettings.inspectorWidth;
+      const startBottom = startSettings.bottomHeight;
 
       let latest =
         kind === 'tree' ? startTree : kind === 'inspector' ? startInspector : startBottom;
+      let moved = false;
 
       function stop() {
         window.removeEventListener('pointermove', onMove);
         window.removeEventListener('pointerup', onUp);
         window.removeEventListener('pointercancel', onCancel);
+        window.removeEventListener('lostpointercapture', onLostCapture);
+        try {
+          if (target.hasPointerCapture?.(pointerId)) {
+            target.releasePointerCapture?.(pointerId);
+          }
+        } catch {
+          // 捕获已丢失时释放会抛错，忽略即可
+        }
         if (stopDragRef.current === stop) {
           stopDragRef.current = null;
         }
       }
 
+      function finish(shouldCommit: boolean) {
+        stop();
+        setLiveSize(null);
+        if (shouldCommit) {
+          updateWorkbenchSettings(sizePatch(kind, latest));
+        }
+      }
+
       function onMove(e: PointerEvent) {
+        if (Math.abs(e.clientX - startX) >= 2 || Math.abs(e.clientY - startY) >= 2) {
+          moved = true;
+        }
         latest =
           kind === 'tree'
             ? clamp(startTree + e.clientX - startX, MIN_SIDE, MAX_SIDE)
@@ -95,23 +125,27 @@ export function WorkbenchShell({
         setLiveSize({ kind, value: latest });
       }
 
-      function onUp() {
-        stop();
-        setLiveSize(null);
-        updateWorkbenchSettings(sizePatch(kind, latest));
+      function onUp(e: PointerEvent) {
+        const dragged =
+          moved || Math.abs(e.clientX - startX) >= 2 || Math.abs(e.clientY - startY) >= 2;
+        finish(dragged);
       }
 
       function onCancel() {
-        stop();
-        setLiveSize(null);
+        finish(false);
+      }
+
+      function onLostCapture() {
+        finish(moved);
       }
 
       window.addEventListener('pointermove', onMove);
       window.addEventListener('pointerup', onUp);
       window.addEventListener('pointercancel', onCancel);
+      window.addEventListener('lostpointercapture', onLostCapture);
       stopDragRef.current = stop;
     },
-    [workbench, updateWorkbenchSettings]
+    [updateWorkbenchSettings]
   );
 
   const collapsed = workbench.bottomCollapsed;
@@ -166,7 +200,10 @@ export function WorkbenchShell({
         <button
           type="button"
           aria-label={collapsed ? '展开问题面板' : '折叠问题面板'}
-          onClick={() => updateWorkbenchSettings({ bottomCollapsed: !collapsed })}
+          onClick={() => {
+            setLiveSize(null);
+            updateWorkbenchSettings({ bottomCollapsed: !collapsed });
+          }}
           className="rounded p-0.5 text-app-text-secondary hover:bg-app-bg-tertiary"
         >
           {collapsed ? (
