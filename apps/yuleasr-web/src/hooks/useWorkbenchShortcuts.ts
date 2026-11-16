@@ -12,14 +12,24 @@ export function useWorkbenchShortcuts({ onSave, onSearch, onValidate, onGenerate
     if (!window.electronAPI?.isElectron) return;
 
     const handler = (event: KeyboardEvent) => {
+      if (
+        event.isComposing ||
+        event.target instanceof HTMLInputElement ||
+        event.target instanceof HTMLTextAreaElement ||
+        event.target instanceof HTMLSelectElement ||
+        (event.target instanceof HTMLElement && event.target.isContentEditable)
+      ) {
+        return;
+      }
+
       const mod = event.ctrlKey || event.metaKey;
       if (!mod) return;
 
       const key = event.key.toLowerCase();
-      if (key === 's') {
+      if (key === 's' && !event.shiftKey) {
         event.preventDefault();
         onSave();
-      } else if (key === 'f') {
+      } else if (key === 'f' && !event.shiftKey) {
         event.preventDefault();
         onSearch();
       } else if (key === 'v' && event.shiftKey && onValidate) {

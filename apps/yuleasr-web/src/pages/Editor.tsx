@@ -303,7 +303,7 @@ export function Editor() {
 
   useWorkbenchShortcuts({
     onSave: () => {
-      void handleSave();
+      if (isDirty) void handleSave();
     },
     onSearch: () => setIsSearchOpen(true),
     onValidate: () => {

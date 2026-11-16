@@ -4,7 +4,10 @@ import { afterEach, describe, it, expect, vi } from 'vitest';
 
 import { useWorkbenchShortcuts } from '@/hooks/useWorkbenchShortcuts';
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  delete (window as any).electronAPI;
+});
 
 function press(key: string, init: KeyboardEventInit = {}) {
   window.dispatchEvent(new KeyboardEvent('keydown', { key, ...init }));
@@ -29,6 +32,18 @@ describe('useWorkbenchShortcuts', () => {
 
     expect(onSave).toHaveBeenCalledTimes(1);
     expect(onSearch).toHaveBeenCalledTimes(1);
-    delete (window as any).electronAPI;
+  });
+
+  it('焦点在输入框内不触发保存', () => {
+    (window as any).electronAPI = { isElectron: true };
+    const onSave = vi.fn();
+    renderHook(() => useWorkbenchShortcuts({ onSave, onSearch: vi.fn() }));
+
+    const input = document.createElement('input');
+    document.body.appendChild(input);
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 's', ctrlKey: true, bubbles: true }));
+
+    expect(onSave).not.toHaveBeenCalled();
+    input.remove();
   });
 });
