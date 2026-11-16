@@ -34,6 +34,7 @@ import { useTheme } from '@/components/ThemeProvider';
 import { InspectorPane } from '@/components/workbench/InspectorPane';
 import { ProblemsPanel } from '@/components/workbench/ProblemsPanel';
 import { WorkbenchShell } from '@/components/workbench/WorkbenchShell';
+import { useWorkbenchShortcuts } from '@/hooks/useWorkbenchShortcuts';
 import { issueToConfigPath } from '@/lib/issue-target';
 import { modulesForSegment, WORKBENCH_SEGMENTS } from '@/lib/segment-modules';
 import { cn, formatDate } from '@/lib/utils';
@@ -258,6 +259,57 @@ export function Editor() {
   const handleSave = async () => {
     await saveConfig();
   };
+
+  const handleGenerate = useCallback(async () => {
+    if (!currentConfig) return;
+    // F2b: 配置数据 → schema 驱动全量生成（117 模块，配置值覆盖默认值）
+    const files = await generateHeadersFromConfig(currentConfig.modules);
+    if (files.length === 0) {
+      alert('未加载到任何模块 schema，无法生成。');
+      return;
+    }
+    setCodeGenFiles(files);
+    setCodeGenResult(files[0]);
+    setGccResults(null);
+    // Check gcc availability in Electron
+    if (window.electronAPI) {
+      const result = await window.electronAPI.gccCheck();
+      setGccAvailable(result.available);
+    }
+    // Auto-trigger pipeline if user has enabled it
+    const { pipeline: pipelineSettings } = useSettingsStore.getState();
+    if (pipelineSettings.autoTriggerOnCodegen) {
+      try {
+        const triggerResult = await triggerPipeline({
+          config_json: JSON.stringify(currentConfig),
+          project_dir: window.location.pathname,
+          type: 'full',
+        });
+        if (triggerResult.ok && triggerResult.job_id) {
+          // Fix 24: 触发新 job 前清理旧隐藏 timer
+          if (pipelineHideTimerRef.current) {
+            clearTimeout(pipelineHideTimerRef.current);
+            pipelineHideTimerRef.current = null;
+          }
+          setActivePipelineJobId(triggerResult.job_id);
+          console.log('Pipeline auto-triggered:', triggerResult.job_id);
+        }
+      } catch (err) {
+        console.warn('Auto-trigger pipeline failed:', err);
+      }
+    }
+  }, [currentConfig]);
+
+  useWorkbenchShortcuts({
+    onSave: () => {
+      void handleSave();
+    },
+    onSearch: () => setIsSearchOpen(true),
+    onValidate: () => {
+      void handleValidate();
+    },
+    onGenerate: handleGenerate,
+  });
 
   const handleExport = () => {
     if (!currentConfig) return;
@@ -845,45 +897,7 @@ export function Editor() {
             className="hidden"
           />
           <button
-            onClick={async () => {
-              if (!currentConfig) return;
-              // F2b: 配置数据 → schema 驱动全量生成（117 模块，配置值覆盖默认值）
-              const files = await generateHeadersFromConfig(currentConfig.modules);
-              if (files.length === 0) {
-                alert('未加载到任何模块 schema，无法生成。');
-                return;
-              }
-              setCodeGenFiles(files);
-              setCodeGenResult(files[0]);
-              setGccResults(null);
-              // Check gcc availability in Electron
-              if (window.electronAPI) {
-                const result = await window.electronAPI.gccCheck();
-                setGccAvailable(result.available);
-              }
-              // Auto-trigger pipeline if user has enabled it
-              const { pipeline: pipelineSettings } = useSettingsStore.getState();
-              if (pipelineSettings.autoTriggerOnCodegen) {
-                try {
-                  const triggerResult = await triggerPipeline({
-                    config_json: JSON.stringify(currentConfig),
-                    project_dir: window.location.pathname,
-                    type: 'full',
-                  });
-                  if (triggerResult.ok && triggerResult.job_id) {
-                    // Fix 24: 触发新 job 前清理旧隐藏 timer
-                    if (pipelineHideTimerRef.current) {
-                      clearTimeout(pipelineHideTimerRef.current);
-                      pipelineHideTimerRef.current = null;
-                    }
-                    setActivePipelineJobId(triggerResult.job_id);
-                    console.log('Pipeline auto-triggered:', triggerResult.job_id);
-                  }
-                } catch (err) {
-                  console.warn('Auto-trigger pipeline failed:', err);
-                }
-              }
-            }}
+            onClick={handleGenerate}
             className="inline-flex items-center gap-2 px-3 py-2 text-sm font-medium text-app-text-primary bg-app-bg-primary border border-app-border-primary rounded-lg hover:bg-app-bg-secondary transition-colors"
             title="Generate _Cfg.h source files from configuration"
           >
