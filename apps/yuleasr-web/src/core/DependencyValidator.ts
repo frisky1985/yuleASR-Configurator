@@ -77,6 +77,7 @@ export class DependencyValidator {
             suggestion: dep.autoEnable
               ? `Enable ${dep.module} automatically`
               : `Enable ${dep.module} module`,
+            fix: { kind: 'enable-module', module: dep.module },
           });
         } else if (!dep.required && !depEnabled) {
           this.addIssue({
@@ -204,6 +205,16 @@ export class DependencyValidator {
         severity: 'error',
         module: moduleName,
         parameter: param.name,
+        fix:
+          !instanceName && param.defaultValue !== undefined
+            ? {
+                kind: 'set-default',
+                module: moduleName,
+                containerPath,
+                parameter: param.name,
+                value: param.defaultValue,
+              }
+            : undefined,
       });
     }
 
@@ -218,6 +229,15 @@ export class DependencyValidator {
           module: moduleName,
           parameter: param.name,
           suggestion: `Set value to at least ${param.min}`,
+          fix: instanceName
+            ? undefined
+            : {
+                kind: 'clamp-min',
+                module: moduleName,
+                containerPath,
+                parameter: param.name,
+                value: param.min,
+              },
         });
       }
       if (param.max !== undefined && val > param.max) {
@@ -228,6 +248,15 @@ export class DependencyValidator {
           module: moduleName,
           parameter: param.name,
           suggestion: `Set value to at most ${param.max}`,
+          fix: instanceName
+            ? undefined
+            : {
+                kind: 'clamp-max',
+                module: moduleName,
+                containerPath,
+                parameter: param.name,
+                value: param.max,
+              },
         });
       }
     }

@@ -247,6 +247,12 @@ export interface ValidationResult {
   info: ValidationIssue[];
 }
 
+export type FixDescriptor =
+  | { kind: 'clamp-min'; module: string; containerPath?: string; parameter: string; value: number }
+  | { kind: 'clamp-max'; module: string; containerPath?: string; parameter: string; value: number }
+  | { kind: 'set-default'; module: string; containerPath?: string; parameter: string; value: unknown }
+  | { kind: 'enable-module'; module: string };
+
 export interface ValidationIssue {
   id: string;
   path: string; // e.g., "Mcu.General.McuClockSetting"
@@ -259,6 +265,10 @@ export interface ValidationIssue {
   // Dependency related
   dependencySource?: string;
   dependencyTarget?: string;
+  /** 可安全自动执行的修复；缺省表示只能人工处理 */
+  fix?: FixDescriptor;
+  /** 用户已确认/忽略（会话内有效，不落库） */
+  acknowledged?: boolean;
 }
 
 // Tree view node types for hierarchical display
