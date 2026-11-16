@@ -6,13 +6,10 @@ import {
   Play,
   Download,
   Upload,
-  GitBranch,
   MoreVertical,
   CheckCircle,
   AlertCircle,
   Search,
-  AlertTriangle,
-  Info,
   Share2,
   Eye,
   FileJson,
@@ -24,26 +21,21 @@ import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { CodeDiffPreview } from '@/components/CodeDiffPreview';
-import { CollapsibleSection } from '@/components/CollapsibleSection';
 import type { ConfigTreeHandle } from '@/components/ConfigTree';
 import { ConfigTree } from '@/components/ConfigTree';
-import {
-  ConfigurationStatusPanel,
-  exportConfigReport,
-} from '@/components/ConfigurationStatusPanel';
-import { ContainerConfigSection } from '@/components/ContainerConfigSection';
 import { ContainerParameterList } from '@/components/ContainerParameterList';
 import { SchemaCoverageTable } from '@/components/ecuc/SchemaCoverageTable';
 import { GlobalSearch } from '@/components/GlobalSearch';
 import { KeyboardShortcutsHelp } from '@/components/KeyboardShortcutsHelp';
-import { ModuleConfigWizard } from '@/components/ModuleConfigWizard';
-import { OSEditor } from '@/components/OSEditor';
-import { ParameterEditor } from '@/components/ParameterEditor';
 import { PipelinePushButton } from '@/components/PipelinePushButton';
 import { PipelineStatusPanel } from '@/components/PipelineStatusPanel';
 import { ShareDialog } from '@/components/ShareDialog';
 import { useTheme } from '@/components/ThemeProvider';
-import { ValidationPanel } from '@/components/ValidationPanel';
+import { InspectorPane } from '@/components/workbench/InspectorPane';
+import { ProblemsPanel } from '@/components/workbench/ProblemsPanel';
+import { WorkbenchShell } from '@/components/workbench/WorkbenchShell';
+import { issueToConfigPath } from '@/lib/issue-target';
+import { modulesForSegment, WORKBENCH_SEGMENTS } from '@/lib/segment-modules';
 import { cn, formatDate } from '@/lib/utils';
 import {
   DEFAULT_SCHEMA_VERSION,
@@ -57,7 +49,7 @@ import { downloadAuditReport } from '@/services/configReportGenerator';
 import { triggerPipeline } from '@/services/yuleoshPipeline';
 import { useConfigStore, toConditionModuleConfigs } from '@/stores/configStore';
 import { useSettingsStore } from '@/stores/settingsStore';
-import type { ValidationResult } from '@/types';
+import { useWorkbenchStore } from '@/stores/workbenchStore';
 import type { ConfigContainer, ConfigFile } from '@/types/config';
 
 export function Editor() {
@@ -65,7 +57,7 @@ export function Editor() {
   const navigate = useNavigate();
 
   // Local state
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery] = useState('');
   const [showDisabled, setShowDisabled] = useState(true);
   const [isValidating, setIsValidating] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -111,7 +103,6 @@ export function Editor() {
   const {
     currentConfig,
     selectedPath,
-    validationResult,
     validationIssues,
     validationDegraded,
     isDirty,
@@ -123,7 +114,10 @@ export function Editor() {
     saveConfig,
     validateConfig,
     toggleModuleEnabled,
+    applyIssueFix,
   } = useConfigStore();
+
+  const { workbench, updateWorkbenchSettings } = useSettingsStore();
 
   // 同步失败 toast（本地优先，但云同步异常不能静默；一次性提示，几秒后消失）
   const [syncErrorToast, setSyncErrorToast] = useState<string | null>(null);
@@ -311,7 +305,7 @@ export function Editor() {
         setSelectedPath('');
         useConfigStore.setState({ currentConfig: config as ConfigFile, isDirty: false });
         localStorage.setItem('yuleasr_config', JSON.stringify(config));
-      } catch (err) {
+      } catch {
         alert('导入失败：无效的配置文件');
       }
       setImporting(false);
@@ -438,8 +432,60 @@ export function Editor() {
     [currentConfig]
   );
 
-  // Check if OS is selected
-  const isOSSelected = selectedPath?.includes('layer:OS') || selectedPath?.includes('/os');
+  const { selectedIssueId, acknowledgedIssueIds, selectIssue, acknowledgeIssue, resetForConfig } =
+    useWorkbenchStore();
+
+  useEffect(() => {
+    if (configId) resetForConfig(configId);
+  }, [configId, resetForConfig]);
+
+  const visibleIssues = useMemo(
+    () => validationIssues.filter(issue => !acknowledgedIssueIds.includes(issue.id)),
+    [validationIssues, acknowledgedIssueIds]
+  );
+
+  const selectedIssue = visibleIssues.find(issue => issue.id === selectedIssueId) ?? null;
+
+  const treeConfig = useMemo(
+    () =>
+      currentConfig
+        ? {
+            ...currentConfig,
+            modules: modulesForSegment(currentConfig, workbench.activeSegment),
+          }
+        : null,
+    [currentConfig, workbench.activeSegment]
+  );
+
+  const selectedParameter = useMemo(() => {
+    if (!selectedPath) return null;
+    const paramKey = selectedPath.match(/param:([^/]+)$/)?.[1];
+    if (!paramKey) return null;
+
+    const inModule = selectedModule?.parameters.find(p => p.id === paramKey || p.name === paramKey);
+    if (inModule) return inModule;
+
+    const stack = [...(selectedModule?.containers ?? [])];
+    while (stack.length) {
+      const container = stack.shift();
+      if (!container) break;
+      const hit = container.parameters.find(p => p.id === paramKey || p.name === paramKey);
+      if (hit) return hit;
+      if (container.subContainers?.length) stack.push(...container.subContainers);
+    }
+    return null;
+  }, [selectedPath, selectedModule]);
+
+  const handleIssueSelect = useCallback(
+    (id: string) => {
+      selectIssue(id);
+      const issue = visibleIssues.find(i => i.id === id);
+      if (!issue || !currentConfig) return;
+      const path = issueToConfigPath(currentConfig, issue);
+      if (path) setSelectedPath(path);
+    },
+    [visibleIssues, currentConfig, selectIssue, setSelectedPath]
+  );
 
   if (isLoading && !currentConfig) {
     return (
@@ -894,7 +940,7 @@ export function Editor() {
           jobId={activePipelineJobId}
           autoPoll={true}
           pollInterval={3000}
-          onComplete={job => {
+          onComplete={() => {
             // Keep showing for 10 seconds after completion (Fix 24: timer 存入 ref，避免泄漏)
             if (pipelineHideTimerRef.current) {
               clearTimeout(pipelineHideTimerRef.current);
@@ -911,178 +957,190 @@ export function Editor() {
       )}
 
       {/* Main Content */}
-      <div className="grid grid-cols-12 gap-4 h-[calc(100vh-12rem)]">
-        {/* Left Sidebar - Hierarchical Config Tree */}
-        <div className="col-span-3 h-full">
-          <ConfigTree
-            ref={configTreeRef}
-            config={currentConfig}
-            selectedPath={selectedPath}
-            onSelectPath={setSelectedPath}
-            validationIssues={validationIssues}
-            showDisabled={showDisabled}
-            onToggleModule={(id, enabled) => toggleModuleEnabled(id, enabled)}
-            filterText={searchQuery}
-          />
-        </div>
-
-        {/* Center - Validation + Selected Container Parameters */}
-        <div className="col-span-6 h-full overflow-y-auto space-y-4">
-          {/* Validation Summary */}
-          <div className="bg-app-bg-primary border border-app-border-primary rounded-lg p-4">
-            <h3 className="text-sm font-semibold text-app-text-primary mb-3">Validation</h3>
-            {/* Fix 19: 跨模块验证降级警告条 —— schema 加载失败时验证未完整执行，不得显示"全部通过" */}
-            {validationDegraded && (
-              <div className="mb-3 flex items-start gap-2 bg-yellow-50 border border-yellow-200 text-yellow-800 text-xs px-3 py-2 rounded dark:bg-yellow-950/40 dark:text-yellow-300 dark:border-yellow-800/60">
-                <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
-                <span>{t('validation.degradedWarning')}</span>
-              </div>
-            )}
-            {validationResult ? (
-              <div className="space-y-2">
-                {validationResult.valid ? (
-                  <div className="flex items-center gap-2 text-green-600">
-                    <CheckCircle className="w-5 h-5" />
-                    <span className="text-sm">All checks passed</span>
+      <div className="flex h-[calc(100vh-12rem)] min-h-0 flex-col">
+        <WorkbenchShell
+          segments={
+            <div className="flex items-center gap-0.5" role="tablist" aria-label="工作区段">
+              {WORKBENCH_SEGMENTS.map(item => (
+                <button
+                  key={item.id}
+                  role="tab"
+                  aria-selected={workbench.activeSegment === item.id}
+                  onClick={() => updateWorkbenchSettings({ activeSegment: item.id })}
+                  className={cn(
+                    'rounded px-2 py-1 text-[11px] transition-colors',
+                    workbench.activeSegment === item.id
+                      ? 'bg-purple-100 font-medium text-purple-800 dark:bg-purple-500/20 dark:text-purple-200'
+                      : 'text-app-text-secondary hover:bg-app-bg-tertiary'
+                  )}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          }
+          breadcrumb={
+            <span className="font-mono">
+              {selectedPath
+                ? selectedPath.replace(/(layer|module|container|instance|param):/g, '')
+                : 'ECU Configuration'}
+            </span>
+          }
+          toolbar={
+            <label className="flex items-center gap-1 text-[11px] text-app-text-secondary">
+              <input
+                type="checkbox"
+                checked={showDisabled}
+                onChange={event => setShowDisabled(event.target.checked)}
+              />
+              显示禁用模块
+            </label>
+          }
+          tree={
+            <ConfigTree
+              ref={configTreeRef}
+              config={treeConfig ?? currentConfig}
+              selectedPath={selectedPath}
+              onSelectPath={setSelectedPath}
+              validationIssues={validationIssues}
+              showDisabled={showDisabled}
+              onToggleModule={(id, enabled) => toggleModuleEnabled(id, enabled)}
+              filterText={searchQuery}
+            />
+          }
+          main={
+            <div className="h-full overflow-y-auto p-3">
+              {selectedContainer ? (
+                <div className="overflow-hidden rounded-lg border border-app-border-primary bg-app-bg-primary">
+                  <div className="flex items-center justify-between border-b border-app-border-primary bg-app-bg-secondary px-3 py-1.5">
+                    <h3 className="text-xs font-semibold text-app-text-primary">
+                      {(instanceContainer || selectedContainer).displayName ||
+                        (instanceContainer || selectedContainer).name}
+                    </h3>
+                    <span className="text-[11px] text-app-text-secondary">
+                      {(instanceContainer || selectedContainer).parameters.length} 参数
+                    </span>
                   </div>
-                ) : (
-                  <>
-                    <div className="flex items-center gap-2 text-red-600">
-                      <AlertCircle className="w-4 h-4" />
-                      <span className="text-sm">{validationResult.errors.length} errors</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-yellow-600">
-                      <AlertTriangle className="w-4 h-4" />
-                      <span className="text-sm">{validationResult.warnings.length} warnings</span>
-                    </div>
-                  </>
-                )}
-              </div>
-            ) : (
-              <p className="text-sm text-app-text-secondary">
-                Click Validate to check configuration
-              </p>
-            )}
-          </div>
-
-          {/* Validation Issues List */}
-          {validationIssues.length > 0 && (
-            <div className="bg-app-bg-primary border border-app-border-primary rounded-lg p-4">
-              <h3 className="text-sm font-semibold text-app-text-primary mb-3">Issues</h3>
-              <div className="space-y-2 max-h-48 overflow-y-auto">
-                {validationIssues.slice(0, 10).map(issue => (
-                  <div
-                    key={issue.id}
+                  <div className="p-3">
+                    {selectedContainer.multiple && !selectedInstanceName ? (
+                      <div className="py-8 text-center">
+                        <button
+                          onClick={() => {
+                            const containerPath = `layer:${selectedModule?.layer}/module:${selectedModule?.id}/container:${selectedContainer.id}`;
+                            const instanceName = configTreeRef.current?.addInstance(containerPath);
+                            if (instanceName) {
+                              setSelectedPath(`${containerPath}/instance:${instanceName}`);
+                            }
+                          }}
+                          className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-app-bg-tertiary transition-colors hover:bg-primary-50 dark:hover:bg-primary-900/40"
+                          title="添加实例"
+                          aria-label="添加实例"
+                        >
+                          <span className="text-xl text-app-text-tertiary">+</span>
+                        </button>
+                        <p className="mb-1 text-sm font-medium text-app-text-primary">
+                          {selectedContainer.displayName || selectedContainer.name}
+                        </p>
+                        <p className="text-xs text-app-text-secondary">
+                          创建实例后，在树中选择实例查看和编辑参数
+                        </p>
+                      </div>
+                    ) : (
+                      <ContainerParameterList
+                        container={instanceContainer || selectedContainer}
+                        onParamChange={(name, value) => handleParameterChange(name, value)}
+                        moduleConfigs={conditionModuleConfigs}
+                      />
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="flex h-full items-center justify-center text-xs text-app-text-secondary">
+                  在左侧选择容器或参数
+                </div>
+              )}
+            </div>
+          }
+          inspector={
+            <InspectorPane
+              issue={selectedIssue}
+              parameter={selectedParameter}
+              onApplyFix={() => {
+                if (!selectedIssue) return;
+                applyIssueFix(selectedIssue);
+                selectIssue(null);
+              }}
+              onLocate={() => {
+                if (!selectedIssue) return;
+                const path = issueToConfigPath(currentConfig, selectedIssue);
+                if (path) setSelectedPath(path);
+              }}
+            />
+          }
+          problems={
+            <div className="flex h-full min-h-0 flex-col">
+              <div className="flex shrink-0 items-center gap-0.5 border-b border-app-border-primary px-2 py-1">
+                {(
+                  [
+                    { id: 'problems', label: '问题' },
+                    { id: 'generate', label: '生成' },
+                    { id: 'output', label: '输出' },
+                    { id: 'console', label: '控制台' },
+                  ] as const
+                ).map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => updateWorkbenchSettings({ bottomTab: tab.id })}
                     className={cn(
-                      'text-xs p-2 rounded cursor-pointer hover:bg-app-bg-secondary',
-                      issue.severity === 'error' &&
-                        'bg-red-50 text-red-700 border border-red-100 dark:bg-red-950/40 dark:text-red-300 dark:border-red-800/60',
-                      issue.severity === 'warning' &&
-                        'bg-yellow-50 text-yellow-700 border border-yellow-100 dark:bg-yellow-950/40 dark:text-yellow-300 dark:border-yellow-800/60',
-                      issue.severity === 'info' &&
-                        'bg-blue-50 text-blue-700 border border-blue-100 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800/60'
+                      'rounded px-2 py-0.5 text-[11px]',
+                      workbench.bottomTab === tab.id
+                        ? 'bg-app-bg-tertiary font-medium text-app-text-primary'
+                        : 'text-app-text-secondary hover:bg-app-bg-secondary'
                     )}
-                    onClick={() => {
-                      if (issue.module) {
-                        const module = currentConfig?.modules.find(m => m.name === issue.module);
-                        if (module) setSelectedPath(`layer:${module.layer}/module:${module.id}`);
-                      }
-                    }}
                   >
-                    <div className="font-medium">{issue.path}</div>
-                    <div className="mt-1">{issue.message}</div>
-                    {issue.suggestion && (
-                      <div className="mt-1 text-app-text-secondary italic">{issue.suggestion}</div>
+                    {tab.label}
+                    {tab.id === 'problems' && visibleIssues.length > 0 && (
+                      <span className="ml-1 text-red-500">{visibleIssues.length}</span>
                     )}
-                  </div>
+                  </button>
                 ))}
-                {validationIssues.length > 10 && (
-                  <div className="text-xs text-app-text-secondary text-center">
-                    +{validationIssues.length - 10} more issues
-                  </div>
-                )}
               </div>
-            </div>
-          )}
-
-          {/* Selected Container Parameters - show when a container is clicked */}
-          {selectedContainer && (
-            <div className="bg-app-bg-primary border border-app-border-primary rounded-lg overflow-hidden">
-              <div className="px-4 py-2.5 bg-app-bg-secondary border-b border-app-border-primary flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-app-text-primary">
-                  {(instanceContainer || selectedContainer).displayName ||
-                    (instanceContainer || selectedContainer).name}
-                </h3>
-                <span className="text-xs text-app-text-secondary">
-                  {instanceContainer
-                    ? `${instanceContainer.parameters.length} params · ${instanceContainer.description || ''}`
-                    : `${selectedContainer.parameters.length + (selectedContainer.subContainers?.reduce((s, sc) => s + sc.parameters.length, 0) ?? 0)} params`}
-                </span>
-              </div>
-              <div className="p-3">
-                {selectedContainer.multiple && !selectedInstanceName ? (
-                  /* Dynamic container with no instance selected - empty state */
-                  <div className="text-center py-8">
-                    <button
-                      onClick={() => {
-                        const containerPath = `layer:${selectedModule?.layer}/module:${selectedModule?.id}/container:${selectedContainer.id}`;
-                        const instanceName = configTreeRef.current?.addInstance(containerPath);
-                        if (instanceName) {
-                          setSelectedPath(`${containerPath}/instance:${instanceName}`);
-                        }
-                      }}
-                      className="w-12 h-12 rounded-full bg-app-bg-tertiary flex items-center justify-center mx-auto mb-3 hover:bg-primary-50 dark:hover:bg-primary-900/40 transition-colors cursor-pointer group"
-                      title="添加实例"
-                    >
-                      <svg
-                        className="w-6 h-6 text-app-text-tertiary group-hover:text-primary-500 transition-colors"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                        />
-                      </svg>
-                    </button>
-                    <p className="text-sm font-medium text-app-text-primary mb-1">
-                      {selectedContainer.displayName || selectedContainer.name}
-                    </p>
-                    <p className="text-sm text-app-text-secondary">
-                      点击上方 [+] 添加
-                      {selectedContainer.subContainers?.[0]?.displayName ||
-                        selectedContainer.subContainers?.[0]?.name ||
-                        '实例'}{' '}
-                      实例
-                    </p>
-                    <p className="text-xs text-app-text-tertiary mt-2">
-                      创建实例后，在树中选择实例查看和编辑参数
-                    </p>
-                  </div>
-                ) : (
-                  /* Static container or instance selected - show parameters normally */
-                  <ContainerParameterList
-                    container={instanceContainer || selectedContainer}
-                    onParamChange={(name, value) => handleParameterChange(name, value)}
-                    moduleConfigs={conditionModuleConfigs}
+              <div className="min-h-0 flex-1">
+                {workbench.bottomTab === 'problems' ? (
+                  <ProblemsPanel
+                    issues={validationIssues}
+                    filter={workbench.problemsFilter}
+                    acknowledgedIds={acknowledgedIssueIds}
+                    selectedId={selectedIssueId}
+                    onSelect={handleIssueSelect}
+                    onAcknowledge={acknowledgeIssue}
+                    onFilterChange={filter => updateWorkbenchSettings({ problemsFilter: filter })}
                   />
+                ) : (
+                  <div className="flex h-full items-center justify-center text-xs text-app-text-secondary">
+                    {workbench.bottomTab === 'generate' && '生成结果将显示在这里'}
+                    {workbench.bottomTab === 'output' && '暂无输出'}
+                    {workbench.bottomTab === 'console' && '暂无日志'}
+                  </div>
                 )}
               </div>
             </div>
-          )}
-        </div>
-
-        {/* Right - Configuration Status only */}
-        <div className="col-span-3 h-full overflow-y-auto">
-          <ConfigurationStatusPanel
-            config={currentConfig}
-            onExportReport={() => exportConfigReport(currentConfig)}
-            validationResult={validationResult}
-          />
-        </div>
+          }
+          statusBar={
+            <div className="flex items-center gap-3 px-3 py-1 text-[11px] text-app-text-secondary">
+              <span className={isDirty ? 'text-amber-600' : ''}>
+                {isDirty ? '未保存' : '已保存'}
+              </span>
+              <span>{validationIssues.filter(i => i.severity === 'error').length} 错误</span>
+              <span>{validationIssues.filter(i => i.severity === 'warning').length} 警告</span>
+              {validationDegraded && <span className="text-amber-600">校验降级</span>}
+              <span className="ml-auto">
+                {currentConfig.modules.filter(m => m.enabled).length} 模块 · 参数{' '}
+                {selectedModule?.parameters.length ?? 0}
+              </span>
+            </div>
+          }
+        />
       </div>
 
       {/* Global Search */}
@@ -1269,7 +1327,7 @@ export function Editor() {
               </span>
               {codeGenFiles.length > 1 && (
                 <div className="ml-auto flex gap-1">
-                  {codeGenFiles.map((f, i) => (
+                  {codeGenFiles.map(f => (
                     <button
                       key={f.filename}
                       onClick={() => setCodeGenResult(f)}
