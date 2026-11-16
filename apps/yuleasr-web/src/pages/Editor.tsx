@@ -197,21 +197,22 @@ export function Editor() {
 
   // Keyboard shortcuts
   useEffect(() => {
+    const isDesktop = !!window.electronAPI?.isElectron;
     const handleKeyDown = (e: KeyboardEvent) => {
       // Ctrl/Cmd + K to open search
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
         setIsSearchOpen(true);
       }
-      // Ctrl/Cmd + S to save
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      // Ctrl/Cmd + S to save（桌面端由 useWorkbenchShortcuts 处理）
+      if ((e.ctrlKey || e.metaKey) && e.key === 's' && !isDesktop) {
         e.preventDefault();
         if (isDirty) {
           handleSave();
         }
       }
-      // Ctrl/Cmd + Shift + V to validate
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'V') {
+      // Ctrl/Cmd + Shift + V to validate（桌面端由 useWorkbenchShortcuts 处理）
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'V' && !isDesktop) {
         e.preventDefault();
         handleValidate();
       }
