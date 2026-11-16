@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
 import { DependencyValidator } from '@/core/DependencyValidator';
-
 import type { ConfigFile, ConfigModule, ConfigContainer, ConfigParameter } from '@/types/config';
 
 function makeParam(
