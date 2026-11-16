@@ -21,7 +21,7 @@ const config = {
       dependencies: [],
     },
   ],
-} as ConfigFile;
+} as unknown as ConfigFile;
 
 describe('issueToConfigPath', () => {
   it('模块级问题定位到模块', () => {
