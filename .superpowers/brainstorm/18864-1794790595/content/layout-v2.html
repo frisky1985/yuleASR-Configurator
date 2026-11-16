@@ -1,0 +1,177 @@
+<style>
+  .wf{font:10px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:#9aa4b2;background:#12141a;height:230px;display:flex;flex-direction:column;overflow:hidden;border-radius:4px;border:1px solid #232732}
+  .wf-bar{height:16px;background:#1b1f27;border-bottom:1px solid #2a2f3a;display:flex;align-items:center;gap:4px;padding:0 6px;font-size:8px;color:#6b7480}
+  .wf-dot{width:5px;height:5px;border-radius:50%;background:#3d4450}
+  .wf-top{height:24px;background:#161a22;border-bottom:1px solid #2a2f3a;display:flex;align-items:center;gap:4px;padding:0 6px;font-size:8px;color:#9aa4b2}
+  .wf-btn{background:#222834;border:1px solid #2d3444;padding:1px 5px;border-radius:2px}
+  .wf-btn.on{background:#2c3a55;color:#cfe0ff;border-color:#4f8cff}
+  .wf-tb{flex:1;margin-left:6px;background:#17202c;border:1px solid #2a3345;border-radius:2px;padding:0 4px;color:#6b7480;font-size:7.5px;display:flex;align-items:center;justify-content:space-between}
+  .wf-main{flex:1;display:flex;min-height:0}
+  .wf-tree{width:26%;background:#151920;border-right:1px solid #2a2f3a;padding:4px;font-size:8.5px;line-height:1.75;overflow:auto}
+  .wf-tree .dot{color:#3d4450}
+  .wf-tree .ok{color:#6ee7a8}
+  .wf-tree .err{color:#ff8a8a}
+  .wf-tree .warn{color:#ffd166}
+  .wf-body{flex:1;display:flex;min-width:0;border-right:1px solid #2a2f3a}
+  .wf-param{flex:1;padding:4px;overflow:auto;min-width:0}
+  .wf-row{display:flex;gap:2px;margin-bottom:2px}
+  .wf-cell{background:#1c212b;border:1px solid #2a3140;border-radius:2px;padding:1px 3px;font-size:8px;overflow:hidden;white-space:nowrap}
+  .wf-cell.on{border-color:#4f8cff;color:#cfe0ff;background:#1b2436}
+  .wf-cell.err{border-color:#a23535;color:#ffb0b0;background:#28191c}
+  .wf-cell.warn{border-color:#8a6d1c;color:#ffd778;background:#2a2416}
+  .wf-cell.badge{background:#17202c;color:#8a93a2;border-color:#2a3345;min-width:46px;text-align:center}
+  .wf-inspect{width:24%;background:#141821;padding:4px;font-size:8px;line-height:1.55;overflow:auto}
+  .wf-section{margin-bottom:5px;padding-bottom:5px;border-bottom:1px dashed #2a2f3a}
+  .wf-section h6{font-size:8px;color:#cfe0ff;margin:0 0 3px}
+  .wf-chip{display:inline-block;background:#2b3a55;border:1px solid #4f8cff;color:#cfe0ff;padding:0 5px;border-radius:8px;font-size:7px;margin-right:2px}
+  .wf-chip.warn{background:#3a2e18;border-color:#ffd166;color:#ffe7a8}
+  .wf-chip.err{background:#3a1c20;border-color:#ff8a8a;color:#ffc3c3}
+  .wf-sugg{background:#1a2838;border:1px solid #2a4466;border-radius:2px;padding:2px 4px;margin-top:2px;font-size:7.5px;color:#9fc8ff}
+  .wf-sugg button{background:#2c5282;color:#fff;border:none;border-radius:2px;padding:1px 4px;font-size:7px;float:right;margin-left:3px}
+  .wf-bottom{height:30%;border-top:1px solid #2a2f3a;background:#141821;display:flex;flex-direction:column;overflow:hidden}
+  .wf-btabs{height:16px;background:#171b22;border-bottom:1px solid #2a2f3a;display:flex;align-items:center;padding:0 4px;gap:4px;font-size:7.5px}
+  .wf-btabs span{padding:0 4px;color:#6b7480}
+  .wf-btabs span.on{color:#cfe0ff;border-bottom:1px solid #4f8cff}
+  .wf-err{color:#ff8a8a}.wf-warn{color:#ffd166}.wf-ok{color:#6ee7a8}
+  .wf-list{flex:1;overflow:auto;padding:3px 4px;font-size:8px;line-height:1.8}
+  .wf-list .ln{color:#4b5360;margin-right:4px}
+  .wf-list .loc{color:#7e8794;margin-left:auto;font-size:7.5px}
+  .wf-list div{display:flex;align-items:center}
+  .wf-status{height:12px;background:#1b1f27;border-top:1px solid #2a2f3a;font-size:7.5px;display:flex;align-items:center;padding:0 6px;gap:8px;color:#6b7480}
+  .wf-status .sp{flex:1}
+  .wf-status .dot{width:6px;height:6px;border-radius:50%;background:#6ee7a8;display:inline-block;margin-right:3px}
+</style>
+
+<h2>组合骨架 A + B · 先定结构，再进细节</h2>
+<p class="subtitle">这一版把「底部问题面板（A）」和「右侧检查器（B）」合到同一个窗口；下一步只讨论参数区的密度和模块切换。先看骨架是否对路。</p>
+
+<div class="mockup">
+  <div class="mockup-header">Basic Editor（组合骨架 · 第 1 版）</div>
+  <div class="mockup-body" style="padding:0">
+    <div class="wf">
+      <div class="wf-bar"><span class="wf-dot"></span><span class="wf-dot"></span><span class="wf-dot"></span><span style="margin-left:4px">ECU_A_2026.dvproj — yuleASR Configurator</span></div>
+      <div class="wf-top">
+        <span class="wf-btn on">Basic Editor</span>
+        <span class="wf-btn">BSW 管理</span>
+        <span class="wf-btn">通信</span>
+        <span class="wf-btn">诊断</span>
+        <span class="wf-btn">生成</span>
+        <div class="wf-tb">
+          <span>Basic Editor · Can / CanConfigSet / CanController_0</span>
+          <span>🔎  <span style="color:#4f8cff">⤡</span>  ↶ ↷  💾  ▼ 校验  ▶ 生成</span>
+        </div>
+      </div>
+      <div class="wf-main">
+        <div class="wf-tree">
+          <div>▾ <b>ECU Configuration</b></div>
+          <div>&nbsp;▾ <span class="ok">Can <span class="dot">✓</span></span></div>
+          <div>&nbsp;&nbsp;▸ CanConfigSet</div>
+          <div>&nbsp;&nbsp;▪ CanController_0 <span class="err">✕</span></div>
+          <div>&nbsp;&nbsp;▪ CanController_1</div>
+          <div>&nbsp;&nbsp;▸ CanChannel</div>
+          <div>&nbsp;▾ <span class="warn">Com</span></div>
+          <div>&nbsp;&nbsp;▪ ComIPdu <span class="warn">▲</span></div>
+          <div>&nbsp;&nbsp;▪ ComSignal</div>
+          <div>&nbsp;▸ Dem</div>
+          <div>&nbsp;▸ NvM</div>
+          <div>&nbsp;▸ Os</div>
+          <div>&nbsp;▸ PduR</div>
+        </div>
+        <div class="wf-body">
+          <div class="wf-param">
+            <div class="wf-row"><span class="wf-cell" style="flex:0 0 34%">参数</span><span class="wf-cell">值</span><span class="wf-cell badge">单位</span></div>
+            <div class="wf-row"><span class="wf-cell" style="flex:0 0 34%">CanControllerBaudRate</span><span class="wf-cell err">5000000</span><span class="wf-cell badge">bps</span></div>
+            <div class="wf-row"><span class="wf-cell" style="flex:0 0 34%">CanControllerId</span><span class="wf-cell">0</span><span class="wf-cell badge">—</span></div>
+            <div class="wf-row"><span class="wf-cell" style="flex:0 0 34%">CanControllerReceiveProcessingType</span><span class="wf-cell on">INTERRUPT</span><span class="wf-cell badge">—</span></div>
+            <div class="wf-row"><span class="wf-cell" style="flex:0 0 34%">CanControllerTransmitProcessingType</span><span class="wf-cell">INTERRUPT</span><span class="wf-cell badge">—</span></div>
+            <div class="wf-row"><span class="wf-cell" style="flex:0 0 34%">CanControllerWakeupSupport</span><span class="wf-cell">true</span><span class="wf-cell badge">—</span></div>
+            <div class="wf-row"><span class="wf-cell" style="flex:0 0 34%">CanControllerBusOffBehavior</span><span class="wf-cell">AUTO_RECOVER</span><span class="wf-cell badge">—</span></div>
+            <div class="wf-row"><span class="wf-cell warn" style="flex:0 0 34%">CanControllerBaudRateConfig (ref)</span><span class="wf-cell warn">⚠ 未解析</span><span class="wf-cell badge">—</span></div>
+          </div>
+          <div class="wf-inspect">
+            <div class="wf-section">
+              <h6>当前项</h6>
+              <span class="wf-chip err">1 错误</span>
+              <span class="wf-chip warn">1 警告</span>
+              <div style="margin-top:3px;color:#9aa4b2">CanController_0 / CanControllerBaudRate</div>
+            </div>
+            <div class="wf-section">
+              <h6>修复建议</h6>
+              <div class="wf-sugg">值 5000000 超出范围 [1000,1000000] → 自动改为 500000 <button>应用</button></div>
+              <div class="wf-sugg">创建并绑定 BaudRateConfigSet <button>应用</button></div>
+            </div>
+            <div class="wf-section">
+              <h6>元信息</h6>
+              <div>数据类型：float</div>
+              <div>单位：bps</div>
+              <div>范围：1000 – 1000000</div>
+              <div>默认：500000</div>
+              <div style="margin-top:3px;color:#7e8794;font-size:7.5px">来自 CAN 驱动 BSWM_Can 4.3.1</div>
+            </div>
+            <div class="wf-section">
+              <h6>引用</h6>
+              <div>● 被 Com_CanIf_RxIndication 引用 × 1</div>
+              <div>● 被 Dem_Can 引用 × 2</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wf-bottom">
+        <div class="wf-btabs">
+          <span class="on">问题 ▾</span><span>生成</span><span>输出</span><span>控制台</span>
+        </div>
+        <div class="wf-list">
+          <div><span class="ln">E-001</span><span class="wf-err">✕</span><span>CanControllerBaudRate 超出允许范围</span><span class="loc">→ 点击跳转</span></div>
+          <div><span class="ln">W-014</span><span class="wf-warn">▲</span><span>ComIPdu 缺少 Pdu_Ref</span><span class="loc">Com / ComIPdu[0]</span></div>
+          <div><span class="ln">W-022</span><span class="wf-warn">▲</span><span>Can_BusOffRecovery 未绑定 BswM 动作</span><span class="loc">Can / CanConfigSet[0]</span></div>
+          <div><span class="ln">I-043</span><span>✓ BaudRateConfigSet 建议命名规则已应用</span><span class="loc">—</span></div>
+          <div><span class="ln">I-044</span><span>✓ 首次校验完成 · 用时 312ms</span><span class="loc">—</span></div>
+        </div>
+      </div>
+      <div class="wf-status"><span class="dot"></span>就绪 · 已自动保存 · ARXML 有效<div class="sp"></div>问题 1 ✕ · 2 ▲ · 587 参数 · 上次生成 14:22</div>
+    </div>
+  </div>
+</div>
+
+<div class="split" style="margin-top:14px">
+  <div class="mockup">
+    <div class="mockup-header">需要决定的下一项：参数区多宽</div>
+    <div class="mockup-body">
+      <div class="options">
+        <div class="option" data-choice="dense" onclick="toggleSelect(this)">
+          <div class="letter">1</div>
+          <div class="content"><h3>稀疏行</h3><p>每行高度 ~28px，三列（参数·值·单位）+ 行内状态色块；可读性好，屏幕利用率低</p></div>
+        </div>
+        <div class="option" data-choice="compact" onclick="toggleSelect(this)">
+          <div class="letter">2</div>
+          <div class="content"><h3>紧凑行</h3><p>每行 ~20px，参数名左对齐、值可编辑、单位右对齐；DaVinci Classic 风格，密度高</p></div>
+        </div>
+        <div class="option" data-choice="grid" onclick="toggleSelect(this)">
+          <div class="letter">3</div>
+          <div class="content"><h3>栅格表</h3><p>表头固定、支持列排序和批量编辑；适合批量改值的场景，但普通阅读重</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mockup">
+    <div class="mockup-header">需要决定的下一项：模块切换优先走哪</div>
+    <div class="mockup-body">
+      <div class="options">
+        <div class="option" data-choice="tree-first" onclick="toggleSelect(this)">
+          <div class="letter">1</div>
+          <div class="content"><h3>树优先</h3><p>左侧树是唯一真源；顶栏只显示当前模块名，切模块靠树点击</p></div>
+        </div>
+        <div class="option" data-choice="tabs" onclick="toggleSelect(this)">
+          <div class="letter">2</div>
+          <div class="content"><h3>标签页 + 树</h3><p>顶部有 Basic / 通信 / 诊断 等标签页，树在当前标签内收窄；DaVinci 新 UI 倾向</p></div>
+        </div>
+        <div class="option" data-choice="perspective" onclick="toggleSelect(this)">
+          <div class="letter">3</div>
+          <div class="content"><h3>透视 + 标签页</h3><p>最左小条是透视（编辑/校验/生成），每个透视内再分模块标签；重但规整</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:14px">浏览器开着 http://localhost:59896 ，组合骨架已在上面。点选 4 个选项后，我就回终端逐项澄清范围边界（哪些 DaVinci 交互必须复刻、桌面专属增强做哪些、范围控制到多大）。</p>
